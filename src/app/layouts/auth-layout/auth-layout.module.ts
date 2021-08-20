@@ -7,16 +7,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { LoginComponent } from '../../pages/login/login.component';
 import { RegisterComponent } from '../../pages/register/register.component';
+import { VerifyComponent } from 'src/app/pages/verify/verify.component';
+import { ForgotPassComponent } from 'src/app/pages/forgot-pass/forgot-pass.component';
+import { ResetPassComponent } from 'src/app/pages/reset-pass/reset-pass.component';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AuthLayoutRoutes),
-    FormsModule
-    // NgbModule
+    FormsModule,
+    ReactiveFormsModule,
+    NgbModule
   ],
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    VerifyComponent,
+    ForgotPassComponent,
+    ResetPassComponent
   ]
 })
 export class AuthLayoutModule { }
