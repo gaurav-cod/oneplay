@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { PC } from 'src/app/models/pc.model';
+import { RestService } from 'src/app/services/rest.service';
 
 // core components
 import {
@@ -15,26 +17,15 @@ import {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  public pc: PC;
+  public loading = false;
 
-  public datasets: any;
-  public data: any;
-  public salesChart;
-  public clicked: boolean = true;
-  public clicked1: boolean = false;
+  constructor(private readonly restService: RestService) { }
 
   ngOnInit() {
-
-    this.datasets = [
-      [0, 20, 10, 30, 15, 40, 20, 60, 60],
-      [0, 20, 5, 25, 10, 30, 15, 40, 40]
-    ];
-    this.data = this.datasets[0];
-
-
     var chartOrders = document.getElementById('chart-orders');
 
     parseOptions(Chart, chartOptions());
-
 
     var ordersChart = new Chart(chartOrders, {
       type: 'bar',
@@ -42,19 +33,80 @@ export class DashboardComponent implements OnInit {
       data: chartExample2.data
     });
 
-    var chartSales = document.getElementById('chart-sales');
-
-    this.salesChart = new Chart(chartSales, {
-			type: 'line',
-			options: chartExample1.options,
-			data: chartExample1.data
-		});
+    this.loading = true;
+    this.restService.getPcInfo().subscribe(
+      data => {
+        this.pc = data
+        this.loading = false;
+      },
+      error => {
+        alert(error);
+        this.loading = false;
+      }
+    );
   }
 
-
-  public updateOptions() {
-    this.salesChart.data.datasets[0].data = this.data;
-    this.salesChart.update();
+  get ipv4() {
+    return this.pc?.ipv4 || '_'
   }
 
+  get launchTime() {
+    return this.pc?.launchStartTime?.toLocaleString() || '_'
+  }
+
+  get message() {
+    return this.pc?.message || '_';
+  }
+
+  get password() {
+    return this.pc?.password || '_';
+  }
+
+  get status() {
+    return this.pc?.state || 'loading';
+  }
+
+  startPc() {
+    this.loading = true;
+    this.restService.startPc().subscribe(
+      () => window.location.reload(),
+      error => {
+        alert(error);
+        this.loading = false;
+      }
+    )
+  }
+
+  stopPc() {
+    this.loading = true;
+    this.restService.stopPc().subscribe(
+      () => window.location.reload(),
+      error => {
+        alert(error);
+        this.loading = false;
+      }
+    )
+  }
+
+  startConsole() {
+    this.loading = true;
+    this.restService.startConsole().subscribe(
+      () => window.location.reload(),
+      error => {
+        alert(error);
+        this.loading = false;
+      }
+    )
+  }
+
+  stopConsole() {
+    this.loading = true;
+    this.restService.stopConsole().subscribe(
+      () => window.location.reload(),
+      error => {
+        alert(error);
+        this.loading = false;
+      }
+    )
+  }
 }

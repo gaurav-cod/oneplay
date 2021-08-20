@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map, catchError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginDTO, SignupDTO } from '../interface';
+import { PC } from '../models/pc.model';
 import { UserModel } from '../models/user.model';
 import { AuthService } from './auth.service';
 
@@ -81,6 +82,70 @@ export class RestService {
       .post(this.idam_api + '/user/reset_password', formData)
       .pipe(
         map(res => { }),
+        catchError((res) => {
+          throw new Error(res.error["error_msg"]);
+        })
+      );
+  }
+
+  getPcInfo(): Observable<PC> {
+    const formData = new FormData();
+    return this.http
+      .post(this.api + '/pc/info', formData)
+      .pipe(
+        map(res => new PC(res["data"])),
+        catchError((res) => {
+          throw new Error(res.error["error_msg"]);
+        })
+      );
+  }
+
+  startPc(): Observable<void> {
+    const formData = new FormData();
+    formData.append("real_time", "true");
+    return this.http
+      .post(this.api + '/pc/system/start', formData)
+      .pipe(
+        map(() => { }),
+        catchError((res) => {
+          throw new Error(res.error["error_msg"]);
+        })
+      );
+  }
+
+  stopPc(): Observable<void> {
+    const formData = new FormData();
+    formData.append("real_time", "true");
+    return this.http
+      .post(this.api + '/pc/system/stop', formData)
+      .pipe(
+        map(() => { }),
+        catchError((res) => {
+          throw new Error(res.error["error_msg"]);
+        })
+      );
+  }
+  
+  startConsole(): Observable<void> {
+    const formData = new FormData();
+    formData.append("real_time", "true");
+    return this.http
+      .post(this.api + '/pc/console/start', formData)
+      .pipe(
+        map(() => { }),
+        catchError((res) => {
+          throw new Error(res.error["error_msg"]);
+        })
+      );
+  }
+
+  stopConsole(): Observable<void> {
+    const formData = new FormData();
+    formData.append("real_time", "true");
+    return this.http
+      .post(this.api + '/pc/console/stop', formData)
+      .pipe(
+        map(() => { }),
         catchError((res) => {
           throw new Error(res.error["error_msg"]);
         })

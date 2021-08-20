@@ -8,72 +8,72 @@
           <div class="row align-items-center">
             <div class="col">
               <h6 class="text-uppercase text-light ls-1 mb-1">Your PC</h6>
-              <!-- <h2 class="text-white mb-0">Sales value</h2> -->
             </div>
             <div class="col">
-              <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item mr-2 mr-md-0" data-toggle="chart" data-target="#chart-sales"
-                  (click)="data=datasets[0];updateOptions()">
-                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked===true}"
-                    data-toggle="tab" (click)="clicked=true;clicked1=false">
-                    <span class="d-none d-md-block">Start</span>
-                    <span class="d-md-none">M</span>
-                  </a>
-                </li>
-                <!-- <li class="nav-item" data-toggle="chart" data-target="#chart-sales"
-                  (click)="data=datasets[1];updateOptions()">
-                  <a href="javascript:void(0)" class="nav-link py-2 px-3" [ngClass]="{'active':clicked1===true}"
-                    data-toggle="tab" (click)="clicked=false;clicked1=true">
-                    <span class="d-none d-md-block">Week</span>
-                    <span class="d-md-none">W</span>
-                  </a>
-                </li> -->
-              </ul>
+              <div class="nav nav-pills justify-content-end">
+                <button *ngIf="!pc?.isRunning" class="btn btn-primary" [disabled]="loading" (click)="startPc()">Start
+                  PC</button>
+                <button *ngIf="pc?.isRunning" class="btn btn-danger" [disabled]="loading" (click)="stopPc()">Stop
+                  PC</button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-body">
-          <!-- Chart -->
-          <!-- <div class="chart"> -->
-          <!-- Chart wrapper -->
-          <!-- <canvas id="chart-sales" class="chart-canvas"></canvas> -->
-          <!-- </div> -->
-          <div class="row align-items-center">
-            <div class="col">vCPUs:</div>
-            <div class="col">0</div>
+        <div class="card-body text-white">
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">vCPUs:</div>
+            <div class="col">4</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">RAM:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">RAM:</div>
             <div class="col">32GB</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">SSD:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">SSD:</div>
             <div class="col">256GB</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">GPU:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">GPU:</div>
             <div class="col">16GB Nvidia Tesla T4</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">Upstream:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Upstream:</div>
             <div class="col">50 Mbit/s</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">Location:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Location:</div>
             <div class="col">Asia Pacific (Mumbai)</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">IP:</div>
-            <div class="col">_</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">IPv4:</div>
+            <div class="col">{{ ipv4 }}</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">Username:</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Username:</div>
             <div class="col">Admin</div>
           </div>
-          <div class="row align-items-center">
-            <div class="col">Status:</div>
-            <div class="col">_</div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Launch Start Time:</div>
+            <div class="col">{{ launchTime }}</div>
           </div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Message:</div>
+            <div class="col">{{ message }}</div>
+          </div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Password:</div>
+            <div class="col">{{ password }}</div>
+          </div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Status:</div>
+            <div class="col">{{ status }}</div>
+          </div>
+        </div>
+        <div *ngIf="pc?.isRunning" class="card-footer bg-gradient-default text-center">
+          <button *ngIf="!pc?.isConsoleActive" class="btn btn-success" [disabled]="loading"
+            (click)="startConsole()">Start Console</button>
+          <button *ngIf="pc?.isConsoleActive" class="btn btn-danger" [disabled]="loading" (click)="stopConsole()">Stop
+            Console</button>
         </div>
       </div>
     </div>
