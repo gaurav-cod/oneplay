@@ -3,6 +3,7 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserModel } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-navbar',
@@ -13,8 +14,15 @@ export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
+  private user: UserModel;
+
+  get title() {
+    return this.user ? (this.user.firstName + ' ' + this.user.lastName) : 'User';
+  }
+
   constructor(location: Location,private readonly authService: AuthService) {
     this.location = location;
+    this.authService.user.subscribe(u => this.user = u);
   }
 
   ngOnInit() {

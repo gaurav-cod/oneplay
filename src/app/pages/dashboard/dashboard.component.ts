@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 import { PC } from 'src/app/models/pc.model';
+import { PcService } from 'src/app/services/pc.service';
 import { RestService } from 'src/app/services/rest.service';
 
 // core components
@@ -20,7 +21,9 @@ export class DashboardComponent implements OnInit {
   public pc: PC;
   public loading = false;
 
-  constructor(private readonly restService: RestService) { }
+  constructor(private readonly restService: RestService, private readonly pcService: PcService) {
+    this.pcService.pcInfo.subscribe(pc => this.pc = pc);
+  }
 
   ngOnInit() {
     var chartOrders = document.getElementById('chart-orders');
@@ -35,8 +38,7 @@ export class DashboardComponent implements OnInit {
 
     this.loading = true;
     this.restService.getPcInfo().subscribe(
-      data => {
-        this.pc = data
+      () => {
         this.loading = false;
       },
       error => {
