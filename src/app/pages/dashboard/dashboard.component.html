@@ -1,7 +1,6 @@
-<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
-</div>
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8"></div>
 <div class="container-fluid mt--7">
-  <div class="row">
+  <div class="row pb-4">
     <div class="col-xl-3"></div>
     <div class="col-xl-6 mb-5 mb-xl-0">
       <div class="card bg-gradient-default shadow">
@@ -12,10 +11,22 @@
             </div>
             <div class="col">
               <div class="nav nav-pills justify-content-end">
-                <button *ngIf="!pc?.isRunning" class="btn btn-primary" [disabled]="loading" (click)="startPc()">Start
-                  PC</button>
-                <button *ngIf="pc?.isRunning" class="btn btn-danger" [disabled]="loading" (click)="stopPc()">Stop
-                  PC</button>
+                <button
+                  *ngIf="!pc?.isRunning"
+                  class="btn btn-primary"
+                  [disabled]="loading"
+                  (click)="startPc()"
+                >
+                  Start PC
+                </button>
+                <button
+                  *ngIf="pc?.isRunning"
+                  class="btn btn-danger"
+                  [disabled]="loading"
+                  (click)="stopPc()"
+                >
+                  Stop PC
+                </button>
               </div>
             </div>
           </div>
@@ -59,18 +70,47 @@
           </div>
           <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">Password:</div>
-            <div class="col">{{ password }}</div>
+            <div class="col">
+              {{ password }}{{ " " }}
+              <i
+                *ngIf="pc?.isRunning && showPass"
+                class="fa fa-eye"
+                aria-hidden="true"
+                (click)="showPass = false"
+              ></i>
+              <i
+                *ngIf="pc?.isRunning && !showPass"
+                class="fa fa-eye-slash"
+                aria-hidden="true"
+                (click)="showPass = true"
+              ></i>
+            </div>
           </div>
           <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">Status:</div>
             <div class="col">{{ status }}</div>
           </div>
         </div>
-        <div *ngIf="pc?.isRunning" class="card-footer bg-gradient-default text-center">
-          <button *ngIf="!pc?.isConsoleActive" class="btn btn-success" [disabled]="loading"
-            (click)="startConsole()">Start Console</button>
-          <button *ngIf="pc?.isConsoleActive" class="btn btn-danger" [disabled]="loading" (click)="stopConsole()">Stop
-            Console</button>
+        <div
+          *ngIf="pc?.isRunning"
+          class="card-footer bg-gradient-default text-center"
+        >
+          <button
+            *ngIf="!pc?.isConsoleActive"
+            class="btn btn-success"
+            [disabled]="loading"
+            (click)="startConsole()"
+          >
+            Start Console
+          </button>
+          <button
+            *ngIf="pc?.isConsoleActive"
+            class="btn btn-danger"
+            [disabled]="loading"
+            (click)="stopConsole()"
+          >
+            Stop Console
+          </button>
         </div>
       </div>
     </div>
@@ -93,5 +133,4 @@
       </div>
     </div> -->
   </div>
-
 </div>
