@@ -40,6 +40,18 @@ export class DashboardComponent implements OnInit {
     //   data: chartExample2.data
     // });
 
+    const buttons = document.querySelectorAll(".collapsed");
+    buttons.forEach((b) =>
+      b.addEventListener("click", (e) => {
+        document
+          .querySelectorAll(".collapse")
+          .forEach((c) => c.classList.remove("show"));
+        const targetName = (e.target as Element).getAttribute("data-target");
+        const target = document.querySelector(targetName);
+        target.classList.toggle("show");
+      })
+    );
+
     this.loading = true;
     this.restService.getPcInfo().subscribe(
       () => {
