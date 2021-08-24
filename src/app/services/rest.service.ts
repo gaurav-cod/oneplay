@@ -37,21 +37,24 @@ export class RestService {
 
   signup(data: SignupDTO): Observable<void> {
     const formData = new FormData();
-    formData.append("name", data.name);
+    formData.append("first_name", data.first_name);
+    formData.append("last_name", data.last_name);
     formData.append("email", data.email);
     formData.append("password", data.password);
+    formData.append("gender", data.gender);
     return this.http.post(this.idam_api + "/user/signup", formData).pipe(
       map(() => {}),
       catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+        if (res.error["is_error"]) throw new Error(res.error["error_msg"]);
+        throw res.error["data"]["msg"];
       })
     );
   }
 
   verify(token: string): Observable<void> {
     const formData = new FormData();
-    formData.append("verify_token", token);
-    return this.http.post(this.idam_api + "/user/verify_user", formData).pipe(
+    formData.append("verification_token", token);
+    return this.http.post(this.idam_api + "/user/verify_signup", formData).pipe(
       map((res) => {}),
       catchError((res) => {
         throw new Error(res.error["error_msg"]);
