@@ -1,0 +1,20 @@
+<button class="btn btn-primary" (click)="open(classic)">Open Console</button>
+<ng-template #classic let-d="dismiss">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title text-dark" id="modal-title-default">Console</h2>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="d('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <iframe [src]="url | safe" frameborder="0"></iframe>
+    </div>
+  </div>
+</ng-template>

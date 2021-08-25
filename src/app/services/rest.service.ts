@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
-import { LoginDTO, SignupDTO } from "../interface";
+import { LoginDTO, SignupDTO, StartPcRO } from "../interface";
 import { PC } from "../models/pc.model";
 import { UserModel } from "../models/user.model";
 import { AuthService } from "./auth.service";
@@ -99,11 +99,11 @@ export class RestService {
     );
   }
 
-  startPc(): Observable<void> {
+  startPc(): Observable<StartPcRO> {
     const formData = new FormData();
     formData.append("real_time", "true");
     return this.http.post(this.api + "/pc/system/start", formData).pipe(
-      map(() => {}),
+      map((res) => res["data"]),
       catchError((res) => {
         throw new Error(res.error["error_msg"]);
       })

@@ -67,6 +67,14 @@
             <div class="col">{{ launchTime }}</div>
           </div>
           <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Total Allocated Time:</div>
+            <div class="col">{{ timeAllocated }}</div>
+          </div>
+          <div class="row align-items-center mb-2">
+            <div class="col font-weight-bold">Total Time Usage:</div>
+            <div class="col">{{ timeUsage }}</div>
+          </div>
+          <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">Message:</div>
             <div class="col">{{ message }}</div>
           </div>
@@ -113,6 +121,7 @@
           >
             Stop Console
           </button>
+          <app-console *ngIf="pc?.isConsoleActive"></app-console>
         </div>
       </div>
     </div>

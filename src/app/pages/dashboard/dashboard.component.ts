@@ -12,6 +12,18 @@ import {
   chartExample2,
 } from "../../variables/charts";
 
+function pad(num: number) {
+  return ("0" + num).slice(-2);
+}
+
+function hhmmss(secs: number) {
+  var minutes = Math.floor(secs / 60);
+  secs = secs % 60;
+  var hours = Math.floor(minutes / 60);
+  minutes = minutes % 60;
+  return `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
+}
+
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
@@ -27,6 +39,12 @@ export class DashboardComponent implements OnInit {
     private readonly pcService: PcService
   ) {
     this.pcService.pcInfo.subscribe((pc) => (this.pc = pc));
+
+    setInterval(() => {
+      if (this.pc) {
+        this.pc = this.pc.copyWith({ timeUsage: this.pc.timeUsage + 1 });
+      }
+    }, 1000);
   }
 
   ngOnInit() {
@@ -72,6 +90,14 @@ export class DashboardComponent implements OnInit {
     return this.pc?.launchStartTime?.toLocaleString() || "_";
   }
 
+  get timeAllocated() {
+    return this.pc ? hhmmss(this.pc.timeAllocated) : "_";
+  }
+
+  get timeUsage() {
+    return this.pc ? hhmmss(this.pc.timeUsage) : "_";
+  }
+
   get message() {
     return this.pc?.message || "_";
   }
@@ -95,7 +121,13 @@ export class DashboardComponent implements OnInit {
   startPc() {
     this.loading = true;
     this.restService.startPc().subscribe(
-      () => window.location.reload(),
+      (res) => {
+        if (res.success) window.location.reload();
+        else {
+          alert(res.msg);
+          this.loading = false;
+        }
+      },
       (error) => {
         alert(error);
         this.loading = false;

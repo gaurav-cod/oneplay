@@ -10,3 +10,8 @@ export interface SignupDTO {
     password: string;
     gender: 'male' | 'female';
 }
+
+export interface StartPcRO {
+    success: boolean;
+    msg: string;
+}

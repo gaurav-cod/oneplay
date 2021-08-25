@@ -12,8 +12,6 @@ export class PcService {
     return this._$pcInfo.asObservable();
   }
 
-  constructor() { }
-
   getInfo(data: Object) {
     this._$pcInfo.next(new PC(data));
   }
