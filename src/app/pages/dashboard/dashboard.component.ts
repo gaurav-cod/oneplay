@@ -40,8 +40,12 @@ export class DashboardComponent implements OnInit {
   ) {
     this.pcService.pcInfo.subscribe((pc) => (this.pc = pc));
 
-    setInterval(() => {
+    const timer = setInterval(() => {
       if (this.pc) {
+        if (!this.pc.isRunning) {
+          clearInterval(timer);
+          return;
+        }
         this.pc = this.pc.copyWith({ timeUsage: this.pc.timeUsage + 1 });
       }
     }, 1000);
