@@ -103,7 +103,7 @@ export class DashboardComponent implements OnInit {
   }
 
   get message() {
-    return this.pc?.message || "_";
+    return this.pc?.message || "";
   }
 
   get password() {

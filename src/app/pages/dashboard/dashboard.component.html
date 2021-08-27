@@ -1,10 +1,9 @@
 <div class="header bg-dark pb-8 pt-5 pt-md-8"></div>
 <div class="container-fluid mt--7">
   <div class="row pb-8">
+    <div class="col-xl-4"></div>
 
-    <div class="col-xl-3"></div>
-
-    <div class="col-xl-6">
+    <div class="col-xl-4">
       <div class="card bg-gradient-default shadow">
         <div class="card-header bg-transparent">
           <div class="row align-items-center">
@@ -34,6 +33,7 @@
           </div>
         </div>
         <div class="card-body text-white">
+          <p *ngIf="!!message" class="text-danger text-center">{{ message }}</p>
           <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">vCPUs:</div>
             <div class="col">4</div>
@@ -73,10 +73,6 @@
           <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">Total Time Usage:</div>
             <div class="col">{{ timeUsage }}</div>
-          </div>
-          <div class="row align-items-center mb-2">
-            <div class="col font-weight-bold">Message:</div>
-            <div class="col">{{ message }}</div>
           </div>
           <div class="row align-items-center mb-2">
             <div class="col font-weight-bold">Password:</div>
@@ -126,8 +122,8 @@
       </div>
     </div>
 
-    <div class="col-xl-3"></div>
-    
+    <div class="col-xl-4"></div>
+
     <!-- <div class="col-xl-4">
       <div class="card shadow">
         <div class="card-header bg-transparent">
@@ -147,65 +143,132 @@
     </div> -->
   </div>
 
-  <div id="faq" class="p-lg-5 p-md-4 p-3 py-5 text-center" style="background-color: #100d21;">
-    <h2 class="display-6 text-white mt-3 mb-5 mt-lg-5 mx-auto fw-bold" style="max-width: 690px">
+  <div
+    id="faq"
+    class="p-lg-5 p-md-4 p-3 py-5 text-center"
+    style="background-color: #100d21"
+  >
+    <h2
+      class="display-6 text-white mt-3 mb-5 mt-lg-5 mx-auto fw-bold"
+      style="max-width: 690px"
+    >
       Frequently Asked Questions
     </h2>
     <div class="container text-left mb-5" style="max-width: 780px">
       <div id="accordion">
-        <div class="card mb-3" style="background-color: #1d1a2f;">
-          <div class="card-header" id="headingOne" style="background-color: #1d1a2f;">
+        <div class="card mb-3" style="background-color: #1d1a2f">
+          <div
+            class="card-header"
+            id="headingOne"
+            style="background-color: #1d1a2f"
+          >
             <h5 class="mb-0">
-              <button class="text-white btn collapsed" data-toggle="collapse" data-target="#collapseOne"
-                aria-expanded="true" aria-controls="collapseOne">
-                Where are your servers located?
+              <button
+                class="text-white btn collapsed"
+                data-toggle="collapse"
+                data-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                Initial setup
               </button>
             </h5>
           </div>
 
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div
+            id="collapseOne"
+            class="collapse show"
+            aria-labelledby="headingOne"
+            data-parent="#accordion"
+          >
             <div class="card-body text-white-50">
-              We don’t offer a free trial. If you’re unhappy with OnePlay and haven’t used the service for more than 3
-              hours, email us at support@oneplay.in and you’ll receive a full refund of your first payment.
+              You need to have a Nvidia Account and Steam/EPIC account to access
+              the games. If you dont have please create one from here. <br>
+              <a href="https://www.nvidia.com/en-us/account/" target="_blank">https://www.nvidia.com/en-us/account/</a><br>
+              <a href="https://store.steampowered.com/login/" target="_blank">https://store.steampowered.com/login/</a><br>
+              <a href="https://www.epicgames.com/id/login" target="_blank">https://www.epicgames.com/id/login</a><br>
+              Once You create those, start
+              the PC wait for 1 min then refresh the page and start the console.
+              Once you start the console, access the console that opens a
+              Pop-Up. Enter the Password as - OnePlayPc@2021 (Default, please
+              change it once you login to windows!!!) Open Geforce experience
+              and login to your nvidia account and once you login in, go to the
+              settings and enable game-stream. Open Steam and login to your
+              steam account.
             </div>
           </div>
         </div>
 
-        <div class="card mb-3" style="background-color: #1d1a2f;">
-          <div class="card-header" id="headingTwo" style="background-color: #1d1a2f;">
+        <div class="card mb-3" style="background-color: #1d1a2f">
+          <div
+            class="card-header"
+            id="headingTwo"
+            style="background-color: #1d1a2f"
+          >
             <h5 class="mb-0">
-              <button class="btn text-white collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                aria-expanded="false" aria-controls="collapseTwo">
-                Is there a free trial?
+              <button
+                class="btn text-white collapsed"
+                data-toggle="collapse"
+                data-target="#collapseTwo"
+                aria-expanded="false"
+                aria-controls="collapseTwo"
+              >
+                Download the client for windows/mac
               </button>
             </h5>
           </div>
-          <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div
+            id="collapseTwo"
+            class="collapse"
+            aria-labelledby="headingTwo"
+            data-parent="#accordion"
+          >
             <div class="card-body text-white-50">
-              We don’t offer a free trial. If you’re unhappy with OnePlay and haven’t used the service for more than 3
-              hours, email us at support@oneplay.in and you’ll receive a full refund of your first payment.
+              Download for Windows | Download for Mac
             </div>
           </div>
         </div>
 
-        <div class="card" style="background-color: #1d1a2f;">
-          <div class="card-header" id="headingThree" style="background-color: #1d1a2f;">
+        <div class="card" style="background-color: #1d1a2f">
+          <div
+            class="card-header"
+            id="headingThree"
+            style="background-color: #1d1a2f"
+          >
             <h5 class="mb-0">
-              <button class="btn text-white collapsed" data-toggle="collapse" data-target="#collapseThree"
-                aria-expanded="false" aria-controls="collapseThree">
-                Can I use my OnePlay for other things than gaming?
+              <button
+                class="btn text-white collapsed"
+                data-toggle="collapse"
+                data-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseThree"
+              >
+                How to connect (First Time)
               </button>
             </h5>
           </div>
-          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div
+            id="collapseThree"
+            class="collapse"
+            aria-labelledby="headingThree"
+            data-parent="#accordion"
+          >
             <div class="card-body text-white-50">
-              We don’t offer a free trial. If you’re unhappy with OnePlay and haven’t used the service for more than 3
-              hours, email us at support@oneplay.in and you’ll receive a full refund of your first payment.
+              Once you download and install, open Moonlight and click on the top
+              right + icon to add a PC. Enter the IP Address of your OnePlay
+              there. Click on connect. You will be asked for a Pin, that you
+              need to enter in the PC (opened in the console) Once you enter the
+              pin, connect directly via moonlight and stop the console. Enter
+              steam big picture mode and access your library. Then onwards, you
+              just need to start a pc and wait for 1 min and connect via
+              moonlight. Make sure to use a 5GHZ Wifi or Ethernet for the best
+              experience. Always remember to Stop your pc when you are not using
+              other wise you will be billed. Always turn your console off, after
+              the initial setup as its not required and is risky.
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 </div>
