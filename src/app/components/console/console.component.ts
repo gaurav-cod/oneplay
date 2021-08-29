@@ -13,7 +13,7 @@ export class ConsoleComponent implements OnInit {
   constructor(private readonly modalService: NgbModal, private readonly pcService: PcService) {
     pcService.pcInfo.subscribe(pc => {
       if (pc?.ipv4) {
-        this.url = `https://www.oneplay.in/dashboard/console?ip=${pc.ipv4}`;
+        this.url = `https://www.oneplay.in/dashboard/console/?host=${pc.ipv4}&port=5080&encrypt=1`;
       } else {
         this.url = '';
       }

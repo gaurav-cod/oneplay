@@ -143,10 +143,7 @@
     </div> -->
   </div>
 
-  <div
-    id="faq"
-    class="p-lg-5 p-md-4 p-3 py-5 text-center"
-  >
+  <div id="faq" class="p-lg-5 p-md-4 p-3 py-5 text-center">
     <h2
       class="display-6 text-white mt-3 mb-5 mt-lg-5 mx-auto fw-bold"
       style="max-width: 690px"
@@ -180,20 +177,53 @@
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
-            <div class="card-body text-white-50">
-              You need to have a Nvidia Account and Steam/EPIC account to access your games. <br>If you dont have please create one from here. <br><br>
-              <a href="https://www.nvidia.com/en-us/account/" target="_blank">https://www.nvidia.com/en-us/account/</a><br>
-              <a href="https://store.steampowered.com/login/" target="_blank">https://store.steampowered.com/login/</a><br>
-              <a href="https://www.epicgames.com/id/login" target="_blank">https://www.epicgames.com/id/login</a><br><br>
-              Then After, start the PC and wait for 1 min and refresh the page and start the console (first time setup). <br>
+            <div class="card-body text-white-50 px-5">
+              You need to have a Nvidia Account and Steam/EPIC account to access
+              your games. <br />If you dont have please create one from here.
+              <br /><br />
+              <a
+                target="_blank"
+                href="https://www.nvidia.com/en-us/account/"
+                target="_blank"
+                >https://www.nvidia.com/en-us/account/</a
+              ><br />
+              <a
+                target="_blank"
+                href="https://store.steampowered.com/login/"
+                target="_blank"
+                >https://store.steampowered.com/login/</a
+              ><br />
+              <a
+                target="_blank"
+                href="https://www.epicgames.com/id/login"
+                target="_blank"
+                >https://www.epicgames.com/id/login</a
+              ><br /><br />
+              Then After, start the PC and wait for 1 min and refresh the page
+              and start the console (first time setup). <br />
               Once you start the console, access the console Pop-Up.
-              <br><br>Enter the Password as - OnePlayPc@2021 (Default, please change it once you login to Windows!!!) <br><br>
-              Open Geforce experience in the desktop, and login to your nvidia account and once you successfully log in, go to the
-              settings and <a href="https://www.nvidia.com/en-us/support/gamestream/gamestream-pc-setup/#">enable game stream</a>. <br><br> 
-              Finally login in to Steam/Epic Accounts.<br><br>
-              To change the VNC password, in the desktop click on VNC Control, the after change password and change it to your desired password. <br><br>
-              Dont start playing games directly into console as its not designed for that. <br><br>
-              You now need to pair the client with the PC which is explained in the next step <br>
+              <br /><br />Enter the Password as - OnePlayPc@2021 (Default,
+              please change it once you login to Windows!!!) <br /><br />
+              Open Geforce experience in the desktop, and login to your nvidia
+              account and once you successfully log in, go to the settings and
+              <a
+                target="_blank"
+                href="https://www.nvidia.com/en-us/support/gamestream/gamestream-pc-setup/#"
+                >enable game stream</a
+              >. <br /><br />
+              Finally login in to Steam/Epic Accounts.<br /><br />
+              To change the VNC password, in the desktop click on VNC Control,
+              the after change password and change it to your desired password.
+              <br /><br />
+              Dont start playing games directly into console as its not designed
+              for that. <br /><br />
+              You now need to pair the client with the PC which is explained in
+              the next step <br /><br />
+              <ng-container *ngIf="!!sslUrl">
+                You need to allow SSL in order to connect to the VM, to do that,
+                click on this link and allow SSL :
+                <a [href]="sslUrl" target="_blank">click on this link</a>
+              </ng-container>
             </div>
           </div>
         </div>
@@ -222,13 +252,24 @@
             aria-labelledby="headingTwo"
             data-parent="#accordion"
           >
-            <div class="card-body text-white-50">
-              Download for <a href="https://github.com/moonlight-stream/moonlight-qt/releases/download/v3.1.4/MoonlightSetup-3.1.4.exe">Windows</a> | Download for <a href="https://github.com/moonlight-stream/moonlight-qt/releases/download/v3.1.4/Moonlight-3.1.4.dmg">Mac</a>
+            <div class="card-body text-white-50 px-5">
+              Download for
+              <a
+                target="_blank"
+                href="https://github.com/moonlight-stream/moonlight-qt/releases/download/v3.1.4/MoonlightSetup-3.1.4.exe"
+                >Windows</a
+              >
+              | Download for
+              <a
+                target="_blank"
+                href="https://github.com/moonlight-stream/moonlight-qt/releases/download/v3.1.4/Moonlight-3.1.4.dmg"
+                >Mac</a
+              >
             </div>
           </div>
         </div>
 
-        <div class="card" style="background-color: #1d1a2f">
+        <div class="card mb-3" style="background-color: #1d1a2f">
           <div
             class="card-header"
             id="headingThree"
@@ -252,22 +293,29 @@
             aria-labelledby="headingThree"
             data-parent="#accordion"
           >
-            <div class="card-body text-white-50">
-              Once you download and install, open Moonlight and click on the top right + icon to add a PC. <br>
-              Enter the IP Address of your OnePlay there. <br>
-              Click on connect.<br>
-              You will see a PIN that you need to enter in the Cloud PC (opened in the console, at the bottom right in the Nvidia Pop-Up)<br>.
-              Once you enter the pin, go to the client and connect directly via moonlight. <br>
-              Stop your console as Moonlight is already paired <br>
-              Enter steam big picture mode and access your library. Then onwards, you just need to start a pc and wait for 1 min and connect via moonlight. <br>
-              Make sure to use a 5GHZ Wifi or Ethernet for the best experience. <br>
-              Always remember to Stop your pc when you are not using other wise you will be billed. <br>
-              Always turn your console off, after the initial setup. <br>
+            <div class="card-body text-white-50 px-5">
+              Once you download and install, open Moonlight and click on the top
+              right + icon to add a PC. <br />
+              Enter the IP Address of your OnePlay there. <br />
+              Click on connect.<br />
+              You will see a PIN that you need to enter in the Cloud PC (opened
+              in the console, at the bottom right in the Nvidia Pop-Up)<br />.
+              Once you enter the pin, go to the client and connect directly via
+              moonlight. <br />
+              Stop your console as Moonlight is already paired <br />
+              Enter steam big picture mode and access your library. Then
+              onwards, you just need to start a pc and wait for 1 min and
+              connect via moonlight. <br />
+              Make sure to use a 5GHZ Wifi or Ethernet for the best experience.
+              <br />
+              Always remember to Stop your pc when you are not using other wise
+              you will be billed. <br />
+              Always turn your console off, after the initial setup. <br />
             </div>
           </div>
         </div>
-        
-         <div class="card mb-3" style="background-color: #1d1a2f">
+
+        <div class="card mb-3" style="background-color: #1d1a2f">
           <div
             class="card-header"
             id="headingFour"
@@ -291,22 +339,19 @@
             aria-labelledby="headingFour"
             data-parent="#accordion"
           >
-            <div class="card-body text-white-50">
-              
-              1. After the first time setup or adding a new device, make sure to stop your console. <br>
-              2. Dont play games in console as its not designed for that.<br>
-              3. Make sure to stop your PC after usage else your allocated time will be used up.<br>
-              4. Please use a WiFi 5GZ or Ethernet to connect for the best experience.<br>
-              5. For Any help write to us at - help@oneplay.in<br>
-              
+            <div class="card-body text-white-50 px-5">
+              1. After the first time setup or adding a new device, make sure to
+              stop your console. <br />
+              2. Dont play games in console as its not designed for that.<br />
+              3. Make sure to stop your PC after usage else your allocated time
+              will be used up.<br />
+              4. Please use a WiFi 5GZ or Ethernet to connect for the best
+              experience.<br />
+              5. For Any help write to us at - help@oneplay.in<br />
             </div>
           </div>
         </div>
-        
-        
-        
       </div>
     </div>
   </div>
 </div>
- 

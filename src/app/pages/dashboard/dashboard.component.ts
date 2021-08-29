@@ -122,6 +122,10 @@ export class DashboardComponent implements OnInit {
     return this.pc?.state || "loading";
   }
 
+  get sslUrl() {
+    return !!this.pc?.ipv4 ? `http://${this.pc.ipv4.trim()}:5080` : "";
+  }
+
   startPc() {
     this.loading = true;
     this.restService.startPc().subscribe(
