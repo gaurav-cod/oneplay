@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
   }
 
   get sslUrl() {
-    return !!this.pc?.ipv4 ? `http://${this.pc.ipv4.trim()}:5080` : "";
+    return !!this.pc?.ipv4 ? `https://${this.pc.ipv4.trim()}:5080` : "";
   }
 
   startPc() {
