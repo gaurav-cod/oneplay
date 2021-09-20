@@ -1,0 +1,112 @@
+<ngb-carousel
+  id="home-header"
+  [interval]="4000"
+  [pauseOnFocus]="false"
+  [pauseOnHover]="false"
+  [showNavigationArrows]="false"
+>
+  <ng-template *ngFor="let i of [1, 2, 3]" ngbSlide>
+    <div
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+      style="
+        min-height: 786px;
+        background-image: url(assets/img/theme/profile-cover.jpg);
+        background-size: cover;
+        background-position: center top;
+      "
+    >
+      <!-- Mask -->
+      <span class="mask bg-gradient-banner"></span>
+      <!-- Header container -->
+      <div class="container d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10" style="min-width: 450px">
+            <h1 class="display-2 text-white">FORTNITE</h1>
+            <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
+            <p class="text-white mt-0">Available to purchase on</p>
+            <a href="#!" class="btn btn-primary">Know more</a>
+            <a href="#!" class="btn bg-translucent-dark text-white"
+              >Add to wishlist</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ngb-carousel>
+<div class="container mt--9">
+  <h3 class="text-white position-relative">Continue from where you left off</h3>
+  <div class="d-flex overflow-auto">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <a
+        [routerLink]="['/view/' + i]"
+        class="card card-block"
+        style="width: 219px"
+      >
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          height="153"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+
+  <h3 class="text-white position-relative mt-5">Top Stream Categories</h3>
+  <div class="d-flex overflow-auto">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <div class="card card-block position-relative" style="width: 219px">
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/team-1-800x800.jpg"
+          height="275"
+          alt=""
+        />
+        <span class="mask bg-gradient-darker opacity-7 card-img"></span>
+        <div class="position-absolute text-center bottom-2" style="width: 100%">
+          <h4 class="text-white">Action</h4>
+          <div class="text-white-50 small">13.2k viewers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-white position-relative mt-5">Trending games</h3>
+  <div class="d-flex overflow-auto">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <a
+        [routerLink]="['/view/' + i]"
+        class="card card-block"
+        style="width: 219px"
+      >
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          height="153"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+
+  <h3 class="text-white position-relative mt-5">
+    Apps and games you might like
+  </h3>
+  <div class="d-flex overflow-auto pb-7">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <a
+        [routerLink]="['/view/' + i]"
+        class="card card-block"
+        style="width: 219px"
+      >
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          height="153"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+</div>

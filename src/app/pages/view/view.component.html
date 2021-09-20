@@ -1,0 +1,205 @@
+<div
+  class="header pb-0 pt-5 pt-lg-8"
+  style="
+    background-image: url(assets/img/theme/profile-cover.jpg);
+    background-size: cover;
+    background-position: center top;
+  "
+>
+  <!-- Mask -->
+  <span class="mask bg-gradient-banner"></span>
+  <!-- Header container -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-7 col-md-10" style="min-width: 450px">
+        <button
+          class="btn btn-icon d-flex align-items-center p-0"
+          (click)="back()"
+        >
+          <i class="ni ni-bold-left fill-default"></i
+          ><span class="text-gray">Go back</span>
+        </button>
+        <h1 class="display-2 text-white">FORTNITE</h1>
+        <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
+        <p class="text-white mt-0">Available to purchase on</p>
+        <a href="#!" class="btn btn-primary">Continue playing</a>
+        <a href="#!" class="btn bg-translucent-dark text-white"
+          >Add to wishlist</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="mt-6 pb-8 pt-5 bg-gradient-banner-bottom">
+    <div class="row align-items-center container mx-auto">
+      <div class="col-lg-6 col-md-12">
+        <p class="text-white">Friends who’ve played this</p>
+        <div class="media">
+          <div class="avatar avatar-md rounded-circle mr-2">
+            <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
+          </div>
+          <div class="avatar avatar-md rounded-circle mr-2">
+            <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
+          </div>
+          <div class="avatar avatar-md rounded-circle">
+            <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 mt-lg-0 mt-md-5">
+        <div class="d-flex align-items-center">
+          <button class="btn btn-icon-only btn-neutral rounded-circle">
+            <i class="ni ni-bold-left"></i>
+          </button>
+          <div class="d-flex overflow-auto" style="width: 470px">
+            <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="small-card py-2">
+              <img
+                width="110"
+                height="77"
+                src="../../../assets/img/theme/profile-cover.jpg"
+                alt=""
+              />
+            </div>
+          </div>
+          <button class="btn btn-icon-only btn-neutral rounded-circle">
+            <i class="ni ni-bold-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container pb-6">
+  <div class="row">
+    <div class="col-md-7 col-12 pr-lg-4">
+      <h4 class="text-white">Offers and downloadable content</h4>
+      <div class="d-flex overflow-auto" style="width: 100%">
+        <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="small-card py-2">
+          <img
+            width="206"
+            height="132"
+            src="../../../assets/img/theme/profile-cover.jpg"
+            alt=""
+          />
+          <div class="text-white-50 text-sm mt-2" style="max-width: 206">
+            Up to 75% Off | Valid until 15th August only on OnePlay
+          </div>
+        </div>
+      </div>
+      <hr class="border-dark" />
+      <h3 class="text-white">About the game</h3>
+      <p class="text-white">
+        Assassin’s Creed Odyssey is the twentieth game in its series. It is the
+        earliest game in the Assassin’s Creed universe chronology and the
+        prequel to Assassin’s Creed Origins.
+      </p>
+      <h4 class="text-white">Plot</h4>
+      <p class="text-white">
+        The events of Assassin’s Creed Odyssey’s take place in the Classical Era
+        of Ancient Greece, in 431 BC, before the Brotherhood of Assassins was
+        even formed. The plot follows a fictionalized story of the Peloponnesian
+        War between city-states of Sparta and Athens that left Greece
+        devastated. The player can choose to control either a male (named
+        Alexios) or female (named Kassandra) protagonist, both of them being
+        descendants of the famous Spartan king Leonidas. The player enters the
+        plot as a mercenary and can side with either Athens or its rival Sparta.
+        There’s also the frame story set in the contemporary age. Its
+        protagonist is Layla Hassan, who was also the main character in the
+        frame story of Assassin’s Creed Origins.
+      </p>
+      <h4 class="text-white">Gameplay</h4>
+      <p class="text-white">
+        Unlike most earlier installments of Assassin’s Creed, which put the
+        emphasis solely on action, Odyssey has a strong role-playing element in
+        it. Dialogue options and the non-linear plot allow the player to reach
+        several alternate endings. The game also has a reputation system and
+        multiple options for romancing, including same-sex romances. The combat
+        system is similar to that in Origins with the addition of new skills.
+        The game also reintroduces naval battles.
+      </p>
+      <h4 class="text-white">Characters</h4>
+      <div class="row overflow-auto">
+        <div class="col-1 mr-3">
+          <div class="avatar avatar-lg rounded-circle">
+            <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
+          </div>
+        </div>
+        <div class="col-1 mr-3">
+          <div class="avatar avatar-lg rounded-circle">
+            <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
+          </div>
+        </div>
+        <div class="col-1 mr-3">
+          <div class="avatar avatar-lg rounded-circle">
+            <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 col-12">
+      <h4 class="text-white mb-4">Top Live Streams of the game</h4>
+      <div *ngFor="let i of [1, 2, 3]" class="media mb-2">
+        <img
+          width="138"
+          height="96"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          alt=""
+        />
+        <div class="ml-3">
+          <h5 class="text-white">
+            Assassin’s Creed Odyssey | Level 3 | Egyptian King Assasination
+          </h5>
+          <div class="media mb-1 align-items-center">
+            <div class="rounded-circle bg-gray" style="padding: 12px"></div>
+            <span class="text-gray small ml-1">Chadwikx3</span>
+          </div>
+          <div class="text-gray">
+            &bull;&nbsp; <span class="small">2,368 viewers</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="border-dark" />
+
+      <h4 class="text-white mb-4">Other game content</h4>
+      <div *ngFor="let i of [1, 2, 3]" class="media mb-2">
+        <img
+          width="138"
+          height="96"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          alt=""
+        />
+        <div class="ml-3">
+          <h5 class="text-white">
+            Assassin’s Creed Odyssey | Level 3 | Egyptian King Assasination
+          </h5>
+          <div class="media mb-1 align-items-center">
+            <div class="rounded-circle bg-gray" style="padding: 12px"></div>
+            <span class="text-gray small ml-1">Chadwikx3</span>
+          </div>
+          <div class="text-gray">
+            &bull;&nbsp; <span class="small">2,368 viewers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="text-white mt-6">Similar games</h3>
+  <div class="d-flex overflow-auto">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <a
+        [routerLink]="['/view/' + i]"
+        class="card card-block"
+        style="width: 219px"
+      >
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/profile-cover.jpg"
+          height="153"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+</div>

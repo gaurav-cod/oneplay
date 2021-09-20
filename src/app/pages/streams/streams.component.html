@@ -1,0 +1,77 @@
+<div class="container py-5">
+  <div class="card bg-dark mb-5" style="width: 100%">
+    <div class="row g-0">
+      <div class="col-md-8">
+        <img
+          src="../../../assets/img/theme/profile-cover.jpg"
+          class="img-fluid rounded-start"
+          alt="..."
+        />
+      </div>
+      <div class="col-md-4">
+        <div
+          class="card-body d-flex flex-column justify-content-between"
+          style="height: 100%"
+        >
+          <div>
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">
+              This is a wider card with supporting text below as a natural
+              lead-in to additional content. This content is a little bit
+              longer.
+            </p>
+            <p class="card-text">
+              <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+          </div>
+          <button class="btn btn-primary">Watch live stream</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="text-white mb-3">Top Live Streams</h2>
+  <div class="d-flex overflow-auto" style="width: 100%">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-3">
+      <app-stream-card
+        [id]="'i'"
+        [title]="'Far Cry 3 Live Right Now 😈 Going Crazy!🎉'"
+        [image]="'assets/img/theme/profile-cover.jpg'"
+        [avatar]="'assets/img/theme/team-2-800x800.jpg'"
+        [player]="'AdamsmithD'"
+      ></app-stream-card>
+    </div>
+  </div>
+  
+  <h2 class="text-white mb-3 mt-5">Top videos</h2>
+  <div class="d-flex overflow-auto" style="width: 100%">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-3">
+      <app-stream-card
+        [id]="'i'"
+        [title]="'Far Cry 3 Live Right Now 😈 Going Crazy!🎉'"
+        [image]="'assets/img/theme/profile-cover.jpg'"
+        [avatar]="'assets/img/theme/team-2-800x800.jpg'"
+        [player]="'AdamsmithD'"
+      ></app-stream-card>
+    </div>
+  </div>
+
+  <h2 class="text-white mb-3 mt-5">Top Categories</h2>
+  <div class="d-flex overflow-auto">
+    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+      <div class="card card-block position-relative" style="width: 219px">
+        <img
+          class="card-img"
+          src="../../../assets/img/theme/team-1-800x800.jpg"
+          height="275"
+          alt=""
+        />
+        <span class="mask bg-gradient-darker opacity-7 card-img"></span>
+        <div class="position-absolute text-center bottom-2" style="width: 100%">
+          <h4 class="text-white">Action</h4>
+          <div class="text-white-50 small">13.2k viewers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

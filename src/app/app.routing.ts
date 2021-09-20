@@ -11,7 +11,7 @@ import { LoginGuard } from './guards/login.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'home',
     pathMatch: 'full',
   }, {
     path: '',
@@ -35,7 +35,7 @@ const routes: Routes = [
     ]
   }, {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: 'home'
   }
 ];
 
@@ -44,7 +44,8 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: false
+      useHash: false,
+      scrollPositionRestoration: 'enabled'
     })
   ],
   exports: [

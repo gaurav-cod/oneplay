@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+#home-header {
+    .carousel-indicators {
+        left: auto;
+        bottom: 200px;
+
+        li {
+            border-radius: 50%;
+            height: 14px;
+            width: 14px;
+        }
+    }
+}

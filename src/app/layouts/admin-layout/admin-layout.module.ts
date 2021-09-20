@@ -8,11 +8,15 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../pages/dashboard/dashboard.component';
 import { IconsComponent } from '../../pages/icons/icons.component';
-import { MapsComponent } from '../../pages/maps/maps.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { TablesComponent } from '../../pages/tables/tables.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { HomeComponent } from 'src/app/pages/home/home.component';
+import { StoreComponent } from 'src/app/pages/store/store.component';
+import { ViewComponent } from 'src/app/pages/view/view.component';
+import { StreamsComponent } from 'src/app/pages/streams/streams.component';
+import { StreamComponent } from 'src/app/pages/stream/stream.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -30,7 +34,11 @@ import { ComponentsModule } from 'src/app/components/components.module';
     UserProfileComponent,
     TablesComponent,
     IconsComponent,
-    MapsComponent
+    HomeComponent,
+    StoreComponent,
+    ViewComponent,
+    StreamsComponent,
+    StreamComponent
   ]
 })
 
