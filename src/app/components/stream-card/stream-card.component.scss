@@ -1,5 +1,7 @@
 .root {
     width: 275px;
+    display: flex;
+    flex-direction: column;
 
     .image {
         width: 100%;

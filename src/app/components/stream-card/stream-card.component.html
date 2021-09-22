@@ -1,4 +1,4 @@
-<div class="root">
+<a [routerLink]="['/streams/'+id]" class="root">
   <img class="image mb-2" [src]="image" alt="" />
   <div class="text-white text-sm mb-2">{{ title }}</div>
   <div class="d-flex align-items-center">
@@ -7,4 +7,4 @@
     </div>
     <div class="text-white-50 text-xs ml-2">{{ player }}</div>
   </div>
-</div>
+</a>
