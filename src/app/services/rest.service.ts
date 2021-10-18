@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { LoginDTO, SignupDTO, StartPcRO } from "../interface";
+import { GameModel } from "../models/game.model";
 import { PC } from "../models/pc.model";
 import { UserModel } from "../models/user.model";
 import { AuthService } from "./auth.service";
@@ -14,6 +15,7 @@ import { PcService } from "./pc.service";
 export class RestService {
   private readonly api = environment.api_endpoint;
   private readonly idam_api = environment.idam_api_endpoint;
+  private readonly r_mix_api = environment.render_mix_api;
 
   constructor(
     private readonly http: HttpClient,
@@ -141,5 +143,23 @@ export class RestService {
         throw new Error(res.error["error_msg"]);
       })
     );
+  }
+
+  getGameDetails(id: string): Observable<GameModel> {
+    return this.http
+      .get(this.r_mix_api + "/games/" + id + '/info')
+      .pipe(map((res) => new GameModel(res["data"])));
+  }
+
+  search(q: string): Observable<GameModel> {
+    return this.http
+      .get(this.r_mix_api + "/search?q=" + q)
+      .pipe(map((res) => new GameModel(res["data"]["_source"])));
+  }
+
+  getSimilarGames(id: string): Observable<GameModel[]> {
+    return this.http
+      .get(this.r_mix_api + "/games/" + id + "/similar")
+      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
   }
 }

@@ -1,7 +1,8 @@
 <div
+  *ngIf="!!game"
   class="header pb-0 pt-5 pt-lg-8"
   style="
-    background-image: url(assets/img/theme/profile-cover.jpg);
+    background-image: url({{game.bgImage}});
     background-size: cover;
     background-position: center top;
   "
@@ -19,8 +20,8 @@
           <i class="ni ni-bold-left fill-default"></i
           ><span class="text-gray">Go back</span>
         </button>
-        <h1 class="display-2 text-white">FORTNITE</h1>
-        <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
+        <h1 class="display-2 text-white">{{game.title}}</h1>
+        <p class="text-white mt-0 mb-4">OnePlay Rating: {{game.rating}}/10</p>
         <p class="text-white mt-0">Available to purchase on</p>
         <a href="#!" class="btn btn-primary">Continue playing</a>
         <a href="#!" class="btn bg-translucent-dark text-white"

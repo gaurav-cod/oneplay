@@ -1,0 +1,20 @@
+.bg-gradient-banner {
+  background: linear-gradient(261deg, rgba(18, 18, 18, 0) 15%, rgba(18, 18, 18, 0.27) 30%, rgba(18, 18, 18, 0.47) 45%, rgba(18, 18, 18, 0.92) 70%);
+}
+
+.bg-gradient-banner-bottom {
+  background: linear-gradient(to bottom, rgba(18, 18, 18, 0), #121212 69%, #121212);
+}
+
+.small-card {
+  width: -webkit-max-content;
+  width: -moz-max-content;
+  width: max-content;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  margin-right: 8px;
+}
+.small-card img {
+  border-radius: 8px;
+}/*# sourceMappingURL=view.component.css.map */
