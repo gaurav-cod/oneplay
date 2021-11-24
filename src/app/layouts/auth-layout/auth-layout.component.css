@@ -1,0 +1,10 @@
+.main-content {
+  background-image: url("../../../assets/img/Sign in Background Image - Desktop.png");
+  background-size: cover;
+  height: 100vh;
+}
+.main-content .backdrop {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.363);
+}/*# sourceMappingURL=auth-layout.component.css.map */

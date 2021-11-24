@@ -2,7 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
-import { LoginDTO, SignupDTO, StartPcRO } from "../interface";
+import { HomeFeeds, LoginDTO, SignupDTO, StartPcRO } from "../interface";
+import { GameModel } from "../models/game.model";
+import { GameFeedModel } from "../models/gameFeed.model";
 import { PC } from "../models/pc.model";
 import { UserModel } from "../models/user.model";
 import { AuthService } from "./auth.service";
@@ -14,6 +16,7 @@ import { PcService } from "./pc.service";
 export class RestService {
   private readonly api = environment.api_endpoint;
   private readonly idam_api = environment.idam_api_endpoint;
+  private readonly r_mix_api = environment.render_mix_api;
 
   constructor(
     private readonly http: HttpClient,
@@ -139,6 +142,58 @@ export class RestService {
       map(() => {}),
       catchError((res) => {
         throw new Error(res.error["error_msg"]);
+      })
+    );
+  }
+
+  getGameDetails(id: string): Observable<GameModel> {
+    return this.http
+      .post(this.r_mix_api + "/games/" + id + "/info", null)
+      .pipe(map((res) => new GameModel(res["data"])));
+  }
+
+  search(q: string): Observable<GameModel[]> {
+    return this.http
+      .post(this.r_mix_api + "/search?q=" + q, null)
+      .pipe(
+        map((res) =>
+          !!res["data"] ? res["data"].map((d: any) => new GameModel(d)) : []
+        )
+      );
+  }
+
+  getSimilarGames(id: string): Observable<GameModel[]> {
+    return this.http
+      .post(this.r_mix_api + "/games/" + id + "/similar", null)
+      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+  }
+
+  getFilteredGames(): Observable<GameModel[]> {
+    const data = [
+      {
+        order_by: "release_date:desc",
+      },
+    ];
+    return this.http
+      .post(this.r_mix_api + "/feed/custom", data)
+      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+  }
+
+  getAllGames(page: number): Observable<GameModel[]> {
+    return this.http
+      .post(this.r_mix_api + "/games?page=" + page, null)
+      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+  }
+
+  getHomeFeed(): Observable<HomeFeeds> {
+    return this.http.post(this.r_mix_api + "/feed/personalized", null).pipe(
+      map((res) => {
+        const games = res["data"].map((d: any) => new GameFeedModel(d));
+        return {
+          games,
+          categories: [],
+          banners: [],
+        };
       })
     );
   }

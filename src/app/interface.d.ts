@@ -1,3 +1,6 @@
+import { GameModel } from "./models/game.model";
+import { GameFeedModel } from "./models/gameFeed.model";
+
 export interface LoginDTO {
     email: string;
     password: string;
@@ -14,4 +17,10 @@ export interface SignupDTO {
 export interface StartPcRO {
     success: boolean;
     msg: string;
+}
+
+export interface HomeFeeds {
+    games: GameFeedModel[];
+    categories: any[];
+    banners: GameModel[];
 }
