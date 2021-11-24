@@ -11,6 +11,7 @@ import { RestService } from "src/app/services/rest.service";
 })
 export class ViewComponent implements OnInit {
   game: GameModel;
+  similarGames: GameModel[] = [];
 
   constructor(
     private readonly location: Location,
@@ -23,6 +24,9 @@ export class ViewComponent implements OnInit {
       this.restService
         .getGameDetails(params.id)
         .subscribe((game) => (this.game = game));
+      this.restService
+        .getSimilarGames(params.id)
+        .subscribe((games) => (this.similarGames = games));
     });
   }
 

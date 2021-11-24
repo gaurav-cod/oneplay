@@ -165,15 +165,15 @@
 
   <h3 class="text-white mt-6">Similar games</h3>
   <div class="d-flex overflow-auto">
-    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
+    <div *ngFor="let similarGame of similarGames" class="mr-4 mb-4">
       <a
-        [routerLink]="['/view/' + i]"
+        [routerLink]="['/view/' + similarGame.oneplayId]"
         class="card card-block"
         style="width: 219px"
       >
         <img
           class="card-img"
-          src="../../../assets/img/theme/profile-cover.jpg"
+          [src]="similarGame.posterImg || similarGame.bgImage"
           height="153"
           alt=""
         />
