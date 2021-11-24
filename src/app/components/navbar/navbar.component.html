@@ -1,4 +1,8 @@
-<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+<nav
+  class="navbar navbar-expand-md navbar-dark d-none d-md-flex"
+  id="navbar-main"
+  style="background-color: #272727"
+>
   <div class="container-fluid">
     <!-- Brand -->
     <a
@@ -6,20 +10,62 @@
       routerLinkActive="active"
       [routerLink]="['/dashboard']"
     >
-      <img style="height: 54px; width: 200px" src="assets/img/brand/logo.png" />
+      <img style="height: 43px; width: 150px" src="assets/img/brand/logo.png" />
     </a>
+
+    <!-- Links -->
+    <ul class="navbar-nav d-none d-md-flex">
+      <li class="nav-item">
+        <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link"
+          >Home</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          routerLinkActive="active"
+          [routerLink]="['/streams']"
+          class="nav-link"
+          >Streams</a
+        >
+      </li>
+      <li class="nav-item">
+        <a routerLinkActive="active" [routerLink]="['/store']" class="nav-link"
+          >Store</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          routerLinkActive="active"
+          [routerLink]="['/library']"
+          class="nav-link"
+          >Library</a
+        >
+      </li>
+    </ul>
+
     <!-- Form -->
-    <!-- <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-      <div class="form-group mb-0" [ngClass]="{ 'focused': focus === true }">
-        <div class="input-group input-group-alternative">
+    <form class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto">
+      <div class="form-group mb-0" [ngClass]="{ focused: focus === true }">
+        <div class="input-group input-group-alternative border-0 bg-darker">
+          <input
+            class="form-control"
+            placeholder="Search"
+            type="text"
+            [formControl]="query"
+            (focus)="focus = true"
+            (blur)="focus = false"
+          />
           <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fas fa-search"></i></span>
+            <a
+              [routerLink]="['/search']"
+              [queryParams]="{ q: query.value }"
+              class="input-group-text"
+              ><i class="fas fa-search"></i
+            ></a>
           </div>
-          <input class="form-control" placeholder="Search" type="text" (focus)="focus = true"
-          (blur)="focus = false">
         </div>
       </div>
-    </form> -->
+    </form>
     <!-- User -->
     <ul class="navbar-nav align-items-center d-none d-md-flex">
       <li class="nav-item" ngbDropdown placement="bottom-right">
@@ -49,11 +95,23 @@
             <i class="ni ni-calendar-grid-58"></i>
             <span>Activity</span>
           </a> -->
-          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-support-16"></i>
-            <span>Support</span>
-          </a> -->
-          <!-- <div class="dropdown-divider"></div> -->
+          <a
+            routerLinkActive="active"
+            [routerLink]="['/user-profile']"
+            class="dropdown-item"
+          >
+            <i class="ni ni-settings"></i>
+            <span>Settings</span>
+          </a>
+          <a
+            routerLinkActive="active"
+            [routerLink]="['/dashboard']"
+            class="dropdown-item"
+          >
+            <i class="ni ni-laptop"></i>
+            <span>Your PC</span>
+          </a>
+          <div class="dropdown-divider"></div>
           <a href="javascript:void(0)" class="dropdown-item" (click)="logout()">
             <i class="ni ni-button-power"></i>
             <span>Logout</span>

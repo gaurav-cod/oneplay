@@ -15,16 +15,24 @@ import { AuthService } from "../services/auth.service";
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private readonly authService: AuthService) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(request: HttpRequest<any>, next: HttpHandler) {
+    let req = request;
     const formData = req.body as FormData;
 
-    formData.append("token", environment.api_token);
-    formData.append("device", "web");
-
     if (req.urlWithParams.startsWith(environment.idam_api_endpoint)) {
+      formData.append("device", "web");
+      formData.append("token", environment.api_token);
       formData.append("session-token", "AUTH");
     } else if (req.urlWithParams.startsWith(environment.api_endpoint)) {
+      formData.append("token", environment.api_token);
       formData.append("session-token", this.authService.sessionToken);
+    } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
+      req = req.clone({
+        setHeaders: {
+          "Access-Control-Allow-Origin": "*",
+          "session_token": "1E123_223"
+        },
+      });
     }
 
     return next.handle(req).pipe(
