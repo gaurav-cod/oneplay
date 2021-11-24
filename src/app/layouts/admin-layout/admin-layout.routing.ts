@@ -10,6 +10,7 @@ import { ViewComponent } from 'src/app/pages/view/view.component';
 import { StreamComponent } from 'src/app/pages/stream/stream.component';
 import { StreamsComponent } from 'src/app/pages/streams/streams.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
+import { SearchComponent } from 'src/app/pages/search/search.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -21,5 +22,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'view/:id',       component: ViewComponent },
     { path: 'streams/:id',    component: StreamComponent },
     { path: 'streams',        component: StreamsComponent },
-    { path: 'library',        component: LibraryComponent }
+    { path: 'library',        component: LibraryComponent },
+    { path: 'search',         component: SearchComponent }
 ];

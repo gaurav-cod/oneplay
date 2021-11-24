@@ -2,10 +2,10 @@
   *ngIf="!!game"
   class="header pb-0 pt-5 pt-lg-8"
   style="
-    background-image: url({{game.bgImage}});
     background-size: cover;
     background-position: center top;
   "
+  [ngStyle]="{'background-image': 'url(' + game.bgImage + ')'}"
 >
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
@@ -22,18 +22,23 @@
         </button>
         <h1 class="display-2 text-white">{{game.title}}</h1>
         <p class="text-white mt-0 mb-4">OnePlay Rating: {{game.rating}}/10</p>
-        <p class="text-white mt-0">Available to purchase on</p>
+        <!-- <p class="text-white mt-0">Available to purchase on</p>
         <a href="#!" class="btn btn-primary">Continue playing</a>
         <a href="#!" class="btn bg-translucent-dark text-white"
           >Add to wishlist</a
-        >
+        > -->
       </div>
     </div>
   </div>
   <div class="mt-6 pb-8 pt-5 bg-gradient-banner-bottom">
     <div class="row align-items-center container mx-auto">
       <div class="col-lg-6 col-md-12">
-        <p class="text-white">Friends who’ve played this</p>
+        <p class="text-white mt-0">Available to purchase on</p>
+        <a href="#!" class="btn btn-primary">Continue playing</a>
+        <a href="#!" class="btn bg-translucent-dark text-white"
+          >Add to wishlist</a
+        >
+        <!-- <p class="text-white">Friends who’ve played this</p>
         <div class="media">
           <div class="avatar avatar-md rounded-circle mr-2">
             <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
@@ -44,7 +49,7 @@
           <div class="avatar avatar-md rounded-circle">
             <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="col-lg-6 col-md-12 mt-lg-0 mt-md-5">
         <div class="d-flex align-items-center">
@@ -70,10 +75,10 @@
   </div>
 </div>
 
-<div class="container pb-6">
+<div *ngIf="!!game" class="container pb-6">
   <div class="row">
     <div class="col-md-7 col-12 pr-lg-4">
-      <h4 class="text-white">Offers and downloadable content</h4>
+      <!-- <h4 class="text-white">Offers and downloadable content</h4>
       <div class="d-flex overflow-auto" style="width: 100%">
         <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="small-card py-2">
           <img
@@ -87,37 +92,9 @@
           </div>
         </div>
       </div>
-      <hr class="border-dark" />
+      <hr class="border-dark" /> -->
       <h3 class="text-white">About the game</h3>
-      <p class="text-white">
-        Assassin’s Creed Odyssey is the twentieth game in its series. It is the
-        earliest game in the Assassin’s Creed universe chronology and the
-        prequel to Assassin’s Creed Origins.
-      </p>
-      <h4 class="text-white">Plot</h4>
-      <p class="text-white">
-        The events of Assassin’s Creed Odyssey’s take place in the Classical Era
-        of Ancient Greece, in 431 BC, before the Brotherhood of Assassins was
-        even formed. The plot follows a fictionalized story of the Peloponnesian
-        War between city-states of Sparta and Athens that left Greece
-        devastated. The player can choose to control either a male (named
-        Alexios) or female (named Kassandra) protagonist, both of them being
-        descendants of the famous Spartan king Leonidas. The player enters the
-        plot as a mercenary and can side with either Athens or its rival Sparta.
-        There’s also the frame story set in the contemporary age. Its
-        protagonist is Layla Hassan, who was also the main character in the
-        frame story of Assassin’s Creed Origins.
-      </p>
-      <h4 class="text-white">Gameplay</h4>
-      <p class="text-white">
-        Unlike most earlier installments of Assassin’s Creed, which put the
-        emphasis solely on action, Odyssey has a strong role-playing element in
-        it. Dialogue options and the non-linear plot allow the player to reach
-        several alternate endings. The game also has a reputation system and
-        multiple options for romancing, including same-sex romances. The combat
-        system is similar to that in Origins with the addition of new skills.
-        The game also reintroduces naval battles.
-      </p>
+      <p [innerHTML]="game.description" class="text-white-50"></p>
       <h4 class="text-white">Characters</h4>
       <div class="row overflow-auto">
         <div class="col-1 mr-3">

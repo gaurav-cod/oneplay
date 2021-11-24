@@ -30,6 +30,7 @@ export class AuthInterceptor implements HttpInterceptor {
       req = req.clone({
         setHeaders: {
           "Access-Control-Allow-Origin": "*",
+          "session_token": "1E123_223"
         },
       });
     }

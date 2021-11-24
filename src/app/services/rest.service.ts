@@ -147,14 +147,18 @@ export class RestService {
 
   getGameDetails(id: string): Observable<GameModel> {
     return this.http
-      .get(this.r_mix_api + "/games/" + id + '/info')
+      .post(this.r_mix_api + "/games/" + id + "/info", null)
       .pipe(map((res) => new GameModel(res["data"])));
   }
 
-  search(q: string): Observable<GameModel> {
+  search(q: string): Observable<GameModel[]> {
     return this.http
-      .get(this.r_mix_api + "/search?q=" + q)
-      .pipe(map((res) => new GameModel(res["data"]["_source"])));
+      .post(this.r_mix_api + "/search?q=" + q, null)
+      .pipe(
+        map((res) =>
+          !!res["data"] ? res["data"].map((d: any) => new GameModel(d)) : []
+        )
+      );
   }
 
   getSimilarGames(id: string): Observable<GameModel[]> {

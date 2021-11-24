@@ -1,0 +1,27 @@
+<div class="container">
+  <h1 class="text-white my-5">
+    You searched for
+    <span class="text-primary text-underline">"{{ query }}"</span>
+  </h1>
+
+  <div *ngIf="games.length !== 0" class="py-5 row">
+    <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+      <a [routerLink]="['/view/', game.oneplayId]" class="card card-block">
+        <img
+          class="card-img"
+          [src]="game.posterImg || game.bgImage"
+          height="153"
+          width="219"
+          alt=""
+        />
+      </a>
+    </div>
+  </div>
+
+  <div
+    *ngIf="games.length === 0"
+    class="text-center text-lg text-white-50 my-5"
+  >
+    No games found
+  </div>
+</div>

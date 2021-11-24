@@ -8,9 +8,16 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConsoleComponent } from "./console/console.component";
 import { SafePipe } from "../pipes/safe.pipe";
 import { StreamCardComponent } from "./stream-card/stream-card.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgbModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   declarations: [
     FooterComponent,
     NavbarComponent,

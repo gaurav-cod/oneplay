@@ -28,13 +28,13 @@ export class GameModel {
 
     constructor(json: { [key: string]: any }) {
         this.id = json["id"];
-        this.oneplayId = json["oneplay_id"];
+        this.oneplayId = json["oplay_id"];
         this.title = json["title"];
         this.description = json["description"];
         this.playTime = json["play_time"];
         this.releaseDate = new Date(json["release_date"]);
         this.posterImg = json["poster_image"];
-        this.bgImage = json["backgroud_image"];
+        this.bgImage = json["background_image"];
         this.rating = json["rating"];
         this.popularityScore = json["popularity_score"];
         this.metacriticScore = json["metacritic_score"];
