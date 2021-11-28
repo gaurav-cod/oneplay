@@ -7,6 +7,7 @@ import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
 import { PC } from "../models/pc.model";
 import { UserModel } from "../models/user.model";
+import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
 import { PcService } from "./pc.service";
 
@@ -196,5 +197,22 @@ export class RestService {
         };
       })
     );
+  }
+
+  getVideos(id: string): Observable<VideoModel[]> {
+    return this.http
+      .post(this.r_mix_api + "/streams/youtube?game_id=" + id, null)
+      .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
+  }
+  
+  getLiveVideos(id: string): Observable<VideoModel[]> {
+    const data = [
+      {
+        order_by: "release_date:desc",
+      },
+    ];
+    return this.http
+      .post(this.r_mix_api + "/streams/youtube?game_id=" + id, data)
+      .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
   }
 }

@@ -24,3 +24,9 @@ export interface HomeFeeds {
     categories: any[];
     banners: GameModel[];
 }
+
+export interface Thumbnail {
+    url: string;
+    width: number;
+    height: number;
+}
