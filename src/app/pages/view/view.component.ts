@@ -14,9 +14,10 @@ import { RestService } from "src/app/services/rest.service";
 export class ViewComponent implements OnInit {
   game: GameModel;
   similarGames: GameModel[] = [];
-  videos: VideoModel[] = [];
-  liveVideos: VideoModel[] = [];
   playing: string = "";
+  
+  private _videos: VideoModel[] = [];
+  private _liveVideos: VideoModel[] = [];
 
   constructor(
     private readonly location: Location,
@@ -35,11 +36,19 @@ export class ViewComponent implements OnInit {
         .subscribe((games) => (this.similarGames = games));
       this.restService
         .getVideos(params.id)
-        .subscribe((videos) => (this.videos = videos));
+        .subscribe((videos) => (this._videos = videos));
       this.restService
         .getLiveVideos(params.id)
-        .subscribe((videos) => (this.liveVideos = videos));
+        .subscribe((videos) => (this._liveVideos = videos));
     });
+  }
+
+  get videos(): VideoModel[] {
+    return this._videos.slice(0, 10);
+  }
+
+  get liveVideos(): VideoModel[] {
+    return this._liveVideos.slice(0, 10);
   }
 
   open(content: any, video: VideoModel): void {
