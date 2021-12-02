@@ -106,6 +106,7 @@
           [width]="video.thumbnails.default.width"
           [height]="video.thumbnails.default.height"
           [src]="video.thumbnails.default.url"
+          (click)="open(modal, video)"
           alt=""
         />
         <div class="ml-3">
@@ -151,12 +152,12 @@
     <div *ngFor="let similarGame of similarGames" class="mr-4 mb-4">
       <a
         [routerLink]="['/view/' + similarGame.oneplayId]"
-        class="card card-block"
+        class="card card-block border-0"
         style="width: 219px"
       >
         <img
           class="card-img"
-          [src]="similarGame.posterImg || similarGame.bgImage"
+          [src]="similarGame.bgImage"
           height="153"
           alt=""
         />

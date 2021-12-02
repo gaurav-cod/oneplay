@@ -23,10 +23,10 @@
       *ngFor="let game of games"
       class="col-sm-12 col-md-6 col-lg-3 mb-4"
     >
-      <a [routerLink]="['/view/' + game.oneplayId]" class="card card-block">
+      <a [routerLink]="['/view/' + game.oneplayId]" class="card card-block border-0">
         <img
           class="card-img"
-          [src]="game.posterImg || game.bgImage"
+          [src]="game.bgImage"
           height="153"
           width="219"
           alt=""

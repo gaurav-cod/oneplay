@@ -41,12 +41,12 @@
       <div *ngFor="let game of firstRow.games" class="mr-4">
         <a
           [routerLink]="['/view/' + game.oneplayId]"
-          class="card card-block"
+          class="card card-block border-0"
           style="width: 219px"
         >
           <img
             class="card-img"
-            [src]="game.posterImg || game.bgImage"
+            [src]="game.bgImage"
             height="153"
             alt=""
           />
@@ -58,7 +58,7 @@
   <h3 class="text-white position-relative mt-5">Top Stream Categories</h3>
   <div class="d-flex overflow-auto">
     <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
-      <div class="card card-block position-relative" style="width: 219px">
+      <div class="card card-block position-relative border-0" style="width: 219px">
         <img
           class="card-img"
           src="../../../assets/img/theme/team-1-800x800.jpg"
@@ -80,12 +80,12 @@
       <div *ngFor="let game of row.games" class="mr-4">
         <a
           [routerLink]="['/view/' + game.oneplayId]"
-          class="card card-block"
+          class="card card-block border-0"
           style="width: 219px"
         >
           <img
             class="card-img"
-            [src]="game.posterImg || game.bgImage"
+            [src]="game.bgImage"
             height="153"
             alt=""
           />
