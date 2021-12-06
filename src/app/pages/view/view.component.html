@@ -40,7 +40,6 @@
   <div class="mt-6 pb-8 pt-5 bg-gradient-banner-bottom">
     <div class="row align-items-center container mx-auto">
       <div class="col-lg-6 col-md-12">
-        <p class="text-white mt-0">Available to purchase on</p>
         <a href="#!" class="btn btn-primary">Continue playing</a>
         <a href="#!" class="btn bg-translucent-dark text-white"
           >Add to wishlist</a
@@ -58,25 +57,15 @@
           </div>
         </div> -->
       </div>
-      <div class="col-lg-6 col-md-12 mt-lg-0 mt-md-5">
-        <!-- <div class="d-flex align-items-center">
-          <button class="btn btn-icon-only btn-neutral rounded-circle">
-            <i class="ni ni-bold-left"></i>
-          </button>
-          <div class="d-flex overflow-auto" style="width: 470px">
-            <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="small-card py-2">
-              <img
-                width="110"
-                height="77"
-                src="../../../assets/img/theme/profile-cover.jpg"
-                alt=""
-              />
-            </div>
+      <div class="col-lg-6 col-md-6 mt-lg-3 mt-md-5">
+        <div class="float-right">
+          <div
+            *ngFor="let genre of game.genreMappings"
+            class="btn btn-sm bg-translucent-dark text-white border-white"
+          >
+            {{ genre }}
           </div>
-          <button class="btn btn-icon-only btn-neutral rounded-circle">
-            <i class="ni ni-bold-right"></i>
-          </button>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -86,24 +75,30 @@
   <div class="row">
     <div class="col-md-7 col-12 pr-lg-4">
       <h4 class="text-white mb-4">Top Live Streams</h4>
-      <div *ngFor="let video of liveVideos" class="media mb-2">
-        <img
-          [width]="video.thumbnails.default.width"
-          [height]="video.thumbnails.default.height"
-          [src]="video.thumbnails.default.url"
-          (click)="open(modal, video)"
-          alt=""
-        />
-        <div class="ml-3">
-          <h5 class="text-white">
-            {{ video.title }}
-          </h5>
-          <div class="media mb-1 align-items-center">
-            <div class="rounded-circle bg-gray" style="padding: 12px"></div>
-            <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
-          </div>
-          <div class="text-gray">
-            <span class="text-xs">{{ video.description }}</span>
+      <div
+        *ngFor="let video of liveVideos"
+        class="card bg-dark p-3 mb-3"
+        (click)="open(modal, video)"
+        style="cursor: pointer"
+      >
+        <div class="media">
+          <img
+            [width]="video.thumbnails.default.width"
+            [height]="video.thumbnails.default.height"
+            [src]="video.thumbnails.default.url"
+            alt=""
+          />
+          <div class="ml-3">
+            <h5 class="text-white">
+              {{ video.title }}
+            </h5>
+            <div class="media mb-1 align-items-center">
+              <div class="rounded-circle bg-gray" style="padding: 12px"></div>
+              <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
+            </div>
+            <div class="text-gray">
+              <span class="text-xs">{{ video.description }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -111,46 +106,70 @@
       <hr class="border-dark" />
 
       <h4 class="text-white mb-4">Top Videos</h4>
-      <div *ngFor="let video of videos" class="media mb-2">
-        <img
-          [width]="video.thumbnails.default.width"
-          [height]="video.thumbnails.default.height"
-          [src]="video.thumbnails.default.url"
-          (click)="open(modal, video)"
-          alt=""
-        />
-        <div class="ml-3">
-          <h5 class="text-white">
-            {{ video.title }}
-          </h5>
-          <div class="media mb-1 align-items-center">
-            <div class="rounded-circle bg-gray" style="padding: 12px"></div>
-            <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
-          </div>
-          <div class="text-gray">
-            <span class="text-xs">{{ video.description }}</span>
+      <div
+        *ngFor="let video of videos"
+        class="card bg-dark p-3 mb-3"
+        (click)="open(modal, video)"
+        style="cursor: pointer"
+      >
+        <div class="media">
+          <img
+            [width]="video.thumbnails.default.width"
+            [height]="video.thumbnails.default.height"
+            [src]="video.thumbnails.default.url"
+            (click)="open(modal, video)"
+            alt=""
+          />
+          <div class="ml-3">
+            <h5 class="text-white">
+              {{ video.title }}
+            </h5>
+            <div class="media mb-1 align-items-center">
+              <div class="rounded-circle bg-gray" style="padding: 12px"></div>
+              <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
+            </div>
+            <div class="text-gray">
+              <span class="text-xs">{{ video.description }}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col-md-5 col-12">
-      <h3 class="text-white">About the game</h3>
-      <p [innerHTML]="game.description" class="text-white-50"></p>
-      <h4 class="text-white">Characters</h4>
-      <div class="row overflow-auto">
-        <div class="col-1 mr-3">
-          <div class="avatar avatar-lg rounded-circle">
-            <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
-          </div>
+      <div class="card bg-dark p-3 mb-3 mt-5">
+        <div class="d-flex align-items-center flex-wrap">
+          <span class="text-white mr-3">Available purchase on</span>
+          <a
+            href="{{ store.link }}"
+            target="_blank"
+            *ngFor="let store of game.storesMapping"
+            ngbTooltip="{{ store.name }}"
+            class="rounded-circle bg-gray mr-1"
+            style="width: 24px; height: 24px"
+          ></a>
         </div>
-        <div class="col-1 mr-3">
-          <div class="avatar avatar-lg rounded-circle">
-            <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
+      </div>
+      <div class="card bg-dark p-3 mb-3">
+        <h3 class="text-white">About the game</h3>
+        <p [innerHTML]="game.description" class="text-white-50"></p>
+      </div>
+      <div class="card bg-dark p-3">
+        <h4 class="text-white">Characters</h4>
+        <div class="row overflow-auto">
+          <div class="col-1 mr-3">
+            <div class="avatar avatar-lg rounded-circle">
+              <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
+            </div>
           </div>
-        </div>
-        <div class="col-1 mr-3">
-          <div class="avatar avatar-lg rounded-circle">
-            <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
+          <div class="col-1 mr-3">
+            <div class="avatar avatar-lg rounded-circle">
+              <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
+            </div>
+          </div>
+          <div class="col-1 mr-3">
+            <div class="avatar avatar-lg rounded-circle">
+              <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
+            </div>
           </div>
         </div>
       </div>

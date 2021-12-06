@@ -30,3 +30,8 @@ export interface Thumbnail {
     width: number;
     height: number;
 }
+
+export interface PurchaseStore {
+    name: string;
+    link: string;
+}

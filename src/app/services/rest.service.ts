@@ -204,7 +204,7 @@ export class RestService {
       .post(this.r_mix_api + "/streams/youtube?game_id=" + id, null)
       .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
   }
-  
+
   getLiveVideos(id: string): Observable<VideoModel[]> {
     const data = [
       {
@@ -212,7 +212,10 @@ export class RestService {
       },
     ];
     return this.http
-      .post(this.r_mix_api + "/streams/youtube?game_id=" + id, data)
+      .post(
+        this.r_mix_api + "/streams/youtube?game_id=" + id + "&eventType=live",
+        data
+      )
       .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
   }
 }

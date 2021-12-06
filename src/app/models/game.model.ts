@@ -1,3 +1,5 @@
+import { PurchaseStore } from "../interface";
+
 export class GameModel {
     readonly id: number;
     readonly oneplayId: string;
@@ -20,11 +22,12 @@ export class GameModel {
     readonly isCategorized: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
-    readonly genreMapping: string[];
+    readonly genreMappings: string[];
     readonly tagsMapping: string[];
     readonly platformsMapping: string[];
     readonly developer: string[];
     readonly publisher: string[];
+    readonly storesMapping: PurchaseStore[];
 
     constructor(json: { [key: string]: any }) {
         this.id = json["id"];
@@ -48,10 +51,11 @@ export class GameModel {
         this.isCategorized = json["is_categorized"];
         this.createdAt = new Date(json["created_at"] * 1000);
         this.updatedAt = new Date(json["updated_at"] * 1000);
-        this.genreMapping = json["genre_mapping"];
+        this.genreMappings = json["genre_mappings"];
         this.tagsMapping = json["tags_mapping"];
         this.platformsMapping = json["platforms_mapping"];
         this.developer = json["developer"];
         this.publisher = json["publisher"];
+        this.storesMapping = json["stores_mapping"];
     }
 }
