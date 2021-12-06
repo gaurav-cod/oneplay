@@ -4,6 +4,16 @@
   style="background-size: cover; background-position: center top"
   [ngStyle]="{ 'background-image': 'url(' + game.bgImage + ')' }"
 >
+  <video
+    *ngIf="!!game.video"
+    class="mask"
+    autoplay="true"
+    loop="true"
+    muted="true"
+    style="height: 90%; object-fit: cover;"
+  >
+    <source [src]="game.video" />
+  </video>
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
   <!-- Header container -->
