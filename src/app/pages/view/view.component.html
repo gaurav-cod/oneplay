@@ -7,10 +7,10 @@
   <video
     *ngIf="!!game.video"
     class="mask"
-    autoplay="true"
-    loop="true"
-    muted="true"
-    style="height: 90%; object-fit: cover;"
+    autoplay
+    loop
+    [muted]="'muted'"
+    style="height: 90%; object-fit: cover"
   >
     <source [src]="game.video" />
   </video>
