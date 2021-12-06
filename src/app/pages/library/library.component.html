@@ -19,11 +19,11 @@
   </div>
 
   <div class="py-5 row">
-    <div
-      *ngFor="let game of games"
-      class="col-sm-12 col-md-6 col-lg-3 mb-4"
-    >
-      <a [routerLink]="['/view/' + game.oneplayId]" class="card card-block border-0">
+    <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+      <a
+        [routerLink]="['/view/' + game.oneplayId]"
+        class="card card-block border-0"
+      >
         <img
           class="card-img"
           [src]="game.bgImage"
@@ -31,6 +31,10 @@
           width="219"
           alt=""
         />
+        <div class="mask bg-darker opacity-4"></div>
+        <h5 class="position-absolute left-3 bottom-1 text-white">
+          {{ game.title }}
+        </h5>
       </a>
     </div>
   </div>

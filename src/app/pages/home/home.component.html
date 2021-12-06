@@ -44,12 +44,11 @@
           class="card card-block border-0"
           style="width: 219px"
         >
-          <img
-            class="card-img"
-            [src]="game.bgImage"
-            height="153"
-            alt=""
-          />
+          <img class="card-img" [src]="game.bgImage" height="153" alt="" />
+          <div class="mask bg-darker opacity-4"></div>
+          <h5 class="position-absolute left-3 bottom-1 text-white">
+            {{ game.title }}
+          </h5>
         </a>
       </div>
     </div>
@@ -58,7 +57,10 @@
   <h3 class="text-white position-relative mt-5">Top Stream Categories</h3>
   <div class="d-flex overflow-auto">
     <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
-      <div class="card card-block position-relative border-0" style="width: 219px">
+      <div
+        class="card card-block position-relative border-0"
+        style="width: 219px"
+      >
         <img
           class="card-img"
           src="../../../assets/img/theme/team-1-800x800.jpg"
@@ -83,12 +85,11 @@
           class="card card-block border-0"
           style="width: 219px"
         >
-          <img
-            class="card-img"
-            [src]="game.bgImage"
-            height="153"
-            alt=""
-          />
+          <img class="card-img" [src]="game.bgImage" height="153" alt="" />
+          <div class="mask bg-darker opacity-4"></div>
+          <h5 class="position-absolute left-3 bottom-1 text-white">
+            {{ game.title }}
+          </h5>
         </a>
       </div>
     </div>

@@ -15,6 +15,7 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
+    { path: 'user-profile/:tab',   component: UserProfileComponent },
     { path: 'tables',         component: TablesComponent },
     { path: 'icons',          component: IconsComponent },
     { path: 'home',           component: HomeComponent },

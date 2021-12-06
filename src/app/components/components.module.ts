@@ -8,6 +8,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ConsoleComponent } from "./console/console.component";
 import { StreamCardComponent } from "./stream-card/stream-card.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   imports: [
@@ -23,6 +25,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     SidebarComponent,
     ConsoleComponent,
     StreamCardComponent,
+    BasicInfoComponent,
+    NotificationsComponent,
   ],
   exports: [
     FooterComponent,
@@ -30,6 +34,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     SidebarComponent,
     ConsoleComponent,
     StreamCardComponent,
+    BasicInfoComponent,
+    NotificationsComponent,
   ],
 })
 export class ComponentsModule {}

@@ -155,12 +155,11 @@
         class="card card-block border-0"
         style="width: 219px"
       >
-        <img
-          class="card-img"
-          [src]="similarGame.bgImage"
-          height="153"
-          alt=""
-        />
+        <img class="card-img" [src]="similarGame.bgImage" height="153" alt="" />
+        <div class="mask bg-darker opacity-4"></div>
+        <h5 class="position-absolute left-3 bottom-1 text-white">
+          {{ similarGame.title }}
+        </h5>
       </a>
     </div>
   </div>

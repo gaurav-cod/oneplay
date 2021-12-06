@@ -1,78 +1,78 @@
-<div class="container">
-  <h1 class="text-white my-5">
-    Discover from over
-    <span class="text-primary text-underline">500+ games</span>{{ " "
-    }}<span class="text-white-50">200+ apps</span>
-  </h1>
-
-  <div class="d-flex justify-content-between">
-    <div class="row text-white-50 align-items-center">
-      <div class="col">Filter by</div>
-
-      <div class="col" ngbDropdown>
-        <button class="btn btn-outline-white" ngbDropdownToggle>
-          <span class="text-sm">Release date </span>
-          <i class="ni ni-bold-down"></i>
-        </button>
-        <div ngbDropdownMenu>
-          <a ngbDropdownItem>Action</a>
-          <a ngbDropdownItem>Another action</a>
-          <a ngbDropdownItem>Something else here</a>
-        </div>
-      </div>
-
-      <div class="col" ngbDropdown>
-        <button class="btn btn-outline-white" ngbDropdownToggle>
-          <span class="text-sm">Rating </span>
-          <i class="ni ni-bold-down"></i>
-        </button>
-        <div ngbDropdownMenu>
-          <a ngbDropdownItem>Action</a>
-          <a ngbDropdownItem>Another action</a>
-          <a ngbDropdownItem>Something else here</a>
-        </div>
-      </div>
-
-      <div class="col" ngbDropdown>
-        <button class="btn btn-outline-white" ngbDropdownToggle>
-          <span class="text-sm">Genre </span>
-          <i class="ni ni-bold-down"></i>
-        </button>
-        <div ngbDropdownMenu>
-          <a ngbDropdownItem>Action</a>
-          <a ngbDropdownItem>Another action</a>
-          <a ngbDropdownItem>Something else here</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="row text-white-50 align-items-center">
-      <div class="col">Filter by</div>
-      <div class="col" ngbDropdown>
-        <button class="btn btn-outline-white btn-icon" ngbDropdownToggle>
-          <span class="text-sm">Popularity </span>
-          <i class="ni ni-bold-down"></i>
-        </button>
-        <div ngbDropdownMenu>
-          <a ngbDropdownItem>Action</a>
-          <a ngbDropdownItem>Another action</a>
-          <a ngbDropdownItem>Something else here</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="py-5 row">
-    <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
-      <a [routerLink]="['/view/' + game.oneplayId]" class="card card-block border-0">
-        <img
-          class="card-img"
-          [src]="game.bgImage"
-          height="153"
-          width="219"
-          alt=""
-        />
+<div class="container pt-6">
+  <div class="row">
+    <div class="col-12 col-md-3">
+      <a class="card bg-dark">
+        <div class="p-3 text-white">Show all games</div>
       </a>
+      <h3 class="text-white mt-4">Best</h3>
+      <a class="card bg-dark mb-3">
+        <div class="p-3 text-white">Best 0f 2021</div>
+      </a>
+      <a class="card bg-dark mb-3">
+        <div class="p-3 text-white">Best of 2020</div>
+      </a>
+      <a class="card bg-dark">
+        <div class="p-3 text-white">Top 100</div>
+      </a>
+      <h3 class="text-white mt-4">New Releases</h3>
+      <a class="card bg-dark mb-3">
+        <div class="p-3 text-white">Last 30 days</div>
+      </a>
+      <a class="card bg-dark mb-3">
+        <div class="p-3 text-white">Last week</div>
+      </a>
+      <a class="card bg-dark">
+        <div class="p-3 text-white">Next week</div>
+      </a>
+      <h3 class="text-white mt-4">Genres</h3>
+      <a class="card bg-dark mb-3">
+        <div class="p-3 text-white">View by genres</div>
+      </a>
+    </div>
+
+    <div class="col-12 col-md-9">
+      <div class="d-flex justify-content-between">
+        <h1 class="text-white">All games</h1>
+
+        <div class="row text-white-50 align-items-center">
+          <div class="col">Sort by</div>
+          <div class="col" ngbDropdown>
+            <button class="btn btn-outline-white btn-icon" ngbDropdownToggle>
+              <span class="text-sm">Popularity </span>
+              <i class="ni ni-bold-down"></i>
+            </button>
+            <div ngbDropdownMenu>
+              <a ngbDropdownItem>Action</a>
+              <a ngbDropdownItem>Another action</a>
+              <a ngbDropdownItem>Something else here</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="py-5 row">
+        <div
+          *ngFor="let game of games"
+          class="col-sm-12 col-md-6 col-lg-4 mb-4"
+        >
+          <a
+            [routerLink]="['/view/' + game.oneplayId]"
+            class="card card-block border-0"
+          >
+            <img
+              class="card-img"
+              [src]="game.bgImage"
+              height="153"
+              width="219"
+              alt=""
+            />
+            <div class="mask bg-darker opacity-4"></div>
+            <h5 class="position-absolute left-3 bottom-1 text-white">
+              {{game.title}}
+            </h5>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
