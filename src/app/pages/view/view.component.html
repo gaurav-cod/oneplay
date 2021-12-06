@@ -157,6 +157,15 @@
       >
         <img class="card-img" [src]="similarGame.bgImage" height="153" alt="" />
         <div class="mask bg-darker opacity-4"></div>
+        <video
+          *ngIf="!!similarGame.video"
+          class="mask"
+          onmouseover="this.play()"
+          onmouseout="this.pause();this.currentTime=0;"
+          style="border-radius: 4px; height: 100%; object-fit: cover"
+        >
+          <source [src]="similarGame.video" />
+        </video>
         <h5 class="position-absolute left-3 bottom-1 text-white">
           {{ similarGame.title }}
         </h5>
