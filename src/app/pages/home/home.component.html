@@ -15,10 +15,8 @@
         background-position: center top;
       "
       [style.background-image]="
-        'url(' +
-        (game.bgImage || 'assets/img/theme/profile-cover.jpg') +
-        ')'
-        "
+        'url(' + (game.bgImage || 'assets/img/theme/profile-cover.jpg') + ')'
+      "
     >
       <!-- Mask -->
       <span class="mask bg-gradient-banner"></span>
@@ -26,11 +24,18 @@
       <div class="container d-flex align-items-center">
         <div class="row">
           <div class="col-lg-7 col-md-10" style="min-width: 50vw">
-            <h1 class="display-2 text-white">{{game.title}}</h1>
+            <h1 class="display-2 text-white">{{ game.title }}</h1>
             <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
             <p class="text-white mt-0">Available to purchase on</p>
-            <a href="#!" class="btn btn-primary">Play Now</a>
-            <a href="#!" class="btn bg-translucent-dark text-white"
+            <a
+              [href]="
+                'https://www.oneplay.in/play_demo/play?id=' + game.oneplayId
+              "
+              target="_blank"
+              class="btn btn-primary btn-lg w-25"
+              >Play Now</a
+            >
+            <a href="#!" class="btn bg-translucent-dark text-white btn-lg"
               >Add to wishlist</a
             >
           </div>

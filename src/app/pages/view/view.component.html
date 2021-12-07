@@ -40,8 +40,13 @@
   <div class="mt-6 pb-8 pt-5 bg-gradient-banner-bottom">
     <div class="row align-items-center container mx-auto">
       <div class="col-lg-6 col-md-12">
-        <a href="#!" class="btn btn-primary">Continue playing</a>
-        <a href="#!" class="btn bg-translucent-dark text-white"
+        <a
+          [href]="'https://www.oneplay.in/play_demo/play?id=' + game.oneplayId"
+          target="_blank"
+          class="btn btn-white btn-lg w-50"
+          >Play Now</a
+        >
+        <a href="#!" class="btn bg-translucent-dark text-white btn-lg"
           >Add to wishlist</a
         >
         <!-- <p class="text-white">Friends who’ve played this</p>
