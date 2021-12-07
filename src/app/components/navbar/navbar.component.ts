@@ -1,6 +1,6 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
-import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserModel } from 'src/app/models/user.model';
@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit {
     return this.user ? (this.user.firstName + ' ' + this.user.lastName) : 'User';
   }
 
-  constructor(location: Location,private readonly authService: AuthService) {
+  constructor(location: Location,private readonly authService: AuthService, private readonly router: Router) {
     this.location = location;
     this.authService.user.subscribe(u => this.user = u);
   }
@@ -42,6 +42,10 @@ export class NavbarComponent implements OnInit {
         }
     }
     return 'Oneplay';
+  }
+
+  search() {
+    this.router.navigate(['/search'], { queryParams: { q: this.query.value } });
   }
 
   logout() {

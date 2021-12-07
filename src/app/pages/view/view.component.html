@@ -73,8 +73,11 @@
 
 <div *ngIf="!!game" class="container pb-6">
   <div class="row">
-    <div class="col-md-7 col-12 pr-lg-4">
-      <h4 class="text-white mb-4">Top Live Streams</h4>
+    <div class="col-md-8 col-12 pr-lg-4">
+      <h2 class="text-white mb-4">Top Live Streams</h2>
+      <p *ngIf="liveVideos.length === 0" class="text-white-50 text-center">
+        No videos found
+      </p>
       <div
         *ngFor="let video of liveVideos"
         class="card bg-dark p-3 mb-3"
@@ -83,20 +86,30 @@
       >
         <div class="media">
           <img
-            [width]="video.thumbnails.default.width"
-            [height]="video.thumbnails.default.height"
-            [src]="video.thumbnails.default.url"
+            [width]="video.thumbnails.medium.width - 72"
+            [height]="video.thumbnails.medium.height - 40"
+            [src]="video.thumbnails.medium.url"
+            (click)="open(modal, video)"
+            style="border-radius: 4px"
             alt=""
           />
           <div class="ml-3">
-            <h5 class="text-white">
+            <h3 class="text-white">
               {{ video.title }}
-            </h5>
+            </h3>
             <div class="media mb-1 align-items-center">
-              <div class="rounded-circle bg-gray" style="padding: 12px"></div>
-              <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
+              <img
+                [src]="video.channelTitle | avatar"
+                class="rounded-circle"
+                width="24"
+                height="24"
+                alt=""
+              />
+              <span class="text-white-50 small ml-1">{{
+                video.channelTitle
+              }}</span>
             </div>
-            <div class="text-gray">
+            <div class="text-white">
               <span class="text-xs">{{ video.description }}</span>
             </div>
           </div>
@@ -105,7 +118,10 @@
 
       <hr class="border-dark" />
 
-      <h4 class="text-white mb-4">Top Videos</h4>
+      <h2 class="text-white mb-4">Top Videos</h2>
+      <p *ngIf="videos.length === 0" class="text-white-50 text-center">
+        No videos found
+      </p>
       <div
         *ngFor="let video of videos"
         class="card bg-dark p-3 mb-3"
@@ -114,28 +130,37 @@
       >
         <div class="media">
           <img
-            [width]="video.thumbnails.default.width"
-            [height]="video.thumbnails.default.height"
-            [src]="video.thumbnails.default.url"
+            [width]="video.thumbnails.medium.width - 72"
+            [height]="video.thumbnails.medium.height - 40"
+            [src]="video.thumbnails.medium.url"
             (click)="open(modal, video)"
+            style="border-radius: 4px"
             alt=""
           />
           <div class="ml-3">
-            <h5 class="text-white">
+            <h3 class="text-white">
               {{ video.title }}
-            </h5>
+            </h3>
             <div class="media mb-1 align-items-center">
-              <div class="rounded-circle bg-gray" style="padding: 12px"></div>
-              <span class="text-gray small ml-1">{{ video.channelTitle }}</span>
+              <img
+                [src]="video.channelTitle | avatar"
+                class="rounded-circle"
+                width="24"
+                height="24"
+                alt=""
+              />
+              <span class="text-white-50 small ml-1">{{
+                video.channelTitle
+              }}</span>
             </div>
-            <div class="text-gray">
+            <div class="text-white">
               <span class="text-xs">{{ video.description }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-5 col-12">
+    <div class="col-md-4 col-12">
       <div class="card bg-dark p-3 mb-3 mt-5">
         <div class="d-flex align-items-center flex-wrap">
           <span class="text-white mr-3">Available purchase on</span>
@@ -144,16 +169,27 @@
             target="_blank"
             *ngFor="let store of game.storesMapping"
             ngbTooltip="{{ store.name }}"
-            class="rounded-circle bg-gray mr-1"
-            style="width: 24px; height: 24px"
-          ></a>
+            class="mr-1"
+          >
+            <img
+              [src]="store.name | avatar"
+              class="rounded-circle"
+              width="24"
+              height="24"
+              alt=""
+            />
+          </a>
         </div>
       </div>
       <div class="card bg-dark p-3 mb-3">
         <h3 class="text-white">About the game</h3>
-        <p [innerHTML]="game.description" class="text-white-50"></p>
+        <p
+          id="description"
+          [innerHTML]="game.description"
+          class="text-white-50"
+        ></p>
       </div>
-      <div class="card bg-dark p-3">
+      <!-- <div class="card bg-dark p-3">
         <h4 class="text-white">Characters</h4>
         <div class="row overflow-auto">
           <div class="col-1 mr-3">
@@ -172,7 +208,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 

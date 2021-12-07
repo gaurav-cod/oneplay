@@ -1,7 +1,7 @@
 <nav
   class="navbar navbar-expand-md navbar-dark d-none d-md-flex"
   id="navbar-main"
-  style="background-color: #272727"
+  style="background-color: #1c1c1c"
 >
   <div class="container-fluid">
     <!-- Brand -->
@@ -44,7 +44,7 @@
     </ul>
 
     <!-- Form -->
-    <form class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto">
+    <form class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto" (submit)="search()">
       <div class="form-group mb-0" [ngClass]="{ focused: focus === true }">
         <div class="input-group input-group-alternative border-0 bg-darker">
           <input

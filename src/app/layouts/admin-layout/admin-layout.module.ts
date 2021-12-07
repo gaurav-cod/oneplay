@@ -20,6 +20,7 @@ import { StreamComponent } from 'src/app/pages/stream/stream.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
 import { SafePipe } from 'src/app/pipes/safe.pipe';
+import { AvatarPipe } from 'src/app/pipes/avatar.pipe';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -44,7 +45,8 @@ import { SafePipe } from 'src/app/pipes/safe.pipe';
     StreamComponent,
     LibraryComponent,
     SearchComponent,
-    SafePipe
+    SafePipe,
+    AvatarPipe,
   ]
 })
 
