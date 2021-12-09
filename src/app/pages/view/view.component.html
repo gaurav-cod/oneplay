@@ -120,6 +120,14 @@
           </div>
         </div>
       </div>
+      <div *ngIf="liveVideos.length >= 3" class="text-center p-3">
+        <button
+          class="btn btn-outline-success btn-sm"
+          (click)="showAllLiveVideos = !showAllLiveVideos"
+        >
+          {{ showAllLiveVideos ? 'Show Less' : 'Show All' }}
+        </button>
+      </div>
 
       <hr class="border-dark" />
 
@@ -164,6 +172,16 @@
           </div>
         </div>
       </div>
+
+      <div *ngIf="videos.length >= 3" class="text-center p-3">
+        <button
+          class="btn btn-outline-success btn-sm"
+          (click)="showAllVideos = !showAllVideos"
+        >
+          {{ showAllVideos ? "Show Less" : "Show All" }}
+        </button>
+      </div>
+      
     </div>
     <div class="col-md-4 col-12">
       <div class="card bg-dark p-3 mb-3 mt-5">

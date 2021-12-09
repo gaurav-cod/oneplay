@@ -28,12 +28,9 @@
             <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
             <p class="text-white mt-0">Available to purchase on</p>
             <a
-              [href]="
-                'https://www.oneplay.in/play_demo/play?id=' + game.oneplayId
-              "
-              target="_blank"
+              [routerLink]="['/view/' + game.oneplayId]"
               class="btn btn-primary btn-lg w-25"
-              >Play Now</a
+              >Explore More</a
             >
             <a href="#!" class="btn bg-translucent-dark text-white btn-lg"
               >Add to wishlist</a

@@ -15,7 +15,9 @@ export class ViewComponent implements OnInit {
   game: GameModel;
   similarGames: GameModel[] = [];
   playing: string = "";
-  
+  showAllVideos = false;
+  showAllLiveVideos = false;
+
   private _videos: VideoModel[] = [];
   private _liveVideos: VideoModel[] = [];
 
@@ -44,11 +46,13 @@ export class ViewComponent implements OnInit {
   }
 
   get videos(): VideoModel[] {
-    return this._videos.slice(0, 10);
+    return !this.showAllVideos ? this._videos.slice(0, 3) : this._videos;
   }
 
   get liveVideos(): VideoModel[] {
-    return this._liveVideos.slice(0, 10);
+    return !this.showAllLiveVideos
+      ? this._liveVideos.slice(0, 3)
+      : this._liveVideos;
   }
 
   open(content: any, video: VideoModel): void {
