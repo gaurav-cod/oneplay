@@ -146,7 +146,6 @@
             [width]="video.thumbnails.medium.width - 72"
             [height]="video.thumbnails.medium.height - 40"
             [src]="video.thumbnails.medium.url"
-            (click)="open(modal, video)"
             style="border-radius: 4px"
             alt=""
           />
@@ -284,10 +283,15 @@
 </div>
 
 <ng-template #modal let-d="dismiss">
-  <div class="modal-content">
+  <div class="modal-content position-relative">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </div>
     <iframe
-      width="642"
-      height="361"
+      class="youtube-player"
       [src]="playing | safe"
       title="YouTube video player"
       frameborder="0"
