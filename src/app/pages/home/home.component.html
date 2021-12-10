@@ -92,9 +92,17 @@
     </div>
   </div> -->
 
-  <ng-container *ngFor="let row of restRows">
+  <div *ngFor="let row of restRows" class="position-relative">
     <h3 class="text-white position-relative mt-5">{{ row.title }}</h3>
-    <div class="d-flex overflow-auto">
+    <button
+      class="btn btn-secondary rounded-circle position-absolute"
+      style="top: 72px; left: -90px"
+      (click)="scrollLeft('section_' + row.title)"
+    >
+      <i class="fas fa-chevron-left text-xl"></i>
+    </button>
+
+    <div id="{{'section_' + row.title}}" class="d-flex overflow-auto">
       <div *ngFor="let game of row.games" class="mr-4">
         <a
           [routerLink]="['/view/' + game.oneplayId]"
@@ -118,5 +126,13 @@
         </a>
       </div>
     </div>
-  </ng-container>
+
+    <button
+      class="btn btn-secondary rounded-circle position-absolute"
+      style="top: 72px; right: -90px"
+      (click)="scrollRight('section_' + row.title)"
+    >
+      <i class="fas fa-chevron-right text-xl"></i>
+    </button>
+  </div>
 </div>

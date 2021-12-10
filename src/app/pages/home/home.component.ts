@@ -19,4 +19,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  scrollRight(id: string) {
+    const container = document.getElementById(id);
+    container.scrollLeft += container.clientWidth;
+  }
+
+  scrollLeft(id: string) {
+    const container = document.getElementById(id);
+    container.scrollLeft -= container.clientWidth;
+  }
 }
