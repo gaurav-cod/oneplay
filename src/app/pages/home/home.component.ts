@@ -22,11 +22,25 @@ export class HomeComponent implements OnInit {
 
   scrollRight(id: string) {
     const container = document.getElementById(id);
-    container.scrollLeft += container.clientWidth;
+    let scrollAmount = 0;
+    const slideTimer = setInterval(function(){
+        container.scrollLeft += (container.clientWidth / 12);
+        scrollAmount += (container.clientWidth / 12);
+        if(scrollAmount >= (container.clientWidth / 2)){
+            window.clearInterval(slideTimer);
+        }
+    }, 25);
   }
 
   scrollLeft(id: string) {
     const container = document.getElementById(id);
-    container.scrollLeft -= container.clientWidth;
+    let scrollAmount = 0;
+    const slideTimer = setInterval(function(){
+        container.scrollLeft -= (container.clientWidth / 12);
+        scrollAmount += (container.clientWidth / 12);
+        if(scrollAmount >= (container.clientWidth / 2)){
+            window.clearInterval(slideTimer);
+        }
+    }, 25);
   }
 }
