@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import Chart from "chart.js";
 import { PC } from "src/app/models/pc.model";
 import { PcService } from "src/app/services/pc.service";
@@ -36,7 +37,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly pcService: PcService
+    private readonly pcService: PcService,
+    private readonly title: Title
   ) {
     this.pcService.pcInfo.subscribe((pc) => (this.pc = pc));
 
@@ -52,6 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.title.setTitle("OnePlay | PC");
     // var chartOrders = document.getElementById('chart-orders');
 
     // parseOptions(Chart, chartOptions());

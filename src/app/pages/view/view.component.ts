@@ -1,5 +1,6 @@
 import { Location } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GameModel } from "src/app/models/game.model";
@@ -25,14 +26,21 @@ export class ViewComponent implements OnInit {
     private readonly location: Location,
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly title: Title,
+    private readonly meta: Meta
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.restService
-        .getGameDetails(params.id)
-        .subscribe((game) => (this.game = game));
+      this.restService.getGameDetails(params.id).subscribe((game) => {
+        this.game = game;
+        this.title.setTitle("OnePlay | Play " + game.title);
+        this.meta.addTags([
+          {name: "keywords", content: game.tagsMapping.join(", ")},
+          {name: "description", content: game.description},
+        ])
+      });
       this.restService
         .getSimilarGames(params.id)
         .subscribe((games) => (this.similarGames = games));
