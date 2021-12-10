@@ -10,6 +10,8 @@ import { StreamCardComponent } from "./stream-card/stream-card.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { FriendsComponent } from './friends/friends.component';
+import { PipesModule } from "../pipes/pipes.module";
 
 @NgModule({
   imports: [
@@ -18,6 +20,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    PipesModule,
   ],
   declarations: [
     FooterComponent,
@@ -27,6 +30,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     StreamCardComponent,
     BasicInfoComponent,
     NotificationsComponent,
+    FriendsComponent,
   ],
   exports: [
     FooterComponent,
@@ -36,6 +40,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
     StreamCardComponent,
     BasicInfoComponent,
     NotificationsComponent,
+    FriendsComponent,
   ],
 })
 export class ComponentsModule {}

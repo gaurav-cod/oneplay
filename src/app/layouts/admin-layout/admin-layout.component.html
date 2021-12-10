@@ -1,8 +1,14 @@
 <!-- Sidenav -->
 <app-sidebar></app-sidebar>
-<div class="main-content" style="background: #121212;">
+<app-friends
+  [isCollapsed]="friendsCollapsed"
+  (toggleCollapse)="friendsCollapsed = !friendsCollapsed"
+></app-friends>
+<div class="main-content" style="background: #121212">
   <!-- Top navbar -->
-  <app-navbar></app-navbar>
+  <app-navbar
+    (toggleFriends)="friendsCollapsed = !friendsCollapsed"
+  ></app-navbar>
   <!-- Pages -->
   <router-outlet></router-outlet>
   <!-- <div class="container-fluid">

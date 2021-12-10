@@ -19,8 +19,7 @@ import { StreamsComponent } from 'src/app/pages/streams/streams.component';
 import { StreamComponent } from 'src/app/pages/stream/stream.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
-import { SafePipe } from 'src/app/pipes/safe.pipe';
-import { AvatarPipe } from 'src/app/pipes/avatar.pipe';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -31,7 +30,8 @@ import { AvatarPipe } from 'src/app/pipes/avatar.pipe';
     HttpClientModule,
     NgbModule,
     ClipboardModule,
-    ComponentsModule
+    ComponentsModule,
+    PipesModule,
   ],
   declarations: [
     DashboardComponent,
@@ -45,8 +45,6 @@ import { AvatarPipe } from 'src/app/pipes/avatar.pipe';
     StreamComponent,
     LibraryComponent,
     SearchComponent,
-    SafePipe,
-    AvatarPipe,
   ]
 })
 

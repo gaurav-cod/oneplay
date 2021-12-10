@@ -5,11 +5,7 @@
 >
   <div class="container-fluid">
     <!-- Brand -->
-    <a
-      class="navbar-brand"
-      routerLinkActive="active"
-      [routerLink]="['/home']"
-    >
+    <a class="navbar-brand" routerLinkActive="active" [routerLink]="['/home']">
       <img style="height: 43px; width: 150px" src="assets/img/brand/logo.png" />
     </a>
 
@@ -44,7 +40,10 @@
     </ul>
 
     <!-- Form -->
-    <form class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto" (submit)="search()">
+    <form
+      class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto"
+      (submit)="search()"
+    >
       <div class="form-group mb-0" [ngClass]="{ focused: focus === true }">
         <div class="input-group input-group-alternative border-0 bg-darker">
           <input
@@ -68,33 +67,23 @@
     </form>
     <!-- User -->
     <ul class="navbar-nav align-items-center d-none d-md-flex">
+      <li class="nav-item">
+        <a class="nav-link" (click)="toggleFriendsList()">
+          <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+            <i class="fas fa-user-friends"></i>
+          </span>
+        </a>
+      </li>
       <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link pr-0" role="button" ngbDropdownToggle>
-          <div class="media align-items-center">
-            <span class="avatar avatar-sm rounded-circle">
-              <img alt="Image placeholder" src="assets/img/theme/avatar.png" />
-            </span>
-            <div class="media-body ml-2 d-none d-lg-block">
-              <span class="mb-0 text-sm font-weight-bold">{{ title }}</span>
-            </div>
-          </div>
+          <span class="avatar avatar-sm rounded-circle">
+            <img alt="Image placeholder" [src]="title | avatar" />
+          </span>
         </a>
         <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
-          <!-- <div class=" dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Welcome!</h6>
-          </div> -->
-          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-single-02"></i>
-            <span>My profile</span>
-          </a> -->
-          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-settings-gear-65"></i>
-            <span>Settings</span>
-          </a> -->
-          <!-- <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
-            <i class="ni ni-calendar-grid-58"></i>
-            <span>Activity</span>
-          </a> -->
+          <div class="dropdown-header noti-title">
+            <h6 class="text-overflow m-0">{{ title }}</h6>
+          </div>
           <a
             routerLinkActive="active"
             [routerLink]="['/user-profile']"

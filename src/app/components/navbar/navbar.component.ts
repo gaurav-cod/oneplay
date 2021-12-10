@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ export class NavbarComponent implements OnInit {
   public query = new FormControl('');
   private user: UserModel;
 
+  @Output() toggleFriends = new EventEmitter();
+
   get title() {
     return this.user ? (this.user.firstName + ' ' + this.user.lastName) : 'User';
   }
@@ -30,6 +32,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.listTitles = ROUTES.filter(listTitle => listTitle);
   }
+
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());
     if(titlee.charAt(0) === '#'){
@@ -42,6 +45,10 @@ export class NavbarComponent implements OnInit {
         }
     }
     return 'Oneplay';
+  }
+
+  toggleFriendsList() {
+    this.toggleFriends.emit();
   }
 
   search() {
