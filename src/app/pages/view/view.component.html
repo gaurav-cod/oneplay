@@ -255,37 +255,36 @@
     </div>
   </div>
 
-  <h3 class="text-white mt-6">Similar games</h3>
-  <div class="d-flex overflow-auto">
-    <div *ngFor="let similarGame of similarGames" class="mr-4 mb-4">
-      <a
-        [routerLink]="['/view/' + similarGame.oneplayId]"
-        class="card card-block border-0"
-        style="width: 219px"
-      >
-        <img class="card-img" [src]="similarGame.bgImage" height="153" alt="" />
-        <div class="mask bg-darker opacity-4"></div>
-        <video
-          *ngIf="!!similarGame.video"
-          class="mask"
-          onmouseover="this.play()"
-          onmouseout="this.pause();this.currentTime=0;"
-          style="border-radius: 4px; height: 100%; object-fit: cover"
-        >
-          <source [src]="similarGame.video" />
-        </video>
-        <h5 class="position-absolute left-3 bottom-1 text-white">
-          {{ similarGame.title }}
-        </h5>
-      </a>
-    </div>
+  <div class="position-relative mt-6">
+    <h3 class="text-white">Similar games</h3>
+    <app-similar-games
+      [tag]="'similar'"
+      [value]="game.oneplayId"
+    ></app-similar-games>
+  </div>
+
+  <div *ngFor="let dev of game.developer" class="position-relative mt-5">
+    <h3 class="text-white">More from {{ dev }}</h3>
+    <app-similar-games [tag]="'developer'" [value]="dev"></app-similar-games>
+  </div>
+
+  <div *ngFor="let genre of game.genreMappings" class="position-relative mt-5">
+    <h3 class="text-white">More in {{ genre }}</h3>
+    <app-similar-games [tag]="'genre'" [value]="genre"></app-similar-games>
   </div>
 </div>
 
 <ng-template #modal let-d="dismiss">
   <div class="modal-content position-relative">
     <div
-      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      class="
+        position-absolute
+        btn btn-github
+        rounded-circle
+        top--4
+        right--6
+        py-3
+      "
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>

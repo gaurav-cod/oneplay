@@ -166,6 +166,34 @@ export class RestService {
   getSimilarGames(id: string): Observable<GameModel[]> {
     return this.http
       .post(this.r_mix_api + "/games/" + id + "/similar", null)
+      .pipe(
+        map((res) =>
+          res["data"]["similar_games"].map((d: any) => new GameModel(d))
+        )
+      );
+  }
+
+  getGamesByGenre(genre: string): Observable<GameModel[]> {
+    const data = [
+      {
+        genres: genre,
+        order_by: "trend_score:desc",
+      },
+    ];
+    return this.http
+      .post(this.r_mix_api + "/feed/custom", data)
+      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+  }
+
+  getGamesByDeveloper(developer: string): Observable<GameModel[]> {
+    const data = [
+      {
+        developer,
+        order_by: "trend_score:desc",
+      },
+    ];
+    return this.http
+      .post(this.r_mix_api + "/feed/custom", data)
       .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
   }
 

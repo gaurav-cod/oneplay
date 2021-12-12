@@ -12,6 +12,7 @@ import { BasicInfoComponent } from './basic-info/basic-info.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { FriendsComponent } from './friends/friends.component';
 import { PipesModule } from "../pipes/pipes.module";
+import { SimilarGamesComponent } from './similar-games/similar-games.component';
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { PipesModule } from "../pipes/pipes.module";
     BasicInfoComponent,
     NotificationsComponent,
     FriendsComponent,
+    SimilarGamesComponent,
   ],
   exports: [
     FooterComponent,
@@ -41,6 +43,7 @@ import { PipesModule } from "../pipes/pipes.module";
     BasicInfoComponent,
     NotificationsComponent,
     FriendsComponent,
+    SimilarGamesComponent,
   ],
 })
 export class ComponentsModule {}

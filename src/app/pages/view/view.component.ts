@@ -14,7 +14,6 @@ import { RestService } from "src/app/services/rest.service";
 })
 export class ViewComponent implements OnInit {
   game: GameModel;
-  similarGames: GameModel[] = [];
   playing: string = "";
   showAllVideos = false;
   showAllLiveVideos = false;
@@ -41,9 +40,6 @@ export class ViewComponent implements OnInit {
           {name: "description", content: game.description},
         ])
       });
-      this.restService
-        .getSimilarGames(params.id)
-        .subscribe((games) => (this.similarGames = games));
       this.restService
         .getVideos(params.id)
         .subscribe((videos) => (this._videos = videos));
