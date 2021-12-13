@@ -168,7 +168,7 @@ export class RestService {
       .post(this.r_mix_api + "/games/" + id + "/similar", null)
       .pipe(
         map((res) =>
-          res["data"]["similar_games"].map((d: any) => new GameModel(d))
+          res["data"].map((d: any) => new GameModel(d))
         )
       );
   }
