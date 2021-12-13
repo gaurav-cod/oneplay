@@ -10,9 +10,9 @@
     autoplay
     loop
     [muted]="'muted'"
+    [src]="game.video"
     style="height: 90%; object-fit: cover"
   >
-    <source [src]="game.video" />
   </video>
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
