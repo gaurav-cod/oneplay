@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { RestService } from "src/app/services/rest.service";
 
@@ -18,7 +19,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    document.body.click();
+  }
 
   scrollRight(id: string) {
     const container = document.getElementById(id);
@@ -42,5 +45,24 @@ export class HomeComponent implements OnInit {
             window.clearInterval(slideTimer);
         }
     }, 25);
+  }
+
+  playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
+    if (game.video) {
+      image.style.opacity = "0";
+      video.play();
+    }
+  }
+
+  pauseVideo(
+    video: HTMLVideoElement,
+    image: HTMLImageElement,
+    game: GameModel
+  ) {
+    if (game.video) {
+      image.style.opacity = "1";
+      video.pause();
+      video.currentTime = 0;
+    }
   }
 }

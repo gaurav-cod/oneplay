@@ -102,27 +102,54 @@
       <i class="fas fa-chevron-left text-xl"></i>
     </button>
 
-    <div id="{{'section_' + row.title}}" class="d-flex overflow-auto">
+    <div id="{{ 'section_' + row.title }}" class="d-flex overflow-auto">
       <div *ngFor="let game of row.games" class="mr-4">
         <a
           [routerLink]="['/view/' + game.oneplayId]"
           class="card card-block border-0"
           style="width: 219px"
         >
-          <img class="card-img" [src]="game.bgImage" height="153" alt="" />
-          <div class="mask bg-darker opacity-4"></div>
           <video
-            *ngIf="!!game.video"
+            #video
             class="mask"
-            onmouseover="this.play()"
-            onmouseout="this.pause();this.currentTime=0;"
             style="border-radius: 4px; height: 100%; object-fit: cover"
           >
             <source [src]="game.video" />
           </video>
-          <h5 class="position-absolute left-3 bottom-1 text-white">
+          <img
+            #image
+            class="card-img"
+            style="z-index: 1"
+            [src]="game.bgImage"
+            height="153"
+            alt=""
+          />
+          <div
+            class="mask bg-darker opacity-4"
+            style="z-index: 2"
+            (mouseover)="playVideo(video, image, game)"
+            (mouseout)="pauseVideo(video, image, game)"
+          ></div>
+          <h5
+            class="position-absolute left-3 bottom-1 text-white"
+            style="z-index: 3"
+          >
             {{ game.title }}
           </h5>
+          <div
+            *ngIf="!!game.video && video.paused"
+            class="
+              bg-translucent-darker
+              text-white
+              rounded-circle
+              position-absolute
+              py-1
+              px-2
+            "
+            style="z-index: 3; right: 12px; top: 8px"
+          >
+            <i class="fas fa-play text-sm"></i>
+          </div>
         </a>
       </div>
     </div>
