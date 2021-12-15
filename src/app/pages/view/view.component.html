@@ -12,8 +12,7 @@
     [muted]="'muted'"
     [src]="game.video"
     style="height: 90%; object-fit: cover"
-  >
-  </video>
+  ></video>
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
   <!-- Header container -->
@@ -255,22 +254,25 @@
     </div>
   </div>
 
-  <div class="position-relative mt-6">
-    <h3 class="text-white">Similar games</h3>
+  <div *ngIf="similarGames.length" class="mt-6">
     <app-similar-games
-      [tag]="'similar'"
-      [value]="game.oneplayId"
+      [title]="'Similar games'"
+      [games]="similarGames"
     ></app-similar-games>
   </div>
 
-  <div *ngFor="let dev of game.developer" class="position-relative mt-5">
-    <h3 class="text-white">More from {{ dev }}</h3>
-    <app-similar-games [tag]="'developer'" [value]="dev"></app-similar-games>
+  <div *ngFor="let dev of devGamesMap" class="mt-5">
+    <app-similar-games
+      [title]="dev.title"
+      [games]="dev.games"
+    ></app-similar-games>
   </div>
 
-  <div *ngFor="let genre of game.genreMappings" class="position-relative mt-5">
-    <h3 class="text-white">More in {{ genre }}</h3>
-    <app-similar-games [tag]="'genre'" [value]="genre"></app-similar-games>
+  <div *ngFor="let genre of genreGamesMap" class="mt-5">
+    <app-similar-games
+      [title]="genre.title"
+      [games]="genre.games"
+    ></app-similar-games>
   </div>
 </div>
 

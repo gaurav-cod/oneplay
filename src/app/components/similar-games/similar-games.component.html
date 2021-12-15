@@ -1,67 +1,57 @@
-<button
-  class="btn btn-secondary rounded-circle position-absolute"
-  style="top: 72px; left: -90px"
-  (click)="scrollLeft()"
->
-  <i class="fas fa-chevron-left text-xl"></i>
-</button>
+<div class="position-relative">
+  <h3 class="text-white">{{ title }}</h3>
 
-<div #container class="d-flex overflow-auto">
-  <div *ngFor="let game of games" class="mr-4">
-    <a
-      [routerLink]="['/view/' + game.oneplayId]"
-      class="card card-block border-0"
-      style="width: 219px"
-    >
-      <video
-        #video
-        class="mask"
-        style="border-radius: 4px; height: 100%; object-fit: cover"
+  <div #container class="d-flex overflow-auto">
+    <div *ngFor="let game of games" class="mr-4">
+      <a
+        [routerLink]="['/view/' + game.oneplayId]"
+        class="card card-block border-0"
+        style="width: 219px"
       >
-        <source [src]="game.video" />
-      </video>
-      <img
-        #image
-        class="card-img"
-        style="z-index: 1"
-        [src]="game.bgImage"
-        height="153"
-        alt=""
-      />
-      <div
-        class="mask bg-darker opacity-4"
-        style="z-index: 2"
-        (mouseover)="playVideo(video, image, game)"
-        (mouseout)="pauseVideo(video, image, game)"
-      ></div>
-      <h5
-        class="position-absolute left-3 bottom-1 text-white"
-        style="z-index: 3"
-      >
-        {{ game.title }}
-      </h5>
-      <div
-        *ngIf="!!game.video && video.paused"
-        class="
-          bg-translucent-darker
-          text-white
-          rounded-circle
-          position-absolute
-          py-1
-          px-2
-        "
-        style="z-index: 3; right: 12px; top: 8px"
-      >
-        <i class="fas fa-play text-sm"></i>
-      </div>
-    </a>
+        <video
+          #video
+          class="mask"
+          style="border-radius: 4px; height: 100%; object-fit: cover"
+        >
+          <source [src]="game.video" />
+        </video>
+        <img
+          #image
+          class="card-img"
+          style="z-index: 1"
+          [src]="game.bgImage"
+          height="153"
+          alt=""
+        />
+        <div
+          class="mask bg-darker opacity-4"
+          style="z-index: 2"
+          (mouseover)="playVideo(video, image, game)"
+          (mouseout)="pauseVideo(video, image, game)"
+        ></div>
+        <h5
+          class="position-absolute left-3 bottom-1 text-white"
+          style="z-index: 3"
+        >
+          {{ game.title }}
+        </h5>
+      </a>
+    </div>
   </div>
-</div>
 
-<button
-  class="btn btn-secondary rounded-circle position-absolute"
-  style="top: 72px; right: -90px"
-  (click)="scrollRight()"
->
-  <i class="fas fa-chevron-right text-xl"></i>
-</button>
+  <button
+    class="btn rounded-circle position-absolute px-1 py-2"
+    style="top: 90px; left: -40px"
+    (click)="scrollLeft()"
+  >
+    <i class="fas fa-chevron-left text-xl"></i>
+  </button>
+
+  <button
+    class="btn rounded-circle position-absolute px-1 py-2"
+    style="top: 90px; right: -40px"
+    (click)="scrollRight()"
+  >
+    <i class="fas fa-chevron-right text-xl"></i>
+  </button>
+</div>

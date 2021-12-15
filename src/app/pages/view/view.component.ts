@@ -4,6 +4,7 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GameModel } from "src/app/models/game.model";
+import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { VideoModel } from "src/app/models/video.model";
 import { RestService } from "src/app/services/rest.service";
 
@@ -17,6 +18,10 @@ export class ViewComponent implements OnInit {
   playing: string = "";
   showAllVideos = false;
   showAllLiveVideos = false;
+
+  similarGames: GameModel[] = [];
+  devGamesMap: GameFeedModel[] = [];
+  genreGamesMap: GameFeedModel[] = [];
 
   private _videos: VideoModel[] = [];
   private _liveVideos: VideoModel[] = [];
@@ -36,10 +41,29 @@ export class ViewComponent implements OnInit {
         this.game = game;
         this.title.setTitle("OnePlay | Play " + game.title);
         this.meta.addTags([
-          {name: "keywords", content: game.tagsMapping.join(", ")},
-          {name: "description", content: game.description},
-        ])
+          { name: "keywords", content: game.tagsMapping?.join(", ") },
+          { name: "description", content: game.description },
+        ]);
+        Promise.all(
+          game.developer.map((dev) =>
+            this.restService
+              .getGamesByDeveloper(dev)
+              .toPromise()
+              .then((games) => ({ title: `More from ${dev}`, games }))
+          )
+        ).then((map) => (this.devGamesMap = map));
+        Promise.all(
+          game.genreMappings.map((genre) =>
+            this.restService
+              .getGamesByGenre(genre)
+              .toPromise()
+              .then((games) => ({ title: `More in ${genre}`, games }))
+          )
+        ).then((map) => (this.genreGamesMap = map));
       });
+      this.restService
+        .getSimilarGames(params.id)
+        .subscribe((games) => (this.similarGames = games));
       this.restService
         .getVideos(params.id)
         .subscribe((videos) => (this._videos = videos));
