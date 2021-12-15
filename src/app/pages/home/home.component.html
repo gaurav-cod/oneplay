@@ -28,7 +28,7 @@
             <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
             <p class="text-white mt-0">Available to purchase on</p>
             <a
-              [routerLink]="['/view/' + game.oneplayId]"
+              [routerLink]="['/view/' + (game | glink)]"
               class="btn btn-primary btn-lg w-25"
               >Explore More</a
             >

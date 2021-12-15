@@ -21,7 +21,7 @@
   <div class="py-5 row">
     <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
       <a
-        [routerLink]="['/view/' + game.oneplayId]"
+        [routerLink]="['/view/' + (game | glink)]"
         class="card card-block border-0"
       >
         <img

@@ -37,7 +37,8 @@ export class ViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.restService.getGameDetails(params.id).subscribe((game) => {
+      const id = (params.id as string).replace(/(.*)\-/g, "");
+      this.restService.getGameDetails(id).subscribe((game) => {
         this.game = game;
         this.title.setTitle("OnePlay | Play " + game.title);
         this.meta.addTags([
@@ -62,13 +63,13 @@ export class ViewComponent implements OnInit {
         ).then((map) => (this.genreGamesMap = map));
       });
       this.restService
-        .getSimilarGames(params.id)
+        .getSimilarGames(id)
         .subscribe((games) => (this.similarGames = games));
       this.restService
-        .getVideos(params.id)
+        .getVideos(id)
         .subscribe((videos) => (this._videos = videos));
       this.restService
-        .getLiveVideos(params.id)
+        .getLiveVideos(id)
         .subscribe((videos) => (this._liveVideos = videos));
     });
   }
