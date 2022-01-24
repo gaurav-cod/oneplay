@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FriendModel } from 'src/app/models/friend.model';
 
 @Component({
   selector: 'app-friends',
@@ -10,8 +11,9 @@ export class FriendsComponent implements OnInit {
 
   @Output() toggleCollapse = new EventEmitter();
 
-  _screens: Array<'main' | 'mail' | 'parties' | 'party'> = ['main'];
+  _screens: Array<'main' | 'mail' | 'parties' | 'party' | 'chat'> = ['main'];
   selectedParty: string;
+  selectedFriend: FriendModel;
 
   constructor() { }
 
@@ -39,6 +41,11 @@ export class FriendsComponent implements OnInit {
   goToParties() {
     this._screens.push('parties');
   }
+
+  goToChat(friend: FriendModel) {
+    this.selectedFriend = friend;
+    this._screens.push('chat');
+  };
 
   goBack() {
     this._screens.pop();

@@ -13,6 +13,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { FriendsComponent } from './friends/friends.component';
 import { PipesModule } from "../pipes/pipes.module";
 import { SimilarGamesComponent } from './similar-games/similar-games.component';
+import { FriendsModule } from "./friends/friends.module";
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { SimilarGamesComponent } from './similar-games/similar-games.component';
     FormsModule,
     ReactiveFormsModule,
     PipesModule,
+    FriendsModule,
   ],
   declarations: [
     FooterComponent,

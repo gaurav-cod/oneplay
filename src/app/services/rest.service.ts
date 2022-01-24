@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { HomeFeeds, LoginDTO, SignupDTO, StartPcRO } from "../interface";
+import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
 import { PC } from "../models/pc.model";
@@ -16,7 +17,6 @@ import { PcService } from "./pc.service";
 })
 export class RestService {
   private readonly api = environment.api_endpoint;
-  private readonly idam_api = environment.idam_api_endpoint;
   private readonly r_mix_api = environment.render_mix_api;
 
   constructor(
@@ -26,69 +26,58 @@ export class RestService {
   ) {}
 
   login(data: LoginDTO): Observable<void> {
-    const formData = new FormData();
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    return this.http.post(this.idam_api + "/user/login", formData).pipe(
-      map((res) => {
-        this.authService.login(res["data"]);
-      }),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
+      .pipe(
+        map((res) => {
+          this.authService.login(res);
+        }),
+        catchError((error) => {
+          throw new Error(error.message);
+        })
+      );
   }
 
   signup(data: SignupDTO): Observable<void> {
-    const formData = new FormData();
-    formData.append("first_name", data.first_name);
-    formData.append("last_name", data.last_name);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("gender", data.gender);
-    return this.http.post(this.idam_api + "/user/signup", formData).pipe(
-      map(() => {}),
-      catchError((res) => {
-        if (res.error["is_error"]) throw new Error(res.error["error_msg"]);
-        throw res.error["data"]["msg"];
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/signup", { ...data, device: "web" })
+      .pipe(
+        map(() => {}),
+        catchError((error) => {
+          throw new Error(error.message);
+        })
+      );
   }
 
   verify(token: string): Observable<void> {
-    const formData = new FormData();
-    formData.append("verification_token", token);
-    return this.http.post(this.idam_api + "/user/verify_signup", formData).pipe(
-      map((res) => {}),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/verify_signup/" + token, null)
+      .pipe(
+        map((res) => {}),
+        catchError((error) => {
+          throw new Error(error.message);
+        })
+      );
   }
 
   requestResetPassword(email: string): Observable<void> {
-    const formData = new FormData();
-    formData.append("email", email);
     return this.http
-      .post(this.idam_api + "/user/request_password_reset", formData)
+      .post(this.r_mix_api + "/accounts/request_reset_password/" + email, null)
       .pipe(
         map((res) => {}),
-        catchError((res) => {
-          throw new Error(res.error["error_msg"]);
+        catchError((error) => {
+          throw new Error(error.message);
         })
       );
   }
 
   resetPassword(token: string, password: string): Observable<void> {
-    const formData = new FormData();
-    formData.append("reset_token", token);
-    formData.append("password", password);
     return this.http
-      .post(this.idam_api + "/user/reset_password", formData)
+      .post(this.r_mix_api + "/accounts/reset_password", { token, password })
       .pipe(
         map((res) => {}),
-        catchError((res) => {
-          throw new Error(res.error["error_msg"]);
+        catchError((error) => {
+          throw new Error(error.message);
         })
       );
   }
@@ -149,28 +138,22 @@ export class RestService {
 
   getGameDetails(id: string): Observable<GameModel> {
     return this.http
-      .post(this.r_mix_api + "/games/" + id + "/info", null)
-      .pipe(map((res) => new GameModel(res["data"])));
+      .get(this.r_mix_api + "/games/" + id + "/info")
+      .pipe(map((res) => new GameModel(res)));
   }
 
-  search(q: string): Observable<GameModel[]> {
+  search(query: string): Observable<GameModel[]> {
     return this.http
-      .post(this.r_mix_api + "/search?q=" + q, null)
-      .pipe(
-        map((res) =>
-          !!res["data"] ? res["data"].map((d: any) => new GameModel(d)) : []
-        )
-      );
+      .get<any[]>(this.r_mix_api + "/games/search", {
+        params: { query },
+      })
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getSimilarGames(id: string): Observable<GameModel[]> {
     return this.http
-      .post(this.r_mix_api + "/games/" + id + "/similar", null)
-      .pipe(
-        map((res) =>
-          res["data"].map((d: any) => new GameModel(d))
-        )
-      );
+      .get<any[]>(this.r_mix_api + "/games/" + id + "/similar")
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getGamesByGenre(genre: string): Observable<GameModel[]> {
@@ -181,8 +164,8 @@ export class RestService {
       },
     ];
     return this.http
-      .post(this.r_mix_api + "/feed/custom", data)
-      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getGamesByDeveloper(developer: string): Observable<GameModel[]> {
@@ -193,8 +176,8 @@ export class RestService {
       },
     ];
     return this.http
-      .post(this.r_mix_api + "/feed/custom", data)
-      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getFilteredGames(): Observable<GameModel[]> {
@@ -204,27 +187,29 @@ export class RestService {
       },
     ];
     return this.http
-      .post(this.r_mix_api + "/feed/custom", data)
-      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getAllGames(page: number): Observable<GameModel[]> {
     return this.http
-      .post(this.r_mix_api + "/games?page=" + page, null)
-      .pipe(map((res) => res["data"].map((d: any) => new GameModel(d))));
+      .get<any[]>(this.r_mix_api + "/games", { params: { page, limit: 10 } })
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getHomeFeed(): Observable<HomeFeeds> {
-    return this.http.post(this.r_mix_api + "/feed/personalized", null).pipe(
-      map((res) => {
-        const games = res["data"].map((d: any) => new GameFeedModel(d));
-        return {
-          games,
-          categories: [],
-          banners: [],
-        };
-      })
-    );
+    return this.http
+      .get<any[]>(this.r_mix_api + "/games/feed/personalized")
+      .pipe(
+        map((res) => {
+          const games = res.map((d) => new GameFeedModel(d));
+          return {
+            games,
+            categories: [],
+            banners: [],
+          };
+        })
+      );
   }
 
   getVideos(id: string): Observable<VideoModel[]> {
@@ -245,5 +230,11 @@ export class RestService {
         data
       )
       .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
+  }
+
+  getAllFriends(): Observable<FriendModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/friends/all")
+      .pipe(map((res) => res.map((d) => new FriendModel(d))));
   }
 }

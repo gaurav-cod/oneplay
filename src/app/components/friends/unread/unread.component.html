@@ -1,0 +1,27 @@
+<div class="d-flex flex-column" style="height: 100vh">
+  <div class="d-flex align-items-center p-3 bg-gray-dark">
+    <button class="btn bg-transparent" (click)="goBack.emit()">
+      <i class="fas fa-chevron-left text-white text-xs"></i>
+    </button>
+    <div class="text-white">Your messages</div>
+  </div>
+
+  <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
+    <li
+      *ngFor="let i of [1, 1, 1, 1, 1, 1, 1]"
+      class="media mb-1 align-items-center my-3"
+    >
+      <img
+        [src]="'Lucifer 666' | avatar"
+        class="rounded-circle mr-2"
+        width="36"
+        height="36"
+        alt=""
+      />
+      <div>
+        <div class="text-white small">Lucifer 666</div>
+        <div class="text-white text-xs">Playing GTA V</div>
+      </div>
+    </li>
+  </ul>
+</div>

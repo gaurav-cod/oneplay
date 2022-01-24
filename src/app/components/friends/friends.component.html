@@ -9,129 +9,28 @@
   [ngClass]="{ 'd-flex': !isCollapsed }"
   [ngbCollapse]="isCollapsed"
   id="sidenav-collapse-friends"
-  style="width: 350px; height: 100vh; z-index: 999999999999999"
+  style="
+    width: 350px;
+    z-index: 999999999999999;
+  "
 >
-  <ng-container *ngIf="currentScreen === 'main'">
-    <div class="d-flex align-items-center p-3 bg-gray-dark">
-      <div class="flex-grow-1 d-flex align-items-center">
-        <span class="text-white">Your status</span>
-        <div
-          class="rounded-circle bg-success mx-1"
-          style="width: 8px; height: 8px"
-        ></div>
-        <span class="text-success">Online</span>
-      </div>
-      <button
-        class="btn btn-github rounded-circle py-2 px-3"
-        (click)="toggle()"
-      >
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+  <app-friends-main
+    *ngIf="currentScreen === 'main'"
+    (toggle)="toggle()"
+    (goToParties)="goToParties()"
+    (goToMail)="goToMail()"
+    (goToChat)="goToChat($event)"
+  ></app-friends-main>
 
-    <div class="p-3">
-      <button class="btn btn-block btn-github" (click)="goToParties()">
-        View your parties
-      </button>
-    </div>
+  <app-parties *ngIf="currentScreen === 'parties'" (goBack)="goBack()">
+  </app-parties>
 
-    <div class="bg-gray-dark" style="height: 1px"></div>
+  <app-unread *ngIf="currentScreen === 'mail'" (goBack)="goBack()">
+  </app-unread>
 
-    <div class="p-3">
-      <a
-        class="nav-link d-flex"
-        style="background-color: rgba(243, 20, 64, 0.1); cursor: pointer;"
-        (click)="goToMail()"
-      >
-        <i class="fas fa-envelope text-danger" style="font-size: 36px"></i>
-        <div class="ml-2">
-          <div class="text-danger text-xs">You have 10 unread messages</div>
-          <div class="text-white text-xs">Click to view ></div>
-        </div>
-      </a>
-    </div>
-
-    <div class="bg-gray-dark" style="height: 1px"></div>
-
-    <h5 class="text-white m-3">Online friends (08)</h5>
-
-    <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
-      <li
-        *ngFor="let i of [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]"
-        class="media mb-1 align-items-center mb-3"
-      >
-        <img
-          [src]="'Lucifer 666' | avatar"
-          class="rounded-circle mr-2"
-          width="36"
-          height="36"
-          alt=""
-        />
-        <div>
-          <div class="text-white small">Lucifer 666</div>
-          <div class="text-warning text-xs">Playing GTA V</div>
-        </div>
-      </li>
-    </ul>
-  </ng-container>
-
-  <ng-container *ngIf="currentScreen === 'parties'">
-    <div class="d-flex align-items-center p-3 bg-gray-dark">
-      <button class="btn bg-transparent" (click)="goBack()">
-          <i class="fas fa-chevron-left text-white text-xs"></i>
-      </button>
-      <div class="text-white">Your parties</div>
-    </div>
-
-    <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
-      <li
-        *ngFor="let i of [1, 1, 1, 1, 1, 1, 1]"
-        class="media mb-1 align-items-center my-3"
-      >
-        <img
-          [src]="'Lucifer 666' | avatar"
-          class="rounded-circle mr-2"
-          width="36"
-          height="36"
-          alt=""
-        />
-        <div>
-          <div class="text-white small">Lucifer 666</div>
-          <div class="text-warning text-xs">Playing GTA V</div>
-        </div>
-      </li>
-    </ul>
-
-    <div class="p-3">
-      <button class="btn btn-block btn-primary">Create a new party</button>
-    </div>
-  </ng-container>
-  
-  <ng-container *ngIf="currentScreen === 'mail'">
-    <div class="d-flex align-items-center p-3 bg-gray-dark">
-      <button class="btn bg-transparent" (click)="goBack()">
-          <i class="fas fa-chevron-left text-white text-xs"></i>
-      </button>
-      <div class="text-white">Your messages</div>
-    </div>
-
-    <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
-      <li
-        *ngFor="let i of [1, 1, 1, 1, 1, 1, 1]"
-        class="media mb-1 align-items-center my-3"
-      >
-        <img
-          [src]="'Lucifer 666' | avatar"
-          class="rounded-circle mr-2"
-          width="36"
-          height="36"
-          alt=""
-        />
-        <div>
-          <div class="text-white small">Lucifer 666</div>
-          <div class="text-white text-xs">Playing GTA V</div>
-        </div>
-      </li>
-    </ul>
-  </ng-container>
+  <app-direct-chat
+    *ngIf="currentScreen === 'chat'"
+    (goBack)="goBack()"
+    [friend]="selectedFriend"
+  ></app-direct-chat>
 </div>

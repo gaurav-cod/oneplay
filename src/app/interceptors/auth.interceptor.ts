@@ -19,18 +19,13 @@ export class AuthInterceptor implements HttpInterceptor {
     let req = request;
     const formData = req.body as FormData;
 
-    if (req.urlWithParams.startsWith(environment.idam_api_endpoint)) {
-      formData.append("device", "web");
-      formData.append("token", environment.api_token);
-      formData.append("session-token", "AUTH");
-    } else if (req.urlWithParams.startsWith(environment.api_endpoint)) {
+    if (req.urlWithParams.startsWith(environment.api_endpoint)) {
       formData.append("token", environment.api_token);
       formData.append("session-token", this.authService.sessionToken);
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
       req = req.clone({
         setHeaders: {
-          "Access-Control-Allow-Origin": "*",
-          "session_token": "1E123_223"
+          session_token: this.authService.sessionToken,
         },
       });
     }
