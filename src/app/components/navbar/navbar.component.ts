@@ -1,50 +1,56 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ROUTES } from '../sidebar/sidebar.component';
-import { Location } from '@angular/common';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
-import { UserModel } from 'src/app/models/user.model';
-import { FormControl } from '@angular/forms';
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { ROUTES } from "../sidebar/sidebar.component";
+import { Location } from "@angular/common";
+import { Router } from "@angular/router";
+import { AuthService } from "src/app/services/auth.service";
+import { UserModel } from "src/app/models/user.model";
+import { FormControl } from "@angular/forms";
+import { RestService } from "src/app/services/rest.service";
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: "app-navbar",
+  templateUrl: "./navbar.component.html",
+  styleUrls: ["./navbar.component.scss"],
 })
 export class NavbarComponent implements OnInit {
   public focus;
   public listTitles: any[];
   public location: Location;
-  public query = new FormControl('');
+  public query = new FormControl("");
   private user: UserModel;
 
   @Output() toggleFriends = new EventEmitter();
 
   get title() {
-    return this.user ? (this.user.firstName + ' ' + this.user.lastName) : 'User';
+    return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
 
-  constructor(location: Location,private readonly authService: AuthService, private readonly router: Router) {
+  constructor(
+    location: Location,
+    private readonly authService: AuthService,
+    private readonly router: Router,
+    private readonly restService: RestService
+  ) {
     this.location = location;
-    this.authService.user.subscribe(u => this.user = u);
+    this.authService.user.subscribe((u) => (this.user = u));
   }
 
   ngOnInit() {
-    this.listTitles = ROUTES.filter(listTitle => listTitle);
+    this.listTitles = ROUTES.filter((listTitle) => listTitle);
   }
 
-  getTitle(){
+  getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
-    if(titlee.charAt(0) === '#'){
-        titlee = titlee.slice( 1 );
+    if (titlee.charAt(0) === "#") {
+      titlee = titlee.slice(1);
     }
 
-    for(var item = 0; item < this.listTitles.length; item++){
-        if(this.listTitles[item].path === titlee) {
-            return this.listTitles[item].title;
-        }
+    for (var item = 0; item < this.listTitles.length; item++) {
+      if (this.listTitles[item].path === titlee) {
+        return this.listTitles[item].title;
+      }
     }
-    return 'Oneplay';
+    return "Oneplay";
   }
 
   toggleFriendsList() {
@@ -52,11 +58,11 @@ export class NavbarComponent implements OnInit {
   }
 
   search() {
-    this.router.navigate(['/search'], { queryParams: { q: this.query.value } });
+    this.router.navigate(["/search"], { queryParams: { q: this.query.value } });
   }
 
   logout() {
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.logout();
   }
-
 }

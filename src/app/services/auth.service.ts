@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { UserModel } from '../models/user.model';
-import * as Cookies from 'js-cookie';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+import { UserModel } from "../models/user.model";
+import * as Cookies from "js-cookie";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AuthService {
-  private readonly _$user: BehaviorSubject<UserModel | null> = new BehaviorSubject(null);
+  private readonly _$user: BehaviorSubject<UserModel | null> =
+    new BehaviorSubject(null);
 
   get user() {
     return this._$user.asObservable();
@@ -18,7 +19,16 @@ export class AuthService {
     if (obj) {
       return new UserModel(obj).token;
     }
-    return '';
+    return "";
+  }
+
+  get sessionKey() {
+    if (this.sessionToken) {
+      const str = atob(this.sessionToken);
+      const [userid, token] = str.split(":");
+      return `user:${userid}:session:${token}`;
+    }
+    return "";
   }
 
   constructor() {

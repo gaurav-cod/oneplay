@@ -8,6 +8,7 @@ import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
 import { PC } from "../models/pc.model";
+import { Session } from "../models/session.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
@@ -81,6 +82,21 @@ export class RestService {
           throw new Error(error.message);
         })
       );
+  }
+
+  getSessions(): Observable<Session[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/sessions")
+      .pipe(map((res) => res.map((d) => new Session(d))));
+  }
+
+  deleteSession(key: string): Observable<void> {
+    return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
+      map(() => {}),
+      catchError((error) => {
+        throw new Error(error.message);
+      })
+    );
   }
 
   getPcInfo(): Observable<void> {
@@ -255,5 +271,12 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/stream/" + streamId + "/messages")
       .pipe(map((res) => res.map((d) => new MessageModel(d))));
+  }
+
+  getLocation(ip: string): Observable<string> {
+    return this.http.get(this.r_mix_api + "/location/" + ip).pipe(
+      map((res) => `${res["city"]}, ${res["country_name"]}`),
+      catchError(() => "unknown")
+    );
   }
 }
