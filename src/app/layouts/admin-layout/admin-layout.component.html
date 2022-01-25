@@ -1,9 +1,12 @@
-<!-- Sidenav -->
-<app-sidebar></app-sidebar>
 <app-friends
-  [isCollapsed]="friendsCollapsed"
-  (toggleCollapse)="friendsCollapsed = !friendsCollapsed"
+[isCollapsed]="friendsCollapsed"
+(toggleCollapse)="friendsCollapsed = !friendsCollapsed"
 ></app-friends>
+
+<!-- Sidenav -->
+<app-sidebar
+  (toggleFriends)="friendsCollapsed = !friendsCollapsed"
+></app-sidebar>
 <div class="main-content" style="background: #121212">
   <!-- Top navbar -->
   <app-navbar

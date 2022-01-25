@@ -6,6 +6,7 @@ import { HomeFeeds, LoginDTO, SignupDTO, StartPcRO } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
+import { MessageModel } from "../models/message.model";
 import { PC } from "../models/pc.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
@@ -236,5 +237,23 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/social/friends/all")
       .pipe(map((res) => res.map((d) => new FriendModel(d))));
+  }
+
+  getDirectMessages(friendId: string): Observable<MessageModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/friends/" + friendId + "/messages")
+      .pipe(map((res) => res.map((d) => new MessageModel(d))));
+  }
+
+  getGroupMessages(groupId: string): Observable<MessageModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/groups/" + groupId + "/messages")
+      .pipe(map((res) => res.map((d) => new MessageModel(d))));
+  }
+
+  getStreamMessages(streamId: string): Observable<MessageModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/stream/" + streamId + "/messages")
+      .pipe(map((res) => res.map((d) => new MessageModel(d))));
   }
 }

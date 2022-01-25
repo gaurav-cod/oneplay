@@ -1,8 +1,40 @@
 <div class="d-flex flex-column" style="height: 100vh">
   <div class="d-flex align-items-center p-3 bg-gray-dark">
     <button class="btn bg-transparent" (click)="goBack.emit()">
-      <i class="fas fa-chevron-left text-white text-xs"></i>
+      <em class="fas fa-chevron-left text-white text-xs"></em>
     </button>
-    <div class="text-white">{{ friend.first_name }}</div>
+    <div class="text-white">{{ friend.name }}</div>
   </div>
+
+  <ul #chatBox class="navbar-nav flex-grow-1 px-3 overflow-auto">
+    <li
+      *ngFor="let msg of messages"
+      class="media mb-1 align-items-center my-3"
+      [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
+    >
+      <img
+        [src]="getSenderName(msg) | avatar"
+        class="rounded-circle mr-2"
+        width="36"
+        height="36"
+        alt=""
+      />
+      <div>
+        <div class="text-white small">{{ getSenderName(msg) }}</div>
+        <div class="text-warning text-xs">{{ msg.message }}</div>
+      </div>
+    </li>
+  </ul>
+
+  <form class="p-3 d-flex align-items-center" (submit)="sendMessage()">
+    <input
+      type="text"
+      class="form-control-lg flex-grow-1"
+      [formControl]="message"
+      placeholder="Enter message"
+    />
+    <button class="btn bg-transparent" type="submit">
+      <em class="fas fa-paper-plane text-white text-xs"></em>
+    </button>
+  </form>
 </div>
