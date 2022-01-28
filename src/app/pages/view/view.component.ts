@@ -4,7 +4,6 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GameModel } from "src/app/models/game.model";
-import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { VideoModel } from "src/app/models/video.model";
 import { RestService } from "src/app/services/rest.service";
 
@@ -20,8 +19,9 @@ export class ViewComponent implements OnInit {
   showAllLiveVideos = false;
 
   similarGames: GameModel[] = [];
-  devGamesMap: GameFeedModel[] = [];
-  genreGamesMap: GameFeedModel[] = [];
+
+  private _devGames: GameModel[] = [];
+  private _genreGames: GameModel[] = [];
 
   private _videos: VideoModel[] = [];
   private _liveVideos: VideoModel[] = [];
@@ -45,22 +45,16 @@ export class ViewComponent implements OnInit {
           { name: "keywords", content: game.tagsMapping?.join(", ") },
           { name: "description", content: game.description },
         ]);
-        Promise.all(
-          game.developer.map((dev) =>
-            this.restService
-              .getGamesByDeveloper(dev)
-              .toPromise()
-              .then((games) => ({ title: `More from ${dev}`, games }))
-          )
-        ).then((map) => (this.devGamesMap = map));
-        Promise.all(
-          game.genreMappings.map((genre) =>
-            this.restService
-              .getGamesByGenre(genre)
-              .toPromise()
-              .then((games) => ({ title: `More in ${genre}`, games }))
-          )
-        ).then((map) => (this.genreGamesMap = map));
+        game.developer.forEach((dev) =>
+          this.restService
+            .getGamesByDeveloper(dev)
+            .subscribe((games) => this._devGames = [...this._devGames, ...games])
+        );
+        game.genreMappings.forEach((genre) =>
+          this.restService
+            .getGamesByGenre(genre)
+            .subscribe((games) => this._genreGames = [...this._genreGames, ...games])
+        );
       });
       this.restService
         .getSimilarGames(id)
@@ -72,6 +66,26 @@ export class ViewComponent implements OnInit {
         .getLiveVideos(id)
         .subscribe((videos) => (this._liveVideos = videos));
     });
+  }
+
+  get devGames(): GameModel[] {
+    return [...this._devGames].sort(
+      (a, b) => a.popularityScore - b.popularityScore
+    );
+  }
+
+  get allDevelopers(): string {
+    return "From " + this.game?.developer?.join(", ") || "";
+  }
+
+  get genreGames(): GameModel[] {
+    return [...this._genreGames].sort(
+      (a, b) => a.popularityScore - b.popularityScore
+    );
+  }
+
+  get allGenres(): string {
+    return "From " + this.game?.genreMappings?.join(", ") || "";
   }
 
   get videos(): VideoModel[] {

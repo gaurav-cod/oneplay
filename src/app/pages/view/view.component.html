@@ -261,17 +261,17 @@
     ></app-similar-games>
   </div>
 
-  <div *ngFor="let dev of devGamesMap" class="mt-5">
+  <div *ngIf="genreGames.length" class="mt-5">
     <app-similar-games
-      [title]="dev.title"
-      [games]="dev.games"
+      [title]="allGenres"
+      [games]="genreGames"
     ></app-similar-games>
   </div>
 
-  <div *ngFor="let genre of genreGamesMap" class="mt-5">
+  <div *ngIf="devGames.length" class="mt-5">
     <app-similar-games
-      [title]="genre.title"
-      [games]="genre.games"
+      [title]="allDevelopers"
+      [games]="devGames"
     ></app-similar-games>
   </div>
 </div>

@@ -56,6 +56,6 @@ export class GameModel {
         this.platformsMapping = json["platforms_mapping"];
         this.developer = json["developer"];
         this.publisher = json["publisher"];
-        this.storesMapping = json["stores_mapping"];
+        this.storesMapping = json["stores_mappings"];
     }
 }
