@@ -13,8 +13,9 @@ export class HomeComponent implements OnInit {
 
   constructor(private readonly restService: RestService) {
     this.restService.getHomeFeed().subscribe((res) => {
-      this.firstRow = res.games[0];
-      this.restRows = res.games.slice(1);
+      const games = res.games.filter((g) => g.games.length > 0);
+      this.firstRow = games[0];
+      this.restRows = games.slice(1);
     });
   }
 

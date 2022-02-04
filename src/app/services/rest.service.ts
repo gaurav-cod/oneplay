@@ -174,35 +174,29 @@ export class RestService {
   }
 
   getGamesByGenre(genre: string): Observable<GameModel[]> {
-    const data = [
-      {
-        genres: genre,
-        order_by: "trend_score:desc",
-      },
-    ];
+    const data = {
+      genres: genre,
+      order_by: "trend_score:desc",
+    };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getGamesByDeveloper(developer: string): Observable<GameModel[]> {
-    const data = [
-      {
-        developer,
-        order_by: "trend_score:desc",
-      },
-    ];
+    const data = {
+      developer,
+      order_by: "trend_score:desc",
+    };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
   getFilteredGames(): Observable<GameModel[]> {
-    const data = [
-      {
-        order_by: "release_date:desc",
-      },
-    ];
+    const data = {
+      order_by: "release_date:desc",
+    };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
       .pipe(map((res) => res.map((d) => new GameModel(d))));
