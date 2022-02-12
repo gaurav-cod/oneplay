@@ -28,4 +28,23 @@ export class SearchComponent implements OnInit {
         .subscribe((games) => (this.games = games));
     });
   }
+
+  playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
+    if (game.video) {
+      image.style.opacity = "0";
+      video.play();
+    }
+  }
+
+  pauseVideo(
+    video: HTMLVideoElement,
+    image: HTMLImageElement,
+    game: GameModel
+  ) {
+    if (game.video) {
+      image.style.opacity = "1";
+      video.pause();
+      video.currentTime = 0;
+    }
+  }
 }

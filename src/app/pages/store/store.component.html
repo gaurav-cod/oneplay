@@ -1,5 +1,5 @@
-<div class="container pt-6">
-  <div class="row">
+<div class="container-fluid pt-8">
+  <div class="row container-fluid">
     <div class="col-12 col-md-3">
       <a class="card bg-dark">
         <div class="p-3 text-white">Show all games</div>
@@ -59,26 +59,27 @@
             [routerLink]="['/view/' + (game | glink)]"
             class="card card-block border-0"
           >
-            <img
-              class="card-img"
-              [src]="game.bgImage"
-              height="153"
-              width="219"
-              alt=""
-            />
-            <div class="mask bg-darker opacity-4"></div>
             <video
-              *ngIf="!!game.video"
+              #video
               class="mask"
-              onmouseover="this.play()"
-              onmouseout="this.pause();this.currentTime=0;"
               style="border-radius: 4px; height: 100%; object-fit: cover"
             >
               <source [src]="game.video" />
             </video>
-            <h5 class="position-absolute left-3 bottom-1 text-white">
-              {{ game.title }}
-            </h5>
+            <img
+              #image
+              class="card-img"
+              style="z-index: 1"
+              [src]="game | gameAsset: 'textBgImage'"
+              height="170"
+              alt=""
+            />
+            <div
+              class="mask"
+              style="z-index: 2"
+              (mouseover)="playVideo(video, image, game)"
+              (mouseout)="pauseVideo(video, image, game)"
+            ></div>
           </a>
         </div>
       </div>

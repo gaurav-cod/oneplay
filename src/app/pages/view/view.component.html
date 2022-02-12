@@ -1,10 +1,12 @@
 <div
   *ngIf="!!game"
-  class="header pb-0 pt-5 pt-lg-8"
+  class="header pb-0 pt-5 pt-lg-9"
   style="background-size: cover; background-position: center top"
-  [ngStyle]="{ 'background-image': 'url(' + game.bgImage + ')' }"
+  [ngStyle]="{
+    'background-image': 'url(' + (game | gameAsset: 'bgImage') + ')'
+  }"
 >
-  <video
+  <!-- <video
     *ngIf="!!game.video"
     class="mask"
     autoplay
@@ -12,13 +14,13 @@
     [muted]="'muted'"
     [src]="game.video"
     style="height: 90%; object-fit: cover"
-  ></video>
+  ></video> -->
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
   <!-- Header container -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-7 col-md-10" style="min-width: 450px">
+  <div class="container-fluid">
+    <div class="row container-fluid">
+      <div class="col-lg-5 col-md-10" style="min-width: 450px">
         <button
           class="btn btn-icon d-flex align-items-center p-0"
           (click)="back()"
@@ -26,8 +28,60 @@
           <i class="ni ni-bold-left fill-default"></i
           ><span class="text-gray">Go back</span>
         </button>
-        <h1 class="display-2 text-white">{{ game.title }}</h1>
+        <img [src]="game | gameAsset: 'textLogo'" class="text-logo" alt="" />
         <p class="text-white mt-0 mb-4">OnePlay Rating: {{ game.rating }}/10</p>
+        <div
+          *ngFor="let genre of game.genreMappings"
+          class="btn btn-sm bg-translucent-dark text-white border-white"
+        >
+          {{ genre }}
+        </div>
+        <p
+          id="description"
+          [innerHTML]="game.description"
+          class="text-white mt-3"
+        ></p>
+        <div
+          *ngIf="game.storesMapping.length"
+          class="d-flex align-items-center flex-wrap"
+        >
+          <span class="text-white-50 mr-3">Available purchase on:</span>
+          <a
+            href="{{ store.link }}"
+            target="_blank"
+            *ngFor="let store of game.storesMapping"
+            ngbTooltip="{{ store.name }}"
+            class="mr-1"
+          >
+            <img
+              [src]="store.name | avatar"
+              class="rounded-circle"
+              width="24"
+              height="24"
+              alt=""
+            />
+          </a>
+        </div>
+        <div
+          *ngIf="game.developer.length"
+          class="d-flex align-items-center flex-wrap"
+        >
+          <span class="text-white-50 mr-3">Developers:</span>
+          <a
+            target="_blank"
+            *ngFor="let dev of game.developer"
+            ngbTooltip="{{ dev }}"
+            class="mr-1"
+          >
+            <img
+              [src]="dev | avatar"
+              class="rounded-circle"
+              width="32"
+              height="32"
+              alt=""
+            />
+          </a>
+        </div>
         <!-- <p class="text-white mt-0">Available to purchase on</p>
         <a href="#!" class="btn btn-primary">Continue playing</a>
         <a href="#!" class="btn bg-translucent-dark text-white"
@@ -36,8 +90,8 @@
       </div>
     </div>
   </div>
-  <div class="mt-6 pb-8 pt-5 bg-gradient-banner-bottom">
-    <div class="row align-items-center container mx-auto">
+  <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid">
+    <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
         <a
           [href]="'https://www.oneplay.in/play_demo/play?id=' + game.oneplayId"
@@ -61,232 +115,145 @@
           </div>
         </div> -->
       </div>
-      <div class="col-lg-6 col-md-6 mt-lg-3 mt-md-5">
-        <div class="float-right">
-          <div
-            *ngFor="let genre of game.genreMappings"
-            class="btn btn-sm bg-translucent-dark text-white border-white"
-          >
-            {{ genre }}
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="!!game" class="container pb-6">
-  <div class="row">
-    <div class="col-md-8 col-12 pr-lg-4">
-      <h2 class="text-white mb-4">Top Live Streams</h2>
-      <p *ngIf="liveVideos.length === 0" class="text-white-50 text-center">
-        No videos found
-      </p>
-      <div
-        *ngFor="let video of liveVideos"
-        class="card bg-dark p-3 mb-3"
-        (click)="open(modal, video)"
-        style="cursor: pointer"
-      >
-        <div class="media">
-          <img
-            [width]="video.thumbnails.medium.width - 72"
-            [height]="video.thumbnails.medium.height - 40"
-            [src]="video.thumbnails.medium.url"
-            (click)="open(modal, video)"
-            style="border-radius: 4px"
-            alt=""
-          />
-          <div class="ml-3">
-            <h3 class="text-white">
-              {{ video.title }}
-            </h3>
-            <div class="media mb-1 align-items-center">
-              <img
-                [src]="video.channelTitle | avatar"
-                class="rounded-circle"
-                width="24"
-                height="24"
-                alt=""
-              />
-              <span class="text-white-50 small ml-1">{{
-                video.channelTitle
-              }}</span>
-            </div>
-            <div class="text-white">
-              <span class="text-xs">{{ video.description }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="liveVideos.length >= 3" class="text-center p-3">
-        <button
-          class="btn btn-outline-success btn-sm"
-          (click)="showAllLiveVideos = !showAllLiveVideos"
+<div class="container-fluid">
+  <div *ngIf="!!game" class="container-fluid pb-6">
+    <div class="row">
+      <div class="col-md-8 col-12 pr-lg-4">
+        <h2 class="text-white mb-4">Top Live Streams</h2>
+        <p *ngIf="liveVideos.length === 0" class="text-white-50 text-center">
+          No videos found
+        </p>
+        <div
+          *ngFor="let video of liveVideos"
+          class="card bg-dark p-3 mb-3"
+          (click)="open(modal, video)"
+          style="cursor: pointer"
         >
-          {{ showAllLiveVideos ? "Show Less" : "Show All" }}
-        </button>
-      </div>
-
-      <hr class="border-dark" />
-
-      <h2 class="text-white mb-4">Top Videos</h2>
-      <p *ngIf="videos.length === 0" class="text-white-50 text-center">
-        No videos found
-      </p>
-      <div
-        *ngFor="let video of videos"
-        class="card bg-dark p-3 mb-3"
-        (click)="open(modal, video)"
-        style="cursor: pointer"
-      >
-        <div class="media">
-          <img
-            [width]="video.thumbnails.medium.width - 72"
-            [height]="video.thumbnails.medium.height - 40"
-            [src]="video.thumbnails.medium.url"
-            style="border-radius: 4px"
-            alt=""
-          />
-          <div class="ml-3">
-            <h3 class="text-white">
-              {{ video.title }}
-            </h3>
-            <div class="media mb-1 align-items-center">
-              <img
-                [src]="video.channelTitle | avatar"
-                class="rounded-circle"
-                width="24"
-                height="24"
-                alt=""
-              />
-              <span class="text-white-50 small ml-1">{{
-                video.channelTitle
-              }}</span>
-            </div>
-            <div class="text-white">
-              <span class="text-xs">{{ video.description }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="videos.length >= 3" class="text-center p-3">
-        <button
-          class="btn btn-outline-success btn-sm"
-          (click)="showAllVideos = !showAllVideos"
-        >
-          {{ showAllVideos ? "Show Less" : "Show All" }}
-        </button>
-      </div>
-    </div>
-    <div class="col-md-4 col-12">
-      <div class="card bg-dark p-3 mb-3 mt-5">
-        <div class="d-flex align-items-center flex-wrap">
-          <span class="text-white mr-3">Available purchase on</span>
-          <a
-            href="{{ store.link }}"
-            target="_blank"
-            *ngFor="let store of game.storesMapping"
-            ngbTooltip="{{ store.name }}"
-            class="mr-1"
-          >
+          <div class="media">
             <img
-              [src]="store.name | avatar"
-              class="rounded-circle"
-              width="24"
-              height="24"
+              [width]="video.thumbnails.medium.width - 72"
+              [height]="video.thumbnails.medium.height - 40"
+              [src]="video.thumbnails.medium.url"
+              (click)="open(modal, video)"
+              style="border-radius: 4px"
               alt=""
             />
-          </a>
+            <div class="ml-3">
+              <h3 class="text-white">
+                {{ video.title }}
+              </h3>
+              <div class="media mb-1 align-items-center">
+                <img
+                  [src]="video.channelTitle | avatar"
+                  class="rounded-circle"
+                  width="24"
+                  height="24"
+                  alt=""
+                />
+                <span class="text-white-50 small ml-1">{{
+                  video.channelTitle
+                }}</span>
+              </div>
+              <div class="text-white">
+                <span class="text-xs">{{ video.description }}</span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="card bg-dark p-3 mb-3">
-        <div class="d-flex align-items-center flex-wrap">
-          <span class="text-white mr-3">Developers</span>
-          <a
-            target="_blank"
-            *ngFor="let dev of game.developer"
-            ngbTooltip="{{ dev }}"
-            class="mr-1"
+        <div *ngIf="liveVideos.length >= 3" class="text-center p-3">
+          <button
+            class="btn btn-outline-success btn-sm"
+            (click)="showAllLiveVideos = !showAllLiveVideos"
           >
+            {{ showAllLiveVideos ? "Show Less" : "Show All" }}
+          </button>
+        </div>
+
+        <hr class="border-dark" />
+
+        <h2 class="text-white mb-4">Top Videos</h2>
+        <p *ngIf="videos.length === 0" class="text-white-50 text-center">
+          No videos found
+        </p>
+        <div
+          *ngFor="let video of videos"
+          class="card bg-dark p-3 mb-3"
+          (click)="open(modal, video)"
+          style="cursor: pointer"
+        >
+          <div class="media">
             <img
-              [src]="dev | avatar"
-              class="rounded-circle"
-              width="32"
-              height="32"
+              [width]="video.thumbnails.medium.width - 72"
+              [height]="video.thumbnails.medium.height - 40"
+              [src]="video.thumbnails.medium.url"
+              style="border-radius: 4px"
               alt=""
             />
-          </a>
-        </div>
-      </div>
-
-      <div class="card bg-dark p-3 mb-3">
-        <h3 class="text-white">About the game</h3>
-        <p
-          id="description"
-          [innerHTML]="game.description"
-          class="text-white-50"
-        ></p>
-      </div>
-
-      <!-- <div class="card bg-dark p-3">
-        <h4 class="text-white">Characters</h4>
-        <div class="row overflow-auto">
-          <div class="col-1 mr-3">
-            <div class="avatar avatar-lg rounded-circle">
-              <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
-            </div>
-          </div>
-          <div class="col-1 mr-3">
-            <div class="avatar avatar-lg rounded-circle">
-              <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
-            </div>
-          </div>
-          <div class="col-1 mr-3">
-            <div class="avatar avatar-lg rounded-circle">
-              <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
+            <div class="ml-3">
+              <h3 class="text-white">
+                {{ video.title }}
+              </h3>
+              <div class="media mb-1 align-items-center">
+                <img
+                  [src]="video.channelTitle | avatar"
+                  class="rounded-circle"
+                  width="24"
+                  height="24"
+                  alt=""
+                />
+                <span class="text-white-50 small ml-1">{{
+                  video.channelTitle
+                }}</span>
+              </div>
+              <div class="text-white">
+                <span class="text-xs">{{ video.description }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div> -->
+
+        <div *ngIf="videos.length >= 3" class="text-center p-3">
+          <button
+            class="btn btn-outline-success btn-sm"
+            (click)="showAllVideos = !showAllVideos"
+          >
+            {{ showAllVideos ? "Show Less" : "Show All" }}
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div *ngIf="similarGames.length" class="mt-6">
-    <app-similar-games
-      [title]="'Similar games'"
-      [games]="similarGames"
-    ></app-similar-games>
-  </div>
+    <div *ngIf="similarGames.length" class="mt-6">
+      <app-similar-games
+        [title]="'Similar games'"
+        [games]="similarGames"
+      ></app-similar-games>
+    </div>
 
-  <div *ngIf="genreGames.length" class="mt-5">
-    <app-similar-games
-      [title]="allGenres"
-      [games]="genreGames"
-    ></app-similar-games>
-  </div>
+    <div *ngIf="genreGames.length" class="mt-5">
+      <app-similar-games
+        [title]="allGenres"
+        [games]="genreGames"
+      ></app-similar-games>
+    </div>
 
-  <div *ngIf="devGames.length" class="mt-5">
-    <app-similar-games
-      [title]="allDevelopers"
-      [games]="devGames"
-    ></app-similar-games>
+    <div *ngIf="devGames.length" class="mt-5">
+      <app-similar-games
+        [title]="allDevelopers"
+        [games]="devGames"
+      ></app-similar-games>
+    </div>
   </div>
 </div>
 
 <ng-template #modal let-d="dismiss">
   <div class="modal-content position-relative">
     <div
-      class="
-        position-absolute
-        btn btn-github
-        rounded-circle
-        top--4
-        right--6
-        py-3
-      "
+      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
