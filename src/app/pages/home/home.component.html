@@ -8,25 +8,26 @@
 >
   <ng-template *ngFor="let game of firstRow.games" ngbSlide>
     <div
-      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
+      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end"
       style="
-        min-height: 786px;
+        min-height: 680px;
         background-size: cover;
         background-position: center top;
       "
       [style.background-image]="
-        'url(' + (game.bgImage || 'assets/img/theme/profile-cover.jpg') + ')'
+        'url(' + (game | gameAsset: 'bgImage') + ')'
       "
     >
       <!-- Mask -->
       <span class="mask bg-gradient-banner"></span>
       <!-- Header container -->
-      <div class="container d-flex align-items-center">
-        <div class="row">
+      <div class="container-fluid">
+        <div class="row container-fluid">
           <div class="col-lg-7 col-md-10" style="min-width: 50vw">
-            <h1 class="display-2 text-white">{{ game.title }}</h1>
+            <!-- <h1 class="display-2 text-white">{{ game.title }}</h1> -->
+            <img [src]="game | gameAsset: 'textLogo'" class="text-logo" alt="">
             <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
-            <p class="text-white mt-0">Available to purchase on</p>
+            <!-- <p class="text-white mt-0">Available to purchase on</p> -->
             <a
               [routerLink]="['/view/' + (game | glink)]"
               class="btn btn-primary btn-lg w-25"
@@ -42,8 +43,8 @@
   </ng-template>
 </ngb-carousel>
 
-<div class="container mt--9">
-  <div *ngFor="let row of restRows" class="mt-5">
+<div class="container-fluid mt--8 pb-5">
+  <div *ngFor="let row of restRows" class="mt-5 container-fluid">
     <app-similar-games
       [title]="row.title"
       [games]="row.games"

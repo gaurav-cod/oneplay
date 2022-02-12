@@ -9,6 +9,8 @@ export class GameModel {
     readonly releaseDate: Date;
     readonly posterImg: string;
     readonly bgImage: string;
+    readonly textBgImage: string;
+    readonly textLogo: string;
     readonly video?: string;
     readonly rating: number;
     readonly popularityScore: number;
@@ -38,6 +40,8 @@ export class GameModel {
         this.releaseDate = new Date(json["release_date"]);
         this.posterImg = json["poster_image"];
         this.bgImage = json["background_image"];
+        this.textBgImage = json["text_background_image"];
+        this.textLogo = json["text_logo"];
         this.video = json["videos"]?.[0];
         this.rating = json["rating"];
         this.popularityScore = json["popularity_score"];

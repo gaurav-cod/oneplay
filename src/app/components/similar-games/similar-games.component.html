@@ -1,12 +1,12 @@
 <div class="position-relative">
-  <h3 class="text-white">{{ title }}</h3>
+  <h1 class="text-white">{{ title }}</h1>
 
   <div #container class="d-flex overflow-auto">
     <div *ngFor="let game of games" class="mr-4">
       <a
         [routerLink]="['/view/' + (game | glink)]"
-        class="card card-block border-0"
-        style="width: 219px"
+        class="card card-block border-0 shadow-1"
+        style="width: 280px"
       >
         <video
           #video
@@ -19,22 +19,16 @@
           #image
           class="card-img"
           style="z-index: 1"
-          [src]="game.bgImage"
-          height="153"
+          [src]="game | gameAsset: 'textBgImage'"
+          height="170"
           alt=""
         />
         <div
-          class="mask bg-darker opacity-4"
+          class="mask"
           style="z-index: 2"
           (mouseover)="playVideo(video, image, game)"
           (mouseout)="pauseVideo(video, image, game)"
         ></div>
-        <h5
-          class="position-absolute left-3 bottom-1 text-white"
-          style="z-index: 3"
-        >
-          {{ game.title }}
-        </h5>
       </a>
     </div>
   </div>

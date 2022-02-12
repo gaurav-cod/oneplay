@@ -4,10 +4,11 @@ import { SafePipe } from "./safe.pipe";
 import { AvatarPipe } from "./avatar.pipe";
 import { GLinkPipe } from "./glink.pipe";
 import { TimeAgoPipe } from "./time-ago.pipe";
+import { GameAssetPipe } from './game-asset.pipe';
 
 @NgModule({
-  declarations: [SafePipe, AvatarPipe, GLinkPipe, TimeAgoPipe],
+  declarations: [SafePipe, AvatarPipe, GLinkPipe, TimeAgoPipe, GameAssetPipe],
   imports: [CommonModule],
-  exports: [SafePipe, AvatarPipe, GLinkPipe, TimeAgoPipe],
+  exports: [SafePipe, AvatarPipe, GLinkPipe, TimeAgoPipe, GameAssetPipe],
 })
 export class PipesModule {}
