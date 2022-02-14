@@ -8,7 +8,7 @@ export const environment = {
   render_mix_api: 'https://103.242.119.222/api',
   socket_endpoint: 'https://103.242.119.222',
   api_token: '233be082240792841e2740b60d3ec54084d0a7cabf9a71c19c9cd618512347a6',
-  game_assets: 'https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets',
+  game_assets: 'https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets_2',
 };
 
 /*
