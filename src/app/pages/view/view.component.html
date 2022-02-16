@@ -64,10 +64,17 @@
         </div>
         <div
           *ngIf="game.developer.length"
-          class="d-flex align-items-center flex-wrap"
+          class="d-flex align-items-center flex-wrap mt-3"
         >
           <span class="text-white-50 mr-3">Developers:</span>
-          <a
+          <span
+            *ngFor="let dev of game.developer; let i = index"
+            class="text-white mr-1"
+          >
+            {{ dev
+            }}<span *ngIf="i !== game.developer.length - 1">,</span></span
+          >
+          <!-- <a
             target="_blank"
             *ngFor="let dev of game.developer"
             ngbTooltip="{{ dev }}"
@@ -80,7 +87,7 @@
               height="32"
               alt=""
             />
-          </a>
+          </a> -->
         </div>
         <!-- <p class="text-white mt-0">Available to purchase on</p>
         <a href="#!" class="btn btn-primary">Continue playing</a>

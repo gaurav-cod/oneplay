@@ -71,6 +71,7 @@
           <a
             [routerLink]="['/view/' + (game | glink)]"
             class="list-group-heading text-white my-2"
+            (click)="query.setValue('')"
             >{{ game.title }}</a
           >
         </li>
