@@ -99,9 +99,22 @@
           class="btn btn-white btn-lg w-50"
           >Play Now</a
         >
-        <a href="#!" class="btn bg-translucent-dark text-white btn-lg"
-          >Add to wishlist</a
+        <button
+          *ngIf="!isInWishlist"
+          (click)="addToWishlist()"
+          [disabled]="loadingWishlist"
+          class="btn bg-translucent-dark text-white btn-lg"
         >
+          Add to wishlist
+        </button>
+        <button
+          *ngIf="isInWishlist"
+          (click)="removeFromWishlist()"
+          [disabled]="loadingWishlist"
+          class="btn bg-translucent-dark text-white btn-lg"
+        >
+          Remove from wishlist
+        </button>
         <!-- <p class="text-white">Friends who’ve played this</p>
         <div class="media">
           <div class="avatar avatar-md rounded-circle mr-2">

@@ -99,6 +99,24 @@ export class RestService {
     );
   }
 
+  getWishlist(): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/accounts/wishlist")
+      .pipe();
+  }
+
+  addWishlist(gameId: string): Observable<any> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/add_to_wishlist/" + gameId, null)
+      .pipe();
+  }
+
+  removeWishlist(gameId: string): Observable<any> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/remove_from_wishlist/" + gameId, null)
+      .pipe();
+  }
+
   getPcInfo(): Observable<void> {
     const formData = new FormData();
     return this.http.post(this.api + "/pc/info", formData).pipe(
@@ -225,22 +243,14 @@ export class RestService {
 
   getVideos(id: string): Observable<VideoModel[]> {
     return this.http
-      .post(this.r_mix_api + "/streams/youtube?game_id=" + id, null)
-      .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
+      .get<any[]>(this.r_mix_api + "/streams/" + id)
+      .pipe(map((res) => res.map((d: any) => new VideoModel(d))));
   }
 
   getLiveVideos(id: string): Observable<VideoModel[]> {
-    const data = [
-      {
-        order_by: "release_date:desc",
-      },
-    ];
     return this.http
-      .post(
-        this.r_mix_api + "/streams/youtube?game_id=" + id + "&eventType=live",
-        data
-      )
-      .pipe(map((res) => res["data"].map((d: any) => new VideoModel(d))));
+      .get<any[]>(this.r_mix_api + "/streams/" + id + "?eventType=live")
+      .pipe(map((res) => res.map((d: any) => new VideoModel(d))));
   }
 
   getAllFriends(): Observable<FriendModel[]> {

@@ -5,6 +5,7 @@ import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GameModel } from "src/app/models/game.model";
 import { VideoModel } from "src/app/models/video.model";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -20,20 +21,29 @@ export class ViewComponent implements OnInit {
 
   similarGames: GameModel[] = [];
 
+  loadingWishlist = false;
+
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
 
   private _videos: VideoModel[] = [];
   private _liveVideos: VideoModel[] = [];
 
+  private wishlist: string[] = [];
+
   constructor(
     private readonly location: Location,
     private readonly restService: RestService,
+    private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
     private readonly ngbModal: NgbModal,
     private readonly title: Title,
     private readonly meta: Meta
-  ) {}
+  ) {
+    this.authService.wishlist.subscribe(
+      (wishlist) => (this.wishlist = wishlist)
+    );
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
@@ -48,12 +58,16 @@ export class ViewComponent implements OnInit {
         game.developer.forEach((dev) =>
           this.restService
             .getGamesByDeveloper(dev)
-            .subscribe((games) => this._devGames = [...this._devGames, ...games])
+            .subscribe(
+              (games) => (this._devGames = [...this._devGames, ...games])
+            )
         );
         game.genreMappings.forEach((genre) =>
           this.restService
             .getGamesByGenre(genre)
-            .subscribe((games) => this._genreGames = [...this._genreGames, ...games])
+            .subscribe(
+              (games) => (this._genreGames = [...this._genreGames, ...games])
+            )
         );
       });
       this.restService
@@ -66,6 +80,10 @@ export class ViewComponent implements OnInit {
         .getLiveVideos(id)
         .subscribe((videos) => (this._liveVideos = videos));
     });
+  }
+
+  get isInWishlist(): boolean {
+    return this.wishlist.includes(this.game?.oneplayId);
   }
 
   get devGames(): GameModel[] {
@@ -108,5 +126,21 @@ export class ViewComponent implements OnInit {
 
   back(): void {
     this.location.back();
+  }
+
+  addToWishlist(): void {
+    this.loadingWishlist = true;
+    this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
+      this.loadingWishlist = false;
+      this.authService.addToWishlist(this.game.oneplayId);
+    });
+  }
+
+  removeFromWishlist(): void {
+    this.loadingWishlist = true;
+    this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
+      this.loadingWishlist = false;
+      this.authService.removeFromWishlist(this.game.oneplayId);
+    });
   }
 }

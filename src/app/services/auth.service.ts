@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
 import * as Cookies from "js-cookie";
 
@@ -10,8 +10,20 @@ export class AuthService {
   private readonly _$user: BehaviorSubject<UserModel | null> =
     new BehaviorSubject(null);
 
+  private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject(
+    []
+  );
+
   get user() {
     return this._$user.asObservable();
+  }
+
+  get wishlist() {
+    return this._$wishlist.asObservable();
+  }
+
+  set wishlist(list: Observable<string[]>) {
+    list.subscribe((res) => this._$wishlist.next(res));
   }
 
   get sessionToken() {
@@ -46,5 +58,22 @@ export class AuthService {
   logout() {
     Cookies.remove("op_user");
     this._$user.next(null);
+  }
+
+  addToWishlist(id: string) {
+    const wishlist = this._$wishlist.value;
+    if (!wishlist.includes(id)) {
+      wishlist.push(id);
+      this._$wishlist.next(wishlist);
+    }
+  }
+
+  removeFromWishlist(id: string) {
+    const wishlist = this._$wishlist.value;
+    const index = wishlist.indexOf(id);
+    if (index > -1) {
+      wishlist.splice(index, 1);
+      this._$wishlist.next(wishlist);
+    }
   }
 }
