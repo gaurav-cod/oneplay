@@ -29,6 +29,9 @@
           ><span class="text-gray">Go back</span>
         </button>
         <img [src]="game | gameAsset: 'textLogo'" class="text-logo" alt="" />
+        <p class="text-white-50 mb-3">
+          {{ releaseYear }} | {{ game.ageRating }}
+        </p>
         <p class="text-white mt-0 mb-4">OnePlay Rating: {{ game.rating }}/10</p>
         <div
           *ngFor="let genre of game.genreMappings"

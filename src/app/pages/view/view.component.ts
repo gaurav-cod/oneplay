@@ -116,6 +116,10 @@ export class ViewComponent implements OnInit {
       : this._liveVideos;
   }
 
+  get releaseYear() {
+    return this.game?.releaseDate.getFullYear();
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.youtube_url.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
