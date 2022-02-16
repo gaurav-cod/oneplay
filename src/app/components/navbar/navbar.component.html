@@ -40,8 +40,7 @@
 
     <!-- Form -->
     <form
-      class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto"
-      (submit)="search()"
+      class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto position-relative"
     >
       <div class="form-group mb-0" [ngClass]="{ focused: focus === true }">
         <div class="input-group input-group-alternative border-0 bg-darker">
@@ -54,15 +53,28 @@
             (blur)="focus = false"
           />
           <div class="input-group-prepend">
-            <a
-              [routerLink]="['/search']"
-              [queryParams]="{ q: query.value }"
-              class="input-group-text"
-              ><i class="fas fa-search"></i
-            ></a>
+            <a class="input-group-text"><i class="fas fa-search"></i></a>
           </div>
         </div>
       </div>
+      <ul
+        *ngIf="results.length"
+        class="position-absolute w-100 card list-group"
+        style="top: calc(100% + 8px)"
+      >
+        <li *ngFor="let game of results" class="list-group-item bg-dark">
+          <img
+            class="list-group-img"
+            [src]="game | gameAsset: 'textBgImage'"
+            alt=""
+          />
+          <a
+            [routerLink]="['/view/' + (game | glink)]"
+            class="list-group-heading text-white my-2"
+            >{{ game.title }}</a
+          >
+        </li>
+      </ul>
     </form>
     <!-- User -->
     <ul class="navbar-nav align-items-center d-none d-md-flex">
