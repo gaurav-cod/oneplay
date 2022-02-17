@@ -11,6 +11,7 @@ import { StreamComponent } from 'src/app/pages/stream/stream.component';
 import { StreamsComponent } from 'src/app/pages/streams/streams.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
+import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
@@ -24,5 +25,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'streams/:id',    component: StreamComponent },
     { path: 'streams',        component: StreamsComponent },
     { path: 'library',        component: LibraryComponent },
-    { path: 'search',         component: SearchComponent }
+    { path: 'search',         component: SearchComponent },
+    { path: 'wishlist',       component: WishlistComponent }
 ];

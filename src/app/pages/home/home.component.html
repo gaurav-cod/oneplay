@@ -2,7 +2,7 @@
   id="home-header"
   [interval]="4000"
   [pauseOnFocus]="false"
-  [pauseOnHover]="false"
+  [pauseOnHover]="true"
   [showNavigationArrows]="false"
   *ngIf="!!firstRow"
 >
@@ -14,9 +14,7 @@
         background-size: cover;
         background-position: center top;
       "
-      [style.background-image]="
-        'url(' + (game | gameAsset: 'bgImage') + ')'
-      "
+      [style.background-image]="'url(' + (game | gameAsset: 'bgImage') + ')'"
     >
       <!-- Mask -->
       <span class="mask bg-gradient-banner"></span>
@@ -25,7 +23,11 @@
         <div class="row container-fluid">
           <div class="col-lg-7 col-md-10" style="min-width: 50vw">
             <!-- <h1 class="display-2 text-white">{{ game.title }}</h1> -->
-            <img [src]="game | gameAsset: 'textLogo'" class="text-logo" alt="">
+            <img
+              [src]="game | gameAsset: 'textLogo'"
+              class="text-logo"
+              alt=""
+            />
             <p class="text-white mt-0 mb-4">OnePlay Rating: 8/10</p>
             <!-- <p class="text-white mt-0">Available to purchase on</p> -->
             <a
@@ -33,9 +35,22 @@
               class="btn btn-primary btn-lg w-25"
               >Explore More</a
             >
-            <a href="#!" class="btn bg-translucent-dark text-white btn-lg"
-              >Add to wishlist</a
+            <button
+              *ngIf="!isInWishlist(game)"
+              (click)="addToWishlist(game)"
+              [disabled]="loadingWishlist"
+              class="btn bg-translucent-dark text-white btn-lg"
             >
+              Add to wishlist
+            </button>
+            <button
+              *ngIf="isInWishlist(game)"
+              (click)="removeFromWishlist(game)"
+              [disabled]="loadingWishlist"
+              class="btn bg-translucent-dark text-white btn-lg"
+            >
+              Remove from wishlist
+            </button>
           </div>
         </div>
       </div>

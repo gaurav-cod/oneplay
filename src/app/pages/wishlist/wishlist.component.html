@@ -1,0 +1,53 @@
+<div class="container-fluid pt-8">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between">
+      <h1 class="text-white">Your Wishlist</h1>
+
+      <!-- <div class="row text-white-50 align-items-center">
+        <div class="col">Sort by</div>
+        <div class="col" ngbDropdown>
+          <button class="btn btn-outline-white btn-icon" ngbDropdownToggle>
+            <span class="text-sm">Popularity </span>
+            <i class="ni ni-bold-down"></i>
+          </button>
+          <div ngbDropdownMenu>
+            <a ngbDropdownItem>Action</a>
+            <a ngbDropdownItem>Another action</a>
+            <a ngbDropdownItem>Something else here</a>
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="py-5 row">
+      <div *ngFor="let game of games" class="col-sm-12 col-md-4 col-lg-3 mb-4">
+        <a
+          [routerLink]="['/view/' + (game | glink)]"
+          class="card card-block border-0"
+        >
+          <video
+            #video
+            class="mask"
+            style="border-radius: 4px; height: 100%; object-fit: cover"
+          >
+            <source [src]="game.video" />
+          </video>
+          <img
+            #image
+            class="card-img"
+            style="z-index: 1"
+            [src]="game | gameAsset: 'textBgImage'"
+            height="170"
+            alt=""
+          />
+          <div
+            class="mask"
+            style="z-index: 2"
+            (mouseover)="playVideo(video, image, game)"
+            (mouseout)="pauseVideo(video, image, game)"
+          ></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

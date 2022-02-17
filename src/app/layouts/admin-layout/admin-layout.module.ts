@@ -20,6 +20,7 @@ import { StreamComponent } from 'src/app/pages/stream/stream.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -45,6 +46,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     StreamComponent,
     LibraryComponent,
     SearchComponent,
+    WishlistComponent,
   ]
 })
 

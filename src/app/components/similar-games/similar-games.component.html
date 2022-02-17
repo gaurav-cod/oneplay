@@ -1,12 +1,17 @@
 <div class="position-relative">
-  <h1 class="text-white">{{ title }}</h1>
+  <h2 class="text-white">{{ title }}</h2>
 
   <div #container class="d-flex overflow-auto">
-    <div *ngFor="let game of games" class="mr-4">
+    <div *ngFor="let game of games" class="mr-4" style="
+    height: 180px;">
       <a
-        [routerLink]="['/view/' + (game | glink)]"
         class="card card-block border-0 shadow-1"
-        style="width: 280px"
+        style="
+          width: 280px;
+          max-height: 190px;
+          box-shadow: 6px 5px 4px 2px #0e0d0d;
+        "
+        (click)="onGameClick(game)"
       >
         <video
           #video
@@ -26,9 +31,18 @@
         <div
           class="mask"
           style="z-index: 2"
-          (mouseover)="playVideo(video, image, game)"
-          (mouseout)="pauseVideo(video, image, game)"
-        ></div>
+          #mask
+          (mouseenter)="playVideo(video, image, game)"
+          (mouseleave)="pauseVideo(video, image, game)"
+        >
+          <div
+            *ngIf="showSound === game.oneplayId"
+            class="mute rounded-circle py-1 px-2 bg-translucent-darker"
+            (click)="muteUnmute($event, video, game)"
+          >
+            <em class="fa fa-volume-off text-white"></em>
+          </div>
+        </div>
       </a>
     </div>
   </div>

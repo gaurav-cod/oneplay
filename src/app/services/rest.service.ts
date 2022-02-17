@@ -220,6 +220,15 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
+  getWishlistGames(ids: string[]): Observable<GameModel[]> {
+    const data = {
+      content_ids: ids.join(","),
+    };
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .pipe(map((res) => res.map((d) => new GameModel(d))));
+  }
+
   getAllGames(page: number): Observable<GameModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games", { params: { page, limit: 10 } })
