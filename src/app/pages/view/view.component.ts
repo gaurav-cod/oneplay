@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
@@ -38,7 +39,8 @@ export class ViewComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly ngbModal: NgbModal,
     private readonly title: Title,
-    private readonly meta: Meta
+    private readonly meta: Meta,
+    private readonly loaderService: NgxUiLoaderService
   ) {
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
@@ -48,28 +50,33 @@ export class ViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const id = (params.id as string).replace(/(.*)\-/g, "");
-      this.restService.getGameDetails(id).subscribe((game) => {
-        this.game = game;
-        this.title.setTitle("OnePlay | Play " + game.title);
-        this.meta.addTags([
-          { name: "keywords", content: game.tagsMapping?.join(", ") },
-          { name: "description", content: game.description },
-        ]);
-        game.developer.forEach((dev) =>
-          this.restService
-            .getGamesByDeveloper(dev)
-            .subscribe(
-              (games) => (this._devGames = [...this._devGames, ...games])
-            )
-        );
-        game.genreMappings.forEach((genre) =>
-          this.restService
-            .getGamesByGenre(genre)
-            .subscribe(
-              (games) => (this._genreGames = [...this._genreGames, ...games])
-            )
-        );
-      });
+      this.loaderService.start();
+      this.restService.getGameDetails(id).subscribe(
+        (game) => {
+          this.game = game;
+          this.title.setTitle("OnePlay | Play " + game.title);
+          this.meta.addTags([
+            { name: "keywords", content: game.tagsMapping?.join(", ") },
+            { name: "description", content: game.description },
+          ]);
+          game.developer.forEach((dev) =>
+            this.restService
+              .getGamesByDeveloper(dev)
+              .subscribe(
+                (games) => (this._devGames = [...this._devGames, ...games])
+              )
+          );
+          game.genreMappings.forEach((genre) =>
+            this.restService
+              .getGamesByGenre(genre)
+              .subscribe(
+                (games) => (this._genreGames = [...this._genreGames, ...games])
+              )
+          );
+          this.loaderService.stop();
+        },
+        (err) => this.loaderService.stop()
+      );
       this.restService
         .getSimilarGames(id)
         .subscribe((games) => (this.similarGames = games));

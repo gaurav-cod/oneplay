@@ -21,6 +21,7 @@ import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 // import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
     ClipboardModule,
     ComponentsModule,
     PipesModule,
+    NgxUiLoaderModule,
   ],
   declarations: [
     DashboardComponent,

@@ -54,14 +54,13 @@
             target="_blank"
             *ngFor="let store of game.storesMapping"
             ngbTooltip="{{ store.name }}"
-            class="mr-1"
+            class="mr-2"
           >
             <img
-              [src]="store.name | avatar"
-              class="rounded-circle"
-              width="24"
-              height="24"
+              [src]="store.name | store"
+              height="32"
               alt=""
+              onerror="this.style.display = 'none'"
             />
           </a>
         </div>
@@ -291,3 +290,5 @@
     ></iframe>
   </div>
 </ng-template>
+
+<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
