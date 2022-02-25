@@ -14,6 +14,7 @@ import { FriendsComponent } from './friends/friends.component';
 import { PipesModule } from "../pipes/pipes.module";
 import { SimilarGamesComponent } from './similar-games/similar-games.component';
 import { FriendsModule } from "./friends/friends.module";
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { FriendsModule } from "./friends/friends.module";
     NotificationsComponent,
     FriendsComponent,
     SimilarGamesComponent,
+    SubscriptionsComponent,
   ],
   exports: [
     FooterComponent,
@@ -46,6 +48,7 @@ import { FriendsModule } from "./friends/friends.module";
     NotificationsComponent,
     FriendsComponent,
     SimilarGamesComponent,
+    SubscriptionsComponent,
   ],
 })
 export class ComponentsModule {}

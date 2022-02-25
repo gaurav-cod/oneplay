@@ -2,7 +2,13 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
-import { HomeFeeds, LoginDTO, SignupDTO, StartPcRO } from "../interface";
+import {
+  HomeFeeds,
+  LoginDTO,
+  PaytmTxn,
+  SignupDTO,
+  StartPcRO,
+} from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
@@ -97,6 +103,20 @@ export class RestService {
         throw new Error(error.message);
       })
     );
+  }
+
+  payForSubscription(packageName: string): Observable<PaytmTxn> {
+    return this.http
+      .post<PaytmTxn>(
+        this.r_mix_api + "/accounts/subscription/" + packageName,
+        null
+      )
+      .pipe(
+        map((res) => res),
+        catchError((res) => {
+          throw new Error(res.message);
+        })
+      );
   }
 
   getWishlist(): Observable<string[]> {

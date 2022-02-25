@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -12,10 +13,43 @@ export class AdminLayoutComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.authService.wishlist = this.restService.getWishlist();
+    this.route.queryParams.subscribe((params) => {
+      if (params.subscribe) {
+        this.handlePay(params.subscribe);
+      }
+    });
+  }
+
+  private handlePay(packageName: string) {
+    this.restService.payForSubscription(packageName).subscribe(
+      (data) => {
+        const config = {
+          root: "",
+          flow: "DEFAULT",
+          data: {
+            orderId: data.orderId,
+            token: data.token,
+            tokenType: "TXN_TOKEN",
+            amount: data.amount,
+          },
+        };
+        // @ts-ignore
+        window.Paytm.CheckoutJS.init(config)
+          .then(function onSuccess() {
+            // @ts-ignore
+            window.Paytm.CheckoutJS.invoke();
+          })
+          .catch(function onError(error) {
+            console.log("error => ", error);
+          });
+      },
+      (error) => alert(error.error.message)
+    );
   }
 }
