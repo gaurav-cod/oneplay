@@ -1,3 +1,20 @@
+.desc {
+  min-width: 450px;
+
+  @media (max-width: 480px) {
+    min-width: auto;
+  }
+}
+
+.buttons {
+  @media (max-width: 480px) {
+    .btn-lg {
+      margin-bottom: 16px;
+      width: 100% !important;
+    }
+  }
+}
+
 .bg-gradient-banner {
   background: linear-gradient(
     261deg,

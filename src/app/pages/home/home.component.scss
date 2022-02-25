@@ -14,3 +14,18 @@
   min-width: 300px;
   margin-bottom: 24px;
 }
+
+.background {
+  min-height: 680px;
+  background-size: cover;
+  background-position: center top;
+
+  @media (max-width: 480px) {
+    min-height: 480px;
+
+    .btn {
+      margin-bottom: 16px;
+      width: 100% !important;
+    }
+  }
+}

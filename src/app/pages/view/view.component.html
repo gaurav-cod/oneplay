@@ -20,7 +20,7 @@
   <!-- Header container -->
   <div class="container-fluid">
     <div class="row container-fluid">
-      <div class="col-lg-5 col-md-10" style="min-width: 450px">
+      <div class="col-lg-5 col-md-10 desc">
         <button
           class="btn btn-icon d-flex align-items-center p-0"
           (click)="back()"
@@ -99,7 +99,7 @@
       </div>
     </div>
   </div>
-  <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid">
+  <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid buttons">
     <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
         <a
@@ -155,7 +155,7 @@
           (click)="open(modal, video)"
           style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
         >
-          <div class="media">
+          <div class="media flex-column flex-md-row">
             <img
               [width]="video.thumbnails.medium.width - 72"
               [height]="video.thumbnails.medium.height - 40"
@@ -165,7 +165,7 @@
               alt=""
             />
             <live>LIVE</live>
-            <div class="ml-3">
+            <div class="ml-3 mt-3 mt-md-0">
               <h3 class="text-white">
                 {{ video.title }}
               </h3>
@@ -207,7 +207,7 @@
           (click)="open(modal, video)"
           style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
         >
-          <div class="media">
+          <div class="media flex-column flex-md-row">
             <img
               [width]="video.thumbnails.medium.width - 72"
               [height]="video.thumbnails.medium.height - 40"
@@ -215,7 +215,7 @@
               style="border-radius: 4px"
               alt=""
             />
-            <div class="ml-3">
+            <div class="ml-3 mt-3 mt-md-0">
               <h3 class="text-white">
                 {{ video.title }}
               </h3>
