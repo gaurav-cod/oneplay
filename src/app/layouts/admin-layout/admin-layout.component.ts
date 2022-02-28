@@ -38,16 +38,29 @@ export class AdminLayoutComponent implements OnInit {
             tokenType: "TXN_TOKEN",
             amount: data.amount,
           },
+          handler: {
+            notifyMerchant: function (eventName, data) {
+              console.log("notifyMerchant handler function called");
+              console.log("eventName => ", eventName);
+              console.log("data => ", data);
+            },
+          },
         };
         // @ts-ignore
-        window.Paytm.CheckoutJS.init(config)
-          .then(function onSuccess() {
+        if (window.Paytm && window.Paytm.CheckoutJS) {
+          // @ts-ignore
+          window.Paytm.CheckoutJS.onLoad(function excecuteAfterCompleteLoad() {
             // @ts-ignore
-            window.Paytm.CheckoutJS.invoke();
-          })
-          .catch(function onError(error) {
-            console.log("error => ", error);
+            window.Paytm.CheckoutJS.init(config)
+              .then(function onSuccess() {
+                // @ts-ignore
+                window.Paytm.CheckoutJS.invoke();
+              })
+              .catch(function onError(error) {
+                console.log("error => ", error);
+              });
           });
+        }
       },
       (error) => alert(error.error.message)
     );

@@ -108,7 +108,7 @@ export class RestService {
   payForSubscription(packageName: string): Observable<PaytmTxn> {
     return this.http
       .post<PaytmTxn>(
-        this.r_mix_api + "/accounts/subscription/" + packageName,
+        this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
         null
       )
       .pipe(
