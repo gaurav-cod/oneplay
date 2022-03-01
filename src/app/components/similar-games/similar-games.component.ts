@@ -19,6 +19,7 @@ export class SimilarGamesComponent {
   @ViewChild("mask") maskRef: ElementRef<HTMLDivElement>;
 
   showSound = "";
+  timer: NodeJS.Timeout;
 
   constructor(
     private readonly router: Router,
@@ -53,23 +54,25 @@ export class SimilarGamesComponent {
     }, 25);
   }
 
-  playVideo(
-    video: HTMLVideoElement,
-    image: HTMLImageElement,
-    game: GameModel,
-  ) {
+  playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
     if (game.video) {
-      image.style.opacity = "0";
-      this.showSound = game.oneplayId;
-      video.play();
+      this.timer = setTimeout(() => {
+        image.style.opacity = "0";
+        this.showSound = game.oneplayId;
+        video.muted = true;
+        video.play();
+      }, 1000);
     }
   }
 
   pauseVideo(
     video: HTMLVideoElement,
     image: HTMLImageElement,
-    game: GameModel,
+    game: GameModel
   ) {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     if (game.video) {
       image.style.opacity = "1";
       video.pause();
