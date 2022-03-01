@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -8,7 +8,7 @@ import { RestService } from "src/app/services/rest.service";
   templateUrl: "./admin-layout.component.html",
   styleUrls: ["./admin-layout.component.scss"],
 })
-export class AdminLayoutComponent implements OnInit {
+export class AdminLayoutComponent implements AfterViewInit, OnInit {
   friendsCollapsed = true;
 
   constructor(
@@ -17,10 +17,13 @@ export class AdminLayoutComponent implements OnInit {
     private readonly route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.authService.wishlist = this.restService.getWishlist();
+  ngOnInit(): void {
+          this.authService.wishlist = this.restService.getWishlist();
+  }
+
+  ngAfterViewInit(): void {
     this.route.queryParams.subscribe((params) => {
-      if (params.subscribe) {
+      if (params.subscribe && confirm("Proceed to pay?")) {
         this.handlePay(params.subscribe);
       }
     });
