@@ -4,12 +4,18 @@
   right: 16px;
 }
 
-.zoom {
+.card {
+  width: 280px;
+  height: 170px;
+  box-shadow: 6px 5px 4px 2px #0e0d0d;
   transition: transform 0.2s;
-}
+  cursor: pointer;
 
-.zoom:hover {
-  transform: scale(1.2);
-  z-index: 999;
-  position: absolute;
+  .card-img {
+    height: 100%;
+  }
+
+  &:hover {
+    transform: scale(1.1) translateZ(0px);
+  }
 }
