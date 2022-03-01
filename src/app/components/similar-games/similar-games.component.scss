@@ -1,5 +1,15 @@
 .mute {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.zoom {
+  transition: transform 0.2s;
+}
+
+.zoom:hover {
+  transform: scale(1.2);
+  z-index: 999;
+  position: absolute;
 }
