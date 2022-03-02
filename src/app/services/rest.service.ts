@@ -231,8 +231,9 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getFilteredGames(): Observable<GameModel[]> {
+  getFilteredGames(query: { [key: string]: string }): Observable<GameModel[]> {
     const data = {
+      ...query,
       order_by: "release_date:desc",
     };
     return this.http
