@@ -4,6 +4,9 @@ export class UserModel {
   readonly username: string | null;
   readonly firstName: string;
   readonly lastName: string;
+  readonly bio: string;
+  readonly email: string;
+  readonly phone: number;
   readonly type: string;
   readonly subscribedPlan: string;
   readonly subscriptionIsActive: boolean;
@@ -18,6 +21,9 @@ export class UserModel {
     this.username = json["user_info"]["username"];
     this.firstName = json["user_info"]["first_name"];
     this.lastName = json["user_info"]["last_name"];
+    this.bio = json["user_info"]["bio"];
+    this.email = json["user_info"]["email"];
+    this.phone = json["user_info"]["phone"];
     this.type = json["user_info"]["user_type"];
     this.subscribedPlan = json["user_info"]["subscribed_plan"];
     this.subscriptionIsActive = json["user_info"]["subscription_is_active"];
@@ -34,6 +40,9 @@ export class UserModel {
         username: data.username || this.username,
         first_name: data.firstName || this.firstName,
         last_name: data.lastName || this.lastName,
+        bio: data.bio || this.bio,
+        email: data.email || this.email,
+        phone: data.phone || this.phone,
         user_type: this.type,
         subscribed_plan: this.subscribedPlan,
         subscription_is_active: this.subscriptionIsActive,
@@ -41,5 +50,26 @@ export class UserModel {
         profile_image: data.photo || this.photo,
       },
     });
+  }
+
+  get json() {
+    return {
+      session_token: this.token,
+      user_info: {
+        user_id: this.id,
+        status: this.status,
+        username: this.username,
+        first_name: this.firstName,
+        last_name: this.lastName,
+        bio: this.bio,
+        email: this.email,
+        phone: this.phone,
+        user_type: this.type,
+        subscribed_plan: this.subscribedPlan,
+        subscription_is_active: this.subscriptionIsActive,
+        is_verified_profile: this.isVerified,
+        profile_image: this.photo,
+      },
+    };
   }
 }

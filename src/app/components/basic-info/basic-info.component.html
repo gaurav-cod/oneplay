@@ -9,39 +9,107 @@
   <div class="card-body">
     <form>
       <div class="form-group">
-        <label class="form-control-label text-white" for="input-username"
-          >Username</label
-        >
-        <input
-          type="text"
-          id="input-username"
-          class="form-control bg-darker"
-          placeholder="Username"
-          value="lucky.jesse"
-        />
+        <label class="form-control-label text-white">Username</label>
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="text"
+            class="form-control bg-transparent"
+            placeholder="Type a username..."
+            [formControl]="username"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="username.disabled"
+              (click)="username.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!username.disabled"
+              (click)="updateUsername()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-control-label text-white" for="input-email"
-          >Country/Region*</label
-        >
-        <input
-          type="text"
-          id="input-email"
-          class="form-control bg-darker"
-          placeholder="Country"
-        />
+        <label class="form-control-label text-white">First Name</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="text"
+            class="form-control bg-darker"
+            placeholder="Your first name..."
+            [formControl]="firstName"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="firstName.disabled"
+              (click)="firstName.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!firstName.disabled"
+              (click)="updateFirstName()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-control-label text-white" for="input-first-name"
-          >Location in this Country/Region</label
-        >
-        <input
-          type="text"
-          id="input-first-name"
-          class="form-control bg-darker"
-          placeholder="First name"
-          value="Lucky"
-        />
+        <label class="form-control-label text-white">Last Name</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="text"
+            class="form-control bg-darker"
+            placeholder="Your last name..."
+            [formControl]="lastName"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="lastName.disabled"
+              (click)="lastName.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!lastName.disabled"
+              (click)="updateLastName()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-control-label text-white">Bio</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="text"
+            class="form-control bg-darker"
+            placeholder="Write a short bio..."
+            [formControl]="bio"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="bio.disabled"
+              (click)="bio.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!bio.disabled"
+              (click)="updateBio()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
     </form>
   </div>
@@ -58,33 +126,83 @@
   <div class="card-body">
     <form>
       <div class="form-group">
-        <input
-          type="password"
-          id="input-username"
-          class="form-control form-control-underline"
-          placeholder="Change Password"
-        />
+        <label class="form-control-label text-white">Password</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="password"
+            class="form-control bg-darker"
+            placeholder="Change Password"
+            [formControl]="password"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="password.disabled"
+              (click)="password.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!password.disabled"
+              (click)="updatePassword()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <input
-          type="password"
-          id="input-email"
-          class="form-control form-control-underline"
-          placeholder="Phone number"
-        />
+        <label class="form-control-label text-white">Phone Number</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="number"
+            class="form-control bg-darker"
+            placeholder="Phone number"
+            [formControl]="phone"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="phone.disabled"
+              (click)="phone.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!phone.disabled"
+              (click)="updatePhone()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-control-label" for="input-email"
-          >Email address</label
-        >
-        <input
-          type="email"
-          id="input-email"
-          class="form-control form-control-alternative"
-          placeholder="jesse@example.com"
-        />
+        <label class="form-control-label text-white">Email</label>
+
+        <div class="input-group input-group-alternative bg-darker">
+          <input
+            type="email"
+            class="form-control bg-darker"
+            placeholder="Email address"
+            [formControl]="email"
+          />
+          <div class="input-group-prepend">
+            <a
+              *ngIf="email.disabled"
+              (click)="email.enable()"
+              class="input-group-text bg-transparent"
+              >Change</a
+            >
+            <a
+              *ngIf="!email.disabled"
+              (click)="updateEmail()"
+              class="input-group-text bg-transparent"
+              >Save</a
+            >
+          </div>
+        </div>
       </div>
-      <button class="btn btn-primary">Save changes</button>
     </form>
   </div>
 </div>

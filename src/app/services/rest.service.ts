@@ -8,6 +8,7 @@ import {
   PaytmTxn,
   SignupDTO,
   StartPcRO,
+  UpdateProfileDTO,
 } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
@@ -51,6 +52,41 @@ export class RestService {
       .post(this.r_mix_api + "/accounts/signup", { ...data, device: "web" })
       .pipe(
         map(() => {}),
+        catchError((error) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
+  updateProfile(data: UpdateProfileDTO): Observable<void> {
+    const formData = new FormData();
+    Object.keys(data).forEach((key) => {
+      formData.append(key, data[key]);
+    });
+    return this.http.put(this.r_mix_api + "/accounts/profile", formData).pipe(
+      map(() => {}),
+      catchError((error) => {
+        throw new Error(error.message);
+      })
+    );
+  }
+
+  updatePassword(password: string): Observable<void> {
+    return this.http
+      .put(this.r_mix_api + "/accounts/password", { password })
+      .pipe(
+        map(() => {}),
+        catchError((error) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
+  updateEmail(email: string): Observable<string> {
+    return this.http
+      .put(this.r_mix_api + "/accounts/email", { email })
+      .pipe(
+        map((res) => res["msg"]),
         catchError((error) => {
           throw new Error(error.message);
         })

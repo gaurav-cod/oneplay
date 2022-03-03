@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
 import { Session } from "src/app/models/session.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -13,10 +14,42 @@ export class BasicInfoComponent implements OnInit {
   ipLocationMap: { [key: string]: string } = {};
   loggingOut: boolean = false;
 
+  username = new FormControl(
+    { value: "", disabled: true },
+    Validators.required
+  );
+  firstName = new FormControl(
+    { value: "", disabled: true },
+    Validators.required
+  );
+  lastName = new FormControl(
+    { value: "", disabled: true },
+    Validators.required
+  );
+  bio = new FormControl({ value: "", disabled: true }, Validators.required);
+  password = new FormControl(
+    { value: "", disabled: true },
+    Validators.required
+  );
+  phone = new FormControl({ value: "", disabled: true }, Validators.required);
+  email = new FormControl({ value: "", disabled: true }, [
+    Validators.required,
+    Validators.email,
+  ]);
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService
-  ) {}
+  ) {
+    this.authService.user.subscribe((user) => {
+      this.username.setValue(user.username);
+      this.firstName.setValue(user.firstName);
+      this.lastName.setValue(user.lastName);
+      this.bio.setValue(user.bio);
+      this.phone.setValue(user.phone);
+      this.email.setValue(user.email);
+    });
+  }
 
   ngOnInit(): void {
     this.restService.getSessions().subscribe((res) => {
@@ -27,6 +60,92 @@ export class BasicInfoComponent implements OnInit {
         });
       });
     });
+  }
+
+  updateUsername(): void {
+    this.restService.updateProfile({ username: this.username.value }).subscribe(
+      () => {
+        this.authService.updateProfile({ username: this.username.value });
+        this.username.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+  
+  updateFirstName(): void {
+    this.restService.updateProfile({ first_name: this.firstName.value }).subscribe(
+      () => {
+        this.authService.updateProfile({ firstName: this.firstName.value });
+        this.firstName.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  updateLastName(): void {
+    this.restService.updateProfile({ last_name: this.lastName.value }).subscribe(
+      () => {
+        this.authService.updateProfile({ lastName: this.lastName.value });
+        this.lastName.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  updateBio(): void {
+    this.restService.updateProfile({ bio: this.bio.value }).subscribe(
+      () => {
+        this.authService.updateProfile({ bio: this.bio.value });
+        this.bio.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  updatePhone(): void {
+    if (!this.phone.valid) return;
+    this.restService.updateProfile({ phone: this.phone.value }).subscribe(
+      () => {
+        this.authService.updateProfile({ phone: this.phone.value });
+        this.phone.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  updateEmail(): void {
+    this.restService.updateEmail(this.email.value).subscribe(
+      (msg) => {
+        alert(msg);
+        this.authService.logout();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
+  }
+
+  updatePassword(): void {
+    this.restService.updatePassword(this.password.value).subscribe(
+      () => {
+        alert("Password updated successfully");
+        this.password.reset();
+        this.password.disable();
+      },
+      (error) => {
+        alert(error);
+      }
+    );
   }
 
   isActive(session: Session): boolean {

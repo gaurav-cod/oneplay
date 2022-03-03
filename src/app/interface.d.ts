@@ -41,3 +41,11 @@ export interface PaytmTxn {
   orderId: string;
   amount: string;
 }
+
+export interface UpdateProfileDTO {
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  bio?: string;
+  phone?: number;
+}

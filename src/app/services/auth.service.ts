@@ -55,6 +55,13 @@ export class AuthService {
     this._$user.next(new UserModel(userObj));
   }
 
+  updateProfile(userObj: Partial<UserModel>) {
+    const user = this._$user.value;
+    const newUser = user.copyWith(userObj);
+    Cookies.set("op_user", newUser.json);
+    this._$user.next(newUser);
+  }
+
   logout() {
     Cookies.remove("op_user");
     this._$user.next(null);
