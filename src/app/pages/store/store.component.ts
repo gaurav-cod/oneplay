@@ -14,7 +14,7 @@ const queries = {
     release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
   },
   "Top 100": {
-    rating: 7,
+    rating: '4',
   },
   "Last 30 days": {
     release_date: "now-1d/d#now/d",
