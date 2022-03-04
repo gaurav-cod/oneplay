@@ -47,5 +47,5 @@ export interface UpdateProfileDTO {
   last_name?: string;
   username?: string;
   bio?: string;
-  phone?: number;
+  phone?: string;
 }
