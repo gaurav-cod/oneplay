@@ -16,6 +16,7 @@ import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
 import { PC } from "../models/pc.model";
 import { Session } from "../models/session.model";
+import { VideoFeedModel } from "../models/streamFeed.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
@@ -83,14 +84,12 @@ export class RestService {
   }
 
   updateEmail(email: string): Observable<string> {
-    return this.http
-      .put(this.r_mix_api + "/accounts/email", { email })
-      .pipe(
-        map((res) => res["msg"]),
-        catchError((error) => {
-          throw new Error(error.message);
-        })
-      );
+    return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
+      map((res) => res["msg"]),
+      catchError((error) => {
+        throw new Error(error.message);
+      })
+    );
   }
 
   verify(token: string): Observable<void> {
@@ -305,6 +304,12 @@ export class RestService {
           };
         })
       );
+  }
+
+  getStreamsFeed(): Observable<VideoFeedModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/streams")
+      .pipe(map((res) => res.map((d) => new VideoFeedModel(d))));
   }
 
   getVideos(id: string): Observable<VideoModel[]> {
