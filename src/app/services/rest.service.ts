@@ -331,7 +331,7 @@ export class RestService {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
-      .post<void>(this.client_api + "/terminate_game", formData)
+      .post<void>(this.client_api + "/terminate_stream", formData)
       .pipe(
         map(() => {}),
         catchError((err) => {
