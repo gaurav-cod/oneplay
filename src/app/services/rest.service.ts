@@ -7,32 +7,28 @@ import {
   LoginDTO,
   PaytmTxn,
   SignupDTO,
-  StartPcRO,
+  StartGameRO,
   UpdateProfileDTO,
 } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
-import { PC } from "../models/pc.model";
 import { Session } from "../models/session.model";
 import { VideoFeedModel } from "../models/streamFeed.model";
-import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
-import { PcService } from "./pc.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class RestService {
-  private readonly api = environment.api_endpoint;
+  private readonly client_api = environment.client_api;
   private readonly r_mix_api = environment.render_mix_api;
 
   constructor(
     private readonly http: HttpClient,
-    private readonly authService: AuthService,
-    private readonly pcService: PcService
+    private readonly authService: AuthService
   ) {}
 
   login(data: LoginDTO): Observable<void> {
@@ -172,60 +168,6 @@ export class RestService {
       .pipe();
   }
 
-  getPcInfo(): Observable<void> {
-    const formData = new FormData();
-    return this.http.post(this.api + "/pc/info", formData).pipe(
-      map((res) => this.pcService.getInfo(res["data"])),
-      catchError(({ error }) => {
-        throw new Error(error.message);
-      })
-    );
-  }
-
-  startPc(): Observable<StartPcRO> {
-    const formData = new FormData();
-    formData.append("real_time", "true");
-    return this.http.post(this.api + "/pc/system/start", formData).pipe(
-      map((res) => res["data"]),
-      catchError(({ error }) => {
-        throw new Error(error.message);
-      })
-    );
-  }
-
-  stopPc(): Observable<void> {
-    const formData = new FormData();
-    formData.append("real_time", "true");
-    return this.http.post(this.api + "/pc/system/stop", formData).pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw new Error(error.message);
-      })
-    );
-  }
-
-  startConsole(): Observable<void> {
-    const formData = new FormData();
-    formData.append("real_time", "true");
-    return this.http.post(this.api + "/pc/console/start", formData).pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw new Error(error.message);
-      })
-    );
-  }
-
-  stopConsole(): Observable<void> {
-    const formData = new FormData();
-    formData.append("real_time", "true");
-    return this.http.post(this.api + "/pc/console/stop", formData).pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw new Error(error.message);
-      })
-    );
-  }
-
   getGameDetails(id: string): Observable<GameModel> {
     return this.http
       .get(this.r_mix_api + "/games/" + id + "/info")
@@ -353,5 +295,48 @@ export class RestService {
       map((res) => `${res["city"]}, ${res["country_name"]}`),
       catchError(() => "unknown")
     );
+  }
+
+  startGame(gameId: string): Observable<StartGameRO> {
+    const formData = new FormData();
+    formData.append("game_id", gameId);
+    formData.append(
+      "launch_payload",
+      JSON.stringify({ resolution: "1366x768" })
+    );
+    return this.http
+      .post<StartGameRO>(this.client_api + "/start_game", formData)
+      .pipe(
+        map((res) => res["data"]),
+        catchError((err) => {
+          throw new Error(err.error.msg);
+        })
+      );
+  }
+
+  getClientToken(sessionId: string): Observable<string> {
+    const formData = new FormData();
+    formData.append("session_id", sessionId);
+    return this.http
+      .post<string>(this.client_api + "/get_session", formData)
+      .pipe(
+        map((res) => res["data"]["client_token"]),
+        catchError((err) => {
+          throw new Error(err.error.msg);
+        })
+      );
+  }
+
+  terminateGame(sessionId: string): Observable<void> {
+    const formData = new FormData();
+    formData.append("session_id", sessionId);
+    return this.http
+      .post<void>(this.client_api + "/terminate_game", formData)
+      .pipe(
+        map(() => {}),
+        catchError((err) => {
+          throw new Error(err.error.msg);
+        })
+      );
   }
 }

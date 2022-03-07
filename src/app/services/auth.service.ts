@@ -34,13 +34,18 @@ export class AuthService {
     return "";
   }
 
-  get sessionKey() {
+  get userIdAndToken() {
     if (this.sessionToken) {
       const str = atob(this.sessionToken);
       const [userid, token] = str.split(":");
-      return `user:${userid}:session:${token}`;
+      return { userid, token };
     }
-    return "";
+    return { userid: "", token: "" };
+  }
+
+  get sessionKey() {
+    const { userid, token } = this.userIdAndToken;
+    return `user:${userid}:session:${token}`;
   }
 
   constructor() {

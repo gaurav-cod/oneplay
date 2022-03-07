@@ -49,3 +49,15 @@ export interface UpdateProfileDTO {
   bio?: string;
   phone?: string;
 }
+
+export interface StartGameRO {
+  api_action: "call_terminate" | "call_session";
+  game: {
+    game_id: string;
+    game_name: string;
+  }
+  session: {
+    id: string;
+    launched_at: number;
+  }
+}

@@ -103,12 +103,22 @@
   <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid buttons">
     <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
-        <a
-          [href]="'https://www.oneplay.in/play_demo/play?id=' + game.oneplayId"
-          target="_blank"
-          class="btn btn-white btn-lg w-50"
-          >Play Now</a
+        <button
+          class="btn btn-white btn-lg w-50 position-relative"
+          [disabled]="startingGame"
+          (click)="startGame()"
         >
+          <ngx-ui-loader
+            [fgsColor]="'#c32ead'"
+            [hasProgressBar]="false"
+            [fgsSize]="20"
+            [fgsPosition]="'center-left'"
+            [text]="'Initializing...'"
+            [overlayBorderRadius]="'6px'"
+            [loaderId]="'play-loader'"
+          ></ngx-ui-loader>
+          Play Now
+        </button>
         <button
           *ngIf="!isInWishlist"
           (click)="addToWishlist()"
