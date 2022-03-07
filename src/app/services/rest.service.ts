@@ -16,6 +16,7 @@ import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
 import { Session } from "../models/session.model";
 import { VideoFeedModel } from "../models/streamFeed.model";
+import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
 
@@ -26,18 +27,13 @@ export class RestService {
   private readonly client_api = environment.client_api;
   private readonly r_mix_api = environment.render_mix_api;
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
-  login(data: LoginDTO): Observable<void> {
+  login(data: LoginDTO): Observable<string> {
     return this.http
       .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
       .pipe(
-        map((res) => {
-          this.authService.login(res);
-        }),
+        map((res) => res["session_token"]),
         catchError(({ error }) => {
           throw new Error(error.message);
         })
@@ -53,6 +49,15 @@ export class RestService {
           throw new Error(error.message);
         })
       );
+  }
+
+  getProfile(): Observable<UserModel> {
+    return this.http.get(this.r_mix_api + "/accounts/profile").pipe(
+      map((res) => new UserModel(res)),
+      catchError(({ error }) => {
+        throw new Error(error.message);
+      })
+    );
   }
 
   updateProfile(data: UpdateProfileDTO): Observable<void> {

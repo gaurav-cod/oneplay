@@ -10,13 +10,13 @@ export class AuthGuard implements CanActivate {
   constructor(private readonly authService: AuthService, private readonly router: Router) { }
 
   canActivate(): Observable<boolean> {
-    this.authService.user.subscribe((u) => {
+    this.authService.sessionTokenExists.subscribe((u) => {
       if (!u) {
         this.router.navigateByUrl('/login');
       }
     });
 
-    return this.authService.user.pipe(map(u => !!u));
+    return this.authService.sessionTokenExists;
   }
 
 }

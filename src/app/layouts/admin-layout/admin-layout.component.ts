@@ -20,7 +20,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-          this.authService.wishlist = this.restService.getWishlist();
+    this.authService.wishlist = this.restService.getWishlist();
+    this.authService.user = this.restService.getProfile();
   }
 
   ngAfterViewInit(): void {

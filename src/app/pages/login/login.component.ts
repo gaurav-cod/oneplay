@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly restService: RestService,
+    private readonly authService: AuthService,
     private readonly toastr: ToastrService
   ) {}
 
@@ -24,7 +26,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   login() {
     this.restService.login(this.loginForm.value).subscribe(
-      () => {},
+      (token) => {
+        this.authService.login(token);
+      },
       (error) => {
         this.toastr.error(error, "Login Error!");
       }

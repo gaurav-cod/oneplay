@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
 import * as Cookies from "js-cookie";
 
@@ -14,8 +14,22 @@ export class AuthService {
     []
   );
 
+  private readonly _$sessionToken: BehaviorSubject<string | null> =
+    new BehaviorSubject(null);
+
+  constructor() {
+    const sessionToken = Cookies.get("op_session_token");
+    if (sessionToken) {
+      this._$sessionToken.next(sessionToken);
+    }
+  }
+
   get user() {
     return this._$user.asObservable();
+  }
+
+  set user(userObservable: Observable<UserModel>) {
+    userObservable.subscribe((user) => this._$user.next(user));
   }
 
   get wishlist() {
@@ -26,12 +40,12 @@ export class AuthService {
     list.subscribe((res) => this._$wishlist.next(res));
   }
 
+  get sessionTokenExists() {
+    return this._$sessionToken.asObservable().pipe(map((token) => !!token));
+  }
+
   get sessionToken() {
-    const obj = Cookies.getJSON("op_user");
-    if (obj) {
-      return new UserModel(obj).token;
-    }
-    return "";
+    return this._$sessionToken.value ?? '';
   }
 
   get userIdAndToken() {
@@ -48,28 +62,22 @@ export class AuthService {
     return `user:${userid}:session:${token}`;
   }
 
-  constructor() {
-    const obj = Cookies.getJSON("op_user");
-    if (obj) {
-      this._$user.next(new UserModel(obj));
-    }
-  }
-
-  login(userObj: Object) {
-    Cookies.set("op_user", userObj);
-    this._$user.next(new UserModel(userObj));
+  login(sessionToken: string) {
+    Cookies.set("op_session_token", sessionToken);
+    this._$sessionToken.next(sessionToken);
   }
 
   updateProfile(userObj: Partial<UserModel>) {
     const user = this._$user.value;
     const newUser = user.copyWith(userObj);
-    Cookies.set("op_user", newUser.json);
     this._$user.next(newUser);
   }
 
   logout() {
-    Cookies.remove("op_user");
+    Cookies.remove("op_session_token");
+    this._$sessionToken.next(null);
     this._$user.next(null);
+    this._$wishlist.next([]);
   }
 
   addToWishlist(id: string) {

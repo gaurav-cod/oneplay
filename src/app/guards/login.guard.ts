@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
@@ -9,13 +9,13 @@ import { AuthService } from '../services/auth.service';
 export class LoginGuard implements CanActivate {
   constructor(private readonly authService: AuthService, private readonly router: Router) { }
   canActivate(): Observable<boolean> {
-    this.authService.user.subscribe((u) => {
-      if (!!u) {
+    this.authService.sessionTokenExists.subscribe((u) => {
+      if (u) {
         this.router.navigateByUrl('/');
       }
     });
 
-    return this.authService.user.pipe(map(u => !u));
+    return this.authService.sessionTokenExists.pipe(map(u => !u));
   }
 
 }
