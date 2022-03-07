@@ -9,6 +9,10 @@ html {
     background: transparent;  /* Optional: just make scrollbar invisible */
 }
 
+body {
+    background-color: #121212 !important;
+}
+
 #home-header {
     .carousel-indicators {
         // left: auto;

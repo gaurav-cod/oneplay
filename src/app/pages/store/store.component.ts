@@ -7,7 +7,7 @@ import { RestService } from "src/app/services/rest.service";
 
 const queries = {
   "All Games": {},
-  "Best 0f 2021": {
+  "Best of 2021": {
     release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
   },
   "Best of 2020": {
@@ -36,6 +36,9 @@ export class StoreComponent implements OnInit {
   games: GameModel[] = [];
   heading: string = "All Games";
 
+  showSound = "";
+  timer: NodeJS.Timeout;
+
   constructor(
     private readonly restService: RestService,
     private readonly title: Title,
@@ -62,8 +65,12 @@ export class StoreComponent implements OnInit {
 
   playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
     if (game.video) {
-      image.style.opacity = "0";
-      video.play();
+      this.timer = setTimeout(() => {
+        image.style.opacity = "0";
+        this.showSound = game.oneplayId;
+        video.muted = true;
+        video.play();
+      }, 1000);
     }
   }
 
@@ -72,10 +79,25 @@ export class StoreComponent implements OnInit {
     image: HTMLImageElement,
     game: GameModel
   ) {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
     if (game.video) {
       image.style.opacity = "1";
       video.pause();
       video.currentTime = 0;
+      this.showSound = "";
+    }
+  }
+
+  muteUnmute(e: Event, video: HTMLVideoElement, game: GameModel) {
+    e.stopPropagation();
+    if (game.video) {
+      if (video.muted) {
+        video.muted = false;
+      } else {
+        video.muted = true;
+      }
     }
   }
 }

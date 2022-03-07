@@ -5,8 +5,8 @@
         <div class="p-3 text-white">Show all games</div>
       </a>
       <h3 class="text-white mt-4">Best</h3>
-      <a [routerLink]="['/store/Best 0f 2021']" class="card bg-dark mb-3">
-        <div class="p-3 text-white">Best 0f 2021</div>
+      <a [routerLink]="['/store/Best of 2021']" class="card bg-dark mb-3">
+        <div class="p-3 text-white">Best of 2021</div>
       </a>
       <a [routerLink]="['/store/Best of 2020']" class="card bg-dark mb-3">
         <div class="p-3 text-white">Best of 2020</div>
@@ -28,7 +28,7 @@
 
     <div class="col-12 col-md-9">
       <div class="d-flex justify-content-between">
-        <h1 class="text-white">{{heading}}</h1>
+        <h1 class="text-white">{{ heading }}</h1>
 
         <div class="row text-white-50 align-items-center">
           <div class="col">Sort by</div>
@@ -53,7 +53,7 @@
         >
           <a
             [routerLink]="['/view/' + (game | glink)]"
-            class="card card-block border-0"
+            class="card game-card card-block border-0 shadow-1"
           >
             <video
               #video
@@ -62,20 +62,27 @@
             >
               <source [src]="game.video" />
             </video>
-            <img
-              #image
-              class="card-img"
-              style="z-index: 1"
-              [src]="game | gameAsset: 'textBgImage'"
-              height="170"
-              alt=""
-            />
             <div
               class="mask"
               style="z-index: 2"
-              (mouseover)="playVideo(video, image, game)"
-              (mouseout)="pauseVideo(video, image, game)"
-            ></div>
+              #mask
+              (mouseenter)="playVideo(video, image, game)"
+              (mouseleave)="pauseVideo(video, image, game)"
+            >
+              <img
+                #image
+                class="card-img"
+                [src]="game | gameAsset: 'textBgImage'"
+                alt=""
+              />
+              <div
+                *ngIf="showSound === game.oneplayId"
+                class="mute rounded-circle py-1 px-2 bg-translucent-darker"
+                (click)="muteUnmute($event, video, game)"
+              >
+                <em class="fa fa-volume-off text-white"></em>
+              </div>
+            </div>
           </a>
         </div>
       </div>
