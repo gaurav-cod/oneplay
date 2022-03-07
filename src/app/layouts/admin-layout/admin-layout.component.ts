@@ -24,11 +24,11 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      if (params.subscribe && confirm("Proceed to pay?")) {
-        this.handlePay(params.subscribe);
-      }
-    });
+    // this.route.queryParams.subscribe((params) => {
+    //   if (params.subscribe && confirm("Proceed to pay?")) {
+    //     this.handlePay(params.subscribe);
+    //   }
+    // });
   }
 
   private handlePay(packageName: string) {
