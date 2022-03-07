@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -14,7 +15,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +67,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
           });
         }
       },
-      (error) => alert(error.error.message)
+      (error) => this.toastr.error(error, "Error")
     );
   }
 }

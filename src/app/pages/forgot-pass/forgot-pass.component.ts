@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { RestService } from 'src/app/services/rest.service';
 export class ForgotPassComponent implements OnInit {
   email = new FormControl('', Validators.required);
 
-  constructor(private readonly restService: RestService) { }
+  constructor(private readonly restService: RestService, private readonly toastr: ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -19,8 +20,8 @@ export class ForgotPassComponent implements OnInit {
     this.restService
       .requestResetPassword(this.email.value)
       .subscribe(
-        () => alert('Check your email to reset password'),
-        (error) => alert(error)
+        () => this.toastr.success('Check your email to reset password', 'Success'),
+        (error) => this.toastr.error(error, 'Reset Password Error')
       );
   }
 

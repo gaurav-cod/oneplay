@@ -42,7 +42,7 @@ export class RestService {
         map((res) => {
           this.authService.login(res);
         }),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -53,7 +53,7 @@ export class RestService {
       .post(this.r_mix_api + "/accounts/signup", { ...data, device: "web" })
       .pipe(
         map(() => {}),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -66,7 +66,7 @@ export class RestService {
     });
     return this.http.put(this.r_mix_api + "/accounts/profile", formData).pipe(
       map(() => {}),
-      catchError((error) => {
+      catchError(({ error }) => {
         throw new Error(error.message);
       })
     );
@@ -77,7 +77,7 @@ export class RestService {
       .put(this.r_mix_api + "/accounts/password", { password })
       .pipe(
         map(() => {}),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -86,7 +86,7 @@ export class RestService {
   updateEmail(email: string): Observable<string> {
     return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
       map((res) => res["msg"]),
-      catchError((error) => {
+      catchError(({ error }) => {
         throw new Error(error.message);
       })
     );
@@ -97,7 +97,7 @@ export class RestService {
       .post(this.r_mix_api + "/accounts/verify_signup/" + token, null)
       .pipe(
         map((res) => {}),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -108,7 +108,7 @@ export class RestService {
       .post(this.r_mix_api + "/accounts/request_reset_password/" + email, null)
       .pipe(
         map((res) => {}),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -119,7 +119,7 @@ export class RestService {
       .post(this.r_mix_api + "/accounts/reset_password", { token, password })
       .pipe(
         map((res) => {}),
-        catchError((error) => {
+        catchError(({ error }) => {
           throw new Error(error.message);
         })
       );
@@ -134,7 +134,7 @@ export class RestService {
   deleteSession(key: string): Observable<void> {
     return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
       map(() => {}),
-      catchError((error) => {
+      catchError(({ error }) => {
         throw new Error(error.message);
       })
     );
@@ -148,8 +148,8 @@ export class RestService {
       )
       .pipe(
         map((res) => res),
-        catchError((res) => {
-          throw new Error(res.message);
+        catchError(({ error }) => {
+          throw new Error(error.message);
         })
       );
   }
@@ -176,8 +176,8 @@ export class RestService {
     const formData = new FormData();
     return this.http.post(this.api + "/pc/info", formData).pipe(
       map((res) => this.pcService.getInfo(res["data"])),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+      catchError(({ error }) => {
+        throw new Error(error.message);
       })
     );
   }
@@ -187,8 +187,8 @@ export class RestService {
     formData.append("real_time", "true");
     return this.http.post(this.api + "/pc/system/start", formData).pipe(
       map((res) => res["data"]),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+      catchError(({ error }) => {
+        throw new Error(error.message);
       })
     );
   }
@@ -198,8 +198,8 @@ export class RestService {
     formData.append("real_time", "true");
     return this.http.post(this.api + "/pc/system/stop", formData).pipe(
       map(() => {}),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+      catchError(({ error }) => {
+        throw new Error(error.message);
       })
     );
   }
@@ -209,8 +209,8 @@ export class RestService {
     formData.append("real_time", "true");
     return this.http.post(this.api + "/pc/console/start", formData).pipe(
       map(() => {}),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+      catchError(({ error }) => {
+        throw new Error(error.message);
       })
     );
   }
@@ -220,8 +220,8 @@ export class RestService {
     formData.append("real_time", "true");
     return this.http.post(this.api + "/pc/console/stop", formData).pipe(
       map(() => {}),
-      catchError((res) => {
-        throw new Error(res.error["error_msg"]);
+      catchError(({ error }) => {
+        throw new Error(error.message);
       })
     );
   }

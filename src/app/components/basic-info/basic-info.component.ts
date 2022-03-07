@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { ToastrService } from "ngx-toastr";
 import { Session } from "src/app/models/session.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -39,7 +40,8 @@ export class BasicInfoComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly toastr: ToastrService
   ) {
     this.authService.user.subscribe((user) => {
       this.username.setValue(user.username);
@@ -69,7 +71,7 @@ export class BasicInfoComponent implements OnInit {
         this.username.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Username");
       }
     );
   }
@@ -81,7 +83,7 @@ export class BasicInfoComponent implements OnInit {
         this.firstName.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update First Name");
       }
     );
   }
@@ -93,7 +95,7 @@ export class BasicInfoComponent implements OnInit {
         this.lastName.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Last Name");
       }
     );
   }
@@ -105,7 +107,7 @@ export class BasicInfoComponent implements OnInit {
         this.bio.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Bio");
       }
     );
   }
@@ -118,7 +120,7 @@ export class BasicInfoComponent implements OnInit {
         this.phone.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Phone");
       }
     );
   }
@@ -126,11 +128,11 @@ export class BasicInfoComponent implements OnInit {
   updateEmail(): void {
     this.restService.updateEmail(this.email.value).subscribe(
       (msg) => {
-        alert(msg);
+        this.toastr.success(msg, "Update Email");
         this.authService.logout();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Email");
       }
     );
   }
@@ -138,12 +140,12 @@ export class BasicInfoComponent implements OnInit {
   updatePassword(): void {
     this.restService.updatePassword(this.password.value).subscribe(
       () => {
-        alert("Password updated successfully");
+        this.toastr.success("Password updated successfully");
         this.password.reset();
         this.password.disable();
       },
       (error) => {
-        alert(error);
+        this.toastr.error(error, "Update Password");
       }
     );
   }
@@ -161,7 +163,7 @@ export class BasicInfoComponent implements OnInit {
       },
       (error) => {
         this.loggingOut = false;
-        alert(error);
+        this.toastr.error(error, "Delete Session");
       }
     );
   }

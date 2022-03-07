@@ -22,7 +22,6 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
-// import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [

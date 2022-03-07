@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class RegisterComponent implements OnInit {
   });
   loading = false;
 
-  constructor(private readonly restService: RestService) { }
+  constructor(private readonly restService: RestService, private readonly toastr: ToastrService) { }
 
   ngOnInit() {
   }
@@ -26,10 +27,10 @@ export class RegisterComponent implements OnInit {
     this.loading = true;
     this.restService.signup(this.registerForm.value).subscribe(() => {
       this.loading = false;
-      alert('Please check your email to confirm your email id');
+      this.toastr.success('Please check your email to confirm your email id', 'Success');
     }, (error) => {
       this.loading = false;
-      alert(error);
+      this.toastr.error(error, 'Signup Error');
     })
   }
 

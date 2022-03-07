@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -11,7 +12,8 @@ export class VerifyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private restService: RestService
+    private restService: RestService,
+    private readonly toastr: ToastrService
   ) {}
 
   ngOnInit(): void {}
@@ -23,7 +25,7 @@ export class VerifyComponent implements OnInit {
         alert("Your account has been verified. You can now login.");
         this.router.navigateByUrl("/login");
       },
-      (error) => alert(error)
+      (error) => this.toastr.error(error)
     );
   }
 }
