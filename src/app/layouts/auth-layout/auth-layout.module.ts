@@ -10,13 +10,15 @@ import { RegisterComponent } from '../../pages/register/register.component';
 import { VerifyComponent } from 'src/app/pages/verify/verify.component';
 import { ForgotPassComponent } from 'src/app/pages/forgot-pass/forgot-pass.component';
 import { ResetPassComponent } from 'src/app/pages/reset-pass/reset-pass.component';
+import { PipesModule } from 'src/app/pipes/pipes.module';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AuthLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule,
+    PipesModule,
   ],
   declarations: [
     LoginComponent,

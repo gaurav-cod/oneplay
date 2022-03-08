@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { ROUTES } from "../sidebar/sidebar.component";
 import { Location } from "@angular/common";
 import { Router } from "@angular/router";
@@ -8,6 +15,7 @@ import { FormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
+import { BehaviorSubject } from "rxjs";
 
 @Component({
   selector: "app-navbar",
@@ -15,7 +23,7 @@ import AwesomeDebouncePromise from "awesome-debounce-promise";
   styleUrls: ["./navbar.component.scss"],
 })
 export class NavbarComponent implements OnInit {
-  public focus;
+  public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public listTitles: any[];
   public location: Location;
   public query = new FormControl("");
@@ -26,6 +34,10 @@ export class NavbarComponent implements OnInit {
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
+  }
+
+  get isFocused() {
+    return this.focus.asObservable();
   }
 
   constructor(
@@ -48,6 +60,13 @@ export class NavbarComponent implements OnInit {
         debouncedSearch(value);
       } else {
         this.results = [];
+      }
+    });
+    this.focus.asObservable().subscribe((focused) => {
+      if (!focused) {
+        setTimeout(() => {
+          this.query.setValue("");
+        }, 300);
       }
     });
   }
@@ -79,5 +98,13 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.logout();
+  }
+
+  onFocus() {
+    this.focus.next(true);
+  }
+
+  onBlur() {
+    this.focus.next(false);
   }
 }

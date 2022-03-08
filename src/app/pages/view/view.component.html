@@ -35,7 +35,7 @@
         <p class="text-white mt-0 mb-4">OnePlay Rating: {{ game.rating }}/10</p>
         <div
           *ngFor="let genre of game.genreMappings"
-          class="btn btn-sm bg-translucent-dark text-white border-white"
+          class="badge badge-pill badge-dark text-white mr-1 mb-1"
         >
           {{ genre }}
         </div>
@@ -173,11 +173,12 @@
               [src]="video.thumbnails.medium.url"
               (click)="open(modal, video)"
               style="border-radius: 4px"
+              class="video-image"
               alt=""
             />
             <live>LIVE</live>
             <div class="ml-3 mt-3 mt-md-0">
-              <h3 class="text-white">
+              <h3 class="text-white video-text">
                 {{ video.title }}
               </h3>
               <div class="media mb-1 align-items-center">
@@ -193,7 +194,7 @@
                 }}</span>
               </div>
               <div class="text-white">
-                <span class="text-xs">{{ video.description }}</span>
+                <span class="text-xs video-text">{{ video.description }}</span>
               </div>
             </div>
           </div>
@@ -224,10 +225,11 @@
               [height]="video.thumbnails.medium.height - 40"
               [src]="video.thumbnails.medium.url"
               style="border-radius: 4px"
+              class="video-image"
               alt=""
             />
             <div class="ml-3 mt-3 mt-md-0">
-              <h3 class="text-white">
+              <h3 class="text-white video-text">
                 {{ video.title }}
               </h3>
               <div class="media mb-1 align-items-center">
@@ -243,7 +245,7 @@
                 }}</span>
               </div>
               <div class="text-white">
-                <span class="text-xs">{{ video.description }}</span>
+                <span class="text-xs video-text">{{ video.description }}</span>
               </div>
             </div>
           </div>

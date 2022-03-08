@@ -42,15 +42,18 @@
     <form
       class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto position-relative"
     >
-      <div class="form-group mb-0" [ngClass]="{ focused: focus === true }">
+      <div
+        class="form-group mb-0"
+        [ngClass]="{ focused: (isFocused | async) === true }"
+      >
         <div class="input-group input-group-alternative border-0 bg-darker">
           <input
             class="form-control"
             placeholder="Search"
             type="text"
             [formControl]="query"
-            (focus)="focus = true"
-            (blur)="focus = false"
+            (focus)="onFocus()"
+            (blur)="onBlur()"
           />
           <div class="input-group-prepend">
             <a class="input-group-text"><i class="fas fa-search"></i></a>
@@ -66,8 +69,7 @@
           *ngFor="let game of results"
           class="list-group-item bg-dark d-flex border-0"
           [routerLink]="['/view/' + (game | glink)]"
-          (click)="query.setValue('')"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           <img
             [src]="game | gameAsset: 'textBgImage'"
@@ -78,9 +80,9 @@
           />
           <div>
             <p class="list-group-heading text-white m-0">{{ game.title }}</p>
-            <p class="list-group-content text-white-50 small m-0">{{
-              game.releaseDate.getFullYear()
-            }}</p>
+            <p class="list-group-content text-white-50 small m-0">
+              {{ game.releaseDate.getFullYear() }}
+            </p>
           </div>
         </li>
       </ul>
