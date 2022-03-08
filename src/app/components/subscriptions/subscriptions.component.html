@@ -11,20 +11,18 @@
     <div *ngFor="let subscription of subscriptions">
       <div class="d-flex justify-content-between align-items-center">
         <div class="text-white-50">
-          {{ subscription.name }}, {{ subscription.amount }}/-
+          <span class="text-white">{{ subscription.planName }},</span> {{ subscription.amount }}/-
+          {{ subscription.isFree ? "(Free Trial)" : "" }}
         </div>
         <div class="d-flex text-right align-items-center">
           <div class="text-white-50 mr-2">
-            {{ session.device }}
-            <span class="text-success">{{
-              subscription.status
-            }}</span>
+            <span class="text-white">{{ subscription.endsAt | date : 'mediumDate' }}</span> |
+            <span
+              [ngClass]="{ 'text-success': subscription.status === 'active' }"
+              >{{ subscription.status | titlecase }}</span
+            >
           </div>
-          <button
-            class="btn btn-primary"
-          >
-            Renew
-          </button>
+          <button class="btn btn-primary" (click)="onRenew()">Renew</button>
         </div>
       </div>
       <div class="dropdown-divider"></div>

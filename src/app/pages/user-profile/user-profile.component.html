@@ -2,11 +2,11 @@
   <h1 class="text-white">Settings</h1>
   <div class="row">
     <div class="col-xl-4 mb-5 mb-xl-0">
-      <div class="d-flex justify-content-between mb-3">
+      <!-- <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-primary rounded-pill">Account</button>
         <button class="btn btn-dark rounded-pill">Controllers</button>
         <button class="btn btn-dark rounded-pill">Linking</button>
-      </div>
+      </div> -->
       <a
         routerLinkActive="bg-gray-dark"
         [routerLink]="['/user-profile', 'basic-info']"
@@ -45,7 +45,7 @@
           </p>
         </div>
       </a>
-      <a
+      <!-- <a
         routerLinkActive="bg-gray-dark"
         [routerLink]="['/user-profile', 'notifications']"
         class="card bg-dark mb-3"
@@ -57,7 +57,7 @@
             choice.
           </p>
         </div>
-      </a>
+      </a> -->
     </div>
     <div class="col-xl-8 order-xl-1">
       <ng-container *ngIf="activeTab === 'basic-info'">
@@ -68,6 +68,9 @@
       </ng-container>
       <ng-container *ngIf="activeTab === 'subscription'">
         <app-subscriptions></app-subscriptions>
+      </ng-container>
+      <ng-container *ngIf="activeTab === 'purchase-history'">
+        <app-purchase-history></app-purchase-history>
       </ng-container>
     </div>
   </div>

@@ -16,6 +16,7 @@ import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
 import { Session } from "../models/session.model";
 import { VideoFeedModel } from "../models/streamFeed.model";
+import { SubscriptionModel } from "../models/subscription.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { AuthService } from "./auth.service";
@@ -153,6 +154,12 @@ export class RestService {
           throw new Error(error.message);
         })
       );
+  }
+
+  getSubscriptions(): Observable<SubscriptionModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all")
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
   getWishlist(): Observable<string[]> {
