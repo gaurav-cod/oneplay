@@ -22,7 +22,7 @@ export class VerifyComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify(token).subscribe(
       () => {
-        alert("Your account has been verified. You can now login.");
+        this.toastr.success("Your account has been verified. You can now login.", "Verification Success");
         this.router.navigateByUrl("/login");
       },
       (error) => this.toastr.error(error)
