@@ -10,6 +10,8 @@ import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
+declare var gtag: Function;
+
 @Component({
   selector: "app-view",
   templateUrl: "./view.component.html",
@@ -147,6 +149,10 @@ export class ViewComponent implements OnInit {
     this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.addToWishlist(this.game.oneplayId);
+      gtag("event", "add_to_wishlist", {
+        event_category: "wishlist",
+        event_label: this.game.title,
+      });
     });
   }
 
@@ -155,10 +161,18 @@ export class ViewComponent implements OnInit {
     this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
+      gtag("event", "remove_from_wishlist", {
+        event_category: "wishlist",
+        event_label: this.game.title,
+      });
     });
   }
 
   startGame(): void {
+    gtag("event", "start_game", {
+      event_category: "game",
+      event_label: this.game.title,
+    });
     this.startLoading();
     this.restService.startGame(this.game.oneplayId).subscribe(
       (data) => {

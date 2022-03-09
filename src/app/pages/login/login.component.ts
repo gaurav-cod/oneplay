@@ -4,6 +4,8 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 
+declare var gtag: Function;
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -27,6 +29,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   login() {
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
+        gtag("event", "login", {
+          event_category: "user",
+          event_label: this.loginForm.value.email,
+        });
         this.authService.login(token);
       },
       (error) => {
