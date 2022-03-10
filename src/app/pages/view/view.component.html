@@ -3,7 +3,7 @@
   class="header pb-0 pt-5 pt-lg-9"
   style="background-size: cover; background-position: center top"
   [ngStyle]="{
-    'background-image': 'url(' + (game | gameAsset: 'bgImage') + ')'
+    'background-image': 'url(' + (game.bgImage) + ')'
   }"
 >
   <!-- <video
@@ -28,7 +28,7 @@
           <i class="ni ni-bold-left fill-default"></i
           ><span class="text-gray">Go back</span>
         </button>
-        <img [src]="game | gameAsset: 'textLogo'" class="text-logo" alt="" />
+        <img [src]="game.textLogo" class="text-logo" alt="" />
         <p class="text-white-50 mb-3">
           {{ releaseYear }} | {{ game.ageRating }}
         </p>

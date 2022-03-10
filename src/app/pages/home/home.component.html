@@ -9,7 +9,7 @@
   <ng-template *ngFor="let game of firstRow.games" ngbSlide>
     <div
       class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end background"
-      [style.background-image]="'url(' + (game | gameAsset: 'bgImage') + ')'"
+      [style.background-image]="'url(' + (game.bgImage) + ')'"
     >
       <!-- Mask -->
       <span class="mask bg-gradient-banner"></span>
@@ -19,7 +19,7 @@
           <div class="col-lg-7 col-md-10" style="min-width: 50vw">
             <!-- <h1 class="display-2 text-white">{{ game.title }}</h1> -->
             <img
-              [src]="game | gameAsset: 'textLogo'"
+              [src]="game.textLogo"
               class="text-logo"
               alt=""
             />
