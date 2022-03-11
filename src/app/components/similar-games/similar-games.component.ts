@@ -55,7 +55,7 @@ export class SimilarGamesComponent {
   }
 
   playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
-    if (game.video) {
+    if (game.video && window.innerWidth > 768) {
       this.timer = setTimeout(() => {
         image.style.opacity = "0";
         this.showSound = game.oneplayId;
@@ -73,7 +73,7 @@ export class SimilarGamesComponent {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (game.video) {
+    if (game.video && window.innerWidth > 768) {
       image.style.opacity = "1";
       video.pause();
       video.currentTime = 0;

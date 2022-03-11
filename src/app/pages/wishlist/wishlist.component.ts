@@ -12,6 +12,9 @@ import { RestService } from "src/app/services/rest.service";
 export class WishlistComponent implements OnInit {
   games: GameModel[] = [];
 
+  showSound = "";
+  timer: NodeJS.Timeout;
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -28,9 +31,13 @@ export class WishlistComponent implements OnInit {
   }
 
   playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
-    if (game.video) {
-      image.style.opacity = "0";
-      video.play();
+    if (game.video && window.innerWidth > 768) {
+      this.timer = setTimeout(() => {
+        image.style.opacity = "0";
+        this.showSound = game.oneplayId;
+        video.muted = true;
+        video.play();
+      }, 1000);
     }
   }
 
@@ -39,10 +46,25 @@ export class WishlistComponent implements OnInit {
     image: HTMLImageElement,
     game: GameModel
   ) {
-    if (game.video) {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    if (game.video && window.innerWidth > 768) {
       image.style.opacity = "1";
       video.pause();
       video.currentTime = 0;
+      this.showSound = "";
+    }
+  }
+
+  muteUnmute(e: Event, video: HTMLVideoElement, game: GameModel) {
+    e.stopPropagation();
+    if (game.video) {
+      if (video.muted) {
+        video.muted = false;
+      } else {
+        video.muted = true;
+      }
     }
   }
 }

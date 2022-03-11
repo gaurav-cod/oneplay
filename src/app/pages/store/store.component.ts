@@ -14,7 +14,7 @@ const queries = {
     release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
   },
   "Top 100": {
-    rating: '4',
+    rating: "4",
   },
   "Last 30 days": {
     release_date: "now-1d/d#now/d",
@@ -51,20 +51,22 @@ export class StoreComponent implements OnInit {
       this.heading = params.filter ?? "All Games";
       this.title.setTitle("OnePlay | " + params.filter ?? "Store");
       this.loaderService.start();
-      this.restService.getFilteredGames(queries[params.filter ?? "All Games"]).subscribe(
-        (games) => {
-          this.games = games;
-          this.loaderService.stop();
-        },
-        (error) => {
-          this.loaderService.stop();
-        }
-      );
+      this.restService
+        .getFilteredGames(queries[params.filter ?? "All Games"])
+        .subscribe(
+          (games) => {
+            this.games = games;
+            this.loaderService.stop();
+          },
+          (error) => {
+            this.loaderService.stop();
+          }
+        );
     });
   }
 
   playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
-    if (game.video) {
+    if (game.video && window.innerWidth > 768) {
       this.timer = setTimeout(() => {
         image.style.opacity = "0";
         this.showSound = game.oneplayId;
@@ -82,7 +84,7 @@ export class StoreComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (game.video) {
+    if (game.video && window.innerWidth > 768) {
       image.style.opacity = "1";
       video.pause();
       video.currentTime = 0;

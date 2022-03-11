@@ -23,7 +23,7 @@
       <div *ngFor="let game of games" class="col-sm-12 col-md-4 col-lg-3 mb-4">
         <a
           [routerLink]="['/view/' + (game | glink)]"
-          class="card card-block border-0"
+          class="card game-card card-block border-0 shadow-1"
         >
           <video
             #video
@@ -32,20 +32,22 @@
           >
             <source [src]="game.video" />
           </video>
-          <img
-            #image
-            class="card-img"
-            style="z-index: 1"
-            [src]="game.textBgImage"
-            height="170"
-            alt=""
-          />
           <div
             class="mask"
             style="z-index: 2"
-            (mouseover)="playVideo(video, image, game)"
-            (mouseout)="pauseVideo(video, image, game)"
-          ></div>
+            #mask
+            (mouseenter)="playVideo(video, image, game)"
+            (mouseleave)="pauseVideo(video, image, game)"
+          >
+            <img #image class="card-img" [src]="game.textBgImage" alt="" />
+            <div
+              *ngIf="showSound === game.oneplayId"
+              class="mute rounded-circle py-1 px-2 bg-translucent-darker"
+              (click)="muteUnmute($event, video, game)"
+            >
+              <em class="fa fa-volume-off text-white"></em>
+            </div>
+          </div>
         </a>
       </div>
     </div>
