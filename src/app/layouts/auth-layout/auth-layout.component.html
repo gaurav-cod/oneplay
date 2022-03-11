@@ -1,25 +1,46 @@
 <div class="main-content">
   <div class="backdrop">
-    <nav class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark">
+    <nav
+      class="navbar navbar-top navbar-horizontal navbar-expand-md navbar-dark"
+    >
       <div class="container px-4">
-        <a class="navbar-brand" routerLinkActive="active" [routerLink]="['/dashboard']">
-          <img style="height: 70px; width: 70px" src="assets/img/brand/logo.png" />
+        <a
+          class="navbar-brand"
+          routerLinkActive="active"
+          [routerLink]="['/dashboard']"
+        >
+          <img
+            style="height: 70px; width: 70px"
+            src="assets/img/brand/logo.png"
+          />
         </a>
-        <button class="navbar-toggler" type="button" (click)="isCollapsed=!isCollapsed"
-          aria-controls="sidenav-collapse-main">
+        <button
+          class="navbar-toggler"
+          type="button"
+          (click)="isCollapsed = !isCollapsed"
+          aria-controls="sidenav-collapse-main"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
+        <div
+          class="collapse navbar-collapse"
+          [ngbCollapse]="isCollapsed"
+          id="sidenav-collapse-main"
+        >
           <!-- Collapse header -->
-          <div class="navbar-collapse-header d-md-none">
+          <div class="navbar-collapse-header d-md-none" style="width: 100%">
             <div class="row">
               <div class="col-6 collapse-brand">
                 <a routerLinkActive="active" [routerLink]="['/dashboard']">
-                  <img src="assets/img/brand/logo.png">
+                  <img src="assets/img/brand/logo.png" />
                 </a>
               </div>
               <div class="col-6 collapse-close">
-                <button type="button" class="navbar-toggler" (click)="isCollapsed=!isCollapsed">
+                <button
+                  type="button"
+                  class="navbar-toggler"
+                  (click)="isCollapsed = !isCollapsed"
+                >
                   <span></span>
                   <span></span>
                 </button>
@@ -27,16 +48,22 @@
             </div>
           </div>
           <!-- Navbar items -->
-          <ul class="navbar-nav ml-auto">
+          <ul id="nav-buttons" class="navbar-nav ml-lg-auto" >
             <li class="nav-item nav-link">
-              <a class="btn btn-md btn-neutral text-dark" routerLinkActive="active"
-                [routerLink]="['/register']">
+              <a
+                class="btn btn-md btn-outline-light btn-block"
+                routerLinkActive="active"
+                [routerLink]="['/register']"
+              >
                 <span class="nav-link-inner--text">Sign up</span>
               </a>
             </li>
             <li class="nav-item nav-link">
-              <a class="btn btn-md btn-neutral text-dark" routerLinkActive="active"
-                [routerLink]="['/login']">
+              <a
+                class="btn btn-md btn-outline-light btn-block"
+                routerLinkActive="active"
+                [routerLink]="['/login']"
+              >
                 <span class="nav-link-inner--text">Login</span>
               </a>
             </li>

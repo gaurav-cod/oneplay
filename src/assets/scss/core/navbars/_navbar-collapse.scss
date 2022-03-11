@@ -33,10 +33,10 @@
         top: 0;
         left: 0;
         right: 0;
-        z-index: 1050;
+        z-index: 2050;
         margin: .7rem;
         overflow-y: auto;
-        height: auto !important;
+        height: 95vh !important;
         opacity: 0;
 
         .navbar-toggler {
@@ -88,9 +88,11 @@
     .navbar-collapse.show {
         padding: 1.5rem;
         border-radius: $border-radius;
-        background: #FFF;
+        background: #151221;
         box-shadow: 0 50px 100px rgba(50,50,93,.1),0 15px 35px rgba(50,50,93,.15),0 5px 15px rgba(0,0,0,.1);
         animation: show-navbar-collapse .2s ease forwards;
+        display: flex;
+        flex-direction: column;
     }
 
     .navbar-collapse.collapsing-out {
