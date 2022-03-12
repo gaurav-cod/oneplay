@@ -26,6 +26,13 @@ export class SimilarGamesComponent {
     private readonly gLink: GLinkPipe
   ) {}
 
+  // get unique games
+  get _games() {
+    return this.games.filter((game, index, self) => {
+      return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
+    });
+  }
+
   onGameClick(game: GameModel) {
     this.router.navigateByUrl("/view/" + this.gLink.transform(game));
   }

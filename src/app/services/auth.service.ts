@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   get sessionToken() {
-    return this._$sessionToken.value ?? '';
+    return Cookies.get("op_session_token") || '';
   }
 
   get userIdAndToken() {
