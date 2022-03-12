@@ -21,6 +21,7 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
     ComponentsModule,
     PipesModule,
     NgxUiLoaderModule,
+    InfiniteScrollModule,
   ],
   declarations: [
     UserProfileComponent,

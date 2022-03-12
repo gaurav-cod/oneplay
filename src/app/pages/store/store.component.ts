@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { BehaviorSubject } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
 
@@ -35,9 +36,10 @@ const queries = {
 export class StoreComponent implements OnInit {
   games: GameModel[] = [];
   heading: string = "All Games";
-
+  isLoading: boolean = false;
   showSound = "";
   timer: NodeJS.Timeout;
+  currentPage = new BehaviorSubject(0);
 
   constructor(
     private readonly restService: RestService,
@@ -48,21 +50,17 @@ export class StoreComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.heading = params.filter ?? "All Games";
-      this.title.setTitle("OnePlay | " + params.filter ?? "Store");
-      this.loaderService.start();
-      this.restService
-        .getFilteredGames(queries[params.filter ?? "All Games"])
-        .subscribe(
-          (games) => {
-            this.games = games;
-            this.loaderService.stop();
-          },
-          (error) => {
-            this.loaderService.stop();
-          }
-        );
+      this.heading = params.filter || "All Games";
+      this.title.setTitle("OnePlay | " + (params.filter || "Store"));
+      this.currentPage.subscribe((page) => {
+        this.loadGames(queries[params.filter || "All Games"], page);
+      });
+      this.currentPage.next(0);
     });
+  }
+
+  onScroll() {
+    this.currentPage.next(this.currentPage.value + 1);
   }
 
   playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
@@ -101,5 +99,26 @@ export class StoreComponent implements OnInit {
         video.muted = true;
       }
     }
+  }
+
+  private loadGames(query: any, page: number) {
+    if (this.isLoading) {
+      return;
+    }
+    if (page === 0) {
+      this.loaderService.start();
+    }
+    this.isLoading = true;
+    this.restService.getFilteredGames(query, page).subscribe(
+      (games) => {
+        this.games = this.games.concat(games);
+        this.isLoading = false;
+        this.loaderService.stop();
+      },
+      (error) => {
+        this.isLoading = false;
+        this.loaderService.stop();
+      }
+    );
   }
 }

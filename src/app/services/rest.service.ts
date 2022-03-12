@@ -220,13 +220,18 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getFilteredGames(query: { [key: string]: string }): Observable<GameModel[]> {
+  getFilteredGames(
+    query: { [key: string]: string },
+    page: number
+  ): Observable<GameModel[]> {
     const data = {
       ...query,
       order_by: "release_date:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+        params: { page, limit: 12 },
+      })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
@@ -248,10 +253,10 @@ export class RestService {
   getHomeFeed(): Observable<HomeFeeds> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
-        params: { 
+        params: {
           textBackground: "280x170",
           textLogo: "400x320",
-         },
+        },
       })
       .pipe(
         map((res) => {
