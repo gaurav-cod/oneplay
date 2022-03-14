@@ -8,6 +8,7 @@ export class VideoModel {
         medium: Thumbnail;
         high: Thumbnail;
     };
+    readonly channelId: string;
     readonly channelTitle: string;
     readonly liveBroadcastContent: string;
     readonly publishTime: Date;
@@ -17,6 +18,7 @@ export class VideoModel {
         this.title = data.title;
         this.description = data.description;
         this.thumbnails = data.thumbnails;
+        this.channelId = data.channelId;
         this.channelTitle = data.channelTitle;
         this.liveBroadcastContent = data.liveBroadcastContent;
         this.publishTime = new Date(data.publishTime);
