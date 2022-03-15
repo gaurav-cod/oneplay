@@ -225,7 +225,9 @@ export class ViewComponent implements OnInit {
     ) {
       this.restService.terminateGame(sessionId).subscribe(
         () => {
-          this.startGame();
+          setTimeout(() => {
+            this.startGame();
+          }, 2000);
         },
         (err) => {
           this.toastr.error(err, "Terminate Game");
@@ -236,14 +238,14 @@ export class ViewComponent implements OnInit {
       this.stopLoading();
     }
   }
-  
+
   private startLoading(): void {
     this.startingGame = true;
-    this.loaderService.startLoader('play-loader');
+    this.loaderService.startLoader("play-loader");
   }
 
   private stopLoading(): void {
     this.startingGame = false;
-    this.loaderService.stopLoader('play-loader');
+    this.loaderService.stopLoader("play-loader");
   }
 }

@@ -40,6 +40,7 @@ export class StoreComponent implements OnInit {
   showSound = "";
   timer: NodeJS.Timeout;
   currentPage = new BehaviorSubject(0);
+  canLoadMore = true;
 
   constructor(
     private readonly restService: RestService,
@@ -52,6 +53,7 @@ export class StoreComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.heading = params.filter || "All Games";
       this.title.setTitle("OnePlay | " + (params.filter || "Store"));
+      this.canLoadMore = true;
       this.currentPage.subscribe((page) => {
         this.loadGames(queries[params.filter || "All Games"], page);
       });
@@ -102,23 +104,43 @@ export class StoreComponent implements OnInit {
   }
 
   private loadGames(query: any, page: number) {
-    if (this.isLoading) {
+    if (this.isLoading || !this.canLoadMore) {
       return;
     }
-    if (page === 0) {
-      this.loaderService.start();
-    }
-    this.isLoading = true;
+    this.startLoading(page);
     this.restService.getFilteredGames(query, page).subscribe(
       (games) => {
-        this.games = this.games.concat(games);
-        this.isLoading = false;
-        this.loaderService.stop();
+        if (page === 0) {
+          this.games = games;
+        } else {
+          this.games = [...this.games, ...games];
+        }
+        if (games.length < 12) {
+          this.canLoadMore = false;
+        }
+        this.stopLoading(page);
       },
       (error) => {
-        this.isLoading = false;
-        this.loaderService.stop();
+        this.stopLoading(page);
       }
     );
+  }
+
+  private startLoading(page: number) {
+    if (page === 0) {
+      this.loaderService.start();
+    } else {
+      this.loaderService.startLoader("scroll");
+    }
+    this.isLoading = true;
+  }
+
+  private stopLoading(page: number) {
+    if (page === 0) {
+      this.loaderService.stop();
+    } else {
+      this.loaderService.stopLoader("scroll");
+    }
+    this.isLoading = false;
   }
 }
