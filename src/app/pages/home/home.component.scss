@@ -24,11 +24,6 @@
   background-position: center top;
 
   @media (max-width: 480px) {
-    min-height: 480px;
-
-    .btn {
-      margin-bottom: 16px;
-      width: 100% !important;
-    }
+    min-height: 700px;
   }
 }

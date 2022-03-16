@@ -1,5 +1,5 @@
+<h2 class="text-white position-relative">{{ title }}</h2>
 <div class="position-relative">
-  <h2 class="text-white">{{ title }}</h2>
 
   <div #container class="d-flex overflow-auto py-3">
     <div *ngFor="let game of _games" class="mr-4">
@@ -40,16 +40,16 @@
   </div>
 
   <button
-    class="btn rounded-circle position-absolute px-1 py-2"
-    style="top: 90px; left: -40px"
+    class="btn position-absolute d-none d-lg-block h-100"
+    style="top: 0; left: -48px"
     (click)="scrollLeft()"
   >
     <i class="fas fa-chevron-left text-xl"></i>
   </button>
 
   <button
-    class="btn rounded-circle position-absolute px-1 py-2"
-    style="top: 90px; right: -40px"
+    class="btn position-absolute d-none d-lg-block h-100"
+    style="top: 0; right: -48px"
     (click)="scrollRight()"
   >
     <i class="fas fa-chevron-right text-xl"></i>

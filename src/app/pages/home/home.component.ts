@@ -17,6 +17,14 @@ export class HomeComponent implements OnInit {
 
   private wishlist: string[] = [];
 
+  get showNavigation(): boolean {
+    return window.innerWidth < 768;
+  }
+
+  get showIndicator(): boolean {
+    return window.innerWidth > 768;
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,

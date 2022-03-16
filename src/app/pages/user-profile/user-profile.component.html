@@ -1,7 +1,7 @@
-<div class="container py-7">
+<div class="container py-2 py-lg-7">
   <h1 class="text-white">Settings</h1>
   <div class="row">
-    <div class="col-xl-4 mb-5 mb-xl-0">
+    <div *ngIf="showMenu" class="col-xl-4 mb-5 mb-xl-0">
       <!-- <div class="d-flex justify-content-between mb-3">
         <button class="btn btn-primary rounded-pill">Account</button>
         <button class="btn btn-dark rounded-pill">Controllers</button>
@@ -59,7 +59,7 @@
         </div>
       </a> -->
     </div>
-    <div class="col-xl-8 order-xl-1">
+    <div *ngIf="!!activeTab" class="col-xl-8 order-xl-1">
       <ng-container *ngIf="activeTab === 'basic-info'">
         <app-basic-info></app-basic-info>
       </ng-container>
