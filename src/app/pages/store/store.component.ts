@@ -14,18 +14,18 @@ const queries = {
   "Best of 2020": {
     release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
   },
-  "Top 100": {
+  "Top 20": {
     rating: "4",
   },
-  "Last 30 days": {
-    release_date: "now-1d/d#now/d",
-  },
-  "Last week": {
-    release_date: "now-1w/d#now/d",
-  },
-  "Next week": {
-    release_date: "now/d#now+1w/d",
-  },
+  // "Last 30 days": {
+  //   release_date: "now-1d/d#now/d",
+  // },
+  // "Last week": {
+  //   release_date: "now-1w/d#now/d",
+  // },
+  // "Next week": {
+  //   release_date: "now/d#now+1w/d",
+  // },
 };
 
 @Component({
@@ -41,6 +41,10 @@ export class StoreComponent implements OnInit {
   timer: NodeJS.Timeout;
   currentPage = new BehaviorSubject(0);
   canLoadMore = true;
+
+  get routes() {
+    return Object.keys(queries)
+  }
 
   constructor(
     private readonly restService: RestService,

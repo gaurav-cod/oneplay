@@ -18,4 +18,9 @@
   &:hover {
     transform: scale(1.1) translateZ(0px);
   }
+
+  @media (max-width: 480px) {
+    width: 150px;
+    height: 100px;
+  }
 }
