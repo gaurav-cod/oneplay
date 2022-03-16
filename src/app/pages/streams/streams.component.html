@@ -62,16 +62,10 @@
 
 <div class="container py-5">
   <ng-container *ngFor="let feed of feeds">
-    <h2 class="text-white mb-3">{{feed.title}} Live Streams</h2>
+    <h2 class="text-white mb-3">{{ feed.title }} Live Streams</h2>
     <div class="d-flex overflow-auto" style="width: 100%">
       <div *ngFor="let video of feed.videos" class="mr-3">
-        <app-stream-card
-          [id]="video.channelId + ':' + feed.id"
-          [title]="video.title"
-          [image]="video.thumbnails.medium.url"
-          [avatar]="video.channelTitle | avatar"
-          [player]="video.channelTitle"
-        ></app-stream-card>
+        <app-stream-card [gameId]="feed.id" [video]="video"></app-stream-card>
       </div>
     </div>
   </ng-container>
