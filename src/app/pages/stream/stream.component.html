@@ -1,16 +1,13 @@
-<div *ngIf="!!video" class="row m-0 stream">
+<div *ngIf="!!video" class="row m-0 pt-lg-7 stream">
   <div class="col-md-9 col-sm-12 d-flex flex-column px-0">
-    <div
-      style="
-        background-size: cover;
-        background-position: center top;
-        position: relative;
-        flex: 1;
-      "
-      [style.background-image]="'url(' + video.thumbnails.high.url + ')'"
-    >
-      <span class="mask bg-translucent-dark"></span>
-    </div>
+    <iframe
+      class="youtube-player"
+      [src]="playing | safe"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
     <div
       class="d-flex justify-content-between align-items-center container-fluid py-4"
     >

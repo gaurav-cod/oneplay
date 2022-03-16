@@ -28,7 +28,7 @@ export class StreamCardComponent implements OnInit {
       gameId: this.gameId,
       video: this.video,
     };
-    return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    return encodeURIComponent(JSON.stringify(data));
   }
 
   constructor() {}
