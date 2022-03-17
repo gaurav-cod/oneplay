@@ -319,12 +319,18 @@ export class RestService {
     );
   }
 
-  startGame(gameId: string): Observable<StartGameRO> {
+  startGame(
+    gameId: string,
+    resolution: string,
+    is_vsync_enabled: boolean,
+    fps: number,
+    bitrate: number
+  ): Observable<StartGameRO> {
     const formData = new FormData();
     formData.append("game_id", gameId);
     formData.append(
       "launch_payload",
-      JSON.stringify({ resolution: "1366x768" })
+      JSON.stringify({ resolution, is_vsync_enabled, fps, bitrate })
     );
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)

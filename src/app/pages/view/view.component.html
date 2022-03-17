@@ -3,7 +3,7 @@
   class="header pb-0 pt-5 pt-lg-9"
   style="background-size: cover; background-position: center top"
   [ngStyle]="{
-    'background-image': 'url(' + (game.bgImage) + ')'
+    'background-image': 'url(' + game.bgImage + ')'
   }"
 >
   <!-- <video
@@ -74,7 +74,7 @@
             *ngFor="let dev of game.developer; let i = index"
             class="text-white mr-1"
           >
-            {{ dev
+            {{ dev | titlecase
             }}<span *ngIf="i !== game.developer.length - 1">,</span></span
           >
           <!-- <a
@@ -106,7 +106,7 @@
         <button
           class="btn btn-white btn-lg w-50 position-relative"
           [disabled]="startingGame"
-          (click)="startGame()"
+          (click)="playGame(smallModal)"
         >
           <ngx-ui-loader
             [fgsColor]="'#c32ead'"
@@ -301,6 +301,72 @@
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen
     ></iframe>
+  </div>
+</ng-template>
+
+<!-- small modal to select resolution, vsync and fps before launching the game -->
+<ng-template #smallModal let-d="dismiss">
+  <div class="modal-content position-relative">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-dark mb-4">Select your game settings</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="resolution" class="text-dark"> Resolution </label>
+            <select
+              class="form-control"
+              id="resolution"
+              [formControl]="resolution"
+            >
+              <option
+                *ngFor="let res of constants.RESOLUTIONS"
+                [value]="res"
+                [disabled]="!allowedResolutions.includes(res)"
+              >
+                {{ res }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="vsync" class="text-dark">Vsync</label>
+            <select class="form-control" id="vsync" [formControl]="vsync">
+              <option *ngFor="let v of constants.VSYNC" [value]="v.value">
+                {{ v.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="fps" class="text-dark">FPS</label>
+            <select class="form-control" id="fps" [formControl]="fps">
+              <option *ngFor="let f of constants.FPS" [value]="f">
+                {{ f }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button class="btn btn-primary btn-block" (click)="startGame()">
+            Launch game
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </ng-template>
 

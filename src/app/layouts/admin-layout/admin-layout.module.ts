@@ -28,6 +28,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
     ClipboardModule,

@@ -1,14 +1,17 @@
 import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
+import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { PlayConstants } from "./play-constants";
 
 declare var gtag: Function;
 
@@ -27,6 +30,15 @@ export class ViewComponent implements OnInit {
   similarGames: GameModel[] = [];
 
   loadingWishlist = false;
+
+  constants = PlayConstants;
+  allowedResolutions: string[] = [];
+
+  resolution = new FormControl("");
+  fps = new FormControl(PlayConstants.DEFAULT_FPS);
+  vsync = new FormControl(PlayConstants.VSYNC[1].value);
+
+  user: UserModel;
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -50,6 +62,24 @@ export class ViewComponent implements OnInit {
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
     );
+    this.authService.user.subscribe((user) => {
+      if (user) {
+        const resolutionFromLocalStorage = localStorage.getItem("resolution");
+        const fpsFromLocalStorage = localStorage.getItem("fps");
+        const vsyncFromLocalStorage = localStorage.getItem("vsync");
+        this.resolution.setValue(
+          resolutionFromLocalStorage ||
+            PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan]
+        );
+        this.fps.setValue(fpsFromLocalStorage || PlayConstants.DEFAULT_FPS);
+        this.vsync.setValue(
+          vsyncFromLocalStorage || PlayConstants.VSYNC[1].value
+        );
+        this.allowedResolutions =
+          PlayConstants.RESOLUTIONS_PACKAGES[user.subscribedPlan];
+        this.user = user;
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -168,28 +198,61 @@ export class ViewComponent implements OnInit {
     });
   }
 
+  playGame(container): void {
+    if (this.user.status !== "active") {
+      this.toastr.error(
+        "Your account needs to be activated by Oneplay to play games",
+        "Error"
+      );
+      return;
+    }
+    if (!this.user.subscriptionIsActive) {
+      this.toastr.error(
+        "Your subscription is not active. Please renew your subscription",
+        "Error"
+      );
+      return;
+    }
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
+  }
+
   startGame(): void {
+    this.ngbModal.dismissAll();
+    localStorage.setItem("resolution", this.resolution.value);
+    localStorage.setItem("fps", this.fps.value);
+    localStorage.setItem("vsync", this.vsync.value);
     gtag("event", "start_game", {
       event_category: "game",
       event_label: this.game.title,
     });
     this.startLoading();
-    this.restService.startGame(this.game.oneplayId).subscribe(
-      (data) => {
-        if (data.api_action === "call_session") {
-          this.startGameWithClientToken(data.session.id);
-        } else if (data.api_action === "call_terminate") {
-          this.terminateGame(data.session.id);
-        } else {
-          this.toastr.error("Something went wrong");
+    this.restService
+      .startGame(
+        this.game.oneplayId,
+        this.resolution.value,
+        this.vsync.value,
+        this.fps.value,
+        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
+      )
+      .subscribe(
+        (data) => {
+          if (data.api_action === "call_session") {
+            this.startGameWithClientToken(data.session.id);
+          } else if (data.api_action === "call_terminate") {
+            this.terminateGame(data.session.id);
+          } else {
+            this.toastr.error("Something went wrong");
+            this.stopLoading();
+          }
+        },
+        (err) => {
+          this.toastr.error(err, "Start Game");
           this.stopLoading();
         }
-      },
-      (err) => {
-        this.toastr.error(err, "Start Game");
-        this.stopLoading();
-      }
-    );
+      );
   }
 
   private startGameWithClientToken(sessionId: string): void {
@@ -216,7 +279,7 @@ export class ViewComponent implements OnInit {
         this.stopLoading();
         clearInterval(timer);
       }
-    }, 1000);
+    }, 3000);
   }
 
   private terminateGame(sessionId: string): void {
