@@ -1,0 +1,9 @@
+.banner-img {
+  height: 465px;
+  background-size: cover;
+  background-position: center;
+
+  @media (max-width: 480px) {
+    height: 265px;
+  }
+}

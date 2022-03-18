@@ -7,16 +7,11 @@
   [showNavigationIndicators]="false"
 >
   <ng-template *ngFor="let banner of banners" ngbSlide>
-    <div class="container pt-7">
+    <div class="container pt-3 pt-lg-7">
       <div class="card bg-dark mb-5" style="width: 100%">
         <div class="row m-0">
           <div
-            class="col-md-8 p-0 position-relative"
-            style="
-              min-height: 465px;
-              background-size: cover;
-              background-position: center;
-            "
+            class="col-md-8 p-0 position-relative banner-img"
             [style.background-image]="'url(' + banner.thumbnails.high.url + ')'"
           >
             <!-- <span class="mask bg-translucent-dark"></span> -->
@@ -64,7 +59,7 @@
   <ng-container *ngFor="let feed of feeds">
     <h2 class="text-white mb-3">{{ feed.title }} Live Streams</h2>
     <div class="d-flex overflow-auto" style="width: 100%">
-      <div *ngFor="let video of feed.videos" class="mr-3">
+      <div *ngFor="let video of feed.videos" class="mr-3 mb-3 mb-lg-5">
         <app-stream-card [gameId]="feed.id" [video]="video"></app-stream-card>
       </div>
     </div>

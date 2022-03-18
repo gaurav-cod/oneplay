@@ -16,6 +16,7 @@ import { SimilarGamesComponent } from './similar-games/similar-games.component';
 import { FriendsModule } from "./friends/friends.module";
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
+import { BottomNavComponent } from './bottom-nav/bottom-nav.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { PurchaseHistoryComponent } from './purchase-history/purchase-history.co
     SimilarGamesComponent,
     SubscriptionsComponent,
     PurchaseHistoryComponent,
+    BottomNavComponent,
   ],
   exports: [
     FooterComponent,
@@ -52,6 +54,7 @@ import { PurchaseHistoryComponent } from './purchase-history/purchase-history.co
     SimilarGamesComponent,
     SubscriptionsComponent,
     PurchaseHistoryComponent,
+    BottomNavComponent,
   ],
 })
 export class ComponentsModule {}

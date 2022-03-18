@@ -1,5 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
+import AwesomeDebouncePromise from "awesome-debounce-promise";
+import { BehaviorSubject } from "rxjs";
+import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -23,10 +27,22 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
+  
+  public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   public menuItems: any[];
   public isCollapsed = true;
+  public query = new FormControl("");
+  public results: GameModel[] = [];
   user: UserModel;
+  
+  get title() {
+    return this.user ? this.user.firstName + " " + this.user.lastName : "User";
+  }
+
+  get isFocused() {
+    return this.focus.asObservable();
+  }
 
   constructor(
     private router: Router,
@@ -42,10 +58,38 @@ export class SidebarComponent implements OnInit {
     this.authService.user.subscribe((user) => {
       this.user = user;
     });
+    const debouncedSearch = AwesomeDebouncePromise(
+      (value) => this.search(value),
+      500
+    );
+    this.query.valueChanges.subscribe((value) => {
+      if (value.trim() !== "") {
+        debouncedSearch(value);
+      } else {
+        this.results = [];
+      }
+    });
+    this.focus.asObservable().subscribe((focused) => {
+      if (!focused) {
+        setTimeout(() => {
+          this.query.setValue("");
+        }, 300);
+      }
+    });
   }
 
-  get title() {
-    return this.user ? this.user.firstName + " " + this.user.lastName : "User";
+  search(value: string) {
+    return this.restService
+      .search(value)
+      .subscribe((games) => (this.results = games));
+  }
+
+  onFocus() {
+    this.focus.next(true);
+  }
+
+  onBlur() {
+    this.focus.next(false);
   }
 
   logout() {
