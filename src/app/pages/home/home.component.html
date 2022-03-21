@@ -10,7 +10,7 @@
   <ng-template *ngFor="let game of firstRow.games" ngbSlide>
     <div
       class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end background"
-      [style.background-image]="'url(' + (game.bgImage) + ')'"
+      [style.background-image]="'url(' + game.bgImage + ')'"
     >
       <!-- Mask -->
       <span class="mask bg-gradient-banner"></span>
@@ -19,11 +19,7 @@
         <div class="row container-fluid m-0">
           <div class="col-lg-7 col-md-10" style="min-width: 50vw">
             <!-- <h1 class="display-2 text-white">{{ game.title }}</h1> -->
-            <img
-              [src]="game.textLogo"
-              class="text-logo"
-              alt=""
-            />
+            <img [src]="game.textLogo" class="text-logo" alt="" />
             <p class="text-white mt-0 mb-4"></p>
             <!-- <p class="text-white mt-0">Available to purchase on</p> -->
             <div class="row">
@@ -33,12 +29,9 @@
                   class="btn btn-primary btn-lg w-100 h-100"
                   >Explore More</a
                 >
-
               </div>
               <div *ngIf="!isInWishlist(game)" class="col">
-
                 <button
-                  
                   (click)="addToWishlist(game)"
                   [disabled]="loadingWishlist"
                   class="btn bg-translucent-dark text-white btn-lg"
@@ -48,14 +41,12 @@
               </div>
               <div *ngIf="isInWishlist(game)" class="col">
                 <button
-                  
                   (click)="removeFromWishlist(game)"
                   [disabled]="loadingWishlist"
                   class="btn bg-translucent-dark text-white btn-lg"
                 >
                   Remove from wishlist
                 </button>
-
               </div>
             </div>
           </div>
@@ -66,12 +57,17 @@
 </ngb-carousel>
 
 <div class="container-fluid mt--8 py-5">
-  <div *ngFor="let row of restRows" class="container-fluid mb-0 mb-md-5">
+  <cdk-virtual-scroll-viewport
+    itemSize="260"
+    style="height: 100vh;"
+    class="container-fluid mb-0 mb-md-5"
+  >
     <app-similar-games
+      *cdkVirtualFor="let row of restRows"
       [title]="row.title"
       [games]="row.games"
     ></app-similar-games>
-  </div>
+  </cdk-virtual-scroll-viewport>
 </div>
 
 <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>

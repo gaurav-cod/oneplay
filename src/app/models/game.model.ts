@@ -13,6 +13,7 @@ export class GameModel {
     readonly textLogo: string;
     readonly video?: string;
     readonly rating: number;
+    readonly isFree: boolean;
     readonly popularityScore: number;
     readonly metacriticScore: number;
     readonly officialWebsite: string;
@@ -44,6 +45,7 @@ export class GameModel {
         this.textLogo = json["text_logo"];
         this.video = json["videos"]?.[0];
         this.rating = json["rating"];
+        this.isFree = json["is_free"] === 'true';
         this.popularityScore = json["popularity_score"];
         this.metacriticScore = json["metacritic_score"];
         this.officialWebsite = json["official_website"];

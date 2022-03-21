@@ -30,9 +30,9 @@
         </button>
         <img [src]="game.textLogo" class="text-logo" alt="" />
         <p class="text-white-50 mb-3">
-          {{ releaseYear }} | {{ game.ageRating }}
+          {{ releaseYear }} | {{ game.ageRating }} {{ game.isFree ? ' | Free' : '' }}
         </p>
-        <p class="text-white mt-0 mb-4">OnePlay Rating: {{ game.rating }}/10</p>
+        <p class="text-white mt-0 mb-4">Play-Time: {{ game.playTime }}</p>
         <div
           *ngFor="let genre of game.genreMappings"
           class="badge badge-pill badge-dark text-white mr-1 mb-1"

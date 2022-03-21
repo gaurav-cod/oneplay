@@ -22,6 +22,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   imports: [
@@ -36,6 +37,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     PipesModule,
     NgxUiLoaderModule,
     InfiniteScrollModule,
+    ScrollingModule,
   ],
   declarations: [
     UserProfileComponent,
