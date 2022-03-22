@@ -22,32 +22,28 @@
             <img [src]="game.textLogo" class="text-logo" alt="" />
             <p class="text-white mt-0 mb-4"></p>
             <!-- <p class="text-white mt-0">Available to purchase on</p> -->
-            <div class="row">
-              <div class="col">
-                <a
-                  [routerLink]="['/view/' + (game | glink)]"
-                  class="btn btn-primary btn-lg w-100 h-100"
-                  >Explore More</a
-                >
-              </div>
-              <div *ngIf="!isInWishlist(game)" class="col">
-                <button
-                  (click)="addToWishlist(game)"
-                  [disabled]="loadingWishlist"
-                  class="btn bg-translucent-dark text-white btn-lg"
-                >
-                  Add to wishlist
-                </button>
-              </div>
-              <div *ngIf="isInWishlist(game)" class="col">
-                <button
-                  (click)="removeFromWishlist(game)"
-                  [disabled]="loadingWishlist"
-                  class="btn bg-translucent-dark text-white btn-lg"
-                >
-                  Remove from wishlist
-                </button>
-              </div>
+            <div class="d-flex">
+              <a
+                [routerLink]="['/view/' + (game | glink)]"
+                class="btn btn-primary btn-lg h-100"
+                >Explore More</a
+              >
+              <button
+              *ngIf="!isInWishlist(game)"
+                (click)="addToWishlist(game)"
+                [disabled]="loadingWishlist"
+                class="btn bg-translucent-dark text-white btn-lg"
+              >
+                Add to wishlist
+              </button>
+              <button
+              *ngIf="isInWishlist(game)"
+                (click)="removeFromWishlist(game)"
+                [disabled]="loadingWishlist"
+                class="btn bg-translucent-dark text-white btn-lg"
+              >
+                Remove from wishlist
+              </button>
             </div>
           </div>
         </div>
