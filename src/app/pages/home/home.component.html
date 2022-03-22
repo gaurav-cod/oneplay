@@ -29,7 +29,7 @@
                 >Explore More</a
               >
               <button
-              *ngIf="!isInWishlist(game)"
+                *ngIf="!isInWishlist(game)"
                 (click)="addToWishlist(game)"
                 [disabled]="loadingWishlist"
                 class="btn bg-translucent-dark text-white btn-lg"
@@ -37,7 +37,7 @@
                 Add to wishlist
               </button>
               <button
-              *ngIf="isInWishlist(game)"
+                *ngIf="isInWishlist(game)"
                 (click)="removeFromWishlist(game)"
                 [disabled]="loadingWishlist"
                 class="btn bg-translucent-dark text-white btn-lg"
@@ -53,15 +53,13 @@
 </ngb-carousel>
 
 <div class="container-fluid mt--8 py-5">
-  <div
-    class="container-fluid mb-0 mb-md-5"
-  >
+  <div class="container-fluid mb-0 mb-md-5">
     <app-similar-games
       *ngFor="let row of restRows"
       [title]="row.title"
       [games]="row.games"
     ></app-similar-games>
-</div>
+  </div>
 </div>
 
 <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
