@@ -52,6 +52,17 @@ export class RestService {
       );
   }
 
+  getName(id: string): Observable<string> {
+    return this.http
+      .get<string>(this.r_mix_api + "/accounts/" + id + "/name")
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
   getProfile(): Observable<UserModel> {
     return this.http.get(this.r_mix_api + "/accounts/profile").pipe(
       map((res) => new UserModel(res)),

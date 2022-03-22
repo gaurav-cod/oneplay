@@ -13,6 +13,7 @@ export interface SignupDTO {
   email: string;
   password: string;
   gender: "male" | "female";
+  referred_by_id?: string;
 }
 
 export interface StartPcRO {

@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~ngx-sharebuttons/themes/material/material-dark-theme";
+@import "~ngx-sharebuttons/themes/modern/modern-light-theme";
+@import "~ngx-sharebuttons/themes/circles/circles-dark-theme";
+
 @font-face {
     font-family: helvetica;
     src: url(assets/fonts/Helvetica/Helvetica.ttf);

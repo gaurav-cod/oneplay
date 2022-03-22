@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
@@ -44,10 +45,15 @@ export class SidebarComponent implements OnInit {
     return this.focus.asObservable();
   }
 
+  get link() {
+    return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
-    private restService: RestService
+    private restService: RestService,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnInit() {
@@ -95,5 +101,12 @@ export class SidebarComponent implements OnInit {
   logout() {
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.logout();
+  }
+
+  open (container) {
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
   }
 }

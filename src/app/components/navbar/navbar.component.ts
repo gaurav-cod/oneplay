@@ -16,6 +16,7 @@ import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-navbar",
@@ -40,10 +41,15 @@ export class NavbarComponent implements OnInit {
     return this.focus.asObservable();
   }
 
+  get link() {
+    return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
+  }
+
   constructor(
     location: Location,
     private readonly authService: AuthService,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly ngbModal: NgbModal
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
@@ -106,5 +112,12 @@ export class NavbarComponent implements OnInit {
 
   onBlur() {
     this.focus.next(false);
+  }
+
+  open (container) {
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
   }
 }

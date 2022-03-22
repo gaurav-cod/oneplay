@@ -17,7 +17,7 @@
       </li>
       <li class="nav-item">
         <a routerLinkActive="active" [routerLink]="['/store']" class="nav-link"
-        >Store</a
+          >Store</a
         >
       </li>
       <li class="nav-item">
@@ -129,7 +129,14 @@
             <i class="ni ni-favourite-28"></i>
             <span>Your Wishlist</span>
           </a>
-          <a href="https://www.oneplay.in/subscription.html" class="dropdown-item">
+          <a href="javascript:void(0)" class="dropdown-item" (click)="open(share)">
+            <i class="fa fa-link" aria-hidden="true"></i>
+            <span>Referral Link</span>
+          </a>
+          <a
+            href="https://www.oneplay.in/subscription.html"
+            class="dropdown-item"
+          >
             <i class="ni ni-credit-card"></i>
             <span>Subscription</span>
           </a>
@@ -147,3 +154,27 @@
     </ul>
   </div>
 </nav>
+
+<ng-template #share let-d="dismiss">
+  <div class="modal-content position-relative">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-dark mb-4">Share/Copy Referral Link</h2>
+        </div>
+      </div>
+      <share-buttons
+        [url]="link"
+        [include]="['facebook','twitter','linkedin','telegram','messenger','whatsapp','email','copy']"
+        theme="material-dark"
+        show="11"
+      ></share-buttons>
+    </div>
+  </div>
+</ng-template>
