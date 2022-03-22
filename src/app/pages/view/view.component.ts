@@ -98,14 +98,14 @@ export class ViewComponent implements OnInit {
             this.restService
               .getGamesByDeveloper(dev)
               .subscribe(
-                (games) => (this._devGames = [...this._devGames, ...games])
+                (games) => (this._devGames = this.getShuffledGames([...this._devGames, ...games]))
               )
           );
           game.genreMappings.forEach((genre) =>
             this.restService
               .getGamesByGenre(genre)
               .subscribe(
-                (games) => (this._genreGames = [...this._genreGames, ...games])
+                (games) => (this._genreGames = this.getShuffledGames([...this._genreGames, ...games]))
               )
           );
           this.loaderService.stop();
@@ -310,5 +310,9 @@ export class ViewComponent implements OnInit {
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
+  }
+
+  private getShuffledGames(games: GameModel[]): GameModel[] {
+    return [...games].sort(() => Math.random() - 0.5);
   }
 }

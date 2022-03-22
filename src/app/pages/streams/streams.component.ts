@@ -33,4 +33,8 @@ export class StreamsComponent implements OnInit {
       }
     );
   }
+
+  getId(video: VideoModel): string {
+    return encodeURIComponent(JSON.stringify({ video }));
+  }
 }

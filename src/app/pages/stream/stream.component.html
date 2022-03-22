@@ -143,15 +143,11 @@
     </div>
     <div class="col-md-3 col-sm-12"></div>
   </div>
-  <ng-container *ngIf="topVideos.length && !!game">
-    <h2 class="text-white mt-5">Other streams you might like</h2>
-    <div class="d-flex overflow-auto" style="width: 100%">
-      <div *ngFor="let video of topVideos" class="mr-3">
-        <app-stream-card
-          [gameId]="game.oneplayId"
-          [video]="video"
-        ></app-stream-card>
-      </div>
-    </div>
-  </ng-container>
+  <div *ngIf="topVideos.length && !!game" class="mt-5">
+    <app-stream-card
+      [title]="'Other streams you might like'"
+      [gameId]="game.oneplayId"
+      [videos]="topVideos"
+    ></app-stream-card>
+  </div>
 </div>

@@ -46,7 +46,11 @@
                   {{ banner.description }}
                 </p>
               </div>
-              <button class="btn btn-primary">Watch live stream</button>
+              <a
+                [routerLink]="['/streams/' + getId(banner)]"
+                class="btn btn-primary"
+                >Watch live stream</a
+              >
             </div>
           </div>
         </div>
@@ -55,15 +59,14 @@
   </ng-template>
 </ngb-carousel>
 
-<div class="container py-5">
-  <ng-container *ngFor="let feed of feeds">
-    <h2 class="text-white mb-3">{{ feed.title }} Live Streams</h2>
-    <div class="d-flex overflow-auto" style="width: 100%">
-      <div *ngFor="let video of feed.videos" class="mr-3 mb-3 mb-lg-5">
-        <app-stream-card [gameId]="feed.id" [video]="video"></app-stream-card>
-      </div>
-    </div>
-  </ng-container>
+<div class="container-fluid py-5">
+  <div class="container-fluid mb-3 mb-lg-5" *ngFor="let feed of feeds">
+    <app-stream-card
+      [title]="feed.title + ' Live Streams'"
+      [gameId]="feed.id"
+      [videos]="feed.videos"
+    ></app-stream-card>
+  </div>
 
   <!-- <h2 class="text-white mb-3 mt-5">Streamers to lookout for</h2>
   <div class="d-flex overflow-auto" style="width: 100%">
