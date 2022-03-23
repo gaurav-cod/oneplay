@@ -44,3 +44,35 @@ body {
         bottom: 100px;
     }
 }
+
+.two-lines {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    height: 3em;
+    -webkit-box-orient: vertical;
+}
+
+.two-lines-sm {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    height: 2em;
+    -webkit-box-orient: vertical;
+}
+
+.three-lines-xs {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    height: 4.5em;
+    -webkit-box-orient: vertical;
+}
+
+.three-lines-sm {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    height: 5em;
+    -webkit-box-orient: vertical;
+}

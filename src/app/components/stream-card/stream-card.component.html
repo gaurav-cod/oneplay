@@ -4,7 +4,7 @@
     <div *ngFor="let video of videos" class="mr-3">
       <a [routerLink]="['/streams/' + getId(video)]" class="root">
         <img class="image mb-2" [src]="video.thumbnails.medium.url" alt="" />
-        <div class="text-white text-sm mb-2">{{ video.title }}</div>
+        <div class="text-white text-sm mb-2 two-lines">{{ video.title }}</div>
         <div class="d-flex align-items-center">
           <div class="avatar avatar-sm rounded-circle">
             <img [src]="video.channelTitle | avatar" alt="" />
