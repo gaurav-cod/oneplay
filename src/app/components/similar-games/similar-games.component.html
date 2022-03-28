@@ -1,38 +1,32 @@
 <h2 class="text-white position-relative">{{ title }}</h2>
 <div class="position-relative">
-
   <div #container class="d-flex overflow-auto py-3">
-    <div *ngFor="let game of _games" class="mr-4">
+    <div *ngFor="let game of _games" class="mr-3">
       <a
+        #gameLink
         class="card card-block border-0 shadow-1"
         (click)="onGameClick(game)"
       >
-        <video
-          #video
-          class="mask"
-          style="border-radius: 4px; height: 100%; object-fit: cover"
-        >
-          <source [src]="game.video" />
-        </video>
         <div
           class="mask"
           style="z-index: 2"
           #mask
-          (mouseenter)="playVideo(video, image, game)"
-          (mouseleave)="pauseVideo(video, image, game)"
+          (mouseenter)="playVideo(gameLink, image, game)"
+          (mouseleave)="pauseVideo(gameLink, image, game)"
         >
-          <img
-            #image
-            class="card-img"
-            [src]="game.textBgImage"
-            alt=""
-          />
+          <img #image class="card-img" [src]="game.textBgImage" alt="" />
           <div
             *ngIf="showSound === game.oneplayId"
-            class="mute rounded-circle py-1 px-2 bg-translucent-darker"
-            (click)="muteUnmute($event, video, game)"
+            class="mute bg-translucent-darker"
+            [ngClass]="{ unmute: !muted }"
+            (click)="muteUnmute($event, gameLink, game)"
           >
-            <em class="fa fa-volume-off text-white"></em>
+            <em *ngIf="muted" class="fa fa-volume-off text-white"></em>
+            <em
+              *ngIf="!muted"
+              class="fa fa-microphone-slash text-white"
+              style="font-size: 12px"
+            ></em>
           </div>
         </div>
       </a>

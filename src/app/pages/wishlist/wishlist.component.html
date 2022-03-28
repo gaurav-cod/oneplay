@@ -22,28 +22,22 @@
     <div class="py-5 row">
       <div *ngFor="let game of games" class="col-6 col-md-4 col-lg-3 mb-4">
         <a
+          #gameCard
           [routerLink]="['/view/' + (game | glink)]"
           class="card game-card card-block border-0 shadow-1"
         >
-          <video
-            #video
-            class="mask"
-            style="border-radius: 4px; height: 100%; object-fit: cover"
-          >
-            <source [src]="game.video" />
-          </video>
           <div
             class="mask"
             style="z-index: 2"
             #mask
-            (mouseenter)="playVideo(video, image, game)"
-            (mouseleave)="pauseVideo(video, image, game)"
+            (mouseenter)="playVideo(gameCard, image, game)"
+            (mouseleave)="pauseVideo(gameCard, image, game)"
           >
             <img #image class="card-img" [src]="game.textBgImage" alt="" />
             <div
               *ngIf="showSound === game.oneplayId"
-              class="mute rounded-circle py-1 px-2 bg-translucent-darker"
-              (click)="muteUnmute($event, video, game)"
+              class="mute bg-translucent-darker"
+              (click)="muteUnmute($event, gameCard, game)"
             >
               <em class="fa fa-volume-off text-white"></em>
             </div>

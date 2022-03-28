@@ -43,7 +43,11 @@ export class StoreComponent implements OnInit {
   canLoadMore = true;
 
   get routes() {
-    return Object.keys(queries)
+    return Object.keys(queries);
+  }
+
+  get isMobile() {
+    return window.innerWidth < 768;
   }
 
   constructor(
@@ -69,11 +73,19 @@ export class StoreComponent implements OnInit {
     this.currentPage.next(this.currentPage.value + 1);
   }
 
-  playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
-    if (game.video && window.innerWidth > 768) {
+  playVideo(
+    gameLink: HTMLAnchorElement,
+    image: HTMLImageElement,
+    game: GameModel
+  ) {
+    if (game.video && !this.isMobile) {
       this.timer = setTimeout(() => {
         image.style.opacity = "0";
         this.showSound = game.oneplayId;
+        const video = document.createElement("video");
+        gameLink.insertAdjacentElement("afterbegin", video);
+        video.classList.add("mask");
+        video.src = game.video;
         video.muted = true;
         video.play();
       }, 1000);
@@ -81,24 +93,26 @@ export class StoreComponent implements OnInit {
   }
 
   pauseVideo(
-    video: HTMLVideoElement,
+    gameLink: HTMLAnchorElement,
     image: HTMLImageElement,
     game: GameModel
   ) {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (game.video && window.innerWidth > 768) {
+    if (game.video && !this.isMobile) {
       image.style.opacity = "1";
-      video.pause();
-      video.currentTime = 0;
+      if (gameLink.firstElementChild instanceof HTMLVideoElement) {
+        gameLink.removeChild(gameLink.firstElementChild);
+      }
       this.showSound = "";
     }
   }
 
-  muteUnmute(e: Event, video: HTMLVideoElement, game: GameModel) {
+  muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
     e.stopPropagation();
     if (game.video) {
+      const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
       } else {

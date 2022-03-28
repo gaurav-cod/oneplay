@@ -20,6 +20,7 @@ export class SimilarGamesComponent {
 
   showSound = "";
   timer: NodeJS.Timeout;
+  muted = true;
 
   constructor(
     private readonly router: Router,
@@ -31,6 +32,10 @@ export class SimilarGamesComponent {
     return this.games.filter((game, index, self) => {
       return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
     });
+  }
+
+  get isMobile() {
+    return window.innerWidth < 768;
   }
 
   onGameClick(game: GameModel) {
@@ -61,40 +66,55 @@ export class SimilarGamesComponent {
     }, 25);
   }
 
-  playVideo(video: HTMLVideoElement, image: HTMLImageElement, game: GameModel) {
-    if (game.video && window.innerWidth > 768) {
+  playVideo(
+    gameLink: HTMLAnchorElement,
+    image: HTMLImageElement,
+    game: GameModel
+  ) {
+    if (game.video && !this.isMobile) {
       this.timer = setTimeout(() => {
         image.style.opacity = "0";
         this.showSound = game.oneplayId;
-        video.muted = true;
-        video.play();
+        if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
+          const video = document.createElement("video");
+          gameLink.insertAdjacentElement("afterbegin", video);
+          video.classList.add("mask");
+          video.src = game.video;
+          video.muted = true;
+          video.play();
+        }
       }, 1000);
     }
   }
 
   pauseVideo(
-    video: HTMLVideoElement,
+    gameLink: HTMLAnchorElement,
     image: HTMLImageElement,
     game: GameModel
   ) {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (game.video && window.innerWidth > 768) {
+    if (game.video && !this.isMobile) {
       image.style.opacity = "1";
-      video.pause();
-      video.currentTime = 0;
+      if (gameLink.firstElementChild instanceof HTMLVideoElement) {
+        gameLink.removeChild(gameLink.firstElementChild);
+      }
       this.showSound = "";
+      this.muted = true;
     }
   }
 
-  muteUnmute(e: Event, video: HTMLVideoElement, game: GameModel) {
+  muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
     e.stopPropagation();
     if (game.video) {
+      const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
+        this.muted = false;
       } else {
         video.muted = true;
+        this.muted = true;
       }
     }
   }

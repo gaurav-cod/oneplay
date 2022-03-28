@@ -145,7 +145,7 @@ export class NavbarComponent implements OnInit {
   open(container) {
     this.ngbModal.open(container, {
       centered: true,
-      modalDialogClass: "modal-sm",
+      modalDialogClass: "modal-md",
     });
   }
 }
