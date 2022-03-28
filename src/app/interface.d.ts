@@ -12,7 +12,7 @@ export interface SignupDTO {
   last_name: string;
   email: string;
   password: string;
-  gender: "male" | "female";
+  gender: "male" | "female" | "other" | "unknown";
   referred_by_id?: string;
 }
 
