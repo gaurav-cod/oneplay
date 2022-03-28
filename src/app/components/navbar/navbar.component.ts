@@ -17,11 +17,15 @@ import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { GameService } from "src/app/services/game.service";
+import { GameStatusRO } from "src/app/interface";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
 
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.scss"],
+  providers: [GLinkPipe],
 })
 export class NavbarComponent implements OnInit {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -29,6 +33,7 @@ export class NavbarComponent implements OnInit {
   public location: Location;
   public query = new FormControl("");
   public results: GameModel[] = [];
+  public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
 
   @Output() toggleFriends = new EventEmitter();
@@ -45,11 +50,31 @@ export class NavbarComponent implements OnInit {
     return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
   }
 
+  get gameLink() {
+    if (this.gameStatus && this.gameStatus.is_running) {
+      return this.gLink.transform({
+        title: this.gameStatus.game_name,
+        oneplayId: this.gameStatus.game_id,
+      } as GameModel);
+    }
+    return "javascript:void(0)";
+  }
+
+  get isGameRunning() {
+    return this.gameStatus && this.gameStatus.is_running;
+  }
+
+  get isUserLive() {
+    return this.gameStatus && this.gameStatus.is_user_connected;
+  }
+
   constructor(
     location: Location,
     private readonly authService: AuthService,
     private readonly restService: RestService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly gameService: GameService,
+    private readonly gLink: GLinkPipe
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
@@ -74,6 +99,9 @@ export class NavbarComponent implements OnInit {
           this.query.setValue("");
         }, 300);
       }
+    });
+    this.gameService.gameStatus.subscribe((status) => {
+      this.gameStatus = status;
     });
   }
 
@@ -114,7 +142,7 @@ export class NavbarComponent implements OnInit {
     this.focus.next(false);
   }
 
-  open (container) {
+  open(container) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",

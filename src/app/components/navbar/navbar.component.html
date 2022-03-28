@@ -97,9 +97,14 @@
         </a>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" href="https://www.oneplay.in/speed-test/run">
-          <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-            <i class="fa fa-bolt" aria-hidden="true"></i>
+        <a class="nav-link" [href]="gameLink | safe">
+          <span class="avatar avatar-sm rounded-circle bg-gray-dark position-relative">
+            <i
+              class="fa fa-gamepad"
+              aria-hidden="true"
+              [ngClass]="{ 'test-success': isGameRunning }"
+            ></i>
+            <span *ngIf="isUserLive" id="live">LIVE</span>
           </span>
         </a>
       </li>
@@ -129,9 +134,17 @@
             <i class="ni ni-favourite-28"></i>
             <span>Your Wishlist</span>
           </a>
-          <a href="javascript:void(0)" class="dropdown-item" (click)="open(share)">
+          <a
+            href="javascript:void(0)"
+            class="dropdown-item"
+            (click)="open(share)"
+          >
             <i class="fa fa-link" aria-hidden="true"></i>
             <span>Referral Link</span>
+          </a>
+          <a href="https://www.oneplay.in/speed-test/run" class="dropdown-item">
+            <i class="fa fa-bolt"></i>
+            <span>Speed Test</span>
           </a>
           <a
             href="https://www.oneplay.in/subscription.html"
@@ -171,7 +184,16 @@
       </div>
       <share-buttons
         [url]="link"
-        [include]="['facebook','twitter','linkedin','telegram','messenger','whatsapp','email','copy']"
+        [include]="[
+          'facebook',
+          'twitter',
+          'linkedin',
+          'telegram',
+          'messenger',
+          'whatsapp',
+          'email',
+          'copy'
+        ]"
         theme="material-dark"
         show="11"
       ></share-buttons>

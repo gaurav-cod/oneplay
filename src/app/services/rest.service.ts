@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
+  GameStatusRO,
   HomeFeeds,
   LoginDTO,
   PaytmTxn,
@@ -373,6 +374,18 @@ export class RestService {
       .post<void>(this.client_api + "/terminate_stream", formData)
       .pipe(
         map(() => {}),
+        catchError((err) => {
+          throw new Error(err.error.msg);
+        })
+      );
+  }
+
+  getGameStatus(): Observable<GameStatusRO | null> {
+    const formData = new FormData();
+    return this.http
+      .post(this.client_api + "/get_any_active_session_status", formData)
+      .pipe(
+        map((res) => (!!Object.keys(res["data"]).length ? res["data"] : null)),
         catchError((err) => {
           throw new Error(err.error.msg);
         })

@@ -106,18 +106,18 @@
         <button
           class="btn btn-white btn-lg w-50 position-relative"
           [disabled]="startingGame"
-          (click)="playGame(smallModal)"
+          (click)="action === 'Terminate' ? terminateSession() : playGame(smallModal)"
         >
           <ngx-ui-loader
             [fgsColor]="'#c32ead'"
             [hasProgressBar]="false"
             [fgsSize]="20"
             [fgsPosition]="'center-left'"
-            [text]="'Initializing...'"
+            [text]="action === 'Terminate' ? 'Terminating...' : 'Initializing...'"
             [overlayBorderRadius]="'6px'"
             [loaderId]="'play-loader'"
           ></ngx-ui-loader>
-          Play Now
+          {{action + ' Now'}}
         </button>
         <button
           *ngIf="!isInWishlist"

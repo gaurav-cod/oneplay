@@ -4,9 +4,12 @@ import { Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
+import { GameStatusRO } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
 
 declare interface RouteInfo {
@@ -25,6 +28,7 @@ export const ROUTES: RouteInfo[] = [
   selector: "app-sidebar",
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"],
+  providers: [GLinkPipe],
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
@@ -35,6 +39,7 @@ export class SidebarComponent implements OnInit {
   public isCollapsed = true;
   public query = new FormControl("");
   public results: GameModel[] = [];
+  public gameStatus: GameStatusRO | null = null;
   user: UserModel;
   
   get title() {
@@ -49,11 +54,31 @@ export class SidebarComponent implements OnInit {
     return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
   }
 
+  get gameLink() {
+    if (this.gameStatus && this.gameStatus.is_running) {
+      return this.gLink.transform({
+        title: this.gameStatus.game_name,
+        oneplayId: this.gameStatus.game_id,
+      } as GameModel);
+    }
+    return "javascript:void(0)";
+  }
+
+  get isGameRunning() {
+    return this.gameStatus && this.gameStatus.is_running;
+  }
+
+  get isUserLive() {
+    return this.gameStatus && this.gameStatus.is_user_connected;
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
     private restService: RestService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly gameService: GameService,
+    private readonly gLink: GLinkPipe
   ) {}
 
   ngOnInit() {
@@ -81,6 +106,9 @@ export class SidebarComponent implements OnInit {
           this.query.setValue("");
         }, 300);
       }
+    });
+    this.gameService.gameStatus.subscribe((status) => {
+      this.gameStatus = status;
     });
   }
 

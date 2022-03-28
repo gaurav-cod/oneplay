@@ -1,7 +1,8 @@
 import { AfterViewInit, Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
+import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -15,13 +16,25 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly route: ActivatedRoute,
-    private readonly toastr: ToastrService
+    private readonly router: Router,
+    private readonly toastr: ToastrService,
+    private readonly gameService: GameService
   ) {}
 
   ngOnInit(): void {
     this.authService.wishlist = this.restService.getWishlist();
     this.authService.user = this.restService.getProfile();
+    this.gameService.gameStatus = this.restService.getGameStatus();
+
+    setInterval(() => {
+      this.gameService.gameStatus = this.restService.getGameStatus();
+    }, 5 * 60 * 1000);
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.gameService.gameStatus = this.restService.getGameStatus();
+      }
+    });
   }
 
   ngAfterViewInit(): void {

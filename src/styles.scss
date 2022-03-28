@@ -76,3 +76,14 @@ body {
     height: 5em;
     -webkit-box-orient: vertical;
 }
+
+#live {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 8px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #d80000;
+    padding: 2px;
+}

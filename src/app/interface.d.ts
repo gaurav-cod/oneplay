@@ -68,3 +68,11 @@ export interface VideoWithGameId {
   gameId: string;
   video: VideoModel;
 }
+
+export interface GameStatusRO {
+  game_id: string;
+  game_name: string;
+  is_running: boolean;
+  is_user_connected: boolean;
+  session_id: string;
+}

@@ -10,6 +10,7 @@ import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
+import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
 import { PlayConstants } from "./play-constants";
 
@@ -37,8 +38,9 @@ export class ViewComponent implements OnInit {
   resolution = new FormControl("");
   fps = new FormControl(PlayConstants.DEFAULT_FPS);
   vsync = new FormControl(PlayConstants.VSYNC[1].value);
-
+  action: "Play" | "Resume" | "Terminate" = "Play";
   user: UserModel;
+  sessionToTerminate = "";
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -57,7 +59,8 @@ export class ViewComponent implements OnInit {
     private readonly title: Title,
     private readonly meta: Meta,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
+    private readonly gameService: GameService
   ) {
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
@@ -98,14 +101,22 @@ export class ViewComponent implements OnInit {
             this.restService
               .getGamesByDeveloper(dev)
               .subscribe(
-                (games) => (this._devGames = this.getShuffledGames([...this._devGames, ...games]))
+                (games) =>
+                  (this._devGames = this.getShuffledGames([
+                    ...this._devGames,
+                    ...games,
+                  ]))
               )
           );
           game.genreMappings.forEach((genre) =>
             this.restService
               .getGamesByGenre(genre)
               .subscribe(
-                (games) => (this._genreGames = this.getShuffledGames([...this._genreGames, ...games]))
+                (games) =>
+                  (this._genreGames = this.getShuffledGames([
+                    ...this._genreGames,
+                    ...games,
+                  ]))
               )
           );
           this.loaderService.stop();
@@ -121,6 +132,20 @@ export class ViewComponent implements OnInit {
       this.restService
         .getLiveVideos(id)
         .subscribe((videos) => (this._liveVideos = videos));
+      this.gameService.gameStatus.subscribe((status) => {
+        if (status && status.game_id === id) {
+          if (status.is_running && !status.is_user_connected) {
+            this.action = "Resume";
+          } else if (status.is_running && status.is_user_connected) {
+            this.action = "Terminate";
+            this.sessionToTerminate = status.session_id;
+          } else {
+            this.action = "Play";
+          }
+        } else {
+          this.action = "Play";
+        }
+      });
     });
   }
 
@@ -219,6 +244,20 @@ export class ViewComponent implements OnInit {
     });
   }
 
+  terminateSession(): void {
+    this.startLoading();
+    this.restService
+      .terminateGame(this.sessionToTerminate)
+      .subscribe(() => {
+        this.toastr.success("Session terminated", "Success");
+        this.gameService.gameStatus = this.restService.getGameStatus();
+        this.stopLoading();
+      }, (err) => {
+        this.toastr.error("Something went wrong", "Error");
+        this.stopLoading();
+      });
+  }
+
   startGame(): void {
     this.ngbModal.dismissAll();
     localStorage.setItem("resolution", this.resolution.value);
@@ -265,6 +304,7 @@ export class ViewComponent implements OnInit {
             clearInterval(timer);
             this.stopLoading();
             window.location.href = `oneplay:key?${token}`;
+            this.gameService.gameStatus = this.restService.getGameStatus();
           }
         },
         (err) => {
@@ -273,7 +313,7 @@ export class ViewComponent implements OnInit {
           clearInterval(timer);
         }
       );
-      seconds++;
+      seconds = seconds + 3;
       if (seconds > 60) {
         this.toastr.error("Session expired", "Start Game");
         this.stopLoading();
