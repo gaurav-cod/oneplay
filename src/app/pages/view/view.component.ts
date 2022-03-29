@@ -12,6 +12,7 @@ import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
+import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 
 declare var gtag: Function;
@@ -246,16 +247,17 @@ export class ViewComponent implements OnInit {
 
   terminateSession(): void {
     this.startLoading();
-    this.restService
-      .terminateGame(this.sessionToTerminate)
-      .subscribe(() => {
+    this.restService.terminateGame(this.sessionToTerminate).subscribe(
+      () => {
         this.toastr.success("Session terminated", "Success");
         this.gameService.gameStatus = this.restService.getGameStatus();
         this.stopLoading();
-      }, (err) => {
+      },
+      (err) => {
         this.toastr.error("Something went wrong", "Error");
         this.stopLoading();
-      });
+      }
+    );
   }
 
   startGame(): void {
@@ -303,7 +305,15 @@ export class ViewComponent implements OnInit {
           if (!!token) {
             clearInterval(timer);
             this.stopLoading();
-            window.location.href = `oneplay:key?${token}`;
+            const userAgent = new UAParser(window.navigator.userAgent);
+            if (userAgent.getOS().name === "Android") {
+              window.open(
+                `https://www.oneplay.in/launch/app?payload=${token}`,
+                "_blank"
+              );
+            } else {
+              window.location.href = `oneplay:key?${token}`;
+            }
             this.gameService.gameStatus = this.restService.getGameStatus();
           }
         },

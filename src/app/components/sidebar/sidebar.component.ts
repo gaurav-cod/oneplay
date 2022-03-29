@@ -20,7 +20,7 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
   { path: "/home", title: "Home", class: "" },
   { path: "/store", title: "Store", class: "" },
-  { path: '/streams', title: 'Streams', class: '' },
+  { path: "/streams", title: "Streams", class: "" },
   // { path: '/library', title: 'Library', class: '' },
 ];
 
@@ -32,7 +32,7 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
-  
+
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   public menuItems: any[];
@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
   public results: GameModel[] = [];
   public gameStatus: GameStatusRO | null = null;
   user: UserModel;
-  
+
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
@@ -56,10 +56,13 @@ export class SidebarComponent implements OnInit {
 
   get gameLink() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return this.gLink.transform({
-        title: this.gameStatus.game_name,
-        oneplayId: this.gameStatus.game_id,
-      } as GameModel);
+      return (
+        "/view/" +
+        this.gLink.transform({
+          title: this.gameStatus.game_name,
+          oneplayId: this.gameStatus.game_id,
+        } as GameModel)
+      );
     }
     return "javascript:void(0)";
   }
@@ -131,7 +134,7 @@ export class SidebarComponent implements OnInit {
     this.authService.logout();
   }
 
-  open (container) {
+  open(container) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
