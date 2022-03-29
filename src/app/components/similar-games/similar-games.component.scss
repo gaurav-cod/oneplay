@@ -10,11 +10,23 @@
   padding: 2px 6px !important;
 }
 
+.zoom {
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1) translateZ(0px);
+    z-index: 9;
+  }
+
+  &:first-child:hover {
+    transform: scale(1.1) translateZ(0px) translateX(16px);
+  }
+}
+
 .card {
   width: 280px;
   height: 170px;
   box-shadow: 6px 5px 4px 2px #0e0d0d;
-  transition: transform 0.2s;
   background: none !important;
   cursor: pointer;
 
@@ -26,10 +38,6 @@
     border-radius: 4px;
     height: 100%;
     object-fit: cover;
-  }
-
-  &:hover {
-    transform: scale(1.1) translateZ(0px);
   }
 }
 
