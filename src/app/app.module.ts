@@ -15,7 +15,7 @@ import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { ToastrModule } from 'ngx-toastr';
-import { ErrorComponent } from './pages/error/error.component';
+import { CommonLayoutComponent } from './layouts/common-layout/common-layout.component';
 
 
 @NgModule({
@@ -36,7 +36,7 @@ import { ErrorComponent } from './pages/error/error.component';
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    ErrorComponent,
+    CommonLayoutComponent,
   ],
   providers: [
     {

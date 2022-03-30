@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
@@ -10,8 +10,10 @@ import { RestService } from "src/app/services/rest.service";
   templateUrl: "./admin-layout.component.html",
   styleUrls: ["./admin-layout.component.scss"],
 })
-export class AdminLayoutComponent implements AfterViewInit, OnInit {
+export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
+
+  private timer: any;
 
   constructor(
     private readonly restService: RestService,
@@ -26,7 +28,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
     this.authService.user = this.restService.getProfile();
     this.gameService.gameStatus = this.restService.getGameStatus();
 
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.gameService.gameStatus = this.restService.getGameStatus();
     }, 5 * 60 * 1000);
 
@@ -35,6 +37,10 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit {
         this.gameService.gameStatus = this.restService.getGameStatus();
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
   }
 
   ngAfterViewInit(): void {

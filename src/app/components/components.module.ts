@@ -19,6 +19,7 @@ import { PurchaseHistoryComponent } from "./purchase-history/purchase-history.co
 import { BottomNavComponent } from "./bottom-nav/bottom-nav.component";
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { AuthNavbarComponent } from './auth-navbar/auth-navbar.component';
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
     SubscriptionsComponent,
     PurchaseHistoryComponent,
     BottomNavComponent,
+    AuthNavbarComponent,
   ],
   exports: [
     FooterComponent,
@@ -59,6 +61,7 @@ import { ShareIconsModule } from 'ngx-sharebuttons/icons';
     SubscriptionsComponent,
     PurchaseHistoryComponent,
     BottomNavComponent,
+    AuthNavbarComponent,
   ],
 })
 export class ComponentsModule {}

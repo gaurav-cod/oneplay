@@ -7,7 +7,7 @@ import { AdminLayoutComponent } from "./layouts/admin-layout/admin-layout.compon
 import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component";
 import { AuthGuard } from "./guards/auth.guard";
 import { LoginGuard } from "./guards/login.guard";
-import { ErrorComponent } from "./pages/error/error.component";
+import { CommonLayoutComponent } from "./layouts/common-layout/common-layout.component";
 
 const routes: Routes = [
   {
@@ -44,8 +44,17 @@ const routes: Routes = [
     ],
   },
   {
-    path: "error",
-    component: ErrorComponent,
+    path: "",
+    component: CommonLayoutComponent,
+    children: [
+      {
+        path: "",
+        loadChildren: () =>
+          import("src/app/layouts/common-layout/common-layout.module").then(
+            (m) => m.CommonLayoutModule
+          ),
+      },
+    ],
   },
   {
     path: "**",
