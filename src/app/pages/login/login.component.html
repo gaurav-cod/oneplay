@@ -12,29 +12,57 @@
         <div class="card-body px-lg-4 py-lg-3">
           <form [formGroup]="loginForm" (submit)="login()" role="form">
             <div class="form-group mb-3">
-              <label class="text-white-50 d-none d-lg-block" for="">Email</label>
-              <input formControlName="email" class="form-control bg-dark" placeholder="Email" type="email">
+              <label class="text-white-50 d-none d-lg-block" for=""
+                >Email or Phone Number</label
+              >
+              <input
+                formControlName="id"
+                class="form-control bg-dark"
+                placeholder="Email or Phone Number"
+                type="text"
+              />
             </div>
             <div class="form-group">
-              <label class="text-white-50 d-none d-lg-block" for="">Password</label>
-              <input formControlName="password" class="form-control bg-dark" placeholder="Password" type="password">
+              <label class="text-white-50 d-none d-lg-block" for=""
+                >Password</label
+              >
+              <input
+                formControlName="password"
+                class="form-control bg-dark"
+                placeholder="Password"
+                type="password"
+              />
             </div>
             <div class="row">
               <div class="col-6">
-                <div class="custom-control custom-control-alternative custom-checkbox" style="z-index: 0;">
-                  <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
+                <div
+                  class="custom-control custom-control-alternative custom-checkbox"
+                  style="z-index: 0"
+                >
+                  <input
+                    class="custom-control-input"
+                    id=" customCheckLogin"
+                    type="checkbox"
+                  />
                   <label class="custom-control-label" for=" customCheckLogin">
                     <span class="text-muted">Remember me</span>
                   </label>
                 </div>
               </div>
               <div class="col-6 text-right">
-                <a href="javascript:void(0)" class="text-light" routerLinkActive="active"
-                [routerLink]="['/forgot-password']"><small>Forgot password?</small></a>
+                <a
+                  href="javascript:void(0)"
+                  class="text-light"
+                  routerLinkActive="active"
+                  [routerLink]="['/forgot-password']"
+                  ><small>Forgot password?</small></a
+                >
               </div>
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary btn-block my-4">Sign in</button>
+              <button type="submit" class="btn btn-primary btn-block my-4">
+                Sign in
+              </button>
             </div>
           </form>
         </div>

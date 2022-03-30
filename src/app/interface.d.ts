@@ -3,7 +3,7 @@ import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
 
 export interface LoginDTO {
-  email: string;
+  id: string;
   password: string;
 }
 
@@ -11,9 +11,15 @@ export interface SignupDTO {
   first_name: string;
   last_name: string;
   email: string;
+  phone: string;
   password: string;
   gender: "male" | "female" | "other" | "unknown";
   referred_by_id?: string;
+}
+
+export interface VerifySignupDTO {
+  token: string;
+  otp: string;
 }
 
 export interface StartPcRO {
@@ -57,11 +63,11 @@ export interface StartGameRO {
   game: {
     game_id: string;
     game_name: string;
-  }
+  };
   session: {
     id: string;
     launched_at: number;
-  }
+  };
 }
 
 export interface VideoWithGameId {
