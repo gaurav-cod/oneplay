@@ -13,7 +13,7 @@ declare var gtag: Function;
 })
 export class LoginComponent implements OnInit, OnDestroy {
   loginForm = new FormGroup({
-    email: new FormControl("", Validators.required),
+    id: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
   });
 
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       (token) => {
         gtag("event", "login", {
           event_category: "user",
-          event_label: this.loginForm.value.email,
+          event_label: this.loginForm.value.id,
         });
         this.authService.login(token);
       },

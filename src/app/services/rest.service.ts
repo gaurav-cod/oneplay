@@ -10,6 +10,7 @@ import {
   SignupDTO,
   StartGameRO,
   UpdateProfileDTO,
+  VerifySignupDTO,
 } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
@@ -106,9 +107,20 @@ export class RestService {
     );
   }
 
-  verify(token: string): Observable<void> {
+  verify(data: VerifySignupDTO): Observable<void> {
     return this.http
-      .post(this.r_mix_api + "/accounts/verify_signup/" + token, null)
+      .post(this.r_mix_api + "/accounts/verify_signup", data)
+      .pipe(
+        map((res) => {}),
+        catchError(({ error }) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
+  sendOTP(token: string): Observable<void> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/send_otp/" + token, null)
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
