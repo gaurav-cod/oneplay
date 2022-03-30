@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --deploy-url=https://www.oneream.com/dashboard/",
     "build:prod": "ng build --prod --deploy-url=https://www.oneplay.in/dashboard/",
     "test": "ng test",
     "lint": "ng lint",

@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   client_api: 'https://client-apis.oneplay.in/services/v1',
-  render_mix_api: 'https://rendermix.oneream.in/v1',
+  render_mix_api: 'https://rendermix.oneream.com/v1',
   socket_endpoint: 'https://103.242.119.222',
   game_assets: 'https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/',
   ga_tracking_id: 'UA-220923953-2',
