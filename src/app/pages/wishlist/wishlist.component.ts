@@ -3,6 +3,7 @@ import { Title } from "@angular/platform-browser";
 import { GameModel } from "src/app/models/game.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-wishlist",
@@ -46,7 +47,7 @@ export class WishlistComponent implements OnInit {
         const video = document.createElement("video");
         gameLink.insertAdjacentElement("afterbegin", video);
         video.classList.add("mask");
-        video.src = game.video;
+        video.src = environment.game_assets + game.oneplayId + game.trailer_video;
         video.muted = true;
         video.play();
       }, 1000);

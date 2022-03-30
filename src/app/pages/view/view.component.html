@@ -30,7 +30,8 @@
         </button>
         <img [src]="game.textLogo" class="text-logo" alt="" />
         <p class="text-white-50 mb-3">
-          {{ releaseYear }} | {{ game.ageRating }} {{ game.isFree ? ' | Free' : '' }}
+          {{ releaseYear }} | {{ game.ageRating }}
+          {{ game.isFree ? " | Free" : "" }}
         </p>
         <!-- <p class="text-white mt-0 mb-4">Play-Time: {{ game.playTime }}</p> -->
         <div
@@ -105,18 +106,22 @@
         <button
           class="btn btn-white btn-lg w-50 position-relative"
           [disabled]="startingGame"
-          (click)="action === 'Terminate' ? terminateSession() : playGame(smallModal)"
+          (click)="
+            action === 'Terminate' ? terminateSession() : playGame(smallModal)
+          "
         >
           <ngx-ui-loader
             [fgsColor]="'#c32ead'"
             [hasProgressBar]="false"
             [fgsSize]="20"
             [fgsPosition]="'center-left'"
-            [text]="action === 'Terminate' ? 'Terminating...' : 'Initializing...'"
+            [text]="
+              action === 'Terminate' ? 'Terminating...' : 'Initializing...'
+            "
             [overlayBorderRadius]="'6px'"
             [loaderId]="'play-loader'"
           ></ngx-ui-loader>
-          {{action + ' Now'}}
+          {{ action + " Now" }}
         </button>
         <button
           *ngIf="!isInWishlist"
@@ -167,9 +172,7 @@
         >
           <div class="media flex-column flex-md-row">
             <img
-              [width]="video.thumbnails.medium.width - 72"
-              [height]="video.thumbnails.medium.height - 40"
-              [src]="video.thumbnails.medium.url"
+              [src]="video.thumbnail"
               (click)="open(modal, video)"
               style="border-radius: 4px"
               class="video-image"
@@ -182,18 +185,22 @@
               </h3>
               <div class="media mb-1 align-items-center">
                 <img
-                  [src]="video.channelTitle | avatar"
+                  [src]="
+                    !!video.creatorThumbnail || (video.creatorName | avatar)
+                  "
                   class="rounded-circle"
                   width="24"
                   height="24"
                   alt=""
                 />
                 <span class="text-white-50 small ml-1">{{
-                  video.channelTitle
+                  video.creatorName
                 }}</span>
               </div>
               <div class="text-white">
-                <span class="text-xs video-text three-lines-xs">{{ video.description }}</span>
+                <span class="text-xs video-text three-lines-xs">{{
+                  video.description
+                }}</span>
               </div>
             </div>
           </div>
@@ -220,10 +227,8 @@
         >
           <div class="media flex-column flex-md-row">
             <img
-              [width]="video.thumbnails.medium.width - 72"
-              [height]="video.thumbnails.medium.height - 40"
-              [src]="video.thumbnails.medium.url"
-              style="border-radius: 4px"
+              [src]="video.thumbnail"
+              (click)="open(modal, video)"
               class="video-image"
               alt=""
             />
@@ -233,18 +238,22 @@
               </h3>
               <div class="media mb-1 align-items-center">
                 <img
-                  [src]="video.channelTitle | avatar"
+                  [src]="
+                    !!video.creatorThumbnail || (video.creatorName | avatar)
+                  "
                   class="rounded-circle"
                   width="24"
                   height="24"
                   alt=""
                 />
                 <span class="text-white-50 small ml-1">{{
-                  video.channelTitle
+                  video.creatorName
                 }}</span>
               </div>
               <div class="text-white">
-                <span class="text-xs video-text three-lines-xs">{{ video.description }}</span>
+                <span class="text-xs video-text three-lines-xs">{{
+                  video.description
+                }}</span>
               </div>
             </div>
           </div>

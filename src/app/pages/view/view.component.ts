@@ -189,7 +189,7 @@ export class ViewComponent implements OnInit {
   }
 
   open(content: any, video: VideoModel): void {
-    this.playing = video.youtube_url.replace("watch?v=", "embed/");
+    this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
       modalDialogClass: "modal-xl",
       centered: true,

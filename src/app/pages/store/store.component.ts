@@ -5,6 +5,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { BehaviorSubject } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 
 const queries = {
   "All Games": {},
@@ -85,7 +86,7 @@ export class StoreComponent implements OnInit {
         const video = document.createElement("video");
         gameLink.insertAdjacentElement("afterbegin", video);
         video.classList.add("mask");
-        video.src = game.video;
+        video.src = environment.game_assets + game.oneplayId + game.trailer_video;
         video.muted = true;
         video.play();
       }, 1000);
