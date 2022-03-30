@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-similar-games",
@@ -79,7 +80,7 @@ export class SimilarGamesComponent {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src = game.video;
+          video.src = environment.game_assets + game.oneplayId + game.video;
           video.muted = true;
           video.play();
         }
