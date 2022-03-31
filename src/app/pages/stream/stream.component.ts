@@ -37,10 +37,10 @@ export class StreamComponent implements OnInit {
         { name: "description", content: data.video.description },
       ]);
       this.video = data.video;
-      this.restService.getGameDetails(data.gameId).subscribe((game) => {
+      this.restService.getGameDetails(data.video.gameId).subscribe((game) => {
         this.game = game;
       });
-      this.restService.getVideos(data.gameId).subscribe((videos) => {
+      this.restService.getVideos(data.video.gameId).subscribe((videos) => {
         this.topVideos = videos;
       });
     });

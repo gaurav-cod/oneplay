@@ -82,3 +82,9 @@ export interface GameStatusRO {
   is_user_connected: boolean;
   session_id: string;
 }
+
+export interface GameSessionRO {
+  game_id: string;
+  user_id: string;
+  user_session_id: string;
+}
