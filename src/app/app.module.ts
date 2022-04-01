@@ -29,7 +29,7 @@ import { CommonLayoutComponent } from './layouts/common-layout/common-layout.com
     RouterModule,
     AppRoutingModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-top-center',
     })
   ],
   declarations: [

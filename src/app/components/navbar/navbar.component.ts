@@ -52,12 +52,15 @@ export class NavbarComponent implements OnInit {
 
   get gameLink() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return "/view/" + this.gLink.transform({
-        title: this.gameStatus.game_name,
-        oneplayId: this.gameStatus.game_id,
-      } as GameModel);
+      return [
+        "view",
+        this.gLink.transform({
+          title: this.gameStatus.game_name,
+          oneplayId: this.gameStatus.game_id,
+        } as GameModel),
+      ];
     }
-    return "javascript:void(0)";
+    return [];
   }
 
   get isGameRunning() {
@@ -66,6 +69,16 @@ export class NavbarComponent implements OnInit {
 
   get isUserLive() {
     return this.gameStatus && this.gameStatus.is_user_connected;
+  }
+
+  get gamePlayTooltip() {
+    if (this.isGameRunning && !this.isUserLive) {
+      return this.gameStatus.game_name + " is running";
+    }
+    if (this.isUserLive) {
+      return "You are playing " + this.gameStatus.game_name;
+    }
+    return "";
   }
 
   constructor(

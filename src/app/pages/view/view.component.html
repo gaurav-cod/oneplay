@@ -104,24 +104,38 @@
     <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
         <button
+          *ngIf="action !== 'Terminate'"
           class="btn btn-white btn-lg w-50 position-relative"
           [disabled]="startingGame"
-          (click)="
-            action === 'Terminate' ? terminateSession() : playGame(smallModal)
-          "
+          (click)="playGame(smallModal)"
         >
           <ngx-ui-loader
             [fgsColor]="'#c32ead'"
             [hasProgressBar]="false"
             [fgsSize]="20"
             [fgsPosition]="'center-left'"
-            [text]="
-              action === 'Terminate' ? 'Terminating...' : 'Initializing...'
-            "
+            [text]="'Initializing...'"
             [overlayBorderRadius]="'6px'"
             [loaderId]="'play-loader'"
           ></ngx-ui-loader>
-          {{ action + " Now" }}
+          {{ !startingGame ? action + " Now" : "" }}
+        </button>
+        <button
+          *ngIf="action !== 'Play'"
+          class="btn btn-danger btn-lg w-25 position-relative"
+          [disabled]="terminatingGame"
+          (click)="terminateSession()"
+        >
+          <ngx-ui-loader
+            [fgsColor]="'#c32ead'"
+            [hasProgressBar]="false"
+            [fgsSize]="20"
+            [fgsPosition]="'center-left'"
+            [text]="'Terminating...'"
+            [overlayBorderRadius]="'6px'"
+            [loaderId]="'terminate-loader'"
+          ></ngx-ui-loader>
+          {{ !terminatingGame ? "Terminate" : "" }}
         </button>
         <button
           *ngIf="!isInWishlist"
