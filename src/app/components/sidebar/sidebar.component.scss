@@ -9,6 +9,12 @@
   left: 0;
   width: 100%;
 
+  .navbar-collapse {
+    background: #0000007a !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
   @media (max-width: 768px) {
     z-index: 999;
   }
