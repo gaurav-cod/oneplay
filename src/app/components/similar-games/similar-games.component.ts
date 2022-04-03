@@ -80,7 +80,7 @@ export class SimilarGamesComponent {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src = environment.game_assets + game.oneplayId + game.video;
+          video.src = environment.game_assets + game.oneplayId + game.trailer_video;
           video.muted = true;
           video.play();
         }

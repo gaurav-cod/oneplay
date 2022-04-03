@@ -17,6 +17,7 @@ export class RegisterComponent implements OnInit {
     first_name: new FormControl("", Validators.required),
     last_name: new FormControl("", Validators.required),
     email: new FormControl("", Validators.required),
+    phone: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
     gender: new FormControl("", Validators.required),
     referred_by_id: new FormControl(""),
@@ -42,23 +43,28 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.loading = true;
-    this.restService.signup(this.registerForm.value).subscribe(
-      () => {
-        this.loading = false;
-        this.toastr.success(
-          "Please check your email to confirm your email id",
-          "Success"
-        );
-        gtag("event", "signup", {
-          event_category: "user",
-          event_label: this.registerForm.value.email,
-        });
-      },
-      (error) => {
-        this.loading = false;
-        this.toastr.error(error, "Signup Error");
-      }
-    );
+    this.restService
+      .signup({
+        ...this.registerForm.value,
+        phone: `+91${this.registerForm.value.phone}`,
+      })
+      .subscribe(
+        () => {
+          this.loading = false;
+          this.toastr.success(
+            "Please check your email to confirm your email id",
+            "Success"
+          );
+          gtag("event", "signup", {
+            event_category: "user",
+            event_label: this.registerForm.value.email,
+          });
+        },
+        (error) => {
+          this.loading = false;
+          this.toastr.error(error, "Signup Error");
+        }
+      );
   }
 
   private getName(id: string) {

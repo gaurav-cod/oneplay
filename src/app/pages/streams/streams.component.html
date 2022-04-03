@@ -12,7 +12,7 @@
         <div class="row m-0">
           <div
             class="col-md-8 p-0 position-relative banner-img"
-            [style.background-image]="'url(' + banner.thumbnails.high.url + ')'"
+            [style.background-image]="'url(' + banner.thumbnail + ')'"
           >
             <!-- <span class="mask bg-translucent-dark"></span> -->
           </div>
@@ -22,14 +22,20 @@
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center">
                     <div class="avatar rounded-circle mr-2">
-                      <img [src]="banner.channelTitle | avatar" alt="" />
+                      <img
+                        [src]="
+                          !!banner.creatorThumbnail ||
+                          (banner.creatorName | avatar)
+                        "
+                        alt=""
+                      />
                     </div>
                     <div>
                       <div class="text-sm text-white two-lines-sm">
-                        {{ banner.channelTitle }}
+                        {{ banner.creatorName }}
                       </div>
                       <div class="text-xs text-primary">
-                        {{ banner.liveBroadcastContent }}
+                        {{ banner.source }}
                       </div>
                     </div>
                   </div>
@@ -38,7 +44,9 @@
                       class="fa fa-eye text-white-50 mr-1"
                       aria-hidden="true"
                     ></i>
-                    <span class="text-xs text-white-50">15.3K viewers</span>
+                    <span class="text-xs text-white-50"
+                      >{{ nFormatter(banner.sourceViews, 1) }} viewers</span
+                    >
                   </div>
                 </div>
                 <hr class="my-3 bg-gray" />

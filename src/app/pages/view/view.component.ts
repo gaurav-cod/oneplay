@@ -28,6 +28,7 @@ export class ViewComponent implements OnInit {
   showAllVideos = false;
   showAllLiveVideos = false;
   startingGame = false;
+  terminatingGame = false;
 
   similarGames: GameModel[] = [];
 
@@ -189,7 +190,7 @@ export class ViewComponent implements OnInit {
   }
 
   open(content: any, video: VideoModel): void {
-    this.playing = video.youtube_url.replace("watch?v=", "embed/");
+    this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
       modalDialogClass: "modal-xl",
       centered: true,
@@ -246,16 +247,16 @@ export class ViewComponent implements OnInit {
   }
 
   terminateSession(): void {
-    this.startLoading();
+    this.startTerminating();
     this.restService.terminateGame(this.sessionToTerminate).subscribe(
       () => {
         this.toastr.success("Session terminated", "Success");
         this.gameService.gameStatus = this.restService.getGameStatus();
-        this.stopLoading();
+        this.stopTerminating();
       },
       (err) => {
         this.toastr.error("Something went wrong", "Error");
-        this.stopLoading();
+        this.stopTerminating();
       }
     );
   }
@@ -360,6 +361,16 @@ export class ViewComponent implements OnInit {
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
+  }
+
+  private startTerminating(): void {
+    this.terminatingGame = true;
+    this.loaderService.startLoader("terminate-loader");
+  }
+
+  private stopTerminating(): void {
+    this.terminatingGame = false;
+    this.loaderService.stopLoader("terminate-loader");
   }
 
   private getShuffledGames(games: GameModel[]): GameModel[] {

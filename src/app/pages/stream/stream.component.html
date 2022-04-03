@@ -14,15 +14,15 @@
     >
       <div class="d-flex align-items-center">
         <div class="avatar avatar-lg rounded-circle mr-2">
-          <img [src]="video.channelTitle | avatar" alt="" />
+          <img [src]="!!video.creatorThumbnail || (video.creatorName | avatar)" alt="" />
         </div>
         <div>
-          <div class="text-sm text-white">{{ video.channelTitle }}</div>
+          <div class="text-sm text-white">{{ video.creatorName }}</div>
           <div class="text-xs text-white-50 d-none d-md-block">
             {{ video.title }}
           </div>
           <span class="badge bg-light text-dark">{{
-            video.liveBroadcastContent
+            video.source
           }}</span>
         </div>
       </div>

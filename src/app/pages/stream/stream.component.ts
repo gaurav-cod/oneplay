@@ -18,7 +18,7 @@ export class StreamComponent implements OnInit {
   topVideos: VideoModel[] = [];
 
   get playing() {
-    return this.video?.youtube_url.replace("watch?v=", "embed/") || "";
+    return this.video?.sourceLink.replace("watch?v=", "embed/") || "";
   }
 
   constructor(
@@ -33,14 +33,14 @@ export class StreamComponent implements OnInit {
       const data: VideoWithGameId = JSON.parse(decodeURIComponent(params.id));
       this.title.setTitle("OnePlay | Watch " + data.video.title);
       this.meta.addTags([
-        { name: "keywords", content: data.video.channelTitle },
+        { name: "keywords", content: data.video.creatorName },
         { name: "description", content: data.video.description },
       ]);
       this.video = data.video;
-      this.restService.getGameDetails(data.gameId).subscribe((game) => {
+      this.restService.getGameDetails(data.video.gameId).subscribe((game) => {
         this.game = game;
       });
-      this.restService.getVideos(data.gameId).subscribe((videos) => {
+      this.restService.getVideos(data.video.gameId).subscribe((videos) => {
         this.topVideos = videos;
       });
     });

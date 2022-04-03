@@ -16,6 +16,7 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
+          "defaultConfiguration": "development",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -73,7 +74,8 @@
                 },
                 "fonts": true
               },
-             "outputHashing": "all"
+             "outputHashing": "all",
+             "baseHref": "/dashboard/"
            }
           }
         },

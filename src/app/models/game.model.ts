@@ -11,6 +11,7 @@ export class GameModel {
     readonly bgImage: string;
     readonly textBgImage: string;
     readonly textLogo: string;
+    readonly trailer_video: string;
     readonly video?: string;
     readonly rating: number;
     readonly isFree: boolean;
@@ -43,6 +44,7 @@ export class GameModel {
         this.bgImage = json["background_image"];
         this.textBgImage = json["text_background_image"];
         this.textLogo = json["text_logo"];
+        this.trailer_video = json["trailer_video"];
         this.video = json["videos"]?.[0];
         this.rating = json["rating"];
         this.isFree = json["is_free"] === 'true';

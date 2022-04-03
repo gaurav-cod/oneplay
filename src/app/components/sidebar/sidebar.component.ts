@@ -56,15 +56,15 @@ export class SidebarComponent implements OnInit {
 
   get gameLink() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return (
-        "/view/" +
+      return [
+        "view",
         this.gLink.transform({
           title: this.gameStatus.game_name,
           oneplayId: this.gameStatus.game_id,
-        } as GameModel)
-      );
+        } as GameModel),
+      ];
     }
-    return "javascript:void(0)";
+    return [];
   }
 
   get isGameRunning() {

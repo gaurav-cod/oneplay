@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
+  GameSessionRO,
   GameStatusRO,
   HomeFeeds,
   LoginDTO,
@@ -10,6 +11,7 @@ import {
   SignupDTO,
   StartGameRO,
   UpdateProfileDTO,
+  VerifySignupDTO,
 } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
@@ -106,9 +108,20 @@ export class RestService {
     );
   }
 
-  verify(token: string): Observable<void> {
+  verify(data: VerifySignupDTO): Observable<void> {
     return this.http
-      .post(this.r_mix_api + "/accounts/verify_signup/" + token, null)
+      .post(this.r_mix_api + "/accounts/verify_signup", data)
+      .pipe(
+        map((res) => {}),
+        catchError(({ error }) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
+  sendOTP(token: string): Observable<void> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/send_otp/" + token, null)
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
@@ -388,6 +401,28 @@ export class RestService {
         map((res) => (!!Object.keys(res["data"]).length ? res["data"] : null)),
         catchError((err) => {
           throw new Error(err.error.msg);
+        })
+      );
+  }
+
+  getGameSession(launchKey: string): Observable<GameSessionRO> {
+    return this.http
+      .get<GameSessionRO>(this.r_mix_api + "/logging/game_session/" + launchKey)
+      .pipe(
+        map((res) => res),
+        catchError((err) => {
+          throw new Error(err.message);
+        })
+      );
+  }
+
+  saveFeedback(feedback: any): Observable<void> {
+    return this.http
+      .post<void>(this.r_mix_api + "/logging/feedback", feedback)
+      .pipe(
+        map(() => {}),
+        catchError((err) => {
+          throw new Error(err.message);
         })
       );
   }
