@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-subscriptions",
@@ -11,10 +11,7 @@ import { RestService } from "src/app/services/rest.service";
 export class SubscriptionsComponent implements OnInit {
   subscriptions: SubscriptionModel[] = [];
 
-  constructor(
-    private readonly restService: RestService,
-    private readonly toastr: ToastrService
-  ) {}
+  constructor(private readonly restService: RestService) {}
 
   ngOnInit(): void {
     this.restService
@@ -23,6 +20,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   onRenew() {
-    this.toastr.warning("Not available at the moment");
+    Swal.fire({
+      icon: "warning",
+      title: "Not available at the moment",
+      text: "",
+    });
   }
 }

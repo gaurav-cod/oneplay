@@ -14,7 +14,6 @@ import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
-import { ToastrModule } from 'ngx-toastr';
 import { CommonLayoutComponent } from './layouts/common-layout/common-layout.component';
 
 
@@ -27,10 +26,7 @@ import { CommonLayoutComponent } from './layouts/common-layout/common-layout.com
     ComponentsModule,
     NgbModule,
     RouterModule,
-    AppRoutingModule,
-    ToastrModule.forRoot({
-      positionClass: 'toast-top-center',
-    })
+    AppRoutingModule
   ],
   declarations: [
     AppComponent,

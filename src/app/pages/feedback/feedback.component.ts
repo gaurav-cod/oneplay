@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 import { GameSessionRO } from "src/app/interface";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-feedback",
@@ -24,8 +24,7 @@ export class FeedbackComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly restService: RestService,
-    private readonly toastr: ToastrService
+    private readonly restService: RestService
   ) {}
 
   ngOnInit(): void {
@@ -50,10 +49,20 @@ export class FeedbackComponent implements OnInit {
       })
       .subscribe(
         () => {
-          this.toastr.success("Feedback submitted successfully!");
+          Swal.fire({
+            title: "Thank you!",
+            text: "Your feedback has been submitted successfully!",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
         },
         (err) => {
-          this.toastr.error("Error submitting feedback");
+          Swal.fire({
+            title: "Error!",
+            text: "Error submitting feedback",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       );
   }

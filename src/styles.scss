@@ -3,6 +3,7 @@
 @import "~ngx-sharebuttons/themes/material/material-dark-theme";
 @import "~ngx-sharebuttons/themes/modern/modern-light-theme";
 @import "~ngx-sharebuttons/themes/circles/circles-dark-theme";
+@import "~sweetalert2/src/sweetalert2.scss";
 
 @font-face {
     font-family: helvetica;
@@ -43,10 +44,6 @@ body {
         // left: auto;
         bottom: 100px;
     }
-}
-
-.toast-top-center {
-    top: 32px !important;
 }
 
 .two-lines {

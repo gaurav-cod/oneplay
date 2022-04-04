@@ -1,28 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { RestService } from 'src/app/services/rest.service';
+import { Component, OnInit } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
+import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
-  selector: 'app-forgot-pass',
-  templateUrl: './forgot-pass.component.html',
-  styleUrls: ['./forgot-pass.component.scss']
+  selector: "app-forgot-pass",
+  templateUrl: "./forgot-pass.component.html",
+  styleUrls: ["./forgot-pass.component.scss"],
 })
 export class ForgotPassComponent implements OnInit {
-  email = new FormControl('', Validators.required);
+  email = new FormControl("", Validators.required);
 
-  constructor(private readonly restService: RestService, private readonly toastr: ToastrService) { }
+  constructor(private readonly restService: RestService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   submit() {
-    this.restService
-      .requestResetPassword(this.email.value)
-      .subscribe(
-        () => this.toastr.success('Check your email to reset password', 'Success'),
-        (error) => this.toastr.error(error, 'Reset Password Error')
-      );
+    this.restService.requestResetPassword(this.email.value).subscribe(
+      () =>
+        Swal.fire({
+          title: "Success",
+          text: "Check your email to reset password",
+          icon: "success",
+          confirmButtonText: "OK",
+        }),
+      (error) =>
+        Swal.fire({
+          title: "Error",
+          text: "Error requesting reset password",
+          icon: "error",
+          confirmButtonText: "OK",
+        })
+    );
   }
-
 }

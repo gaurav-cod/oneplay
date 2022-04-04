@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-reset-pass",
@@ -15,8 +15,7 @@ export class ResetPassComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private restService: RestService,
-    private readonly toastr: ToastrService
+    private restService: RestService
   ) {}
 
   ngOnInit(): void {}
@@ -25,10 +24,21 @@ export class ResetPassComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.resetPassword(token, this.password.value).subscribe(
       () => {
-        this.toastr.success("Password reset successfully");
+        Swal.fire({
+          title: "Success",
+          text: "Password reset successfully",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         this.router.navigateByUrl("/login");
       },
-      (error) => this.toastr.error(error, "Reset Password Error")
+      (error) =>
+        Swal.fire({
+          title: "Opps...",
+          text: "Error resetting password",
+          icon: "error",
+          confirmButtonText: "OK",
+        })
     );
   }
 }

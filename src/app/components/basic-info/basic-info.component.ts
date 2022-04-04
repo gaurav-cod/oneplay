@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
 import { Session } from "src/app/models/session.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-basic-info",
@@ -40,8 +40,7 @@ export class BasicInfoComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService,
-    private readonly toastr: ToastrService
+    private readonly authService: AuthService
   ) {
     this.authService.user.subscribe((user) => {
       this.username.setValue(user.username);
@@ -71,33 +70,49 @@ export class BasicInfoComponent implements OnInit {
         this.username.disable();
       },
       (error) => {
-        this.toastr.error(error, "Update Username");
-      }
-    );
-  }
-  
-  updateFirstName(): void {
-    this.restService.updateProfile({ first_name: this.firstName.value }).subscribe(
-      () => {
-        this.authService.updateProfile({ firstName: this.firstName.value });
-        this.firstName.disable();
-      },
-      (error) => {
-        this.toastr.error(error, "Update First Name");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }
 
+  updateFirstName(): void {
+    this.restService
+      .updateProfile({ first_name: this.firstName.value })
+      .subscribe(
+        () => {
+          this.authService.updateProfile({ firstName: this.firstName.value });
+          this.firstName.disable();
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error,
+          });
+        }
+      );
+  }
+
   updateLastName(): void {
-    this.restService.updateProfile({ last_name: this.lastName.value }).subscribe(
-      () => {
-        this.authService.updateProfile({ lastName: this.lastName.value });
-        this.lastName.disable();
-      },
-      (error) => {
-        this.toastr.error(error, "Update Last Name");
-      }
-    );
+    this.restService
+      .updateProfile({ last_name: this.lastName.value })
+      .subscribe(
+        () => {
+          this.authService.updateProfile({ lastName: this.lastName.value });
+          this.lastName.disable();
+        },
+        (error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error,
+          });
+        }
+      );
   }
 
   updateBio(): void {
@@ -107,7 +122,11 @@ export class BasicInfoComponent implements OnInit {
         this.bio.disable();
       },
       (error) => {
-        this.toastr.error(error, "Update Bio");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }
@@ -120,7 +139,11 @@ export class BasicInfoComponent implements OnInit {
         this.phone.disable();
       },
       (error) => {
-        this.toastr.error(error, "Update Phone");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }
@@ -128,11 +151,19 @@ export class BasicInfoComponent implements OnInit {
   updateEmail(): void {
     this.restService.updateEmail(this.email.value).subscribe(
       (msg) => {
-        this.toastr.success(msg, "Update Email");
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: msg,
+        });
         this.authService.logout();
       },
       (error) => {
-        this.toastr.error(error, "Update Email");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }
@@ -140,12 +171,20 @@ export class BasicInfoComponent implements OnInit {
   updatePassword(): void {
     this.restService.updatePassword(this.password.value).subscribe(
       () => {
-        this.toastr.success("Password updated successfully");
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Password updated successfully",
+        });
         this.password.reset();
         this.password.disable();
       },
       (error) => {
-        this.toastr.error(error, "Update Password");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }
@@ -163,7 +202,11 @@ export class BasicInfoComponent implements OnInit {
       },
       (error) => {
         this.loggingOut = false;
-        this.toastr.error(error, "Delete Session");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error,
+        });
       }
     );
   }

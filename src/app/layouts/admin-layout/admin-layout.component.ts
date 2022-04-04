@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-admin-layout",
@@ -19,7 +19,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly router: Router,
-    private readonly toastr: ToastrService,
     private readonly gameService: GameService
   ) {}
 
@@ -87,7 +86,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           });
         }
       },
-      (error) => this.toastr.error(error, "Error")
+      (error) => Swal.fire({ title: "Error", text: error, icon: "error" })
     );
   }
 }

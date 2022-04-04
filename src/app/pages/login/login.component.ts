@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 declare var gtag: Function;
 
@@ -19,8 +19,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService,
-    private readonly toastr: ToastrService
+    private readonly authService: AuthService
   ) {}
 
   ngOnInit() {}
@@ -36,7 +35,12 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.authService.login(token);
       },
       (error) => {
-        this.toastr.error(error, "Login Error!");
+        Swal.fire({
+          title: "Error",
+          text: "Error logging in",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     );
   }

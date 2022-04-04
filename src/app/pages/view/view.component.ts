@@ -1,10 +1,9 @@
 import { Location } from "@angular/common";
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ToastrService } from "ngx-toastr";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
@@ -12,6 +11,7 @@ import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 
@@ -61,7 +61,6 @@ export class ViewComponent implements OnInit {
     private readonly title: Title,
     private readonly meta: Meta,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly toastr: ToastrService,
     private readonly gameService: GameService
   ) {
     this.authService.wishlist.subscribe(
@@ -227,17 +226,21 @@ export class ViewComponent implements OnInit {
 
   playGame(container): void {
     if (this.user.status !== "active") {
-      this.toastr.error(
-        "Your account needs to be activated by Oneplay to play games",
-        "Error"
-      );
+      Swal.fire({
+        title: "Opps...",
+        text: "Your account needs to be activated by Oneplay to play games",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
     if (!this.user.subscriptionIsActive) {
-      this.toastr.error(
-        "Your subscription is not active. Please renew your subscription",
-        "Error"
-      );
+      Swal.fire({
+        title: "Opps...",
+        text: "Your subscription is not active. Please renew your subscription",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
       return;
     }
     this.ngbModal.open(container, {
@@ -250,12 +253,22 @@ export class ViewComponent implements OnInit {
     this.startTerminating();
     this.restService.terminateGame(this.sessionToTerminate).subscribe(
       () => {
-        this.toastr.success("Session terminated", "Success");
+        Swal.fire({
+          title: "Session terminated",
+          text: "Your session has been terminated",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         this.gameService.gameStatus = this.restService.getGameStatus();
         this.stopTerminating();
       },
       (err) => {
-        this.toastr.error("Something went wrong", "Error");
+        Swal.fire({
+          title: "Opps...",
+          text: "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         this.stopTerminating();
       }
     );
@@ -286,19 +299,34 @@ export class ViewComponent implements OnInit {
           } else if (data.api_action === "call_terminate") {
             this.terminateGame(data.session.id);
           } else {
-            this.toastr.error("Something went wrong");
+            Swal.fire({
+              title: "Opps...",
+              text: "Something went wrong",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
             this.stopLoading();
           }
         },
         (err) => {
-          this.toastr.error(err, "Start Game");
+          Swal.fire({
+            title: "Opps...",
+            text: "Something went wrong",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
           this.stopLoading();
         }
       );
   }
 
   private startGameWithClientToken(sessionId: string): void {
-    this.toastr.info("Initializing game...");
+    Swal.fire({
+      title: "Initializing game",
+      text: "Please wait while we connect you to the game",
+      icon: "info",
+      confirmButtonText: "OK",
+    });
     let seconds = 0;
     const timer = setInterval(() => {
       this.restService.getClientToken(sessionId).subscribe(
@@ -319,14 +347,24 @@ export class ViewComponent implements OnInit {
           }
         },
         (err) => {
-          this.toastr.error(err, "Start Game");
+          Swal.fire({
+            title: "Opps...",
+            text: "Something went wrong",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
           this.stopLoading();
           clearInterval(timer);
         }
       );
       seconds = seconds + 3;
       if (seconds > 60) {
-        this.toastr.error("Session expired", "Start Game");
+        Swal.fire({
+          title: "Opps...",
+          text: "Something went wrong",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
         this.stopLoading();
         clearInterval(timer);
       }
@@ -344,7 +382,12 @@ export class ViewComponent implements OnInit {
           }, 2000);
         },
         (err) => {
-          this.toastr.error(err, "Terminate Game");
+          Swal.fire({
+            title: "Opps...",
+            text: "Something went wrong",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
           this.stopLoading();
         }
       );

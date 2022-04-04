@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 declare var gtag: Function;
 
@@ -26,7 +26,6 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly toastr: ToastrService,
     private readonly route: ActivatedRoute
   ) {}
 
@@ -51,10 +50,12 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          this.toastr.success(
-            "Please check your email to confirm your email id",
-            "Success"
-          );
+          Swal.fire({
+            title: "Success",
+            text: "Please check your email to confirm your email id",
+            icon: "success",
+            confirmButtonText: "OK",
+          });
           gtag("event", "signup", {
             event_category: "user",
             event_label: this.registerForm.value.email,
@@ -62,7 +63,12 @@ export class RegisterComponent implements OnInit {
         },
         (error) => {
           this.loading = false;
-          this.toastr.error(error, "Signup Error");
+          Swal.fire({
+            title: "Error",
+            text: "Error signing up",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       );
   }
