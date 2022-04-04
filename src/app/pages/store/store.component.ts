@@ -7,28 +7,6 @@ import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 
-const queries = {
-  "All Games": {},
-  "Best of 2021": {
-    release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
-  },
-  "Best of 2020": {
-    release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
-  },
-  "Top 20": {
-    rating: "4",
-  },
-  // "Last 30 days": {
-  //   release_date: "now-1d/d#now/d",
-  // },
-  // "Last week": {
-  //   release_date: "now-1w/d#now/d",
-  // },
-  // "Next week": {
-  //   release_date: "now/d#now+1w/d",
-  // },
-};
-
 @Component({
   selector: "app-store",
   templateUrl: "./store.component.html",
@@ -43,8 +21,21 @@ export class StoreComponent implements OnInit {
   currentPage = new BehaviorSubject(0);
   canLoadMore = true;
 
+  private queries = {
+    "All Games": {},
+    "Best of 2021": {
+      release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
+    },
+    "Best of 2020": {
+      release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
+    },
+    "Top 20": {
+      rating: "4",
+    },
+  };
+
   get routes() {
-    return Object.keys(queries);
+    return Object.keys(this.queries);
   }
 
   get isMobile() {
@@ -64,9 +55,31 @@ export class StoreComponent implements OnInit {
       this.title.setTitle("OnePlay | " + (params.filter || "Store"));
       this.canLoadMore = true;
       this.currentPage.subscribe((page) => {
-        this.loadGames(queries[params.filter || "All Games"], page);
+        this.loadGames(this.queries[params.filter || "All Games"], page);
       });
       this.currentPage.next(0);
+    });
+
+    this.restService.getTopGenres(3).subscribe((genres) => {
+      genres.forEach((genre) => {
+        this.queries["In " + genre] = {
+          genres: genre,
+        };
+      });
+    });
+    this.restService.getTopDevelopers(3).subscribe((developers) => {
+      developers.forEach((developer) => {
+        this.queries["By " + developer] = {
+          developer: developer,
+        };
+      });
+    });
+    this.restService.getTopPublishers(3).subscribe((publishers) => {
+      publishers.forEach((publisher) => {
+        this.queries["From " + publisher] = {
+          publisher: publisher,
+        };
+      });
     });
   }
 
@@ -86,7 +99,8 @@ export class StoreComponent implements OnInit {
         const video = document.createElement("video");
         gameLink.insertAdjacentElement("afterbegin", video);
         video.classList.add("mask");
-        video.src = environment.game_assets + game.oneplayId + game.trailer_video;
+        video.src =
+          environment.game_assets + game.oneplayId + game.trailer_video;
         video.muted = true;
         video.play();
       }, 1000);

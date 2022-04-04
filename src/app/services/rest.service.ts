@@ -225,6 +225,30 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
+  getTopGenres(limit: number): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/games/top_genres", {
+        params: { limit },
+      })
+      .pipe();
+  }
+
+  getTopPublishers(limit: number): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/games/top_publishers", {
+        params: { limit },
+      })
+      .pipe();
+  }
+
+  getTopDevelopers(limit: number): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/games/top_developers", {
+        params: { limit },
+      })
+      .pipe();
+  }
+
   getGamesByGenre(genre: string): Observable<GameModel[]> {
     const data = {
       genres: genre,
