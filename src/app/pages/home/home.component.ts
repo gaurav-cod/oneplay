@@ -4,6 +4,7 @@ import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-home",
@@ -28,9 +29,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly loaderService: NgxUiLoaderService,
-  ) {
-      }
+    private readonly loaderService: NgxUiLoaderService
+  ) {}
 
   ngOnInit(): void {
     this.loaderService.start();
@@ -44,6 +44,16 @@ export class HomeComponent implements OnInit {
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
     );
+    this.authService.user.subscribe((user) => {
+      if (user.status !== "active") {
+        Swal.fire({
+          icon: "warning",
+          title: "Hi, " + user.firstName,
+          text: "Your account is under verification for activation of the free trail subscription, it usually takes less then 24 hours and you will get a mail.\nPlease contact us in support@oneplay.in if you are still facing issues after 24 hours.",
+          confirmButtonText: "OK",
+        });
+      }
+    });
   }
 
   isInWishlist(game: GameModel): boolean {
