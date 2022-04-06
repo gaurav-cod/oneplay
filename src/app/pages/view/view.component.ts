@@ -259,7 +259,9 @@ export class ViewComponent implements OnInit {
           icon: "success",
           confirmButtonText: "OK",
         });
-        this.gameService.gameStatus = this.restService.getGameStatus();
+        setTimeout(() => {
+          this.gameService.gameStatus = this.restService.getGameStatus();
+        }, 2000);
         this.stopTerminating();
       },
       (err) => {
@@ -343,7 +345,9 @@ export class ViewComponent implements OnInit {
             } else {
               window.location.href = `oneplay:key?${token}`;
             }
-            this.gameService.gameStatus = this.restService.getGameStatus();
+            setTimeout(() => {
+              this.gameService.gameStatus = this.restService.getGameStatus();
+            }, 2000);
           }
         },
         (err) => {
