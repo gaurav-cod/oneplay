@@ -139,10 +139,10 @@ export class ViewComponent implements OnInit {
             this.action = "Resume";
           } else if (status.is_running && status.is_user_connected) {
             this.action = "Terminate";
-            this.sessionToTerminate = status.session_id;
           } else {
             this.action = "Play";
           }
+          this.sessionToTerminate = status.session_id;
         } else {
           this.action = "Play";
         }
@@ -261,7 +261,7 @@ export class ViewComponent implements OnInit {
         });
         setTimeout(() => {
           this.gameService.gameStatus = this.restService.getGameStatus();
-        }, 2000);
+        }, 3000);
         this.stopTerminating();
       },
       (err) => {
@@ -347,7 +347,7 @@ export class ViewComponent implements OnInit {
             }
             setTimeout(() => {
               this.gameService.gameStatus = this.restService.getGameStatus();
-            }, 2000);
+            }, 3000);
           }
         },
         (err) => {
