@@ -4,3 +4,9 @@
     box-shadow: none !important;
   }
 }
+
+.passed {
+  color: rgba(white, 0.3);
+  transition: 0.4s all;
+  text-decoration: line-through;
+}

@@ -24,6 +24,29 @@ export class RegisterComponent implements OnInit {
   });
   loading = false;
 
+  passwordChecks = [
+    {
+      name: "1 uppercase character",
+      regex: /[A-Z]/,
+    },
+    {
+      name: "1 lowercase character",
+      regex: /[a-z]/,
+    },
+    {
+      name: "1 number",
+      regex: /[0-9]/,
+    },
+    {
+      name: "8 characters minimum",
+      regex: /.{8,}/,
+    },
+  ];
+
+  get password(): string {
+    return this.registerForm.controls["password"].value || "";
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute
