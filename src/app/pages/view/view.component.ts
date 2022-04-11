@@ -155,9 +155,9 @@ export class ViewComponent implements OnInit {
   }
 
   get devGames(): GameModel[] {
-    return [...this._devGames].sort(
-      (a, b) => a.popularityScore - b.popularityScore
-    );
+    return [...this._devGames]
+      .filter((game) => game.oneplayId !== this.game.oneplayId)
+      .sort((a, b) => a.popularityScore - b.popularityScore);
   }
 
   get allDevelopers(): string {
@@ -165,9 +165,9 @@ export class ViewComponent implements OnInit {
   }
 
   get genreGames(): GameModel[] {
-    return [...this._genreGames].sort(
-      (a, b) => a.popularityScore - b.popularityScore
-    );
+    return [...this._genreGames]
+      .filter((game) => game.oneplayId !== this.game.oneplayId)
+      .sort((a, b) => a.popularityScore - b.popularityScore);
   }
 
   get allGenres(): string {
@@ -230,7 +230,6 @@ export class ViewComponent implements OnInit {
         title: "Opps...",
         text: "Your account needs to be activated by Oneplay to play games",
         icon: "error",
-        confirmButtonText: "OK",
       });
       return;
     }
@@ -239,13 +238,12 @@ export class ViewComponent implements OnInit {
         title: "Opps...",
         text: "Your subscription is not active. Please renew your subscription",
         icon: "error",
-        confirmButtonText: "OK",
       });
       return;
     }
     this.ngbModal.open(container, {
       centered: true,
-      modalDialogClass: "modal-sm",
+      modalDialogClass: "modal-md",
     });
   }
 
@@ -327,7 +325,7 @@ export class ViewComponent implements OnInit {
       title: "Initializing game",
       text: "Please wait while we connect you to the game",
       icon: "info",
-      confirmButtonText: "OK",
+      showConfirmButton: false,
     });
     let seconds = 0;
     const timer = setInterval(() => {

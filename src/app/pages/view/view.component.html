@@ -342,6 +342,41 @@
         </div>
       </div>
       <div class="row">
+        <div *ngIf="game.storesMapping.length" class="col-12">
+          <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="ml-2">
+              You need to
+              {{ game.isFree ? "have account" : "purchase this game" }} in
+              {{ game.storesMapping.length > 1 ? "any of" : "" }}
+              <a
+                *ngFor="let store of game.storesMapping"
+                [href]="store.link"
+                target="_blank"
+                class="d-inline-block mx-2"
+                >{{ store.name }}</a
+              >
+              to play this game
+            </span>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="alert alert-warning" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span class="ml-2">
+              You need to
+              <a
+                href="https://www.oneplay.in/download.html"
+                target="_blank"
+                class="d-inline-block mx-2"
+              >
+                download & install
+              </a
+              >
+              the OnePlay client to play this game
+            </span>
+          </div>
+        </div>
         <div class="col-12 col-md-6">
           <div class="form-group">
             <label for="resolution" class="text-dark"> Resolution </label>
