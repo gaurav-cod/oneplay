@@ -234,7 +234,7 @@ export class ViewComponent implements OnInit {
       });
       return;
     }
-    if (!this.user.subscriptionIsActive) {
+    if (!this.user.subscriptionIsActive || !this.user.subscribedPlan) {
       Swal.fire({
         title: "Opps...",
         text: "Your subscription is not active. Please renew your subscription",
@@ -267,7 +267,7 @@ export class ViewComponent implements OnInit {
       (err) => {
         Swal.fire({
           title: "Opps...",
-          text: "Something went wrong",
+          text: err || "Something went wrong",
           icon: "error",
           confirmButtonText: "OK",
         });
@@ -313,7 +313,7 @@ export class ViewComponent implements OnInit {
         (err) => {
           Swal.fire({
             title: "Opps...",
-            text: "Something went wrong",
+            text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -353,7 +353,7 @@ export class ViewComponent implements OnInit {
         (err) => {
           Swal.fire({
             title: "Opps...",
-            text: "Something went wrong",
+            text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -362,7 +362,7 @@ export class ViewComponent implements OnInit {
         }
       );
       seconds = seconds + 3;
-      if (seconds > 60) {
+      if (seconds > 90) {
         Swal.fire({
           title: "Opps...",
           text: "Something went wrong",
@@ -388,7 +388,7 @@ export class ViewComponent implements OnInit {
         (err) => {
           Swal.fire({
             title: "Opps...",
-            text: "Something went wrong",
+            text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });

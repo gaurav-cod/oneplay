@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       (error) => {
         Swal.fire({
           title: "Error",
-          text: "Error logging in",
+          text: error,
           icon: "error",
           confirmButtonText: "OK",
         });

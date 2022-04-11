@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
           Swal.fire({
             title: "Error",
-            text: "Error signing up",
+            text: error,
             icon: "error",
             confirmButtonText: "OK",
           });

@@ -34,7 +34,7 @@ export class VerifyComponent implements OnInit {
       (err) => {
         Swal.fire({
           title: "Opps...",
-          text: "Error sending OTP",
+          text: err,
           icon: "error",
           confirmButtonText: "OK",
         });
