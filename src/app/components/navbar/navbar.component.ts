@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit {
     if (this.isUserLive) {
       return "You are playing " + this.gameStatus.game_name;
     }
-    return "";
+    return "No game is running!";
   }
 
   constructor(

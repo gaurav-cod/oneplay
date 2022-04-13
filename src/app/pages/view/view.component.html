@@ -343,8 +343,8 @@
       </div>
       <div class="row">
         <div *ngIf="game.storesMapping.length" class="col-12">
-          <div class="alert alert-warning" role="alert">
-            <i class="fas fa-exclamation-triangle"></i>
+          <div class="alert alert-dark" role="alert">
+            <i class="fa fa-gamepad text-danger"></i>
             <span class="ml-2">
               You need to
               {{ game.isFree ? "have account" : "purchase this game" }} in
@@ -353,7 +353,7 @@
                 *ngFor="let store of game.storesMapping"
                 [href]="store.link"
                 target="_blank"
-                class="d-inline-block mx-2"
+                class="d-inline-block mx-1 text-danger"
                 >{{ store.name }}</a
               >
               to play this game
@@ -361,14 +361,14 @@
           </div>
         </div>
         <div class="col-12">
-          <div class="alert alert-warning" role="alert">
-            <i class="fas fa-exclamation-triangle"></i>
+          <div class="alert alert-success" role="alert">
+            <i class="fa fa-download text-primary"></i>
             <span class="ml-2">
               You need to
               <a
                 href="https://www.oneplay.in/download.html"
                 target="_blank"
-                class="d-inline-block mx-2"
+                class="d-inline-block mx-1"
               >
                 download & install
               </a

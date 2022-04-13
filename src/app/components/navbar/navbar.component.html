@@ -97,12 +97,21 @@
         </a>
       </li> -->
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="gameLink" ngbTooltip="{{gamePlayTooltip}}">
-          <span class="avatar avatar-sm rounded-circle bg-gray-dark position-relative">
+        <a
+          class="nav-link"
+          [routerLink]="gameLink"
+          ngbTooltip="{{ gamePlayTooltip }}"
+        >
+          <span
+            class="avatar avatar-sm rounded-circle bg-gray-dark position-relative"
+          >
             <i
               class="fa fa-gamepad"
               aria-hidden="true"
-              [ngClass]="{ 'text-success': isGameRunning }"
+              [ngClass]="{
+                'text-success': isGameRunning,
+                'text-muted': !isGameRunning
+              }"
             ></i>
             <span *ngIf="isUserLive" id="live">LIVE</span>
           </span>
@@ -143,7 +152,7 @@
             <span>Referral Link</span>
           </a>
           <a href="https://www.oneplay.in/speed-test/run" class="dropdown-item">
-            <i class="fa fa-bolt" style="margin-left: 6px;"></i>
+            <i class="fa fa-bolt" style="margin-left: 6px"></i>
             <span>Speed Test</span>
           </a>
           <a
@@ -172,10 +181,10 @@
   <div class="modal-content position-relative">
     <div
       class="position-absolute btn btn-github rounded-circle top--5 right--6"
-      style="padding: 16px 20px;"
+      style="padding: 16px 20px"
       (click)="d('Cross click')"
     >
-      <i class="fas fa-times" style="font-size: 24px;"></i>
+      <i class="fas fa-times" style="font-size: 24px"></i>
     </div>
     <div class="modal-body">
       <div class="row">

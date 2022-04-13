@@ -32,6 +32,9 @@ export class StoreComponent implements OnInit {
     "Top 20": {
       rating: "4",
     },
+    "Free Games": {
+      is_free: "true",
+    }
   };
 
   get routes() {

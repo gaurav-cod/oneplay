@@ -324,8 +324,9 @@ export class ViewComponent implements OnInit {
     Swal.fire({
       title: "Initializing game",
       text: "Please wait while we connect you to the game",
-      icon: "info",
       showConfirmButton: false,
+      willOpen: () => Swal.showLoading(),
+      willClose: () => Swal.hideLoading(),
     });
     let seconds = 0;
     const timer = setInterval(() => {
