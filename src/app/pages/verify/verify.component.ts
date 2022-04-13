@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 })
 export class VerifyComponent implements OnInit {
   otp = new FormControl("", Validators.required);
+  otpSent = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +31,7 @@ export class VerifyComponent implements OnInit {
           icon: "success",
           confirmButtonText: "OK",
         });
+        this.otpSent = true;
       },
       (err) => {
         Swal.fire({
