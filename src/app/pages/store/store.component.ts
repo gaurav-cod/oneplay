@@ -15,10 +15,10 @@ import { environment } from "src/environments/environment";
 export class StoreComponent implements OnInit {
   games: GameModel[] = [];
   heading: string = "All Games";
-  isLoading: boolean = false;
   showSound = "";
   timer: NodeJS.Timeout;
-  currentPage = new BehaviorSubject(0);
+  currentPage = 0;
+  isLoading = false;
   canLoadMore = true;
 
   private queries = {
@@ -34,7 +34,7 @@ export class StoreComponent implements OnInit {
     },
     "Free Games": {
       is_free: "true",
-    }
+    },
   };
 
   get routes() {
@@ -57,10 +57,8 @@ export class StoreComponent implements OnInit {
       this.heading = params.filter || "All Games";
       this.title.setTitle("OnePlay | " + (params.filter || "Store"));
       this.canLoadMore = true;
-      this.currentPage.subscribe((page) => {
-        this.loadGames(this.queries[params.filter || "All Games"], page);
-      });
-      this.currentPage.next(0);
+      this.currentPage = 0;
+      this.loadGames();
     });
 
     this.restService.getTopGenres(3).subscribe((genres) => {
@@ -87,7 +85,7 @@ export class StoreComponent implements OnInit {
   }
 
   onScroll() {
-    this.currentPage.next(this.currentPage.value + 1);
+    this.loadMore();
   }
 
   playVideo(
@@ -139,27 +137,42 @@ export class StoreComponent implements OnInit {
     }
   }
 
-  private loadGames(query: any, page: number) {
-    if (this.isLoading || !this.canLoadMore) {
-      return;
-    }
-    this.startLoading(page);
-    this.restService.getFilteredGames(query, page).subscribe(
+  private loadGames() {
+    this.startLoading(0);
+    this.restService.getFilteredGames(this.queries[this.heading], 0).subscribe(
       (games) => {
-        if (page === 0) {
-          this.games = games;
-        } else {
-          this.games = [...this.games, ...games];
-        }
+        this.games = games;
         if (games.length < 12) {
           this.canLoadMore = false;
         }
-        this.stopLoading(page);
+        this.stopLoading(0);
       },
       (error) => {
-        this.stopLoading(page);
+        this.stopLoading(0);
       }
     );
+  }
+
+  private loadMore() {
+    if (this.isLoading || !this.canLoadMore) {
+      return;
+    }
+    this.startLoading(this.currentPage + 1);
+    this.restService
+      .getFilteredGames(this.queries[this.heading], this.currentPage + 1)
+      .subscribe(
+        (games) => {
+          this.games = [...this.games, ...games];
+          if (games.length < 12) {
+            this.canLoadMore = false;
+          }
+          this.stopLoading(this.currentPage + 1);
+          this.currentPage++;
+        },
+        (error) => {
+          this.stopLoading(this.currentPage + 1);
+        }
+      );
   }
 
   private startLoading(page: number) {
