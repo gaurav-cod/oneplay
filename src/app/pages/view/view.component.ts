@@ -275,6 +275,9 @@ export class ViewComponent implements OnInit {
   }
 
   startGame(): void {
+    if (this.startingGame) {
+      return;
+    }
     this.ngbModal.dismissAll();
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
