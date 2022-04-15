@@ -17,10 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     let req = request;
-    
+
     if (req.urlWithParams.startsWith(environment.client_api)) {
       const formData: FormData = req.body || new FormData();
-      const { userid, token } = this.authService.userIdAndToken; 
+      const { userid, token } = this.authService.userIdAndToken;
       formData.append("user_id", userid);
       formData.append("session_token", token);
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
@@ -35,7 +35,9 @@ export class AuthInterceptor implements HttpInterceptor {
       filter((res) => res instanceof HttpResponse),
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          this.authService.logout();
+          if (req.urlWithParams.startsWith(environment.render_mix_api)) {
+            this.authService.logout();
+          }
         }
         return throwError(error);
       })
