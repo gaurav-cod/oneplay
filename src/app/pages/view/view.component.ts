@@ -89,6 +89,7 @@ export class ViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const id = (params.id as string).replace(/(.*)\-/g, "");
+      this.stopLoading();
       this.loaderService.start();
       this.restService.getGameDetails(id).subscribe(
         (game) => {
@@ -302,35 +303,28 @@ export class ViewComponent implements OnInit {
           } else if (data.api_action === "call_terminate") {
             this.terminateGame(data.session.id);
           } else {
+            this.stopLoading();
             Swal.fire({
               title: "Opps...",
               text: "Something went wrong",
               icon: "error",
               confirmButtonText: "OK",
             });
-            this.stopLoading();
           }
         },
         (err) => {
+          this.stopLoading();
           Swal.fire({
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
-          this.stopLoading();
         }
       );
   }
 
   private startGameWithClientToken(sessionId: string): void {
-    Swal.fire({
-      title: "Initializing game",
-      text: "Please wait while we connect you to the game",
-      showConfirmButton: false,
-      willOpen: () => Swal.showLoading(),
-      willClose: () => Swal.hideLoading(),
-    });
     let seconds = 0;
     const timer = setInterval(() => {
       this.restService.getClientToken(sessionId).subscribe(
@@ -353,25 +347,25 @@ export class ViewComponent implements OnInit {
           }
         },
         (err) => {
+          this.stopLoading();
           Swal.fire({
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
-          this.stopLoading();
           clearInterval(timer);
         }
       );
       seconds = seconds + 3;
       if (seconds > 90) {
+        this.stopLoading();
         Swal.fire({
           title: "Opps...",
           text: "Something went wrong",
           icon: "error",
           confirmButtonText: "OK",
         });
-        this.stopLoading();
         clearInterval(timer);
       }
     }, 3000);
@@ -388,13 +382,13 @@ export class ViewComponent implements OnInit {
           }, 2000);
         },
         (err) => {
+          this.stopLoading();
           Swal.fire({
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
-          this.stopLoading();
         }
       );
     } else {
@@ -405,11 +399,19 @@ export class ViewComponent implements OnInit {
   private startLoading(): void {
     this.startingGame = true;
     this.loaderService.startLoader("play-loader");
+    Swal.fire({
+      title: "Initializing game",
+      text: "Please wait while we connect you to the game",
+      showConfirmButton: false,
+      willOpen: () => Swal.showLoading(),
+      willClose: () => Swal.hideLoading(),
+    });
   }
 
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
+    Swal.close();
   }
 
   private startTerminating(): void {
