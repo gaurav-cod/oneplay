@@ -70,7 +70,7 @@
 <div class="container-fluid py-5">
   <div class="container-fluid mb-3 mb-lg-5" *ngFor="let feed of feeds">
     <app-stream-card
-      [title]="feed.title + ' Live Streams'"
+      [title]="'Streams of ' + feed.title"
       [gameId]="feed.id"
       [videos]="feed.videos"
     ></app-stream-card>

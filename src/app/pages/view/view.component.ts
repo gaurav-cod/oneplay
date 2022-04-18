@@ -301,6 +301,7 @@ export class ViewComponent implements OnInit {
           if (data.api_action === "call_session") {
             this.startGameWithClientToken(data.session.id);
           } else if (data.api_action === "call_terminate") {
+            this.stopLoading();
             this.terminateGame(data.session.id);
           } else {
             this.stopLoading();
@@ -378,6 +379,7 @@ export class ViewComponent implements OnInit {
       this.restService.terminateGame(sessionId).subscribe(
         () => {
           setTimeout(() => {
+            this.gameService.gameStatus = this.restService.getGameStatus();
             this.startGame();
           }, 2000);
         },

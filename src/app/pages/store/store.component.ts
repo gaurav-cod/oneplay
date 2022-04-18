@@ -35,6 +35,12 @@ export class StoreComponent implements OnInit {
     "Free Games": {
       is_free: "true",
     },
+    Steam: {
+      stores: "Steam",
+    },
+    "Epic Games": {
+      stores: "Epic Games",
+    }
   };
 
   get routes() {
@@ -137,8 +143,13 @@ export class StoreComponent implements OnInit {
     }
   }
 
-  private loadGames() {
+  private async loadGames() {
     this.startLoading(0);
+    const query = this.queries[this.heading];
+    if (!query) {
+      // wait for the rest service to load the genres, developers, publishers
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
     this.restService.getFilteredGames(this.queries[this.heading], 0).subscribe(
       (games) => {
         this.games = games;
