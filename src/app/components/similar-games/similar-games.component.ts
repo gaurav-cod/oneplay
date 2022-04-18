@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
+import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { environment } from "src/environments/environment";
@@ -25,7 +26,8 @@ export class SimilarGamesComponent {
 
   constructor(
     private readonly router: Router,
-    private readonly gLink: GLinkPipe
+    private readonly gLink: GLinkPipe,
+    private readonly loaderService: NgxUiLoaderService,
   ) {}
 
   // get unique games
@@ -70,7 +72,8 @@ export class SimilarGamesComponent {
   playVideo(
     gameLink: HTMLAnchorElement,
     image: HTMLImageElement,
-    game: GameModel
+    game: GameModel,
+    index: number
   ) {
     if (game.video && !this.isMobile) {
       this.timer = setTimeout(() => {
@@ -81,8 +84,13 @@ export class SimilarGamesComponent {
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
           video.src = environment.game_assets + game.oneplayId + game.trailer_video;
-          video.muted = true;
+          video.muted = false;
           video.play();
+          // circular loader until video is loaded
+          this.loaderService.startLoader("video-" + game.oneplayId + index);
+          video.onloadeddata = () => {
+            this.loaderService.stopLoader("video-" + game.oneplayId + index);
+          }
         }
       }, 1000);
     }
@@ -91,7 +99,8 @@ export class SimilarGamesComponent {
   pauseVideo(
     gameLink: HTMLAnchorElement,
     image: HTMLImageElement,
-    game: GameModel
+    game: GameModel,
+    index: number
   ) {
     if (this.timer) {
       clearTimeout(this.timer);
@@ -103,6 +112,7 @@ export class SimilarGamesComponent {
       }
       this.showSound = "";
       this.muted = true;
+      this.loaderService.stopLoader("video-" + game.oneplayId + index);
     }
   }
 

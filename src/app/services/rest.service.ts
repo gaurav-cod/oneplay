@@ -274,8 +274,8 @@ export class RestService {
     page: number
   ): Observable<GameModel[]> {
     const data = {
-      ...query,
       order_by: "release_date:desc",
+      ...query,
     };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
@@ -305,6 +305,7 @@ export class RestService {
         params: {
           textBackground: "280x170",
           textLogo: "400x320",
+          poster: "528x704"
         },
       })
       .pipe(

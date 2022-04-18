@@ -20,12 +20,14 @@ import { BottomNavComponent } from "./bottom-nav/bottom-nav.component";
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { AuthNavbarComponent } from './auth-navbar/auth-navbar.component';
+import { NgxUiLoaderModule } from "ngx-ui-loader";
 
 @NgModule({
   imports: [
     CommonModule,
     RouterModule,
     NgbModule,
+    NgxUiLoaderModule,
     FormsModule,
     ReactiveFormsModule,
     PipesModule,

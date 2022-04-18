@@ -25,6 +25,8 @@ export class RegisterComponent implements OnInit {
   });
   loading = false;
 
+  showPassword = false;
+
   passwordChecks = [
     {
       name: "1 uppercase character",

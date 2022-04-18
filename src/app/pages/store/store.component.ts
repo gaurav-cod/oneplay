@@ -30,7 +30,8 @@ export class StoreComponent implements OnInit {
       release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
     },
     "Top 20": {
-      rating: "4",
+      play_time: "10",
+      order_by: "play_time:desc",
     },
     "Free Games": {
       is_free: "true",
@@ -175,6 +176,10 @@ export class StoreComponent implements OnInit {
         (games) => {
           this.games = [...this.games, ...games];
           if (games.length < 12) {
+            this.canLoadMore = false;
+          }
+          if (this.heading === 'Top 20' && this.games.length > 20) {
+            this.games = this.games.slice(0, 20);
             this.canLoadMore = false;
           }
           this.stopLoading(this.currentPage + 1);

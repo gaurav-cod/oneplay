@@ -57,12 +57,29 @@
             </div>
             <div class="form-group">
               <label class="text-white-50" for="">Password</label>
-              <input
+              <div class="input-group">
+                <input
                 formControlName="password"
                 class="form-control bg-dark"
                 placeholder="Password"
-                type="password"
-              />
+                [type]="showPassword ? 'text' : 'password'"
+                />
+                <div class="input-group-prepend">
+                  <button
+                    class="btn btn-outline-light"
+                    type="button"
+                    (click)="showPassword = !showPassword"
+                  >
+                    <i 
+                    class="fa" 
+                    [ngClass]="{
+                      'fa-eye': !showPassword,
+                      'fa-eye-slash': showPassword
+                    }"
+                    ></i>
+                  </button>
+                </div>
+              </div>
             </div>
             <ul class="text-muted font-italic text-xs">
               <li
