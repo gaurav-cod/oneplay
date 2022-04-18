@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Title } from "@angular/platform-browser";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -19,10 +20,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly title: Title,
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.title.setTitle("Login");
+  }
   ngOnDestroy() {}
 
   login() {

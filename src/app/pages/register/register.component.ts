@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -49,10 +50,12 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly title: Title,
   ) {}
 
   ngOnInit() {
+    this.title.setTitle("Signup");
     const ctrl = this.registerForm.controls["referred_by_id"];
     this.route.queryParams.subscribe((params) => {
       if (!params["ref"]) return;

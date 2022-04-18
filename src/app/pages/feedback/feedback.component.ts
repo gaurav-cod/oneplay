@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { GameSessionRO } from "src/app/interface";
 import { RestService } from "src/app/services/rest.service";
@@ -24,10 +25,12 @@ export class FeedbackComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly title: Title,
   ) {}
 
   ngOnInit(): void {
+    this.title.setTitle("Feedback");
     this.route.queryParams.subscribe((params) => {
       if (params.id) {
         this.restService.getGameSession(params.id).subscribe((gameSession) => {

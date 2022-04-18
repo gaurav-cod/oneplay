@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
@@ -29,10 +30,12 @@ export class HomeComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly loaderService: NgxUiLoaderService
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly title: Title,
   ) {}
 
   ngOnInit(): void {
+    this.title.setTitle("Home");
     this.loaderService.start();
     this.restService.getHomeFeed().subscribe((res) => {
       const games = res.games.filter((g) => g.games.length > 0);

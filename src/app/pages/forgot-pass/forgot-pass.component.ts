@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { Title } from "@angular/platform-browser";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -11,9 +12,14 @@ import Swal from "sweetalert2";
 export class ForgotPassComponent implements OnInit {
   email = new FormControl("", Validators.required);
 
-  constructor(private readonly restService: RestService) {}
+  constructor(
+    private readonly restService: RestService,
+    private readonly title: Title
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.title.setTitle("Forgot Password");
+  }
 
   submit() {
     this.restService.requestResetPassword(this.email.value).subscribe(

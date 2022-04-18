@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { VideoFeedModel } from "src/app/models/streamFeed.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -15,10 +16,12 @@ export class StreamsComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly loaderService: NgxUiLoaderService
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly title: Title,
   ) {}
 
   ngOnInit(): void {
+    this.title.setTitle("Streams");
     this.loaderService.start();
     this.restService.getStreamsFeed().subscribe(
       (feeds) => {
