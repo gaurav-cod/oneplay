@@ -3,7 +3,39 @@
     <div class="col-3 d-none d-md-block">
       <a
         class="card bg-dark mb-3"
-        *ngFor="let route of routes"
+        *ngFor="let route of commonRoutes"
+        [routerLink]="['/store/' + route]"
+      >
+        <div class="p-3 text-white">{{ route }}</div>
+      </a>
+      <h3 class="text-white-50 my-4 px-3">Filter By Stores</h3>
+      <a
+        class="card bg-dark mb-3"
+        *ngFor="let route of storeRoutes"
+        [routerLink]="['/store/' + route]"
+      >
+        <div class="p-3 text-white">{{ route }}</div>
+      </a>
+      <h3 class="text-white-50 my-4 px-3">Filter By Genres</h3>
+      <a
+        class="card bg-dark mb-3"
+        *ngFor="let route of genreRoutes"
+        [routerLink]="['/store/' + route]"
+      >
+        <div class="p-3 text-white">{{ route }}</div>
+      </a>
+      <h3 class="text-white-50 my-4 px-3">Filter By Developers</h3>
+      <a
+        class="card bg-dark mb-3"
+        *ngFor="let route of developerRoutes"
+        [routerLink]="['/store/' + route]"
+      >
+        <div class="p-3 text-white">{{ route }}</div>
+      </a>
+      <h3 class="text-white-50 my-4 px-3">Filter By Publishers</h3>
+      <a
+        class="card bg-dark mb-3"
+        *ngFor="let route of publisherRoutes"
         [routerLink]="['/store/' + route]"
       >
         <div class="p-3 text-white">{{ route }}</div>

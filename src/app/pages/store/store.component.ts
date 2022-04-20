@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, filter } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
@@ -22,30 +22,71 @@ export class StoreComponent implements OnInit {
   canLoadMore = true;
 
   private queries = {
-    "All Games": {},
+    "All Games": {
+      label: "common",
+      value: {},
+    },
     "Best of 2021": {
-      release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
+      label: "common",
+      value: {
+        release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
+      },
     },
     "Best of 2020": {
-      release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
+      label: "common",
+      value: {
+        release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
+      },
     },
     "Top 20": {
-      play_time: "10",
-      order_by: "play_time:desc",
+      label: "common",
+      value: {
+        play_time: "10",
+        order_by: "play_time:desc",
+      },
     },
     "Free Games": {
-      is_free: "true",
+      label: "common",
+      value: {
+        is_free: "true",
+      },
     },
     Steam: {
-      stores: "Steam",
+      label: "store",
+      value: {
+        stores: "Steam",
+      },
     },
     "Epic Games": {
-      stores: "Epic Games",
-    }
+      label: "store",
+      value: {
+        stores: "Epic Games",
+      },
+    },
   };
 
   get routes() {
     return Object.keys(this.queries);
+  }
+
+  get commonRoutes() {
+    return this.filterRoutesByLabel("common");
+  }
+
+  get storeRoutes() {
+    return this.filterRoutesByLabel("store");
+  }
+
+  get genreRoutes() {
+    return this.filterRoutesByLabel("genre");
+  }
+
+  get developerRoutes() {
+    return this.filterRoutesByLabel("developer");
+  }
+
+  get publisherRoutes() {
+    return this.filterRoutesByLabel("publisher");
   }
 
   get isMobile() {
@@ -70,22 +111,31 @@ export class StoreComponent implements OnInit {
 
     this.restService.getTopGenres(3).subscribe((genres) => {
       genres.forEach((genre) => {
-        this.queries["In " + genre] = {
-          genres: genre,
+        this.queries[genre] = {
+          label: "genre",
+          value: {
+            genres: genre,
+          },
         };
       });
     });
     this.restService.getTopDevelopers(3).subscribe((developers) => {
       developers.forEach((developer) => {
-        this.queries["By " + developer] = {
-          developer: developer,
+        this.queries[developer] = {
+          label: "developer",
+          value: {
+            developer: developer,
+          },
         };
       });
     });
     this.restService.getTopPublishers(3).subscribe((publishers) => {
       publishers.forEach((publisher) => {
-        this.queries["From " + publisher] = {
-          publisher: publisher,
+        this.queries[publisher] = {
+          label: "publisher",
+          value: {
+            publisher: publisher,
+          },
         };
       });
     });
@@ -144,6 +194,12 @@ export class StoreComponent implements OnInit {
     }
   }
 
+  private filterRoutesByLabel(label: string) {
+    return Object.keys(this.queries).filter(
+      (route) => this.queries[route].label === label
+    );
+  }
+
   private async loadGames() {
     this.startLoading(0);
     const query = this.queries[this.heading];
@@ -151,18 +207,20 @@ export class StoreComponent implements OnInit {
       // wait for the rest service to load the genres, developers, publishers
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    this.restService.getFilteredGames(this.queries[this.heading], 0).subscribe(
-      (games) => {
-        this.games = games;
-        if (games.length < 12) {
-          this.canLoadMore = false;
+    this.restService
+      .getFilteredGames(this.queries[this.heading]?.value, 0)
+      .subscribe(
+        (games) => {
+          this.games = games;
+          if (games.length < 12) {
+            this.canLoadMore = false;
+          }
+          this.stopLoading(0);
+        },
+        (error) => {
+          this.stopLoading(0);
         }
-        this.stopLoading(0);
-      },
-      (error) => {
-        this.stopLoading(0);
-      }
-    );
+      );
   }
 
   private loadMore() {
@@ -171,14 +229,14 @@ export class StoreComponent implements OnInit {
     }
     this.startLoading(this.currentPage + 1);
     this.restService
-      .getFilteredGames(this.queries[this.heading], this.currentPage + 1)
+      .getFilteredGames(this.queries[this.heading]?.value, this.currentPage + 1)
       .subscribe(
         (games) => {
           this.games = [...this.games, ...games];
           if (games.length < 12) {
             this.canLoadMore = false;
           }
-          if (this.heading === 'Top 20' && this.games.length > 20) {
+          if (this.heading === "Top 20" && this.games.length > 20) {
             this.games = this.games.slice(0, 20);
             this.canLoadMore = false;
           }
