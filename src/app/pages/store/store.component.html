@@ -98,7 +98,13 @@
                 class="mute bg-translucent-darker"
                 (click)="muteUnmute($event, gameCard, game)"
               >
-                <em class="fa fa-volume-off text-white"></em>
+                <em
+                  class="fa text-white"
+                  [ngClass]="{
+                    'fa-volume-down': muted,
+                    'fa-volume-mute': !muted
+                  }"
+                ></em>
               </div>
             </div>
           </a>

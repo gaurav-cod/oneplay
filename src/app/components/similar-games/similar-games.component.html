@@ -21,18 +21,16 @@
             [ngClass]="{ unmute: !muted }"
             (click)="muteUnmute($event, gameLink, game)"
           >
-            <em *ngIf="muted" class="fa fa-volume-off text-white"></em>
             <em
-              *ngIf="!muted"
-              class="fa fa-microphone-slash text-white"
-              style="font-size: 12px"
+              class="fa text-white"
+              [ngClass]="{ 'fa-volume-down': muted, 'fa-volume-mute': !muted }"
             ></em>
           </div>
           <ngx-ui-loader
-              [fgsColor]="'#c32ead'"
-              [hasProgressBar]="false"
-              [loaderId]="'video-' + game.oneplayId + i"
-            ></ngx-ui-loader>
+            [fgsColor]="'#c32ead'"
+            [hasProgressBar]="false"
+            [loaderId]="'video-' + game.oneplayId + i"
+          ></ngx-ui-loader>
         </div>
       </a>
     </div>

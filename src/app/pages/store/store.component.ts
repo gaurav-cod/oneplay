@@ -20,6 +20,7 @@ export class StoreComponent implements OnInit {
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
+  muted = true;
 
   private queries = {
     "All Games": {
@@ -179,6 +180,7 @@ export class StoreComponent implements OnInit {
         gameLink.removeChild(gameLink.firstElementChild);
       }
       this.showSound = "";
+      this.muted = true;
     }
   }
 
@@ -188,8 +190,10 @@ export class StoreComponent implements OnInit {
       const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
+        this.muted = false;
       } else {
         video.muted = true;
+        this.muted = true;
       }
     }
   }

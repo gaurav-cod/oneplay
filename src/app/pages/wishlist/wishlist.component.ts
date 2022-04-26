@@ -15,6 +15,7 @@ export class WishlistComponent implements OnInit {
 
   showSound = "";
   timer: NodeJS.Timeout;
+  muted = true;
 
   get isMobile() {
     return window.innerWidth < 768;
@@ -68,6 +69,7 @@ export class WishlistComponent implements OnInit {
         gameLink.removeChild(gameLink.firstElementChild);
       }
       this.showSound = "";
+      this.muted = true;
     }
   }
 
@@ -77,8 +79,10 @@ export class WishlistComponent implements OnInit {
       const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
+        this.muted = false;
       } else {
         video.muted = true;
+        this.muted = true;
       }
     }
   }
