@@ -15,28 +15,13 @@ export class BasicInfoComponent implements OnInit {
   ipLocationMap: { [key: string]: string } = {};
   loggingOut: boolean = false;
 
-  username = new FormControl(
-    { value: "", disabled: true },
-    Validators.required
-  );
-  firstName = new FormControl(
-    { value: "", disabled: true },
-    Validators.required
-  );
-  lastName = new FormControl(
-    { value: "", disabled: true },
-    Validators.required
-  );
-  bio = new FormControl({ value: "", disabled: true }, Validators.required);
-  password = new FormControl(
-    { value: "", disabled: true },
-    Validators.required
-  );
-  phone = new FormControl({ value: "", disabled: true }, Validators.required);
-  email = new FormControl({ value: "", disabled: true }, [
-    Validators.required,
-    Validators.email,
-  ]);
+  username = new FormControl("", Validators.required);
+  firstName = new FormControl("", Validators.required);
+  lastName = new FormControl("", Validators.required);
+  bio = new FormControl("", Validators.required);
+  password = new FormControl("", Validators.required);
+  phone = new FormControl("", Validators.required);
+  email = new FormControl("", [Validators.required, Validators.email]);
 
   constructor(
     private readonly restService: RestService,
@@ -49,6 +34,25 @@ export class BasicInfoComponent implements OnInit {
       this.bio.setValue(user.bio);
       this.phone.setValue(user.phone);
       this.email.setValue(user.email);
+
+      if (!!user.username) {
+        this.username.disable();
+      }
+      if (!!user.firstName) {
+        this.firstName.disable();
+      }
+      if (!!user.lastName) {
+        this.lastName.disable();
+      }
+      if (!!user.bio) {
+        this.bio.disable();
+      }
+      if (!!user.phone) {
+        this.phone.disable();
+      }
+      if (!!user.email) {
+        this.email.disable();
+      }
     });
   }
 

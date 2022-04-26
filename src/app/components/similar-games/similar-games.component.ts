@@ -84,7 +84,7 @@ export class SimilarGamesComponent {
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
           video.src = environment.game_assets + game.oneplayId + game.trailer_video;
-          video.muted = false;
+          video.muted = true;
           video.play();
           // circular loader until video is loaded
           this.loaderService.startLoader("video-" + game.oneplayId + index);
