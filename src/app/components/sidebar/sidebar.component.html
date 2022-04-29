@@ -153,12 +153,6 @@
 
 <ng-template #share let-d="dismiss">
   <div class="modal-content position-relative">
-    <div
-      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
-      (click)="d('Cross click')"
-    >
-      <i class="fas fa-times"></i>
-    </div>
     <div class="modal-body">
       <div class="row">
         <div class="col-12">
@@ -166,11 +160,17 @@
         </div>
       </div>
       <share-buttons
-        [url]="link"
-        [include]="['facebook','twitter','linkedin','telegram','messenger','whatsapp','email','copy']"
-        theme="material-dark"
-        show="11"
+      [url]="link"
+      [include]="['facebook','twitter','linkedin','telegram','messenger','whatsapp','email','copy']"
+      theme="material-dark"
+      show="11"
       ></share-buttons>
+    </div>
+    <div
+      class="position-absolute top-2 right-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
     </div>
   </div>
 </ng-template>

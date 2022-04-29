@@ -47,6 +47,10 @@ export class UserModel {
     });
   }
 
+  get name() {
+    return this.firstName + " " + this.lastName;
+  }
+
   get json() {
     return {
       user_id: this.id,

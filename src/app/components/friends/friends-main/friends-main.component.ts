@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { FriendModel } from "src/app/models/friend.model";
-import { RestService } from "src/app/services/rest.service";
+import { FriendsService } from "src/app/services/friends.service";
 
 @Component({
   selector: "app-friends-main",
@@ -15,13 +15,13 @@ export class FriendsMainComponent implements OnInit {
 
   friends: FriendModel[] = [];
 
-  constructor(private readonly restService: RestService) {}
-
-  ngOnInit(): void {
-    this.restService.getAllFriends().subscribe((friends) => {
+  constructor(private readonly friendsService: FriendsService) {
+    this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
     });
   }
+
+  ngOnInit(): void {}
 
   onChat(friend: FriendModel) {
     this.goToChat.emit(friend);

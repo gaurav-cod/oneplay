@@ -48,6 +48,7 @@
       >
         <div class="input-group input-group-alternative border-0 bg-darker">
           <input
+            #search
             class="form-control"
             placeholder="Search"
             type="text"
@@ -61,7 +62,7 @@
         </div>
       </div>
       <ul
-        *ngIf="results.length"
+        *ngIf="results.length || uResults.length"
         class="position-absolute w-100 card list-group border-0"
         style="top: calc(100% + 8px)"
       >
@@ -84,6 +85,27 @@
               {{ game.releaseDate.getFullYear() }}
             </p>
           </div>
+        </li>
+        <li
+          *ngFor="let user of uResults"
+          class="list-group-item bg-dark d-flex border-0"
+        >
+          <img
+            [src]="user.photo || (user.name | avatar)"
+            class="mr-3"
+            width="80"
+            height="50"
+            alt=""
+          />
+          <div class="flex-grow-1">
+            <p class="list-group-heading text-white m-0">{{ user.name }}</p>
+            <p class="list-group-content text-white-50 small m-0">
+              {{ user.username }}
+            </p>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-light" (click)="addFriend(user)">
+            <i class="fas {{getFriendAddIcon(user)}}"></i>
+          </button>
         </li>
       </ul>
     </form>

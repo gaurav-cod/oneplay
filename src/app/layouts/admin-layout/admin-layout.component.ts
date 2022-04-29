@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
+import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -18,6 +19,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
+    private readonly friendsService: FriendsService,
     private readonly router: Router,
     private readonly gameService: GameService
   ) {}
@@ -25,6 +27,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.wishlist = this.restService.getWishlist();
     this.authService.user = this.restService.getProfile();
+    this.friendsService.friends = this.restService.getAllFriends();
+    this.friendsService.pendings = this.restService.getPendingSentRequests();
     this.gameService.gameStatus = this.restService.getGameStatus();
 
     this.timer = setInterval(() => {

@@ -211,10 +211,18 @@ export class RestService {
       .pipe(map((res) => new GameModel(res)));
   }
 
+  searchUsers(query: string): Observable<UserModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/search/", {
+        params: { query, page: 0, limit: 5 },
+      })
+      .pipe(map((res) => res.map((d) => new UserModel(d))));
+  }
+
   search(query: string): Observable<GameModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/search", {
-        params: { query },
+        params: { query, page: 0, limit: 5 },
       })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
@@ -305,7 +313,7 @@ export class RestService {
         params: {
           textBackground: "280x170",
           textLogo: "400x320",
-          poster: "528x704"
+          poster: "528x704",
         },
       })
       .pipe(
@@ -342,6 +350,32 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/social/friends/all")
       .pipe(map((res) => res.map((d) => new FriendModel(d))));
+  }
+
+  getPendingSentRequests(): Observable<FriendModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/friends/pending_sent_requests")
+      .pipe(map((res) => res.map((d) => new FriendModel(d))));
+  }
+
+  addFriend(id: string): Observable<string> {
+    return this.http
+      .post(this.r_mix_api + "/social/friends/" + id + "/send_request", null)
+      .pipe(
+        map((data) => data["id"]),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
+  deleteFriend(id: string): Observable<void> {
+    return this.http.delete<any>(this.r_mix_api + "/social/friends/" + id).pipe(
+      map(() => {}),
+      catchError(({ error }) => {
+        throw Error(error.message);
+      })
+    );
   }
 
   getDirectMessages(friendId: string): Observable<MessageModel[]> {

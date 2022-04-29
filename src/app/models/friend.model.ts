@@ -1,6 +1,6 @@
 export class FriendModel {
     readonly id: string;
-    readonly status: string;
+    readonly status: "pending" | "accepted";
     readonly accepted_at: Date | null;
     readonly created_at: Date;
     readonly updated_at: Date;

@@ -20,6 +20,8 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { FriendModel } from "src/app/models/friend.model";
+import { FriendsService } from "src/app/services/friends.service";
 
 @Component({
   selector: "app-navbar",
@@ -33,10 +35,17 @@ export class NavbarComponent implements OnInit {
   public location: Location;
   public query = new FormControl("");
   public results: GameModel[] = [];
+  public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
+
   private user: UserModel;
+  private acceptedFriends: FriendModel[] = [];
+  private pendingFriends: FriendModel[] = [];
+  private dontClose = false;
 
   @Output() toggleFriends = new EventEmitter();
+
+  @ViewChild('search') searchElement: ElementRef;
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -84,6 +93,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     location: Location,
     private readonly authService: AuthService,
+    private readonly friendsService: FriendsService,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
@@ -91,6 +101,8 @@ export class NavbarComponent implements OnInit {
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
+    this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
+    this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
   }
 
   ngOnInit() {
@@ -104,18 +116,57 @@ export class NavbarComponent implements OnInit {
         debouncedSearch(value);
       } else {
         this.results = [];
+        this.uResults = [];
       }
     });
     this.focus.asObservable().subscribe((focused) => {
       if (!focused) {
         setTimeout(() => {
-          this.query.setValue("");
+          if (!this.dontClose) {
+            this.query.setValue("");
+          } else {
+            this.dontClose = false;
+            this.searchElement.nativeElement.focus();
+          }
         }, 300);
       }
     });
     this.gameService.gameStatus.subscribe((status) => {
       this.gameStatus = status;
     });
+  }
+
+  getFriendAddIcon(friend: UserModel) {
+    if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
+      return "fa-user-check";
+    } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
+      return "fa-user-clock";
+    } else {
+      return "fa-user-plus";
+    }
+  }
+
+  addFriend(friend: UserModel) {
+    this.dontClose = true;
+    const acceptedFriend = this.acceptedFriends.find(
+      (f) => f.user_id === friend.id
+    );
+    const pendingFriend = this.pendingFriends.find(
+      (f) => f.user_id === friend.id
+    );
+    if (acceptedFriend) {
+      this.restService.deleteFriend(acceptedFriend.id).subscribe(() => {
+        this.friendsService.deleteFriend(acceptedFriend);
+      });
+    } else if (pendingFriend) {
+      this.restService.deleteFriend(pendingFriend.id).subscribe(() => {
+        this.friendsService.cancelRequest(pendingFriend);
+      });
+    } else {
+      this.restService.addFriend(friend.id).subscribe((id) => {
+        this.friendsService.addFriend(friend, id);
+      });
+    }
   }
 
   getTitle() {
@@ -133,9 +184,10 @@ export class NavbarComponent implements OnInit {
   }
 
   search(value: string) {
-    return this.restService
-      .search(value)
-      .subscribe((games) => (this.results = games));
+    this.restService.search(value).subscribe((games) => (this.results = games));
+    this.restService
+      .searchUsers(value)
+      .subscribe((users) => (this.uResults = users));
   }
 
   toggleFriendsList() {
