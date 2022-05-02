@@ -403,6 +403,28 @@ export class RestService {
     );
   }
 
+  addDevice(token: string): Observable<void> {
+    return this.http
+      .post(this.r_mix_api + "/notification/push/device/" + token, null)
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
+  deleteDevice(token: string): Observable<void> {
+    return this.http
+      .delete(this.r_mix_api + "/notification/push/device/" + token)
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
   startGame(
     gameId: string,
     resolution: string,

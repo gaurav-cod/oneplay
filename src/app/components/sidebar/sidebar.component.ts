@@ -10,6 +10,7 @@ import { UserModel } from "src/app/models/user.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
+import { MessagingService } from "src/app/services/messaging.service";
 import { RestService } from "src/app/services/rest.service";
 
 declare interface RouteInfo {
@@ -81,7 +82,8 @@ export class SidebarComponent implements OnInit {
     private restService: RestService,
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
-    private readonly gLink: GLinkPipe
+    private readonly gLink: GLinkPipe,
+    private readonly messagingService: MessagingService
   ) {}
 
   ngOnInit() {
@@ -130,8 +132,12 @@ export class SidebarComponent implements OnInit {
   }
 
   logout() {
-    this.restService.deleteSession(this.authService.sessionKey).subscribe();
-    this.authService.logout();
+    this.restService
+      .deleteSession(this.authService.sessionKey)
+      .subscribe(async () => {
+        await this.messagingService.removeToken();
+        this.authService.logout();
+      });
   }
 
   open(container) {

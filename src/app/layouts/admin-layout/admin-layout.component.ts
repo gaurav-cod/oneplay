@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
+import { MessagingService } from "src/app/services/messaging.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -20,6 +21,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
+    private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly gameService: GameService
   ) {}
@@ -38,6 +40,18 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.gameService.gameStatus = this.restService.getGameStatus();
+      }
+    });
+
+    this.messagingService.requestToken();
+    this.messagingService.receiveMessage();
+    this.messagingService.currentMessage.subscribe((message) => {
+      if (message) {
+        Swal.fire({
+          title: message.notification.title,
+          text: message.notification.body,
+          icon: "info",
+        });
       }
     });
   }

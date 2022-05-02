@@ -22,6 +22,7 @@ import { GameStatusRO } from "src/app/interface";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { FriendModel } from "src/app/models/friend.model";
 import { FriendsService } from "src/app/services/friends.service";
+import { MessagingService } from "src/app/services/messaging.service";
 
 @Component({
   selector: "app-navbar",
@@ -45,7 +46,7 @@ export class NavbarComponent implements OnInit {
 
   @Output() toggleFriends = new EventEmitter();
 
-  @ViewChild('search') searchElement: ElementRef;
+  @ViewChild("search") searchElement: ElementRef;
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -97,7 +98,8 @@ export class NavbarComponent implements OnInit {
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
-    private readonly gLink: GLinkPipe
+    private readonly gLink: GLinkPipe,
+    private readonly messagingService: MessagingService
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
@@ -195,8 +197,12 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.restService.deleteSession(this.authService.sessionKey).subscribe();
-    this.authService.logout();
+    this.restService
+      .deleteSession(this.authService.sessionKey)
+      .subscribe(async () => {
+        await this.messagingService.removeToken();
+        this.authService.logout();
+      });
   }
 
   onFocus() {
