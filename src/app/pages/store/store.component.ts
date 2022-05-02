@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { BehaviorSubject, filter } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
@@ -15,12 +14,9 @@ import { environment } from "src/environments/environment";
 export class StoreComponent implements OnInit {
   games: GameModel[] = [];
   heading: string = "All Games";
-  showSound = "";
-  timer: NodeJS.Timeout;
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
-  muted = true;
 
   private queries = {
     "All Games": {
@@ -144,58 +140,6 @@ export class StoreComponent implements OnInit {
 
   onScroll() {
     this.loadMore();
-  }
-
-  playVideo(
-    gameLink: HTMLAnchorElement,
-    image: HTMLImageElement,
-    game: GameModel
-  ) {
-    if (game.video && !this.isMobile) {
-      this.timer = setTimeout(() => {
-        image.style.opacity = "0";
-        this.showSound = game.oneplayId;
-        const video = document.createElement("video");
-        gameLink.insertAdjacentElement("afterbegin", video);
-        video.classList.add("mask");
-        video.src =
-          environment.game_assets + game.oneplayId + game.trailer_video;
-        video.muted = true;
-        video.play();
-      }, 1000);
-    }
-  }
-
-  pauseVideo(
-    gameLink: HTMLAnchorElement,
-    image: HTMLImageElement,
-    game: GameModel
-  ) {
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    if (game.video && !this.isMobile) {
-      image.style.opacity = "1";
-      if (gameLink.firstElementChild instanceof HTMLVideoElement) {
-        gameLink.removeChild(gameLink.firstElementChild);
-      }
-      this.showSound = "";
-      this.muted = true;
-    }
-  }
-
-  muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
-    e.stopPropagation();
-    if (game.video) {
-      const video = gameLink.firstElementChild as HTMLVideoElement;
-      if (video.muted) {
-        video.muted = false;
-        this.muted = false;
-      } else {
-        video.muted = true;
-        this.muted = true;
-      }
-    }
   }
 
   private filterRoutesByLabel(label: string) {

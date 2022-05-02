@@ -45,6 +45,7 @@
     "socket.io-client": "3.1.1",
     "sweetalert2": "^11.4.8",
     "ua-parser-js": "^1.0.2",
+    "uuid": "^8.3.2",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
@@ -57,6 +58,7 @@
     "@types/js-cookie": "^2.2.6",
     "@types/node": "16.3.2",
     "@types/ua-parser-js": "^0.7.36",
+    "@types/uuid": "^8.3.4",
     "codelyzer": "6.0.2",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",

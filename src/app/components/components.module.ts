@@ -17,10 +17,11 @@ import { FriendsModule } from "./friends/friends.module";
 import { SubscriptionsComponent } from "./subscriptions/subscriptions.component";
 import { PurchaseHistoryComponent } from "./purchase-history/purchase-history.component";
 import { BottomNavComponent } from "./bottom-nav/bottom-nav.component";
-import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
-import { ShareIconsModule } from 'ngx-sharebuttons/icons';
-import { AuthNavbarComponent } from './auth-navbar/auth-navbar.component';
+import { ShareButtonsModule } from "ngx-sharebuttons/buttons";
+import { ShareIconsModule } from "ngx-sharebuttons/icons";
+import { AuthNavbarComponent } from "./auth-navbar/auth-navbar.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
+import { GameCardComponent } from "./game-card/game-card.component";
 
 @NgModule({
   imports: [
@@ -33,9 +34,10 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
     PipesModule,
     FriendsModule,
     ShareButtonsModule,
-    ShareIconsModule
+    ShareIconsModule,
   ],
   declarations: [
+    GameCardComponent,
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
@@ -51,6 +53,7 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
     AuthNavbarComponent,
   ],
   exports: [
+    GameCardComponent,
     FooterComponent,
     NavbarComponent,
     SidebarComponent,

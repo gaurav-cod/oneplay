@@ -1,38 +1,8 @@
 <h2 class="text-white position-relative">{{ title }}</h2>
 <div class="position-relative">
   <div #container class="d-flex overflow-auto py-3">
-    <div *ngFor="let game of _games; let i = index" class="mr-3 zoom">
-      <a
-        #gameLink
-        class="card card-block border-0 shadow-1 position-relative"
-        (click)="onGameClick(game)"
-      >
-        <div
-          class="mask"
-          style="z-index: 2"
-          #mask
-          (mouseenter)="playVideo(gameLink, image, game, i)"
-          (mouseleave)="pauseVideo(gameLink, image, game, i)"
-        >
-          <img #image class="card-img" [src]="game.textBgImage" alt="" />
-          <div
-            *ngIf="showSound === game.oneplayId"
-            class="mute bg-translucent-darker"
-            [ngClass]="{ unmute: !muted }"
-            (click)="muteUnmute($event, gameLink, game)"
-          >
-            <em
-              class="fa text-white"
-              [ngClass]="{ 'fa-volume-down': muted, 'fa-volume-mute': !muted }"
-            ></em>
-          </div>
-          <ngx-ui-loader
-            [fgsColor]="'#c32ead'"
-            [hasProgressBar]="false"
-            [loaderId]="'video-' + game.oneplayId + i"
-          ></ngx-ui-loader>
-        </div>
-      </a>
+    <div *ngFor="let game of _games" class="mr-3 zoom">
+      <app-game-card [game]="game"></app-game-card>
     </div>
   </div>
 
