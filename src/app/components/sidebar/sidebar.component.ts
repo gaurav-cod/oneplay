@@ -119,7 +119,7 @@ export class SidebarComponent implements OnInit {
 
   search(value: string) {
     return this.restService
-      .search(value)
+      .search(value, 0, 5)
       .subscribe((games) => (this.results = games));
   }
 

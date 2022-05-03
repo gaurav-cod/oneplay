@@ -13,17 +13,19 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'user-profile/:tab',   component: UserProfileComponent },
-    { path: 'tables',         component: TablesComponent },
-    { path: 'icons',          component: IconsComponent },
-    { path: 'home',           component: HomeComponent },
-    { path: 'store',          component: StoreComponent },
-    { path: 'store/:filter',          component: StoreComponent },
-    { path: 'view/:id',       component: ViewComponent },
-    { path: 'streams/:id',    component: StreamComponent },
-    { path: 'streams',        component: StreamsComponent },
-    { path: 'library',        component: LibraryComponent },
-    { path: 'search',         component: SearchComponent },
-    { path: 'wishlist',       component: WishlistComponent }
+    { path: 'user-profile',         component: UserProfileComponent },
+    { path: 'user-profile/:tab',    component: UserProfileComponent },
+    { path: 'tables',               component: TablesComponent },
+    { path: 'icons',                component: IconsComponent },
+    { path: 'home',                 component: HomeComponent },
+    { path: 'store',                component: StoreComponent },
+    { path: 'store/:filter',        component: StoreComponent },
+    { path: 'view/:id',             component: ViewComponent },
+    { path: 'streams/:id',          component: StreamComponent },
+    { path: 'streams',              component: StreamsComponent },
+    { path: 'library',              component: LibraryComponent },
+    { path: 'search',               component: SearchComponent },
+    { path: 'wishlist',             component: WishlistComponent },
+    { path: 'search',               component: SearchComponent },
+    { path: 'search/:tab',          component: SearchComponent },
 ];

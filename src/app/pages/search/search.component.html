@@ -1,43 +1,23 @@
 <div class="container-fluid pt-8">
-  <div class="row container-fluid">
-    <div class="col-12 col-md-3">
-      <a class="card bg-dark">
-        <div class="p-3 text-white">Show all games</div>
-      </a>
-      <h3 class="text-white mt-4">Best</h3>
-      <a class="card bg-dark mb-3">
-        <div class="p-3 text-white">Best 0f 2021</div>
-      </a>
-      <a class="card bg-dark mb-3">
-        <div class="p-3 text-white">Best of 2020</div>
-      </a>
-      <a class="card bg-dark">
-        <div class="p-3 text-white">Top 100</div>
-      </a>
-      <h3 class="text-white mt-4">New Releases</h3>
-      <a class="card bg-dark mb-3">
-        <div class="p-3 text-white">Last 30 days</div>
-      </a>
-      <a class="card bg-dark mb-3">
-        <div class="p-3 text-white">Last week</div>
-      </a>
-      <a class="card bg-dark">
-        <div class="p-3 text-white">Next week</div>
-      </a>
-      <h3 class="text-white mt-4">Genres</h3>
-      <a class="card bg-dark mb-3">
-        <div class="p-3 text-white">View by genres</div>
-      </a>
-    </div>
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between">
+      <h1 class="text-white">
+        You searched for "{{ query }}"
+        <a
+          *ngFor="let t of ['games', 'users']"
+          href="javascript:void(0)"
+          (click)="changeTab(t)"
+          class="text-underline mx-2"
+          [ngClass]="{
+            'text-primary': t === tab,
+            'text-white-50': t !== tab
+          }"
+        >
+          {{ t | titlecase }}
+        </a>
+      </h1>
 
-    <div class="col-12 col-md-9">
-      <div class="d-flex justify-content-between">
-        <h1 class="text-white">
-          You searched for
-          <span class="text-primary text-underline">"{{ query }}"</span>
-        </h1>
-
-        <div class="row text-white-50 align-items-center">
+      <!-- <div class="row text-white-50 align-items-center">
           <div class="col">Sort by</div>
           <div class="col" ngbDropdown>
             <button class="btn btn-outline-white btn-icon" ngbDropdownToggle>
@@ -50,49 +30,61 @@
               <a ngbDropdownItem>Something else here</a>
             </div>
           </div>
+        </div> -->
+    </div>
+
+    <div
+      *ngIf="games.length !== 0 && tab === 'games'"
+      class="py-5 row"
+      infinite-scroll
+      [infiniteScrollDistance]="5"
+      [infiniteScrollThrottle]="200"
+      (scrolled)="onScroll()"
+    >
+      <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+        <div class="zoom">
+          <app-game-card [game]="game"></app-game-card>
         </div>
       </div>
+    </div>
 
-      <div *ngIf="games.length !== 0" class="py-5 row">
-        <div
-          *ngFor="let game of games"
-          class="col-sm-12 col-md-6 col-lg-4 mb-4"
-        >
-          <a
-            [routerLink]="['/view/' + (game | glink)]"
-            class="card card-block border-0"
-          >
-            <video
-              #video
-              class="mask"
-              style="border-radius: 4px; height: 100%; object-fit: cover"
-            >
-              <source [src]="game.video" />
-            </video>
-            <img
-              #image
-              class="card-img"
-              style="z-index: 1"
-              [src]="game.textBgImage"
-              height="170"
-              alt=""
-            />
-            <div
-              class="mask"
-              style="z-index: 2"
-              (mouseover)="playVideo(video, image, game)"
-              (mouseout)="pauseVideo(video, image, game)"
-            ></div>
-          </a>
+    <div
+      *ngIf="games.length === 0 && tab === 'games'"
+      class="text-center text-lg text-white-50 my-5"
+    >
+      No games found
+    </div>
+
+    <div
+      *ngIf="users.length !== 0 && tab === 'users'"
+      class="py-5 row"
+      infinite-scroll
+      [infiniteScrollDistance]="5"
+      [infiniteScrollThrottle]="200"
+      (scrolled)="onScroll()"
+    >
+      <div *ngFor="let user of users" class="col-sm-12 col-md-6 col-lg-4 mb-4">
+        <div class="zoom">
+          <p>{{ user.name }}</p>
         </div>
       </div>
+    </div>
 
-      <div
-        *ngIf="games.length === 0"
-        class="text-center text-lg text-white-50 my-5"
-      >
-        No games found
-      </div>
+    <div
+      *ngIf="users.length === 0 && tab === 'users'"
+      class="text-center text-lg text-white-50 my-5"
+    >
+      No users found
+    </div>
+
+    <div class="position-relative">
+      <ngx-ui-loader
+        [fgsColor]="'#c32ead'"
+        [loaderId]="'scroll'"
+        [hasProgressBar]="false"
+      ></ngx-ui-loader>
     </div>
   </div>
 </div>
+
+<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>

@@ -99,7 +99,8 @@ export class NavbarComponent implements OnInit {
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
-    private readonly messagingService: MessagingService
+    private readonly messagingService: MessagingService,
+    private readonly router: Router
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
@@ -186,9 +187,11 @@ export class NavbarComponent implements OnInit {
   }
 
   search(value: string) {
-    this.restService.search(value).subscribe((games) => (this.results = games));
     this.restService
-      .searchUsers(value)
+      .search(value, 0, 5)
+      .subscribe((games) => (this.results = games));
+    this.restService
+      .searchUsers(value, 0, 5)
       .subscribe((users) => (this.uResults = users));
   }
 
@@ -217,6 +220,12 @@ export class NavbarComponent implements OnInit {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
+    });
+  }
+
+  searchNavigate(tab: "games" | "users") {
+    this.router.navigate(["/search", tab], {
+      queryParams: { q: this.query.value },
     });
   }
 }

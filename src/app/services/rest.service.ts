@@ -211,18 +211,22 @@ export class RestService {
       .pipe(map((res) => new GameModel(res)));
   }
 
-  searchUsers(query: string): Observable<UserModel[]> {
+  searchUsers(
+    query: string,
+    page: number,
+    limit: number
+  ): Observable<UserModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/search/", {
-        params: { query, page: 0, limit: 5 },
+        params: { query, page, limit },
       })
       .pipe(map((res) => res.map((d) => new UserModel(d))));
   }
 
-  search(query: string): Observable<GameModel[]> {
+  search(query: string, page: number, limit: number): Observable<GameModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/search", {
-        params: { query, page: 0, limit: 5 },
+        params: { query, page, limit },
       })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
