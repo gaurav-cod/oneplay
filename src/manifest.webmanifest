@@ -1,7 +1,7 @@
 {
-  "name": "argon-dashboard-angular",
-  "short_name": "argon-dashboard-angular",
-  "theme_color": "#1976d2",
+  "name": "OnePlay",
+  "short_name": "oneplay",
+  "theme_color": "#5f44f2",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
