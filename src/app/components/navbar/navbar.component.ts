@@ -200,12 +200,10 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.restService
-      .deleteSession(this.authService.sessionKey)
-      .subscribe(async () => {
-        await this.messagingService.removeToken();
-        this.authService.logout();
-      });
+    this.messagingService.removeToken().finally(() => {
+      this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.logout();
+    });
   }
 
   onFocus() {
