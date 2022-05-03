@@ -17,6 +17,12 @@ import { PlayConstants } from "./play-constants";
 
 declare var gtag: Function;
 
+const initializeMessages = [
+  "Loading...",
+  "Your game starts in 3 2 1...",
+  "Initializing Game in 3 2 1...",
+];
+
 @Component({
   selector: "app-view",
   templateUrl: "./view.component.html",
@@ -51,6 +57,8 @@ export class ViewComponent implements OnInit {
   private _liveVideos: VideoModel[] = [];
 
   private wishlist: string[] = [];
+
+  private initializerTimer: NodeJS.Timer;
 
   constructor(
     private readonly location: Location,
@@ -401,18 +409,21 @@ export class ViewComponent implements OnInit {
   private startLoading(): void {
     this.startingGame = true;
     this.loaderService.startLoader("play-loader");
-    Swal.fire({
-      title: "Initializing game",
-      text: "Please wait while we connect you to the game",
-      showConfirmButton: false,
-      willOpen: () => Swal.showLoading(),
-      willClose: () => Swal.hideLoading(),
-    });
+    let index = 0;
+    this.initializerTimer = setInterval(() => {
+      this.getInitializeSwal(initializeMessages[index]);
+      if (index === initializeMessages.length - 1) {
+        index = 0;
+      } else {
+        index++;
+      }
+    }, 3000);
   }
 
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
+    clearInterval(this.initializerTimer);
     Swal.close();
   }
 
@@ -428,5 +439,16 @@ export class ViewComponent implements OnInit {
 
   private getShuffledGames(games: GameModel[]): GameModel[] {
     return [...games].sort(() => Math.random() - 0.5);
+  }
+
+  private getInitializeSwal(title: string) {
+    Swal.close();
+    Swal.fire({
+      title,
+      text: "Please wait while we connect you to the game",
+      showConfirmButton: false,
+      willOpen: () => Swal.showLoading(),
+      willClose: () => Swal.hideLoading(),
+    });
   }
 }

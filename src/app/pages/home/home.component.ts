@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly title: Title,
+    private readonly title: Title
   ) {}
 
   ngOnInit(): void {
@@ -52,7 +52,9 @@ export class HomeComponent implements OnInit {
         Swal.fire({
           icon: "warning",
           title: "Hi, " + user.firstName,
-          text: "Your account is under verification for activation of the free trail subscription, it usually takes less then 24 hours and you will get a mail.\nPlease contact us in support@oneplay.in if you are still facing issues after 24 hours.",
+          html: `Your account is yet to be verified. Please give us 24 hrs to do so.
+          Until then, kindly <a href="https://oneplay.in/download.html">download client</a> info from our website
+          Thankyou for your patience!`,
           confirmButtonText: "OK",
         });
       }
