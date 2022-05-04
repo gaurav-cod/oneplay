@@ -32,7 +32,9 @@
     >
       <i class="fas fa-envelope text-danger" style="font-size: 36px"></i>
       <div class="ml-2">
-        <div class="text-danger text-xs">You have 10 unread messages</div>
+        <div class="text-danger text-xs">
+          You have {{ requests }} friend requests
+        </div>
         <div class="text-white text-xs">Click to view ></div>
       </div>
     </a>
@@ -40,7 +42,7 @@
 
   <div class="bg-gray-dark" style="height: 1px"></div>
 
-  <h5 class="text-white m-3">Online friends ({{ friends.length }})</h5>
+  <h5 class="text-white m-3">Your friends ({{ friends.length }})</h5>
 
   <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li

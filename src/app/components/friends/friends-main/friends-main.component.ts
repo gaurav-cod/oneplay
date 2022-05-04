@@ -14,10 +14,14 @@ export class FriendsMainComponent implements OnInit {
   @Output("goToChat") goToChat = new EventEmitter();
 
   friends: FriendModel[] = [];
+  requests = 0;
 
   constructor(private readonly friendsService: FriendsService) {
     this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
+    });
+    this.friendsService.requests.subscribe((requests) => {
+      this.requests = requests.length;
     });
   }
 

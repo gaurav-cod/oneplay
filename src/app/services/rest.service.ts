@@ -362,11 +362,28 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new FriendModel(d))));
   }
 
+  getPendingReceivedRequests(): Observable<FriendModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/friends/pending_received_requests")
+      .pipe(map((res) => res.map((d) => new FriendModel(d))));
+  }
+
   addFriend(id: string): Observable<string> {
     return this.http
       .post(this.r_mix_api + "/social/friends/" + id + "/send_request", null)
       .pipe(
         map((data) => data["id"]),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
+  acceptFriend(id: string): Observable<void> {
+    return this.http
+      .put(this.r_mix_api + "/social/friends/" + id + "/accept_request", null)
+      .pipe(
+        map((data) => {}),
         catchError(({ error }) => {
           throw Error(error.message);
         })

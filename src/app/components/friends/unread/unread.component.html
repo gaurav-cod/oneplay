@@ -3,25 +3,34 @@
     <button class="btn bg-transparent" (click)="goBack.emit()">
       <i class="fas fa-chevron-left text-white text-xs"></i>
     </button>
-    <div class="text-white">Your messages</div>
+    <div class="text-white">Friend Requests</div>
   </div>
 
   <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li
-      *ngFor="let i of [1, 1, 1, 1, 1, 1, 1]"
+      *ngFor="let request of requests"
       class="media mb-1 align-items-center my-3"
     >
       <img
-        [src]="'Lucifer 666' | avatar"
+        [src]="request.name | avatar"
         class="rounded-circle mr-2"
         width="36"
         height="36"
         alt=""
       />
       <div>
-        <div class="text-white small">Lucifer 666</div>
-        <div class="text-white text-xs">Playing GTA V</div>
+        <div class="text-white small">{{ request.name }}</div>
+        <div class="text-white text-xs">{{ request.username }}</div>
       </div>
+      <button
+        class="btn btn-sm ml-auto"
+        (click)="accept(request)"
+      >
+        <i class="fas fa-check text-success"></i>
+      </button>
+      <button class="btn btn-sm" (click)="decline(request)">
+        <i class="fas fa-times text-white"></i>
+      </button>
     </li>
   </ul>
 </div>

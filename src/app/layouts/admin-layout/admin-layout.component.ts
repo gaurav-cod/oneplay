@@ -31,6 +31,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.authService.user = this.restService.getProfile();
     this.friendsService.friends = this.restService.getAllFriends();
     this.friendsService.pendings = this.restService.getPendingSentRequests();
+    this.friendsService.requests =
+      this.restService.getPendingReceivedRequests();
     this.gameService.gameStatus = this.restService.getGameStatus();
 
     this.timer = setInterval(() => {
