@@ -451,13 +451,20 @@ export class RestService {
     resolution: string,
     is_vsync_enabled: boolean,
     fps: number,
-    bitrate: number
+    bitrate: number,
+    advanced_options: any
   ): Observable<StartGameRO> {
     const formData = new FormData();
     formData.append("game_id", gameId);
     formData.append(
       "launch_payload",
-      JSON.stringify({ resolution, is_vsync_enabled, fps, bitrate })
+      JSON.stringify({
+        resolution,
+        is_vsync_enabled,
+        fps,
+        bitrate,
+        ...advanced_options,
+      })
     );
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)

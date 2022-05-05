@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
+import Cookies from "js-cookie";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -14,6 +15,8 @@ import Swal from "sweetalert2";
 })
 export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
+
+  readonly isApp = Cookies.get('src') === 'oneplay_app';
 
   private timer: any;
 

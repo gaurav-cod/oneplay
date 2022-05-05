@@ -1,6 +1,6 @@
 import { Location } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -49,6 +49,15 @@ export class ViewComponent implements OnInit {
   action: "Play" | "Resume" | "Terminate" = "Play";
   user: UserModel;
   sessionToTerminate = "";
+
+  advancedOptions = new FormGroup({
+    absolute_mouse_mode: new FormControl(false),
+    absolute_touch_mode: new FormControl(false),
+    background_gamepad: new FormControl(false),
+    audio_type: new FormControl("stereo"),
+    stream_codec: new FormControl("auto"),
+    video_decoder_selection: new FormControl("auto"),
+  });
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -256,6 +265,13 @@ export class ViewComponent implements OnInit {
     });
   }
 
+  openAdvanceOptions(container): void {
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
+  }
+
   terminateSession(): void {
     this.startTerminating();
     this.restService.terminateGame(this.sessionToTerminate).subscribe(
@@ -302,7 +318,8 @@ export class ViewComponent implements OnInit {
         this.resolution.value,
         this.vsync.value,
         this.fps.value,
-        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
+        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value),
+        this.advancedOptions.value
       )
       .subscribe(
         (data) => {

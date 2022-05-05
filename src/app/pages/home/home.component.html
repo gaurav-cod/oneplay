@@ -26,8 +26,12 @@
               <a
                 [routerLink]="['/view/' + (game | glink)]"
                 class="btn btn-primary btn-lg h-100"
-                >Explore More</a
-              >
+                >
+                <span class="d-none d-md-block">
+                  Explore More
+                </span>
+                <i class="fas fa-external-link-alt d-block d-md-none mx-2"></i>
+                </a>
               <button
                 *ngIf="!isInWishlist(game)"
                 (click)="addToWishlist(game)"
