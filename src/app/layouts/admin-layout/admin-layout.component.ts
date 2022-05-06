@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import Cookies from "js-cookie";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
 
-  readonly isApp = Cookies.get('src') === 'oneplay_app';
+  isApp = Cookies.get('src') === 'oneplay_app';
 
   private timer: any;
 
@@ -25,38 +25,31 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
     private readonly messagingService: MessagingService,
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly gameService: GameService
   ) {}
 
   ngOnInit(): void {
-    this.authService.wishlist = this.restService.getWishlist();
-    this.authService.user = this.restService.getProfile();
-    this.friendsService.friends = this.restService.getAllFriends();
-    this.friendsService.pendings = this.restService.getPendingSentRequests();
-    this.friendsService.requests =
-      this.restService.getPendingReceivedRequests();
-    this.gameService.gameStatus = this.restService.getGameStatus();
+    this.initAuth();
+    this.initFriends();
+    this.initGames();
+    this.initPushNotification();
 
     this.timer = setInterval(() => {
-      this.gameService.gameStatus = this.restService.getGameStatus();
+      this.initGames();
     }, 5 * 60 * 1000);
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        this.gameService.gameStatus = this.restService.getGameStatus();
+        this.initGames();
       }
     });
 
-    this.messagingService.requestToken();
-    this.messagingService.receiveMessage();
-    this.messagingService.currentMessage.subscribe((message) => {
-      if (message) {
-        Swal.fire({
-          title: message.notification.title,
-          text: message.notification.body,
-          icon: "info",
-        });
+    this.route.queryParams.subscribe((params) => {
+      if (params.src === 'oneplay_app') {
+        Cookies.set('src', 'oneplay_app');
+        this.isApp = true;
       }
     });
   }
@@ -71,6 +64,36 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     //     this.handlePay(params.subscribe);
     //   }
     // });
+  }
+
+  private initAuth() {
+    this.authService.wishlist = this.restService.getWishlist();
+    this.authService.user = this.restService.getProfile();
+  }
+
+  private initFriends() {
+    this.friendsService.friends = this.restService.getAllFriends();
+    this.friendsService.pendings = this.restService.getPendingSentRequests();
+    this.friendsService.requests =
+      this.restService.getPendingReceivedRequests();
+  }
+
+  private initGames() {
+    this.gameService.gameStatus = this.restService.getGameStatus();
+  }
+
+  private initPushNotification() {
+    this.messagingService.requestToken();
+    this.messagingService.receiveMessage();
+    this.messagingService.currentMessage.subscribe((message) => {
+      if (message) {
+        Swal.fire({
+          title: message.notification.title,
+          text: message.notification.body,
+          icon: "info",
+        });
+      }
+    });
   }
 
   private handlePay(packageName: string) {
