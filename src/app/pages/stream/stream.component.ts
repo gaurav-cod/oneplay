@@ -18,6 +18,7 @@ import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { StreamChatService } from "src/app/services/stream-chat.service";
+import { memoize } from "src/app/utils/memoize.util";
 
 @Component({
   selector: "app-stream",
@@ -94,6 +95,7 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  @memoize()
   getSenderName(message: MessageModel) {
     if (message.sender === this.user.id) {
       return of(this.user.firstName);
