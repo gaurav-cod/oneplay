@@ -413,7 +413,7 @@ export class RestService {
 
   getStreamMessages(streamId: string): Observable<MessageModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/stream/" + streamId + "/messages")
+      .get<any[]>(this.r_mix_api + "/streams/" + streamId + "/messages")
       .pipe(map((res) => res.map((d) => new MessageModel(d))));
   }
 

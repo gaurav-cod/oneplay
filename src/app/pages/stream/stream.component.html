@@ -14,16 +14,17 @@
     >
       <div class="d-flex align-items-center">
         <div class="avatar avatar-lg rounded-circle mr-2">
-          <img [src]="!!video.creatorThumbnail || (video.creatorName | avatar)" alt="" />
+          <img
+            [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+            alt=""
+          />
         </div>
         <div>
           <div class="text-sm text-white">{{ video.creatorName }}</div>
           <div class="text-xs text-white-50 d-none d-md-block">
             {{ video.title }}
           </div>
-          <span class="badge bg-light text-dark">{{
-            video.source
-          }}</span>
+          <span class="badge bg-light text-dark">{{ video.source }}</span>
         </div>
       </div>
       <div class="d-flex align-items-center">
@@ -44,7 +45,7 @@
       </div>
     </div>
   </div>
-  <!-- <div
+  <div
     class="col-md-3 col-sm-12 d-flex flex-column"
     style="background: #171717"
   >
@@ -55,28 +56,33 @@
           <i class="fa fa-users" aria-hidden="true"></i>
         </div>
       </div>
-      <div class="py-4 overflow-auto" style="max-height: 580px">
-        <div *ngFor="let msg of chats" class="d-flex align-items-center mb-3">
+      <ul #chatBox class="py-4 overflow-auto" style="max-height: 580px">
+        <li
+          *ngFor="let msg of chats"
+          class="d-flex align-items-center mb-3"
+          [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
+        >
           <div
             class="avatar avatar-sm rounded-circle mr-2"
             style="width: 24px; height: 24px"
           >
-            <img [src]="msg.photo" alt="" />
+            <img [src]="(getSenderName(msg) | async) | avatar" alt="" />
           </div>
-          <div class="text-white-50 mr-2 text-sm">{{ msg.name }}</div>
+          <div class="text-white-50 mr-2 text-sm">{{ getSenderName(msg) | async }}</div>
           <div class="text-white text-sm">{{ msg.message }}</div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
-    <form class="d-flex mb-4">
+    <form class="d-flex mb-4" (submit)="sendMessage()">
       <input
         type="text"
         class="form-control bg-transparent mr-2"
         placeholder="Type something..."
+        [formControl]="message"
       />
       <button type="submit" class="btn btn-primary">Send</button>
     </form>
-  </div> -->
+  </div>
 </div>
 <div class="container-fluid pb-5">
   <div *ngIf="!!game" class="row mt-4">
