@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -19,6 +20,9 @@ export class SearchComponent implements OnInit {
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
+  isFocused = false;
+
+  queryControl = new FormControl("");
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -53,6 +57,13 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  search() {
+    this.router.navigate(["search", this.tab], {
+      queryParams: { q: this.queryControl.value },
+      replaceUrl: true,
+    });
+  }
+
   onScroll() {
     switch (this.tab) {
       case "games":
@@ -63,7 +74,7 @@ export class SearchComponent implements OnInit {
         break;
     }
   }
-  
+
   changeTab(tab: "games" | "users") {
     this.router.navigate(["search", tab], {
       queryParams: { q: this.query },

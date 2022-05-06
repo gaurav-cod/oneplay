@@ -144,4 +144,8 @@ export class SidebarComponent implements OnInit {
       modalDialogClass: "modal-sm",
     });
   }
+
+  toggleFriendsList() {
+    this.toggleFriends.emit();
+  }
 }

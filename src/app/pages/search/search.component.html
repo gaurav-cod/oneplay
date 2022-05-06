@@ -1,8 +1,26 @@
 <div class="container-fluid pt-8">
   <div class="container-fluid">
+    <form class="d-block d-lg-none mb-5" (submit)="search()">
+      <div class="form-group mb-0" [ngClass]="{ focused: isFocused === true }">
+        <div class="input-group input-group-alternative border-0 bg-darker">
+          <input
+            class="form-control"
+            placeholder="Search"
+            type="text"
+            [formControl]="queryControl"
+            (focus)="isFocused = true"
+            (blur)="isFocused = false"
+          />
+          <div class="input-group-prepend">
+            <button class="btn input-group-text" type="submit"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </form>
+
     <div class="d-flex justify-content-between">
-      <h1 class="text-white">
-        You searched for "{{ query }}"
+      <h1 class="text-white text-center">
+        <span *ngIf="!!query">You searched for "{{ query }}" </span>
         <a
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
@@ -41,7 +59,7 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+      <div *ngFor="let game of games" class="col-6 col-lg-3 mb-4">
         <div class="zoom">
           <app-game-card [game]="game"></app-game-card>
         </div>

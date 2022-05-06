@@ -17,13 +17,17 @@
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
       <li class="nav-item" placement="bottom-right">
-        <a class="nav-link nav-link-icon text-white" role="button" (click)="isCollapsed = !isCollapsed">
-          <i class="fas fa-search"></i>
+        <a class="nav-link" (click)="toggleFriendsList()">
+          <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+            <i class="fas fa-user-friends"></i>
+          </span>
         </a>
       </li>
-            <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" [routerLink]="gameLink">
-          <span class="avatar avatar-sm rounded-circle bg-gray-dark position-relative">
+          <span
+            class="avatar avatar-sm rounded-circle bg-gray-dark position-relative"
+          >
             <i
               class="fa fa-gamepad"
               aria-hidden="true"
@@ -59,7 +63,11 @@
             <i class="ni ni-favourite-28"></i>
             <span>Your Wishlist</span>
           </a>
-          <a href="javascript:void(0)" class="dropdown-item" (click)="open(share)">
+          <a
+            href="javascript:void(0)"
+            class="dropdown-item"
+            (click)="open(share)"
+          >
             <i class="fa fa-link" aria-hidden="true"></i>
             <span>Referral Link</span>
           </a>
@@ -67,7 +75,10 @@
             <i class="fas fa-tachometer-alt"></i>
             <span>Speed Test</span>
           </a>
-          <a href="https://www.oneplay.in/subscription.html" class="dropdown-item">
+          <a
+            href="https://www.oneplay.in/subscription.html"
+            class="dropdown-item"
+          >
             <i class="ni ni-credit-card"></i>
             <span>Subscription</span>
           </a>
@@ -83,72 +94,6 @@
         </div>
       </li>
     </ul>
-    <!-- Collapse -->
-    <div
-      class="collapse navbar-collapse"
-      [ngbCollapse]="isCollapsed"
-      id="sidenav-collapse-main"
-    >
-      <!-- Collapse header -->
-      <div class="navbar-collapse-header d-md-none" style="width: 100%">
-        <div class="row">
-          <div class="col-6"></div>
-          <div class="col-6 collapse-close">
-            <button
-              type="button"
-              class="navbar-toggler"
-              (click)="isCollapsed = !isCollapsed"
-            >
-              <span class="bg-white"></span>
-              <span class="bg-white"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- Navigation -->
-      <div
-        class="form-group w-100"
-        [ngClass]="{ focused: (isFocused | async) === true }"
-      >
-          <input
-            class="form-control bg-darker"
-            placeholder="Search"
-            type="text"
-            [formControl]="query"
-            (focus)="onFocus()"
-            (blur)="onBlur()"
-          />
-      </div>
-      <ul
-        class="w-100 list-group flex-grow-1 py-3 overflow-auto"
-      >
-        <li
-          *ngFor="let game of results"
-          class="list-group-item bg-darker d-flex border-0 mb-2"
-          [routerLink]="['/view/' + (game | glink)]"
-          style="cursor: pointer"
-        >
-          <img
-            [src]="game.textBgImage"
-            class="mr-3"
-            width="80"
-            height="50"
-            alt=""
-          />
-          <div>
-            <p class="list-group-heading text-white m-0">{{ game.title }}</p>
-            <p class="list-group-content text-white-50 small m-0">
-              {{ game.releaseDate.getFullYear() }}
-            </p>
-          </div>
-        </li>
-      </ul>
-      <div class="collapse-brand d-block d-md-none">
-        <a routerLinkActive="active" [routerLink]="['/dashboard']">
-          <img src="./assets/img/brand/logo.png" />
-        </a>
-      </div>
-    </div>
   </div>
 </nav>
 
@@ -161,16 +106,22 @@
         </div>
       </div>
       <share-buttons
-      [url]="link"
-      [include]="['facebook','twitter','linkedin','telegram','messenger','whatsapp','email','copy']"
-      theme="material-dark"
-      show="11"
+        [url]="link"
+        [include]="[
+          'facebook',
+          'twitter',
+          'linkedin',
+          'telegram',
+          'messenger',
+          'whatsapp',
+          'email',
+          'copy'
+        ]"
+        theme="material-dark"
+        show="11"
       ></share-buttons>
     </div>
-    <div
-      class="position-absolute top-2 right-3"
-      (click)="d('Cross click')"
-    >
+    <div class="position-absolute top-2 right-3" (click)="d('Cross click')">
       <i class="fas fa-times"></i>
     </div>
   </div>
