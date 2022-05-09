@@ -69,9 +69,9 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getSenderName(message: MessageModel) {
     if (message.sender === this.friend.user_id) {
-      return this.friend.first_name;
+      return this.friend.first_name + " " + this.friend.last_name;
     }
-    return this.user.firstName;
+    return this.user.firstName + " " + this.user.lastName;
   }
 
   isUserSender(message: MessageModel) {

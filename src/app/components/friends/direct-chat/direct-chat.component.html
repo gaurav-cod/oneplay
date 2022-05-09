@@ -9,20 +9,19 @@
   <ul #chatBox class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li
       *ngFor="let msg of messages"
-      class="media mb-1 align-items-center my-3"
+      class="d-flex align-items-center my-3"
       [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
     >
-      <img
-        [src]="getSenderName(msg) | avatar"
-        class="rounded-circle mr-2"
-        width="36"
-        height="36"
-        alt=""
-      />
-      <div>
-        <div class="text-white small">{{ getSenderName(msg) }}</div>
-        <div class="text-warning text-xs">{{ msg.message }}</div>
+      <div
+        class="avatar avatar-sm rounded-circle mr-2"
+        style="width: 24px; height: 24px"
+      >
+        <img [src]="getSenderName(msg) | avatar" alt="" />
       </div>
+      <div class="text-white-50 mr-2 text-sm">
+        {{ getSenderName(msg) }}
+      </div>
+      <div class="text-white text-sm">{{ msg.message }}</div>
     </li>
   </ul>
 

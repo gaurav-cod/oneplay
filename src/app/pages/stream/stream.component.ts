@@ -98,7 +98,7 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   @memoize()
   getSenderName(message: MessageModel) {
     if (message.sender === this.user.id) {
-      return of(this.user.firstName);
+      return of(this.user.firstName + " " + this.user.lastName);
     }
     return this.restService.getName(message.sender);
   }
