@@ -22,6 +22,7 @@ export class FriendsComponent implements OnInit {
     | "party_invite"
     | "invites"
     | "chat"
+    | "party_chat"
   > = ["main"];
   selectedParty: string;
   selectedFriend: FriendModel;
@@ -73,6 +74,11 @@ export class FriendsComponent implements OnInit {
   goToChat(friend: FriendModel) {
     this.selectedFriend = friend;
     this._screens.push("chat");
+  }
+
+  goToPartyChat(partyId: string) {
+    this.selectedParty = partyId;
+    this._screens.push("party_chat");
   }
 
   goBack() {

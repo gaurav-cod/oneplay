@@ -39,6 +39,7 @@
     (goBack)="goBack()"
     (goToPartySettings)="goToPartySettings($event)"
     (goToPartyInvite)="goToPartyInvite($event)"
+    (goToPartyChat)="goToPartyChat($event)"
   ></app-party>
 
   <app-create-party
@@ -68,4 +69,10 @@
     (goBack)="goBack()"
     [friend]="selectedFriend"
   ></app-direct-chat>
+
+  <app-party-chat
+    *ngIf="currentScreen === 'party_chat'"
+    [partyId]="selectedParty"
+    (goBack)="goBack()"
+  ></app-party-chat>
 </div>

@@ -1,0 +1,39 @@
+<div class="d-flex flex-column" style="height: 100vh">
+  <div class="d-flex align-items-center p-3 bg-gray-dark">
+    <button class="btn bg-transparent" (click)="goBack.emit()">
+      <em class="fas fa-chevron-left text-white text-xs"></em>
+    </button>
+    <div class="text-white">{{ party.name }}</div>
+  </div>
+
+  <ul #chatBox class="navbar-nav flex-grow-1 px-3 overflow-auto">
+    <li
+      *ngFor="let msg of chats"
+      class="d-flex align-items-center my-3"
+      [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
+    >
+      <div
+        class="avatar avatar-sm rounded-circle mr-2"
+        style="width: 24px; height: 24px"
+      >
+        <img [src]="getSenderName(msg) | async | avatar" alt="" />
+      </div>
+      <div class="text-white-50 mr-2 text-sm">
+        {{ getSenderName(msg) | async }}
+      </div>
+      <div class="text-white text-sm">{{ msg.message }}</div>
+    </li>
+  </ul>
+
+  <form class="p-3 d-flex align-items-center" (submit)="sendMessage()">
+    <input
+      type="text"
+      class="form-control-lg flex-grow-1"
+      [formControl]="message"
+      placeholder="Enter message"
+    />
+    <button class="btn bg-transparent" type="submit">
+      <em class="fas fa-paper-plane text-white text-xs"></em>
+    </button>
+  </form>
+</div>

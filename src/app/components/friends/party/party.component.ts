@@ -24,6 +24,7 @@ export class PartyComponent implements OnInit, OnDestroy {
   @Output("goBack") goBack = new EventEmitter();
   @Output("goToPartySettings") goToPartySettings = new EventEmitter<string>();
   @Output("goToPartyInvite") goToPartyInvite = new EventEmitter<string>();
+  @Output("goToPartyChat") goToPartyChat = new EventEmitter<string>();
 
   members: PartyMemberModel[] = [];
   user: UserModel;
@@ -66,5 +67,9 @@ export class PartyComponent implements OnInit, OnDestroy {
 
   onClickInvite() {
     this.goToPartyInvite.emit(this.party.id);
+  }
+
+  onClickChat() {
+    this.goToPartyChat.emit(this.party.id);
   }
 }

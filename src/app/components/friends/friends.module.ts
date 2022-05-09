@@ -13,6 +13,7 @@ import { PartyComponent } from './party/party.component';
 import { PartySettingsComponent } from './party-settings/party-settings.component';
 import { PartyInviteComponent } from './party-invite/party-invite.component';
 import { InvitesComponent } from './invites/invites.component';
+import { PartyChatComponent } from './party-chat/party-chat.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { InvitesComponent } from './invites/invites.component';
     PartySettingsComponent,
     PartyInviteComponent,
     InvitesComponent,
+    PartyChatComponent,
   ],
   exports: [
     FriendsMainComponent,
@@ -44,6 +46,7 @@ import { InvitesComponent } from './invites/invites.component';
     PartySettingsComponent,
     PartyInviteComponent,
     InvitesComponent,
+    PartyChatComponent,
   ],
 })
 export class FriendsModule {}
