@@ -9,10 +9,7 @@
   [ngClass]="{ 'd-flex': !isCollapsed }"
   [ngbCollapse]="isCollapsed"
   id="sidenav-collapse-friends"
-  style="
-    width: 350px;
-    z-index: 999999999999999;
-  "
+  style="width: 350px; z-index: 999999999999999"
 >
   <app-friends-main
     *ngIf="currentScreen === 'main'"
@@ -22,8 +19,40 @@
     (goToChat)="goToChat($event)"
   ></app-friends-main>
 
-  <app-parties *ngIf="currentScreen === 'parties'" (goBack)="goBack()">
+  <app-parties
+    *ngIf="currentScreen === 'parties'"
+    (goBack)="goBack()"
+    (goToCreateParty)="goToCreateParty()"
+    (selectParty)="selectParty($event)"
+  >
   </app-parties>
+
+  <app-party
+    *ngIf="currentScreen === 'party'"
+    [partyId]="selectedParty"
+    (goBack)="goBack()"
+    (goToPartySettings)="goToPartySettings($event)"
+    (goToPartyInvite)="goToPartyInvite($event)"
+  ></app-party>
+
+  <app-create-party
+    *ngIf="currentScreen === 'create_party'"
+    (goBack)="goBack()"
+    (selectParty)="selectParty($event)"
+  >
+  </app-create-party>
+
+  <app-party-settings
+    *ngIf="currentScreen === 'party_settings'"
+    [partyId]="selectedParty"
+    (goBack)="goBack()"
+  ></app-party-settings>
+
+  <app-party-invite
+    *ngIf="currentScreen === 'party_invite'"
+    [partyId]="selectedParty"
+    (goBack)="goBack()"
+  ></app-party-invite>
 
   <app-unread *ngIf="currentScreen === 'mail'" (goBack)="goBack()">
   </app-unread>

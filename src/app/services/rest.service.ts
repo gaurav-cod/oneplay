@@ -17,6 +17,9 @@ import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
 import { GameFeedModel } from "../models/gameFeed.model";
 import { MessageModel } from "../models/message.model";
+import { PartyModel } from "../models/party.model";
+import { PartyInviteModel } from "../models/partyInvite.model";
+import { PartyMemberModel } from "../models/partyMember.model";
 import { Session } from "../models/session.model";
 import { VideoFeedModel } from "../models/streamFeed.model";
 import { SubscriptionModel } from "../models/subscription.model";
@@ -397,6 +400,89 @@ export class RestService {
         throw Error(error.message);
       })
     );
+  }
+
+  createParty(data: any): Observable<PartyModel> {
+    return this.http.post<any>(this.r_mix_api + "/social/groups", data).pipe(
+      map((res) => new PartyModel(res)),
+      catchError(({ error }) => {
+        throw Error(error.message);
+      })
+    );
+  }
+
+  updateParty(id: string, data: any): Observable<void> {
+    return this.http.put(this.r_mix_api + "/social/groups/" + id, data).pipe(
+      map(() => {}),
+      catchError(({ error }) => {
+        throw Error(error.message);
+      })
+    );
+  }
+
+  getParties(): Observable<PartyModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/groups/all")
+      .pipe(map((res) => res.map((d) => new PartyModel(d))));
+  }
+
+  getPartyMembers(id: string): Observable<PartyMemberModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/groups/" + id + "/members")
+      .pipe(map((res) => res.map((d) => new PartyMemberModel(d))));
+  }
+
+  inviteToParty(id: string, userId: string): Observable<PartyInviteModel> {
+    return this.http
+      .post(this.r_mix_api + "/social/groups/" + id + "/invite/" + userId, null)
+      .pipe(
+        map((data) => {
+          return new PartyInviteModel(data);
+        }),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
+  getPartyInvites(): Observable<PartyInviteModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/groups/invites")
+      .pipe(map((res) => res.map((d) => new PartyInviteModel(d))));
+  }
+
+  getPartyInvitesByGroupId(id: string): Observable<PartyInviteModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/social/groups/" + id + "/invites")
+      .pipe(map((res) => res.map((d) => new PartyInviteModel(d))));
+  }
+
+  acceptPartyInvite(groupId: string): Observable<void> {
+    return this.http
+      .put(
+        this.r_mix_api + "/social/groups/" + groupId + "/accept_invite",
+        null
+      )
+      .pipe(
+        map((data) => {}),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
+  }
+
+  rejectPartyInvite(groupId: string): Observable<void> {
+    return this.http
+      .put(
+        this.r_mix_api + "/social/groups/" + groupId + "/reject_invite",
+        null
+      )
+      .pipe(
+        map((data) => {}),
+        catchError(({ error }) => {
+          throw Error(error.message);
+        })
+      );
   }
 
   getDirectMessages(friendId: string): Observable<MessageModel[]> {

@@ -1,0 +1,55 @@
+<div class="d-flex flex-column" style="height: 100vh">
+    <div class="d-flex align-items-center p-3 bg-gray-dark">
+      <button class="btn bg-transparent" (click)="goBack.emit()">
+        <i class="fas fa-chevron-left text-white text-xs"></i>
+      </button>
+      <div class="text-white">Party Settings</div>
+    </div>
+  
+    <form
+      [formGroup]="partyForm"
+      class="navbar-nav flex-grow-1 p-3 overflow-auto text-white"
+    >
+      <div class="form-group">
+        <label for="partyName">Party Name</label>
+        <input
+          type="text"
+          class="form-control bg-dark"
+          id="partyName"
+          formControlName="name"
+          placeholder="Party Name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="partyDescription">Party Description</label>
+        <textarea
+          class="form-control bg-dark"
+          id="partyDescription"
+          formControlName="description"
+          placeholder="Party Description"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="partyType">Party Type</label>
+        <select
+          class="form-control bg-dark"
+          id="partyType"
+          formControlName="type"
+        >
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+      </div>
+    </form>
+  
+    <div class="p-3">
+      <button
+        class="btn btn-block btn-primary"
+        (click)="onSubmit()"
+        [disabled]="loading || !partyForm.valid"
+      >
+        Save changes
+      </button>
+    </div>
+  </div>
+  

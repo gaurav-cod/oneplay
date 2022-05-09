@@ -1,0 +1,59 @@
+<div class="d-flex flex-column" style="height: 100vh">
+  <div class="d-flex align-items-center p-3 bg-gray-dark">
+    <button class="btn bg-transparent" (click)="goBack.emit()">
+      <i class="fas fa-chevron-left text-white text-xs"></i>
+    </button>
+    <div class="text-white">{{ party?.name }}</div>
+    <button class="btn ml-auto">
+      <i class="fas fa-headset text-white"></i>
+    </button>
+  </div>
+
+  <div class="px-3 py-4 text-center">
+    <img
+      [src]="party?.name || '' | avatar"
+      class="rounded-circle mb-1"
+      width="60"
+      height="60"
+      alt=""
+    />
+    <div class="text-white fw-bold mb-1">{{ party?.name }}</div>
+    <div class="text-warning small mb-3">{{ party?.description }}</div>
+    <div class="d-flex justify-content-center">
+      <button
+        *ngIf="isCreator"
+        class="btn btn-dark bg-gray-dark"
+        (click)="onClickPartySettings()"
+      >
+        <small>Party Settings</small>
+      </button>
+      <button *ngIf="isAdmin" class="btn btn-primary" (click)="onClickInvite()">
+        <small>Invite To Game</small>
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-gray-dark" style="height: 1px"></div>
+
+  <h5 class="text-white m-3">Members</h5>
+
+  <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
+    <li
+      *ngFor="let member of members"
+      class="media mb-1 align-items-center mb-3"
+      style="cursor: pointer"
+    >
+      <img
+        [src]="member.user.name | avatar"
+        class="rounded-circle mr-2"
+        width="36"
+        height="36"
+        alt=""
+      />
+      <div>
+        <div class="text-white small">{{ member.user.name }}</div>
+        <div class="text-warning text-xs">{{ member.role }}</div>
+      </div>
+    </li>
+  </ul>
+</div>

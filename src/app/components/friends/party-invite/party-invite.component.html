@@ -3,33 +3,35 @@
     <button class="btn bg-transparent" (click)="goBack.emit()">
       <i class="fas fa-chevron-left text-white text-xs"></i>
     </button>
-    <div class="text-white">Your parties</div>
+    <div class="text-white">Invite Friends</div>
   </div>
 
   <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li
-      *ngFor="let party of parties"
+      *ngFor="let friend of friends"
       class="media mb-1 align-items-center my-3"
       style="cursor: pointer"
       (click)="onSelectParty(party)"
     >
       <img
-        [src]="party.name | avatar"
+        [src]="friend.name | avatar"
         class="rounded-circle mr-2"
         width="36"
         height="36"
         alt=""
       />
       <div>
-        <div class="text-white small">{{ party.name }}</div>
-        <div class="text-warning text-xs">{{ party.type }}</div>
+        <div class="text-white small">{{ friend.name }}</div>
+        <div class="text-warning text-xs">{{ friend.username }}</div>
       </div>
+      <button
+        *ngIf="!isInvited(friend)"
+        class="btn btn-sm btn-outline-info ml-auto"
+        (click)="onInvite(friend)"
+      >
+        Invite
+      </button>
+      <i *ngIf="isInvited(friend)" class="fas fa-check text-success text-xs ml-auto"></i>
     </li>
   </ul>
-
-  <div class="p-3">
-    <button class="btn btn-block btn-primary" (click)="goToCreateParty.emit()">
-      Create a new party
-    </button>
-  </div>
 </div>

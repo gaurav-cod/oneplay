@@ -8,6 +8,10 @@ import { RouterModule } from "@angular/router";
 import { PartiesComponent } from "./parties/parties.component";
 import { UnreadComponent } from "./unread/unread.component";
 import { DirectChatComponent } from "./direct-chat/direct-chat.component";
+import { CreatePartyComponent } from './create-party/create-party.component';
+import { PartyComponent } from './party/party.component';
+import { PartySettingsComponent } from './party-settings/party-settings.component';
+import { PartyInviteComponent } from './party-invite/party-invite.component';
 
 @NgModule({
   imports: [
@@ -23,12 +27,20 @@ import { DirectChatComponent } from "./direct-chat/direct-chat.component";
     PartiesComponent,
     UnreadComponent,
     DirectChatComponent,
+    CreatePartyComponent,
+    PartyComponent,
+    PartySettingsComponent,
+    PartyInviteComponent,
   ],
   exports: [
     FriendsMainComponent,
     PartiesComponent,
     UnreadComponent,
     DirectChatComponent,
+    CreatePartyComponent,
+    PartyComponent,
+    PartySettingsComponent,
+    PartyInviteComponent,
   ],
 })
 export class FriendsModule {}

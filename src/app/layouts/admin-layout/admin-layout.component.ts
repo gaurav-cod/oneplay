@@ -5,6 +5,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
+import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -24,6 +25,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
+    private readonly partyService: PartyService,
     private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -33,6 +35,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnInit(): void {
     this.initAuth();
     this.initFriends();
+    this.initParties();
     this.initGames();
     this.initPushNotification();
 
@@ -76,6 +79,10 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.friendsService.pendings = this.restService.getPendingSentRequests();
     this.friendsService.requests =
       this.restService.getPendingReceivedRequests();
+  }
+
+  private initParties() {
+    this.partyService.parties = this.restService.getParties();
   }
 
   private initGames() {
