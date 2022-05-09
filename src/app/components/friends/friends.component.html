@@ -19,9 +19,15 @@
     (goToChat)="goToChat($event)"
   ></app-friends-main>
 
+  <app-invites
+    *ngIf="currentScreen === 'invites'"
+    (goBack)="goBack()"
+    ></app-invites>
+
   <app-parties
     *ngIf="currentScreen === 'parties'"
     (goBack)="goBack()"
+    (goToInvites)="goToInvites()"
     (goToCreateParty)="goToCreateParty()"
     (selectParty)="selectParty($event)"
   >

@@ -69,6 +69,14 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     // });
   }
 
+  toggleFriendsCollapsed() {
+    if (this.friendsCollapsed) {
+      this.initFriends();
+      this.initParties();
+    }
+    this.friendsCollapsed = !this.friendsCollapsed;
+  }
+
   private initAuth() {
     this.authService.wishlist = this.restService.getWishlist();
     this.authService.user = this.restService.getProfile();
@@ -83,6 +91,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private initParties() {
     this.partyService.parties = this.restService.getParties();
+    this.partyService.invites = this.restService.getPartyInvites();
   }
 
   private initGames() {
@@ -99,6 +108,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           text: message.notification.body,
           icon: "info",
         });
+        this.initParties();
+        this.initFriends();
       }
     });
   }

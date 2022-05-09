@@ -20,6 +20,7 @@ export class FriendsComponent implements OnInit {
     | "create_party"
     | "party_settings"
     | "party_invite"
+    | "invites"
     | "chat"
   > = ["main"];
   selectedParty: string;
@@ -55,6 +56,10 @@ export class FriendsComponent implements OnInit {
   goToPartyInvite(partyId: string) {
     this.selectedParty = partyId;
     this._screens.push("party_invite");
+  }
+
+  goToInvites() {
+    this._screens.push("invites");
   }
 
   goToMail() {

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { PartyModel } from "../models/party.model";
+import { PartyInviteModel } from "../models/partyInvite.model";
 
 @Injectable({
   providedIn: "root",
@@ -10,12 +11,24 @@ export class PartyService {
     PartyModel[]
   >([]);
 
+  private _$invites: BehaviorSubject<PartyInviteModel[]> = new BehaviorSubject<
+    PartyInviteModel[]
+  >([]);
+
   get parties(): Observable<PartyModel[]> {
     return this._$parties.asObservable();
+  }
+  
+  get invites(): Observable<PartyInviteModel[]> {
+    return this._$invites.asObservable();
   }
 
   set parties(parties: Observable<PartyModel[]>) {
     parties.subscribe((parties) => this._$parties.next(parties));
+  }
+
+  set invites(invites: Observable<PartyInviteModel[]>) {
+    invites.subscribe((invites) => this._$invites.next(invites));
   }
 
   constructor() {}
@@ -54,5 +67,24 @@ export class PartyService {
       totalMembers: party.totalMembers - 1,
     });
     this._$parties.next(parties);
+  }
+
+  acceptInvite(invite: PartyInviteModel): void {
+    // add party to parties
+    const parties = this._$parties.getValue();
+    parties.push(invite.party);
+    this._$parties.next(parties);
+    // remove invite
+    const invites = this._$invites.getValue();
+    const index = invites.indexOf(invite);
+    invites.splice(index, 1);
+    this._$invites.next(invites);
+  }
+
+  rejectInvite(invite: PartyInviteModel): void {
+    const invites = this._$invites.getValue();
+    const index = invites.indexOf(invite);
+    invites.splice(index, 1);
+    this._$invites.next(invites);
   }
 }

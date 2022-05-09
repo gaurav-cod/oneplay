@@ -12,7 +12,7 @@ export class PartyInviteModel {
   constructor(json: any) {
     this.id = json.id;
     this.userId = json.userId;
-    this.party = !!this.party ? new PartyModel(json.group) : null;
+    this.party = !!json.group ? new PartyModel(json.group) : null;
     this.invitedBy = json.invitedBy;
     this.createdAt = new Date(json.createdAt);
     this.updatedAt = new Date(json.updatedAt);

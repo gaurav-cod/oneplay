@@ -1,16 +1,16 @@
 <app-friends
 [isCollapsed]="friendsCollapsed"
-(toggleCollapse)="friendsCollapsed = !friendsCollapsed"
+(toggleCollapse)="toggleFriendsCollapsed()"
 ></app-friends>
 
 <!-- Sidenav -->
 <app-sidebar
-  (toggleFriends)="friendsCollapsed = !friendsCollapsed"
+  (toggleFriends)="toggleFriendsCollapsed()"
 ></app-sidebar>
 <div class="main-content">
   <!-- Top navbar -->
   <app-navbar
-    (toggleFriends)="friendsCollapsed = !friendsCollapsed"
+    (toggleFriends)="toggleFriendsCollapsed()"
   ></app-navbar>
   <!-- Pages -->
   <router-outlet></router-outlet>

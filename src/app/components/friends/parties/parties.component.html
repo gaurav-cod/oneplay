@@ -6,6 +6,24 @@
     <div class="text-white">Your parties</div>
   </div>
 
+  <div class="p-3">
+    <a
+      class="nav-link d-flex"
+      style="background-color: rgba(243, 20, 64, 0.1); cursor: pointer"
+      (click)="goToInvites.emit()"
+    >
+      <i class="fas fa-envelope text-danger" style="font-size: 36px"></i>
+      <div class="ml-2">
+        <div class="text-danger text-xs">
+          You have {{ invites }} party invites
+        </div>
+        <div class="text-white text-xs">Click to view ></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="bg-gray-dark" style="height: 1px"></div>
+
   <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li
       *ngFor="let party of parties"

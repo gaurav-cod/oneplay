@@ -447,7 +447,7 @@ export class RestService {
 
   getPartyInvites(): Observable<PartyInviteModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/social/groups/invites")
+      .get<any[]>(this.r_mix_api + "/social/groups/invites/received")
       .pipe(map((res) => res.map((d) => new PartyInviteModel(d))));
   }
 

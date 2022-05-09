@@ -1,0 +1,37 @@
+<div class="d-flex flex-column" style="height: 100vh">
+    <div class="d-flex align-items-center p-3 bg-gray-dark">
+      <button class="btn bg-transparent" (click)="goBack.emit()">
+        <i class="fas fa-chevron-left text-white text-xs"></i>
+      </button>
+      <div class="text-white">Party Invites</div>
+    </div>
+  
+    <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
+      <li
+        *ngFor="let request of requests"
+        class="media mb-1 align-items-center my-3"
+      >
+        <img
+          [src]="request.party.name | avatar"
+          class="rounded-circle mr-2"
+          width="36"
+          height="36"
+          alt=""
+        />
+        <div>
+          <div class="text-white small">{{ request.party.name }}</div>
+          <div class="text-white text-xs">{{ request.party.description }}</div>
+        </div>
+        <button
+          class="btn btn-sm ml-auto"
+          (click)="accept(request)"
+        >
+          <i class="fas fa-check text-success"></i>
+        </button>
+        <button class="btn btn-sm" (click)="decline(request)">
+          <i class="fas fa-times text-white"></i>
+        </button>
+      </li>
+    </ul>
+  </div>
+  
