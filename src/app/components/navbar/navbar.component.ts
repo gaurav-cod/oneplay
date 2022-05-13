@@ -38,6 +38,7 @@ export class NavbarComponent implements OnInit {
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
+  public notifications = [];
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];

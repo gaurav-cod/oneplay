@@ -160,6 +160,27 @@
           </span>
         </a>
       </li>
+      <!-- notifications dropdown -->
+      <li class="nav-item" ngbDropdown placement="bottom-rigth">
+        <a class="nav-link" role="button" ngbDropdownToggle>
+          <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+            <i class="fas fa-bell"></i>
+          </span>
+        </a>
+        <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+          <div class="dropdown-header noti-title">
+            <h6 class="text-overflow m-0">Notifications</h6>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a
+            *ngFor="let notification of notifications"
+            class="dropdown-item"
+            [routerLink]="['/view/' + (notification.game | glink)]"
+          >
+            <div class="notification-content"></div>
+          </a>
+        </div>
+      </li>
       <li class="nav-item" ngbDropdown placement="bottom-right">
         <a class="nav-link pr-0" role="button" ngbDropdownToggle>
           <span class="avatar avatar-sm rounded-circle">
