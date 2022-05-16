@@ -16,6 +16,10 @@ export class FriendsMainComponent implements OnInit {
   friends: FriendModel[] = [];
   requests = 0;
 
+  get onlineCount() {
+    return this.friends.filter((friend) => friend.isOnline).length;
+  }
+
   constructor(private readonly friendsService: FriendsService) {
     this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
@@ -28,6 +32,6 @@ export class FriendsMainComponent implements OnInit {
   ngOnInit(): void {}
 
   onChat(friend: FriendModel) {
-    this.goToChat.emit(friend);
+    this.goToChat.emit(friend.id);
   }
 }

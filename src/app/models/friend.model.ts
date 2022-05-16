@@ -11,6 +11,7 @@ export class FriendModel {
     readonly email: string;
     readonly last_login_timestamp: Date;
     readonly profile_image: string | null;
+    readonly isOnline: boolean;
 
     constructor(data: any) {
         this.id = data.id;
@@ -25,6 +26,7 @@ export class FriendModel {
         this.email = data.email;
         this.last_login_timestamp = new Date(data.last_login_timestamp);
         this.profile_image = data.profile_image;
+        this.isOnline = data.isOnline;
     }
 
     get name(): string {
@@ -45,6 +47,7 @@ export class FriendModel {
             email: data.email || this.email,
             last_login_timestamp: data.last_login_timestamp || this.last_login_timestamp,
             profile_image: data.profile_image || this.profile_image,
+            isOnline: data.isOnline || this.isOnline,
         });
     }
 }

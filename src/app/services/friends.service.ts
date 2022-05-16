@@ -35,6 +35,10 @@ export class FriendsService {
     requests.subscribe((requests) => this._$requests.next(requests));
   }
 
+  getFriendById(id: string): FriendModel {
+    return this._$friends.value.find((friend) => friend.id === id);
+  }
+
   addFriend(friend: UserModel, id: string) {
     this._$pendings.next([
       ...this._$pendings.getValue(),
@@ -64,6 +68,14 @@ export class FriendsService {
   declineRequest(friend: FriendModel) {
     this._$requests.next(
       this._$requests.getValue().filter((f) => f.id !== friend.id)
+    );
+  }
+
+  updateOnlineStatus(friend: FriendModel, isOnline: boolean) {
+    this._$friends.next(
+      this._$friends.getValue().map((f) =>
+        f.id === friend.id ? f.copyWith({ isOnline }) : f
+      )
     );
   }
 }

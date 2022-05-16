@@ -190,6 +190,28 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
+  setOnline(): Observable<void> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/online", null)
+      .pipe(
+        map((res) => {}),
+        catchError(({ error }) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
+  getOnlineStatus(userId: string): Observable<boolean> {
+    return this.http
+      .get(this.r_mix_api + "/accounts/online/" + userId)
+      .pipe(
+        map((res) => res["status"]),
+        catchError(({ error }) => {
+          throw new Error(error.message);
+        })
+      );
+  }
+
   getWishlist(): Observable<string[]> {
     return this.http
       .get<string[]>(this.r_mix_api + "/accounts/wishlist")

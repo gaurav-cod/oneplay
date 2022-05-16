@@ -19,7 +19,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   isApp = Cookies.get('src') === 'oneplay_app';
 
-  private timer: any;
+  private fiveMinutesTimer: NodeJS.Timer;
+  private oneMinuteTimer: NodeJS.Timer;
 
   constructor(
     private readonly restService: RestService,
@@ -36,12 +37,17 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.initAuth();
     this.initFriends();
     this.initParties();
+    this.setOnline();
     this.initGames();
     this.initPushNotification();
 
-    this.timer = setInterval(() => {
+    this.fiveMinutesTimer = setInterval(() => {
       this.initGames();
     }, 5 * 60 * 1000);
+
+    this.oneMinuteTimer = setInterval(() => {
+      this.setOnline();
+    }, 60 * 1000);
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -58,7 +64,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timer);
+    clearInterval(this.fiveMinutesTimer);
+    clearInterval(this.oneMinuteTimer);
   }
 
   ngAfterViewInit(): void {
@@ -112,6 +119,10 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         this.initFriends();
       }
     });
+  }
+
+  private setOnline() {
+    this.restService.setOnline().subscribe();
   }
 
   private handlePay(packageName: string) {

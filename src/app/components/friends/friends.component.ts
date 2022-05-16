@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FriendModel } from "src/app/models/friend.model";
-import { PartyModel } from "src/app/models/party.model";
 
 @Component({
   selector: "app-friends",
@@ -25,7 +23,7 @@ export class FriendsComponent implements OnInit {
     | "party_chat"
   > = ["main"];
   selectedParty: string;
-  selectedFriend: FriendModel;
+  selectedFriend: string;
 
   constructor() {}
 
@@ -71,8 +69,8 @@ export class FriendsComponent implements OnInit {
     this._screens.push("parties");
   }
 
-  goToChat(friend: FriendModel) {
-    this.selectedFriend = friend;
+  goToChat(friendId: string) {
+    this.selectedFriend = friendId;
     this._screens.push("chat");
   }
 

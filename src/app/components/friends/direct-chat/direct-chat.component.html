@@ -3,7 +3,12 @@
     <button class="btn bg-transparent" (click)="goBack.emit()">
       <em class="fas fa-chevron-left text-white text-xs"></em>
     </button>
-    <div class="text-white">{{ friend.name }}</div>
+    <div class="text-white">
+      {{ friend.name }}
+      <span *ngIf="friend.isOnline" class="text-xs">
+        <em class="fas fa-circle text-success"></em>
+      </span>
+    </div>
   </div>
 
   <ul #chatBox class="navbar-nav flex-grow-1 px-3 overflow-auto">

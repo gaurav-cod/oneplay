@@ -42,7 +42,7 @@
 
   <div class="bg-gray-dark" style="height: 1px"></div>
 
-  <h5 class="text-white m-3">Your friends ({{ friends.length }})</h5>
+  <h5 class="text-white m-3">{{ friends.length }} friends ({{onlineCount}} online)</h5>
 
   <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
     <li
@@ -59,7 +59,12 @@
         alt=""
       />
       <div>
-        <div class="text-white small">{{ friend.name }}</div>
+        <div class="text-white small">
+          {{ friend.name }}
+          <span *ngIf="friend.isOnline" class="text-xs">
+            <em class="fas fa-circle text-success"></em>
+          </span>
+        </div>
         <!-- <div class="text-warning text-xs">Playing GTA V</div> -->
       </div>
     </li>
