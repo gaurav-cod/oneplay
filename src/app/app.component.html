@@ -1,1 +1,13 @@
+<div *ngIf="!!seriousNotification" class="bg-danger p-3 text-center">
+  <span class="text-white">
+    {{ seriousNotification }}
+  </span>
+  <button
+    class="btn btn-sm btn-danger float-md-right"
+    (click)="seriousNotification = null"
+  >
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
 <router-outlet></router-outlet>
