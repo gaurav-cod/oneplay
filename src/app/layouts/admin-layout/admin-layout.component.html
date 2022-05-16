@@ -1,17 +1,25 @@
 <app-friends
-[isCollapsed]="friendsCollapsed"
-(toggleCollapse)="toggleFriendsCollapsed()"
+  [isCollapsed]="friendsCollapsed"
+  (toggleCollapse)="toggleFriendsCollapsed()"
 ></app-friends>
 
-<!-- Sidenav -->
-<app-sidebar
-  (toggleFriends)="toggleFriendsCollapsed()"
-></app-sidebar>
+<div *ngIf="!!seriousNotification" class="bg-danger p-3 text-center">
+  <span class="text-white">
+    {{ seriousNotification }}
+  </span>
+  <button
+    class="btn btn-sm btn-danger float-md-right"
+    (click)="seriousNotification = null"
+  >
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+
 <div class="main-content">
+  <!-- Sidenav -->
+  <app-sidebar (toggleFriends)="toggleFriendsCollapsed()"></app-sidebar>
   <!-- Top navbar -->
-  <app-navbar
-    (toggleFriends)="toggleFriendsCollapsed()"
-  ></app-navbar>
+  <app-navbar (toggleFriends)="toggleFriendsCollapsed()"></app-navbar>
   <!-- Pages -->
   <router-outlet></router-outlet>
   <div class="container-fluid pb-5 pb-lg-0" *ngIf="!isApp">

@@ -191,25 +191,21 @@ export class RestService {
   }
 
   setOnline(): Observable<void> {
-    return this.http
-      .post(this.r_mix_api + "/accounts/online", null)
-      .pipe(
-        map((res) => {}),
-        catchError(({ error }) => {
-          throw new Error(error.message);
-        })
-      );
+    return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
+      map((res) => {}),
+      catchError(({ error }) => {
+        throw new Error(error.message);
+      })
+    );
   }
 
   getOnlineStatus(userId: string): Observable<boolean> {
-    return this.http
-      .get(this.r_mix_api + "/accounts/online/" + userId)
-      .pipe(
-        map((res) => res["status"]),
-        catchError(({ error }) => {
-          throw new Error(error.message);
-        })
-      );
+    return this.http.get(this.r_mix_api + "/accounts/online/" + userId).pipe(
+      map((res) => res["status"]),
+      catchError(({ error }) => {
+        throw new Error(error.message);
+      })
+    );
   }
 
   getWishlist(): Observable<string[]> {
@@ -552,6 +548,15 @@ export class RestService {
           throw Error(error.message);
         })
       );
+  }
+
+  getSeriousNotification(): Observable<string | null> {
+    return this.http.get(this.r_mix_api + "/notification/serious").pipe(
+      map((res) => res["text"]),
+      catchError(({ error }) => {
+        throw Error(error.message);
+      })
+    );
   }
 
   startGame(

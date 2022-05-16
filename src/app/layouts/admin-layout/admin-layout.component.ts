@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 })
 export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
-
+  seriousNotification: string | null = null;
   isApp = Cookies.get('src') === 'oneplay_app';
 
   private fiveMinutesTimer: NodeJS.Timer;
@@ -40,6 +40,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.setOnline();
     this.initGames();
     this.initPushNotification();
+    this.getSeriousNotification();
 
     this.fiveMinutesTimer = setInterval(() => {
       this.initGames();
@@ -123,6 +124,12 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private setOnline() {
     this.restService.setOnline().subscribe();
+  }
+
+  private getSeriousNotification() {
+    this.restService.getSeriousNotification().subscribe((data) => {
+      this.seriousNotification = data;
+    });
   }
 
   private handlePay(packageName: string) {
