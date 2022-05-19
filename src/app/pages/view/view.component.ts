@@ -206,6 +206,14 @@ export class ViewComponent implements OnInit {
     return this.game?.releaseDate.getFullYear();
   }
 
+  get deviceResolution() {
+    return `${screen.width}x${screen.height}`;
+  }
+
+  get allowAutoResolution() {
+    return PlayConstants.MAX_RESOLUTION_WIDTH[this.user?.subscribedPlan] >= screen.width;
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {

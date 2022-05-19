@@ -391,6 +391,12 @@
               >
                 {{ res }}
               </option>
+              <option
+                [value]="deviceResolution"
+                [disabled]="!allowAutoResolution"
+              >
+                Your screen resolution
+              </option>
             </select>
           </div>
         </div>
