@@ -206,6 +206,17 @@ export class ViewComponent implements OnInit {
     return this.game?.releaseDate.getFullYear();
   }
 
+  get deviceResolution() {
+    return `${screen.width}x${screen.height}`;
+  }
+
+  get allowAutoResolution() {
+    return (
+      PlayConstants.MAX_RESOLUTION_WIDTH[this.user?.subscribedPlan] >=
+      screen.width
+    );
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
@@ -398,29 +409,36 @@ export class ViewComponent implements OnInit {
   }
 
   private terminateGame(sessionId: string): void {
-    if (
-      confirm("You are already playing a game. Do you want to terminate it?")
-    ) {
-      this.restService.terminateGame(sessionId).subscribe(
-        () => {
-          setTimeout(() => {
-            this.gameService.gameStatus = this.restService.getGameStatus();
-            this.startGame();
-          }, 2000);
-        },
-        (err) => {
-          this.stopLoading();
-          Swal.fire({
-            title: "Opps...",
-            text: err || "Something went wrong",
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-      );
-    } else {
-      this.stopLoading();
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are already playing a game. Do you want to terminate it?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restService.terminateGame(sessionId).subscribe(
+          () => {
+            setTimeout(() => {
+              this.gameService.gameStatus = this.restService.getGameStatus();
+              this.startGame();
+            }, 2000);
+          },
+          (err) => {
+            this.stopLoading();
+            Swal.fire({
+              title: "Opps...",
+              text: err || "Something went wrong",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          }
+        );
+      } else if (result.isDenied || result.isDismissed) {
+        this.stopLoading();
+      }
+    });
   }
 
   private startLoading(): void {
