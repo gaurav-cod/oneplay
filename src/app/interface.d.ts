@@ -88,3 +88,9 @@ export interface GameSessionRO {
   user_id: string;
   user_session_id: string;
 }
+
+export interface ClientTokenRO {
+  client_token: string;
+  code: number;
+  msg: string;
+}

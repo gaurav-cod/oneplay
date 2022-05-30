@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
+  ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
   HomeFeeds,
@@ -589,13 +590,13 @@ export class RestService {
       );
   }
 
-  getClientToken(sessionId: string): Observable<string> {
+  getClientToken(sessionId: string): Observable<ClientTokenRO> {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
       .post<string>(this.client_api + "/get_session", formData)
       .pipe(
-        map((res) => res["data"]["client_token"]),
+        map((res) => res["data"]),
         catchError((err) => {
           throw new Error(err.error.msg);
         })
