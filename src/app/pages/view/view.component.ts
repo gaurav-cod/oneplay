@@ -67,8 +67,6 @@ export class ViewComponent implements OnInit {
 
   private wishlist: string[] = [];
 
-  private initializerTimer: NodeJS.Timer;
-
   constructor(
     private readonly location: Location,
     private readonly restService: RestService,
@@ -365,22 +363,24 @@ export class ViewComponent implements OnInit {
     let seconds = 0;
     const timer = setInterval(() => {
       this.restService.getClientToken(sessionId).subscribe(
-        (token) => {
-          if (!!token) {
+        (data) => {
+          if (!!data.client_token) {
             clearInterval(timer);
             this.stopLoading();
             const userAgent = new UAParser(window.navigator.userAgent);
             if (userAgent.getOS().name === "Android") {
               window.open(
-                `https://www.oneplay.in/launch/app?payload=${token}`,
+                `https://www.oneplay.in/launch/app?payload=${data.client_token}`,
                 "_blank"
               );
             } else {
-              window.location.href = `oneplay:key?${token}`;
+              window.location.href = `oneplay:key?${data.client_token}`;
             }
             setTimeout(() => {
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
+          } else {
+            this.getInitializeSwal(data.msg);
           }
         },
         (err) => {
@@ -444,21 +444,11 @@ export class ViewComponent implements OnInit {
   private startLoading(): void {
     this.startingGame = true;
     this.loaderService.startLoader("play-loader");
-    let index = 0;
-    this.initializerTimer = setInterval(() => {
-      this.getInitializeSwal(initializeMessages[index]);
-      if (index === initializeMessages.length - 1) {
-        index = 0;
-      } else {
-        index++;
-      }
-    }, 3000);
   }
 
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
-    clearInterval(this.initializerTimer);
     Swal.close();
   }
 
