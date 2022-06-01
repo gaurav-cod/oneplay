@@ -6,95 +6,100 @@
 @import "~sweetalert2/src/sweetalert2.scss";
 
 @font-face {
-    font-family: helvetica;
-    src: url(assets/fonts/Helvetica/Helvetica.ttf);
+  font-family: helvetica;
+  src: url(assets/fonts/Helvetica/Helvetica.ttf);
 }
 
 @font-face {
-    font-family: helvetica;
-    src: url(assets/fonts/Helvetica/Helvetica-Bold.ttf);
-    font-weight: bold;
+  font-family: helvetica;
+  src: url(assets/fonts/Helvetica/Helvetica-Bold.ttf);
+  font-weight: bold;
 }
 
 @font-face {
-    font-family: helvetica;
-    src: url(assets/fonts/Helvetica/helvetica-light-587ebe5a59211.ttf);
-    font-weight: light;
+  font-family: helvetica;
+  src: url(assets/fonts/Helvetica/helvetica-light-587ebe5a59211.ttf);
+  font-weight: light;
 }
 
 * {
-    font-family: helvetica;
+  font-family: helvetica;
 }
 
 html {
-    overflow: scroll;
-    overflow-x: hidden;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 body {
-    background-color: #121212 !important;
+  background-color: #121212 !important;
 }
 
 #home-header {
-    .carousel-indicators {
-        // left: auto;
-        bottom: 100px;
-    }
+  .carousel-indicators {
+    // left: auto;
+    bottom: 100px;
+  }
 }
 
 .two-lines {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    height: 3em;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  height: 3em;
+  -webkit-box-orient: vertical;
 }
 
 .two-lines-sm {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    height: 2em;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  height: 2em;
+  -webkit-box-orient: vertical;
 }
 
 .three-lines-xs {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    height: 4.5em;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  height: 4.5em;
+  -webkit-box-orient: vertical;
 }
 
 .three-lines-sm {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    height: 5em;
-    -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  height: 5em;
+  -webkit-box-orient: vertical;
 }
 
 #live {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 8px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #d80000;
-    padding: 2px;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 8px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #d80000;
+  padding: 2px;
 }
 
 #beta {
-    font-size: 8px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #3f00b4;
-    padding: 2px 4px;
-    margin-left: 4px;
-    border-radius: 4px;
+  font-size: 8px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #3f00b4;
+  padding: 2px 4px;
+  margin-left: 4px;
+  border-radius: 4px;
+}
+
+.required:after {
+  content: " *";
+  color: red;
 }

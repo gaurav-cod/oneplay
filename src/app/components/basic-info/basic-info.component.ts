@@ -137,7 +137,7 @@ export class BasicInfoComponent implements OnInit {
 
   updatePhone(): void {
     if (!this.phone.valid) return;
-    this.restService.updateProfile({ phone: `${this.phone.value}` }).subscribe(
+    this.restService.updateProfile({ phone: this.phone.value }).subscribe(
       () => {
         this.authService.updateProfile({ phone: this.phone.value });
         this.phone.disable();

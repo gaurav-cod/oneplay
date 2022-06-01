@@ -12,7 +12,9 @@
             (blur)="isFocused = false"
           />
           <div class="input-group-prepend">
-            <button class="btn input-group-text" type="submit"><i class="fas fa-search"></i></button>
+            <button class="btn input-group-text" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -61,7 +63,10 @@
     >
       <div *ngFor="let game of games" class="col-6 col-lg-3 mb-4">
         <div class="zoom">
-          <app-game-card [game]="game"></app-game-card>
+          <app-game-card
+            [game]="game"
+            [queryParams]="keywordQuery"
+          ></app-game-card>
         </div>
       </div>
     </div>
