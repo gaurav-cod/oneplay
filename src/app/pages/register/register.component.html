@@ -18,6 +18,11 @@
                 <input
                   formControlName="first_name"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.first_name.valid &&
+                      registerForm.controls.first_name.touched
+                  }"
                   placeholder="First Name"
                   type="text"
                 />
@@ -27,6 +32,11 @@
                 <input
                   formControlName="last_name"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.last_name.valid &&
+                      registerForm.controls.last_name.touched
+                  }"
                   placeholder="Last Name"
                   type="text"
                 />
@@ -37,6 +47,11 @@
               <input
                 formControlName="email"
                 class="form-control bg-dark"
+                [ngClass]="{
+                  'border-danger':
+                    !registerForm.controls.email.valid &&
+                    registerForm.controls.email.touched
+                }"
                 placeholder="Email"
                 type="email"
               />
@@ -50,6 +65,11 @@
                 <input
                   formControlName="phone"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.phone.valid &&
+                      registerForm.controls.phone.touched
+                  }"
                   placeholder="Phone Number"
                   type="number"
                 />
@@ -59,10 +79,15 @@
               <label class="text-white-50 required" for="">Password</label>
               <div class="input-group">
                 <input
-                formControlName="password"
-                class="form-control bg-dark"
-                placeholder="Password"
-                [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.password.valid &&
+                      registerForm.controls.password.touched
+                  }"
+                  placeholder="Password"
+                  [type]="showPassword ? 'text' : 'password'"
                 />
                 <div class="input-group-prepend">
                   <button
@@ -70,12 +95,12 @@
                     type="button"
                     (click)="showPassword = !showPassword"
                   >
-                    <i 
-                    class="fa" 
-                    [ngClass]="{
-                      'fa-eye': !showPassword,
-                      'fa-eye-slash': showPassword
-                    }"
+                    <i
+                      class="fa"
+                      [ngClass]="{
+                        'fa-eye': !showPassword,
+                        'fa-eye-slash': showPassword
+                      }"
                     ></i>
                   </button>
                 </div>
@@ -94,6 +119,11 @@
               <select
                 formControlName="gender"
                 class="form-control form-control-sm bg-dark"
+                [ngClass]="{
+                  'border-danger':
+                    !registerForm.controls.gender.valid &&
+                    registerForm.controls.gender.touched
+                }"
               >
                 <option value="" disabled>Select</option>
                 <option value="male">Male</option>

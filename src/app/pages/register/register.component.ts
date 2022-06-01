@@ -17,9 +17,15 @@ export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
     first_name: new FormControl("", Validators.required),
     last_name: new FormControl("", Validators.required),
-    email: new FormControl("", Validators.required),
-    phone: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    phone: new FormControl("", [
+      Validators.required,
+      Validators.pattern(/^[0-9]{10}$/),
+    ]),
+    password: new FormControl("", [
+      Validators.required,
+      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
+    ]),
     gender: new FormControl("", Validators.required),
     referred_by_id: new FormControl(""),
   });
@@ -53,7 +59,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
-    private readonly title: Title,
+    private readonly title: Title
   ) {}
 
   ngOnInit() {
