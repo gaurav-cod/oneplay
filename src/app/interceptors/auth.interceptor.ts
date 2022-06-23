@@ -21,8 +21,11 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.urlWithParams.startsWith(environment.client_api)) {
       const formData: FormData = req.body || new FormData();
       const { userid, token } = this.authService.userIdAndToken;
-      formData.append("user_id", userid);
-      formData.append("session_token", token);
+      formData.append("user_id", environment.production ? userid : "1");
+      formData.append(
+        "session_token",
+        environment.production ? token : "aa59a54e-dfbe-4570-aac5-13e6ce7aef04"
+      );
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
       req = req.clone({
         setHeaders: {

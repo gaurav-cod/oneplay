@@ -14,6 +14,7 @@ import { v4 } from "uuid";
 })
 export class GameCardComponent implements OnInit {
   @Input("game") game: GameModel;
+  @Input("queryParams") queryParams?: any;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -34,7 +35,9 @@ export class GameCardComponent implements OnInit {
   ngOnInit(): void {}
 
   onGameClick() {
-    this.router.navigateByUrl("/view/" + this.gLink.transform(this.game));
+    this.router.navigate(["view", this.gLink.transform(this.game)], {
+      queryParams: this.queryParams,
+    });
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {

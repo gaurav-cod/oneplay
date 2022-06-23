@@ -5,6 +5,7 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { zip } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -16,12 +17,6 @@ import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 
 declare var gtag: Function;
-
-const initializeMessages = [
-  "Loading...",
-  "Your game starts in 3 2 1...",
-  "Initializing Game in 3 2 1...",
-];
 
 @Component({
   selector: "app-view",
@@ -102,11 +97,19 @@ export class ViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const id = (params.id as string).replace(/(.*)\-/g, "");
+    const paramsObservable = this.route.params.pipe();
+    const queryParamsObservable = this.route.queryParams.pipe();
+    zip(paramsObservable, queryParamsObservable).subscribe((params) => {
+      console.log("params", params);
+      const id = (params[0].id as string).replace(/(.*)\-/g, "");
+      const keyword = params[1].keyword;
+      const keywordHash = params[1].hash;
       this.stopLoading();
       this.loaderService.start();
-      this.restService.getGameDetails(id).subscribe(
+      this.restService.getGameDetails(id, {
+        keyword,
+        keywordHash,
+      }).subscribe(
         (game) => {
           this.game = game;
           this.title.setTitle("OnePlay | Play " + game.title);

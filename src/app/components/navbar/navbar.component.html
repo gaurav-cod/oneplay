@@ -71,6 +71,7 @@
           *ngFor="let game of results"
           class="list-group-item bg-dark d-flex border-0"
           [routerLink]="['/view/' + (game | glink)]"
+          [queryParams]="keywordQuery"
           style="cursor: pointer"
         >
           <img

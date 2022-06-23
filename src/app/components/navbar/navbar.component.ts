@@ -44,6 +44,8 @@ export class NavbarComponent implements OnInit {
   private acceptedFriends: FriendModel[] = [];
   private pendingFriends: FriendModel[] = [];
   private dontClose = false;
+  private keyword = "";
+  private keywordHash = "";
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -90,6 +92,16 @@ export class NavbarComponent implements OnInit {
       return "You are playing " + this.gameStatus.game_name;
     }
     return "No game is running!";
+  }
+
+  get keywordQuery() {
+    if (!!this.keyword && !!this.keywordHash) {
+      return {
+        keyword: this.keyword,
+        hash: this.keywordHash,
+      };
+    }
+    return {};
   }
 
   constructor(
@@ -188,9 +200,11 @@ export class NavbarComponent implements OnInit {
   }
 
   search(value: string) {
-    this.restService
-      .search(value, 0, 5)
-      .subscribe((games) => (this.results = games));
+    this.restService.search(value, 0, 5).subscribe((res) => {
+      this.results = res.results;
+      this.keyword = res.keyword;
+      this.keywordHash = res.keywordHash;
+    });
     this.restService
       .searchUsers(value, 0, 5)
       .subscribe((users) => (this.uResults = users));

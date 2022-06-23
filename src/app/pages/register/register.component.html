@@ -14,35 +14,50 @@
           <form [formGroup]="registerForm" (submit)="register()" role="form">
             <div class="row">
               <div class="form-group col-md-6">
-                <label class="text-white-50" for="">First Name</label>
+                <label class="text-white-50 required" for="">First Name</label>
                 <input
                   formControlName="first_name"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.first_name.valid &&
+                      registerForm.controls.first_name.touched
+                  }"
                   placeholder="First Name"
                   type="text"
                 />
               </div>
               <div class="form-group col-md-6">
-                <label class="text-white-50" for="">Last Name</label>
+                <label class="text-white-50 required" for="">Last Name</label>
                 <input
                   formControlName="last_name"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.last_name.valid &&
+                      registerForm.controls.last_name.touched
+                  }"
                   placeholder="Last Name"
                   type="text"
                 />
               </div>
             </div>
             <div class="form-group">
-              <label class="text-white-50" for="">Email</label>
+              <label class="text-white-50 required" for="">Email</label>
               <input
                 formControlName="email"
                 class="form-control bg-dark"
+                [ngClass]="{
+                  'border-danger':
+                    !registerForm.controls.email.valid &&
+                    registerForm.controls.email.touched
+                }"
                 placeholder="Email"
                 type="email"
               />
             </div>
             <div class="form-group">
-              <label class="text-white-50" for="">Phone Number</label>
+              <label class="text-white-50 required" for="">Phone Number</label>
               <div class="input-group">
                 <div class="input-group-append">
                   <a class="input-group-text bg-dark">+91</a>
@@ -50,19 +65,29 @@
                 <input
                   formControlName="phone"
                   class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.phone.valid &&
+                      registerForm.controls.phone.touched
+                  }"
                   placeholder="Phone Number"
                   type="number"
                 />
               </div>
             </div>
             <div class="form-group">
-              <label class="text-white-50" for="">Password</label>
+              <label class="text-white-50 required" for="">Password</label>
               <div class="input-group">
                 <input
-                formControlName="password"
-                class="form-control bg-dark"
-                placeholder="Password"
-                [type]="showPassword ? 'text' : 'password'"
+                  formControlName="password"
+                  class="form-control bg-dark"
+                  [ngClass]="{
+                    'border-danger':
+                      !registerForm.controls.password.valid &&
+                      registerForm.controls.password.touched
+                  }"
+                  placeholder="Password"
+                  [type]="showPassword ? 'text' : 'password'"
                 />
                 <div class="input-group-prepend">
                   <button
@@ -70,12 +95,12 @@
                     type="button"
                     (click)="showPassword = !showPassword"
                   >
-                    <i 
-                    class="fa" 
-                    [ngClass]="{
-                      'fa-eye': !showPassword,
-                      'fa-eye-slash': showPassword
-                    }"
+                    <i
+                      class="fa"
+                      [ngClass]="{
+                        'fa-eye': !showPassword,
+                        'fa-eye-slash': showPassword
+                      }"
                     ></i>
                   </button>
                 </div>
@@ -90,10 +115,15 @@
               </li>
             </ul>
             <div class="form-group">
-              <label class="text-white-50" for="">Gender</label>
+              <label class="text-white-50 required" for="">Gender</label>
               <select
                 formControlName="gender"
                 class="form-control form-control-sm bg-dark"
+                [ngClass]="{
+                  'border-danger':
+                    !registerForm.controls.gender.valid &&
+                    registerForm.controls.gender.touched
+                }"
               >
                 <option value="" disabled>Select</option>
                 <option value="male">Male</option>

@@ -41,7 +41,10 @@ export class SidebarComponent implements OnInit {
   public query = new FormControl("");
   public results: GameModel[] = [];
   public gameStatus: GameStatusRO | null = null;
-  user: UserModel;
+  public user: UserModel;
+
+  private keyword = "";
+  private keywordHash = "";
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -74,6 +77,16 @@ export class SidebarComponent implements OnInit {
 
   get isUserLive() {
     return this.gameStatus && this.gameStatus.is_user_connected;
+  }
+
+  get keywordQuery() {
+    if (!!this.keyword && !!this.keywordHash) {
+      return {
+        keyword: this.keyword,
+        hash: this.keywordHash,
+      };
+    }
+    return {};
   }
 
   constructor(
@@ -118,9 +131,11 @@ export class SidebarComponent implements OnInit {
   }
 
   search(value: string) {
-    return this.restService
-      .search(value, 0, 5)
-      .subscribe((games) => (this.results = games));
+    return this.restService.search(value, 0, 5).subscribe((res) => {
+      this.results = res.results;
+      this.keyword = res.keyword;
+      this.keywordHash = res.keywordHash;
+    });
   }
 
   onFocus() {

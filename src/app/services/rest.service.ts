@@ -21,6 +21,7 @@ import { MessageModel } from "../models/message.model";
 import { PartyModel } from "../models/party.model";
 import { PartyInviteModel } from "../models/partyInvite.model";
 import { PartyMemberModel } from "../models/partyMember.model";
+import { GameSearch } from "../models/search.model";
 import { Session } from "../models/session.model";
 import { VideoFeedModel } from "../models/streamFeed.model";
 import { SubscriptionModel } from "../models/subscription.model";
@@ -227,9 +228,9 @@ export class RestService {
       .pipe();
   }
 
-  getGameDetails(id: string): Observable<GameModel> {
+  getGameDetails(id: string, params?: any): Observable<GameModel> {
     return this.http
-      .get(this.r_mix_api + "/games/" + id + "/info")
+      .get(this.r_mix_api + "/games/" + id + "/info", { params })
       .pipe(map((res) => new GameModel(res)));
   }
 
@@ -245,12 +246,12 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new UserModel(d))));
   }
 
-  search(query: string, page: number, limit: number): Observable<GameModel[]> {
+  search(query: string, page: number, limit: number): Observable<GameSearch> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/search", {
         params: { query, page, limit },
       })
-      .pipe(map((res) => res.map((d) => new GameModel(d))));
+      .pipe(map((res) => new GameSearch(res)));
   }
 
   getSimilarGames(id: string): Observable<GameModel[]> {

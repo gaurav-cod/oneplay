@@ -173,6 +173,60 @@
 <div class="container-fluid">
   <div *ngIf="!!game" class="container-fluid pb-6">
     <div class="row">
+      <div class="col-md-6 col-12">
+        <h2 class="text-white mb-4">Top Videos</h2>
+        <p *ngIf="videos.length === 0" class="text-white-50 text-center">
+          No videos found
+        </p>
+        <div
+          *ngFor="let video of videos"
+          class="card bg-dark p-3 mb-3"
+          (click)="open(modal, video)"
+          style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
+        >
+          <div class="media flex-column flex-md-row">
+            <img
+              [src]="video.thumbnail"
+              (click)="open(modal, video)"
+              class="video-image"
+              alt=""
+            />
+            <div class="ml-3 mt-3 mt-md-0">
+              <h3 class="text-white video-text two-lines">
+                {{ video.title }}
+              </h3>
+              <div class="media mb-1 align-items-center">
+                <img
+                  [src]="
+                    !!video.creatorThumbnail ? video.creatorThumbnail : (video.creatorName | avatar)
+                  "
+                  class="rounded-circle"
+                  width="24"
+                  height="24"
+                  alt=""
+                />
+                <span class="text-white-50 small ml-1">{{
+                  video.creatorName
+                }}</span>
+              </div>
+              <div class="text-white">
+                <span class="text-xs video-text three-lines-xs">{{
+                  video.description
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="videos.length >= 3" class="text-center p-3">
+          <button
+            class="btn btn-outline-success btn-sm"
+            (click)="showAllVideos = !showAllVideos"
+          >
+            {{ showAllVideos ? "Show Less" : "Show All" }}
+          </button>
+        </div>
+      </div>
       <div class="col-md-6 col-12 pr-lg-4">
         <h2 class="text-white mb-4">Top Live Streams</h2>
         <p *ngIf="liveVideos.length === 0" class="text-white-50 text-center">
@@ -225,60 +279,6 @@
             (click)="showAllLiveVideos = !showAllLiveVideos"
           >
             {{ showAllLiveVideos ? "Show Less" : "Show All" }}
-          </button>
-        </div>
-      </div>
-      <div class="col-md-6 col-12">
-        <h2 class="text-white mb-4">Top Videos</h2>
-        <p *ngIf="videos.length === 0" class="text-white-50 text-center">
-          No videos found
-        </p>
-        <div
-          *ngFor="let video of videos"
-          class="card bg-dark p-3 mb-3"
-          (click)="open(modal, video)"
-          style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
-        >
-          <div class="media flex-column flex-md-row">
-            <img
-              [src]="video.thumbnail"
-              (click)="open(modal, video)"
-              class="video-image"
-              alt=""
-            />
-            <div class="ml-3 mt-3 mt-md-0">
-              <h3 class="text-white video-text two-lines">
-                {{ video.title }}
-              </h3>
-              <div class="media mb-1 align-items-center">
-                <img
-                  [src]="
-                    !!video.creatorThumbnail || (video.creatorName | avatar)
-                  "
-                  class="rounded-circle"
-                  width="24"
-                  height="24"
-                  alt=""
-                />
-                <span class="text-white-50 small ml-1">{{
-                  video.creatorName
-                }}</span>
-              </div>
-              <div class="text-white">
-                <span class="text-xs video-text three-lines-xs">{{
-                  video.description
-                }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="videos.length >= 3" class="text-center p-3">
-          <button
-            class="btn btn-outline-success btn-sm"
-            (click)="showAllVideos = !showAllVideos"
-          >
-            {{ showAllVideos ? "Show Less" : "Show All" }}
           </button>
         </div>
       </div>
@@ -497,8 +497,8 @@
             class="form-control form-control-sm"
           >
             <option value="auto">Auto</option>
-            <option value="H.264">H.264</option>
-            <option value="HEVC">H.265</option>
+            <option value="forceh265">HEVC</option>
+            <option value="neverh265">H.265</option>
           </select>
         </div>
       </div>

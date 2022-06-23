@@ -24,6 +24,19 @@ export class SearchComponent implements OnInit {
 
   queryControl = new FormControl("");
 
+  private keyword = "";
+  private keywordHash = "";
+
+  get keywordQuery() {
+    if (!!this.keyword && !!this.keywordHash) {
+      return {
+        keyword: this.keyword,
+        hash: this.keywordHash,
+      };
+    }
+    return {};
+  }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -85,7 +98,9 @@ export class SearchComponent implements OnInit {
     this.startLoading(0);
     this.restService.search(this.query, 0, 12).subscribe(
       (response) => {
-        this.games = response;
+        this.games = response.results;
+        this.keyword = response.keyword;
+        this.keywordHash = response.keywordHash;
         if (this.games.length < 12) {
           this.canLoadMore = false;
         }
@@ -104,8 +119,8 @@ export class SearchComponent implements OnInit {
     this.startLoading(this.currentPage + 1);
     this.restService.search(this.query, this.currentPage + 1, 12).subscribe(
       (games) => {
-        this.games = [...this.games, ...games];
-        if (games.length < 12) {
+        this.games = [...this.games, ...games.results];
+        if (games.results.length < 12) {
           this.canLoadMore = false;
         }
         this.stopLoading(this.currentPage + 1);
