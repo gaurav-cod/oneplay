@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  client_api: "https://svrdev.oneplay.in/v1/frontend/",
+  client_api: "https://svrdev.oneplay.in/v1/frontend",
   render_mix_api: "https://rendermix.oneream.com/v1",
   socket_endpoint: "https://communication-services.oneream.com",
   game_assets:

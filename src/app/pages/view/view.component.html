@@ -100,6 +100,7 @@
       </div>
     </div>
   </div>
+
   <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid buttons">
     <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
@@ -437,6 +438,24 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #initializedModal>
+  <div class="modal-content" [ngStyle]="{'display':display}">
+    <div class="modal-body p-4 text-center">
+      <h2 class="text-dark mb-2">{{initialized}}</h2>
+      <p class="text-muted">Please wait while we connect you to the game</p>
+      <!-- <ngx-ui-loader
+        [fgsColor]="'#c32ead'"
+        [hasProgressBar]="false"
+        [fgsSize]="20"
+        [fgsPosition]="'center-left'"
+        [text]="'Initializing...'"
+        [overlayBorderRadius]="'6px'"
+        [loaderId]="'initialize-loader'"
+      ></ngx-ui-loader> -->
     </div>
   </div>
 </ng-template>

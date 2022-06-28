@@ -1,5 +1,5 @@
 import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
@@ -24,6 +24,10 @@ declare var gtag: Function;
   styleUrls: ["./view.component.scss"],
 })
 export class ViewComponent implements OnInit {
+  @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
+
+  initialized: string= "Please Wait......";
+
   game: GameModel;
   playing: string = "";
   showAllVideos = false;
@@ -335,6 +339,7 @@ export class ViewComponent implements OnInit {
       )
       .subscribe(
         (data) => {
+          // this.startGameWithClientToken('data.session.id'); //removeThis
           if (data.api_action === "call_session") {
             this.startGameWithClientToken(data.session.id);
           } else if (data.api_action === "call_terminate") {
@@ -363,13 +368,23 @@ export class ViewComponent implements OnInit {
   }
 
   private startGameWithClientToken(sessionId: string): void {
+    
     let seconds = 0;
+    // open inistialized Modal here
+    this.ngbModal.open(this.initializedModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
+
     const timer = setInterval(() => {
       this.restService.getClientToken(sessionId).subscribe(
         (data) => {
           if (!!data.client_token) {
             clearInterval(timer);
-            this.stopLoading();
+            // to close initialzed modal here
+            this.ngbModal.dismissAll();
+
+            this.stopLoading(); 
             const userAgent = new UAParser(window.navigator.userAgent);
             if (userAgent.getOS().name === "Android") {
               window.open(
@@ -383,11 +398,14 @@ export class ViewComponent implements OnInit {
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
           } else {
-            this.getInitializeSwal(data.msg);
+            this.stopLoading();
+            this.initialized = data.msg; //replace this with change message in the modal
           }
         },
         (err) => {
           this.stopLoading();
+          // to close initialzed modal here
+          this.ngbModal.dismissAll();
           Swal.fire({
             title: "Opps...",
             text: err || "Something went wrong",
@@ -467,16 +485,5 @@ export class ViewComponent implements OnInit {
 
   private getShuffledGames(games: GameModel[]): GameModel[] {
     return [...games].sort(() => Math.random() - 0.5);
-  }
-
-  private getInitializeSwal(title: string) {
-    Swal.close();
-    Swal.fire({
-      title,
-      text: "Please wait while we connect you to the game",
-      showConfirmButton: false,
-      willOpen: () => Swal.showLoading(),
-      willClose: () => Swal.hideLoading(),
-    });
   }
 }
