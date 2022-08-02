@@ -444,9 +444,9 @@
 
 <ng-template #initializedModal>
   <div class="modal-content" [ngStyle]="{'display':display}">
-    <div class="modal-body p-4 text-center">
+    <div class="modal-body pl-4 pr-4 pt-4 pb-0 text-center">
       <h2 class="text-dark mb-2">{{initialized}}</h2>
-      <p class="text-muted">Please wait while we connect you to the game</p>
+      <p class="text-muted mb-0">Please wait while we connect you to the game</p>
       <!-- <ngx-ui-loader
         [fgsColor]="'#c32ead'"
         [hasProgressBar]="false"
@@ -456,6 +456,7 @@
         [overlayBorderRadius]="'6px'"
         [loaderId]="'initialize-loader'"
       ></ngx-ui-loader> -->
+      <img src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" width="300px" />
     </div>
   </div>
 </ng-template>

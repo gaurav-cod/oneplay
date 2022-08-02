@@ -316,6 +316,13 @@ export class ViewComponent implements OnInit {
   }
 
   startGame(): void {
+
+    // Comment after changes
+    // this.ngbModal.open(this.initializedModal, {
+    //   centered: true,
+    //   modalDialogClass: "modal-sm",
+    // });
+    // return;
     if (this.startingGame) {
       return;
     }
@@ -486,4 +493,5 @@ export class ViewComponent implements OnInit {
   private getShuffledGames(games: GameModel[]): GameModel[] {
     return [...games].sort(() => Math.random() - 0.5);
   }
+  
 }
