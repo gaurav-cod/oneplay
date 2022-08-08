@@ -26,7 +26,7 @@ declare var gtag: Function;
 export class ViewComponent implements OnInit {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
 
-  initialized: string= "Please Wait......";
+  initialized: string = "Please Wait......";
 
   game: GameModel;
   playing: string = "";
@@ -48,6 +48,8 @@ export class ViewComponent implements OnInit {
   action: "Play" | "Resume" | "Terminate" = "Play";
   user: UserModel;
   sessionToTerminate = "";
+
+  showSettings = true;
 
   advancedOptions = new FormGroup({
     absolute_mouse_mode: new FormControl(false),
@@ -110,43 +112,45 @@ export class ViewComponent implements OnInit {
       const keywordHash = params[1].hash;
       this.stopLoading();
       this.loaderService.start();
-      this.restService.getGameDetails(id, {
-        keyword,
-        keywordHash,
-      }).subscribe(
-        (game) => {
-          this.game = game;
-          this.title.setTitle("OnePlay | Play " + game.title);
-          this.meta.addTags([
-            { name: "keywords", content: game.tagsMapping?.join(", ") },
-            { name: "description", content: game.description },
-          ]);
-          game.developer.forEach((dev) =>
-            this.restService
-              .getGamesByDeveloper(dev)
-              .subscribe(
-                (games) =>
-                  (this._devGames = this.getShuffledGames([
-                    ...this._devGames,
-                    ...games,
-                  ]))
-              )
-          );
-          game.genreMappings.forEach((genre) =>
-            this.restService
-              .getGamesByGenre(genre)
-              .subscribe(
-                (games) =>
-                  (this._genreGames = this.getShuffledGames([
-                    ...this._genreGames,
-                    ...games,
-                  ]))
-              )
-          );
-          this.loaderService.stop();
-        },
-        (err) => this.loaderService.stop()
-      );
+      this.restService
+        .getGameDetails(id, {
+          keyword,
+          keywordHash,
+        })
+        .subscribe(
+          (game) => {
+            this.game = game;
+            this.title.setTitle("OnePlay | Play " + game.title);
+            this.meta.addTags([
+              { name: "keywords", content: game.tagsMapping?.join(", ") },
+              { name: "description", content: game.description },
+            ]);
+            game.developer.forEach((dev) =>
+              this.restService
+                .getGamesByDeveloper(dev)
+                .subscribe(
+                  (games) =>
+                    (this._devGames = this.getShuffledGames([
+                      ...this._devGames,
+                      ...games,
+                    ]))
+                )
+            );
+            game.genreMappings.forEach((genre) =>
+              this.restService
+                .getGamesByGenre(genre)
+                .subscribe(
+                  (games) =>
+                    (this._genreGames = this.getShuffledGames([
+                      ...this._genreGames,
+                      ...games,
+                    ]))
+                )
+            );
+            this.loaderService.stop();
+          },
+          (err) => this.loaderService.stop()
+        );
       this.restService
         .getSimilarGames(id)
         .subscribe((games) => (this.similarGames = games));
@@ -275,10 +279,14 @@ export class ViewComponent implements OnInit {
       });
       return;
     }
-    this.ngbModal.open(container, {
-      centered: true,
-      modalDialogClass: "modal-md",
-    });
+    if (this.showSettings) {
+      this.ngbModal.open(container, {
+        centered: true,
+        modalDialogClass: "modal-md",
+      });
+    } else {
+      this.startGame();
+    }
   }
 
   openAdvanceOptions(container): void {
@@ -316,7 +324,6 @@ export class ViewComponent implements OnInit {
   }
 
   startGame(): void {
-
     // Comment after changes
     // this.ngbModal.open(this.initializedModal, {
     //   centered: true,
@@ -375,7 +382,6 @@ export class ViewComponent implements OnInit {
   }
 
   private startGameWithClientToken(sessionId: string): void {
-    
     let seconds = 0;
     // open inistialized Modal here
     this.ngbModal.open(this.initializedModal, {
@@ -391,7 +397,7 @@ export class ViewComponent implements OnInit {
             // to close initialzed modal here
             this.ngbModal.dismissAll();
 
-            this.stopLoading(); 
+            this.stopLoading();
             const userAgent = new UAParser(window.navigator.userAgent);
             if (userAgent.getOS().name === "Android") {
               window.open(
@@ -493,5 +499,4 @@ export class ViewComponent implements OnInit {
   private getShuffledGames(games: GameModel[]): GameModel[] {
     return [...games].sort(() => Math.random() - 0.5);
   }
-  
 }

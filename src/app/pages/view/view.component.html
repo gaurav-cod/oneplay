@@ -168,6 +168,19 @@
         </div> -->
       </div>
     </div>
+    <div class="container-fluid">
+      <div class="custom-control custom-checkbox my-4">
+        <input
+          type="checkbox"
+          class="custom-control-input"
+          id="customCheck1"
+          [(ngModel)]="showSettings"
+        />
+        <label class="custom-control-label text-white" for="customCheck1">
+          Show gameplay settings before launch
+        </label>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -199,7 +212,9 @@
               <div class="media mb-1 align-items-center">
                 <img
                   [src]="
-                    !!video.creatorThumbnail ? video.creatorThumbnail : (video.creatorName | avatar)
+                    !!video.creatorThumbnail
+                      ? video.creatorThumbnail
+                      : (video.creatorName | avatar)
                   "
                   class="rounded-circle"
                   width="24"
@@ -443,10 +458,12 @@
 </ng-template>
 
 <ng-template #initializedModal>
-  <div class="modal-content" [ngStyle]="{'display':display}">
+  <div class="modal-content" [ngStyle]="{ display: display }">
     <div class="modal-body pl-4 pr-4 pt-4 pb-0 text-center">
-      <h2 class="text-dark mb-2">{{initialized}}</h2>
-      <p class="text-muted mb-0">Please wait while we connect you to the game</p>
+      <h2 class="text-dark mb-2">{{ initialized }}</h2>
+      <p class="text-muted mb-0">
+        Please wait while we connect you to the game
+      </p>
       <!-- <ngx-ui-loader
         [fgsColor]="'#c32ead'"
         [hasProgressBar]="false"
@@ -456,7 +473,10 @@
         [overlayBorderRadius]="'6px'"
         [loaderId]="'initialize-loader'"
       ></ngx-ui-loader> -->
-      <img src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" width="300px" />
+      <img
+        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
+        width="300px"
+      />
     </div>
   </div>
 </ng-template>
