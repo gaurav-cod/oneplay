@@ -584,7 +584,7 @@ export class RestService {
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)
       .pipe(
-        map((res) => res["data"]),
+        map((res) => res),
         catchError((err) => {
           throw new Error(err.error.msg);
         })

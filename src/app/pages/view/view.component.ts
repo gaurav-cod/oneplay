@@ -354,16 +354,16 @@ export class ViewComponent implements OnInit {
       .subscribe(
         (data) => {
           // this.startGameWithClientToken('data.session.id'); //removeThis
-          if (data.api_action === "call_session") {
-            this.startGameWithClientToken(data.session.id);
-          } else if (data.api_action === "call_terminate") {
+          if (data.data.api_action === "call_session") {
+            this.startGameWithClientToken(data.data.session.id);
+          } else if (data.data.api_action === "call_terminate") {
             this.stopLoading();
-            this.terminateGame(data.session.id);
+            this.terminateGame(data.data.session.id);
           } else {
             this.stopLoading();
             Swal.fire({
               title: "Opps...",
-              text: "Something went wrong",
+              text: data.msg || "Something went wrong",
               icon: "error",
               confirmButtonText: "OK",
             });
