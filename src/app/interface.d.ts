@@ -59,15 +59,20 @@ export interface UpdateProfileDTO {
 }
 
 export interface StartGameRO {
-  api_action: "call_terminate" | "call_session";
-  game: {
-    game_id: string;
-    game_name: string;
+  code: number;
+  data: {
+    api_action?: "call_terminate" | "call_session";
+    game?: {
+      game_id: string;
+      game_name: string;
+    };
+    session?: {
+      id: string;
+      launched_at: number;
+    };
   };
-  session: {
-    id: string;
-    launched_at: number;
-  };
+  msg: string;
+  status: number;
 }
 
 export interface VideoWithGameId {
