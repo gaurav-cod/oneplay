@@ -4,8 +4,9 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { zip } from "rxjs";
+import { combineLatest, zip } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -49,7 +50,7 @@ export class ViewComponent implements OnInit {
   user: UserModel;
   sessionToTerminate = "";
 
-  showSettings = true;
+  showSettings = new FormControl(true);
 
   advancedOptions = new FormGroup({
     absolute_mouse_mode: new FormControl(false),
@@ -100,13 +101,17 @@ export class ViewComponent implements OnInit {
         this.user = user;
       }
     });
+    const showSettings = Cookies.get("showSettings");
+    this.showSettings.setValue(showSettings === undefined ? true : showSettings === "true");
+    this.showSettings.valueChanges.subscribe((showSettings) => {
+      Cookies.set("showSettings", showSettings);
+    })
   }
 
   ngOnInit(): void {
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
-    zip(paramsObservable, queryParamsObservable).subscribe((params) => {
-      console.log("params", params);
+    combineLatest(paramsObservable, queryParamsObservable).subscribe((params) => {
       const id = (params[0].id as string).replace(/(.*)\-/g, "");
       const keyword = params[1].keyword;
       const keywordHash = params[1].hash;
@@ -279,7 +284,7 @@ export class ViewComponent implements OnInit {
       });
       return;
     }
-    if (this.showSettings) {
+    if (this.showSettings.value) {
       this.ngbModal.open(container, {
         centered: true,
         modalDialogClass: "modal-md",
