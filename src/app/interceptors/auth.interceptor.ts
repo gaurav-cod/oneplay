@@ -21,10 +21,13 @@ export class AuthInterceptor implements HttpInterceptor {
     if (req.urlWithParams.startsWith(environment.client_api)) {
       const formData: FormData = req.body || new FormData();
       const { userid, token } = this.authService.userIdAndToken;
-      formData.append("user_id", environment.production ? userid : "1");
+      formData.append(
+        "user_id",
+        environment.production ? userid : "5e334db4-45ce-4bfa-93f0-3e7071fb0d2f"
+      );
       formData.append(
         "session_token",
-        environment.production ? token : "aa59a54e-dfbe-4570-aac5-13e6ce7aef04"
+        environment.production ? token : "5dd09e35-14a0-4885-ba98-642ce6b45755"
       );
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
       req = req.clone({
@@ -41,8 +44,9 @@ export class AuthInterceptor implements HttpInterceptor {
           if (req.urlWithParams.startsWith(environment.render_mix_api)) {
             this.authService.logout();
           }
+        } else if (error instanceof HttpErrorResponse && error.status === 504) {
+            return throwError(new Error("Server is not responding"));
         }
-        return throwError(error);
       })
     );
   }
