@@ -46,7 +46,7 @@ export class ViewComponent implements OnInit {
   resolution = new FormControl("");
   fps = new FormControl(PlayConstants.DEFAULT_FPS);
   vsync = new FormControl(PlayConstants.VSYNC[1].value);
-  action: "Play" | "Resume" | "Terminate" = "Play";
+  action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
 
@@ -167,10 +167,8 @@ export class ViewComponent implements OnInit {
         .subscribe((videos) => (this._liveVideos = videos));
       this.gameService.gameStatus.subscribe((status) => {
         if (status && status.game_id === id) {
-          if (status.is_running && !status.is_user_connected) {
+          if (status.is_running) {
             this.action = "Resume";
-          } else if (status.is_running && status.is_user_connected) {
-            this.action = "Terminate";
           } else {
             this.action = "Play";
           }

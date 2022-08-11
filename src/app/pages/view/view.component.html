@@ -105,7 +105,6 @@
     <div class="row align-items-center container-fluid mx-auto">
       <div class="col-lg-6 col-md-12">
         <button
-          *ngIf="action !== 'Terminate'"
           class="btn btn-white btn-lg w-50 position-relative"
           [disabled]="startingGame"
           (click)="playGame(smallModal)"
