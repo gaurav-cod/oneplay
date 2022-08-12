@@ -13,7 +13,7 @@ export class PlayConstants {
   static readonly DEFAULT_RESOLUTIONS = {
     Starter: "1366x768",
     Founder: "1920x1080",
-    Elite: "3840x2160",
+    Elite: "1920x1080",
   };
 
   static readonly RESOLUTIONS_PACKAGES = {
