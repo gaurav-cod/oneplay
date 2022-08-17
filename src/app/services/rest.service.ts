@@ -586,7 +586,7 @@ export class RestService {
       .pipe(
         map((res) => res),
         catchError((err) => {
-          throw new Error(err.error.msg);
+          throw new Error(err.error.message);
         })
       );
   }
@@ -599,7 +599,7 @@ export class RestService {
       .pipe(
         map((res) => res["data"]),
         catchError((err) => {
-          throw new Error(err.error.msg);
+          throw new Error(err.error.message);
         })
       );
   }
@@ -612,7 +612,7 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError((err) => {
-          throw new Error(err.error.msg);
+          throw new Error(err.error.message);
         })
       );
   }
@@ -624,7 +624,7 @@ export class RestService {
       .pipe(
         map((res) => (!!Object.keys(res["data"]).length ? res["data"] : null)),
         catchError((err) => {
-          throw new Error(err.error.msg);
+          throw new Error(err.error.message);
         })
       );
   }

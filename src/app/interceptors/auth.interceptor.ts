@@ -39,14 +39,19 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       filter((res) => res instanceof HttpResponse),
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && error.status === 401) {
-          if (req.urlWithParams.startsWith(environment.render_mix_api)) {
-            this.authService.logout();
-          }
-        } else if (error instanceof HttpErrorResponse && error.status === 504) {
-            return throwError(new Error("Server is not responding"));
+      catchError((error: HttpErrorResponse) => {
+        if (req.urlWithParams.startsWith(environment.render_mix_api) && error.status === 401) {
+          this.authService.logout();
         }
+        console.log(error.error)
+        throw new HttpErrorResponse({
+          status: error.status,
+          statusText: error.statusText,
+          error: {
+            code: error.status,
+            message: error.error?.message || error.error?.msg || error.message || "Server is not responding",
+          }
+        })
       })
     );
   }
