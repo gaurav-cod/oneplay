@@ -27,7 +27,7 @@ export class AuthInterceptor implements HttpInterceptor {
       );
       formData.append(
         "session_token",
-        environment.production ? token : "5dd09e35-14a0-4885-ba98-642ce6b45755"
+        environment.production ? token : "d1a06caf-7153-4bee-8b7c-e52e47b68b37"
       );
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
       req = req.clone({
