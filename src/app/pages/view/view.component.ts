@@ -390,6 +390,8 @@ export class ViewComponent implements OnInit {
     this.ngbModal.open(this.initializedModal, {
       centered: true,
       modalDialogClass: "modal-sm",
+      backdrop: "static",
+      keyboard: false,
     });
 
     const timer = setInterval(() => {
