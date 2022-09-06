@@ -157,6 +157,8 @@ export class SidebarComponent implements OnInit {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
+      backdrop: "static",
+      keyboard: false,
     });
   }
 
