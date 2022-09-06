@@ -28,6 +28,7 @@ export class ViewComponent implements OnInit {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
+  isReadMore = true
 
   game: GameModel;
   playing: string = "";
@@ -43,7 +44,7 @@ export class ViewComponent implements OnInit {
   constants = PlayConstants;
   allowedResolutions: string[] = [];
 
-  resolution = new FormControl("");
+  resolution = new FormControl("1920x1080");
   fps = new FormControl(PlayConstants.DEFAULT_FPS);
   vsync = new FormControl(PlayConstants.VSYNC[1].value);
   action: "Play" | "Resume" = "Play";
@@ -88,10 +89,10 @@ export class ViewComponent implements OnInit {
         const resolutionFromLocalStorage = localStorage.getItem("resolution");
         const fpsFromLocalStorage = localStorage.getItem("fps");
         const vsyncFromLocalStorage = localStorage.getItem("vsync");
-        this.resolution.setValue(
-          resolutionFromLocalStorage ||
-            PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan]
-        );
+        // this.resolution.setValue(
+        //   resolutionFromLocalStorage ||
+        //     PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan]
+        // );
         this.fps.setValue(fpsFromLocalStorage || PlayConstants.DEFAULT_FPS);
         this.vsync.setValue(
           vsyncFromLocalStorage || PlayConstants.VSYNC[1].value
@@ -331,6 +332,8 @@ export class ViewComponent implements OnInit {
     // this.ngbModal.open(this.initializedModal, {
     //   centered: true,
     //   modalDialogClass: "modal-sm",
+    //   backdrop: "static",
+    //   keyboard: false,
     // });
     // return;
     if (this.startingGame) {
@@ -503,5 +506,9 @@ export class ViewComponent implements OnInit {
 
   private getShuffledGames(games: GameModel[]): GameModel[] {
     return [...games].sort(() => Math.random() - 0.5);
+  }
+
+  showText() {
+    this.isReadMore = !this.isReadMore
   }
 }

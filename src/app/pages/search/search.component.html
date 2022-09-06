@@ -27,7 +27,7 @@
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
           (click)="changeTab(t)"
-          class="text-underline mx-2"
+          class="mx-2"
           [ngClass]="{
             'text-primary': t === tab,
             'text-white-50': t !== tab
@@ -86,10 +86,61 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let user of users" class="col-sm-12 col-md-6 col-lg-4 mb-4">
+      <div *ngFor="let user of users" class="col-sm-12 col-md-6 col-lg-3 mb-4">
         <div class="zoom">
-          <p>{{ user.name }}</p>
+          <!-- <div class="row">
+            <div class="col-auto">
+              <img
+                [src]="user.photo || (user.name | avatar)"
+                class="mr-3"
+                width="80"
+                height="50"
+                alt=""
+              />
+            </div>
+            <div class="col-auto">
+              <p class="list-group-heading text-white m-0">{{ user.name }}</p>
+              <p class="list-group-content text-white-50 small m-0">
+                {{ user.username }}
+              </p>
+            </div>
+            <div class="col-auto">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-light"
+                (click)="addFriend(user)"
+              >
+                <i class="fas {{ getFriendAddIcon(user) }}"></i>
+              </button>
+            </div>
+          </div> -->
+          
         </div>
+        <div class="row">
+          <div class="col-auto">
+            <img
+              [src]="user.photo || (user.name | avatar)"
+              height="50"
+              alt=""
+            />
+          </div>
+          <div class="col-auto align-self-center">
+            <p class="list-group-heading text-white m-0">{{ user.name }}</p>
+            <p class="list-group-content text-white-50 small m-0">
+              {{ user.username }}
+            </p>
+          </div>
+          <div class="col-auto align-self-center">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-light"
+              (click)="addFriend(user)"
+            >
+              <i class="fas fa-user-plus"></i>
+            </button>
+          </div>
+        </div>
+        <!-- <p>{{ user.name }}</p> -->
       </div>
     </div>
 

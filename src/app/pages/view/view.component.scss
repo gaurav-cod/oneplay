@@ -146,3 +146,8 @@ live {
   0% {-webkit-transform: scale(0, 0);opacity:0.8;}
   100% {-webkit-transform: scale(1, 1);opacity:0;}
 }
+
+.limitTextHeight {
+  height: 55px;
+  overflow: hidden;
+}

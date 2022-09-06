@@ -11,7 +11,7 @@
 }
 
 .card {
-  width: 280px;
+  // width: 280px;
   height: 170px;
   box-shadow: 6px 5px 4px 2px #0e0d0d;
   background: none !important;
@@ -19,6 +19,7 @@
 
   .card-img {
     height: 100%;
+    width: 100%;
   }
 
   video {
