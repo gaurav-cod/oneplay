@@ -40,19 +40,12 @@
         >
           {{ genre }}
         </div>
-        <!-- <p
+        <p
           id="description"
           [ngClass]="{'limitTextHeight': isReadMore}"
           [innerHTML]="game.description"
           class="text-white mt-3 mb-2"
         >
-        </p> -->
-        <p
-          id="description"
-          [ngClass]="{'limitTextHeight': isReadMore}"
-          class="text-white mt-3 mb-2"
-        >
-        hello
         </p>
         <button type="button" class="btn btn-sm btn-outline-secondary mb-3" (click)="showText()">
           {{ isReadMore ? 'Read More': 'Read Less' }}
