@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { AuthService } from "src/app/services/auth.service";
@@ -12,17 +12,22 @@ declare var gtag: Function;
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   loginForm = new FormGroup({
     id: new FormControl("", Validators.required),
     password: new FormControl("", Validators.required),
   });
+
+  @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly title: Title,
   ) {}
+  ngAfterViewInit(): void {
+    this.emailId.nativeElement.focus();
+  }
 
   ngOnInit() {
     this.title.setTitle("Login");

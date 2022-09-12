@@ -39,7 +39,7 @@
   --danger: #f5365c;
   --light: #adb5bd;
   --dark: #1a1a1a;
-  --default: #172b4d;
+  --default: #000000;
   --white: #fff;
   --neutral: #fff;
   --darker: black;
@@ -87,7 +87,7 @@ section {
 }
 
 body {
-  font-family: Open Sans, sans-serif;
+  font-family: 'Poppins' !important;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -682,8 +682,8 @@ pre code {
   width: 100%;
   margin-right: auto;
   margin-left: auto;
-  padding-right: 15px;
-  padding-left: 15px;
+  /* padding-right: 15px;
+  padding-left: 15px; */
 }
 
 .row {
@@ -6880,14 +6880,14 @@ button.bg-dark:focus {
 }
 
 .bg-default {
-  background-color: #172b4d !important;
+  background-color: #000000 !important;
 }
 
 a.bg-default:hover,
 a.bg-default:focus,
 button.bg-default:hover,
 button.bg-default:focus {
-  background-color: #0b1526 !important;
+  background-color: #000000 !important;
 }
 
 .bg-white {
@@ -14533,10 +14533,10 @@ a.btn-icon-only {
   background-color: transparent;
 }
 @media (min-width: 768px) {
-  .main-content .container-fluid {
+  /* .main-content .container-fluid {
     padding-right: 39px !important;
     padding-left: 39px !important;
-  }
+  } */
 }
 
 .navbar-vertical.navbar-expand-xs.fixed-left + .main-content {
