@@ -5,6 +5,35 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  .font20 {
+      font-size: 14px !important;
+      line-height: 21px !important;
+  }
+
+  .height91vh {
+    height: 84vh !important;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .height91vh {
+    height: 90vh !important;
+  }
+}
+
+@media (min-width: 1700px) and (max-width: 1999px) {
+  .height91vh {
+    height: 94vh !important;
+  }
+}
+
+@media (min-width: 2000px) and (max-width: 2600px) {
+  .height91vh {
+    height: 95vh !important;
+  }
+}
+
 .signupBg {
   background-image: url('../../../assets/img/singup-login/login_signup_Illustration.svg');
   background-repeat: no-repeat;

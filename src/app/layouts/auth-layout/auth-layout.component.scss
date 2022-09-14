@@ -14,3 +14,16 @@
 //         }
 //     }
 // }
+
+@media (max-width: 768px) {
+    .desktopView {
+        display: none;
+    }
+}
+
+.signupBg {
+    background-image: url('../../../assets/img/singup-login/login_signup_Illustration.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
