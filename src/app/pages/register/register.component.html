@@ -20,15 +20,19 @@
               </div>
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite mb-0 required">Name</label>
-                <input type="text" formControlName="first_name" [ngClass]="{'border-danger':!registerForm.controls.first_name.valid && registerForm.controls.first_name.touched }" class="form-control borderRadius0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" name="name" placeholder="First Name" />
+                <input type="text" formControlName="name" [ngClass]="{'border-danger':!registerForm.controls.name.valid && registerForm.controls.name.touched }" class="form-control borderRadius0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="Name" />
               </div>
               <!-- <div class="col-md-6 mt-4">
                   <label class="font16 font500 offWhiteColor mb-3">Last Name</label>
                   <input type="text" class="form-control h56 borderRadius10 offWhiteColor bgTransparent inputFocus font20 font500" name="name" placeholder="Last Name" />
               </div> -->
               <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite mb-0 required">Email / Phone</label>
-                <input type="email" [ngClass]="{'border-danger':!registerForm.controls.first_name.valid && registerForm.controls.first_name.touched }" class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" name="name" placeholder="example@oneplay.in" />
+                <label class="font16 font500 customOffWhite mb-0 required">Email</label>
+                <input type="email" formControlName="email" [ngClass]="{'border-danger':!registerForm.controls.email.valid && registerForm.controls.email.touched }" class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="example@oneplay.in" />
+              </div>
+              <div class="col-md-12 mt-4">
+                <label class="font16 font500 customOffWhite mb-0 required">Phone</label>
+                <input type="number" formControlName="phone" [ngClass]="{'border-danger':!registerForm.controls.phone.valid && registerForm.controls.phone.touched }" class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="9999999999" />
               </div>
               <!-- <div class="col-md-12 mt-4">
                   <label class="font16 font500 offWhiteColor mb-3">Phone</label>
@@ -41,7 +45,7 @@
                 <label class="font16 font500 customOffWhite mb-0 required">Password</label>
                 <span class="font16 font500 mutedColor float-right">at least 8 characters</span>
                 <div class="input-group">
-                  <input type="password" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" name="password" placeholder="........" value="12345678" />
+                  <input type="password" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" placeholder="........" />
                   <span class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput">
                     <button
                       class="btn p-0 bgTransparent borderRadius0"
