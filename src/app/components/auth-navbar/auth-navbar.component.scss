@@ -4,3 +4,73 @@
     text-align: center;
   }
 }
+
+.signupBg {
+  background-image: url('../../../assets/img/singup-login/login_signup_Illustration.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.height91vh {
+  height: 91vh;
+}
+
+.offWhiteColor {
+color: #959595;
+}
+
+.offWhiteColor:hover {
+color: #959595;
+}
+
+.font18 {
+font-size: 18px;
+line-height: 30px;
+}
+
+.font500 {
+font-weight: 500;
+}
+
+.font20 {
+font-size: 20px;
+line-height: 34px;
+}
+
+.h60 {
+height: 60px;
+}
+
+.removeFocus:focus {
+box-shadow: none;
+}
+
+.linearGradient {
+background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+}
+
+.borderRadius60 {
+border-radius: 60px;
+}
+
+.footerWhiteColor a {
+/* color: #E1E1E1; */
+color: #959595;
+}
+
+.footerWhiteColor {
+color: #E1E1E1;
+}
+
+.font16 {
+font-size: 16px;
+line-height: 26px;
+}
+
+.gradientAnchor a {
+background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+}

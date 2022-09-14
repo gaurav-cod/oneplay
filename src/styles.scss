@@ -6,24 +6,24 @@
 @import "~sweetalert2/src/sweetalert2.scss";
 
 @font-face {
-  font-family: helvetica;
-  src: url(assets/fonts/Helvetica/Helvetica.ttf);
+  font-family: 'Poppins';
+  src: url(assets/fonts/Poppins/Poppins-Regular.ttf);
 }
 
 @font-face {
-  font-family: helvetica;
-  src: url(assets/fonts/Helvetica/Helvetica-Bold.ttf);
+  font-family: 'Poppins';
+  src: url(assets/fonts/Poppins/Poppins-Bold.ttf);
   font-weight: bold;
 }
 
 @font-face {
-  font-family: helvetica;
-  src: url(assets/fonts/Helvetica/helvetica-light-587ebe5a59211.ttf);
+  font-family: 'Poppins';
+  src: url(assets/fonts/Poppins/Poppins-Light.ttf);
   font-weight: light;
 }
 
 * {
-  font-family: helvetica;
+  font-family: 'Poppins';
 }
 
 html {

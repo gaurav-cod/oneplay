@@ -1,5 +1,51 @@
 <!-- Page content -->
-<div class="container pt-7 pt-lg-8 pb-9">
+<div class="row">
+  <div class="col-lg-12 loginBg height100vh overflowYScroll">
+    <div class="container">
+      <div class="row largeScreenHeight justify-content-center">
+        <div class="col-md-10">
+          <form [formGroup]="loginForm" (submit)="login()" role="form">
+            <div class="row mt-4">
+              <div class="col-md-12 mb-3">
+                <h1 class="text-white font38 font800 mb-0">
+                  Log in to your account
+                </h1>
+              </div>
+              <div class="col-md-12 mt-3">
+                <label class="font16 font500 customOffWhite mb-0">Email / Phone</label>
+                <input type="email" #emailId formControlName="id" class="form-control h56 pl-0 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput" name="name" placeholder="example@oneplay.in" />
+              </div>
+              <div class="col-md-12 mt-4">
+                <label class="font16 font500 customOffWhite mb-0">Password</label>
+                <div class="input-group">
+                  <input type="password" formControlName="password" class="form-control pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput" name="password" placeholder="........" value="12345678" />
+                  <span class="input-group-text bgTransparent border-start-0 offWhiteColor font20 font500 border-0 border-bottomInput borderRadius0"><img src="assets/img/singup-login/View_blocked.svg" class="img-fluid me-2" alt="india" /></span>
+                </div>
+              </div>
+              <div class="col-md-6 mt-5 custom align-self-center pr-0">
+                <div class="form-check form-switch mb-0">
+                  <input class="form-check-input align-middle inputFocus mr-2" id="customCheckLogin" type="checkbox" id="flexSwitchCheckChecked" checked>
+                  <label class="form-check-label font20 font500 customOffWhite" for="flexSwitchCheckChecked">Remember me</label>
+                </div>
+              </div>
+              <div class="col-md-6 mt-5 align-self-center">
+                <span class="float-right font20 font500"><a [routerLink]="['/forgot-password']" class="customOffWhite"><u>Forgot Password?</u></a></span>
+              </div>
+              <div class="col-md-12 mt-5">
+                <input type="submit" class="btn btn-block linearGradient h60 border-0 borderRadius10 font18 font500 text-white" value="Login" />
+              </div>
+              <div class="col-md-12 mt-5 text-center">
+                <p class="font20 font500 offWhiteColor">Don’t have an account? <span class="purpleGradient"><a [routerLink]="['/register']">Create a New</a></span></p>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="container pt-7 pt-lg-8 pb-9">
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-dark shadow border-0">
@@ -69,4 +115,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
