@@ -27,6 +27,10 @@
   .largeScreenHeight {
     height: auto !important;
   }
+
+  .textCenterCustom {
+    text-align: center;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -42,6 +46,10 @@
 
   .mobileView {
     display: inline !important;
+  }
+
+  .textCenterCustom {
+    text-align: center;
   }
 }
 
@@ -247,4 +255,13 @@ input:-webkit-autofill:active  {
 .custom-choose input[type='radio']
 {
   display: none;
+}
+
+.custompaddingLeftRight {
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+input:-internal-autofill-selected {
+  background-color: transparent !important;
 }
