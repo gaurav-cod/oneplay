@@ -1,13 +1,20 @@
 <!-- Page content -->
-<div class="row">
-  <div class="col-lg-12 loginBg height100vh overflowYScroll customContainer">
+<div class="row justify-content-center loginBg">
+  <div class="col-lg-12 col-11 col-md-6 height100vh overflowYScroll">
+    <div class="mobileView">
+      <div class="text-center">
+        <a href="https://oneplay.in">
+          <img src="assets/img/singup-login/Group 133.svg" class="img-fluid mt-4 mb-3" alt="logo" />
+        </a> 
+      </div>
+    </div>
     <div class="container">
       <div class="row largeScreenHeight justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12 custompaddingLeftRight">
           <form [formGroup]="registerForm" (submit)="register()" role="form">
             <div class="row">
               <div class="col-md-12 mt-4">
-                <h1 class="text-white font50 font800 mb-0">
+                <h1 class="text-white font38 font800 mb-0">
                   Create an account
                 </h1>
               </div>
