@@ -273,3 +273,7 @@ input:-webkit-autofill:active  {
 input:-internal-autofill-selected {
   background-color: transparent !important;
 }
+
+.tooltip-inner {
+  max-width: 100% !important;
+}

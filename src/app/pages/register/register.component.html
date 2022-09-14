@@ -45,7 +45,7 @@
                 <label class="font16 font500 customOffWhite mb-0 required">Password</label>
                 <span class="font16 font500 mutedColor float-right">at least 8 characters</span>
                 <div class="input-group">
-                  <input type="password" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" placeholder="........" />
+                  <input type="password" ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!" triggers="click:blur" placement="top" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" />
                   <span class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput">
                     <button
                       class="btn p-0 bgTransparent borderRadius0"
@@ -95,16 +95,22 @@
               </div>
               <div class="col-md-12 mt-4">
                 <div class="row mb-2">
-                  <div class="col-auto pr-0 align-self-center">
-                    <img src="assets/img/singup-login/Vector.svg" id="customCheckRegister" class="img-fluid" alt="tick" />
+                  <div class="col-auto pr-0 pt-1">
+                    <input
+                      id="customCheckRegister"
+                      type="checkbox"
+                    />
+                    <!-- <img src="assets/img/singup-login/Vector.svg" id="customCheckRegister" class="img-fluid" alt="tick" /> -->
                   </div>
                   <div class="col">
-                    <p class="font16 font500 footerWhiteColor mb-0">By signing up, you agree to OnePlay’s</p>
-                    <p class="font16 font500 gradientAnchor mb-0">
-                      <a href="#" class="anchor">Cookie Policy</a> <span class="footerWhiteColor">&</span>
-                      <a href="./privacy.html" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">&</span>
-                      <a href="./tnc.html" class="anchor">Terms and Conditions</a>
-                    </p>
+                    <label for="customCheckRegister">
+                      <p class="font16 font500 footerWhiteColor mb-0">By signing up, you agree to OnePlay’s</p>
+                      <p class="font16 font500 gradientAnchor mb-0">
+                        <a href="#" class="anchor">Cookie Policy</a> <span class="footerWhiteColor">&</span>
+                        <a href="./privacy.html" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">&</span>
+                        <a href="./tnc.html" class="anchor">Terms and Conditions</a>
+                      </p>
+                    </label>
                   </div>
                 </div>
                 </div>
