@@ -32,6 +32,10 @@
   .largeScreenHeight {
     height: auto !important;
   }
+
+  .textCenterCustom {
+    text-align: center;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -47,6 +51,10 @@
 
   .mobileView {
     display: inline !important;
+  }
+
+  .textCenterCustom {
+    text-align: center;
   }
 }
 
@@ -221,4 +229,8 @@ input:-webkit-autofill:active  {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+input:-internal-autofill-selected {
+  background-color: transparent !important;
 }

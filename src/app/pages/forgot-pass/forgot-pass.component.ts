@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 })
 export class ForgotPassComponent implements OnInit {
   email = new FormControl("", Validators.required);
+  resetemail = false;
 
   constructor(
     private readonly restService: RestService,
@@ -24,12 +25,9 @@ export class ForgotPassComponent implements OnInit {
   submit() {
     this.restService.requestResetPassword(this.email.value).subscribe(
       () =>
-        Swal.fire({
-          title: "Success",
-          text: "Check your email to reset password",
-          icon: "success",
-          confirmButtonText: "OK",
-        }),
+        {
+          this.resetemail = true;
+        },
       (error) =>
         Swal.fire({
           title: "Error",
