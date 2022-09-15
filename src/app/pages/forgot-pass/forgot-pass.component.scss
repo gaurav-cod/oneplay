@@ -32,6 +32,10 @@
   .textCenterCustom {
     text-align: center;
   }
+
+  .h60 {
+    height: 50px !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -51,6 +55,10 @@
 
   .textCenterCustom {
     text-align: center;
+  }
+
+  .h60 {
+    height: 50px !important;
   }
 }
 
