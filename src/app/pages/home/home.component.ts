@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
@@ -12,7 +13,8 @@ import Swal from "sweetalert2";
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+  @ViewChild("legalWelcomeModal") legalWelcomeModal: ElementRef<HTMLDivElement>;
   firstRow: GameFeedModel;
   restRows: GameFeedModel[] = [];
   loadingWishlist = false;
@@ -31,8 +33,16 @@ export class HomeComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly ngbModal: NgbModal,
   ) {}
+  ngAfterViewInit(): void {
+    if (sessionStorage.getItem('#legalModal') !== 'true') {
+      this.welcomeModal();
+      setTimeout(() => this.ngbModal.dismissAll(),20000);
+      sessionStorage.setItem('#legalModal','true');     
+    }
+  }
 
   ngOnInit(): void {
     this.title.setTitle("Home");
@@ -78,6 +88,13 @@ export class HomeComponent implements OnInit {
     this.restService.removeWishlist(game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(game.oneplayId);
+    });
+  }
+
+  private welcomeModal() {
+    this.ngbModal.open(this.legalWelcomeModal, {
+      centered: true,
+      modalDialogClass: "modal-lg",
     });
   }
 }
