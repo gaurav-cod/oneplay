@@ -22,10 +22,6 @@
                 <label class="font16 font500 customOffWhite mb-0 required">Name</label>
                 <input type="text" formControlName="name" [ngClass]="{'border-danger':!registerForm.controls.name.valid && registerForm.controls.name.touched }" class="form-control borderRadius0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="Name" />
               </div>
-              <!-- <div class="col-md-6 mt-4">
-                  <label class="font16 font500 offWhiteColor mb-3">Last Name</label>
-                  <input type="text" class="form-control h56 borderRadius10 offWhiteColor bgTransparent inputFocus font20 font500" name="name" placeholder="Last Name" />
-              </div> -->
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite mb-0 required">Email</label>
                 <input type="email" formControlName="email" [ngClass]="{'border-danger':!registerForm.controls.email.valid && registerForm.controls.email.touched }" class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="example@oneplay.in" />
@@ -34,33 +30,25 @@
                 <label class="font16 font500 customOffWhite mb-0 required">Phone</label>
                 <input type="number" formControlName="phone" [ngClass]="{'border-danger':!registerForm.controls.phone.valid && registerForm.controls.phone.touched }" class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0" placeholder="9999999999" />
               </div>
-              <!-- <div class="col-md-12 mt-4">
-                  <label class="font16 font500 offWhiteColor mb-3">Phone</label>
-                  <div class="input-group">
-                      <span class="input-group-text bgTransparent inputBorder borderRadius10 offWhiteColor  font20 font500"><img src="./assets/signup/india 1.svg" class="img-fluid me-2" alt="india" /> +91</span>
-                      <input type="number" class="form-control h56 borderRadius10 offWhiteColor bgTransparent inputFocus font20 font500" name="name" placeholder="1598357826" />
-                  </div>
-              </div> -->
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite mb-0 required">Password</label>
                 <span class="font16 font500 mutedColor float-right">at least 8 characters</span>
                 <div class="input-group">
-                  <input type="password" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" placeholder="........" />
+                  <input type="password" ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!" triggers="click:blur" placement="top" [ngClass]="{'border-danger':!registerForm.controls.password.valid && registerForm.controls.password.touched }" formControlName="password" class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput" />
                   <span class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput">
                     <button
                       class="btn p-0 bgTransparent borderRadius0"
                       type="button"
                       (click)="showPassword = !showPassword"
                     >
-                      <i
+                      <em
                         class="fa"
                         [ngClass]="{
                           'fa-eye': !showPassword,
                           'fa-eye-slash': showPassword
                         }"
-                      ></i>
+                      ></em>
                     </button>
-                    <!-- <img src="assets/img/singup-login/View_blocked.svg" class="img-fluid me-2" alt="india" /> -->
                   </span>
                 </div>
               </div>
@@ -95,16 +83,21 @@
               </div>
               <div class="col-md-12 mt-4">
                 <div class="row mb-2">
-                  <div class="col-auto pr-0 align-self-center">
-                    <img src="assets/img/singup-login/Vector.svg" id="customCheckRegister" class="img-fluid" alt="tick" />
+                  <div class="col-auto pr-0 pt-1">
+                    <input
+                      id="customCheckRegister"
+                      type="checkbox"
+                    />
                   </div>
                   <div class="col">
-                    <p class="font16 font500 footerWhiteColor mb-0">By signing up, you agree to OnePlay’s</p>
-                    <p class="font16 font500 gradientAnchor mb-0">
-                      <a href="#" class="anchor">Cookie Policy</a> <span class="footerWhiteColor">&</span>
-                      <a href="./privacy.html" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">&</span>
-                      <a href="./tnc.html" class="anchor">Terms and Conditions</a>
-                    </p>
+                    <label for="customCheckRegister">
+                      <p class="font16 font500 footerWhiteColor mb-0">By signing up, you agree to OnePlay’s</p>
+                      <p class="font16 font500 gradientAnchor mb-0">
+                        <a href="https://www.oneplay.in/privacy.html" target="_blank" class="anchor">Cookie Policy</a> <span class="footerWhiteColor">&</span>
+                        <a href="https://www.oneplay.in/privacy.html" target="_blank" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">&</span>
+                        <a href="https://www.oneplay.in/tnc.html" target="_blank" class="anchor">Terms and Conditions</a>
+                      </p>
+                    </label>
                   </div>
                 </div>
                 </div>
@@ -119,13 +112,13 @@
                     <div class="text-center">
                       <div class="col-12">
                         <hr class="mt-2 mb-4 borderBottom"/>
-                        <span class="offWhiteColor font18 font500">Need help?<span class="purpleGradient"><a href="#"> Browse FAQ</a></span></span>
+                        <span class="offWhiteColor font18 font500">Need help?<span class="purpleGradient"><a href="https://www.oneplay.in/contact.html" target="_blank"> Browse FAQ</a></span></span>
                       </div>
                       <div class="col-12 mt-2">
                         <p class="font16 font500 footerWhiteColor mb-0">© 2022 RainBox Media Pvt Ltd. All Rights Reserved.</p>
                         <p class="font16 font500 purpleGradient">
-                          <a href="privacy.html" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">.</span>
-                          <a href="./tnc.html" class="anchor">Terms & Conditions</a>
+                          <a href="https://www.oneplay.in/privacy.html" target="_blank" class="anchor">Privacy Policy</a> <span class="footerWhiteColor">.</span>
+                          <a href="https://www.oneplay.in/tnc.html" target="_blank" class="anchor">Terms & Conditions</a>
                         </p>
                       </div>
                     </div>
@@ -138,189 +131,3 @@
     </div>
   </div>
 </div>
-
-
-
-<!-- <div class="container pt-7 pt-lg-8 pb-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-5 col-md-7">
-      <div class="card bg-dark shadow border-0">
-        <div class="card-header bg-transparent pb-1">
-          <h2 class="text-white mt-2 mb-1">Sign Up</h2>
-          <div class="text-muted">
-            <small>Create an account with OnePlay</small>
-          </div>
-        </div>
-        <div class="card-body px-lg-4 py-lg-3">
-          <form [formGroup]="registerForm" (submit)="register()" role="form">
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label class="text-white-50 required" for="">First Name</label>
-                <input
-                  formControlName="first_name"
-                  class="form-control bg-dark"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.first_name.valid &&
-                      registerForm.controls.first_name.touched
-                  }"
-                  placeholder="First Name"
-                  type="text"
-                />
-              </div>
-              <div class="form-group col-md-6">
-                <label class="text-white-50 required" for="">Last Name</label>
-                <input
-                  formControlName="last_name"
-                  class="form-control bg-dark"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.last_name.valid &&
-                      registerForm.controls.last_name.touched
-                  }"
-                  placeholder="Last Name"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="text-white-50 required" for="">Email</label>
-              <input
-                formControlName="email"
-                class="form-control bg-dark"
-                [ngClass]="{
-                  'border-danger':
-                    !registerForm.controls.email.valid &&
-                    registerForm.controls.email.touched
-                }"
-                placeholder="Email"
-                type="email"
-              />
-            </div>
-            <div class="form-group">
-              <label class="text-white-50 required" for="">Phone Number</label>
-              <div class="input-group">
-                <div class="input-group-append">
-                  <a class="input-group-text bg-dark">+91</a>
-                </div>
-                <input
-                  formControlName="phone"
-                  class="form-control bg-dark"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.phone.valid &&
-                      registerForm.controls.phone.touched
-                  }"
-                  placeholder="Phone Number"
-                  type="number"
-                />
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="text-white-50 required" for="">Password</label>
-              <div class="input-group">
-                <input
-                  formControlName="password"
-                  class="form-control bg-dark"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.password.valid &&
-                      registerForm.controls.password.touched
-                  }"
-                  placeholder="Password"
-                  [type]="showPassword ? 'text' : 'password'"
-                />
-                <div class="input-group-prepend">
-                  <button
-                    class="btn btn-outline-light"
-                    type="button"
-                    (click)="showPassword = !showPassword"
-                  >
-                    <i
-                      class="fa"
-                      [ngClass]="{
-                        'fa-eye': !showPassword,
-                        'fa-eye-slash': showPassword
-                      }"
-                    ></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <ul class="text-muted font-italic text-xs">
-              <li
-                *ngFor="let check of passwordChecks"
-                [ngClass]="{ passed: password.match(check.regex) }"
-              >
-                {{ check.name }}
-              </li>
-            </ul>
-            <div class="form-group">
-              <label class="text-white-50 required" for="">Gender</label>
-              <select
-                formControlName="gender"
-                class="form-control form-control-sm bg-dark"
-                [ngClass]="{
-                  'border-danger':
-                    !registerForm.controls.gender.valid &&
-                    registerForm.controls.gender.touched
-                }"
-              >
-                <option value="" disabled>Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-                <option value="unknown">Unknown</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="text-white-50" for="">Referral ID</label>
-              <input
-                formControlName="referred_by_id"
-                class="form-control bg-dark"
-                placeholder="Referral ID"
-                type="text"
-              />
-            </div>
-            <div class="text-muted font-italic">
-              <small
-                >Referral Name:
-                <span class="text-success font-weight-700">{{
-                  referralName
-                }}</span></small
-              >
-            </div>
-            <div class="row my-4">
-              <div class="col-12">
-                <div
-                  class="custom-control custom-control-alternative custom-checkbox"
-                  style="z-index: 0"
-                >
-                  <input
-                    class="custom-control-input"
-                    id="customCheckRegister"
-                    type="checkbox"
-                  />
-                  <label class="custom-control-label" for="customCheckRegister">
-                    <span class="text-muted"
-                      >I agree with the <a href="#!">Privacy Policy</a></span
-                    >
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="text-center">
-              <button
-                type="button"
-                class="btn btn-primary btn-block mt-4"
-                (click)="register()"
-              >
-                Create account
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
