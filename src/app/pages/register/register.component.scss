@@ -7,8 +7,8 @@
 
 @media (max-width: 548px) {
   .font38 {
-    font-size: 30px !important;
-    line-height: 40px !important;
+    font-size: 27px !important;
+    line-height: 37px !important;
   }
 
   .font20 {
@@ -31,6 +31,10 @@
   .textCenterCustom {
     text-align: center;
   }
+
+  .h60 {
+    height: 50px !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -50,6 +54,10 @@
 
   .textCenterCustom {
     text-align: center;
+  }
+
+  .h60 {
+    height: 50px !important;
   }
 }
 
@@ -93,6 +101,14 @@
 
 .mobileView {
   display: none;
+}
+
+.footerWhiteColor {
+  color: #E1E1E1;
+}
+
+.borderBottom {
+  border-bottom: 1px solid #3E4246;
 }
 
 .passed {
@@ -264,4 +280,8 @@ input:-webkit-autofill:active  {
 
 input:-internal-autofill-selected {
   background-color: transparent !important;
+}
+
+.tooltip-inner {
+  max-width: 100% !important;
 }

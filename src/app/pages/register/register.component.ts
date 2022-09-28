@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
@@ -15,8 +15,8 @@ declare var gtag: Function;
 export class RegisterComponent implements OnInit {
   referralName = "";
   registerForm = new FormGroup({
-    first_name: new FormControl("", Validators.required),
-    last_name: new FormControl("", Validators.required),
+    name: new FormControl("", Validators.required),
+    // last_name: new FormControl("", Validators.required),
     email: new FormControl("", [Validators.required, Validators.email]),
     phone: new FormControl("", [
       Validators.required,
@@ -75,10 +75,16 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    const [first_name, last_name] = this.registerForm.value.name.split(' ');
     this.loading = true;
     this.restService
       .signup({
-        ...this.registerForm.value,
+        first_name: first_name,
+        last_name: last_name??'',
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+        gender: this.registerForm.value.gender,
+        referred_by_id: this.registerForm.value.referred_by_id,
         phone: `+91${this.registerForm.value.phone}`,
       })
       .subscribe(

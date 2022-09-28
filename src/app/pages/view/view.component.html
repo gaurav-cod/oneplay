@@ -6,34 +6,17 @@
     'background-image': 'url(' + game.bgImage + ')'
   }"
 >
-  <!-- <video
-    *ngIf="!!game.video"
-    class="mask"
-    autoplay
-    loop
-    [muted]="'muted'"
-    [src]="game.video"
-    style="height: 90%; object-fit: cover"
-  ></video> -->
   <!-- Mask -->
   <span class="mask bg-gradient-banner"></span>
   <!-- Header container -->
   <div class="container-fluid">
     <div class="row container-fluid">
       <div class="col-lg-5 col-md-10 desc">
-        <!-- <button
-          class="btn btn-icon d-flex align-items-center p-0"
-          (click)="back()"
-        >
-          <i class="ni ni-bold-left fill-default"></i
-          ><span class="text-gray">Go back</span>
-        </button> -->
         <img [src]="game.textLogo" class="text-logo" alt="" />
         <p class="text-white-50 mb-3">
           {{ releaseYear }} | {{ game.ageRating }}
           {{ game.isFree ? " | Free" : "" }}
         </p>
-        <!-- <p class="text-white mt-0 mb-4">Play-Time: {{ game.playTime }}</p> -->
         <div
           *ngFor="let genre of game.genreMappings"
           class="badge badge-pill badge-dark text-white mr-1 mb-1"
@@ -83,26 +66,7 @@
             {{ dev | titlecase
             }}<span *ngIf="i !== game.developer.length - 1">,</span></span
           >
-          <!-- <a
-            target="_blank"
-            *ngFor="let dev of game.developer"
-            ngbTooltip="{{ dev }}"
-            class="mr-1"
-          >
-            <img
-              [src]="dev | avatar"
-              class="rounded-circle"
-              width="32"
-              height="32"
-              alt=""
-            />
-          </a> -->
         </div>
-        <!-- <p class="text-white mt-0">Available to purchase on</p>
-        <a href="#!" class="btn btn-primary">Continue playing</a>
-        <a href="#!" class="btn bg-translucent-dark text-white"
-          >Add to wishlist</a
-        > -->
       </div>
     </div>
   </div>
@@ -159,18 +123,6 @@
         >
           Remove from wishlist
         </button>
-        <!-- <p class="text-white">Friends who’ve played this</p>
-        <div class="media">
-          <div class="avatar avatar-md rounded-circle mr-2">
-            <img src="../../../assets/img/theme/team-1-800x800.jpg" alt="" />
-          </div>
-          <div class="avatar avatar-md rounded-circle mr-2">
-            <img src="../../../assets/img/theme/team-2-800x800.jpg" alt="" />
-          </div>
-          <div class="avatar avatar-md rounded-circle">
-            <img src="../../../assets/img/theme/team-3-800x800.jpg" alt="" />
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="container-fluid">
@@ -412,12 +364,6 @@
               >
                 {{ res }}
               </option>
-              <!-- <option
-                [value]="deviceResolution"
-                [disabled]="!allowAutoResolution"
-              >
-                Your screen resolution
-              </option> -->
             </select>
           </div>
         </div>
@@ -469,17 +415,8 @@
       <p class="text-muted mb-0">
         Please wait while we connect you to the game
       </p>
-      <!-- <ngx-ui-loader
-        [fgsColor]="'#c32ead'"
-        [hasProgressBar]="false"
-        [fgsSize]="20"
-        [fgsPosition]="'center-left'"
-        [text]="'Initializing...'"
-        [overlayBorderRadius]="'6px'"
-        [loaderId]="'initialize-loader'"
-      ></ngx-ui-loader> -->
       <img
-        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
+        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" alt=" "
         width="300px"
       />
     </div>
@@ -543,7 +480,7 @@
           >
             <option value="auto">Auto</option>
             <option value="forceh265">HEVC</option>
-            <option value="neverh265">H.265</option>
+            <option value="neverh265">H.264</option>
           </select>
         </div>
       </div>
