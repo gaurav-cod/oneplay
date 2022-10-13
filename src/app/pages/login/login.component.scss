@@ -117,11 +117,11 @@
 }
 
 .offWhiteColor {
-  color: #959595;
+  color: #959595 !important;
 }
 
 .offWhiteColor:hover {
-  color: #959595;
+  color: #959595 !important;
 }
 
 .font18 {
@@ -147,7 +147,7 @@
 }
 
 .linearGradient {
-  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  background: linear-gradient(200.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
 }
 
 .font16 {
@@ -202,7 +202,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
   transition: background-color 5000s;
-  -webkit-text-fill-color: #fff !important;
+  -webkit-text-fill-color: #959595 !important;
 }
 
 ::placeholder {
@@ -241,7 +241,7 @@ input:-webkit-autofill:active  {
 }
 
 .purpleGradient {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(349.3deg, #A83AFE 0%, #6E59FE 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
