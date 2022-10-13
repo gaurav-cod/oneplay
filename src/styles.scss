@@ -6,24 +6,24 @@
 @import "~sweetalert2/src/sweetalert2.scss";
 
 @font-face {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Regular.ttf);
 }
 
 @font-face {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Bold.ttf);
   font-weight: bold;
 }
 
 @font-face {
-  font-family: 'Poppins';
+  font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Light.ttf);
   font-weight: light;
 }
 
 * {
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 html {
@@ -119,4 +119,8 @@ body {
 .modal-open {
   position: fixed;
   width: 100%;
+}
+
+.linearGradient {
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
 }
