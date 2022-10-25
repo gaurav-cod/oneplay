@@ -28,12 +28,10 @@ export class ViewComponent implements OnInit {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
-  isReadMore = true
+  isReadMore = true;
 
   game: GameModel;
   playing: string = "";
-  showAllVideos = false;
-  showAllLiveVideos = false;
   startingGame = false;
   terminatingGame = false;
 
@@ -51,6 +49,9 @@ export class ViewComponent implements OnInit {
   user: UserModel;
   sessionToTerminate = "";
 
+  videos: VideoModel[] = [];
+  liveVideos: VideoModel[] = [];
+
   showSettings = new FormControl(true);
 
   advancedOptions = new FormGroup({
@@ -64,9 +65,6 @@ export class ViewComponent implements OnInit {
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
-
-  private _videos: VideoModel[] = [];
-  private _liveVideos: VideoModel[] = [];
 
   private wishlist: string[] = [];
 
@@ -103,82 +101,86 @@ export class ViewComponent implements OnInit {
       }
     });
     const showSettings = Cookies.get("showSettings");
-    this.showSettings.setValue(showSettings === undefined ? true : showSettings === "true");
+    this.showSettings.setValue(
+      showSettings === undefined ? true : showSettings === "true"
+    );
     this.showSettings.valueChanges.subscribe((showSettings) => {
       Cookies.set("showSettings", showSettings);
-    })
+    });
   }
 
   ngOnInit(): void {
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
-    combineLatest(paramsObservable, queryParamsObservable).subscribe((params) => {
-      const id = (params[0].id as string).replace(/(.*)\-/g, "");
-      const keyword = params[1].keyword;
-      const keywordHash = params[1].hash;
-      this.stopLoading();
-      this.loaderService.start();
-      this.restService
-        .getGameDetails(id, {
-          keyword,
-          keywordHash,
-        })
-        .subscribe(
-          (game) => {
-            this.game = game;
-            this.title.setTitle("OnePlay | Play " + game.title);
-            this.meta.addTags([
-              { name: "keywords", content: game.tagsMapping?.join(", ") },
-              { name: "description", content: game.description },
-            ]);
-            game.developer.forEach((dev) =>
-              this.restService
-                .getGamesByDeveloper(dev)
-                .subscribe(
-                  (games) =>
-                    (this._devGames = this.getShuffledGames([
-                      ...this._devGames,
-                      ...games,
-                    ]))
-                )
-            );
-            game.genreMappings.forEach((genre) =>
-              this.restService
-                .getGamesByGenre(genre)
-                .subscribe(
-                  (games) =>
-                    (this._genreGames = this.getShuffledGames([
-                      ...this._genreGames,
-                      ...games,
-                    ]))
-                )
-            );
-            this.loaderService.stop();
-          },
-          (err) => this.loaderService.stop()
-        );
-      this.restService
-        .getSimilarGames(id)
-        .subscribe((games) => (this.similarGames = games));
-      this.restService
-        .getVideos(id)
-        .subscribe((videos) => (this._videos = videos));
-      this.restService
-        .getLiveVideos(id)
-        .subscribe((videos) => (this._liveVideos = videos));
-      this.gameService.gameStatus.subscribe((status) => {
-        if (status && status.game_id === id) {
-          if (status.is_running) {
-            this.action = "Resume";
+    combineLatest(paramsObservable, queryParamsObservable).subscribe(
+      (params) => {
+        const id = (params[0].id as string).replace(/(.*)\-/g, "");
+        const keyword = params[1].keyword;
+        const keywordHash = params[1].hash;
+        this.stopLoading();
+        this.loaderService.start();
+        this.restService
+          .getGameDetails(id, {
+            keyword,
+            keywordHash,
+          })
+          .subscribe(
+            (game) => {
+              this.game = game;
+              this.title.setTitle("OnePlay | Play " + game.title);
+              this.meta.addTags([
+                { name: "keywords", content: game.tagsMapping?.join(", ") },
+                { name: "description", content: game.description },
+              ]);
+              game.developer.forEach((dev) =>
+                this.restService
+                  .getGamesByDeveloper(dev)
+                  .subscribe(
+                    (games) =>
+                      (this._devGames = this.getShuffledGames([
+                        ...this._devGames,
+                        ...games,
+                      ]))
+                  )
+              );
+              game.genreMappings.forEach((genre) =>
+                this.restService
+                  .getGamesByGenre(genre)
+                  .subscribe(
+                    (games) =>
+                      (this._genreGames = this.getShuffledGames([
+                        ...this._genreGames,
+                        ...games,
+                      ]))
+                  )
+              );
+              this.loaderService.stop();
+            },
+            (err) => this.loaderService.stop()
+          );
+        this.restService
+          .getSimilarGames(id)
+          .subscribe((games) => (this.similarGames = games));
+        this.restService
+          .getVideos(id)
+          .subscribe((videos) => (this.videos = videos));
+        this.restService
+          .getLiveVideos(id)
+          .subscribe((videos) => (this.liveVideos = videos));
+        this.gameService.gameStatus.subscribe((status) => {
+          if (status && status.game_id === id) {
+            if (status.is_running) {
+              this.action = "Resume";
+            } else {
+              this.action = "Play";
+            }
+            this.sessionToTerminate = status.session_id;
           } else {
             this.action = "Play";
           }
-          this.sessionToTerminate = status.session_id;
-        } else {
-          this.action = "Play";
-        }
-      });
-    });
+        });
+      }
+    );
   }
 
   get isInWishlist(): boolean {
@@ -203,16 +205,6 @@ export class ViewComponent implements OnInit {
 
   get allGenres(): string {
     return "From " + this.game?.genreMappings?.join(", ") || "";
-  }
-
-  get videos(): VideoModel[] {
-    return !this.showAllVideos ? this._videos.slice(0, 3) : this._videos;
-  }
-
-  get liveVideos(): VideoModel[] {
-    return !this.showAllLiveVideos
-      ? this._liveVideos.slice(0, 3)
-      : this._liveVideos;
   }
 
   get releaseYear() {
@@ -509,6 +501,6 @@ export class ViewComponent implements OnInit {
   }
 
   showText() {
-    this.isReadMore = !this.isReadMore
+    this.isReadMore = !this.isReadMore;
   }
 }

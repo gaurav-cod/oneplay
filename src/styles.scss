@@ -36,7 +36,8 @@ html {
 }
 
 body {
-  background-color: #121212 !important;
+  background-color: #151515;
+  font-family: 'Poppins';
 }
 
 #home-header {
@@ -121,6 +122,523 @@ body {
   width: 100%;
 }
 
+.notificationBadge {
+  background-color: #F32D74;
+  border: 2px solid #151515;
+  border-radius: 10px;
+  margin-left: -9px;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+.wh48 {
+  width: 48px;
+  height: 48px;
+}
+
+.custom .navbar-nav .nav-item a {
+  color: #959595;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+}
+
+.custom .navbar-nav .nav-item.active a {
+  color: #ffffff;
+}
+
+.dropdownBg {
+  background: #212123;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.42);
+  border-radius: 6px;
+  width: 200px;
+}
+
+.dropdownBg a {
+  color: #959595;
+}
+
+.dropdownBg .dropdown-item:hover {
+  background-color: transparent;
+  color: #DCDCDC !important;
+}
+
+.borderColor {
+  border-color: #3E4246 !important;
+}
+
+.lightBg {
+  background-color: #212123;
+}
+
+.lightBg:focus {
+  background-color: #212123;
+  box-shadow: none;
+}
+
+.textMuted {
+  color: #959595 !important;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.muteText {
+  color: #959595;
+}
+
+.muteText:hover {
+  color: #959595;
+}
+
+.bgTransparent {
+  background-color: transparent;
+}
+
+.customOverlay {
+  bottom: 0 !important;
+  top: auto !important;
+}
+
+.font16 {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.font500 {
+  font-weight: 500;
+}
+
 .linearGradient {
-  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+}
+
+.font20 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.font600 {
+  font-weight: 600;
+}
+
+.borderRadius90 {
+  border-radius: 90px !important;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+  background-color: none;
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+}
+
+.custom-checkbox .custom-control-input:focus~.custom-control-label::before{
+  box-shadow: none;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::after{
+  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='white' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+}
+
+.font700 {
+  font-weight: 700;
+}
+
+.customFluid {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.customLinearGradient {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+}
+
+.borderRadius15 {
+  border-radius: 15px;
+}
+
+.offWhiteText {
+  color: #DCDCDC;
+}
+
+.w290h185 {
+  width: 290px;
+  height: 185px;
+}
+
+.width290 {
+  width: 290px;
+}
+
+.wh50 {
+  width: 50px;
+  height: 50px;
+}
+
+@media (max-width: 768px) {
+  .carousel-inner .carousel-item > div {
+      display: none;
+  }
+  .carousel-inner .carousel-item > div:first-child {
+      display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .carousel-inner .carousel-item-right.active,
+  .carousel-inner .carousel-item-next {
+    transform: translateX(33.333%);
+  }
+  
+  .carousel-inner .carousel-item-left.active, 
+  .carousel-inner .carousel-item-prev {
+    transform: translateX(-33.333%);
+  }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+  display: flex;
+}
+
+.carousel-inner .carousel-item-right,
+.carousel-inner .carousel-item-left{ 
+transform: translateX(0);
+}
+
+.width10 {
+  width: 10%;
+  background-color: #151515;
+}
+
+.borderRadius6 {
+  border-radius: 6px;
+}
+
+.paddingtop100 {
+  padding-top: 100px;
+}
+
+.bgBlur {
+  -webkit-backdrop-filter: blur(6px) !important;
+  backdrop-filter: blur(6px) !important;
+}
+
+/* dashboard CSS  */
+.borderRadius10 {
+  border-radius: 10px;
+}
+
+.w900h600 {
+  width: 900px;
+  height: 600px;
+}
+
+.w-25 {
+  width: 25%;
+}
+
+.height90 {
+  height: 600px !important;
+}
+
+.height64 {
+  height: 64px;
+}
+
+.playBtn {
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  border-radius: 90px;
+  margin-top: 380px;
+}
+
+.playnowbtn {
+  padding-left: 28%;
+}
+
+.height600 {
+  height: 600px;
+}
+
+.multiBtn {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  color: #959595;
+  letter-spacing: 0.02em;
+}
+
+.custombtn {
+  border: 2px solid #3E4246;
+  border-radius: 60px !important;
+}
+
+.btn:focus {
+  box-shadow: none !important;
+}
+
+.custombtn.active {
+background-image: linear-gradient(to right, #7E67FD 0%, #E1DCFE 100%);
+border-radius: 40px;
+  box-sizing: border-box;
+display: block;
+height: 48px;
+letter-spacing: 1px;
+margin: 0 auto;
+padding: 2px;
+position: relative;
+z-index: 2;
+}
+
+.custombtn.active:hover {
+color: #fff;
+}
+
+.custombtn span {
+align-items: center;
+background: #151515;
+border-radius: 40px;
+display: flex;
+justify-content: center;
+height: 100%;
+transition: background .5s ease;
+width: 100%;
+  padding: 0px 30px;
+}
+
+.custombtn:hover span {
+background: transparent;
+}
+
+/* Chat Box CSS */
+
+.chatModal .modal-dialog {
+  right: 0;
+  bottom:0;
+}
+
+.w300 {
+  width: 300px !important;
+}
+
+.chatboxcontent {
+  background: #212123;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.42);
+  border-radius: 6px;
+}
+
+.gradientInfoText {
+  background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.font14 {
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.secondaryGradientBtn {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  border-radius: 10px;
+  height: 48px;
+}
+
+.anchorGradientPurple {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+  background: transparent;  /* Optional: just make scrollbar invisible */
+}
+
+.redBtn {
+  background-color: #E31C34;
+}
+
+.inputBorder {
+  border: 2px solid #3E4246;
+  border-radius: 10px;
+  background-color: transparent;
+  height: 52px;
+}
+
+.customFormControl:focus {
+  color: #DCDCDC;
+  background-color: transparent;
+  border-color: #3E4246;
+  outline: 0;
+  box-shadow: none;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  border: none;
+  box-shadow: none;
+}
+
+.h56 {
+  height: 56px;
+}
+
+.customBodyColor {
+  background-color: #151515;
+}
+
+.radioBtns .btn-secondary:not(:disabled):not(.disabled).active {
+  color: #A83AFE;
+  background-color: #212123;
+  background-image: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+border-radius: 10px;
+  box-sizing: border-box;
+  padding: 2px;
+}
+
+.radioBtns .btn-secondary:not(:disabled):not(.disabled).active:focus {
+  box-shadow: none;
+}
+
+.radioBtns span {
+align-items: center;
+background: #212123;
+border-radius: 10px;
+display: flex;
+justify-content: center;
+height: 100%;
+transition: background .5s ease;
+width: 100%;
+  padding: 0px 30px;
+}
+
+.radioBtns .btn-secondary {
+  padding: 2px;
+  border-radius: 10px !important;
+  height: 52px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.width35 {
+  width: 35%;
+}
+
+/* setting CSS  */
+
+.padding150 {
+  padding-top: 150px;
+}
+
+.customNavTab.nav-tabs a{
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+  color: #959595 !important; 
+}
+
+.customNavTab.nav-tabs .nav-link.active {
+  color: #ffffff !important;
+  background-color: transparent !important;
+  border-bottom: 3px solid #A83AFE !important;
+}
+
+.transparentBlackBg {
+  background: rgba(21, 21, 21, 0.5);
+}
+
+.transparentBg {
+  background-color: transparent;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.height52 {
+  height: 52px;
+}
+
+.mutedBg {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+}
+
+.borderRadius10 {
+  border-radius: 10px;
+}
+
+.font38 {
+  font-size: 38px;
+  line-height: 50px;
+}
+
+.customTable.table th, .customTable.table thead th {
+  border-top: none;
+}
+
+.customTable.table thead th {
+  border-bottom: none;
+}
+
+.customTable.table td {
+  border-top: 1px solid #3E4246 !important;
+}
+
+.customTable.table thead th, .customTableText {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 26px;
+  color: #959595;
+}
+
+.customTable.table tbody td {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  color: #DCDCDC;
+}
+
+.gradientText {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.cancelgradientText {
+  background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.customgradientText {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.activeGradientText {
+  background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
