@@ -1,98 +1,33 @@
-<div
-  *ngIf="!!game"
-  class="header pb-0 pt-9"
-  style="background-size: cover; background-position: center top"
-  [ngStyle]="{
-    'background-image': 'url(' + game.bgImage + ')'
-  }"
->
-  <!-- Mask -->
-  <span class="mask bg-gradient-banner"></span>
-  <!-- Header container -->
-  <div class="container-fluid">
-    <div class="row container-fluid">
-      <div class="col-lg-5 col-md-10 desc">
-        <img [src]="game.textLogo" class="text-logo" alt="" />
-        <p class="text-white-50 mb-3">
-          {{ releaseYear }} | {{ game.ageRating }}
-          {{ game.isFree ? " | Free" : "" }}
-        </p>
-        <div
-          *ngFor="let genre of game.genreMappings"
-          class="badge badge-pill badge-dark text-white mr-1 mb-1"
-        >
-          {{ genre }}
-        </div>
-        <p
-          id="description"
-          [ngClass]="{'limitTextHeight': isReadMore}"
-          [innerHTML]="game.description"
-          class="text-white mt-3 mb-2"
-        >
-        </p>
-        <button type="button" class="btn btn-sm btn-outline-secondary mb-3" (click)="showText()">
-          {{ isReadMore ? 'Read More': 'Read Less' }}
-        </button>
-        
-        <div
-          *ngIf="game.storesMapping.length"
-          class="d-flex align-items-center flex-wrap"
-        >
-          <span class="text-white-50 mr-3">Available purchase on:</span>
-          <a
-            href="{{ store.link }}"
-            target="_blank"
-            *ngFor="let store of game.storesMapping"
-            ngbTooltip="{{ store.name }}"
-            class="mr-2"
+<div *ngIf="!!game" class="container-fluid customFluid paddingtop100 pb-7">
+  <div class="container-fluid row mt-4">
+    <div class="col-md-12">
+      <div class="card border-0 bgTransparent">
+        <img class="card-img h-75" [src]="game.bgImage" alt="Card image" />
+        <div class="card-img-overlay customOverlay p-4">
+          <img [src]="game.textLogo" class="img-fluid" alt="" />
+          <p class="font16 font500 text-white mt-4">
+            {{ game.releaseDate | date: "MMM, yyyy" }} - {{ game.ageRating }}
+            {{ game.isFree ? " - Free" : "" }}
+          </p>
+          <button
+            class="btn btn-lg px-5 py-3 mr-3 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+            [disabled]="startingGame"
+            (click)="playGame(smallModal)"
           >
-            <img
-              [src]="store.name | store"
-              height="32"
-              alt=""
-              onerror="this.style.display = 'none'"
-            />
-          </a>
-        </div>
-        <div
-          *ngIf="game.developer.length"
-          class="d-flex align-items-center flex-wrap mt-3"
-        >
-          <span class="text-white-50 mr-3">Developers:</span>
-          <span
-            *ngFor="let dev of game.developer; let i = index"
-            class="text-white mr-1"
-          >
-            {{ dev | titlecase
-            }}<span *ngIf="i !== game.developer.length - 1">,</span></span
-          >
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pb-8 pt-5 bg-gradient-banner-bottom container-fluid buttons">
-    <div class="row align-items-center container-fluid mx-auto">
-      <div class="col-lg-6 col-md-12">
-        <button
-          class="btn btn-white btn-lg w-50 position-relative"
-          [disabled]="startingGame"
-          (click)="playGame(smallModal)"
-        >
-          <ngx-ui-loader
-            [fgsColor]="'#c32ead'"
-            [hasProgressBar]="false"
-            [fgsSize]="20"
-            [fgsPosition]="'center-left'"
-            [text]="'Initializing...'"
-            [overlayBorderRadius]="'6px'"
-            [loaderId]="'play-loader'"
-          ></ngx-ui-loader>
-          {{ !startingGame ? action + " Now" : "" }}
-        </button>
-        <button
+            <ngx-ui-loader
+              [fgsColor]="'#c32ead'"
+              [hasProgressBar]="false"
+              [fgsSize]="20"
+              [fgsPosition]="'center-left'"
+              [text]="'Initializing...'"
+              [overlayBorderRadius]="'6px'"
+              [loaderId]="'play-loader'"
+            ></ngx-ui-loader>
+            {{ !startingGame ? action + " Now" : "" }}
+          </button>
+          <button
           *ngIf="action !== 'Play'"
-          class="btn btn-danger btn-lg w-25 position-relative"
+          class="btn btn-danger btn-lg position-relative"
           [disabled]="terminatingGame"
           (click)="terminateSession()"
         >
@@ -107,173 +42,133 @@
           ></ngx-ui-loader>
           {{ !terminatingGame ? "Terminate" : "" }}
         </button>
-        <button
-          *ngIf="!isInWishlist"
+          <button *ngIf="!isInWishlist"
           (click)="addToWishlist()"
-          [disabled]="loadingWishlist"
-          class="btn bg-translucent-dark text-white btn-lg"
-        >
-          Add to wishlist
-        </button>
-        <button
-          *ngIf="isInWishlist"
+          [disabled]="loadingWishlist" class="btn mt-3">
+            <img
+              src="assets/icons/Speedtest (2).svg"
+              class="img-fluid"
+              alt=""
+            />
+          </button>
+          <button *ngIf="isInWishlist"
           (click)="removeFromWishlist()"
-          [disabled]="loadingWishlist"
-          class="btn bg-translucent-dark text-white btn-lg"
-        >
-          Remove from wishlist
-        </button>
+          [disabled]="loadingWishlist" class="btn mt-3">
+            <img
+              src="assets/icons/Speedtest (2).svg"
+              class="img-fluid"
+              alt=""
+            />
+          </button>
+          <form class="pb-4">
+            <div class="custom-control custom-checkbox mt-4">
+              <input
+                type="checkbox"
+                class="custom-control-input my-error"
+                id="customCheck1"
+                [formControl]="showSettings"
+              />
+              <label
+                class="custom-control-label font16 font500 text-white"
+                for="customCheck1"
+                >Show gameplay settings before launch</label
+              >
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="custom-control custom-checkbox my-4 ml-3">
-        <input
-          type="checkbox"
-          class="custom-control-input"
-          id="customCheck1"
-          [formControl]="showSettings"
-        />
-        <label class="custom-control-label text-white" for="customCheck1">
-          Show gameplay settings before launch
-        </label>
+    <div class="col-md-6 mt-5 pr-lg-5">
+      <h3 class="font700 text-white">About Game</h3>
+      <p
+        id="description"
+        [ngClass]="{ limitTextHeight: isReadMore }"
+        [innerHTML]="game.description"
+        class="font20 font500 muteText mt-4"
+      ></p>
+      <a type="button" class="text-white d-inline" (click)="showText()">
+        {{ isReadMore ? "Read More" : "Read Less" }}
+      </a>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div *ngIf="game.storesMapping.length" class="col-auto pr-lg-5 mt-5">
+          <p class="font16 font500 muteText">Store</p>
+          <a
+            href="{{ store.link }}"
+            target="_blank"
+            *ngFor="let store of game.storesMapping"
+            class="font600 font20 text-white"
+          >
+            <img
+              [src]="store.name | store"
+              height="32"
+              class="mr-2"
+              [alt]="store.name"
+              onerror="this.style.display = 'none'"
+            />
+          </a>
+        </div>
+        <div class="col-auto mt-5">
+          <p class="font16 font500 muteText">Developer</p>
+          <p class="font600 font20 text-white">
+            <span
+              *ngFor="let dev of game.developer; let i = index"
+              class="align-middle mr-3"
+              >{{ dev | titlecase }}</span
+            >
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p class="font16 font500 muteText mt-4">Tags</p>
+          <span
+            *ngFor="let genre of game.genreMappings"
+            class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pr-3 mt-3"
+            >{{ genre }}</span
+          >
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid">
-  <div *ngIf="!!game" class="container-fluid pb-6">
-    <div class="row">
-      <div class="col-md-6 col-12">
-        <h2 class="text-white mb-4">Top Videos</h2>
-        <p *ngIf="videos.length === 0" class="text-white-50 text-center">
-          No videos found
-        </p>
-        <div
-          *ngFor="let video of videos"
-          class="card bg-dark p-3 mb-3"
-          (click)="open(modal, video)"
-          style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
-        >
-          <div class="media flex-column flex-md-row">
-            <img
-              [src]="video.thumbnail"
-              (click)="open(modal, video)"
-              class="video-image"
-              alt=""
-            />
-            <div class="ml-3 mt-3 mt-md-0">
-              <h3 class="text-white video-text two-lines">
-                {{ video.title }}
-              </h3>
-              <div class="media mb-1 align-items-center">
-                <img
-                  [src]="
-                    !!video.creatorThumbnail
-                      ? video.creatorThumbnail
-                      : (video.creatorName | avatar)
-                  "
-                  class="rounded-circle"
-                  width="24"
-                  height="24"
-                  alt=""
-                />
-                <span class="text-white-50 small ml-1">{{
-                  video.creatorName
-                }}</span>
-              </div>
-              <div class="text-white">
-                <span class="text-xs video-text three-lines-xs">{{
-                  video.description
-                }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div *ngIf="videos.length >= 3" class="text-center p-3">
-          <button
-            class="btn btn-outline-success btn-sm"
-            (click)="showAllVideos = !showAllVideos"
-          >
-            {{ showAllVideos ? "Show Less" : "Show All" }}
-          </button>
-        </div>
-      </div>
-      <div class="col-md-6 col-12 pr-lg-4">
-        <h2 class="text-white mb-4">Top Live Streams</h2>
-        <p *ngIf="liveVideos.length === 0" class="text-white-50 text-center">
-          No videos found
-        </p>
-        <div
-          *ngFor="let video of liveVideos"
-          class="card bg-dark p-3 mb-3"
-          (click)="open(modal, video)"
-          style="cursor: pointer; box-shadow: 6px 5px 4px 2px #0e0d0d"
-        >
-          <div class="media flex-column flex-md-row">
-            <img
-              [src]="video.thumbnail"
-              (click)="open(modal, video)"
-              style="border-radius: 4px"
-              class="video-image"
-              alt=""
-            />
-            <live>LIVE</live>
-            <div class="ml-3 mt-3 mt-md-0">
-              <h3 class="text-white video-text two-lines">
-                {{ video.title }}
-              </h3>
-              <div class="media mb-1 align-items-center">
-                <img
-                  [src]="
-                    !!video.creatorThumbnail || (video.creatorName | avatar)
-                  "
-                  class="rounded-circle"
-                  width="24"
-                  height="24"
-                  alt=""
-                />
-                <span class="text-white-50 small ml-1">{{
-                  video.creatorName
-                }}</span>
-              </div>
-              <div class="text-white">
-                <span class="text-xs video-text three-lines-xs">{{
-                  video.description
-                }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="liveVideos.length >= 3" class="text-center p-3">
-          <button
-            class="btn btn-outline-success btn-sm"
-            (click)="showAllLiveVideos = !showAllLiveVideos"
-          >
-            {{ showAllLiveVideos ? "Show Less" : "Show All" }}
-          </button>
-        </div>
-      </div>
+<div class="container-fluid customFluid pr-0 pb-6 overflow-hidden">
+  <div *ngIf="!!game" class="container-fluid">
+    <div *ngIf="videos.length" class="mt-5">
+      <app-stream-card
+        [title]="'Top Videos'"
+        [gameId]="game.id"
+        [videos]="videos"
+      ></app-stream-card>
     </div>
-
-    <div *ngIf="similarGames.length" class="mt-6">
+  
+    <div *ngIf="similarGames.length" class="mt-5">
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
       ></app-similar-games>
     </div>
 
+    <div *ngIf="liveVideos.length" class="mt-5">
+      <app-stream-card
+        [title]="'Top Live Streams'"
+        [gameId]="game.id"
+        [videos]="liveVideos"
+      ></app-stream-card>
+    </div>
+  
     <div *ngIf="genreGames.length" class="mt-5">
       <app-similar-games
-        [title]="allGenres"
+        [title]="'From Genre'"
         [games]="genreGames"
       ></app-similar-games>
     </div>
-
+  
     <div *ngIf="devGames.length" class="mt-5">
       <app-similar-games
-        [title]="allDevelopers"
+        [title]="'From Developer'"
         [games]="devGames"
       ></app-similar-games>
     </div>
@@ -416,7 +311,8 @@
         Please wait while we connect you to the game
       </p>
       <img
-        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif" alt=" "
+        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
+        alt=" "
         width="300px"
       />
     </div>

@@ -3,16 +3,28 @@
   <div #container class="d-flex overflow-auto" style="width: 100%">
     <div *ngFor="let video of videos" class="mr-3">
       <a [routerLink]="['/streams/' + getId(video)]" class="root">
-        <img class="image mb-2" [src]="video.thumbnail" alt="" />
-        <div class="text-white text-sm mb-2 two-lines">{{ video.title }}</div>
-        <div class="d-flex align-items-center">
-          <div class="avatar avatar-sm rounded-circle">
-            <img
-              [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
-              alt=""
-            />
+        <img
+          class="image borderRadius15"
+          [src]="video.thumbnail"
+          alt=""
+        />
+        <div class="font16 font500 offWhiteText mt-3 two-lines">
+          {{ video.title }}
+        </div>
+        <div class="row mt-3">
+          <div class="col-auto">
+            <div class="avatar rounded-circle">
+              <img
+                [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+                class="img-fluid wh50"
+                alt=""
+              />
+            </div>
           </div>
-          <div class="text-white-50 text-xs ml-2">{{ video.creatorName }}</div>
+          <div class="col">
+            <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
+            <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+          </div>
         </div>
       </a>
     </div>
