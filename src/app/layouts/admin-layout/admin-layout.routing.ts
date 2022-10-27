@@ -13,8 +13,8 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'user-profile',         component: UserProfileComponent },
-    { path: 'user-profile/:tab',    component: UserProfileComponent },
+    { path: 'settings',         component: UserProfileComponent },
+    { path: 'settings/:tab',    component: UserProfileComponent },
     { path: 'tables',               component: TablesComponent },
     { path: 'icons',                component: IconsComponent },
     { path: 'home',                 component: HomeComponent },
