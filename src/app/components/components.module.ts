@@ -22,6 +22,8 @@ import { ShareIconsModule } from "ngx-sharebuttons/icons";
 import { AuthNavbarComponent } from "./auth-navbar/auth-navbar.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { GameCardComponent } from "./game-card/game-card.component";
+import { SecurityComponent } from "./security/security.component";
+import { DeviceHistoryComponent } from "./device-history/device-history.component";
 
 @NgModule({
   imports: [
@@ -51,6 +53,8 @@ import { GameCardComponent } from "./game-card/game-card.component";
     PurchaseHistoryComponent,
     BottomNavComponent,
     AuthNavbarComponent,
+    SecurityComponent,
+    DeviceHistoryComponent,
   ],
   exports: [
     GameCardComponent,
@@ -67,6 +71,8 @@ import { GameCardComponent } from "./game-card/game-card.component";
     PurchaseHistoryComponent,
     BottomNavComponent,
     AuthNavbarComponent,
+    SecurityComponent,
+    DeviceHistoryComponent,
   ],
 })
 export class ComponentsModule {}

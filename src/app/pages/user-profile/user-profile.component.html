@@ -1,77 +1,49 @@
 <div class="container py-7">
-  <h1 class="text-white">Settings</h1>
-  <div class="row">
-    <div *ngIf="showMenu" class="col-xl-4 mb-5 mb-xl-0">
-      <!-- <div class="d-flex justify-content-between mb-3">
-        <button class="btn btn-primary rounded-pill">Account</button>
-        <button class="btn btn-dark rounded-pill">Controllers</button>
-        <button class="btn btn-dark rounded-pill">Linking</button>
-      </div> -->
-      <a
-        routerLinkActive="bg-gray-dark"
-        [routerLink]="['/user-profile', 'basic-info']"
-        class="card bg-dark mb-3"
-      >
-        <div class="card-body">
-          <h4 class="text-white">Profile information</h4>
-          <p class="text-white-50 text-xs m-0">
-            Edit or modify your profile picture and username here. You can also
-            manage your password and email ID.
-          </p>
+  <div class="row justify-content-center">
+    <div class="col-md-12 col-lg-9">
+      <h1 class="font700 text-white mt-3">Settings</h1>
+      <nav class="mt-5">
+        <div class="customNavTab nav nav-tabs">
+          <a
+            class="nav-item nav-link border-0 pb-3"
+            routerLinkActive="active pl-0"
+            [routerLink]="['/settings', 'profile']"
+            >Profile</a
+          >
+          <a
+            class="nav-item nav-link border-0 pb-3"
+            routerLinkActive="active pl-0"
+            [routerLink]="['/settings', 'security']"
+            >Login & Security</a
+          >
+          <a
+            class="nav-item nav-link border-0 pb-3"
+            routerLinkActive="active pl-0"
+            [routerLink]="['/settings', 'subscription']"
+            >Subscription</a
+          >
+          <a
+            class="nav-item nav-link border-0 pb-3"
+            routerLinkActive="active pl-0"
+            [routerLink]="['/settings', 'device-history']"
+            >Device History</a
+          >
         </div>
-      </a>
-      <a
-        routerLinkActive="bg-gray-dark"
-        [routerLink]="['/user-profile', 'subscription']"
-        class="card bg-dark mb-3"
-      >
-        <div class="card-body">
-          <h4 class="text-white">OnePlay Subscription</h4>
-          <p class="text-white-50 text-xs m-0">
-            View and manage your OnePlay subscription.
-          </p>
-        </div>
-      </a>
-      <a
-        routerLinkActive="bg-gray-dark"
-        [routerLink]="['/user-profile', 'purchase-history']"
-        class="card bg-dark mb-3"
-      >
-        <div class="card-body">
-          <h4 class="text-white">Purchase History</h4>
-          <p class="text-white-50 text-xs m-0">
-            View all your digital orders including your games, in-game
-            purchases, and apps.
-          </p>
-        </div>
-      </a>
-      <!-- <a
-        routerLinkActive="bg-gray-dark"
-        [routerLink]="['/user-profile', 'notifications']"
-        class="card bg-dark mb-3"
-      >
-        <div class="card-body">
-          <h4 class="text-white">Notifications</h4>
-          <p class="text-white-50 text-xs m-0">
-            Enable or disable notifications based on certain features of your
-            choice.
-          </p>
-        </div>
-      </a> -->
-    </div>
-    <div *ngIf="!!activeTab" class="col-xl-8 order-xl-1">
-      <ng-container *ngIf="activeTab === 'basic-info'">
-        <app-basic-info></app-basic-info>
-      </ng-container>
-      <ng-container *ngIf="activeTab === 'notifications'">
-        <app-notifications></app-notifications>
-      </ng-container>
-      <ng-container *ngIf="activeTab === 'subscription'">
-        <app-subscriptions></app-subscriptions>
-      </ng-container>
-      <ng-container *ngIf="activeTab === 'purchase-history'">
-        <app-purchase-history></app-purchase-history>
-      </ng-container>
+      </nav>
+      <div class="tab-content">
+        <ng-container *ngIf="activeTab === 'profile'">
+          <app-basic-info></app-basic-info>
+        </ng-container>
+        <ng-container *ngIf="activeTab === 'security'">
+          <app-security></app-security>
+        </ng-container>
+        <ng-container *ngIf="activeTab === 'subscription'">
+          <app-subscriptions></app-subscriptions>
+        </ng-container>
+        <ng-container *ngIf="activeTab === 'device-history'">
+          <app-device-history></app-device-history>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
