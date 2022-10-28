@@ -1,60 +1,134 @@
-<ngb-carousel
-  id="home-header"
-  [interval]="4000"
-  [pauseOnFocus]="false"
-  [pauseOnHover]="true"
-  [showNavigationArrows]="showNavigation"
-  [showNavigationIndicators]="showIndicator"
-  *ngIf="!!firstRow"
->
-  <ng-template *ngFor="let game of firstRow.games" ngbSlide>
-    <div
-      class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end background"
-      [style.background-image]="'url(' + game.bgImage + ')'"
-    >
-      <!-- Mask -->
-      <span class="mask bg-gradient-banner"></span>
-      <!-- Header container -->
-      <div class="container-fluid pb-4 pb-md-6">
-        <div class="row container-fluid m-0">
-          <div class="col-lg-7 col-md-10" style="min-width: 50vw">
-            <img [src]="game.textLogo" class="text-logo" alt="" />
-            <p class="text-white mt-0 mb-4"></p>
-            <div class="d-flex">
-              <a
+<div class="container-fluid paddingtop100">
+  <ngb-carousel
+    id="home-header"
+    [interval]="4000"
+    [pauseOnFocus]="false"
+    [pauseOnHover]="true"
+    [showNavigationArrows]="showNavigation"
+    [showNavigationIndicators]="showIndicator"
+    *ngIf="!!firstRow"
+  >
+    <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
+      <div class="row">
+        <div class="col p-2 overflow-hidden">
+          <div class="card bgTransparent">
+            <div class="row">
+              <div class="col-auto w-25 p-2">
+                <img
+                  class="card-img borderRadius10"
+                  [src]="
+                    firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
+                      .bgImage
+                  "
+                  alt="Card image"
+                />
+              </div>
+              <div class="col-auto w-50 p-2">
+                <img
+                  class="card-img borderRadius10"
+                  [src]="game.bgImage"
+                  alt="Card image"
+                />
+              </div>
+              <div class="col-auto w-25 p-2">
+                <img
+                  class="card-img borderRadius10"
+                  [src]="
+                    firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1]
+                      .bgImage
+                  "
+                  alt="Card image"
+                />
+              </div>
+            </div>
+            <div class="card-img-overlay playnowbtn">
+              <button
                 [routerLink]="['/view/' + (game | glink)]"
-                class="btn btn-primary btn-lg h-100"
-                >
-                <span class="d-none d-md-block">
-                  Explore More
-                </span>
-                <em class="fas fa-external-link-alt d-block d-md-none mx-2"></em>
-                </a>
-              <button
-                *ngIf="!isInWishlist(game)"
-                (click)="addToWishlist(game)"
-                [disabled]="loadingWishlist"
-                class="btn bg-translucent-dark text-white btn-lg"
+                class="btn height64 playBtn text-white pl-5 pr-5"
               >
-                Add to wishlist
-              </button>
-              <button
-                *ngIf="isInWishlist(game)"
-                (click)="removeFromWishlist(game)"
-                [disabled]="loadingWishlist"
-                class="btn bg-translucent-dark text-white btn-lg"
-              >
-                Remove from wishlist
+                Play Now
               </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </ng-template>
-</ngb-carousel>
 
-<div class="container-fluid mt--9 py-5">
+      <!-- <div
+        class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end background"
+        [style.background-image]="'url(' + game.bgImage + ')'"
+      >
+        <span class="mask bg-gradient-banner"></span>
+        <div class="container-fluid pb-4 pb-md-6">
+          <div class="row container-fluid m-0">
+            <div class="col-lg-7 col-md-10" style="min-width: 50vw">
+              <img [src]="game.textLogo" class="text-logo" alt="" />
+              <p class="text-white mt-0 mb-4"></p>
+              <div class="d-flex">
+                <a
+                  [routerLink]="['/view/' + (game | glink)]"
+                  class="btn btn-primary btn-lg h-100"
+                  >
+                  <span class="d-none d-md-block">
+                    Explore More
+                  </span>
+                  <em class="fas fa-external-link-alt d-block d-md-none mx-2"></em>
+                  </a>
+                <button
+                  *ngIf="!isInWishlist(game)"
+                  (click)="addToWishlist(game)"
+                  [disabled]="loadingWishlist"
+                  class="btn bg-translucent-dark text-white btn-lg"
+                >
+                  Add to wishlist
+                </button>
+                <button
+                  *ngIf="isInWishlist(game)"
+                  (click)="removeFromWishlist(game)"
+                  [disabled]="loadingWishlist"
+                  class="btn bg-translucent-dark text-white btn-lg"
+                >
+                  Remove from wishlist
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </ng-template>
+  </ngb-carousel>
+</div>
+
+<div class="container-fluid customFluid">
+  <div class="row justify-content-center mt-5">
+      <div class="col-auto">
+          <div class="btn-group btn-group-toggle multiBtn" data-toggle="buttons">
+              <label class="btn btn-outline-light custombtn active mr-3">
+                <input type="radio" name="options" id="Play" autocomplete="off" checked > <span>Free to Play</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                <input type="radio" name="options" id="RPG" autocomplete="off" > <span>RPG</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                <input type="radio" name="options" id="Shooter" autocomplete="off" > <span>Shooter</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                  <input type="radio" name="options" id="Multiplayer" autocomplete="off" > <span>Multiplayer</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                  <input type="radio" name="options" id="Co-op" autocomplete="off" > <span>Co-op</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                  <input type="radio" name="options" id="Indie" autocomplete="off" > <span>Indie</span>
+              </label>
+              <label class="btn btn-outline-light custombtn mr-3">
+                  <input type="radio" name="options" id="Racing" autocomplete="off" > <span>Racing</span>
+              </label>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="container-fluid mt-5 py-5">
   <div class="container-fluid mb-0 mb-md-5">
     <app-similar-games
       *ngFor="let row of restRows"
@@ -69,18 +143,53 @@
 <ng-template #legalWelcomeModal let-d="dismiss">
   <div class="modal-content bg-dark">
     <div class="modal-body customOffWhite ps-4 pb-4 pe-4">
-      <div class="text-right mb-3"><button type="button" class="btn-close backgroundNone border-0 text-white" (click)="d('Cross click')" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-times-circle"></i></button></div>
-      We at One Play respect the intellectual property rights of others and requests the users of its services to do the same. If you believe that certain content, which appears on our website, infringes
-      upon copyrights that you own or represent, you may send us a written notification at <strong class="text-white">legal.team@mail.oneplay.in</strong> stating the details of the copyrighted work
-      claimed to be infringed, in accordance with the provisions of the Copyright Act, 1957. Upon your notification, we may remove or disable access to any such content. To be effective, your notification
-      of claimed infringement must be a written communication provided to us that includes substantially the following:
+      <div class="text-right mb-3">
+        <button
+          type="button"
+          class="btn-close backgroundNone border-0 text-white"
+          (click)="d('Cross click')"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+      We at One Play respect the intellectual property rights of others and
+      requests the users of its services to do the same. If you believe that
+      certain content, which appears on our website, infringes upon copyrights
+      that you own or represent, you may send us a written notification at
+      <strong class="text-white">legal.team@mail.oneplay.in</strong> stating the
+      details of the copyrighted work claimed to be infringed, in accordance
+      with the provisions of the Copyright Act, 1957. Upon your notification, we
+      may remove or disable access to any such content. To be effective, your
+      notification of claimed infringement must be a written communication
+      provided to us that includes substantially the following:
       <ol>
-        <li>Identification of the copyrighted work claimed to be infringed, or if multiple copyrighted works are covered by a single notification, a representative list of such works;</li>
-        <li>Information reasonably sufficient to permit us to contact you, such as an address, telephone number, and, if available, an electronic mail address at which you may be contacted;</li>
-        <li>A statement that you have a good faith belief that the use of the material in the manner complained of is not authorized by the copyright owner, its agent, or the law;</li>
-        <li>A statement that the information in the notification is accurate, and under penalty of perjury, that you are the owner of copyright or authorized to act on behalf of the owner of an exclusive right that is allegedly infringed. </li>
+        <li>
+          Identification of the copyrighted work claimed to be infringed, or if
+          multiple copyrighted works are covered by a single notification, a
+          representative list of such works;
+        </li>
+        <li>
+          Information reasonably sufficient to permit us to contact you, such as
+          an address, telephone number, and, if available, an electronic mail
+          address at which you may be contacted;
+        </li>
+        <li>
+          A statement that you have a good faith belief that the use of the
+          material in the manner complained of is not authorized by the
+          copyright owner, its agent, or the law;
+        </li>
+        <li>
+          A statement that the information in the notification is accurate, and
+          under penalty of perjury, that you are the owner of copyright or
+          authorized to act on behalf of the owner of an exclusive right that is
+          allegedly infringed.
+        </li>
       </ol>
-      Following receipt of your communication, we may ask you to provide further or supplemental information, prior to removing any content which was displayed on the Service.
+      Following receipt of your communication, we may ask you to provide further
+      or supplemental information, prior to removing any content which was
+      displayed on the Service.
     </div>
   </div>
 </ng-template>
