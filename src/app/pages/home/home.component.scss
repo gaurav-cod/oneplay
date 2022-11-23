@@ -37,3 +37,39 @@
   background-image: none;
   background-color: transparent !important;
 }
+
+.borderBg {
+  background-color: #3E4246;
+}
+
+.borderRadius50 {
+  border-radius: 50px;
+}
+
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.legalModalBg {
+  background-color: #151515 !important;
+}
+
+.removeFocus:focus {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.backgroundNone {
+  background-image: none !important;
+}
+
+.mutedColor {
+  color: #959595;
+}
+
+.font16 {
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: 500;
+}
