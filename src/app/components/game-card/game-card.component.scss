@@ -11,8 +11,8 @@
 }
 
 .card {
-  width: 280px;
-  height: 170px;
+  width: 240px;
+  height: 130px;
   box-shadow: 6px 5px 4px 2px #0e0d0d;
   background: none !important;
   cursor: pointer;
@@ -34,4 +34,17 @@
     width: 150px;
     height: 100px;
   }
+}
+
+.freeTag {
+  float: right;
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  border-radius: 6px !important;
+  color: #ffffff;
+  top: 10px !important;
+  right: 10px !important;
+}
+
+.borderRadius15 {
+  border-radius: 15px !important;
 }

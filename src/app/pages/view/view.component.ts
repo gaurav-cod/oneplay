@@ -288,7 +288,7 @@ export class ViewComponent implements OnInit {
   openAdvanceOptions(container): void {
     this.ngbModal.open(container, {
       centered: true,
-      modalDialogClass: "modal-sm",
+      modalDialogClass: "modal-md",
     });
   }
 
