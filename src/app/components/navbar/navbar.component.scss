@@ -1,8 +1,66 @@
 .navbar {
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+    background-image: #151515;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 999;
+}
+
+.navbar-nav .nav-link {
+    font-size: 18px !important;
+    line-height: 20px ;
+    font-weight: 500;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: #959595 !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #ffffff !important;
+}
+
+.navbar-search .input-group {
+    background-color: #212123 !important;
+    border-radius: 6px !important;
+}
+
+.notificationBadge {
+    background-color: #F32D74;
+    border: 2px solid #151515;
+    border-radius: 10px;
+    margin-left: -7px !important;
+    top: -13px !important;
+}
+
+.font20 {
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.menudropdown {
+    background-color: #212123 !important;
+}
+
+.menudropdown a {
+    color: #959595 !important;
+    font-weight: 500;
+}
+
+.menudropdown a:hover {
+    color: #ffffff !important;
+    background-color: #212123 !important;
+}
+
+.borderColor {
+    border-color: #3E4246 !important;
+}
+
+.navbar .dropdown-menu-arrow:before {
+    background-color: #212123 !important;
+}
+
+.searchListing:hover  {
+    background-color: #2B2B2E !important;
 }

@@ -151,3 +151,104 @@ live {
   height: 55px;
   overflow: hidden;
 }
+
+.customOverlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 7.12%, rgba(0, 0, 0, 0.52) 51.58%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.height80 {
+  height: 70vh;
+}
+
+.borderRadius15 {
+  border-radius: 15px !important;
+}
+
+.padding0 {
+  padding-right: 0px !important;
+}
+
+.modalBg {
+  background-color: #212123;
+}
+
+.font600 {
+  font-weight: 600;
+}
+
+.garadientColor {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: 500;
+}
+
+.dangerBg {
+  background-color: #E31C34;
+}
+
+.borderColor {
+  border-color: #3E4246 !important;
+}
+
+.inputBorder {
+  border: 2px solid #3E4246;
+  border-radius: 10px;
+  background-color: transparent;
+  height: 52px;
+}
+
+.customFormControl:focus {
+  color: #DCDCDC;
+  background-color: transparent;
+  border-color: #3E4246;
+  outline: 0;
+  box-shadow: none;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  border: none;
+  box-shadow: none;
+}
+
+.font18 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.font500 {
+  font-weight: 500;
+}
+
+.offWhiteText {
+  color: #DCDCDC;
+}
+
+.lightGrayColor {
+  color: #959595;
+}
+
+.font16 {
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.btn-gradient {
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  border-radius: 6px !important; 
+}
+
+.custom-switch {
+  padding-left: 5.9375rem !important;
+}
+
+.btn-secondary {
+  background-color: #3E4246 !important;
+}
+
+.btn-secondary:hover {
+  color: #DCDCDC !important;
+}
