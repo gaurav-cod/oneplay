@@ -1,5 +1,5 @@
 <nav
-  class="navbar navbar-expand-md navbar-dark d-none d-md-flex"
+  class="navbar navbar-expand-md navbar-dark d-none d-md-flex sticky-top pt-4"
   id="navbar-main"
 >
   <div class="container-fluid">
@@ -10,118 +10,119 @@
 
     <!-- Links -->
     <ul class="navbar-nav d-none d-md-flex">
-      <li class="nav-item">
-        <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link"
+      <li class="nav-item pr-3">
+        <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link mt-2"
           >Home</a
         >
       </li>
-      <li class="nav-item">
-        <a routerLinkActive="active" [routerLink]="['/store']" class="nav-link"
+      <li class="nav-item pr-3">
+        <a routerLinkActive="active" [routerLink]="['/store']" class="nav-link mt-2"
           >Store</a
         >
       </li>
-      <li class="nav-item">
+      <li class="nav-item pr-3">
         <a
           routerLinkActive="active"
           [routerLink]="['/streams']"
-          class="nav-link"
+          class="nav-link mt-2"
           >Streams</a
         >
       </li>
+      <li>
+        <form
+          class="navbar-search form-inline d-none d-md-flex ml-lg-auto position-relative"
+        >
+          <div
+            class="form-group mb-0"
+            [ngClass]="{ focused: (isFocused | async) === true }"
+          >
+            <div class="input-group input-group-alternative border-0">
+              <input
+                #search
+                class="form-control font18 font500"
+                placeholder="Search"
+                type="text"
+                [formControl]="query"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+              />
+              <div class="input-group-prepend">
+                <a class="input-group-text"><i class="fas fa-search text-white"></i></a>
+              </div>
+            </div>
+          </div>
+          <ul
+            *ngIf="results.length || uResults.length"
+            class="position-absolute w-100 card list-group border-0"
+            style="top: calc(100% + 8px)"
+          >
+            <li
+              *ngFor="let game of results"
+              class="list-group-item bg-dark d-flex border-0 searchListing"
+              [routerLink]="['/view/' + (game | glink)]"
+              [queryParams]="keywordQuery"
+              style="cursor: pointer"
+            >
+              <img
+                [src]="game.textBgImage"
+                class="mr-3"
+                width="80"
+                height="50"
+                alt=""
+              />
+              <div>
+                <p class="list-group-heading text-white m-0">{{ game.title }}</p>
+                <p class="list-group-content text-white-50 small m-0">
+                  {{ game.releaseDate.getFullYear() }}
+                </p>
+              </div>
+            </li>
+            <li *ngIf="results.length === 5" class="text-center bg-dark p-3">
+              <button
+                class="btn btn-block mutedBg text-white border-0"
+                (click)="searchNavigate('games')"
+              >
+                See more games
+              </button>
+            </li>
+            <li
+              *ngFor="let user of uResults"
+              class="list-group-item bg-dark d-flex border-0 searchListing"
+            >
+              <img
+                [src]="user.photo || (user.name | avatar)"
+                class="mr-3 rounded-circle"
+                width="80"
+                height="50"
+                alt=""
+              />
+              <div class="flex-grow-1">
+                <p class="list-group-heading text-white m-0">{{ user.name }}</p>
+                <p class="list-group-content text-white-50 small m-0">
+                  {{ user.username }}
+                </p>
+              </div>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-light"
+                (click)="addFriend(user)"
+              >
+                <i class="fas {{ getFriendAddIcon(user) }}"></i>
+              </button>
+            </li>
+            <li *ngIf="uResults.length === 5" class="text-center bg-dark p-3">
+              <button
+                class="btn btn-block mutedBg text-white border-0"
+                (click)="searchNavigate('users')"
+              >
+                See more users
+              </button>
+            </li>
+          </ul>
+        </form>
+      </li>
     </ul>
 
-    <!-- Form -->
-    <form
-      class="navbar-search form-inline mr-3 d-none d-md-flex ml-lg-auto position-relative"
-    >
-      <div
-        class="form-group mb-0"
-        [ngClass]="{ focused: (isFocused | async) === true }"
-      >
-        <div class="input-group input-group-alternative border-0 bg-darker">
-          <input
-            #search
-            class="form-control"
-            placeholder="Search"
-            type="text"
-            [formControl]="query"
-            (focus)="onFocus()"
-            (blur)="onBlur()"
-          />
-          <div class="input-group-prepend">
-            <a class="input-group-text"><i class="fas fa-search"></i></a>
-          </div>
-        </div>
-      </div>
-      <ul
-        *ngIf="results.length || uResults.length"
-        class="position-absolute w-100 card list-group border-0"
-        style="top: calc(100% + 8px)"
-      >
-        <li
-          *ngFor="let game of results"
-          class="list-group-item bg-dark d-flex border-0"
-          [routerLink]="['/view/' + (game | glink)]"
-          [queryParams]="keywordQuery"
-          style="cursor: pointer"
-        >
-          <img
-            [src]="game.textBgImage"
-            class="mr-3"
-            width="80"
-            height="50"
-            alt=""
-          />
-          <div>
-            <p class="list-group-heading text-white m-0">{{ game.title }}</p>
-            <p class="list-group-content text-white-50 small m-0">
-              {{ game.releaseDate.getFullYear() }}
-            </p>
-          </div>
-        </li>
-        <li *ngIf="results.length === 5" class="text-center bg-dark py-2">
-          <button
-            class="btn btn-sm btn-outline-success"
-            (click)="searchNavigate('games')"
-          >
-            See more games
-          </button>
-        </li>
-        <li
-          *ngFor="let user of uResults"
-          class="list-group-item bg-dark d-flex border-0"
-        >
-          <img
-            [src]="user.photo || (user.name | avatar)"
-            class="mr-3"
-            width="80"
-            height="50"
-            alt=""
-          />
-          <div class="flex-grow-1">
-            <p class="list-group-heading text-white m-0">{{ user.name }}</p>
-            <p class="list-group-content text-white-50 small m-0">
-              {{ user.username }}
-            </p>
-          </div>
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-light"
-            (click)="addFriend(user)"
-          >
-            <i class="fas {{ getFriendAddIcon(user) }}"></i>
-          </button>
-        </li>
-        <li *ngIf="uResults.length === 5" class="text-center bg-dark py-2">
-          <button
-            class="btn btn-sm btn-outline-success"
-            (click)="searchNavigate('users')"
-          >
-            See more users
-          </button>
-        </li>
-      </ul>
-    </form>
     <!-- User -->
     <ul class="navbar-nav align-items-center d-none d-md-flex">
       <li class="nav-item">
@@ -132,38 +133,33 @@
         </a>
       </li>
       <li class="nav-item">
-        <a
-          class="nav-link"
-          [routerLink]="gameLink"
-          ngbTooltip="{{ gamePlayTooltip }}"
-        >
-          <span
-            class="avatar avatar-sm rounded-circle bg-gray-dark position-relative"
-          >
-            <i
-              class="fa fa-gamepad"
-              aria-hidden="true"
-              [ngClass]="{
-                'text-success': isGameRunning,
-                'text-muted': !isGameRunning
-              }"
-            ></i>
-            <span *ngIf="isUserLive" id="live">LIVE</span>
-          </span>
+        <a class="nav-link" [routerLink]="gameLink" ngbTooltip="{{ gamePlayTooltip }}">
+          <img src="assets/img/Dashboard/Speedtest.svg" class="img-fluid" alt=""  aria-hidden="true" 
+            [ngClass]="{
+              'text-success': isGameRunning,
+              'text-muted': !isGameRunning
+            }"
+          />
+          <span *ngIf="isUserLive" id="live">LIVE</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="https://www.oneplay.in/speed-test/run">
+          <img src="assets/img/Dashboard/Speedtest (1).svg" class="img-fluid" alt="" />
         </a>
       </li>
       <!-- notifications dropdown -->
       <li class="nav-item" ngbDropdown placement="bottom-rigth">
-        <a class="nav-link" role="button" ngbDropdownToggle>
-          <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-            <i class="fas fa-bell"></i>
-          </span>
+        <a class="nav-link mt-2" role="button" ngbDropdownToggle>
+          <button class="btn text-white p-0">
+            <i class="fas fa-bell font20 mr-0"></i> <span class="badge badge-danger ml-0 notificationBadge text-white pl-2 pr-2">9+</span>
+          </button>
         </a>
-        <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+        <div class="dropdown-menu-arrow menudropdown dropdown-menu-right" ngbDropdownMenu>
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Notifications</h6>
+            <h6 class="text-overflow m-0 text-white">Notifications</h6>
           </div>
-          <div class="dropdown-divider"></div>
+          <div class="dropdown-divider borderColor"></div>
           <a
             *ngFor="let notification of notifications"
             class="dropdown-item"
@@ -179,25 +175,24 @@
             <img alt="Image placeholder" [src]="title | avatar" />
           </span>
         </a>
-        <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>
+        <div class="dropdown-menu-arrow menudropdown dropdown-menu-right" ngbDropdownMenu>
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">{{ title }}</h6>
+            <h6 class="text-overflow m-0 text-white">{{ title }}</h6>
           </div>
-          <a
-            routerLinkActive="active"
-            [routerLink]="['settings']"
-            class="dropdown-item"
-          >
-            <i class="ni ni-settings"></i>
-            <span>Settings</span>
-          </a>
           <a
             routerLinkActive="active"
             [routerLink]="['wishlist']"
             class="dropdown-item"
           >
             <i class="ni ni-favourite-28"></i>
-            <span>Your Wishlist</span>
+            <span>Wishlist</span>
+          </a>
+          <a
+            href="https://www.oneplay.in/subscription.html"
+            class="dropdown-item"
+          >
+            <i class="ni ni-credit-card"></i>
+            <span>Subscription</span>
           </a>
           <a
             href="javascript:void(0)"
@@ -211,18 +206,21 @@
             <i class="fas fa-tachometer-alt"></i>
             <span>Speed Test</span>
           </a>
-          <a
-            href="https://www.oneplay.in/subscription.html"
-            class="dropdown-item"
-          >
-            <i class="ni ni-credit-card"></i>
-            <span>Subscription</span>
-          </a>
+          
+          <div class="dropdown-divider borderColor"></div>
           <a href="https://www.oneplay.in/download.html" class="dropdown-item">
             <i class="ni ni-cloud-download-95"></i>
             <span>Downloads</span>
           </a>
-          <div class="dropdown-divider"></div>
+          <a
+            routerLinkActive="active"
+            [routerLink]="['settings']"
+            class="dropdown-item"
+          >
+            <i class="ni ni-settings"></i>
+            <span>Settings</span>
+          </a>
+          <div class="dropdown-divider borderColor"></div>
           <a href="javascript:void(0)" class="dropdown-item" (click)="logout()">
             <i class="ni ni-button-power"></i>
             <span>Logout</span>

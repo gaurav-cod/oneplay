@@ -1,6 +1,6 @@
 <h2 class="text-white position-relative">{{ title }}</h2>
 <div class="position-relative">
-  <div #container class="d-flex overflow-auto py-3">
+  <div #container class="d-flex overflow-auto my-4">
     <div *ngFor="let game of _games" class="mr-3 zoom">
       <app-game-card [game]="game"></app-game-card>
     </div>
@@ -8,7 +8,7 @@
 
   <button
     class="btn position-absolute d-none d-lg-block h-100"
-    style="top: 0; left: -48px"
+    style="top: 0; left: 0; z-index: 2; border-radius: 0px; background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)); padding-right: 50px;"
     (click)="scrollLeft()"
   >
     <i class="fas fa-chevron-left text-xl"></i>
@@ -16,7 +16,7 @@
 
   <button
     class="btn position-absolute d-none d-lg-block h-100"
-    style="top: 0; right: -48px"
+    style="top: 0; right: 0px; z-index: 2; border-radius: 0px; background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)); padding-right: 50px;"
     (click)="scrollRight()"
   >
     <i class="fas fa-chevron-right text-xl"></i>

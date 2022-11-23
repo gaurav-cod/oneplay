@@ -1,9 +1,9 @@
-<div *ngIf="!!game" class="container-fluid customFluid paddingtop100 pb-7">
-  <div class="container-fluid row mt-4">
+<div *ngIf="!!game" class="container-fluid customFluid paddingtop100">
+  <div class="row mt-4">
     <div class="col-md-12">
-      <div class="card border-0 bgTransparent">
-        <img class="card-img h-75" [src]="game.bgImage" alt="Card image" />
-        <div class="card-img-overlay customOverlay p-4">
+      <div class="card border-0 bgTransparent borderRadius15">
+        <img class="card-img height80 borderRadius15" [src]="game.bgImage" alt="Card image" />
+        <div class="card-img-overlay customOverlay p-4 pl-5 borderRadius15">
           <img [src]="game.textLogo" class="img-fluid" alt="" />
           <p class="font16 font500 text-white mt-4">
             {{ game.releaseDate | date: "MMM, yyyy" }} - {{ game.ageRating }}
@@ -78,21 +78,25 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 mt-5 pr-lg-5">
-      <h3 class="font700 text-white">About Game</h3>
-      <p
-        id="description"
-        [ngClass]="{ limitTextHeight: isReadMore }"
-        [innerHTML]="game.description"
-        class="font20 font500 muteText mt-4"
-      ></p>
-      <a type="button" class="text-white d-inline" (click)="showText()">
-        {{ isReadMore ? "Read More" : "Read Less" }}
-      </a>
+    <div class="col-md-6 mt-4 pr-lg-5">
+      <div class="row">
+        <div class="col-lg-10">
+          <h1 class="font700 text-white mb-0">About Game</h1>
+          <p
+            id="description"
+            [ngClass]="{ limitTextHeight: isReadMore }"
+            [innerHTML]="game.description"
+            class="font20 font500 muteText mt-4 mb-0"
+          ></p>
+          <a type="button" class="text-white d-inline" (click)="showText()">
+            {{ isReadMore ? "Read More" : "Read Less" }}
+          </a>
+        </div>
+      </div>
     </div>
     <div class="col-md-6">
       <div class="row">
-        <div *ngIf="game.storesMapping.length" class="col-auto pr-lg-5 mt-5">
+        <div *ngIf="game.storesMapping.length" class="col-auto pr-lg-5 mt-4">
           <p class="font16 font500 muteText">Store</p>
           <a
             href="{{ store.link }}"
@@ -109,7 +113,7 @@
             />
           </a>
         </div>
-        <div class="col-auto mt-5">
+        <div class="col-auto mt-4">
           <p class="font16 font500 muteText">Developer</p>
           <p class="font600 font20 text-white">
             <span
@@ -122,7 +126,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <p class="font16 font500 muteText mt-4">Tags</p>
+          <p class="font16 font500 muteText mt-4 mb-0">Tags</p>
           <span
             *ngFor="let genre of game.genreMappings"
             class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pr-3 mt-3"
@@ -134,8 +138,8 @@
   </div>
 </div>
 
-<div class="container-fluid customFluid pr-0 pb-6 overflow-hidden">
-  <div *ngIf="!!game" class="container-fluid">
+<div class="container-fluid padding0 pb-6 overflow-hidden">
+  <div *ngIf="!!game">
     <div *ngIf="videos.length" class="mt-5">
       <app-stream-card
         [title]="'Top Videos'"
@@ -196,24 +200,23 @@
 
 <!-- small modal to select resolution, vsync and fps before launching the game -->
 <ng-template #smallModal let-d="dismiss">
-  <div class="modal-content position-relative">
-    <div
+  <div class="modal-content position-relative modalBg">
+    <!-- <div
       class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
-    </div>
+    </div> -->
     <div class="modal-body">
-      <div class="row">
-        <div class="col-12">
-          <h2 class="text-dark mb-4">Select your game settings</h2>
+      <div class="row border-bottom borderColor">
+        <div class="col-12 text-center">
+          <h2 class="text-white font600 mb-4">Select your game settings</h2>
         </div>
       </div>
-      <div class="row">
+      <div class="row mt-4">
         <div *ngIf="game.storesMapping.length" class="col-12">
-          <div class="alert alert-dark" role="alert">
-            <i class="fa fa-gamepad text-danger"></i>
-            <span class="ml-2">
+          <div class="alert alert-danger dangerBg border-0 p-1 text-center" role="alert">
+            <span>
               You need to
               {{ game.isFree ? "have account" : "purchase this game" }} in
               {{ game.storesMapping.length > 1 ? "any of" : "" }}
@@ -221,34 +224,32 @@
                 *ngFor="let store of game.storesMapping"
                 [href]="store.link"
                 target="_blank"
-                class="d-inline-block mx-1 text-danger"
+                class="d-inline-block mx-1 text-white"
                 >{{ store.name }}</a
               >
               to play this game
             </span>
           </div>
         </div>
-        <div class="col-12">
-          <div class="alert alert-success" role="alert">
-            <i class="fa fa-download text-primary"></i>
+        <div class="col-12 text-center mt-2">
+          <p class="garadientColor">
+            <i class="fa fa-download"></i>
             <span class="ml-2">
-              You need to
               <a
                 href="https://www.oneplay.in/download.html"
                 target="_blank"
                 class="d-inline-block mx-1"
               >
-                download & install
+                Oneplay client required to play
               </a>
-              the OnePlay client to play this game
             </span>
-          </div>
+          </p>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-12">
           <div class="form-group">
-            <label for="resolution" class="text-dark"> Resolution </label>
+            <label for="resolution" class="font18 font500 lightGrayColor"> Resolution </label>
             <select
-              class="form-control"
+              class="customFormControl form-control font18 inputBorder font500 offWhiteText"
               id="resolution"
               [formControl]="resolution"
             >
@@ -263,38 +264,51 @@
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="vsync" class="text-dark">Vsync</label>
-            <select class="form-control" id="vsync" [formControl]="vsync">
-              <option *ngFor="let v of constants.VSYNC" [value]="v.value">
-                {{ v.label }}
-              </option>
-            </select>
+          <div class="input-group mb-3">
+            <input type="text" class="customFormControl form-control border-right-0 font18 inputBorder font500 offWhiteText" placeholder="Vsync" >
+            <div class="input-group-append">
+              <span class="input-group-text customFormControl inputBorder p-0 border-left-0">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="vsync" [formControl]="vsync">
+                  <label class="custom-control-label" for="vsync"></label>
+                </div>
+              </span>
+              <!-- <select class="customFormControl form-control font18 inputBorder font500 offWhiteText" id="vsync" [formControl]="vsync">
+                <option *ngFor="let v of constants.VSYNC" [value]="v.value">
+                  {{ v.label }}
+                </option>
+              </select> -->
+              <!-- <span class="input-group-text customFormControl inputBorder font500 offWhiteText border-left-0">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                  <label class="custom-control-label" for="customSwitch1">
+                  </label>
+                </div>
+              </span> -->
+            </div>
           </div>
         </div>
         <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label for="fps" class="text-dark">FPS</label>
-            <select class="form-control" id="fps" [formControl]="fps">
-              <option *ngFor="let f of constants.FPS" [value]="f">
-                {{ f }}
-              </option>
-            </select>
-          </div>
+          <select class="customFormControl form-control font18 inputBorder font500 offWhiteText" id="fps" [formControl]="fps">
+            <option *ngFor="let f of constants.FPS" [value]="f">
+              {{ f }} FPS
+            </option>
+          </select>
         </div>
       </div>
       <div class="row">
-        <div class="col-12 mb-2">
+        <div class="col-12 mb-4 mt-3">
           <button
-            class="btn btn-link btn-block"
+            class="btn btn-link btn-block font16 font500 lightGrayColor"
             (click)="openAdvanceOptions(advanced)"
           >
-            Advanced Options
-            <i class="fas fa-external-link-alt ml-2"></i>
+            <i class="fas fa-external-link-alt mr-2"></i>
+            Advanced game options
+            
           </button>
         </div>
         <div class="col-12">
-          <button class="btn btn-primary btn-block" (click)="startGame()">
+          <button class="btn btn-gradient border-0 text-white btn-lg btn-block" (click)="startGame()">
             Launch game
           </button>
         </div>
@@ -320,8 +334,95 @@
 </ng-template>
 
 <ng-template #advanced let-d="dismiss">
-  <div class="modal-content position-relative">
-    <form [formGroup]="advancedOptions" class="modal-body">
+  <div class="modal-content position-relative modalBg">
+    <div class="modal-body">
+      <div class="row border-bottom borderColor">
+        <div class="col-12 text-center">
+          <h2 class="text-white font600 mb-4">Select your game settings</h2>
+        </div>
+      </div>
+      <form [formGroup]="advancedOptions">
+        <div class="row pl-3 pr-3">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-4">
+                <div class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="mouse_mode" formControlName="absolute_mouse_mode">
+                    <label class="custom-control-label" for="mouse_mode"></label>
+                  </div>
+                  <p class="mb-0 font16 font500 muteText mt-3">Absolute Mouse Mode</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="touch_mode" formControlName="absolute_touch_mode">
+                    <label class="custom-control-label" for="touch_mode"></label>
+                  </div>
+                  <p class="mb-0 font16 font500 muteText mt-3">Absolute Touch Mode</p>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="background_gamepad" formControlName="background_gamepad">
+                    <label class="custom-control-label" for="background_gamepad"></label>
+                  </div>
+                  <p class="mb-0 font16 font500 muteText mt-3">Background Gamepad</p>
+                </div>
+              </div>
+              <div class="col-12 mt-4">
+                <label class="font16 font500 muteText">Audio Type</label><br/>
+                <div class="radioBtns btn-group btn-group-toggle w-100 mt-1" data-toggle="buttons">
+                  <label class="btn btn-secondary width35 active mr-4">
+                    <input type="radio" formControlName="audio_type" id="Stereo" value="stereo" autocomplete="off" checked> <span>Stereo</span>
+                  </label>
+                  <label class="btn btn-secondary width35">
+                    <input type="radio" formControlName="audio_type" id="5_1" value="5_1" autocomplete="off"> <span>5.1</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 mt-4">
+                <label class="font16 font500 muteText">Stream Codec</label><br/>
+                <div class="radioBtns btn-group btn-group-toggle w-100 mt-1" data-toggle="buttons">
+                  <label class="btn btn-secondary width35 active mr-4">
+                    <input type="radio" formControlName="stream_codec" id="Auto" value="auto" autocomplete="off"> <span>Auto</span>
+                  </label>
+                  <label class="btn btn-secondary width35 mr-4">
+                    <input type="radio" formControlName="stream_codec" id="HEVC" value="forceh265" autocomplete="off" checked> <span>HEVC</span>
+                  </label>
+                  <label class="btn btn-secondary width35">
+                    <input type="radio" formControlName="stream_codec" id="H.265" value="neverh265" autocomplete="off"> <span>H.265</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-12 mt-4">
+                <label class="font16 font500 muteText">Video Decoder Selection</label><br/>
+                <div class="radioBtns btn-group btn-group-toggle w-100 mt-1" data-toggle="buttons">
+                  <label class="btn btn-secondary width35 active mr-4">
+                    <input type="radio" formControlName="video_decoder_selection" id="Auto" value="auto" autocomplete="off" checked> <span>Auto</span>
+                  </label>
+                  <label class="btn btn-secondary width35 mr-4">
+                    <input type="radio" formControlName="video_decoder_selection" id="Hardware" value="hardware" autocomplete="off"> <span>Hardware</span>
+                  </label>
+                  <label class="btn btn-secondary width35">
+                    <input type="radio" formControlName="video_decoder_selection" id="Software" value="software" autocomplete="off"> <span>Software</span>
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-12 mt-5 mb-4">
+                <input type="submit" (click)="d('dismiss')" class="btn btn-block linearGradient text-white border-0 btn-lg h56 font18 font500" value="Save & Launch Game" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+
+    <!-- <form [formGroup]="advancedOptions" class="modal-body">
       <div class="form-group custom-control custom-switch">
         <input
           id="mouse_mode"
@@ -396,7 +497,7 @@
     </form>
     <div class="modal-footer">
       <button class="btn btn-primary" (click)="d('dismiss')">OK</button>
-    </div>
+    </div> -->
   </div>
 </ng-template>
 
