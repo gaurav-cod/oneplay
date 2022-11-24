@@ -4,19 +4,19 @@
     [interval]="4000"
     [pauseOnFocus]="false"
     [pauseOnHover]="true"
-    [showNavigationArrows]="showNavigation"
-    [showNavigationIndicators]="showIndicator"
+    [showNavigationArrows]="true"
+    [showNavigationIndicators]="false"
     *ngIf="!!firstRow"
   >
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
       <div class="row">
         <div class="col p-2 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
-            <div class="row">
+            <div class="row carousel-images">
               <div class="col-auto w-25 p-2">
                 <div class="card bgTransparent border-0">
                   <img
-                    class="card-img borderRadius15 height40vh"
+                    class="card-img borderRadius15 height40vh left-img"
                     [src]="
                       firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
                         .bgImage
@@ -29,7 +29,7 @@
               <div class="col-auto w-50 p-2">
                 <div class="card bgTransparent border-0">
                   <img
-                    class="card-img borderRadius15 height40vh"
+                    class="card-img borderRadius15 height40vh center-img"
                     [src]="game.bgImage"
                     alt="img"
                   />
@@ -39,7 +39,7 @@
               <div class="col-auto w-25 p-2">
                 <div class="card bgTransparent border-0">
                   <img
-                    class="card-img borderRadius15 height40vh"
+                    class="card-img borderRadius15 height40vh right-img"
                     [src]="
                       firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1]
                         .bgImage
@@ -55,12 +55,14 @@
                 <div class="col-auto w-25 pl-5">
                 </div>
                 <div class="col-auto w-50 pl-5">
+                  <img [src]="game.textLogo" class="text-logo" alt="" />
+                  <br>
                   <button
-                    [routerLink]="['/view/' + (game | glink)]"
-                    class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5"
+                  [routerLink]="['/view/' + (game | glink)]"
+                  class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5"
                   >
-                    Play Now
-                  </button>
+                  Play Now
+                </button>
                 </div>
               </div>
             </div>

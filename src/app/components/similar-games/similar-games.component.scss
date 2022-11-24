@@ -11,6 +11,10 @@
   }
 }
 
+.overflow-auto::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
 @media (max-width: 480px) {
   h2 {
     font-size: 16px;
