@@ -171,12 +171,20 @@ body {
 }
 
 .lightBg {
-  background-color: #212123;
+  background-color: #212123 !important;
 }
 
 .lightBg:focus {
-  background-color: #212123;
+  background-color: #212123 !important;
   box-shadow: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: none !important;
+    background-color: #212123 !important;
 }
 
 .textMuted {
@@ -540,6 +548,10 @@ background: transparent;
   padding-top: 150px;
 }
 
+.customNavTab.nav-tabs {
+  border-color: #3E4246 !important;
+}
+
 .customNavTab.nav-tabs a{
   font-weight: 500;
   font-size: 18px;
@@ -559,7 +571,7 @@ background: transparent;
 }
 
 .transparentBg {
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .cursorPointer {
