@@ -12,12 +12,14 @@
 
 .card {
   width: 240px;
-  height: 130px;
+  height: 147px;
   box-shadow: 6px 5px 4px 2px #0e0d0d;
   background: none !important;
   cursor: pointer;
 
   .card-img {
+    object-fit: cover;
+    object-position: top;
     height: 100%;
     width: 100%;
   }

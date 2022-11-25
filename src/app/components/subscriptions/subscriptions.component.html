@@ -39,7 +39,6 @@
   </div>
 </div> -->
 
-
 <div class="row mb-5">
   <div class="col-md-12 col-lg-10 mt-4">
     <p class="font18 font500 text-white mb-2 mt-2">Current Subscription</p>
@@ -47,16 +46,32 @@
       <div class="col-md-12 mt-4">
         <div class="card lightBg borderRadius10 p-2">
           <div class="card-body p-4">
-            <div class="row">
+            <div *ngIf="currentSubscriptions.length" class="row">
               <div class="col-md-9">
-                <p class="font16 font500 muteText mb-2">Weekly</p>
-                <h2 class="font38 font700 text-white">$8.99</h2>
+                <p class="font16 font500 muteText mb-2">
+                  {{ currentSubscriptions[0].planName }}
+                </p>
+                <h2 class="font38 font700 text-white">
+                  {{ currentSubscriptions[0].amount }}
+                  {{ currentSubscriptions[0].planCurrency | uppercase }}
+                </h2>
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-                <span class="font18 font500 offWhiteText">10 hours left .</span>
-                <span class="font18 font500 muteText">Expires on 16th Sep 2022</span>
+                <span class="font18 font500 offWhiteText"
+                  >{{currentSubscriptions[0].duration}} days plan . </span
+                >
+                <span class="font18 font500 muteText"
+                  >Expires on
+                  {{
+                    currentSubscriptions[0].endsAt | date: "mediumDate"
+                  }}</span
+                >
               </div>
               <div class="col-md-3 align-self-center text-right">
-                <button class="btn pl-4 pr-4 border-0 text-white linearGradient borderRadius10">Renew</button>
+                <button
+                  class="btn pl-4 pr-4 border-0 text-white linearGradient borderRadius10"
+                >
+                  Renew
+                </button>
               </div>
             </div>
           </div>
@@ -76,38 +91,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr *ngFor="let subscription of subscriptions">
               <td class="align-middle pt-4 pb-4" scope="row">
-                12.10.2022
+                {{ subscription.purchasedAt | date: "dd.MM.yyyy" }}
               </td>
               <td class="align-middle pt-4 pb-4">
-                Starter Edition
-                <p class="customTableText mb-0">Weekly - 15 Hours</p>
-              </td>
-              <td class="align-middle pt-4 pb-4">$8.99</td>
-              <td class="gradientText align-middle pt-4 pb-4">Current</td>
-            </tr>
-            <tr>
-              <td class="align-middle pt-4 pb-4" scope="row">
-                25.9.2022
+                {{ subscription.planName }} Edition
+                <p class="customTableText mb-0">{{ subscription.planDesc }}</p>
               </td>
               <td class="align-middle pt-4 pb-4">
-                Founder Edition
-                <p class="customTableText mb-0">Weekly - 15 Hours</p>
+                {{ subscription.amount }}
+                {{ subscription.currency | uppercase }}
               </td>
-              <td class="align-middle pt-4 pb-4">$8.99</td>
-              <td class="align-middle pt-4 pb-4">Completed</td>
-            </tr>
-            <tr>
-              <td class="align-middle pt-4 pb-4" scope="row">
-                12.10.2022
+              <td
+                class="align-middle pt-4 pb-4"
+                [ngClass]="{
+                  gradientText: subscription.status === 'active',
+                  cancelgradientText: subscription.status === 'pending'
+                }"
+              >
+                {{ subscription.status | titlecase }}
               </td>
-              <td class="align-middle pt-4 pb-4">
-                Starter Edition
-                <p class="customTableText mb-0">Weekly - 15 Hours</p>
-              </td>
-              <td class="align-middle pt-4 pb-4">$8.99</td>
-              <td class="cancelgradientText align-middle pt-4 pb-4">Cancelled</td>
             </tr>
           </tbody>
         </table>

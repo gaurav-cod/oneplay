@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 })
 export class SubscriptionsComponent implements OnInit {
   subscriptions: SubscriptionModel[] = [];
+  currentSubscriptions: SubscriptionModel[] = [];
 
   constructor(private readonly restService: RestService) {}
 
@@ -17,6 +18,9 @@ export class SubscriptionsComponent implements OnInit {
     this.restService
       .getSubscriptions()
       .subscribe((s) => (this.subscriptions = s));
+    this.restService
+      .getCurrentSubscription()
+      .subscribe((s) => (this.currentSubscriptions = s));
   }
 
   onRenew() {
