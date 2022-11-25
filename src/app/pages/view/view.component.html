@@ -300,18 +300,6 @@
                   <label class="custom-control-label" for="vsync"></label>
                 </div>
               </span>
-              <!-- <select class="customFormControl form-control font18 inputBorder font500 offWhiteText" id="vsync" [formControl]="vsync">
-                <option *ngFor="let v of constants.VSYNC" [value]="v.value">
-                  {{ v.label }}
-                </option>
-              </select> -->
-              <!-- <span class="input-group-text customFormControl inputBorder font500 offWhiteText border-left-0">
-                <div class="custom-control custom-switch">
-                  <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-                  <label class="custom-control-label" for="customSwitch1">
-                  </label>
-                </div>
-              </span> -->
             </div>
           </div>
         </div>
@@ -447,7 +435,10 @@
                   class="radioBtns btn-group btn-group-toggle w-100 mt-1"
                   data-toggle="buttons"
                 >
-                  <label class="btn btn-secondary width35 active mr-4">
+                  <label
+                    class="btn btn-secondary width35 mr-4"
+                    [ngClass]="{ active: audio_type === 'stereo' }"
+                  >
                     <input
                       type="radio"
                       formControlName="audio_type"
@@ -458,7 +449,10 @@
                     />
                     <span>Stereo</span>
                   </label>
-                  <label class="btn btn-secondary width35">
+                  <label
+                    class="btn btn-secondary width35"
+                    [ngClass]="{ active: audio_type === '5_1' }"
+                  >
                     <input
                       type="radio"
                       formControlName="audio_type"
@@ -477,7 +471,10 @@
                   class="radioBtns btn-group btn-group-toggle w-100 mt-1"
                   data-toggle="buttons"
                 >
-                  <label class="btn btn-secondary width35 active mr-4">
+                  <label
+                    class="btn btn-secondary width35 mr-4"
+                    [ngClass]="{ active: stream_codec === 'auto' }"
+                  >
                     <input
                       type="radio"
                       formControlName="stream_codec"
@@ -487,7 +484,10 @@
                     />
                     <span>Auto</span>
                   </label>
-                  <label class="btn btn-secondary width35 mr-4">
+                  <label
+                    class="btn btn-secondary width35 mr-4"
+                    [ngClass]="{ active: stream_codec === 'forceh265' }"
+                  >
                     <input
                       type="radio"
                       formControlName="stream_codec"
@@ -498,7 +498,10 @@
                     />
                     <span>HEVC</span>
                   </label>
-                  <label class="btn btn-secondary width35">
+                  <label
+                    class="btn btn-secondary width35"
+                    [ngClass]="{ active: stream_codec === 'neverh265' }"
+                  >
                     <input
                       type="radio"
                       formControlName="stream_codec"
@@ -518,7 +521,10 @@
                   class="radioBtns btn-group btn-group-toggle w-100 mt-1"
                   data-toggle="buttons"
                 >
-                  <label class="btn btn-secondary width35 active mr-4">
+                  <label
+                    class="btn btn-secondary width35 mr-4"
+                    [ngClass]="{ active: video_decoder_selection === 'auto' }"
+                  >
                     <input
                       type="radio"
                       formControlName="video_decoder_selection"
@@ -529,7 +535,12 @@
                     />
                     <span>Auto</span>
                   </label>
-                  <label class="btn btn-secondary width35 mr-4">
+                  <label
+                    class="btn btn-secondary width35 mr-4"
+                    [ngClass]="{
+                      active: video_decoder_selection === 'hardware'
+                    }"
+                  >
                     <input
                       type="radio"
                       formControlName="video_decoder_selection"
@@ -539,7 +550,12 @@
                     />
                     <span>Hardware</span>
                   </label>
-                  <label class="btn btn-secondary width35">
+                  <label
+                    class="btn btn-secondary width35"
+                    [ngClass]="{
+                      active: video_decoder_selection === 'software'
+                    }"
+                  >
                     <input
                       type="radio"
                       formControlName="video_decoder_selection"

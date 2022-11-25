@@ -30,17 +30,6 @@ export class PlayConstants {
 
   static readonly DEFAULT_FPS = 60;
 
-  static readonly VSYNC = [
-    {
-      label: "Off",
-      value: false,
-    },
-    {
-      label: "On",
-      value: true,
-    },
-  ];
-
   static getIdleBitrate(resolution: string, fps = 60) {
     const b = {
       "1280x720": 10000,

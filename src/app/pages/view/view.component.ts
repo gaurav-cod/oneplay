@@ -42,9 +42,9 @@ export class ViewComponent implements OnInit {
   constants = PlayConstants;
   allowedResolutions: string[] = [];
 
-  resolution = new FormControl("1920x1080");
-  fps = new FormControl(PlayConstants.DEFAULT_FPS);
-  vsync = new FormControl(PlayConstants.VSYNC[1].value);
+  resolution = new FormControl();
+  fps = new FormControl();
+  vsync = new FormControl();
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
@@ -52,7 +52,7 @@ export class ViewComponent implements OnInit {
   videos: VideoModel[] = [];
   liveVideos: VideoModel[] = [];
 
-  showSettings = new FormControl(true);
+  showSettings = new FormControl();
 
   advancedOptions = new FormGroup({
     absolute_mouse_mode: new FormControl(false),
@@ -84,29 +84,32 @@ export class ViewComponent implements OnInit {
     );
     this.authService.user.subscribe((user) => {
       if (user) {
-        const resolutionFromLocalStorage = localStorage.getItem("resolution");
-        const fpsFromLocalStorage = localStorage.getItem("fps");
-        const vsyncFromLocalStorage = localStorage.getItem("vsync");
-        // this.resolution.setValue(
-        //   resolutionFromLocalStorage ||
-        //     PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan]
-        // );
-        this.fps.setValue(fpsFromLocalStorage || PlayConstants.DEFAULT_FPS);
-        this.vsync.setValue(
-          vsyncFromLocalStorage || PlayConstants.VSYNC[1].value
+        const resolution = localStorage.getItem("resolution");
+        this.resolution.setValue(
+          resolution ||
+            PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan ?? "Founder"]
         );
         this.allowedResolutions =
-          PlayConstants.RESOLUTIONS_PACKAGES[user.subscribedPlan];
+          PlayConstants.RESOLUTIONS_PACKAGES[user.subscribedPlan ?? "Founder"];
         this.user = user;
       }
     });
-    const showSettings = Cookies.get("showSettings");
-    this.showSettings.setValue(
-      showSettings === undefined ? true : showSettings === "true"
-    );
+    const showSettings = localStorage.getItem("showSettings");
+    this.showSettings.setValue(showSettings ? showSettings === "true" : true);
     this.showSettings.valueChanges.subscribe((showSettings) => {
-      Cookies.set("showSettings", showSettings);
+      localStorage.setItem("showSettings", showSettings);
     });
+
+    const fps = localStorage.getItem("fps");
+    this.fps.setValue(fps || PlayConstants.DEFAULT_FPS);
+
+    const vsync = localStorage.getItem("vsync");
+    this.vsync.setValue(vsync ? vsync === "true" : true);
+
+    const advancedOptions = localStorage.getItem("advancedOptions");
+    if (advancedOptions) {
+      this.advancedOptions.setValue(JSON.parse(advancedOptions));
+    }
   }
 
   ngOnInit(): void {
@@ -222,6 +225,18 @@ export class ViewComponent implements OnInit {
     );
   }
 
+  get audio_type() {
+    return this.advancedOptions.value?.audio_type;
+  }
+
+  get stream_codec() {
+    return this.advancedOptions.value?.stream_codec;
+  }
+
+  get video_decoder_selection() {
+    return this.advancedOptions.value?.video_decoder_selection;
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
@@ -335,6 +350,10 @@ export class ViewComponent implements OnInit {
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
     localStorage.setItem("vsync", this.vsync.value);
+    localStorage.setItem(
+      "advancedOptions",
+      JSON.stringify(this.advancedOptions.value)
+    );
     gtag("event", "start_game", {
       event_category: "game",
       event_label: this.game.title,
