@@ -1,6 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
@@ -20,6 +26,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   loadingWishlist = false;
 
   private wishlist: string[] = [];
+  private _legalModalRef: NgbModalRef;
 
   get showNavigation(): boolean {
     return window.innerWidth < 768;
@@ -34,13 +41,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     private readonly authService: AuthService,
     private readonly loaderService: NgxUiLoaderService,
     private readonly title: Title,
-    private readonly ngbModal: NgbModal,
+    private readonly ngbModal: NgbModal
   ) {}
   ngAfterViewInit(): void {
-    if (sessionStorage.getItem('#legalModal') !== 'true') {
+    if (sessionStorage.getItem("#legalModal") !== "true") {
       this.welcomeModal();
-      setTimeout(() => this.ngbModal.dismissAll(),20000);
-      sessionStorage.setItem('#legalModal','true');     
+      setTimeout(() => this._legalModalRef?.close(), 20000);
+      sessionStorage.setItem("#legalModal", "true");
     }
   }
 
@@ -63,7 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           icon: "warning",
           title: "Hi, " + user.firstName,
           html: `Your account is yet to be verified. Please give us 24 hrs to do so.
-          Until then, kindly <a href="https://oneplay.in/download.html">download client</a> info from our website
+          Until then, kindly <a href="https://www.oneplay.in/download.html">download client</a> info from our website
           Thankyou for your patience!`,
           confirmButtonText: "OK",
         });
@@ -92,7 +99,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private welcomeModal() {
-    this.ngbModal.open(this.legalWelcomeModal, {
+    this._legalModalRef = this.ngbModal.open(this.legalWelcomeModal, {
       centered: true,
       modalDialogClass: "modal-lg",
     });

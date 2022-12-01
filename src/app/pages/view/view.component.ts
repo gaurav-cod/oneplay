@@ -1,9 +1,15 @@
 import { Location } from "@angular/common";
-import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+} from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { combineLatest, zip } from "rxjs";
@@ -69,6 +75,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _clientToken: string;
   private wishlist: string[] = [];
   private _timer: NodeJS.Timer;
+  private _initializedModalRef: NgbModalRef;
+  private _settingsModalRef: NgbModalRef;
 
   constructor(
     private readonly location: Location,
@@ -330,7 +338,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.showSettings.value) {
-      this.ngbModal.open(container, {
+      this._settingsModalRef = this.ngbModal.open(container, {
         centered: true,
         modalDialogClass: "modal-md",
       });
@@ -389,6 +397,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       return;
     }
+
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
     localStorage.setItem("vsync", this.vsync.value);
@@ -396,12 +405,15 @@ export class ViewComponent implements OnInit, OnDestroy {
       "advancedOptions",
       JSON.stringify(this.advancedOptions.value)
     );
+
     gtag("event", "start_game", {
       event_category: "game",
       event_label: this.game.title,
     });
-    this.ngbModal.dismissAll();
+
+    this._settingsModalRef?.close();
     this.startLoading();
+
     this.restService
       .startGame(
         this.game.oneplayId,
@@ -442,7 +454,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientToken(sessionId: string): void {
     let seconds = 0;
     // open inistialized Modal here
-    this.ngbModal.open(this.initializedModal, {
+    this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
       centered: true,
       modalDialogClass: "modal-sm",
       backdrop: "static",
@@ -467,7 +479,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
           } else {
-            this.initialized = data.msg || 'Please wait...';
+            this.initialized = data.msg || "Please wait...";
           }
         },
         (err) => {
@@ -537,8 +549,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
-    Swal.close();
-    this.ngbModal.dismissAll();
+    this._initializedModalRef?.close();
+    this.initialized = "Please wait...";
   }
 
   private startTerminating(): void {
