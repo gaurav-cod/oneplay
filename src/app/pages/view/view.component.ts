@@ -1,5 +1,5 @@
 import { Location } from "@angular/common";
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
@@ -24,8 +24,9 @@ declare var gtag: Function;
   templateUrl: "./view.component.html",
   styleUrls: ["./view.component.scss"],
 })
-export class ViewComponent implements OnInit {
+export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
+  @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -65,8 +66,9 @@ export class ViewComponent implements OnInit {
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
-
+  private _clientToken: string;
   private wishlist: string[] = [];
+  private _timer: NodeJS.Timer;
 
   constructor(
     private readonly location: Location,
@@ -109,6 +111,15 @@ export class ViewComponent implements OnInit {
     const advancedOptions = localStorage.getItem("advancedOptions");
     if (advancedOptions) {
       this.advancedOptions.setValue(JSON.parse(advancedOptions));
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.startingGame) {
+      this.stopLoading();
+    }
+    if (this._timer) {
+      clearInterval(this._timer);
     }
   }
 
@@ -171,15 +182,17 @@ export class ViewComponent implements OnInit {
           .getLiveVideos(id)
           .subscribe((videos) => (this.liveVideos = videos));
         this.gameService.gameStatus.subscribe((status) => {
-          if (status && status.game_id === id) {
-            if (status.is_running) {
-              this.action = "Resume";
+          if (!this.startingGame) {
+            if (status && status.game_id === id) {
+              if (status.is_running) {
+                this.action = "Resume";
+              } else {
+                this.action = "Play";
+              }
+              this.sessionToTerminate = status.session_id;
             } else {
               this.action = "Play";
             }
-            this.sessionToTerminate = status.session_id;
-          } else {
-            this.action = "Play";
           }
         });
       }
@@ -237,6 +250,32 @@ export class ViewComponent implements OnInit {
     return this.advancedOptions.value?.video_decoder_selection;
   }
 
+  get clientDownloadLink() {
+    const userAgent = new UAParser(window.navigator.userAgent);
+    switch (userAgent.getOS().name) {
+      case "Windows":
+        return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
+      case "Mac OS":
+        return "https://cdn.edge-net.co/clients/latest/mac_client.dmg";
+      case "Android":
+        return "";
+      default:
+        return "";
+    }
+  }
+
+  get exitCommand() {
+    const userAgent = new UAParser(window.navigator.userAgent);
+    switch (userAgent.getOS().name) {
+      case "Windows":
+        return "Ctrl + Alt + Shift + Q";
+      case "Mac OS":
+        return "Control + Option + Shift + Q";
+      default:
+        return "";
+    }
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
@@ -277,7 +316,7 @@ export class ViewComponent implements OnInit {
     if (this.user.status !== "active") {
       Swal.fire({
         title: "Opps...",
-        text: "Your account needs to be activated by Oneplay to play games",
+        text: "Your account needs to be subjected to availability by Oneplay to play games",
         icon: "error",
       });
       return;
@@ -334,19 +373,22 @@ export class ViewComponent implements OnInit {
     );
   }
 
+  launchGame() {
+    const userAgent = new UAParser(window.navigator.userAgent);
+    if (userAgent.getOS().name === "Android") {
+      window.open(
+        `https://www.oneplay.in/launch/app?payload=${this._clientToken}`,
+        "_blank"
+      );
+    } else {
+      window.location.href = `oneplay:key?${this._clientToken}`;
+    }
+  }
+
   startGame(): void {
-    // Comment after changes
-    // this.ngbModal.open(this.initializedModal, {
-    //   centered: true,
-    //   modalDialogClass: "modal-sm",
-    //   backdrop: "static",
-    //   keyboard: false,
-    // });
-    // return;
     if (this.startingGame) {
       return;
     }
-    this.ngbModal.dismissAll();
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
     localStorage.setItem("vsync", this.vsync.value);
@@ -358,6 +400,7 @@ export class ViewComponent implements OnInit {
       event_category: "game",
       event_label: this.game.title,
     });
+    this.ngbModal.dismissAll();
     this.startLoading();
     this.restService
       .startGame(
@@ -370,11 +413,9 @@ export class ViewComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          // this.startGameWithClientToken('data.session.id'); //removeThis
           if (data.data.api_action === "call_session") {
             this.startGameWithClientToken(data.data.session.id);
           } else if (data.data.api_action === "call_terminate") {
-            this.stopLoading();
             this.terminateGame(data.data.session.id);
           } else {
             this.stopLoading();
@@ -408,43 +449,36 @@ export class ViewComponent implements OnInit {
       keyboard: false,
     });
 
-    const timer = setInterval(() => {
+    this._timer = setInterval(() => {
       this.restService.getClientToken(sessionId).subscribe(
         (data) => {
           if (!!data.client_token) {
-            clearInterval(timer);
-            // to close initialzed modal here
-            this.ngbModal.dismissAll();
+            clearInterval(this._timer);
 
-            this.stopLoading();
-            const userAgent = new UAParser(window.navigator.userAgent);
-            if (userAgent.getOS().name === "Android") {
-              window.open(
-                `https://www.oneplay.in/launch/app?payload=${data.client_token}`,
-                "_blank"
-              );
-            } else {
-              window.location.href = `oneplay:key?${data.client_token}`;
-            }
+            this._clientToken = data.client_token;
+            this.launchGame();
+
             setTimeout(() => {
+              this.stopLoading();
+              this.ngbModal.open(this.launchModal, {
+                centered: true,
+                modalDialogClass: "modal-sm",
+              });
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
           } else {
-            this.stopLoading();
-            this.initialized = data.msg; //replace this with change message in the modal
+            this.initialized = data.msg || 'Please wait...';
           }
         },
         (err) => {
           this.stopLoading();
-          // to close initialzed modal here
-          this.ngbModal.dismissAll();
           Swal.fire({
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "OK",
           });
-          clearInterval(timer);
+          clearInterval(this._timer);
         }
       );
       seconds = seconds + 3;
@@ -456,7 +490,7 @@ export class ViewComponent implements OnInit {
           icon: "error",
           confirmButtonText: "OK",
         });
-        clearInterval(timer);
+        clearInterval(this._timer);
       }
     }, 3000);
   }
@@ -475,6 +509,7 @@ export class ViewComponent implements OnInit {
           () => {
             setTimeout(() => {
               this.gameService.gameStatus = this.restService.getGameStatus();
+              this.stopLoading();
               this.startGame();
             }, 2000);
           },
@@ -503,6 +538,7 @@ export class ViewComponent implements OnInit {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
     Swal.close();
+    this.ngbModal.dismissAll();
   }
 
   private startTerminating(): void {

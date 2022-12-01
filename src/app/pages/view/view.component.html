@@ -580,83 +580,57 @@
         </div>
       </form>
     </div>
+  </div>
+</ng-template>
 
-    <!-- <form [formGroup]="advancedOptions" class="modal-body">
-      <div class="form-group custom-control custom-switch">
-        <input
-          id="mouse_mode"
-          type="checkbox"
-          class="custom-control-input"
-          formControlName="absolute_mouse_mode"
-        />
-        <label class="custom-control-label" for="mouse_mode"
-          >Absolute Mouse Mode</label
-        >
-      </div>
-      <div class="form-group custom-control custom-switch">
-        <input
-          id="touch_mode"
-          type="checkbox"
-          class="custom-control-input"
-          formControlName="absolute_touch_mode"
-        />
-        <label class="custom-control-label" for="touch_mode"
-          >Absolute Touch Mode</label
-        >
-      </div>
-      <div class="form-group custom-control custom-switch">
-        <input
-          id="background_gamepad"
-          type="checkbox"
-          class="custom-control-input"
-          formControlName="background_gamepad"
-        />
-        <label class="custom-control-label" for="background_gamepad"
-          >Background Gamepad</label
-        >
-      </div>
-      <div class="form-group row">
-        <label class="col-12 col-md-4">Audio Type:</label>
-        <div class="col-12 col-md-8">
-          <select
-            formControlName="audio_type"
-            class="form-control form-control-sm"
-          >
-            <option value="stereo">Stereo</option>
-            <option value="5_1">5.1</option>
-          </select>
+<ng-template #launchModal let-d="dismiss">
+  <div class="modal-content position-relative">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-dark text-center">Your game has been launched!</h2>
         </div>
       </div>
-      <div class="form-group row">
-        <label class="col-12 col-md-5">Stream Codec:</label>
-        <div class="col-12 col-md-7">
-          <select
-            formControlName="stream_codec"
-            class="form-control form-control-sm"
-          >
-            <option value="auto">Auto</option>
-            <option value="forceh265">HEVC</option>
-            <option value="neverh265">H.264</option>
-          </select>
+      <div class="dropdown-divider"></div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="text-gray-dark text-center mb-4">Didn't it launch yet?</h4>
         </div>
       </div>
-      <div class="form-group row">
-        <label class="col-12 col-md-7">Video Decoder Selection:</label>
-        <div class="col-12 col-md-5">
-          <select
-            formControlName="video_decoder_selection"
-            class="form-control form-control-sm"
+      <div class="row text-center">
+        <div class="col-12 mb-2">
+          <button class="btn btn-primary btn-block" (click)="launchGame()">
+            Launch again!
+          </button>
+        </div>
+        <div *ngIf="!!clientDownloadLink" class="col-12 mb-2">
+          <code class="text-gray-dark">OR,</code>
+        </div>
+        <div *ngIf="!!clientDownloadLink" class="col-12">
+          <a
+            [href]="clientDownloadLink"
+            class="btn btn-link btn-block text-danger"
           >
-            <option value="auto">Auto</option>
-            <option value="software">Software</option>
-            <option value="hardware">Hardware</option>
-          </select>
+            Download client
+            <i class="fas fa-download ml-2"></i>
+          </a>
         </div>
       </div>
-    </form>
-    <div class="modal-footer">
-      <button class="btn btn-primary" (click)="d('dismiss')">OK</button>
-    </div> -->
+      <div *ngIf="!!exitCommand" class="dropdown-divider"></div>
+      <div *ngIf="!!exitCommand" class="row">
+        <div class="col-12">
+          <div class="text-gray text-center">
+            To Quit Game Press {{ exitCommand }}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </ng-template>
 
