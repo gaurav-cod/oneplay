@@ -1,5 +1,5 @@
 <h2 class="text-white position-relative">{{ title }}</h2>
-<div class="position-relative">
+<div class="position-relative marginLeftNegative">
   <div #container class="d-flex overflow-auto py-4">
     <div *ngFor="let game of _games" class="mr-3 zoom">
       <app-game-card [game]="game"></app-game-card>
@@ -7,7 +7,7 @@
   </div>
 
   <button
-    class="btn position-absolute d-none d-lg-block h-100"
+    class="btn position-absolute d-none d-lg-block h80"
     style="
       top: 0;
       left: 0;
@@ -22,7 +22,7 @@
   </button>
 
   <button
-    class="btn position-absolute d-none d-lg-block h-100"
+    class="btn position-absolute d-none d-lg-block h80"
     style="
       top: 0;
       right: 0px;

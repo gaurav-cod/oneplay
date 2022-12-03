@@ -14,7 +14,7 @@
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
               <div class="col-auto w-25 p-2">
-                <div class="card bgTransparent border-0">
+                <div class="card bgTransparent border-0 borderRadius15">
                   <img
                     class="card-img borderRadius15 height40vh left-img"
                     [src]="
@@ -27,7 +27,7 @@
                 </div>
               </div>
               <div class="col-auto w-50 p-2">
-                <div class="card bgTransparent border-0">
+                <div class="card bgTransparent border-0 borderRadius15">
                   <img
                     class="card-img borderRadius15 height40vh center-img"
                     [src]="game.bgImage"
@@ -37,7 +37,7 @@
                 </div>
               </div>
               <div class="col-auto w-25 p-2">
-                <div class="card bgTransparent border-0">
+                <div class="card bgTransparent border-0 borderRadius15">
                   <img
                     class="card-img borderRadius15 height40vh right-img"
                     [src]="
@@ -59,7 +59,7 @@
                   <br>
                   <button
                   [routerLink]="['/view/' + (game | glink)]"
-                  class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5"
+                  class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5 mt-3 mb-4"
                   >
                   Play Now
                 </button>
