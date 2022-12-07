@@ -26,12 +26,14 @@
 }
 
 .text-logo {
-  max-width: 400px;
-  max-height: 250px;
-  min-width: 300px;
+  max-width: 300px;
+  max-height: 160px;
+  margin-bottom: 24px;
 
   @media (max-width: 480px) {
-    width: 100%;
+    width: 180px;
+    max-height: 100px;
+    margin-bottom: 14px;
   }
 }
 
@@ -152,14 +154,50 @@ live {
 
 .customOverlay {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 7.12%, rgba(0, 0, 0, 0.52) 51.58%, rgba(0, 0, 0, 0.8) 100%);
+  bottom: 0;
+  top: auto;
+  @media (max-width: 480px) {
+    top: 0;
+  }
 }
 
 .height80 {
   height: 70vh;
+  @media (max-width: 480px) {
+    height: 350px;
+  }
 }
 
-.borderRadius15 {
-  border-radius: 15px !important;
+@media (max-width: 480px) {
+  .fullWidthBtn {
+    width: 100%;
+  }
+
+  .height300 {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .font18responsive {
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .font14responsive {
+    font-size: 14px !important;
+    line-height: 16px !important;
+  }
+
+  .radioBtns .btn-secondary {
+    font-size: 12px;
+    line-height: 14px;
+    height: 40px;
+  }
+
+}
+
+.borderRadius10 {
+  border-radius: 10px !important;
 }
 
 .padding0 {
@@ -232,15 +270,15 @@ live {
 .font16 {
   font-size: 16px;
   line-height: 21px;
+  @media (max-width: 480px) {
+    font-size: 14px;
+    line-height: 24px;
+  }
 }
 
 .btn-gradient {
   background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
   border-radius: 6px !important; 
-}
-
-.custom-switch {
-  padding-left: 5.9375rem !important;
 }
 
 .btn-secondary {

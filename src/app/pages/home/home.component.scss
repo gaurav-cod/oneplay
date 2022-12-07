@@ -73,8 +73,8 @@
   border-radius: 90px;
 }
 
-.borderRadius15 {
-  border-radius: 15px !important;
+.borderRadius10 {
+  border-radius: 10px !important;
 }
 
 .playnowbtn {
@@ -97,10 +97,16 @@
 
 .height40vh {
   height: 55vh;
+  @media (max-width: 480px) {
+    height: 200px;
+  }
 }
 
 .height30vh {
   height: 50vh;
+  @media (max-width: 480px) {
+    height: 200px;
+  }
 }
 
 .carousel-images {
@@ -118,5 +124,15 @@
 
   .center-img {
     object-position: top;
+  }
+}
+
+@media  (max-width: 480px) {
+  .customWidth {
+    width: 20%!important;
+  }
+
+  .customWidth1 {
+    width: 60% !important;
   }
 }

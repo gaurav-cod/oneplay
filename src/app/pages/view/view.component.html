@@ -1,76 +1,111 @@
 <div *ngIf="!!game" class="container-fluid customFluid paddingtop100">
   <div class="row mt-4">
     <div class="col-md-12">
-      <div class="card border-0 bgTransparent borderRadius15">
+      <div class="card border-0 bgTransparent borderRadius10">
         <img
-          class="card-img height80 borderRadius15"
+          class="card-img height80 borderRadius10"
           style="object-fit: cover; object-position: top"
           [src]="game.bgImage"
           alt="Card image"
         />
-        <div class="card-img-overlay customOverlay p-4 pl-5 borderRadius15">
+        <div class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10">
+          <div class="row justify-content-end">
+            <div class="col-auto d-block d-sm-none">
+              <button
+                *ngIf="!isInWishlist"
+                (click)="addToWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn p-0"
+              >
+                <img
+                  src="assets/icons/Speedtest (2).svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
+              <button
+                *ngIf="isInWishlist"
+                (click)="removeFromWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn p-0"
+              >
+                <img
+                  src="assets/icons/Speedtest (2).svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
+          
           <img [src]="game.textLogo" class="text-logo" alt="" />
-          <p class="font16 font500 text-white mt-4">
+          <p class="font16 font500 text-white mt-lg-4">
             {{ game.releaseDate | date: "MMM, yyyy" }} - {{ game.ageRating }}
             {{ game.isFree ? " - Free" : "" }}
           </p>
-          <button
-            class="btn btn-lg px-5 py-3 mr-3 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
-            [disabled]="startingGame"
-            (click)="playGame(smallModal)"
-          >
-            <ngx-ui-loader
-              [fgsColor]="'#c32ead'"
-              [hasProgressBar]="false"
-              [fgsSize]="20"
-              [fgsPosition]="'center-left'"
-              [text]="'Initializing...'"
-              [overlayBorderRadius]="'6px'"
-              [loaderId]="'play-loader'"
-            ></ngx-ui-loader>
-            {{ !startingGame ? action + " Now" : "" }}
-          </button>
-          <button
-            *ngIf="action !== 'Play'"
-            class="btn btn-danger btn-lg position-relative"
-            [disabled]="terminatingGame"
-            (click)="terminateSession()"
-          >
-            <ngx-ui-loader
-              [fgsColor]="'#c32ead'"
-              [hasProgressBar]="false"
-              [fgsSize]="20"
-              [fgsPosition]="'center-left'"
-              [text]="'Terminating...'"
-              [overlayBorderRadius]="'6px'"
-              [loaderId]="'terminate-loader'"
-            ></ngx-ui-loader>
-            {{ !terminatingGame ? "Terminate" : "" }}
-          </button>
-          <button
-            *ngIf="!isInWishlist"
-            (click)="addToWishlist()"
-            [disabled]="loadingWishlist"
-            class="btn mt-3"
-          >
-            <img
-              src="assets/icons/Speedtest (2).svg"
-              class="img-fluid"
-              alt=""
-            />
-          </button>
-          <button
-            *ngIf="isInWishlist"
-            (click)="removeFromWishlist()"
-            [disabled]="loadingWishlist"
-            class="btn mt-3"
-          >
-            <img
-              src="assets/icons/Speedtest (2).svg"
-              class="img-fluid"
-              alt=""
-            />
-          </button>
+          <div class="row">
+            <div class="col-auto align-self-center fullWidthBtn">
+              <button
+                class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+                [disabled]="startingGame"
+                (click)="playGame(smallModal)"
+              >
+                <ngx-ui-loader
+                  [fgsColor]="'#c32ead'"
+                  [hasProgressBar]="false"
+                  [fgsSize]="20"
+                  [fgsPosition]="'center-left'"
+                  [text]="'Initializing...'"
+                  [overlayBorderRadius]="'6px'"
+                  [loaderId]="'play-loader'"
+                ></ngx-ui-loader>
+                {{ !startingGame ? action + " Now" : "" }}
+              </button>
+              <button
+                *ngIf="action !== 'Play'"
+                class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
+                [disabled]="terminatingGame"
+                (click)="terminateSession()"
+              >
+                <ngx-ui-loader
+                  [fgsColor]="'#c32ead'"
+                  [hasProgressBar]="false"
+                  [fgsSize]="20"
+                  [fgsPosition]="'center-left'"
+                  [text]="'Terminating...'"
+                  [overlayBorderRadius]="'6px'"
+                  [loaderId]="'terminate-loader'"
+                ></ngx-ui-loader>
+                {{ !terminatingGame ? "Terminate" : "" }}
+              </button>
+            </div>
+            <div class="col-auto d-none d-sm-block align-self-center">
+              <button
+                *ngIf="!isInWishlist"
+                (click)="addToWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn mt-3 p-0"
+              >
+                <img
+                  src="assets/icons/Speedtest (2).svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
+              <button
+                *ngIf="isInWishlist"
+                (click)="removeFromWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn mt-3 p-0"
+              >
+                <img
+                  src="assets/icons/Speedtest (2).svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
+            </div>
+          </div>
           <form class="pb-4">
             <div class="custom-control custom-checkbox mt-4">
               <input
@@ -151,7 +186,7 @@
 
 <div class="container-fluid padding0 pb-6 overflow-hidden">
   <div *ngIf="!!game">
-    <div *ngIf="videos.length" class="mt-5">
+    <div *ngIf="videos.length" class="mt-lg-5 mt-4">
       <app-stream-card
         [title]="'Top Videos'"
         [gameId]="game.id"
@@ -159,14 +194,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="similarGames.length" class="mt-5">
+    <div *ngIf="similarGames.length" class="mt-lg-5 mt-4">
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="liveVideos.length" class="mt-5">
+    <div *ngIf="liveVideos.length" class="mt-lg-5 mt-4">
       <app-stream-card
         [title]="'Top Live Streams'"
         [gameId]="game.id"
@@ -174,14 +209,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="genreGames.length" class="mt-5">
+    <div *ngIf="genreGames.length" class="mt-lg-5 mt-4">
       <app-similar-games
         [title]="'From Genre'"
         [games]="genreGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="devGames.length" class="mt-5">
+    <div *ngIf="devGames.length" class="mt-lg-5 mt-4">
       <app-similar-games
         [title]="'From Developer'"
         [games]="devGames"
@@ -212,25 +247,29 @@
 <!-- small modal to select resolution, vsync and fps before launching the game -->
 <ng-template #smallModal let-d="dismiss">
   <div class="modal-content position-relative modalBg">
-    <!-- <div
-      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--2 py-3"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
-    </div> -->
-    <div class="modal-body">
-      <div class="row border-bottom borderColor">
-        <div class="col-12 text-center">
-          <h2 class="text-white font600 mb-4">Select your game settings</h2>
-        </div>
+    </div>
+    <div class="modal-header border-bottom borderColor w-100 text-center">
+      <h2 class="text-white font600 mb-0 font18responsive">Select your game settings</h2>
+    </div>
+    
+    <!-- <div class="row border-bottom borderColor">
+      <div class="col-12 text-center">
+        
       </div>
-      <div class="row mt-4">
+    </div> -->
+    <div class="modal-body pb-0 height300">
+      <div class="row">
         <div *ngIf="game.storesMapping.length" class="col-12">
           <div
-            class="alert alert-danger dangerBg border-0 p-1 text-center"
+            class="alert alert-danger dangerBg border-0 p-2 text-center"
             role="alert"
           >
-            <span>
+            <p class="mb-0 mt-1 mb-1 font14responsive">
               You need to
               {{ game.isFree ? "have account" : "purchase this game" }} in
               {{ game.storesMapping.length > 1 ? "any of" : "" }}
@@ -242,7 +281,7 @@
                 >{{ store.name }}</a
               >
               to play this game
-            </span>
+            </p>
           </div>
         </div>
         <div class="col-12 text-center mt-2">
@@ -252,7 +291,7 @@
               <a
                 href="https://www.oneplay.in/download.html"
                 target="_blank"
-                class="d-inline-block mx-1"
+                class="d-inline-block mx-1 font14responsive"
               >
                 Oneplay client required to play
               </a>
@@ -316,7 +355,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 mb-4 mt-3">
+        <div class="col-12 mt-3">
           <button
             class="btn btn-link btn-block font16 font500 lightGrayColor"
             (click)="openAdvanceOptions(advanced)"
@@ -325,15 +364,15 @@
             Advanced game options
           </button>
         </div>
-        <div class="col-12">
-          <button
-            class="btn btn-gradient border-0 text-white btn-lg btn-block"
-            (click)="startGame()"
-          >
-            Launch game
-          </button>
-        </div>
       </div>
+    </div>
+    <div class="modal-footer">
+      <button
+        class="btn btn-gradient border-0 text-white btn-lg btn-block"
+        (click)="startGame()"
+      >
+        Launch game
+      </button>
     </div>
   </div>
 </ng-template>
@@ -356,77 +395,93 @@
 
 <ng-template #advanced let-d="dismiss">
   <div class="modal-content position-relative modalBg">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--4 right--2 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="modal-header border-bottom borderColor w-100 text-center">
+      <h2 class="text-white font600 mb-0 font18responsive">Advanced Game Options</h2>
+    </div>
     <div class="modal-body">
-      <div class="row border-bottom borderColor">
-        <div class="col-12 text-center">
-          <h2 class="text-white font600 mb-4">Select your game settings</h2>
-        </div>
-      </div>
       <form [formGroup]="advancedOptions">
-        <div class="row pl-3 pr-3">
+        <div class="row pl-lg-3 pr-lg-3">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-4">
-                <div
-                  class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4"
-                >
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="mouse_mode"
-                      formControlName="absolute_mouse_mode"
-                    />
-                    <label
-                      class="custom-control-label"
-                      for="mouse_mode"
-                    ></label>
+              <div class="col-12 col-md-4">
+                <div class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2">
+                  <div class="row">
+                    <div class="col-md-12 col-2 align-self-center">
+                      <div class="custom-control custom-switch pl-lg-7">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="mouse_mode"
+                          formControlName="absolute_mouse_mode"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="mouse_mode"
+                        ></label>
+                      </div>
+                    </div>
+                    <div class="col-md-12 col-10 pl-0 pl-lg-3">
+                      <p class="mb-0 font16 font500 muteText mt-lg-3">
+                        Absolute Mouse Mode
+                      </p>
+                    </div>
                   </div>
-                  <p class="mb-0 font16 font500 muteText mt-3">
-                    Absolute Mouse Mode
-                  </p>
                 </div>
               </div>
-              <div class="col-4">
-                <div
-                  class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4"
-                >
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="touch_mode"
-                      formControlName="absolute_touch_mode"
-                    />
-                    <label
-                      class="custom-control-label"
-                      for="touch_mode"
-                    ></label>
+              <div class="col-12 col-md-4">
+                <div class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2">
+                  <div class="row">
+                    <div class="col-md-12 col-2 align-self-center">
+                      <div class="custom-control custom-switch pl-lg-7">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="touch_mode"
+                          formControlName="absolute_touch_mode"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="touch_mode"
+                        ></label>
+                      </div>
+                    </div>
+                    <div class="col-10 col-md-12">
+                      <p class="mb-0 font16 font500 muteText mt-lg-3">
+                        Absolute Touch Mode
+                      </p>
+                    </div>
                   </div>
-                  <p class="mb-0 font16 font500 muteText mt-3">
-                    Absolute Touch Mode
-                  </p>
                 </div>
               </div>
-              <div class="col-4">
-                <div
-                  class="text-center customBodyColor borderRadius10 px-2 pt-4 pb-3 mt-4"
-                >
-                  <div class="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      class="custom-control-input"
-                      id="background_gamepad"
-                      formControlName="background_gamepad"
-                    />
-                    <label
-                      class="custom-control-label"
-                      for="background_gamepad"
-                    ></label>
-                  </div>
-                  <p class="mb-0 font16 font500 muteText mt-3">
-                    Background Gamepad
-                  </p>
+              <div class="col-12 col-md-4">
+                <div class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2">
+                  <div class="row">
+                    <div class="col-md-12 col-2 align-self-center">
+                      <div class="custom-control custom-switch pl-lg-7">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="background_gamepad"
+                          formControlName="background_gamepad"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="background_gamepad"
+                        ></label>
+                      </div>
+                    </div>
+                    <div class="col-10 col-md-12">
+                      <p class="mb-0 font16 font500 muteText mt-lg-3">
+                        Background Gamepad
+                      </p>
+                    </div>
+                  </div> 
                 </div>
               </div>
               <div class="col-12 mt-4">
@@ -571,7 +626,7 @@
                 <input
                   type="submit"
                   (click)="d('dismiss')"
-                  class="btn btn-block linearGradient text-white border-0 btn-lg h56 font18 font500"
+                  class="btn btn-block linearGradient text-white border-0 btn-lg h56 font18 font14responsive font500"
                   value="Save & Launch Game"
                 />
               </div>

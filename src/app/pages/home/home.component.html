@@ -13,10 +13,10 @@
         <div class="col p-2 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
-              <div class="col-auto w-25 p-2">
-                <div class="card bgTransparent border-0 borderRadius15">
+              <div class="col-auto w-25 p-2 customWidth">
+                <div class="card bgTransparent border-0 borderRadius10">
                   <img
-                    class="card-img borderRadius15 height40vh left-img"
+                    class="card-img borderRadius10 height40vh left-img"
                     [src]="
                       firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
                         .bgImage
@@ -26,20 +26,20 @@
                   <div class="card-img-overlay playnowbtn"></div>
                 </div>
               </div>
-              <div class="col-auto w-50 p-2">
-                <div class="card bgTransparent border-0 borderRadius15">
+              <div class="col-auto w-50 p-2 customWidth1">
+                <div class="card bgTransparent border-0 borderRadius10">
                   <img
-                    class="card-img borderRadius15 height40vh center-img"
+                    class="card-img borderRadius10 height40vh center-img"
                     [src]="game.bgImage"
                     alt="img"
                   />
                   <div class="card-img-overlay playnowbtn"></div>
                 </div>
               </div>
-              <div class="col-auto w-25 p-2">
-                <div class="card bgTransparent border-0 borderRadius15">
+              <div class="col-auto w-25 p-2 customWidth">
+                <div class="card bgTransparent border-0 borderRadius10">
                   <img
-                    class="card-img borderRadius15 height40vh right-img"
+                    class="card-img borderRadius10 height40vh right-img"
                     [src]="
                       firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1]
                         .bgImage
@@ -51,18 +51,18 @@
               </div>
             </div>
             <div class="card-img-overlay">
-              <div class="row height30vh align-items-end">
-                <div class="col-auto w-25 pl-5">
+              <div class="row height30vh align-items-end" [routerLink]="['/view/' + (game | glink)]">
+                <div class="col-auto w-25 pl-5 customWidth">
                 </div>
-                <div class="col-auto w-50 pl-5">
+                <div class="col-auto w-50 pl-lg-5 customWidth1">
                   <img [src]="game.textLogo" class="text-logo" alt="" />
                   <br>
                   <button
-                  [routerLink]="['/view/' + (game | glink)]"
-                  class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5 mt-3 mb-4"
-                  >
-                  Play Now
-                </button>
+                    [routerLink]="['/view/' + (game | glink)]"
+                    class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5 mt-3 mb-4 d-none d-sm-block"
+                    >
+                    Play Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -70,6 +70,7 @@
         </div>
       </div>
 
+      
       <!-- <div
         class="header pb-8 pt-5 pt-lg-8 d-flex align-items-end background"
         [style.background-image]="'url(' + game.bgImage + ')'"
@@ -115,7 +116,7 @@
   </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid pt-3">
+<div class="container-fluid customFluid pt-3 d-none d-sm-block">
   <div class="row justify-content-center mt-4">
       <div class="col-auto">
           <div class="btn-group btn-group-toggle multiBtn" data-toggle="buttons">
