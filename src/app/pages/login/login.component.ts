@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { AuthService } from "src/app/services/auth.service";
@@ -23,7 +30,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly title: Title,
+    private readonly title: Title
   ) {}
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
@@ -35,6 +42,16 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {}
 
   login() {
+    if (!this.loginForm.valid) {
+      Swal.fire({
+        title: "Error",
+        text: "Email or Phone number and Password cannot be empty.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
         gtag("event", "login", {

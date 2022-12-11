@@ -77,6 +77,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _timer: NodeJS.Timer;
   private _initializedModalRef: NgbModalRef;
   private _settingsModalRef: NgbModalRef;
+  private _launchModalRef: NgbModalRef;
 
   constructor(
     private readonly location: Location,
@@ -105,7 +106,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       }
     });
     const showSettings = localStorage.getItem("showSettings");
-    this.showSettings.setValue(showSettings ? showSettings === "true" : true);
+    this.showSettings.setValue(showSettings ? showSettings === "true" : false);
     this.showSettings.valueChanges.subscribe((showSettings) => {
       localStorage.setItem("showSettings", showSettings);
     });
@@ -381,16 +382,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
   }
 
-  launchGame() {
-    const userAgent = new UAParser(window.navigator.userAgent);
-    if (userAgent.getOS().name === "Android") {
-      window.open(
-        `https://www.oneplay.in/launch/app?payload=${this._clientToken}`,
-        "_blank"
-      );
-    } else {
-      window.location.href = `oneplay:key?${this._clientToken}`;
-    }
+  clickLaunchAgain() {
+    this.launchGame();
+    this._launchModalRef?.close();
   }
 
   startGame(): void {
@@ -472,10 +466,13 @@ export class ViewComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
               this.stopLoading();
-              this.ngbModal.open(this.launchModal, {
+              this._launchModalRef = this.ngbModal.open(this.launchModal, {
                 centered: true,
                 modalDialogClass: "modal-sm",
               });
+              setTimeout(() => {
+                this._launchModalRef?.close();
+              }, 10000);
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
           } else {
@@ -539,6 +536,18 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.stopLoading();
       }
     });
+  }
+
+  private launchGame() {
+    const userAgent = new UAParser(window.navigator.userAgent);
+    if (userAgent.getOS().name === "Android") {
+      window.open(
+        `https://www.oneplay.in/launch/app?payload=${this._clientToken}`,
+        "_blank"
+      );
+    } else {
+      window.location.href = `oneplay:key?${this._clientToken}`;
+    }
   }
 
   private startLoading(): void {
