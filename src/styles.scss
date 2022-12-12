@@ -206,11 +206,6 @@ input:-webkit-autofill:active{
   background-color: transparent !important;
 }
 
-.customOverlay {
-  bottom: 0 !important;
-  top: auto !important;
-}
-
 .font16 {
   font-size: 16px;
   line-height: 26px;
@@ -227,6 +222,10 @@ input:-webkit-autofill:active{
 .font20 {
   font-size: 20px;
   line-height: 30px;
+  @media (max-width: 480px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
 }
 
 .font600 {
@@ -539,7 +538,7 @@ background: transparent;
 }
 
 .width35 {
-  width: 35%;
+  width: 30%;
 }
 
 /* setting CSS  */
@@ -593,6 +592,10 @@ background: transparent;
 .font38 {
   font-size: 38px;
   line-height: 50px;
+  @media (max-width: 480px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 }
 
 .customTable.table th, .customTable.table thead th {

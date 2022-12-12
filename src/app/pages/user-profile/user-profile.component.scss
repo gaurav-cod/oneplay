@@ -11,3 +11,12 @@
   -webkit-box-shadow: none;
   box-shadow: none;
 }
+
+.customCareerTab {
+  overflow-x: auto;
+  overflow-y:hidden;
+  flex-wrap: nowrap !important;
+}
+.customCareerTab .nav-link {
+ white-space: nowrap;
+}

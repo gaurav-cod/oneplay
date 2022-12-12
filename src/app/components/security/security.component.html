@@ -100,13 +100,21 @@
           <div class="input-group">
             <input type="email" class="form-control height52 font18 font500 text-white border-0 lightBg" placeholder="nidhi@oneplay.in" />
             <div class="input-group-append">
-              <span class="input-group-text lightBg border-0"><i class="fas fa-pen-fancy text-white"></i></span>
+              <span class="input-group-text lightBg border-0">
+                <i class="fas fa-pen-fancy text-white"></i>
+                <!-- <img src="assets\img\setting\Verified.svg" class="img-fluid" alt="" /> -->
+              </span>
             </div>
           </div>
         </div>
         <div class="col-md-12 mt-3">
           <label class="font16 font500 offWhiteText">Phone number</label>
-          <input type="number"[formControl]="phone" class="form-control height52 font18 font500 text-white border-0 lightBg" placeholder="9999999999"/>
+          <div class="input-group">
+            <input type="number"[formControl]="phone" class="form-control height52 font18 font500 text-white border-0 lightBg" placeholder="9999999999"/>
+            <div class="input-group-append">
+              <span class="input-group-text lightBg border-0"><i class="fas fa-pen-fancy text-white"></i></span>
+            </div>
+          </div>
         </div>
         <div class="col-md-12 mt-4">
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
@@ -116,7 +124,7 @@
           <div class="input-group">
             <input type="password"[formControl]="password" class="form-control height52 font18 font500 text-white border-0 lightBg" />
             <div class="input-group-append">
-              <span class="input-group-text lightBg border-0"><i class="fas fa-pen-fancy text-white"></i></span>
+              <span class="input-group-text lightBg border-0"><img src="assets\img\setting\Views.svg" class="img-fluid" alt="" /></span>
             </div>
           </div>
           <span class="font16 font500 muteText">at least 8 characters</span>

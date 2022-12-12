@@ -25,6 +25,9 @@
 
 .marginLeftNegative {
   margin-left: -60px;
+  @media (max-width: 480px) {
+    margin-left: 0px;
+  }
 }
 
 .h80 {
