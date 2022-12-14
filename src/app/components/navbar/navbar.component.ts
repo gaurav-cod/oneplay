@@ -51,6 +51,8 @@ export class NavbarComponent implements OnInit {
 
   @ViewChild("search") searchElement: ElementRef;
 
+  isMenuCollapsed = true;
+
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }

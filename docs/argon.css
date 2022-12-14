@@ -4685,7 +4685,7 @@ input[type="button"].btn-block {
     position: absolute;
   }
   .navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 1rem;
+    /* padding-right: 1rem; */
     padding-left: 1rem;
   }
   .navbar-expand-lg > .container,
