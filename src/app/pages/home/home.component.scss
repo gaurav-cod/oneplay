@@ -127,7 +127,7 @@
   }
 }
 
-@media  (max-width: 480px) {
+@media  (max-width: 1025px) {
   .customWidth {
     width: 20%!important;
   }
@@ -135,4 +135,15 @@
   .customWidth1 {
     width: 60% !important;
   }
+}
+
+.multiBtn {
+  overflow: scroll;
+  white-space: nowrap;
+  display:block;
+}
+
+.multiBtn label {
+  display: inline-block;
+  float: none;
 }
