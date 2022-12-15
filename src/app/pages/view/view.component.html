@@ -10,7 +10,7 @@
         />
         <div class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10">
           <div class="row justify-content-end">
-            <div class="col-auto d-block d-sm-none">
+            <div class="col-auto d-block d-sm-none customTopButton">
               <button
                 *ngIf="!isInWishlist"
                 (click)="addToWishlist()"
@@ -37,90 +37,95 @@
               </button>
             </div>
           </div>
-          
-          <img [src]="game.textLogo" class="text-logo" alt="" />
-          <p class="font16 font500 text-white mt-lg-4">
-            {{ game.releaseDate | date: "MMM, yyyy" }} - {{ game.ageRating }}
-            {{ game.isFree ? " - Free" : "" }}
-          </p>
-          <div class="row">
-            <div class="col-auto align-self-center fullWidthBtn">
-              <button
-                class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
-                [disabled]="startingGame"
-                (click)="playGame(smallModal)"
-              >
-                <ngx-ui-loader
-                  [fgsColor]="'#c32ead'"
-                  [hasProgressBar]="false"
-                  [fgsSize]="20"
-                  [fgsPosition]="'center-left'"
-                  [text]="'Initializing...'"
-                  [overlayBorderRadius]="'6px'"
-                  [loaderId]="'play-loader'"
-                ></ngx-ui-loader>
-                {{ !startingGame ? action + " Now" : "" }}
-              </button>
-              <button
-                *ngIf="action !== 'Play'"
-                class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
-                [disabled]="terminatingGame"
-                (click)="terminateSession()"
-              >
-                <ngx-ui-loader
-                  [fgsColor]="'#c32ead'"
-                  [hasProgressBar]="false"
-                  [fgsSize]="20"
-                  [fgsPosition]="'center-left'"
-                  [text]="'Terminating...'"
-                  [overlayBorderRadius]="'6px'"
-                  [loaderId]="'terminate-loader'"
-                ></ngx-ui-loader>
-                {{ !terminatingGame ? "Terminate" : "" }}
-              </button>
+          <div class="row imagesText">
+            <div class="col-md-12">
+              <img [src]="game.textLogo" class="text-logo" alt="" />
             </div>
-            <div class="col-auto d-none d-sm-block align-self-center">
-              <button
-                *ngIf="!isInWishlist"
-                (click)="addToWishlist()"
-                [disabled]="loadingWishlist"
-                class="btn mt-3 p-0"
-              >
-                <img
-                  src="assets/icons/Speedtest (2).svg"
-                  class="img-fluid"
-                  alt=""
-                />
-              </button>
-              <button
-                *ngIf="isInWishlist"
-                (click)="removeFromWishlist()"
-                [disabled]="loadingWishlist"
-                class="btn mt-3 p-0"
-              >
-                <img
-                  src="assets/icons/Speedtest (2).svg"
-                  class="img-fluid"
-                  alt=""
-                />
-              </button>
+            <div class="col-md-12">
+              <p class="font16 font500 text-white mt-lg-4">
+                {{ game.releaseDate | date: "MMM, yyyy" }} - {{ game.ageRating }}
+                {{ game.isFree ? " - Free" : "" }}
+              </p>
+              <div class="row">
+                <div class="col-auto align-self-center fullWidthBtn">
+                  <button
+                    class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+                    [disabled]="startingGame"
+                    (click)="playGame(smallModal)"
+                  >
+                    <ngx-ui-loader
+                      [fgsColor]="'#c32ead'"
+                      [hasProgressBar]="false"
+                      [fgsSize]="20"
+                      [fgsPosition]="'center-left'"
+                      [text]="'Initializing...'"
+                      [overlayBorderRadius]="'6px'"
+                      [loaderId]="'play-loader'"
+                    ></ngx-ui-loader>
+                    {{ !startingGame ? action + " Now" : "" }}
+                  </button>
+                  <button
+                    *ngIf="action !== 'Play'"
+                    class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
+                    [disabled]="terminatingGame"
+                    (click)="terminateSession()"
+                  >
+                    <ngx-ui-loader
+                      [fgsColor]="'#c32ead'"
+                      [hasProgressBar]="false"
+                      [fgsSize]="20"
+                      [fgsPosition]="'center-left'"
+                      [text]="'Terminating...'"
+                      [overlayBorderRadius]="'6px'"
+                      [loaderId]="'terminate-loader'"
+                    ></ngx-ui-loader>
+                    {{ !terminatingGame ? "Terminate" : "" }}
+                  </button>
+                </div>
+                <div class="col-auto d-none d-sm-block align-self-center">
+                  <button
+                    *ngIf="!isInWishlist"
+                    (click)="addToWishlist()"
+                    [disabled]="loadingWishlist"
+                    class="btn mt-3 p-0"
+                  >
+                    <img
+                      src="assets/icons/Speedtest (2).svg"
+                      class="img-fluid"
+                      alt=""
+                    />
+                  </button>
+                  <button
+                    *ngIf="isInWishlist"
+                    (click)="removeFromWishlist()"
+                    [disabled]="loadingWishlist"
+                    class="btn mt-3 p-0"
+                  >
+                    <img
+                      src="assets/icons/Speedtest (2).svg"
+                      class="img-fluid"
+                      alt=""
+                    />
+                  </button>
+                </div>
+              </div>
+              <form class="pb-4">
+                <div class="custom-control custom-checkbox mt-4">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input my-error"
+                    id="customCheck1"
+                    [formControl]="showSettings"
+                  />
+                  <label
+                    class="custom-control-label font16 font500 text-white"
+                    for="customCheck1"
+                    >Show gameplay settings before launch</label
+                  >
+                </div>
+              </form>
             </div>
           </div>
-          <form class="pb-4">
-            <div class="custom-control custom-checkbox mt-4">
-              <input
-                type="checkbox"
-                class="custom-control-input my-error"
-                id="customCheck1"
-                [formControl]="showSettings"
-              />
-              <label
-                class="custom-control-label font16 font500 text-white"
-                for="customCheck1"
-                >Show gameplay settings before launch</label
-              >
-            </div>
-          </form>
         </div>
       </div>
     </div>

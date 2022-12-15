@@ -1,15 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top pt-4" id="navbar-main">
-	<div class="container-fluid pl-0 pr-0">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top pt-lg-4" id="navbar-main">
+	<div class="container p-0">
 		<!-- Brand -->
     <a class="navbar-brand" [routerLink]="['/home']">
-      <img class="img-fluid" src="assets/img/brand/Group 134.svg" alt=" " />
+      <img class="img-fluid d-none d-sm-inline" src="assets/img/brand/Group 134.svg" alt=" " />
+      <img class="img-fluid d-inline d-sm-none" width="70px" height="70px" src="assets/img/brand/Beta_Logo.webp" alt=" " />
     </a>
 
 		<!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
-		<button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button>
+		<!-- <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button> -->
 
 		<!-- Step 2: Add the ngbCollapse directive to the element below. -->
-		<div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto pl-md-4 pl-lg-0 ml-auto">
         <li class="nav-item pr-3">
           <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link mt-2" (click)="isMenuCollapsed = true"
@@ -30,7 +31,7 @@
             >Streams</a
           >
         </li>
-        <li>
+        <li class="d-none d-lg-inline">
           <form
             class="navbar-search form-inline d-none d-md-flex mt-md-3 mt-lg-0 ml-lg-auto position-relative"
           >
@@ -127,7 +128,7 @@
         </li>
 			</ul>
       <!-- User -->
-      <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0">
+      <!-- <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0 d-none d-lg-inline">
         <li class="nav-item">
           <div class="row">
             <div class="col-auto align-self-center p-1">
@@ -153,7 +154,6 @@
                 <img src="assets/img/Dashboard/Speedtest (1).svg" class="img-fluid" alt="" />
               </a>
             </div>
-            <!-- notifications dropdown -->
             <div class="col-auto align-self-center p-1" ngbDropdown placement="bottom-rigth">
               <a class="nav-link mt-2" role="button" ngbDropdownToggle>
                 <button class="btn text-white p-0">
@@ -234,8 +234,117 @@
             </div>
           </div>
         </li>
-      </ul>
+      </ul> -->
 		</div>
+    <!-- User -->
+    <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0">
+      <li class="nav-item">
+        <div class="row">
+          <div class="col-auto align-self-center p-1 d-none d-lg-inline">
+            <a class="nav-link" (click)="toggleFriendsList()">
+              <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+                <i class="fas fa-user-friends"></i>
+              </span>
+            </a>
+          </div>
+          <div class="col-auto align-self-center p-1 d-none d-lg-inline">
+            <a class="nav-link" [routerLink]="gameLink" ngbTooltip="{{ gamePlayTooltip }}">
+              <img src="assets/img/Dashboard/Speedtest.svg" class="img-fluid" alt=""  aria-hidden="true" 
+                [ngClass]="{
+                  'text-success': isGameRunning,
+                  'text-muted': !isGameRunning
+                }"
+              />
+              <span *ngIf="isUserLive" id="live">LIVE</span>
+            </a>
+          </div>
+          <!-- <div class="col-auto align-self-center p-1 d-none d-lg-inline">
+            <a class="nav-link" href="https://www.oneplay.in/speed-test/run">
+              <img src="assets/img/Dashboard/Speedtest (1).svg" class="img-fluid" alt="" />
+            </a>
+          </div> -->
+          <!-- notifications dropdown -->
+          <div class="col-auto align-self-center p-1" ngbDropdown placement="bottom-rigth">
+            <a class="nav-link mt-2" role="button" ngbDropdownToggle>
+              <button class="btn text-white p-0">
+                <i class="fas fa-bell font20 mr-0"></i> <span class="badge badge-danger ml-0 notificationBadge text-white pl-2 pr-2">9+</span>
+              </button>
+            </a>
+            <div class="dropdown-menu-arrow menudropdown dropdown-menu-right" ngbDropdownMenu>
+              <div class="dropdown-header noti-title">
+                <h6 class="text-overflow m-0 text-white">Notifications</h6>
+              </div>
+              <div class="dropdown-divider borderColor"></div>
+              <a
+                *ngFor="let notification of notifications"
+                class="dropdown-item"
+                [routerLink]="['/view/' + (notification.game | glink)]"
+              >
+                <div class="notification-content"></div>
+              </a>
+            </div>
+          </div>
+          <div class="col-auto align-self-center p-1 pr-3 pr-lg-1" ngbDropdown placement="bottom-right">
+            <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+              <span class="avatar avatar-sm rounded-circle">
+                <img alt="Image placeholder" [src]="title | avatar" />
+              </span>
+            </a>
+            <div class="dropdown-menu-arrow menudropdown dropdown-menu-right" ngbDropdownMenu>
+              <div class="dropdown-header noti-title">
+                <h6 class="text-overflow m-0 text-white">{{ title }}</h6>
+              </div>
+              <a
+                routerLinkActive="active"
+                [routerLink]="['wishlist']"
+                class="dropdown-item"
+              >
+                <i class="ni ni-favourite-28"></i>
+                <span>Wishlist</span>
+              </a>
+              <a
+                href="https://www.oneplay.in/subscription.html"
+                class="dropdown-item"
+              >
+                <i class="ni ni-credit-card"></i>
+                <span>Subscription</span>
+              </a>
+              <a
+                href="javascript:void(0)"
+                class="dropdown-item"
+                (click)="open(share)"
+              >
+                <i class="fa fa-link" aria-hidden="true"></i>
+                <span>Referral Link</span>
+              </a>
+              <a href="https://www.oneplay.in/speed-test/run" class="dropdown-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Speed Test</span>
+              </a>
+              
+              <div class="dropdown-divider borderColor"></div>
+              <a href="https://www.oneplay.in/download.html" class="dropdown-item">
+                <i class="ni ni-cloud-download-95"></i>
+                <span>Downloads</span>
+              </a>
+              <a
+                routerLinkActive="active"
+                [routerLink]="['settings']"
+                class="dropdown-item"
+              >
+                <i class="ni ni-settings"></i>
+                <span>Settings</span>
+              </a>
+              <div class="dropdown-divider borderColor"></div>
+              <a href="javascript:void(0)" class="dropdown-item" (click)="logout()">
+                <i class="ni ni-button-power"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
 	</div>
 </nav>
 

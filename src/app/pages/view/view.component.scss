@@ -156,13 +156,24 @@ live {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 7.12%, rgba(0, 0, 0, 0.52) 51.58%, rgba(0, 0, 0, 0.8) 100%);
   bottom: 0;
   top: auto;
-  @media (max-width: 480px) {
-    top: 0;
+}
+
+@media (max-width: 480px) {
+  .customOverlay {
+    height: 360px;
+  }
+
+  .imagesText {
+    height: 300px;
+    align-items: flex-end;
   }
 }
 
 .height80 {
   height: 70vh;
+  @media (max-width: 968px) {
+    height: 60vh;
+  }
   @media (max-width: 480px) {
     height: 350px;
   }
