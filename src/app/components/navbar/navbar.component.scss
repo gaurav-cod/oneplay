@@ -74,19 +74,27 @@
 @media (max-width: 767.98px) {
     .navbar-collapse {
         top: 55px;
-        height: 45vh !important; 
+        height: 28vh !important; 
     }
 
     .navbar-collapse.show {
         background: rgba(3, 3, 27, 0.2);
         backdrop-filter: blur(20px);
         border-radius: 0px 0px 15px 15px;
+        padding: 0.5rem
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px) and (max-width: 1300px) {
     .navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 0px !important; 
+        padding-right: 0px !important; 
+        padding-left: 0.5rem !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 95%;
     }
 }
 
@@ -95,5 +103,22 @@
     .main-content .container-fluid {
         padding-left: 0px !important;
         padding-right: 0px !important;
+    }
+}
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+}
+
+.navbar-search .form-control {
+    width: auto !important;
+
+    background-color: transparent;
+}
+
+@media (min-width: 768px) {
+    .main-content .container-fluid, .main-content .container-sm, .main-content .container-md, .main-content .container-lg, .main-content .container-xl {
+        padding-left: 13px !important;
+        padding-right: 13px !important;
     }
 }

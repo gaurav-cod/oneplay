@@ -1,44 +1,71 @@
 <nav class="navbar navbar-vertical navbar-dark d-flex d-lg-none">
   <div class="container-fluid">
-    <a
-      class="navbar-nav text-center"
-      [routerLink]="['home']"
-      routerLinkActive="text-primary"
-    >
-      <i class="fas fa-home"></i>
-      <div class="text-sm">Home</div>
-    </a>
-    <a
-      class="navbar-nav text-center"
-      [routerLink]="['store']"
-      routerLinkActive="text-primary"
-    >
-      <i class="fas fa-store"></i>
-      <div class="text-sm">Store</div>
-    </a>
-    <a
-      class="navbar-nav text-center"
-      [routerLink]="['streams']"
-      routerLinkActive="text-primary"
-    >
-      <i class="fas fa-play"></i>
-      <div class="text-sm">Streams</div>
+    <a class="navbar-nav" routerLinkActive="active" [routerLink]="['/home']">
+      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+        <i class="fas fa-home"></i>
+      </span>
     </a>
     <a
       class="navbar-nav text-center"
       [routerLink]="['search']"
       routerLinkActive="text-primary"
     >
-      <i class="fas fa-search"></i>
-      <div class="text-sm">Search</div>
+      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+        <i class="fas fa-search"></i>
+      </span>
     </a>
-    <a
-      class="navbar-nav text-center"
-      [routerLink]="['settings']"
-      routerLinkActive="text-primary"
-    >
-      <i class="fas fa-cog"></i>
-      <div class="text-sm">Settings</div>
+    <a class="navbar-nav text-center" [routerLink]="gameLink" ngbTooltip="{{ gamePlayTooltip }}">
+      <img src="assets/img/Dashboard/Speedtest.svg" class="img-fluid" alt=""  aria-hidden="true" 
+        [ngClass]="{
+          'text-success': isGameRunning,
+          'text-muted': !isGameRunning
+        }"
+      />
+      <span *ngIf="isUserLive" id="live">LIVE</span>
+    </a>
+    <a class="navbar-nav text-center" (click)="toggleFriendsList()">
+      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+        <i class="fas fa-user-friends"></i>
+      </span>
+    </a>
+    <a routerLinkActive="active" [routerLink]="['/store']" class="navbar-nav text-center">
+      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+        <i class="fas fa-store"></i>
+      </span>
     </a>
   </div>
 </nav>
+
+<ng-template #share let-d="dismiss">
+  <div class="modal-content position-relative">
+    <div
+      class="position-absolute btn btn-github rounded-circle top--5 right--6"
+      style="padding: 16px 20px"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times" style="font-size: 24px"></i>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-dark mb-4">Share/Copy Referral Link</h2>
+        </div>
+      </div>
+      <share-buttons
+        [url]="link"
+        [include]="[
+          'facebook',
+          'twitter',
+          'linkedin',
+          'telegram',
+          'messenger',
+          'whatsapp',
+          'email',
+          'copy'
+        ]"
+        theme="material-dark"
+        show="11"
+      ></share-buttons>
+    </div>
+  </div>
+</ng-template>
