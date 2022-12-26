@@ -1,8 +1,18 @@
-<h2 class="text-white position-relative">{{ title }}</h2>
-<div class="position-relative marginLeftNegative">
-  <div #container class="d-flex overflow-auto py-4">
-    <div *ngFor="let game of _games" class="mr-3 zoom">
-      <app-game-card [game]="game"></app-game-card>
+<div class="container-fluid">
+  <div class="container-fluid mt-4">
+    <h2 class="text-white position-relative">{{ title }}</h2>
+  </div>
+</div>
+<div class="position-relative">
+  <div class="container-fluid padding-right-0">
+    <div class="row pl-5">
+      <div class="col-md-12">
+        <div #container class="d-flex overflow-auto py-4">
+          <div *ngFor="let game of _games" class="mr-3 zoom">
+            <app-game-card [game]="game"></app-game-card>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -18,7 +28,7 @@
     "
     (click)="scrollLeft()"
   >
-    <i class="fas fa-chevron-left text-xl text-white-50"></i>
+    <img src="assets/img/Vector.svg" height="20px" alt="" />
   </button>
 
   <button
@@ -33,6 +43,6 @@
     "
     (click)="scrollRight()"
   >
-    <i class="fas fa-chevron-right text-xl text-white-50"></i>
+    <img src="assets/img/Vector (1).svg" height="20px" alt="" />
   </button>
 </div>

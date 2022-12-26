@@ -14,7 +14,7 @@
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
               <div class="col-auto w-25 p-2 customWidth">
-                <div class="card bgTransparent border-0 borderRadius10">
+                <div class="card bgTransparent border-0 borderRadius10 mr-3">
                   <img
                     class="card-img borderRadius10 height40vh left-img"
                     [src]="
@@ -37,7 +37,7 @@
                 </div>
               </div>
               <div class="col-auto w-25 p-2 customWidth">
-                <div class="card bgTransparent border-0 borderRadius10">
+                <div class="card bgTransparent border-0 borderRadius10 ml-3">
                   <img
                     class="card-img borderRadius10 height40vh right-img"
                     [src]="
@@ -117,37 +117,37 @@
 </div>
 
 <div class="container-fluid customFluid pt-3 d-none d-md-block">
-  <div class="row justify-content-center mt-4">
+  <div class="row justify-content-center mt-5">
       <div class="col-auto">
           <div class="btn-group btn-group-toggle multiBtn" data-toggle="buttons">
               <label class="btn btn-outline-light custombtn active mr-3">
-                <input type="radio" name="options" id="Play" autocomplete="off" checked > <span>Free to Play</span>
+                <input type="radio" name="options" id="Play" autocomplete="off" checked > <span class="font18">Free to Play</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                <input type="radio" name="options" id="RPG" autocomplete="off" > <span>RPG</span>
+                <input type="radio" name="options" id="RPG" autocomplete="off" > <span class="font18">RPG</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                <input type="radio" name="options" id="Shooter" autocomplete="off" > <span>Shooter</span>
+                <input type="radio" name="options" id="Shooter" autocomplete="off" > <span class="font18">Shooter</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                  <input type="radio" name="options" id="Multiplayer" autocomplete="off" > <span>Multiplayer</span>
+                  <input type="radio" name="options" id="Multiplayer" autocomplete="off" > <span class="font18">Multiplayer</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                  <input type="radio" name="options" id="Co-op" autocomplete="off" > <span>Co-op</span>
+                  <input type="radio" name="options" id="Co-op" autocomplete="off" > <span class="font18">Co-op</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                  <input type="radio" name="options" id="Indie" autocomplete="off" > <span>Indie</span>
+                  <input type="radio" name="options" id="Indie" autocomplete="off" > <span class="font18">Indie</span>
               </label>
               <label class="btn btn-outline-light custombtn mr-3">
-                  <input type="radio" name="options" id="Racing" autocomplete="off" > <span>Racing</span>
+                  <input type="radio" name="options" id="Racing" autocomplete="off" > <span class="font18">Racing</span>
               </label>
           </div>
       </div>
   </div>
 </div>
 
-<div class="container-fluid mt-4 padding0 pb-6">
-  <div class="container-fluid mb-0 padding0">
+<div class="pb-6">
+  <div class="mb-0">
     <app-similar-games
       *ngFor="let row of restRows"
       [title]="row.title"

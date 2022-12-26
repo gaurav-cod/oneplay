@@ -9,7 +9,7 @@
     (mouseenter)="playVideo(gameLink, image)"
     (mouseleave)="pauseVideo(gameLink, image)"
   >
-    <img #image class="card-img borderRadius15" [src]="game.textBgImage" alt="" />
+    <img #image class="card-img borderRadius15 w290h185" [src]="game.textBgImage" alt="" />
     <div
       *ngIf="showSound"
       class="mute bg-translucent-darker"

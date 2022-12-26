@@ -8,6 +8,7 @@
 }
 
 .navbar-nav .nav-link {
+    letter-spacing: 0.02em;
     font-size: 18px !important;
     line-height: 20px;
     font-weight: 500;
@@ -111,7 +112,7 @@
 }
 
 .navbar-search .form-control {
-    width: auto !important;
+    width: 300px !important;
 
     background-color: transparent;
 }
@@ -121,4 +122,8 @@
         padding-left: 13px !important;
         padding-right: 13px !important;
     }
+}
+
+.width200 {
+    width: 200px;
 }
