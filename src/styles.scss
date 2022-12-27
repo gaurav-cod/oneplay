@@ -359,7 +359,11 @@ input:-webkit-autofill:active{
 .playBtn {
   background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
   border-radius: 90px;
-  // margin-top: 380px;
+}
+
+.btn-lg {
+  font-size: 20px !important;
+  line-height: 34px !important;
 }
 
 .playnowbtn {
@@ -381,6 +385,7 @@ input:-webkit-autofill:active{
 .custombtn {
   border: 2px solid #3E4246;
   border-radius: 60px !important;
+  height: 48px;
 }
 
 .btn:focus {
@@ -395,7 +400,7 @@ display: block;
 height: 48px;
 letter-spacing: 1px;
 margin: 0 auto;
-padding: 2px;
+padding: 1px;
 position: relative;
 z-index: 2;
 }
@@ -661,4 +666,14 @@ background: transparent;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+}
+
+.font18 {
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+  @media (max-width: 768px) {
+    font-size: 14px;
+    line-height: 18px;
+  }
 }

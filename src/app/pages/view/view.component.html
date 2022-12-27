@@ -1,6 +1,6 @@
 <div *ngIf="!!game" class="container-fluid customFluid paddingtop100">
-  <div class="row mt-4">
-    <div class="col-md-12">
+  <div class="row mt-4 justify-content-center">
+    <div class="col-md-11">
       <div class="card border-0 bgTransparent borderRadius10">
         <img
           class="card-img height80 borderRadius10"
@@ -129,67 +129,71 @@
         </div>
       </div>
     </div>
-    <div class="col-md-6 mt-4 pr-lg-5">
+    <div class="col-md-11">
       <div class="row">
-        <div class="col-lg-10">
-          <h1 class="font700 text-white mb-0">About Game</h1>
-          <p
-            id="description"
-            [ngClass]="{ limitTextHeight: isReadMore }"
-            [innerHTML]="game.description"
-            class="font20 font500 muteText mt-4 mb-0"
-          ></p>
-          <a type="button" class="text-white d-inline" (click)="showText()">
-            {{ isReadMore ? "Read More" : "Read Less" }}
-          </a>
+        <div class="col-md-6 mt-5 pr-lg-5">
+          <div class="row">
+            <div class="col-lg-10">
+              <h1 class="font700 text-white mb-0">About Game</h1>
+              <p
+                id="description"
+                [ngClass]="{ limitTextHeight: isReadMore }"
+                [innerHTML]="game.description"
+                class="font20 font500 muteText mt-4 mb-0"
+              ></p>
+              <a type="button" class="text-white d-inline readmoreText mt-1" (click)="showText()">
+                {{ isReadMore ? "...Read More" : "Read Less" }}
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <div class="row">
-        <div *ngIf="game.storesMapping.length" class="col-auto pr-lg-5 mt-4">
-          <p class="font16 font500 muteText">Store</p>
-          <a
-            href="{{ store.link }}"
-            target="_blank"
-            *ngFor="let store of game.storesMapping"
-            class="font600 font20 text-white"
-          >
-            <img
-              [src]="store.name | store"
-              height="32"
-              class="mr-2"
-              [alt]="store.name"
-              onerror="this.style.display = 'none'"
-            />
-          </a>
-        </div>
-        <div class="col-auto mt-4">
-          <p class="font16 font500 muteText">Developer</p>
-          <p class="font600 font20 text-white">
-            <span
-              *ngFor="let dev of game.developer; let i = index"
-              class="align-middle mr-3"
-              >{{ dev | titlecase }}</span
-            >
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <p class="font16 font500 muteText mt-4 mb-0">Tags</p>
-          <span
-            *ngFor="let genre of game.genreMappings"
-            class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pr-3 mt-3"
-            >{{ genre }}</span
-          >
+        <div class="col-md-6">
+          <div class="row">
+            <div *ngIf="game.storesMapping.length" class="col-auto pr-lg-5 mt-5">
+              <p class="font16 font500 muteText">Store</p>
+              <a
+                href="{{ store.link }}"
+                target="_blank"
+                *ngFor="let store of game.storesMapping"
+                class="font600 font20 text-white"
+              >
+                <img
+                  [src]="store.name | store"
+                  height="32"
+                  class="mr-2"
+                  [alt]="store.name"
+                  onerror="this.style.display = 'none'"
+                />
+              </a>
+            </div>
+            <div class="col-auto mt-5">
+              <p class="font16 font500 muteText">Developer</p>
+              <p class="font600 font20 text-white">
+                <span
+                  *ngFor="let dev of game.developer; let i = index"
+                  class="align-middle mr-3"
+                  >{{ dev | titlecase }}</span
+                >
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p class="font16 font500 muteText mt-5 mb-0">Tags</p>
+              <span
+                *ngFor="let genre of game.genreMappings"
+                class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pt-1 pb-1 pr-3 mt-3"
+                >{{ genre }}</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid padding0 pb-6 overflow-hidden">
+<div class="pb-6 overflow-hidden">
   <div *ngIf="!!game">
     <div *ngIf="videos.length" class="mt-lg-5 mt-4">
       <app-stream-card

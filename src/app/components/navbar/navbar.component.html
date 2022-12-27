@@ -12,17 +12,17 @@
 		<!-- Step 2: Add the ngbCollapse directive to the element below. -->
 		<div class="collapse navbar-collapse">
 			<ul class="navbar-nav mr-auto pl-md-4 pl-lg-0 ml-auto">
-        <li class="nav-item pr-3">
+        <li class="nav-item">
           <a routerLinkActive="active" [routerLink]="['/home']" class="nav-link mt-2" (click)="isMenuCollapsed = true"
             >Home</a
           >
         </li>
-        <li class="nav-item pr-3">
+        <li class="nav-item">
           <a routerLinkActive="active" [routerLink]="['/store']" class="nav-link mt-2" (click)="isMenuCollapsed = true"
             >Store</a
           >
         </li>
-        <li class="nav-item pr-3">
+        <li class="nav-item">
           <a
             routerLinkActive="active"
             [routerLink]="['/streams']"
@@ -31,7 +31,7 @@
             >Streams</a
           >
         </li>
-        <li class="d-none d-lg-inline">
+        <li class="d-none d-lg-inline ml-3">
           <form
             class="navbar-search form-inline d-none d-md-flex mt-md-3 mt-lg-0 ml-lg-auto position-relative"
           >
@@ -42,7 +42,7 @@
               <div class="input-group input-group-alternative border-0">
                 <input
                   #search
-                  class="form-control font18 font500"
+                  class="form-control font18 font500 width200"
                   placeholder="Search"
                   type="text"
                   [formControl]="query"

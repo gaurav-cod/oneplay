@@ -23,14 +23,11 @@
   }
 }
 
-.marginLeftNegative {
-  margin-left: -60px;
-  @media (max-width: 480px) {
-    margin-left: 0px;
-  }
-}
-
 .h80 {
   height: 84%;
   margin-top: 16px;
+}
+
+.padding-right-0 {
+  padding-right: 0px !important;
 }

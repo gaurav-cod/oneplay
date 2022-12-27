@@ -78,17 +78,7 @@
 }
 
 .playnowbtn {
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 7.12%,
-    rgba(0, 0, 0, 0.52) 51.58%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
-}
-
-.padding0 {
-  // padding-left: 0px !important;
-  padding-right: 0px !important;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58.85%, rgba(0, 0, 0, 0.52) 79.17%, rgba(0, 0, 0, 0.8) 100%)
 }
 
 .overflow-auto {
@@ -96,14 +86,14 @@
 }
 
 .height40vh {
-  height: 55vh;
+  height: 68vh;
   @media (max-width: 480px) {
     height: 200px;
   }
 }
 
 .height30vh {
-  height: 50vh;
+  height: 64vh;
   @media (max-width: 480px) {
     height: 200px;
   }
@@ -146,4 +136,11 @@
 .multiBtn label {
   display: inline-block;
   float: none;
+}
+
+.font18 {
+  font-size: 18px;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
 }
