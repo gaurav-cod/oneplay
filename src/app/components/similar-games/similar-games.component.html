@@ -4,11 +4,11 @@
   </div>
 </div>
 <div class="position-relative">
-  <div class="container-fluid padding-right-0">
-    <div class="row pl-5">
+  <div class="container-fluid padding-right-0 padding-left-0">
+    <div class="row">
       <div class="col-md-12">
-        <div #container class="d-flex overflow-auto py-4">
-          <div *ngFor="let game of _games" class="mr-3 zoom">
+        <div #container class="py-4 row scrollGame">
+          <div *ngFor="let game of _games" class="zoom col-auto gameCard w290">
             <app-game-card [game]="game"></app-game-card>
           </div>
         </div>
@@ -24,7 +24,7 @@
       z-index: 10;
       border-radius: 0px;
       background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
-      padding-right: 50px;
+      padding-right: 35px;
     "
     (click)="scrollLeft()"
   >

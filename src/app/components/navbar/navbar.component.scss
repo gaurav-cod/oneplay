@@ -67,7 +67,6 @@
 }
 
 .navbar-collapse {
-    background: rgba(3, 3, 27, 0.2);
     backdrop-filter: blur(20px);
     border-radius: 0px 0px 15px 15px;
 }
@@ -79,7 +78,6 @@
     }
 
     .navbar-collapse.show {
-        background: rgba(3, 3, 27, 0.2);
         backdrop-filter: blur(20px);
         border-radius: 0px 0px 15px 15px;
         padding: 0.5rem
@@ -93,10 +91,12 @@
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1201px) {
     .container-xl, .container-lg, .container-md, .container-sm, .container {
         max-width: 95%;
     }
+
+    
 }
 
 @media (min-width: 768px) and (max-width: 1250px) {
@@ -126,4 +126,19 @@
 
 .width200 {
     width: 200px;
+}
+@media (max-width: 1200px)
+{
+    .navbar-expand-lg .navbar-collapse {
+        flex-basis: auto;
+        display: flex;
+    }
+
+    .collapse:not(.show) {
+        display: none !important;
+    }
+
+    .hideIcon {
+        display: none !important;
+    }
 }

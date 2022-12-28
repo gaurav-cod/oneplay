@@ -24,10 +24,29 @@
 }
 
 .h80 {
-  height: 84%;
-  margin-top: 16px;
+  height: 75%;
+  margin-top: 21px;
 }
 
 .padding-right-0 {
   padding-right: 0px !important;
+}
+
+.padding-left-0 {
+  padding-left: 0px !important;
+}
+
+.scrollGame {
+  overflow: auto;
+  white-space: nowrap;
+  display: block;
+  padding-left: 70px;
+}
+
+.scrollGame .gameCard {
+  display: inline-block;
+}
+
+.w290 {
+  width: 320px;
 }
