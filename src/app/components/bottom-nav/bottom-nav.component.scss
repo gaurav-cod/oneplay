@@ -10,3 +10,9 @@
         color: #7a7a7a;
     }
 }
+
+@media (min-width: 1201px) {
+    .hideInlarge {
+        display: none !important;
+    }
+}

@@ -240,14 +240,14 @@
     <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0">
       <li class="nav-item">
         <div class="row">
-          <div class="col-auto align-self-center p-1 d-none d-lg-inline">
+          <div class="col-auto align-self-center p-1 d-none d-lg-inline hideIcon">
             <a class="nav-link" (click)="toggleFriendsList()">
               <span class="avatar avatar-sm rounded-circle bg-gray-dark">
                 <i class="fas fa-user-friends"></i>
               </span>
             </a>
           </div>
-          <div class="col-auto align-self-center p-1 d-none d-lg-inline">
+          <div class="col-auto align-self-center p-1 d-none d-lg-inline hideIcon">
             <a class="nav-link" [routerLink]="gameLink" ngbTooltip="{{ gamePlayTooltip }}">
               <img src="assets/img/Dashboard/Speedtest.svg" class="img-fluid" alt=""  aria-hidden="true" 
                 [ngClass]="{
