@@ -22,7 +22,7 @@ export class GameModel {
     readonly rawgId: string;
     readonly cheapsharkId: string;
     readonly isReleased: boolean;
-    readonly status: string;
+    readonly status: 'live' | 'unlive';
     readonly isCategorized: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;

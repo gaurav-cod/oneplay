@@ -42,7 +42,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {}
 
   login() {
-    if (!this.loginForm.valid) {
+    if (
+      this.loginForm.value.id === "" ||
+      this.loginForm.value.password === ""
+    ) {
       Swal.fire({
         title: "Error",
         text: "Email or Phone number and Password cannot be empty.",

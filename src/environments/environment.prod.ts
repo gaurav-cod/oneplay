@@ -1,10 +1,12 @@
 export const environment = {
   production: true,
+  domain: "https://www.oneplay.in",
   client_api: "https://client-apis.oneplay.in/services/v1",
   render_mix_api: "https://rendermix.oneplay.in/v1",
   socket_endpoint: "https://chatservices.oneplay.in",
   game_assets: "https://cdn.edge-net.co/game_assets/",
   ga_tracking_id: "UA-220923953-2",
+  oneplay_partner_id: "28cceed5-8ab9-11ed-bde5-0ab3c1edb81a",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",

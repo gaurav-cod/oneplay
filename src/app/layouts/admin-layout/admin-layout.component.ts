@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import Cookies from "js-cookie";
+import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -20,6 +21,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private fiveMinutesTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
+
+  private routerEventSubscription: Subscription;
+  private queryParamSubscription: Subscription;
 
   constructor(
     private readonly restService: RestService,
@@ -48,13 +52,13 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       this.setOnline();
     }, 60 * 1000);
 
-    this.router.events.subscribe((event) => {
+    this.routerEventSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.initGames();
       }
     });
 
-    this.route.queryParams.subscribe((params) => {
+    this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
       if (params.src === "oneplay_app") {
         Cookies.set("src", "oneplay_app");
         this.isApp = true;
@@ -65,6 +69,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.fiveMinutesTimer);
     clearInterval(this.oneMinuteTimer);
+    this.routerEventSubscription.unsubscribe();
+    this.queryParamSubscription.unsubscribe();
   }
 
   ngAfterViewInit(): void {

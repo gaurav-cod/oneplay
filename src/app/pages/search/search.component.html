@@ -36,21 +36,6 @@
           {{ t | titlecase }}
         </a>
       </h1>
-
-      <!-- <div class="row text-white-50 align-items-center">
-          <div class="col">Sort by</div>
-          <div class="col" ngbDropdown>
-            <button class="btn btn-outline-white btn-icon" ngbDropdownToggle>
-              <span class="text-sm">Popularity </span>
-              <i class="ni ni-bold-down"></i>
-            </button>
-            <div ngbDropdownMenu>
-              <a ngbDropdownItem>Action</a>
-              <a ngbDropdownItem>Another action</a>
-              <a ngbDropdownItem>Something else here</a>
-            </div>
-          </div>
-        </div> -->
     </div>
 
     <div
@@ -61,7 +46,7 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let game of games" class="col-6 col-lg-3 mb-4">
+      <div *ngFor="let game of games" class="col-6 col-md-4 col-lg-3 col-xxl-3 col-xxxl-3 mb-4">
         <div class="zoom">
           <app-game-card
             [game]="game"
@@ -87,35 +72,6 @@
       (scrolled)="onScroll()"
     >
       <div *ngFor="let user of users" class="col-sm-12 col-md-6 col-lg-3 mb-4">
-        <div class="zoom">
-          <!-- <div class="row">
-            <div class="col-auto">
-              <img
-                [src]="user.photo || (user.name | avatar)"
-                class="mr-3"
-                width="80"
-                height="50"
-                alt=""
-              />
-            </div>
-            <div class="col-auto">
-              <p class="list-group-heading text-white m-0">{{ user.name }}</p>
-              <p class="list-group-content text-white-50 small m-0">
-                {{ user.username }}
-              </p>
-            </div>
-            <div class="col-auto">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-light"
-                (click)="addFriend(user)"
-              >
-                <i class="fas {{ getFriendAddIcon(user) }}"></i>
-              </button>
-            </div>
-          </div> -->
-          
-        </div>
         <div class="row">
           <div class="col-auto">
             <img

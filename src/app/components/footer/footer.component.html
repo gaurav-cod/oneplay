@@ -1,28 +1,56 @@
-<footer class="footer d-none d-sm-block" style="background-color: #121212; position: absolute; height: 130px; bottom: 0;left: 0;right: 0; padding: 2.5rem;">
+<footer
+  class="footer d-none d-sm-block"
+  style="
+    background-color: #121212;
+    position: absolute;
+    height: 130px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2.5rem;
+  "
+>
   <div class="row align-items-center justify-content-xl-between mt-4 mb-4">
     <div class="col-xl-6">
       <div class="copyright text-center text-xl-left text-muted">
-        <a [routerLink]="['home']" class="font-weight-bold ml-1">
-          <img src="assets/img/brand/Group 134.svg" class="img-fluid" alt="">
+        <a
+          href="javascript:void(0)"
+          [routerLink]="['home']"
+          class="font-weight-bold ml-1"
+        >
+          <img src="assets/img/brand/Group 134.svg" class="img-fluid" alt="" />
         </a>
       </div>
     </div>
     <div class="col-xl-6">
       <ul class="nav nav-footer justify-content-center justify-content-xl-end">
         <li class="nav-item">
-          <a href="https://www.oneplay.in/contact.html" class="nav-link" target="_blank">Contact Us</a>
+          <a [href]="domain + '/contact.html'" class="nav-link" target="_blank"
+            >Contact Us</a
+          >
         </li>
         <li class="nav-item">
-          <a href="https://www.oneplay.in/about.html" class="nav-link" target="_blank">About Us</a>
+          <a [href]="domain + '/about.html'" class="nav-link" target="_blank"
+            >About Us</a
+          >
         </li>
         <li class="nav-item">
-          <a href="https://medium.com/@oneplay_gaming" class="nav-link" target="_blank">Blogs</a>
+          <a
+            href="https://medium.com/@oneplay_gaming"
+            class="nav-link"
+            target="_blank"
+            >Blogs</a
+          >
         </li>
         <li class="nav-item">
-          <a href="https://www.oneplay.in/tnc.html" class="nav-link" target="_blank">Terms & Conditions</a>
+          <a [href]="domain + '/tnc.html'" class="nav-link" target="_blank"
+            >Terms & Conditions</a
+          >
         </li>
         <li class="nav-item">
-          <a href="https://www.oneplay.in/privacy.html" class="nav-link" target="_blank">Privacy Policy</a>
+          <a [href]="domain + '/privacy.html'" class="nav-link" target="_blank"
+            >Privacy Policy</a
+          >
         </li>
       </ul>
     </div>

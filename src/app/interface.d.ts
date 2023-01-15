@@ -14,6 +14,7 @@ export interface SignupDTO {
   phone: string;
   password: string;
   gender: "male" | "female" | "other" | "unknown";
+  device: "web" | "mobile";
   referred_by_id?: string;
 }
 
@@ -98,4 +99,15 @@ export interface ClientTokenRO {
   client_token: string;
   code: number;
   msg: string;
+}
+
+export interface ILocation {
+  ip: string;
+  city: string;
+  country_name: string;
+  country_code: string;
+  country_calling_code: string;
+  region: string;
+  error?: boolean;
+  reason?: string;
 }

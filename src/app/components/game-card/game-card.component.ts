@@ -19,6 +19,7 @@ export class GameCardComponent implements OnInit {
   timer: NodeJS.Timeout;
   muted = true;
   showSound = false;
+  showTitle = false;
 
   readonly loaderId = v4();
 
@@ -40,8 +41,13 @@ export class GameCardComponent implements OnInit {
     });
   }
 
+  onImgError(event) {
+    event.target.src = 'assets/img/default_bg.jpg';
+    this.showTitle = true;
+  }
+
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.video && !this.isMobile) {
+    if (this.game.video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
         image.style.opacity = "0";
         this.showSound = true;
@@ -69,7 +75,7 @@ export class GameCardComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.video && !this.isMobile) {
+    if (this.game.video && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);

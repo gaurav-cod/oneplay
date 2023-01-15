@@ -38,3 +38,4 @@ build.sh
 # System Files
 .DS_Store
 Thumbs.db
+build.sh

@@ -29,6 +29,16 @@
     height: 100%;
     object-fit: cover;
   }
+
+  .game-title {
+    color: #ffffff;
+    position: absolute;
+    top: 25%;
+    left: 6px;
+    width: 45%;
+    max-height: 50px;
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 480px) {

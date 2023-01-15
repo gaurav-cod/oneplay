@@ -37,7 +37,7 @@ html {
 
 body {
   background-color: #151515;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 #home-header {
@@ -123,7 +123,7 @@ body {
 }
 
 .notificationBadge {
-  background-color: #F32D74;
+  background-color: #f32d74;
   border: 2px solid #151515;
   border-radius: 10px;
   margin-left: -9px;
@@ -163,11 +163,11 @@ body {
 
 .dropdownBg .dropdown-item:hover {
   background-color: transparent;
-  color: #DCDCDC !important;
+  color: #dcdcdc !important;
 }
 
 .borderColor {
-  border-color: #3E4246 !important;
+  border-color: #3e4246 !important;
 }
 
 .lightBg {
@@ -180,11 +180,11 @@ body {
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: none !important;
-    background-color: #212123 !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: none !important;
+  background-color: #212123 !important;
 }
 
 .textMuted {
@@ -216,7 +216,7 @@ input:-webkit-autofill:active{
 }
 
 .linearGradient {
-  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
 }
 
 .font20 {
@@ -236,17 +236,17 @@ input:-webkit-autofill:active{
   border-radius: 90px !important;
 }
 
-.custom-checkbox .custom-control-input:checked~.custom-control-label::before{
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
   background-color: none;
-  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
 }
 
-.custom-checkbox .custom-control-input:focus~.custom-control-label::before{
+.custom-checkbox .custom-control-input:focus ~ .custom-control-label::before {
   box-shadow: none;
 }
 
-.custom-checkbox .custom-control-input:checked~.custom-control-label::after{
-  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='white' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='white' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
 }
 
 .font700 {
@@ -259,7 +259,7 @@ input:-webkit-autofill:active{
 }
 
 .customLinearGradient {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
 }
 
 .borderRadius15 {
@@ -267,7 +267,7 @@ input:-webkit-autofill:active{
 }
 
 .offWhiteText {
-  color: #DCDCDC;
+  color: #dcdcdc;
 }
 
 .w290h185 {
@@ -298,8 +298,8 @@ input:-webkit-autofill:active{
 //   .carousel-inner .carousel-item-next {
 //     transform: translateX(33.333%);
 //   }
-  
-//   .carousel-inner .carousel-item-left.active, 
+
+//   .carousel-inner .carousel-item-left.active,
 //   .carousel-inner .carousel-item-prev {
 //     transform: translateX(-33.333%);
 //   }
@@ -312,7 +312,7 @@ input:-webkit-autofill:active{
 // }
 
 // .carousel-inner .carousel-item-right,
-// .carousel-inner .carousel-item-left{ 
+// .carousel-inner .carousel-item-left{
 // transform: translateX(0);
 // }
 
@@ -357,7 +357,7 @@ input:-webkit-autofill:active{
 }
 
 .playBtn {
-  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
   border-radius: 90px;
 }
 
@@ -383,7 +383,7 @@ input:-webkit-autofill:active{
 }
 
 .custombtn {
-  border: 2px solid #3E4246;
+  border: 2px solid #3e4246;
   border-radius: 60px !important;
   height: 48px;
 }
@@ -393,43 +393,43 @@ input:-webkit-autofill:active{
 }
 
 .custombtn.active {
-background-image: linear-gradient(to right, #7E67FD 0%, #E1DCFE 100%);
-border-radius: 40px;
+  background-image: linear-gradient(to right, #7e67fd 0%, #e1dcfe 100%);
+  border-radius: 40px;
   box-sizing: border-box;
-display: block;
-height: 48px;
-letter-spacing: 1px;
-margin: 0 auto;
-padding: 1px;
-position: relative;
-z-index: 2;
+  display: block;
+  height: 48px;
+  letter-spacing: 1px;
+  margin: 0 auto;
+  padding: 1px;
+  position: relative;
+  z-index: 2;
 }
 
 .custombtn.active:hover {
-color: #fff;
+  color: #fff;
 }
 
 .custombtn span {
-align-items: center;
-background: #151515;
-border-radius: 40px;
-display: flex;
-justify-content: center;
-height: 100%;
-transition: background .5s ease;
-width: 100%;
+  align-items: center;
+  background: #151515;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  transition: background 0.5s ease;
+  width: 100%;
   padding: 0px 30px;
 }
 
 .custombtn:hover span {
-background: transparent;
+  background: transparent;
 }
 
 /* Chat Box CSS */
 
 .chatModal .modal-dialog {
   right: 0;
-  bottom:0;
+  bottom: 0;
 }
 
 .w300 {
@@ -443,7 +443,7 @@ background: transparent;
 }
 
 .gradientInfoText {
-  background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
+  background: linear-gradient(270deg, #3aa0fe 0%, #59fef4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -462,7 +462,7 @@ background: transparent;
 }
 
 .anchorGradientPurple {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -470,31 +470,31 @@ background: transparent;
 }
 
 .modal-body::-webkit-scrollbar {
-  width: 0;  /* Remove scrollbar space */
-  background: transparent;  /* Optional: just make scrollbar invisible */
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
 .redBtn {
-  background-color: #E31C34;
+  background-color: #e31c34;
 }
 
 .inputBorder {
-  border: 2px solid #3E4246;
+  border: 2px solid #3e4246;
   border-radius: 10px;
   background-color: transparent;
   height: 52px;
 }
 
 .customFormControl:focus {
-  color: #DCDCDC;
+  color: #dcdcdc;
   background-color: transparent;
-  border-color: #3E4246;
+  border-color: #3e4246;
   outline: 0;
   box-shadow: none;
 }
 
 .custom-control-input:checked ~ .custom-control-label::before {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   border: none;
   box-shadow: none;
 }
@@ -508,9 +508,9 @@ background: transparent;
 }
 
 .radioBtns .btn-secondary:not(:disabled):not(.disabled).active {
-  color: #A83AFE !important;
+  color: #a83afe !important;
   background-color: #212123 !important;
-  background-image: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background-image: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   border-radius: 10px;
   box-sizing: border-box;
   padding: 2px;
@@ -527,7 +527,7 @@ background: transparent;
   display: flex;
   justify-content: center;
   height: 100%;
-  transition: background .5s ease;
+  transition: background 0.5s ease;
   width: 100%;
   padding: 0px 30px;
 }
@@ -539,7 +539,7 @@ background: transparent;
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
-  color: #DCDCDC;
+  color: #dcdcdc;
 }
 
 .width35 {
@@ -553,21 +553,21 @@ background: transparent;
 }
 
 .customNavTab.nav-tabs {
-  border-color: #3E4246 !important;
+  border-color: #3e4246 !important;
 }
 
-.customNavTab.nav-tabs a{
+.customNavTab.nav-tabs a {
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.02em;
-  color: #959595 !important; 
+  color: #959595 !important;
 }
 
 .customNavTab.nav-tabs .nav-link.active {
   color: #ffffff !important;
   background-color: transparent !important;
-  border-bottom: 3px solid #A83AFE !important;
+  border-bottom: 3px solid #a83afe !important;
 }
 
 .transparentBlackBg {
@@ -607,7 +607,8 @@ background: transparent;
   }
 }
 
-.customTable.table th, .customTable.table thead th {
+.customTable.table th,
+.customTable.table thead th {
   border-top: none;
 }
 
@@ -616,10 +617,11 @@ background: transparent;
 }
 
 .customTable.table td {
-  border-top: 1px solid #3E4246 !important;
+  border-top: 1px solid #3e4246 !important;
 }
 
-.customTable.table thead th, .customTableText {
+.customTable.table thead th,
+.customTableText {
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
@@ -630,11 +632,11 @@ background: transparent;
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
-  color: #DCDCDC;
+  color: #dcdcdc;
 }
 
 .gradientText {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -645,7 +647,7 @@ background: transparent;
 }
 
 .cancelgradientText {
-  background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%);
+  background: linear-gradient(270deg, #8a54d0 -1.64%, #d71f7b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -653,7 +655,7 @@ background: transparent;
 }
 
 .customgradientText {
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -661,7 +663,7 @@ background: transparent;
 }
 
 .activeGradientText {
-  background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
+  background: linear-gradient(270deg, #3aa0fe 0%, #59fef4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -675,5 +677,20 @@ background: transparent;
   @media (max-width: 768px) {
     font-size: 14px;
     line-height: 18px;
+  }
+}
+
+*:focus {
+  outline: 2px solid white !important;
+}
+
+button:focus {
+  border: 2px solid #1a1a1a !important;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  &:focus {
+    opacity: 1 !important;
   }
 }

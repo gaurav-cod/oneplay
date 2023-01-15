@@ -5,7 +5,11 @@
   <div class="container-fluid">
     <div>
       <!-- Brand -->
-      <a class="navbar-brand pt-0" [routerLink]="['/home']">
+      <a
+        href="javascript:void(0)"
+        class="navbar-brand pt-0"
+        [routerLink]="['/home']"
+      >
         <img
           src="./assets/img/brand/Group 134.svg"
           class="navbar-brand-img"
@@ -17,14 +21,18 @@
     <!-- User -->
     <ul class="nav align-items-center d-md-none">
       <li class="nav-item" placement="bottom-right">
-        <a class="nav-link" (click)="toggleFriendsList()">
+        <a
+          href="javascript:void(0)"
+          class="nav-link"
+          (click)="toggleFriendsList()"
+        >
           <span class="avatar avatar-sm rounded-circle bg-gray-dark">
             <i class="fas fa-user-friends"></i>
           </span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [routerLink]="gameLink">
+        <a href="javascript:void(0)" class="nav-link" [routerLink]="gameLink">
           <span
             class="avatar avatar-sm rounded-circle bg-gray-dark position-relative"
           >
@@ -38,7 +46,12 @@
         </a>
       </li>
       <li class="nav-item" ngbDropdown placement="bottom-right">
-        <a class="nav-link pr-0" role="button" ngbDropdownToggle>
+        <a
+          href="javascript:void(0)"
+          class="nav-link pr-0"
+          role="button"
+          ngbDropdownToggle
+        >
           <span class="avatar avatar-sm rounded-circle">
             <img alt="Image placeholder" [src]="title | avatar" />
           </span>
@@ -48,6 +61,7 @@
             <h6 class="text-overflow m-0">{{ title }}</h6>
           </div>
           <a
+            href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['settings']"
             class="dropdown-item"
@@ -56,6 +70,7 @@
             <span>Settings</span>
           </a>
           <a
+            href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['wishlist']"
             class="dropdown-item"
@@ -71,18 +86,15 @@
             <i class="fa fa-link" aria-hidden="true"></i>
             <span>Referral Link</span>
           </a>
-          <a href="https://www.oneplay.in/speed-test/run" class="dropdown-item">
+          <a [href]="domain + '/speed-test/run'" class="dropdown-item">
             <i class="fas fa-tachometer-alt"></i>
             <span>Speed Test</span>
           </a>
-          <a
-            href="https://www.oneplay.in/subscription.html"
-            class="dropdown-item"
-          >
+          <a [href]="domain + '/subscription.html'" class="dropdown-item">
             <i class="ni ni-credit-card"></i>
             <span>Subscription</span>
           </a>
-          <a href="https://www.oneplay.in/download.html" class="dropdown-item">
+          <a [href]="domain + '/download.html'" class="dropdown-item">
             <i class="ni ni-cloud-download-95"></i>
             <span>Downloads</span>
           </a>
@@ -121,8 +133,12 @@
         show="11"
       ></share-buttons>
     </div>
-    <div class="position-absolute top-2 right-3" (click)="d('Cross click')">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute top-2 right-3"
+      (click)="d('Cross click')"
+    >
       <i class="fas fa-times"></i>
-    </div>
+    </a>
   </div>
 </ng-template>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-auth-navbar',
@@ -15,6 +16,10 @@ export class AuthNavbarComponent implements OnInit {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
+  }
+
+  get domain() {
+    return environment.domain;
   }
 
 }

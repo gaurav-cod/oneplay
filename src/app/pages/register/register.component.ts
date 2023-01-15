@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 declare var gtag: Function;
@@ -16,8 +17,8 @@ export class RegisterComponent implements OnInit {
   referralName = "";
   registerForm = new FormGroup({
     name: new FormControl("", Validators.required),
-    // last_name: new FormControl("", Validators.required),
     email: new FormControl("", [Validators.required, Validators.email]),
+    country_code: new FormControl("+91", [Validators.required]),
     phone: new FormControl("", [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/),
@@ -28,6 +29,7 @@ export class RegisterComponent implements OnInit {
     ]),
     gender: new FormControl("", Validators.required),
     referred_by_id: new FormControl(""),
+    terms_checked: new FormControl(false, [Validators.requiredTrue]),
   });
   loading = false;
 
@@ -52,13 +54,30 @@ export class RegisterComponent implements OnInit {
     },
   ];
 
+  readonly countryCodes = [
+    "+91",
+    "+850",
+    "+82",
+    "+84",
+    "+7",
+    "+1",
+    "+60",
+    "+98",
+    "+971",
+  ];
+
   get password(): string {
     return this.registerForm.controls["password"].value || "";
+  }
+
+  get domain(): string {
+    return environment.domain;
   }
 
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly title: Title
   ) {}
 
@@ -72,20 +91,31 @@ export class RegisterComponent implements OnInit {
       this.getName(ctrl.value);
     });
     ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (this.countryCodes.includes(res.country_calling_code)) {
+          this.registerForm.controls["country_code"].setValue(
+            res.country_calling_code
+          );
+        }
+      },
+    });
   }
 
   register() {
-    const [first_name, last_name] = this.registerForm.value.name.split(' ');
+    const [first_name, last_name] = this.registerForm.value.name.split(" ");
     this.loading = true;
     this.restService
       .signup({
         first_name: first_name,
-        last_name: last_name??'',
+        last_name: last_name ?? "",
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
         gender: this.registerForm.value.gender,
         referred_by_id: this.registerForm.value.referred_by_id,
-        phone: `+91${this.registerForm.value.phone}`,
+        phone:
+          this.registerForm.value.country_code + this.registerForm.value.phone,
+        device: "web",
       })
       .subscribe(
         () => {
@@ -95,6 +125,12 @@ export class RegisterComponent implements OnInit {
             text: "Please check your email to confirm your email id",
             icon: "success",
             confirmButtonText: "OK",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigateByUrl("/login");
+            }
           });
           gtag("event", "signup", {
             event_category: "user",

@@ -4,12 +4,14 @@
 
 export const environment = {
   production: false,
+  domain: "https://www.oneream.com",
   client_api: "https://client-apis.oneream.com/services/v2",
   render_mix_api: "https://rendermix.oneream.com/v1",
   socket_endpoint: "https://chatservices.oneream.com",
   game_assets:
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
   ga_tracking_id: "UA-220923953-2",
+  oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",

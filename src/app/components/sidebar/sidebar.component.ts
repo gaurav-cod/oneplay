@@ -12,6 +12,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 
 declare interface RouteInfo {
   path: string;
@@ -54,8 +55,12 @@ export class SidebarComponent implements OnInit {
     return this.focus.asObservable();
   }
 
+  get domain() {
+    return environment.domain;
+  }
+
   get link() {
-    return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
+    return this.domain + "/dashboard/register?ref=" + this.user.id;
   }
 
   get gameLink() {

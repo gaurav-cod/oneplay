@@ -24,7 +24,7 @@ export class DeviceHistoryComponent implements OnInit {
       this.sessions = res;
       this.sessions.forEach((session) => {
         this.restService.getLocation(session.ip).subscribe((res) => {
-          this.ipLocationMap[session.ip] = res;
+          this.ipLocationMap[session.ip] = `${res.city}, ${res.country_name}`;
         });
       });
     });

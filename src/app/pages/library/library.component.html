@@ -10,9 +10,9 @@
           <i class="ni ni-bold-down"></i>
         </button>
         <div ngbDropdownMenu>
-          <a ngbDropdownItem>Action</a>
-          <a ngbDropdownItem>Another action</a>
-          <a ngbDropdownItem>Something else here</a>
+          <a href="javascript:void(0)" ngbDropdownItem>Action</a>
+          <a href="javascript:void(0)" ngbDropdownItem>Another action</a>
+          <a href="javascript:void(0)" ngbDropdownItem>Something else here</a>
         </div>
       </div>
     </div>
@@ -21,6 +21,7 @@
   <div class="py-5 row">
     <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
       <a
+        href="javascript:void(0)"
         [routerLink]="['/view/' + (game | glink)]"
         class="card card-block border-0"
       >
@@ -42,6 +43,7 @@
     <ul class="pagination justify-content-end mb-0">
       <li class="page-item" [ngClass]="{ disabled: page === 1 }">
         <a
+          href="javascript:void(0)"
           class="page-link"
           [routerLink]="['/library']"
           [queryParams]="{ page: page - 1 }"
@@ -53,6 +55,7 @@
       </li>
       <li class="page-item active">
         <a
+          href="javascript:void(0)"
           class="page-link"
           [routerLink]="['/library']"
           [queryParams]="{ page }"
@@ -61,6 +64,7 @@
       </li>
       <li class="page-item">
         <a
+          href="javascript:void(0)"
           class="page-link"
           [routerLink]="['/library']"
           [queryParams]="{ page: page + 1 }"
@@ -69,6 +73,7 @@
       </li>
       <li class="page-item">
         <a
+          href="javascript:void(0)"
           class="page-link"
           [routerLink]="['/library']"
           [queryParams]="{ page: page + 2 }"
@@ -77,6 +82,7 @@
       </li>
       <li class="page-item">
         <a
+          href="javascript:void(0)"
           class="page-link"
           [routerLink]="['/library']"
           [queryParams]="{ page: page + 1 }"

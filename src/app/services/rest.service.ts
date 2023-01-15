@@ -1,12 +1,16 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
+import { of } from "rxjs/internal/observable/of";
+import { throwError } from "rxjs/internal/observable/throwError";
+import { switchMap } from "rxjs/internal/operators/switchMap";
 import { environment } from "src/environments/environment";
 import {
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
   HomeFeeds,
+  ILocation,
   LoginDTO,
   PaytmTxn,
   SignupDTO,
@@ -51,7 +55,10 @@ export class RestService {
 
   signup(data: SignupDTO): Observable<void> {
     return this.http
-      .post(this.r_mix_api + "/accounts/signup", { ...data, device: "web" })
+      .post(this.r_mix_api + "/accounts/signup", {
+        ...data,
+        partnerId: environment.oneplay_partner_id,
+      })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
@@ -252,10 +259,14 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new UserModel(d))));
   }
 
-  search(query: string, page: number, limit: number): Observable<GameSearch> {
+  search(query: string, page: number, limit: number, status?: "live"|"unlive"): Observable<GameSearch> {
+    const params = { query, page, limit }
+    if(status) {
+      params['status'] = status
+    }
     return this.http
       .get<any[]>(this.r_mix_api + "/games/search", {
-        params: { query, page, limit },
+        params
       })
       .pipe(map((res) => new GameSearch(res)));
   }
@@ -529,11 +540,22 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new MessageModel(d))));
   }
 
-  getLocation(ip: string): Observable<string> {
-    return this.http.get(this.r_mix_api + "/location/" + ip).pipe(
-      map((res) => `${res["city"]}, ${res["country_name"]}`),
-      catchError(() => "unknown")
+  getLocation(ip: string): Observable<ILocation> {
+    return this.http.get<ILocation>(this.r_mix_api + "/location/" + ip).pipe(
+      switchMap((res) => {
+        if (res.error) {
+          return throwError(res.reason);
+        }
+        return of(res);
+      }),
+      catchError(() => {
+        throw new Error("unknown");
+      })
     );
+  }
+
+  getCurrentLocation(): Observable<ILocation> {
+    return this.http.get<ILocation>(this.r_mix_api + "/location").pipe();
   }
 
   addDevice(token: string): Observable<void> {

@@ -2,7 +2,7 @@
 <div class="position-relative">
   <div #container class="d-flex overflow-auto" style="width: 100%">
     <div *ngFor="let video of videos" class="mr-3">
-      <a [routerLink]="['/streams/' + getId(video)]" class="root">
+      <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
         <img
           class="image borderRadius15"
           [src]="video.thumbnail"

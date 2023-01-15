@@ -1,0 +1,106 @@
+.mute {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 1px 8px;
+  border-radius: 50%;
+}
+
+.unmute {
+  padding: 2px 6px !important;
+}
+
+.card {
+  max-width: 100%;
+  height: 120px;
+  box-shadow: 6px 5px 4px 2px #0e0d0d;
+  background: none !important;
+  cursor: pointer;
+
+  .card-img {
+    height: 100%;
+  }
+
+  video {
+    border-radius: 4px;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .game-title {
+    color: #ffffff;
+    position: absolute;
+    top: 25%;
+    left: 6px;
+    width: 45%;
+    max-height: 50px;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .card {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    height: 100px;
+  }
+}
+
+@media (max-width: 400px) {
+  .card {
+    height: 80px;
+  }
+}
+
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  background: #e2ebf6;
+  border-radius: 50%;
+  height: 1.5em;
+  margin: 0;
+  margin-left: auto;
+  flex: none;
+  outline: none;
+  position: relative;
+  transition: all 0.2s;
+  width: 1.5em;
+
+  &:after {
+    border: 2px solid #fff;
+    border-top: 0;
+    border-left: 0;
+    content: "";
+    display: block;
+    height: 1em;
+    left: 0.625em;
+    position: absolute;
+    top: 0.25em;
+    transform: rotate(45deg);
+    width: 0.5em;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px #3f00b4;
+  }
+
+  &:checked {
+    background: #3f00b4;
+    border-color: #3f00b4;
+  }
+}
+
+.checkbox-control__target {
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}

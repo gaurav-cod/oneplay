@@ -1,0 +1,35 @@
+<a
+  href="javascript:void(0)"
+  class="card card-block border-0 shadow-1 position-relative"
+>
+  <img
+    class="card-img"
+    [src]="game.textBgImage"
+    (error)="onImgError($event)"
+    [ngStyle]="{
+      filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+    }"
+    alt=""
+  />
+  <h4 *ngIf="showTitle" class="game-title">{{ game.title }}</h4>
+  <div class="card-img-overlay pr-1 pt-1" (click)="onclick()">
+    <div class="row">
+      <div class="col-auto">
+        <span *ngIf="game.isFree" id="free">FREE</span>
+      </div>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col-auto increateZIndex">
+        <label class="checkbox-control">
+          <input
+            type="checkbox"
+            class="checkbox"
+            [checked]="isChecked"
+            (change)="onclick()"
+          />
+          <span class="checkbox-control__target">Card Label</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</a>

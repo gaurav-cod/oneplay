@@ -24,6 +24,10 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { GameCardComponent } from "./game-card/game-card.component";
 import { SecurityComponent } from "./security/security.component";
 import { DeviceHistoryComponent } from "./device-history/device-history.component";
+import { ToastsComponent } from './toasts/toasts.component';
+import { OnboardingModalsComponent } from './onboarding-modals/onboarding-modals.component';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { SelectGameCardComponent } from './select-game-card/select-game-card.component';
 
 @NgModule({
   imports: [
@@ -37,6 +41,7 @@ import { DeviceHistoryComponent } from "./device-history/device-history.componen
     FriendsModule,
     ShareButtonsModule,
     ShareIconsModule,
+    InfiniteScrollModule,
   ],
   declarations: [
     GameCardComponent,
@@ -55,6 +60,9 @@ import { DeviceHistoryComponent } from "./device-history/device-history.componen
     AuthNavbarComponent,
     SecurityComponent,
     DeviceHistoryComponent,
+    ToastsComponent,
+    OnboardingModalsComponent,
+    SelectGameCardComponent,
   ],
   exports: [
     GameCardComponent,
@@ -73,6 +81,9 @@ import { DeviceHistoryComponent } from "./device-history/device-history.componen
     AuthNavbarComponent,
     SecurityComponent,
     DeviceHistoryComponent,
+    ToastsComponent,
+    OnboardingModalsComponent,
+    SelectGameCardComponent,
   ],
 })
 export class ComponentsModule {}

@@ -55,6 +55,7 @@
                 </p>
               </div>
               <a
+                href="javascript:void(0)"
                 [routerLink]="['/streams/' + getId(banner)]"
                 class="btn btn-primary"
                 >Watch live stream</a
@@ -67,7 +68,7 @@
   </ng-template>
 </ngb-carousel>
 
-<div class="container-fluid py-6">
+<div class="container-fluid py-6" [ngClass]="{ 'mt-5': banners.length === 0 }">
   <div class="container-fluid mb-3 mb-lg-5" *ngFor="let feed of feeds">
     <app-stream-card
       [title]="'Streams of ' + feed.title"
@@ -75,39 +76,6 @@
       [videos]="feed.videos"
     ></app-stream-card>
   </div>
-
-  <!-- <h2 class="text-white mb-3 mt-5">Streamers to lookout for</h2>
-  <div class="d-flex overflow-auto" style="width: 100%">
-    <div
-      *ngFor="let i of [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6]"
-      class="mr-5"
-      style="display: flex; flex-direction: column; align-items: center"
-    >
-      <div class="avatar rounded-circle" style="height: 90px; width: 90px">
-        <img src="assets/img/theme/team-3-800x800.jpg" alt="" />
-      </div>
-      <div class="text-white text-sm">BurnedOx</div>
-    </div>
-  </div> -->
-
-  <!-- <h2 class="text-white mb-3 mt-5">Top Categories</h2>
-  <div class="d-flex overflow-auto">
-    <div *ngFor="let i of [1, 2, 3, 4, 5, 6]" class="mr-4">
-      <div class="card card-block position-relative" style="width: 219px">
-        <img
-          class="card-img"
-          src="../../../assets/img/theme/team-1-800x800.jpg"
-          height="275"
-          alt=""
-        />
-        <span class="mask bg-gradient-darker opacity-7 card-img"></span>
-        <div class="position-absolute text-center bottom-2" style="width: 100%">
-          <h4 class="text-white">Action</h4>
-          <div class="text-white-50 small">13.2k viewers</div>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </div>
 
 <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>

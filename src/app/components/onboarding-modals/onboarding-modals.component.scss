@@ -1,0 +1,81 @@
+
+  
+.customBtnBg {
+  background-color: #3f00b4;
+}
+
+.customOffWhite {
+  color: #959595;
+}
+
+.increateZIndex {
+  z-index: 5;
+}
+
+.borderRadius60 {
+  border-radius: 60px;
+}
+
+.modalHeading {
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 42px;
+  color: #DCDCDC;
+  letter-spacing: 0.02em;
+}
+
+.borderBottomColor {
+  border-bottom: 1px solid #3E4246;
+}
+
+.bordertopColor {
+  border-top: 1px solid #3E4246;
+}
+
+.font700 {
+  font-weight: 700;
+}
+
+.font16 {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.font500 {
+  font-weight: 500;
+}
+
+.customColor a {
+  color: #3f00b4;
+}
+
+.customColor {
+  color: #959595;
+}
+
+.modalBG {
+  background-color: #212123;
+}
+
+.form-check input[type=checkbox] {
+  accent-color: #959595;
+}
+
+.backgroundCustom {
+  background-color: #3f00b4;
+}
+
+.display-hide {
+  display: none;
+}
+
+@media (max-width: 500px) {
+  .navbar-search .form-control {
+    width: 186px !important;
+  }
+}
+
+.hoverdisabled:hover {
+  background-color: transparent;
+  color: #ffffff;
+}

@@ -9,7 +9,6 @@ import { ClipboardModule } from "ngx-clipboard";
 import { AdminLayoutRoutes } from "./admin-layout.routing";
 import { IconsComponent } from "../../pages/icons/icons.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
-import { TablesComponent } from "../../pages/tables/tables.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
 import { HomeComponent } from "src/app/pages/home/home.component";
@@ -42,7 +41,6 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
   ],
   declarations: [
     UserProfileComponent,
-    TablesComponent,
     IconsComponent,
     HomeComponent,
     StoreComponent,

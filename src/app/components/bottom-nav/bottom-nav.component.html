@@ -1,11 +1,17 @@
 <nav class="navbar navbar-vertical navbar-dark d-flex hideInlarge">
   <div class="container-fluid">
-    <a class="navbar-nav" routerLinkActive="active" [routerLink]="['/home']">
+    <a
+      href="javascript:void(0)"
+      class="navbar-nav"
+      routerLinkActive="active"
+      [routerLink]="['/home']"
+    >
       <span class="avatar avatar-sm rounded-circle bg-gray-dark">
         <i class="fas fa-home"></i>
       </span>
     </a>
     <a
+      href="javascript:void(0)"
       class="navbar-nav text-center"
       [routerLink]="['search']"
       routerLinkActive="text-primary"
@@ -14,8 +20,17 @@
         <i class="fas fa-search"></i>
       </span>
     </a>
-    <a class="navbar-nav text-center" [routerLink]="gameLink" ngbTooltip="{{ gamePlayTooltip }}">
-      <img src="assets/img/Dashboard/Speedtest.svg" class="img-fluid" alt=""  aria-hidden="true" 
+    <a
+      href="javascript:void(0)"
+      class="navbar-nav text-center"
+      [routerLink]="gameLink"
+      ngbTooltip="{{ gamePlayTooltip }}"
+    >
+      <img
+        src="assets/img/Dashboard/Speedtest.svg"
+        class="img-fluid"
+        alt=""
+        aria-hidden="true"
         [ngClass]="{
           'text-success': isGameRunning,
           'text-muted': !isGameRunning
@@ -23,12 +38,21 @@
       />
       <span *ngIf="isUserLive" id="live">LIVE</span>
     </a>
-    <a class="navbar-nav text-center" (click)="toggleFriendsList()">
+    <a
+      href="javascript:void(0)"
+      class="navbar-nav text-center"
+      (click)="toggleFriendsList()"
+    >
       <span class="avatar avatar-sm rounded-circle bg-gray-dark">
         <i class="fas fa-user-friends"></i>
       </span>
     </a>
-    <a routerLinkActive="active" [routerLink]="['/store']" class="navbar-nav text-center">
+    <a
+      href="javascript:void(0)"
+      routerLinkActive="active"
+      [routerLink]="['/store']"
+      class="navbar-nav text-center"
+    >
       <span class="avatar avatar-sm rounded-circle bg-gray-dark">
         <i class="fas fa-store"></i>
       </span>
@@ -38,13 +62,14 @@
 
 <ng-template #share let-d="dismiss">
   <div class="modal-content position-relative">
-    <div
+    <a
+      href="javascript:void(0)"
       class="position-absolute btn btn-github rounded-circle top--5 right--6"
       style="padding: 16px 20px"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times" style="font-size: 24px"></i>
-    </div>
+    </a>
     <div class="modal-body">
       <div class="row">
         <div class="col-12">

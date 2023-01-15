@@ -12,13 +12,16 @@ import { ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { combineLatest, zip } from "rxjs";
+import { combineLatest, Subscription, zip } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
+import { GamepadService } from "src/app/services/gamepad.service";
 import { RestService } from "src/app/services/rest.service";
+import { ToastService } from "src/app/services/toast.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
@@ -62,9 +65,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   showSettings = new FormControl();
 
   advancedOptions = new FormGroup({
-    absolute_mouse_mode: new FormControl(false),
-    absolute_touch_mode: new FormControl(false),
-    background_gamepad: new FormControl(false),
+    show_stats: new FormControl(false),
+    fullscreen: new FormControl(true),
+    onscreen_controls: new FormControl(false),
     audio_type: new FormControl("stereo"),
     stream_codec: new FormControl("auto"),
     video_decoder_selection: new FormControl("auto"),
@@ -74,10 +77,14 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _genreGames: GameModel[] = [];
   private _clientToken: string;
   private wishlist: string[] = [];
-  private _timer: NodeJS.Timer;
   private _initializedModalRef: NgbModalRef;
   private _settingsModalRef: NgbModalRef;
   private _launchModalRef: NgbModalRef;
+  private _advancedModalRef: NgbModalRef;
+  private _gamepads: Gamepad[] = [];
+  private _clientTokenSubscription: Subscription;
+  private _pageChangeSubscription: Subscription;
+  private _gameStatusSubscription: Subscription;
 
   constructor(
     private readonly location: Location,
@@ -88,11 +95,26 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly meta: Meta,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    private readonly gamepadService: GamepadService,
+    private readonly toastService: ToastService
   ) {
+    const userAgent = new UAParser();
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
     );
+    this.gamepadService.gamepads.subscribe((gamepads) => {
+      this._gamepads = gamepads;
+      if (
+        gamepads.length === 0 &&
+        userAgent.getOS().name === "Android" &&
+        userAgent.getDevice().type !== "smarttv"
+      ) {
+        this.advancedOptions.controls["onscreen_controls"].setValue(true);
+      } else {
+        this.advancedOptions.controls["onscreen_controls"].setValue(false);
+      }
+    });
     this.authService.user.subscribe((user) => {
       if (user) {
         const resolution = localStorage.getItem("resolution");
@@ -127,70 +149,80 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       this.stopLoading();
     }
-    if (this._timer) {
-      clearInterval(this._timer);
-    }
+    this._initializedModalRef?.close();
+    this._settingsModalRef?.close();
+    this._launchModalRef?.close();
+    this._advancedModalRef?.close();
+    this._clientTokenSubscription?.unsubscribe();
+    this._pageChangeSubscription?.unsubscribe();
+    this._gameStatusSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
-    combineLatest(paramsObservable, queryParamsObservable).subscribe(
-      (params) => {
-        const id = (params[0].id as string).replace(/(.*)\-/g, "");
-        const keyword = params[1].keyword;
-        const keywordHash = params[1].hash;
-        this.stopLoading();
-        this.loaderService.start();
-        this.restService
-          .getGameDetails(id, {
-            keyword,
-            keywordHash,
-          })
-          .subscribe(
-            (game) => {
-              this.game = game;
-              this.title.setTitle("OnePlay | Play " + game.title);
-              this.meta.addTags([
-                { name: "keywords", content: game.tagsMapping?.join(", ") },
-                { name: "description", content: game.description },
-              ]);
-              game.developer.forEach((dev) =>
-                this.restService
-                  .getGamesByDeveloper(dev)
-                  .subscribe(
-                    (games) =>
-                      (this._devGames = this.getShuffledGames([
-                        ...this._devGames,
-                        ...games,
-                      ]))
-                  )
-              );
-              game.genreMappings.forEach((genre) =>
-                this.restService
-                  .getGamesByGenre(genre)
-                  .subscribe(
-                    (games) =>
-                      (this._genreGames = this.getShuffledGames([
-                        ...this._genreGames,
-                        ...games,
-                      ]))
-                  )
-              );
-              this.loaderService.stop();
-            },
-            (err) => this.loaderService.stop()
-          );
-        this.restService
-          .getSimilarGames(id)
-          .subscribe((games) => (this.similarGames = games));
-        this.restService
-          .getVideos(id)
-          .subscribe((videos) => (this.videos = videos));
-        this.restService
-          .getLiveVideos(id)
-          .subscribe((videos) => (this.liveVideos = videos));
-        this.gameService.gameStatus.subscribe((status) => {
+    this._pageChangeSubscription = combineLatest(
+      paramsObservable,
+      queryParamsObservable
+    ).subscribe((params) => {
+      const id = (params[0].id as string).replace(/(.*)\-/g, "");
+      const keyword = params[1].keyword;
+      const keywordHash = params[1].hash;
+      this.stopLoading();
+      this.loaderService.start();
+      this.restService
+        .getGameDetails(id, {
+          keyword,
+          keywordHash,
+        })
+        .subscribe(
+          (game) => {
+            this.game = game;
+            this.title.setTitle("OnePlay | Play " + game.title);
+            this.meta.addTags([
+              { name: "keywords", content: game.tagsMapping?.join(", ") },
+              { name: "description", content: game.description },
+            ]);
+            game.developer.forEach((dev) =>
+              this.restService
+                .getGamesByDeveloper(dev)
+                .subscribe(
+                  (games) =>
+                    (this._devGames = this.getShuffledGames([
+                      ...this._devGames,
+                      ...games,
+                    ]))
+                )
+            );
+            game.genreMappings.forEach((genre) =>
+              this.restService
+                .getGamesByGenre(genre)
+                .subscribe(
+                  (games) =>
+                    (this._genreGames = this.getShuffledGames([
+                      ...this._genreGames,
+                      ...games,
+                    ]))
+                )
+            );
+            this.loaderService.stop();
+          },
+          (err) => this.loaderService.stop()
+        );
+      this.restService
+        .getSimilarGames(id)
+        .subscribe((games) => (this.similarGames = games));
+      this.restService
+        .getVideos(id)
+        .subscribe((videos) => (this.videos = videos));
+      this.restService
+        .getLiveVideos(id)
+        .subscribe((videos) => (this.liveVideos = videos));
+
+      this._gameStatusSubscription?.unsubscribe();
+
+      this._gameStatusSubscription = this.gameService.gameStatus.subscribe(
+        (status) => {
           if (!this.startingGame) {
             if (status && status.game_id === id) {
               if (status.is_running) {
@@ -203,9 +235,9 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.action = "Play";
             }
           }
-        });
-      }
-    );
+        }
+      );
+    });
   }
 
   get isInWishlist(): boolean {
@@ -260,7 +292,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get clientDownloadLink() {
-    const userAgent = new UAParser(window.navigator.userAgent);
+    const userAgent = new UAParser();
     switch (userAgent.getOS().name) {
       case "Windows":
         return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
@@ -274,7 +306,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get exitCommand() {
-    const userAgent = new UAParser(window.navigator.userAgent);
+    const userAgent = new UAParser();
     switch (userAgent.getOS().name) {
       case "Windows":
         return "Ctrl + Alt + Shift + Q";
@@ -283,6 +315,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       default:
         return "";
     }
+  }
+
+  get domain() {
+    return environment.domain;
   }
 
   open(content: any, video: VideoModel): void {
@@ -330,10 +366,12 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    if (!this.user.subscriptionIsActive || !this.user.subscribedPlan) {
+    if (!this.user.subscriptionIsActive) {
       Swal.fire({
         title: "Opps...",
-        text: "Your subscription is not active. Please renew your subscription",
+        html: !this.user.subscribedPlan
+          ? `You haven't bought any subscription yet. Please visit <a href="${this.domain}/subscription.html">here</a>`
+          : "Your subscription is not active. Please renew your subscription",
         icon: "error",
       });
       return;
@@ -349,7 +387,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   openAdvanceOptions(container): void {
-    this.ngbModal.open(container, {
+    this._advancedModalRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
     });
@@ -408,6 +446,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsModalRef?.close();
     this.startLoading();
 
+    if (this._gamepads.length > 0) {
+      this.toastService.show(
+        `🎮 ${this._gamepads.length} gamepads are connected`,
+        { classname: "bg-gray-dark text-success", delay: 4000 }
+      );
+    }
+
     this.restService
       .startGame(
         this.game.oneplayId,
@@ -420,6 +465,15 @@ export class ViewComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
           if (data.data.api_action === "call_session") {
+            this._initializedModalRef = this.ngbModal.open(
+              this.initializedModal,
+              {
+                centered: true,
+                modalDialogClass: "modal-sm",
+                backdrop: "static",
+                keyboard: false,
+              }
+            );
             this.startGameWithClientToken(data.data.session.id);
           } else if (data.data.api_action === "call_terminate") {
             this.terminateGame(data.data.session.id);
@@ -445,22 +499,27 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  private startGameWithClientToken(sessionId: string): void {
-    let seconds = 0;
-    // open inistialized Modal here
-    this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      backdrop: "static",
-      keyboard: false,
-    });
+  private startGameWithClientToken(sessionId: string, millis = 0): void {
+    if (millis > 60000) {
+      this.stopLoading();
+      Swal.fire({
+        title: "Opps...",
+        text: "Something went wrong",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
 
-    this._timer = setInterval(() => {
-      this.restService.getClientToken(sessionId).subscribe(
+    const startTime = new Date().getTime();
+
+    this._clientTokenSubscription?.unsubscribe();
+
+    this._clientTokenSubscription = this.restService
+      .getClientToken(sessionId)
+      .subscribe(
         (data) => {
           if (!!data.client_token) {
-            clearInterval(this._timer);
-
             this._clientToken = data.client_token;
             this.launchGame();
 
@@ -477,6 +536,20 @@ export class ViewComponent implements OnInit, OnDestroy {
             }, 3000);
           } else {
             this.initialized = data.msg || "Please wait...";
+
+            const timeTaken = new Date().getTime() - startTime;
+            if (timeTaken >= 2000) {
+              this.startGameWithClientToken(sessionId, timeTaken + millis);
+            } else {
+              setTimeout(
+                () =>
+                  this.startGameWithClientToken(
+                    sessionId,
+                    timeTaken + millis + 1000
+                  ),
+                1000
+              );
+            }
           }
         },
         (err) => {
@@ -487,21 +560,8 @@ export class ViewComponent implements OnInit, OnDestroy {
             icon: "error",
             confirmButtonText: "OK",
           });
-          clearInterval(this._timer);
         }
       );
-      seconds = seconds + 3;
-      if (seconds > 90) {
-        this.stopLoading();
-        Swal.fire({
-          title: "Opps...",
-          text: "Something went wrong",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        clearInterval(this._timer);
-      }
-    }, 3000);
   }
 
   private terminateGame(sessionId: string): void {
@@ -542,7 +602,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     const userAgent = new UAParser(window.navigator.userAgent);
     if (userAgent.getOS().name === "Android") {
       window.open(
-        `https://www.oneplay.in/launch/app?payload=${this._clientToken}`,
+        `${this.domain}/launch/app?payload=${this._clientToken}`,
         "_blank"
       );
     } else {

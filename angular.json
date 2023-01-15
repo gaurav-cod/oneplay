@@ -29,8 +29,7 @@
               "src/assets",
               "src/.htaccess",
               "src/firebase-messaging-sw.js",
-              "src/manifest.json",
-              "src/manifest.webmanifest"
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.scss",
@@ -38,10 +37,9 @@
             ],
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js",
-              "node_modules/clipboard/dist/clipboard.min.js"
-            ],
-            "serviceWorker": true,
-            "ngswConfigPath": "ngsw-config.json"
+              "node_modules/clipboard/dist/clipboard.min.js",
+              "src/gamepad.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -117,8 +115,7 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
+              "src/assets"
             ]
           }
         },

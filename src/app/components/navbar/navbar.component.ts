@@ -23,6 +23,7 @@ import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { FriendModel } from "src/app/models/friend.model";
 import { FriendsService } from "src/app/services/friends.service";
 import { MessagingService } from "src/app/services/messaging.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-navbar",
@@ -62,7 +63,11 @@ export class NavbarComponent implements OnInit {
   }
 
   get link() {
-    return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
+    return environment.domain + "/dashboard/register?ref=" + this.user.id;
+  }
+
+  get domain() {
+    return environment.domain;
   }
 
   get gameLink() {
@@ -152,6 +157,10 @@ export class NavbarComponent implements OnInit {
     this.gameService.gameStatus.subscribe((status) => {
       this.gameStatus = status;
     });
+  }
+
+  onImgError(event) {
+    event.target.src = 'assets/img/default_bg.jpg';
   }
 
   getFriendAddIcon(friend: UserModel) {
