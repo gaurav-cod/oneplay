@@ -41,6 +41,10 @@
   white-space: nowrap;
   display: block;
   padding-left: 70px;
+
+  @media (max-width: 768px) {
+    padding-left: 32px;
+  }
 }
 
 .scrollGame .gameCard {
@@ -49,4 +53,8 @@
 
 .w290 {
   width: 320px;
+
+  @media (max-width: 486px) {
+    width: 166px;
+  }
 }
