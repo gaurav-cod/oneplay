@@ -120,7 +120,11 @@ export class ViewComponent implements OnInit, OnDestroy {
         const resolution = localStorage.getItem("resolution");
         this.resolution.setValue(
           resolution ||
-            PlayConstants.DEFAULT_RESOLUTIONS[user.subscribedPlan ?? "Founder"]
+            (window.innerWidth < 768
+              ? PlayConstants.MOBILE_RESOLUTION
+              : PlayConstants.DEFAULT_RESOLUTIONS[
+                  user.subscribedPlan ?? "Founder"
+                ])
         );
         this.allowedResolutions =
           PlayConstants.RESOLUTIONS_PACKAGES[user.subscribedPlan ?? "Founder"];

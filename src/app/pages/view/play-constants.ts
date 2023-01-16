@@ -6,7 +6,7 @@ export class PlayConstants {
     "3840x2160",
   ];
 
-  static readonly MOBILE_RESOLUTIONS = ["1280x720", "1920x1080"];
+  static readonly MOBILE_RESOLUTION = "1280x720";
 
   static readonly DEFAULT_RESOLUTIONS = {
     Starter: "1280x720",
