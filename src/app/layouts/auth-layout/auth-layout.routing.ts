@@ -5,7 +5,6 @@ import { VerifyComponent } from 'src/app/pages/verify/verify.component';
 
 import { LoginComponent } from '../../pages/login/login.component';
 import { RegisterComponent } from '../../pages/register/register.component';
-import { QrSignupComponent } from 'src/app/pages/qr-signup/qr-signup.component';
 
 export const AuthLayoutRoutes: Routes = [
     { path: 'login',          component: LoginComponent },
@@ -13,5 +12,4 @@ export const AuthLayoutRoutes: Routes = [
     { path: 'verify/:token',       component: VerifyComponent },
     { path: 'forgot-password',       component: ForgotPassComponent },
     { path: 'reset-password/:token',       component: ResetPassComponent },
-    { path: 'qr-signup',                   component: QrSignupComponent },
 ];

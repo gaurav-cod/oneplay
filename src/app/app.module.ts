@@ -15,7 +15,7 @@ import { ComponentsModule } from './components/components.module';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonLayoutComponent } from './layouts/common-layout/common-layout.component';
-
+import { TvAuthLayoutComponent } from './layouts/tv-auth-layout/tv-auth-layout.component';
 
 @NgModule({
   imports: [
@@ -32,6 +32,7 @@ import { CommonLayoutComponent } from './layouts/common-layout/common-layout.com
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
+    TvAuthLayoutComponent,
     CommonLayoutComponent,
   ],
   providers: [

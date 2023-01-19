@@ -158,7 +158,7 @@
 }
 
 .loginBg {
-  background-color: #212123;
+  background-color: #151515;
 }
 
 .overflowYScroll {
@@ -245,4 +245,10 @@ input:-webkit-autofill:active  {
 
 input:-internal-autofill-selected {
   background-color: transparent !important;
+}
+
+.btnGradient {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  border-radius: 10px;
+  color: #ffffff;
 }
