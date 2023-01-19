@@ -13,6 +13,18 @@
       </div>
     </div>
     <div class="container">
+      <div class="row">
+        <div class="col-12 mt-3">
+          <span class="float-right font20 font500"
+            ><a
+              href="javascript:void(0)"
+              [routerLink]="['/qr-signup']"
+              class="customOffWhite"
+              >Sign In with Web</a
+            ></span
+          >
+        </div>
+      </div>
       <div class="row largeScreenHeight">
         <div class="col-md-12 custompaddingLeftRight">
           <form [formGroup]="loginForm" (submit)="login()" role="form">
