@@ -15,3 +15,51 @@
         height: 24px;
     }
 }
+
+.padding-right-0 {
+    padding-right: 0px !important;
+}
+  
+.padding-left-0 {
+    padding-left: 0px !important;
+}
+  
+.scrollGame {
+    overflow: auto;
+    white-space: nowrap;
+    display: block;
+    padding-left: 70px;
+  
+    @media (max-width: 768px) {
+      padding-left: 32px;
+    }
+}
+  
+.scrollGame .gameCard {
+    display: inline-block;
+}
+
+.w290 {
+    width: 320px;
+  
+    @media (max-width: 486px) {
+      width: 166px;
+    }
+}
+
+.overflow-auto::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+  
+@media (max-width: 480px) {
+    h2 {
+      font-size: 16px;
+      font-weight: 100;
+      margin-bottom: -7px;
+    }
+}
+  
+.h80 {
+    height: 85%;
+    margin-top: 21px;
+}

@@ -1,48 +1,74 @@
-<h2 class="text-white mb-3">{{ title }}</h2>
+<div class="container-fluid">
+  <div class="container-fluid">
+    <h2 class="text-white">{{ title }}</h2>
+  </div>
+</div>
+
+
 <div class="position-relative">
-  <div #container class="d-flex overflow-auto" style="width: 100%">
-    <div *ngFor="let video of videos" class="mr-3">
-      <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
-        <img
-          class="image borderRadius15"
-          [src]="video.thumbnail"
-          alt=""
-        />
-        <div class="font16 font500 offWhiteText mt-3 two-lines">
-          {{ video.title }}
-        </div>
-        <div class="row mt-3">
-          <div class="col-auto">
-            <div class="avatar rounded-circle">
+  <div class="container-fluid padding-right-0 padding-left-0">
+    <div class="row">
+      <div class="col-md-12">
+        <div #container class="py-4 row scrollGame">
+          <div *ngFor="let video of videos" class="zoom col-auto gameCard w290">
+            <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
               <img
-                [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
-                class="img-fluid wh50"
+                class="image borderRadius15"
+                [src]="video.thumbnail"
                 alt=""
               />
-            </div>
-          </div>
-          <div class="col">
-            <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
-            <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+              <div class="font16 font500 offWhiteText mt-3 two-lines">
+                {{ video.title }}
+              </div>
+              <div class="row mt-3">
+                <div class="col-auto">
+                  <div class="avatar rounded-circle">
+                    <img
+                      [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+                      class="img-fluid wh50"
+                      alt=""
+                    />
+                  </div>
+                </div>
+                <div class="col">
+                  <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
+                  <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 
   <button
-    class="btn position-absolute d-none d-md-block h-100"
-    style="top: 0; left: -48px"
+    class="btn position-absolute d-none d-md-block h80"
+    style="
+      top: 0;
+      left: 0;
+      z-index: 10;
+      border-radius: 0px;
+      background: #151515a8;
+      padding-right: 35px;
+    "
     (click)="scrollLeft()"
   >
-    <i class="fas fa-chevron-left text-xl"></i>
+    <img src="assets/img/Vector.svg" height="20px" alt="" />
   </button>
 
   <button
-    class="btn position-absolute d-none d-md-block h-100"
-    style="top: 0; right: -48px"
+    class="btn position-absolute d-none d-md-block h80"
+    style="
+      top: 0;
+      right: 0px;
+      z-index: 10;
+      border-radius: 0px;
+      background: #151515a8;
+      padding-right: 50px;
+    "
     (click)="scrollRight()"
   >
-    <i class="fas fa-chevron-right text-xl"></i>
+    <img src="assets/img/Vector (1).svg" height="20px" alt="" />
   </button>
 </div>
