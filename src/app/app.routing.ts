@@ -8,6 +8,7 @@ import { AuthLayoutComponent } from "./layouts/auth-layout/auth-layout.component
 import { AuthGuard } from "./guards/auth.guard";
 import { LoginGuard } from "./guards/login.guard";
 import { CommonLayoutComponent } from "./layouts/common-layout/common-layout.component";
+import { TvAuthLayoutComponent } from "./layouts/tv-auth-layout/tv-auth-layout.component";
 
 const routes: Routes = [
   {
@@ -39,6 +40,20 @@ const routes: Routes = [
         loadChildren: () =>
           import("src/app/layouts/auth-layout/auth-layout.module").then(
             (m) => m.AuthLayoutModule
+          ),
+      },
+    ],
+  },
+  {
+    path: "",
+    component: TvAuthLayoutComponent,
+    canActivate: [LoginGuard],
+    children: [
+      {
+        path: "",
+        loadChildren: () =>
+          import("src/app/layouts/tv-auth-layout/tv-auth-layout.module").then(
+            (m) => m.TvAuthLayoutModule
           ),
       },
     ],

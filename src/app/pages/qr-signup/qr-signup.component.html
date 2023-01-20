@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-md-9">     
+        <div class="row mt-4">
+            <div class="col-md-9 pl-4">
+                <h1 class="font38 text-white">Follow these steps on your computer or mobile device</h1>
+                <div class="row mt-5">
+                    <div class="col-auto">
+                        <p class="steps text-center mb-0">1</p>
+                    </div>
+                    <div class="col pl-0">
+                        <p class="mb-0 font20">Scan the symbol with your phone's camera or go to:</p>
+                        <h2 class="font28 text-white mt-2">{{tvURL}}</h2>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-auto">
+                        <p class="steps text-center mb-0">2</p>
+                    </div>
+                    <div class="col pl-0">
+                        <p class="mb-0 font20">Enter sign-in code:</p>
+                        <h2 class="text-white font28 mt-2">1597-7158</h2>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-auto">
+                        <p class="steps text-center mb-0">3</p>
+                    </div>
+                    <div class="col pl-0 align-self-center">
+                        <p class="mb-0 font20">Sign in to Oneplay. Your TV will be ready to watch!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 pt-8">
+                <qrcode [qrdata]="'signInQrCode'" [width]="qrCodeWidth" [errorCorrectionLevel]="'M'"></qrcode>
+            </div>
+        </div>
+        <div class="customBorderColor mt-5"></div>
+        <div class="row mt-5">
+            <div class="col align-self-center pr-0">
+                <p class="font20 mutedColor mb-0">or enter your email and password with your remote.</p>
+            </div>
+            <div class="col-auto text-end">
+                <a
+                    href="javascript:void(0)"
+                    class="btn btn-md gradientBtn"
+                    routerLinkActive="active"
+                    [routerLink]="['/login']"
+                >
+                    <span class="nav-link-inner--text">Sign In with Remote</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
