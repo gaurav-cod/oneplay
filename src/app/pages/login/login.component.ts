@@ -8,9 +8,11 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
+import UAParser from "ua-parser-js";
 
 declare var gtag: Function;
 
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
+    private readonly route: ActivatedRoute,
     private readonly title: Title
   ) {}
   ngAfterViewInit(): void {
@@ -40,6 +43,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.title.setTitle("Login");
   }
   ngOnDestroy() {}
+
+  get isTV() {
+    const userAgent = new UAParser();
+    return userAgent.getDevice().type === "smarttv";
+  }
 
   login() {
     if (
@@ -61,6 +69,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           event_category: "user",
           event_label: this.loginForm.value.id,
         });
+        const code: string = this.route.snapshot.queryParams["code"];
+        if (!!code && /\d{4}-\d{4}/.exec(code)) {
+          this.restService.setQRSession(code, token).subscribe();
+        }
         this.authService.login(token);
       },
       (error) => {

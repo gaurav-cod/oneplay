@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
+
+declare var gtag: Function;
 
 @Component({
   selector: 'app-qr-signup',
@@ -7,21 +14,97 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./qr-signup.component.scss']
 })
 export class QrSignupComponent implements OnInit {
+  public signInQrCode: string = '';
+  public code: string = '';
 
-  public signInQrCode: string = null;
-  constructor() {
-    this.signInQrCode = this.tvURL;
+  private generateCodeSubscription: Subscription;
+  private getSessionSubscription: Subscription;
+
+  constructor(
+    private readonly restService: RestService,
+    private readonly authService: AuthService,
+    private readonly loaderService: NgxUiLoaderService
+  ) {}
+
+  ngOnDestroy(): void {
+    this.generateCodeSubscription?.unsubscribe();
+    this.getSessionSubscription?.unsubscribe();
   }
+
   ngOnInit(): void {
+    this.generateCode();
   }
-  tvURL = environment.domain+"/tv";
+
+  tvURL = environment.domain + "/tv";
+
   get qrCodeWidth() {
-    if(window.innerWidth > 986) {
-      return(200);
-    }
-    else if(window.innerWidth < 985) {
-      return(130);
+    if (window.innerWidth > 986) {
+      return 200;
+    } else if (window.innerWidth < 985) {
+      return 130;
     }
   }
 
+  private generateCode() {
+    this.loaderService.start();
+    this.generateCodeSubscription = this.restService
+      .generateQRCode()
+      .subscribe({
+        next: ({ code, token }) => {
+          this.loaderService.stop();
+          this.signInQrCode = this.tvURL + "?code=" + code;
+          this.code = code;
+          this.loginWithSession(code, token);
+        },
+        error: (err) => {
+          this.loaderService.stop();
+          Swal.fire({
+            title: "Error",
+            text: err.error.message,
+            icon: "error",
+            confirmButtonText: "Reload",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.generateCode();
+            }
+          });
+        },
+      });
+  }
+
+  private loginWithSession(code: string, token: string) {
+    const startTime = Date.now();
+    this.getSessionSubscription = this.restService
+      .getQRSession(code, token)
+      .subscribe({
+        next: ({ sessionToken }) => {
+          if (!sessionToken) {
+            const timeTaken = Date.now() - startTime;
+            if (timeTaken >= 2000) {
+              this.loginWithSession(code, token);
+            } else {
+              setTimeout(() => this.loginWithSession(code, token), 1000);
+            }
+          } else {
+            gtag("event", "login", {
+              event_category: "user",
+              event_label: "tv",
+            });
+            this.authService.login(sessionToken);
+          }
+        },
+        error: (err) => {
+          Swal.fire({
+            title: "Error",
+            text: "Timeout!",
+            icon: "error",
+            confirmButtonText: "Reload",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.generateCode();
+            }
+          });
+        },
+      });
+  }
 }

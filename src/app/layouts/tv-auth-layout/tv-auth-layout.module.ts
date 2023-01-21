@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrVerifyComponent } from 'src/app/pages/qr-verify/qr-verify.component';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { QrVerifyComponent } from 'src/app/pages/qr-verify/qr-verify.component';
     NgbModule,
     PipesModule,
     QRCodeModule,
+    NgxUiLoaderModule,
   ]
 })
 export class TvAuthLayoutModule { }

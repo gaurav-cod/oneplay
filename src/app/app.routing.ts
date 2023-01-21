@@ -47,7 +47,6 @@ const routes: Routes = [
   {
     path: "",
     component: TvAuthLayoutComponent,
-    canActivate: [LoginGuard],
     children: [
       {
         path: "",
