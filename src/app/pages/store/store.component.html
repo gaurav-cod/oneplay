@@ -1,50 +1,76 @@
 <div class="container-fluid pt-7">
   <div class="row mt-3">
     <div class="col-3 d-none d-md-block">
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark mb-3"
-        *ngFor="let route of commonRoutes"
-        [routerLink]="['/store/' + route]"
-      >
-        <div class="p-3 text-white">{{ route }}</div>
-      </a>
-      <h3 class="text-white-50 my-4 px-3">Filter By Stores</h3>
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark mb-3"
-        *ngFor="let route of storeRoutes"
-        [routerLink]="['/store/' + route]"
-      >
-        <div class="p-3 text-white">{{ route }}</div>
-      </a>
-      <h3 class="text-white-50 my-4 px-3">Filter By Genres</h3>
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark mb-3"
-        *ngFor="let route of genreRoutes"
-        [routerLink]="['/store/' + route]"
-      >
-        <div class="p-3 text-white">{{ route }}</div>
-      </a>
-      <h3 class="text-white-50 my-4 px-3">Filter By Developers</h3>
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark mb-3"
-        *ngFor="let route of developerRoutes"
-        [routerLink]="['/store/' + route]"
-      >
-        <div class="p-3 text-white">{{ route }}</div>
-      </a>
-      <h3 class="text-white-50 my-4 px-3">Filter By Publishers</h3>
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark mb-3"
-        *ngFor="let route of publisherRoutes"
-        [routerLink]="['/store/' + route]"
-      >
-        <div class="p-3 text-white">{{ route }}</div>
-      </a>
+      <h3 class="tabHeading mb-3">Games</h3>
+      <div class="row">
+        <div class="col-auto pr-0" *ngFor="let route of commonRoutes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/store/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
+      
+      <h3 class="tabHeading mb-3">Stores</h3>
+      <div class="row">
+        <div class="col-auto pr-0" *ngFor="let route of storeRoutes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/store/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
+      
+      <h3 class="tabHeading mb-3">Genres</h3>
+      <div class="row">
+        <div class="col-auto pr-0" *ngFor="let route of genreRoutes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/store/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
+      
+      <h3 class="tabHeading mb-3">Developers</h3>
+      <div class="row">
+        <div class="col-auto pr-0" *ngFor="let route of developerRoutes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/store/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
+      
+      <h3 class="tabHeading mb-3">Publishers</h3>
+      <div class="row">
+        <div class="col-auto pr-0" *ngFor="let route of publisherRoutes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/store/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
+      
     </div>
 
     <div class="col-12 d-flex overflow-auto py-3 d-md-none">

@@ -26,3 +26,29 @@
     flex: 0 0 20% !important;
   }
 }
+
+.bgColor {
+  background-color: #212123;
+  border-radius: 60px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  padding: 2px;
+}
+
+.mutedColor {
+  color: #959595;
+}
+
+.tabHeading {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 34px;
+  color: #FFFFFF;
+}
+
+.activeBG {
+  background: linear-gradient(349.3deg, #A83AFE 0%, #6E59FE 100%);
+  padding: 2px;
+  color: #FFFFFF !important;
+}
