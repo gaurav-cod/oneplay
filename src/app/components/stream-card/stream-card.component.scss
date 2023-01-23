@@ -1,5 +1,4 @@
 .root {
-    width: 290px;
     display: flex;
     flex-direction: column;
     
@@ -29,9 +28,11 @@
     white-space: nowrap;
     display: block;
     padding-left: 70px;
+    padding-right: 80px;
   
     @media (max-width: 768px) {
       padding-left: 32px;
+      padding-right: 70px;
     }
 }
   
@@ -41,10 +42,6 @@
 
 .w290 {
     width: 320px;
-  
-    @media (max-width: 486px) {
-      width: 166px;
-    }
 }
 
 .overflow-auto::-webkit-scrollbar { 

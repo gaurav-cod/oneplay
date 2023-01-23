@@ -252,3 +252,11 @@ input:-internal-autofill-selected {
   border-radius: 10px;
   color: #ffffff;
 }
+
+.field-icon {
+  float: right;
+  left: -15px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+}
