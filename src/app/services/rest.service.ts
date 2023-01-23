@@ -241,6 +241,30 @@ export class RestService {
       .pipe();
   }
 
+  generateQRCode() {
+    return this.http
+      .post<{ code: string; token: string }>(
+        this.r_mix_api + "/accounts/qr/generate",
+        null
+      )
+      .pipe();
+  }
+
+  getQRSession(code: string, token: string) {
+    return this.http
+      .post<{ sessionToken: string }>(
+        this.r_mix_api + "/accounts/qr/get_session",
+        { code, token }
+      )
+      .pipe();
+  }
+
+  setQRSession(code: string, token: string) {
+    return this.http
+      .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
+      .pipe();
+  }
+
   getGameDetails(id: string, params?: any): Observable<GameModel> {
     return this.http
       .get(this.r_mix_api + "/games/" + id + "/info", { params })

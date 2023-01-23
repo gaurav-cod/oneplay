@@ -1,44 +1,92 @@
 <div class="row justify-content-center">
-    <div class="col-lg-9 col-md-11 text-center">     
-        <h1 class="font38 text-white">Enter the code displayed on your TV</h1>
-        <form>
-            <div class="row mt-lg-8 mt-md-7 mt-7 justify-content-center">
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" autofocus />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61 border-bottom-0 mutedColor p-0" value="-" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-                <div class="col-auto p-1">
-                    <input type="text" class="form-control w70h61" />
-                </div>
-            </div>
-            <div class="row mt-lg-8 mt-md-7 mt-7">
-                <div class="col-md-12 text-center">
-                    <button class="btn btn-md pl-4 pr-4 gradientBtn">Enter Code to Continue</button>
-                </div>
-                <div class="col-md-12 mt-5 text-center">
-                    <p class="font20">New to Oneplay? <a href="javascript:void(0)" routerLinkActive="active" [routerLink]="['/qr-login']" class="text-white">Sign up now</a></p>
-                </div>
-            </div>
-        </form>
-    </div>
+  <div class="col-lg-9 col-md-11 text-center">
+    <h1 class="font38 text-white">Enter the code displayed on your TV</h1>
+    <form [formGroup]="codeForm">
+      <div class="row mt-lg-8 mt-md-7 mt-7 justify-content-center">
+        <div class="col-auto p-1">
+          <input
+            formControlName="one"
+            type="number"
+            class="form-control w70h61"
+            autofocus
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="two"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="three"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="four"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <div class="w70h61 border-bottom-0 mutedColor p-0">-</div>
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="five"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="six"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="seven"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+        <div class="col-auto p-1">
+          <input
+            formControlName="eight"
+            type="number"
+            class="form-control w70h61"
+          />
+        </div>
+      </div>
+      <div class="row mt-lg-8 mt-md-7 mt-7">
+        <div class="col-md-12 text-center">
+          <button
+            class="btn btn-md pl-4 pr-4 gradientBtn"
+            [disabled]="codeForm.invalid || loading"
+            (click)="verify()"
+          >
+            Enter Code to Continue
+          </button>
+        </div>
+        <div class="col-md-12 mt-5 text-center">
+          <p class="font20">
+            New to Oneplay?
+            <a
+              href="javascript:void(0)"
+              routerLinkActive="active"
+              [routerLink]="['/qr-login']"
+              class="text-white"
+              >Sign up now</a
+            >
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
