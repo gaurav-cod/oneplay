@@ -154,7 +154,7 @@
               <a
                 href="javascript:void(0)"
                 type="button"
-                class="text-white d-inline readmoreText font16 mt-1"
+                class="muteText d-inline mt-1"
                 (click)="showText()"
               >
                 {{ isReadMore ? "...Read More" : "Read Less" }}
@@ -163,10 +163,10 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="row">
+          <div class="row mt-2 mt-lg-4">
             <div
               *ngIf="game.storesMapping.length"
-              class="col-auto pr-lg-5 mt-5"
+              class="col-auto pr-lg-5 mt-3"
             >
               <p class="font16 font500 muteText">Store</p>
               <a
@@ -184,7 +184,7 @@
                 />
               </a>
             </div>
-            <div class="col mt-5">
+            <div class="col mt-3">
               <p class="font16 font500 muteText">Developer</p>
               <p class="font600 font20 text-white">
                 <span
@@ -197,7 +197,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <p class="font16 font500 muteText mt-5 mb-0">Tags</p>
+              <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
               <span
                 *ngFor="let genre of game.genreMappings"
                 class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pt-1 pb-1 pr-3 mt-3"
@@ -211,7 +211,7 @@
   </div>
 </div>
 
-<div class="pb-6 overflow-hidden">
+<div class="pb-lg-8 pb-5 overflow-hidden">
   <div *ngIf="!!game">
     <div *ngIf="videos.length" class="mt-lg-5 mt-4">
       <app-stream-card

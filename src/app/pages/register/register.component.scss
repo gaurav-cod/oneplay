@@ -35,6 +35,11 @@
   .h60 {
     height: 50px !important;
   }
+
+  .custompaddingLeftRight {
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {

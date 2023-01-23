@@ -327,6 +327,9 @@ input:-webkit-autofill:active {
 
 .paddingtop100 {
   padding-top: 100px;
+  @media (max-width: 500px) {
+    padding-top: 75px;
+  }
 }
 
 .bgBlur {

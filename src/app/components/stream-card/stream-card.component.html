@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="container-fluid">
-    <h2 class="text-white">{{ title }}</h2>
+    <h2 class="text-white pb-4">{{ title }}</h2>
   </div>
 </div>
 
@@ -9,7 +9,7 @@
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="py-4 row scrollGame">
+        <div #container class="row scrollGame">
           <div *ngFor="let video of videos" class="zoom col-auto gameCard w290">
             <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
               <img

@@ -41,9 +41,11 @@
   white-space: nowrap;
   display: block;
   padding-left: 70px;
+  padding-right: 80px;
 
   @media (max-width: 768px) {
     padding-left: 32px;
+    padding-right: 32px;
   }
 }
 
