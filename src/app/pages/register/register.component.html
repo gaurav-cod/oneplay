@@ -34,7 +34,7 @@
                       !registerForm.controls.name.valid &&
                       registerForm.controls.name.touched
                   }"
-                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
+                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   placeholder="Name"
                 />
               </div>
@@ -50,7 +50,7 @@
                       !registerForm.controls.email.valid &&
                       registerForm.controls.email.touched
                   }"
-                  class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
+                  class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   placeholder="example@oneplay.in"
                 />
               </div>
@@ -61,7 +61,7 @@
                 <div class="input-group">
                   <div class="input-group-append">
                     <select
-                      class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
+                      class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                       formControlName="country_code"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
@@ -101,7 +101,7 @@
                         registerForm.controls.password.touched
                     }"
                     formControlName="password"
-                    class="form-control borderRadius0 pl-0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+                    class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   />
                   <span
                     class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput"
@@ -179,13 +179,13 @@
               <div class="col-md-12 mt-4 mb-3">
                 <label class="font16 font500 customOffWhite mb-0"
                   >Referral ID</label
-                ><span class="float-right font16 font500 offWhiteColor"
+                ><span class="float-right font16 font500 mutedColor"
                   >Referral Name</span
                 >
                 <input
                   type="text"
                   formControlName="referred_by_id"
-                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
+                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   name="sampleID"
                   placeholder="sampleID"
                 />
@@ -207,14 +207,14 @@
                           class="anchor"
                           >Cookie Policy</a
                         >
-                        <span class="footerWhiteColor">&</span>
+                        <span class="footerWhiteColor pl-2 pr-2">&</span>
                         <a
                           [href]="domain + '/privacy.html'"
                           target="_blank"
                           class="anchor"
                           >Privacy Policy</a
                         >
-                        <span class="footerWhiteColor">&</span>
+                        <span class="footerWhiteColor pl-2 pr-2">&</span>
                         <a
                           [href]="domain + '/tnc.html'"
                           target="_blank"

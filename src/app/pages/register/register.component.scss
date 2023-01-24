@@ -299,3 +299,7 @@ input:-internal-autofill-selected {
 .tooltip-inner {
   max-width: 100% !important;
 }
+
+.btn:disabled {
+  opacity: 0.4;
+}
