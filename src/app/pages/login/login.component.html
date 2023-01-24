@@ -30,7 +30,7 @@
                   type="email"
                   #emailId
                   formControlName="id"
-                  class="form-control h56 pl-0 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput"
+                  class="form-control h56 pl-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                   name="name"
                   placeholder="example@oneplay.in"
                   size="small"
@@ -44,13 +44,12 @@
                   <input
                     type="password"
                     formControlName="password"
-                    class="form-control pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput"
+                    class="form-control pl-0 h56 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                     name="password"
-                    placeholder="........"
                     #passwordField
                   />
                   <span
-                    class="input-group-text bgTransparent border-start-0 offWhiteColor font20 font500 border-0 border-bottomInput borderRadius0"
+                    class="input-group-text bgTransparent border-start-0 offWhiteColor font16 font500 border-0 border-bottomInput borderRadius0"
                     >
                     <i class="fas fa-eye" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" [ngClass]="(passwordField.type=='password')?' fa-eye-slash':' fa-eye'"></i>
                   </span>
@@ -60,7 +59,7 @@
                 <div class="custom-control custom-switch">
                   <input
                     type="checkbox"
-                    class="custom-control-input font20"
+                    class="custom-control-input font16"
                     id="customCheckLogin"
                     checked
                   />
@@ -89,7 +88,7 @@
                 />
               </div>
               <div class="col-md-12 mt-5 text-center margintop20">
-                <p class="font20 font500 offWhiteColor">
+                <p class="font16 font500 offWhiteColor">
                   Don’t have an account?
                   <span class="purpleGradient"
                     ><a href="javascript:void(0)" [routerLink]="['/register']"
@@ -113,7 +112,7 @@
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-2 mb-4 borderBottom" />
-                      <span class="offWhiteColor font18 font500"
+                      <span class="offWhiteColor font16 font500"
                         >Need help?<span class="purpleGradient"
                           ><a
                             href="https://www.oneplay.in/contact.html"
@@ -125,10 +124,10 @@
                       >
                     </div>
                     <div class="col-12 mt-2">
-                      <p class="font16 font500 footerWhiteColor mb-0">
+                      <p class="font14 font500 footerWhiteColor mb-0">
                         © 2022 RainBox Media Pvt Ltd. All Rights Reserved.
                       </p>
-                      <p class="font16 font500 purpleGradient">
+                      <p class="font14 font500 purpleGradient">
                         <a
                           href="https://www.oneplay.in/privacy.html"
                           target="_blank"
