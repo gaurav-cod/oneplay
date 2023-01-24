@@ -34,7 +34,7 @@
                       !registerForm.controls.name.valid &&
                       registerForm.controls.name.touched
                   }"
-                  class="form-control borderRadius0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0"
+                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
                   placeholder="Name"
                 />
               </div>
@@ -50,7 +50,7 @@
                       !registerForm.controls.email.valid &&
                       registerForm.controls.email.touched
                   }"
-                  class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0"
+                  class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
                   placeholder="example@oneplay.in"
                 />
               </div>
@@ -61,7 +61,7 @@
                 <div class="input-group">
                   <div class="input-group-append">
                     <select
-                      class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0"
+                      class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
                       formControlName="country_code"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
@@ -77,7 +77,7 @@
                         !registerForm.controls.phone.valid &&
                         registerForm.controls.phone.touched
                     }"
-                    class="form-control h56 offWhiteColor borderRadius0 bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-2"
+                    class="form-control h56 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-2"
                     placeholder="9999999999"
                   />
                 </div>
@@ -101,7 +101,7 @@
                         registerForm.controls.password.touched
                     }"
                     formControlName="password"
-                    class="form-control borderRadius0 pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput"
+                    class="form-control borderRadius0 pl-0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   />
                   <span
                     class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput"
@@ -185,7 +185,7 @@
                 <input
                   type="text"
                   formControlName="referred_by_id"
-                  class="form-control borderRadius0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 border-bottomInput pl-0"
+                  class="form-control borderRadius0 h56 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-0"
                   name="sampleID"
                   placeholder="sampleID"
                 />
@@ -197,10 +197,10 @@
                   </div>
                   <div class="col">
                     <label for="customCheckRegister">
-                      <p class="font16 font500 footerWhiteColor mb-0">
+                      <p class="font14 font500 footerWhiteColor mb-0">
                         By signing up, you agree to OnePlay’s
                       </p>
-                      <p class="font16 font500 gradientAnchor mb-0">
+                      <p class="font14 font500 gradientAnchor mb-0">
                         <a
                           [href]="domain + '/privacy.html'"
                           target="_blank"
@@ -250,7 +250,7 @@
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-2 mb-4 borderBottom" />
-                      <span class="offWhiteColor font18 font500"
+                      <span class="offWhiteColor font16 font500"
                         >Need help?<span class="purpleGradient"
                           ><a
                             href="https://www.oneplay.in/contact.html"
@@ -262,23 +262,8 @@
                       >
                     </div>
                     <div class="col-12 mt-2">
-                      <p class="font16 font500 footerWhiteColor mb-0">
+                      <p class="font14 font500 footerWhiteColor mb-0">
                         © 2022 RainBox Media Pvt Ltd. All Rights Reserved.
-                      </p>
-                      <p class="font16 font500 purpleGradient">
-                        <a
-                          href="https://www.oneplay.in/privacy.html"
-                          target="_blank"
-                          class="anchor"
-                          >Privacy Policy</a
-                        >
-                        <span class="footerWhiteColor">.</span>
-                        <a
-                          href="https://www.oneplay.in/tnc.html"
-                          target="_blank"
-                          class="anchor"
-                          >Terms & Conditions</a
-                        >
                       </p>
                     </div>
                   </div>

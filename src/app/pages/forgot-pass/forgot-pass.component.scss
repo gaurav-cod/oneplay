@@ -176,8 +176,21 @@
 .inputFocus:focus {
   background-color: transparent;
   box-shadow: none;
-  color: #DCDCDC !important;
-  
+  color: #DCDCDC !important; 
+}
+
+
+.inputFocus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #8898aa !important;
+  opacity: 0.5; /* Firefox */
+}
+
+.inputFocus:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #8898aa !important;
+}
+
+.inputFocus::-ms-input-placeholder { /* Microsoft Edge */
+  color: #8898aa !important;
 }
 
 input:-webkit-autofill,
