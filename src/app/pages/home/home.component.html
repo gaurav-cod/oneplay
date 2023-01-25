@@ -82,47 +82,24 @@
 <div class="container-fluid customFluid pt-3 d-none d-md-block">
   <div class="row justify-content-center mt-5">
     <div class="col-auto">
-      <div class="btn-group btn-group-toggle multiBtn" data-toggle="buttons">
-        <label class="btn btn-outline-light custombtn active mr-3">
-          <input
-            type="radio"
-            name="options"
-            id="Play"
-            autocomplete="off"
-            checked
-          />
-          <span class="font18">Free to Play</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input type="radio" name="options" id="RPG" autocomplete="off" />
-          <span class="font18">RPG</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input type="radio" name="options" id="Shooter" autocomplete="off" />
-          <span class="font18">Shooter</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input
-            type="radio"
-            name="options"
-            id="Multiplayer"
-            autocomplete="off"
-          />
-          <span class="font18">Multiplayer</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input type="radio" name="options" id="Co-op" autocomplete="off" />
-          <span class="font18">Co-op</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input type="radio" name="options" id="Indie" autocomplete="off" />
-          <span class="font18">Indie</span>
-        </label>
-        <label class="btn btn-outline-light custombtn mr-3">
-          <input type="radio" name="options" id="Racing" autocomplete="off" />
-          <span class="font18">Racing</span>
-        </label>
-      </div>
+      <a
+        href="javascript:void(0)"
+        class="card bg-dark bgColor mb-3 mutedColor"
+        routerLinkActive="activeBG"
+        [routerLink]="['/home']"
+      >
+        <div class="pt-3 pb-3 pl-4 pr-4 bgColor">For You</div>
+      </a>
+    </div>
+    <div class="col-auto" *ngFor="let route of routes">
+      <a
+        href="javascript:void(0)"
+        class="card bg-dark bgColor mb-3 mutedColor"
+        routerLinkActive="activeBG"
+        [routerLink]="['/home' + route]"
+      >
+        <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+      </a>
     </div>
   </div>
 </div>

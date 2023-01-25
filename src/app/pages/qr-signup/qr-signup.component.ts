@@ -35,7 +35,7 @@ export class QrSignupComponent implements OnInit {
     this.generateCode();
   }
 
-  tvURL = environment.domain + "/tv";
+  tvURL = environment.domain + "/dashboard/tv";
 
   get qrCodeWidth() {
     if (window.innerWidth > 986) {

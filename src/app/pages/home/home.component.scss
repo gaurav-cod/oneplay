@@ -78,7 +78,12 @@
 }
 
 .playnowbtn {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 58.85%, rgba(0, 0, 0, 0.52) 79.17%, rgba(0, 0, 0, 0.8) 100%)
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 58.85%,
+    rgba(0, 0, 0, 0.52) 79.17%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
 }
 
 .overflow-auto {
@@ -117,9 +122,9 @@
   }
 }
 
-@media  (max-width: 1025px) {
+@media (max-width: 1025px) {
   .customWidth {
-    width: 20%!important;
+    width: 20% !important;
   }
 
   .customWidth1 {
@@ -127,20 +132,17 @@
   }
 }
 
-.multiBtn {
-  overflow: scroll;
-  white-space: nowrap;
-  display:block;
-}
-
-.multiBtn label {
-  display: inline-block;
-  float: none;
-}
-
-.font18 {
+.bgColor {
+  background-color: #212123;
+  border-radius: 60px;
+  font-weight: 500;
   font-size: 18px;
   line-height: 20px;
-  letter-spacing: 0.02em;
-  font-weight: 500;
+  padding: 2px;
+}
+
+.activeBG {
+  background: linear-gradient(349.3deg, #a83afe 0%, #6e59fe 100%);
+  padding: 2px;
+  color: #ffffff !important;
 }

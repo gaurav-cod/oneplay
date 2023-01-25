@@ -25,6 +25,21 @@ export class HomeComponent implements OnInit, OnDestroy {
   private feedSubscription: Subscription;
   private userSubscription: Subscription;
 
+  private queries = {
+    "Free to Play": {
+      is_free: "true",
+    },
+    Action: { genres: "Action" },
+    Adventure: { genres: "Adventure" },
+    Casual: { genres: "Casual" },
+    RPG: { genres: "RPG" },
+    Racing: { genres: "Racing" },
+  };
+
+  get routes() {
+    return Object.keys(this.queries);
+  }
+
   get showNavigation(): boolean {
     return window.innerWidth < 768;
   }
@@ -70,7 +85,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
-      this.wishlist = ids
+      this.wishlist = ids;
       this.restService
         .getWishlistGames(ids)
         .subscribe((games) => (this.library = games));
