@@ -1,5 +1,5 @@
 <div
-  class="container-fluid paddingtop100"
+  class="container-fluid paddingtop100 pb-3"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
   <ngb-carousel
@@ -13,11 +13,11 @@
   >
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
       <div class="row">
-        <div class="col p-2 overflow-hidden">
+        <div class="col p-lg-2 p-1 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
-              <div class="col-auto w-25 p-2 customWidth">
-                <div class="card bgTransparent border-0 borderRadius10 mr-3">
+              <div class="col-auto w-25 p-lg-2 p-1 customWidth">
+                <div class="card bgTransparent border-0 borderRadius10 mr-2">
                   <img
                     class="card-img borderRadius10 height40vh left-img"
                     [src]="
@@ -29,7 +29,7 @@
                   <div class="card-img-overlay playnowbtn"></div>
                 </div>
               </div>
-              <div class="col-auto w-50 p-2 customWidth1">
+              <div class="col-auto w-50 p-lg-2 p-1 customWidth1">
                 <div class="card bgTransparent border-0 borderRadius10">
                   <img
                     class="card-img borderRadius10 height40vh center-img"
@@ -39,8 +39,8 @@
                   <div class="card-img-overlay playnowbtn"></div>
                 </div>
               </div>
-              <div class="col-auto w-25 p-2 customWidth">
-                <div class="card bgTransparent border-0 borderRadius10 ml-3">
+              <div class="col-auto w-25 p-lg-2 p-1 customWidth">
+                <div class="card bgTransparent border-0 borderRadius10 ml-2">
                   <img
                     class="card-img borderRadius10 height40vh right-img"
                     [src]="
@@ -79,7 +79,7 @@
   </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid pt-3 d-none d-md-block">
+<div class="container-fluid customFluid pt-3 pb-4 d-none d-md-block">
   <div class="row justify-content-center mt-5">
     <div class="col-auto">
       <a
@@ -106,11 +106,13 @@
 
 <div class="pb-6">
   <div class="mb-0">
-    <app-similar-games
-      *ngIf="library.length != 0"
-      [title]="'My Library'"
-      [games]="library"
-    ></app-similar-games>
+    <div class="pb-lg-3 pb-0">
+      <app-similar-games
+        *ngIf="library.length != 0"
+        [title]="'My Library'"
+        [games]="library"
+      ></app-similar-games>
+    </div>
     <app-similar-games
       *ngFor="let row of restRows"
       [title]="row.title"

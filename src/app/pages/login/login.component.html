@@ -30,7 +30,7 @@
                   type="email"
                   #emailId
                   formControlName="id"
-                  class="form-control h56 pl-0 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput"
+                  class="form-control h56 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                   name="name"
                   placeholder="example@oneplay.in"
                   size="small"
@@ -44,24 +44,22 @@
                   <input
                     type="password"
                     formControlName="password"
-                    class="form-control pl-0 h56 offWhiteColor bgTransparent inputFocus font20 font500 border-0 borderRadius0 border-bottomInput"
+                    class="form-control h56 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                     name="password"
-                    placeholder="........"
+                    #passwordField
                   />
                   <span
-                    class="input-group-text bgTransparent border-start-0 offWhiteColor font20 font500 border-0 border-bottomInput borderRadius0"
-                    ><img
-                      src="assets/img/singup-login/View_blocked.svg"
-                      class="img-fluid me-2"
-                      alt="india"
-                  /></span>
+                    class="input-group-text bgTransparent border-start-0 offWhiteColor font16 font500 border-0 border-bottomInput borderRadius0"
+                    >
+                    <i class="fas fa-eye" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" [ngClass]="(passwordField.type=='password')?' fa-eye-slash':' fa-eye'"></i>
+                  </span>
                 </div>
               </div>
               <div class="col-md-6 col-6 mt-5 custom align-self-center pr-0">
                 <div class="custom-control custom-switch">
                   <input
                     type="checkbox"
-                    class="custom-control-input font20"
+                    class="custom-control-input font16"
                     id="customCheckLogin"
                     checked
                   />
@@ -98,14 +96,15 @@
                     ></span
                   >
                 </p>
-                <div *ngIf="isTV" class="row">
+                <div class="row">
                   <div class="col-12 mt-3">
                       <a
                         href="javascript:void(0)"
                         [routerLink]="['/qr-login']"
-                        class="btn btn-block btnGradient"
-                        >Sign In with Web</a
+                        class="btn btn-block btn-lg borderRadius10 font16 font500 btnGradient"
                       >
+                        <span className="align-middle">Sign In with Web</span>
+                      </a>
                   </div>
                 </div>
               </div>
@@ -114,7 +113,7 @@
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-2 mb-4 borderBottom" />
-                      <span class="offWhiteColor font18 font500"
+                      <span class="offWhiteColor font16 font500"
                         >Need help?<span class="purpleGradient"
                           ><a
                             href="https://www.oneplay.in/contact.html"
@@ -126,10 +125,10 @@
                       >
                     </div>
                     <div class="col-12 mt-2">
-                      <p class="font16 font500 footerWhiteColor mb-0">
+                      <p class="font14 font500 footerWhiteColor mb-0">
                         © 2022 RainBox Media Pvt Ltd. All Rights Reserved.
                       </p>
-                      <p class="font16 font500 purpleGradient">
+                      <p class="font14 font500 purpleGradient">
                         <a
                           href="https://www.oneplay.in/privacy.html"
                           target="_blank"
