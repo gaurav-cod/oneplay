@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { Subscription } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
-import { RestService } from 'src/app/services/rest.service';
-import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from "@angular/core";
+import { NgxUiLoaderService } from "ngx-ui-loader";
+import { Subscription } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
+import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
 
 declare var gtag: Function;
 
 @Component({
-  selector: 'app-qr-signup',
-  templateUrl: './qr-signup.component.html',
-  styleUrls: ['./qr-signup.component.scss']
+  selector: "app-qr-signup",
+  templateUrl: "./qr-signup.component.html",
+  styleUrls: ["./qr-signup.component.scss"],
 })
 export class QrSignupComponent implements OnInit {
-  public signInQrCode: string = '';
-  public code: string = '';
+  public signInQrCode: string = "";
+  public code: string = "";
 
   private generateCodeSubscription: Subscription;
   private getSessionSubscription: Subscription;
+  private mounted: boolean;
 
   constructor(
     private readonly restService: RestService,
@@ -27,16 +28,18 @@ export class QrSignupComponent implements OnInit {
   ) {}
 
   ngOnDestroy(): void {
+    this.mounted = false;
     this.generateCodeSubscription?.unsubscribe();
     this.getSessionSubscription?.unsubscribe();
   }
-
+  
   ngOnInit(): void {
+    this.mounted = true;
     this.generateCode();
   }
-
+  
   tvURL = environment.domain + "/dashboard/tv";
-
+  
   get qrCodeWidth() {
     if (window.innerWidth > 986) {
       return 200;
@@ -44,13 +47,17 @@ export class QrSignupComponent implements OnInit {
       return 130;
     }
   }
-
+  
   private generateCode() {
+    if (!this.mounted) {
+      return;
+    }
     this.loaderService.start();
+    this.generateCodeSubscription?.unsubscribe();
     this.generateCodeSubscription = this.restService
-      .generateQRCode()
-      .subscribe({
-        next: ({ code, token }) => {
+    .generateQRCode()
+    .subscribe({
+      next: ({ code, token }) => {
           this.loaderService.stop();
           this.signInQrCode = this.tvURL + "?code=" + code;
           this.code = code;
@@ -70,11 +77,15 @@ export class QrSignupComponent implements OnInit {
           });
         },
       });
-  }
-
-  private loginWithSession(code: string, token: string) {
-    const startTime = Date.now();
-    this.getSessionSubscription = this.restService
+    }
+    
+    private loginWithSession(code: string, token: string) {
+      if (!this.mounted) {
+        return;
+      }
+      const startTime = Date.now();
+      this.getSessionSubscription?.unsubscribe();
+      this.getSessionSubscription = this.restService
       .getQRSession(code, token)
       .subscribe({
         next: ({ sessionToken }) => {
