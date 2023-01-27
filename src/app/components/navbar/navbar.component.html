@@ -1,5 +1,5 @@
 <nav
-  class="navbar navbar-expand-lg navbar-dark sticky-top pt-lg-4"
+  class="navbar navbar-expand-lg navbar-dark navbarBg sticky-top pt-lg-4"
   id="navbar-main"
 >
   <div class="container p-0">
@@ -194,20 +194,24 @@
               ngbTooltip="{{ gamePlayTooltip }}"
             >
               <img
+                *ngIf="isGameRunning"
                 src="assets/img/Dashboard/Speedtest.svg"
                 class="img-fluid"
                 alt=""
                 aria-hidden="true"
-                [ngClass]="{
-                  'text-success': isGameRunning,
-                  'text-muted': !isGameRunning
-                }"
+              />
+              <img
+                *ngIf="!isGameRunning"
+                src="assets/img/Dashboard/inactiveGame.svg"
+                class="img-fluid"
+                alt=""
+                aria-hidden="true"
               />
               <span *ngIf="isUserLive" id="live">LIVE</span>
             </a>
           </div>
           <!-- notifications dropdown -->
-          <div
+          <!-- <div
             class="col-auto align-self-center p-1"
             ngbDropdown
             placement="bottom-rigth"
@@ -243,7 +247,7 @@
                 <div class="notification-content"></div>
               </a>
             </div>
-          </div>
+          </div> -->
           <div
             class="col-auto align-self-center p-1 pr-3 pr-lg-1"
             ngbDropdown
@@ -293,7 +297,7 @@
               </a>
 
               <div class="dropdown-divider borderColor"></div>
-              <a [href]="domain + '/download.html'" class="dropdown-item">
+              <a [href]="domain + '/download.html'" class="dropdown-item d-none d-sm-inline">
                 <i class="ni ni-cloud-download-95"></i>
                 <span>Downloads</span>
               </a>
@@ -324,36 +328,38 @@
 </nav>
 
 <ng-template #share let-d="dismiss">
-  <div class="modal-content position-relative">
+  <div class="modal-content modalBG position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--5 right--6"
-      style="padding: 16px 20px"
+      class="position-absolute btn btn-github rounded-circle top--4 right-0"
+      style="padding: 5px 10px;"
       (click)="d('Cross click')"
     >
-      <i class="fas fa-times" style="font-size: 24px"></i>
+      <i class="fas fa-times" style="font-size: 20px"></i>
     </a>
     <div class="modal-body">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-12">
-          <h2 class="text-dark mb-4">Share/Copy Referral Link</h2>
+          <h2 class="customWhite mb-4">Share/Copy Referral Link</h2>
+        </div>
+        <div class="col">
+          <share-buttons
+            [url]="link"
+            [include]="[
+              'facebook',
+              'twitter',
+              'linkedin',
+              'telegram',
+              'messenger',
+              'whatsapp',
+              'email',
+              'copy'
+            ]"
+            theme="material-dark"
+            show="11"
+          ></share-buttons>
         </div>
       </div>
-      <share-buttons
-        [url]="link"
-        [include]="[
-          'facebook',
-          'twitter',
-          'linkedin',
-          'telegram',
-          'messenger',
-          'whatsapp',
-          'email',
-          'copy'
-        ]"
-        theme="material-dark"
-        show="11"
-      ></share-buttons>
     </div>
   </div>
 </ng-template>

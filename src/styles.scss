@@ -171,11 +171,11 @@ body {
 }
 
 .lightBg {
-  background-color: #151515 !important;
+  background-color: #212123 !important;
 }
 
 .lightBg:focus {
-  background-color: #151515 !important;
+  background-color: #212123 !important;
   box-shadow: none;
 }
 
@@ -696,4 +696,8 @@ input[type="checkbox"] {
   &:focus {
     opacity: 1 !important;
   }
+}
+
+.btn-github {
+  background-color: #151617 !important;
 }

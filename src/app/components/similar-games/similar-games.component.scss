@@ -24,8 +24,8 @@
 }
 
 .h80 {
-  height: 75%;
-  margin-top: 21px;
+  height: 82%;
+  margin-top: 16px;
 }
 
 .padding-right-0 {
@@ -59,4 +59,8 @@
   @media (max-width: 486px) {
     width: 166px;
   }
+}
+
+.borderRadius15 {
+  border-radius: 15px !important;
 }
