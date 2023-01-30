@@ -66,10 +66,10 @@
                     <ngx-ui-loader
                       [fgsColor]="'#c32ead'"
                       [hasProgressBar]="false"
-                      [fgsSize]="20"
+                      [fgsSize]="14"
                       [fgsPosition]="'center-left'"
                       [text]="'Initializing...'"
-                      [overlayBorderRadius]="'6px'"
+                      [overlayBorderRadius]="'90px'"
                       [loaderId]="'play-loader'"
                     ></ngx-ui-loader>
                     {{ !startingGame ? action + " Now" : "" }}
@@ -83,10 +83,10 @@
                     <ngx-ui-loader
                       [fgsColor]="'#c32ead'"
                       [hasProgressBar]="false"
-                      [fgsSize]="20"
+                      [fgsSize]="14"
                       [fgsPosition]="'center-left'"
                       [text]="'Terminating...'"
-                      [overlayBorderRadius]="'6px'"
+                      [overlayBorderRadius]="'90px'"
                       [loaderId]="'terminate-loader'"
                     ></ngx-ui-loader>
                     {{ !terminatingGame ? "Terminate" : "" }}
@@ -197,7 +197,7 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
+              <p class="font16 font500 muteText mt-lg-3 mt-1 mb-0">Tags</p>
               <span
                 *ngFor="let genre of game.genreMappings"
                 class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pt-1 pb-1 pr-3 mt-3"
@@ -315,7 +315,7 @@
             </p>
           </div>
         </div>
-        <div class="col-12 text-center mt-2">
+        <div class="col-12 text-center mt-2 d-none d-sm-inline">
           <p class="garadientColor">
             <i class="fa fa-download"></i>
             <span class="ml-2">

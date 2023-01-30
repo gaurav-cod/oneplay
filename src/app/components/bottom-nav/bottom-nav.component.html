@@ -27,14 +27,18 @@
       ngbTooltip="{{ gamePlayTooltip }}"
     >
       <img
+        *ngIf="isGameRunning"
         src="assets/img/Dashboard/Speedtest.svg"
         class="img-fluid"
         alt=""
         aria-hidden="true"
-        [ngClass]="{
-          'text-success': isGameRunning,
-          'text-muted': !isGameRunning
-        }"
+      />
+      <img
+        *ngIf="!isGameRunning"
+        src="assets/img/Dashboard/inactiveGame.svg"
+        class="img-fluid"
+        alt=""
+        aria-hidden="true"
       />
       <span *ngIf="isUserLive" id="live">LIVE</span>
     </a>
@@ -61,19 +65,19 @@
 </nav>
 
 <ng-template #share let-d="dismiss">
-  <div class="modal-content position-relative">
+  <div class="modal-content modalBG position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--5 right--6"
-      style="padding: 16px 20px"
+      class="position-absolute btn btn-github rounded-circle top--4 right-0"
+      style="padding: 5px 10px;"
       (click)="d('Cross click')"
     >
-      <i class="fas fa-times" style="font-size: 24px"></i>
+      <i class="fas fa-times" style="font-size: 20px"></i>
     </a>
     <div class="modal-body">
-      <div class="row">
+      <div class="row justify-content-center">
         <div class="col-12">
-          <h2 class="text-dark mb-4">Share/Copy Referral Link</h2>
+          <h2 class="mb-4 customWhite">Share/Copy Referral Link</h2>
         </div>
       </div>
       <share-buttons
