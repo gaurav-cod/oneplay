@@ -12,6 +12,7 @@ export const environment = {
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
   ga_tracking_id: "UA-220923953-2",
   oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
+  webrtc_domain: "https://remote.dev.thinkmay.net",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",

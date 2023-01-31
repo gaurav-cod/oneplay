@@ -535,7 +535,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               });
               setTimeout(() => {
                 this._launchModalRef?.close();
-              }, 10000);
+              }, 30000);
               this.gameService.gameStatus = this.restService.getGameStatus();
             }, 3000);
           } else {
@@ -642,5 +642,12 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   showText() {
     this.isReadMore = !this.isReadMore;
+  }
+
+  launchWebRTC() {
+    window.open(
+      `${environment.webrtc_domain}/?token={token}&fps=55&resolution=&bitrate=10000`,
+      "_blank"
+    );
   }
 }
