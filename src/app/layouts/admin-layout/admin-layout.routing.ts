@@ -12,10 +12,11 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'settings',         component: UserProfileComponent },
-    { path: 'settings/:tab',    component: UserProfileComponent },
+    { path: 'settings',             component: UserProfileComponent },
+    { path: 'settings/:tab',        component: UserProfileComponent },
     { path: 'icons',                component: IconsComponent },
     { path: 'home',                 component: HomeComponent },
+    { path: 'home/:filter',         component: HomeComponent },
     { path: 'store',                component: StoreComponent },
     { path: 'store/:filter',        component: StoreComponent },
     { path: 'view/:id',             component: ViewComponent },

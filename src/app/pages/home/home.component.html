@@ -85,7 +85,7 @@
       <a
         href="javascript:void(0)"
         class="card bg-dark bgColor mb-3 mutedColor"
-        routerLinkActive="activeBG"
+        [ngClass]="{activeBG: !genreSelected}"
         [routerLink]="['/home']"
       >
         <div class="pt-3 pb-3 pl-4 pr-4 bgColor">For You</div>
@@ -96,7 +96,7 @@
         href="javascript:void(0)"
         class="card bg-dark bgColor mb-2 mutedColor"
         routerLinkActive="activeBG"
-        [routerLink]="['/home' + route]"
+        [routerLink]="['/home/' + route]"
       >
         <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
       </a>
@@ -106,6 +106,12 @@
 
 <div class="pb-6">
   <div class="mb-0">
+    <div *ngIf="genreSelected && genreGames.length > 0" class="pb-lg-3 pb-0">
+      <app-similar-games
+        [title]="genreSelected"
+        [games]="genreGames"
+      ></app-similar-games>
+    </div>
     <div class="pb-lg-3 pb-0">
       <app-similar-games
         *ngIf="library.length != 0"
@@ -113,11 +119,13 @@
         [games]="library"
       ></app-similar-games>
     </div>
-    <app-similar-games
-      *ngFor="let row of restRows"
-      [title]="row.title"
-      [games]="row.games"
-    ></app-similar-games>
+    <ng-container *ngIf="!genreSelected">
+      <app-similar-games
+        *ngFor="let row of restRows"
+        [title]="row.title"
+        [games]="row.games"
+      ></app-similar-games>
+    </ng-container>
   </div>
 </div>
 

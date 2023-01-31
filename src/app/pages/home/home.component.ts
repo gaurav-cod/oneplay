@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { ActivatedRoute } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
@@ -19,11 +20,15 @@ export class HomeComponent implements OnInit, OnDestroy {
   restRows: GameFeedModel[] = [];
   loadingWishlist = false;
   library: GameModel[] = [];
+  genreGames: GameModel[] = [];
+  genreSelected: string = '';
 
   private wishlist: string[] = [];
   private wishlistSubscription: Subscription;
   private feedSubscription: Subscription;
   private userSubscription: Subscription;
+  private gameFilterSubscription: Subscription;
+  private paramsSubscription: Subscription;
 
   private queries = {
     "Free to Play": {
@@ -52,24 +57,44 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly loaderService: NgxUiLoaderService,
+    private readonly route: ActivatedRoute,
     private readonly title: Title
   ) {}
 
   ngOnDestroy(): void {
-    this.wishlistSubscription.unsubscribe();
-    this.feedSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
+    this.wishlistSubscription?.unsubscribe();
+    this.feedSubscription?.unsubscribe();
+    this.userSubscription?.unsubscribe();
+    this.gameFilterSubscription?.unsubscribe();
+    this.paramsSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
     this.title.setTitle("Home");
     this.loaderService.start();
-    this.feedSubscription = this.restService.getHomeFeed().subscribe((res) => {
-      const games = res.games.filter((g) => g.games.length > 0);
-      this.firstRow = games[0];
-      this.restRows = games.slice(1);
-      document.body.click();
-      this.loaderService.stop();
+    this.paramsSubscription = this.route.params.subscribe({
+      next: (params) => {
+        this.feedSubscription?.unsubscribe();
+        this.gameFilterSubscription?.unsubscribe();
+        const query = params.filter;
+        if (!query) {
+          this.genreSelected = '';
+        } else {
+          this.genreSelected = query;
+          this.gameFilterSubscription = this.restService
+          .getFilteredGames(this.queries[query], 0)
+          .subscribe((games) => (this.genreGames = games));
+        }
+        this.feedSubscription = this.restService
+          .getHomeFeed()
+          .subscribe((res) => {
+            const games = res.games.filter((g) => g.games.length > 0);
+            this.firstRow = games[0];
+            this.restRows = games.slice(1);
+            document.body.click();
+            this.loaderService.stop();
+          });
+      },
     });
     this.userSubscription = this.authService.user.subscribe((user) => {
       if (user.status !== "active") {
