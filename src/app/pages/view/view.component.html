@@ -59,8 +59,10 @@
                 </div>
                 <div class="col-auto align-self-center fullWidthBtn">
                   <button
+                    *ngIf="!terminatingGame"
                     class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
                     [disabled]="startingGame || game.status === 'unlive'"
+                    [ngClass]="{'hide-text': startingGame}"
                     (click)="playGame(smallModal)"
                   >
                     <ngx-ui-loader
@@ -72,12 +74,13 @@
                       [overlayBorderRadius]="'90px'"
                       [loaderId]="'play-loader'"
                     ></ngx-ui-loader>
-                    {{ !startingGame ? action + " Now" : "" }}
+                    {{ !startingGame ? action + " Now" : "Initializing..." }}
                   </button>
                   <button
-                    *ngIf="action !== 'Play'"
+                    *ngIf="action !== 'Play' && !startingGame"
                     class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
                     [disabled]="terminatingGame"
+                    [ngClass]="{'hide-text': terminatingGame}"
                     (click)="terminateSession()"
                   >
                     <ngx-ui-loader
@@ -89,7 +92,7 @@
                       [overlayBorderRadius]="'90px'"
                       [loaderId]="'terminate-loader'"
                     ></ngx-ui-loader>
-                    {{ !terminatingGame ? "Terminate" : "" }}
+                    {{ !terminatingGame ? "Terminate" : "Terminating..." }}
                   </button>
                 </div>
                 <div class="col-auto d-none d-sm-block align-self-center">
@@ -719,6 +722,19 @@
           >
             Download client
             <i class="fas fa-download ml-2"></i>
+          </a>
+        </div>
+        <div class="col-12 mb-2">
+          <code class="text-gray-dark">OR,</code>
+        </div>
+        <div class="col-12">
+          <a
+            href="javascript:void(0)"
+            class="btn btn-link btn-block text-info"
+            (click)="launchWebRTC()"
+          >
+            Play on browser
+            <i class="fas fa-globe ml-2"></i>
           </a>
         </div>
       </div>
