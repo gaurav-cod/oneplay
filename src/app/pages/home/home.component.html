@@ -80,26 +80,30 @@
 </div>
 
 <div class="container-fluid customFluid pt-3 pb-3 d-none d-md-block">
-  <div class="row justify-content-center mt-lg-4 mt-3">
+  <div class="row justify-content-center">
     <div class="col-auto">
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark bgColor mb-3 mutedColor"
-        [ngClass]="{activeBG: !genreSelected}"
-        [routerLink]="['/home']"
-      >
-        <div class="pt-3 pb-3 pl-4 pr-4 bgColor">For You</div>
-      </a>
-    </div>
-    <div class="col-auto" *ngFor="let route of routes">
-      <a
-        href="javascript:void(0)"
-        class="card bg-dark bgColor mb-2 mutedColor"
-        routerLinkActive="activeBG"
-        [routerLink]="['/home/' + route]"
-      >
-        <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
-      </a>
+      <div class="row justify-content-center mt-lg-4 mt-3 scrolltab">
+        <div class="col-auto px-2 tabOptions">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-3 mutedColor"
+            [ngClass]="{activeBG: !genreSelected}"
+            [routerLink]="['/home']"
+          >
+            <div class="pt-3 pb-3 pl-5 pr-5 bgColor">For You</div>
+          </a>
+        </div>
+        <div class="col-auto px-2 tabOptions" *ngFor="let route of routes">
+          <a
+            href="javascript:void(0)"
+            class="card bg-dark bgColor mb-2 mutedColor"
+            routerLinkActive="activeBG"
+            [routerLink]="['/home/' + route]"
+          >
+            <div class="pt-3 pb-3 pl-5 pr-5 bgColor">{{ route }}</div>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
