@@ -7,13 +7,13 @@
 
 @media (max-width: 548px) {
   .font38 {
-    font-size: 28px !important;
-    line-height: 38px !important;
+    font-size: 23px !important;
+    line-height: 33px !important;
   }
 
   .font20 {
-    font-size: 14px !important;
-    line-height: 24px !important;
+    font-size: 16px !important;
+    line-height: 26px !important;
   }
 
   .margintop20 {
@@ -39,6 +39,11 @@
 
   .h60 {
     height: 50px !important;
+  }
+
+  .font18 {
+    font-size: 16px;
+    line-height: 26px;
   }
 }
 
@@ -149,6 +154,10 @@
 .font16 {
   font-size: 16px !important;
   line-height: 26px !important;
+  @media (max-width: 500px) {
+    font-size: 14px;
+    line-height: 21px;
+  }
 }
 
 
@@ -271,4 +280,8 @@ input:-internal-autofill-selected {
   margin-top: -25px;
   position: relative;
   z-index: 2;
+}
+
+.font800 {
+  font-weight: 800 !important;
 }
