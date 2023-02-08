@@ -101,6 +101,16 @@ export interface ClientTokenRO {
   msg: string;
 }
 
+export interface WebPlayTokenRO {
+  code: number;
+  data: {
+    service?: "running" | "stopped";
+    token?: string;
+  };
+  msg: string;
+  status: "success" | "fail";
+}
+
 export interface ILocation {
   ip: string;
   city: string;

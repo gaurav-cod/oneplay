@@ -17,6 +17,7 @@ import {
   StartGameRO,
   UpdateProfileDTO,
   VerifySignupDTO,
+  WebPlayTokenRO,
 } from "../interface";
 import { FriendModel } from "../models/friend.model";
 import { GameModel } from "../models/game.model";
@@ -283,14 +284,19 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new UserModel(d))));
   }
 
-  search(query: string, page: number, limit: number, status?: "live"|"unlive"): Observable<GameSearch> {
-    const params = { query, page, limit }
-    if(status) {
-      params['status'] = status
+  search(
+    query: string,
+    page: number,
+    limit: number,
+    status?: "live" | "unlive"
+  ): Observable<GameSearch> {
+    const params = { query, page, limit };
+    if (status) {
+      params["status"] = status;
     }
     return this.http
       .get<any[]>(this.r_mix_api + "/games/search", {
-        params
+        params,
       })
       .pipe(map((res) => new GameSearch(res)));
   }
@@ -650,6 +656,19 @@ export class RestService {
       .post<string>(this.client_api + "/get_session", formData)
       .pipe(
         map((res) => res["data"]),
+        catchError((err) => {
+          throw new Error(err.error.message);
+        })
+      );
+  }
+
+  getWebPlayToken(sessionId: string): Observable<WebPlayTokenRO> {
+    const formData = new FormData();
+    formData.append("session_id", sessionId);
+    return this.http
+      .post<WebPlayTokenRO>(this.client_api + "/get_web_play_token", formData)
+      .pipe(
+        map((res) => res),
         catchError((err) => {
           throw new Error(err.error.message);
         })

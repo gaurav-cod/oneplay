@@ -83,6 +83,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _advancedModalRef: NgbModalRef;
   private _gamepads: Gamepad[] = [];
   private _clientTokenSubscription: Subscription;
+  private _webplayTokenSubscription: Subscription;
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
 
@@ -158,6 +159,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._launchModalRef?.close();
     this._advancedModalRef?.close();
     this._clientTokenSubscription?.unsubscribe();
+    this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._gameStatusSubscription?.unsubscribe();
   }
@@ -478,6 +480,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                 keyboard: false,
               }
             );
+            this.sessionToTerminate = data.data.session.id;
             this.startGameWithClientToken(data.data.session.id);
           } else if (data.data.api_action === "call_terminate") {
             this.terminateGame(data.data.session.id);
@@ -568,6 +571,52 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
+  startGameWithWebRTCToken(count = 0): void {
+    if (count === 0) {
+      this.loaderService.start();
+    } else if (count > 2) {
+      this.loaderService.stop();
+      Swal.fire({
+        title: "Opps...",
+        text: "Something went wrong",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    const startTime = new Date().getTime();
+
+    this._gameStatusSubscription?.unsubscribe();
+
+    this._gameStatusSubscription = this.restService
+      .getWebPlayToken(this.sessionToTerminate)
+      .subscribe(
+        (res) => {
+          if (res.data.service === "running" && !!res.data.token) {
+            this.launchWebRTC(res.data.token);
+            this.loaderService.stop();
+          } else {
+            const timeTaken = new Date().getTime() - startTime;
+            if (timeTaken >= 2000) {
+              this.startGameWithWebRTCToken(count + 1);
+            } else {
+              setTimeout(() => this.startGameWithWebRTCToken(count + 1), 1000);
+            }
+          }
+        },
+        (err) => {
+          this.loaderService.stop();
+          Swal.fire({
+            title: "Opps...",
+            text: err || "Something went wrong",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+      );
+  }
+
   private terminateGame(sessionId: string): void {
     Swal.fire({
       title: "Are you sure?",
@@ -644,9 +693,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.isReadMore = !this.isReadMore;
   }
 
-  launchWebRTC() {
+  private launchWebRTC(token: string) {
     window.open(
-      `${environment.webrtc_domain}/?token={token}&fps=55&resolution=&bitrate=10000`,
+      `${environment.webrtc_domain}/?token=${token}&fps=55&resolution=&bitrate=10000`,
       "_blank"
     );
   }
