@@ -24,6 +24,7 @@ import { FriendModel } from "src/app/models/friend.model";
 import { FriendsService } from "src/app/services/friends.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-navbar",
@@ -160,7 +161,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onImgError(event) {
-    event.target.src = 'assets/img/default_bg.jpg';
+    event.target.src = "assets/img/default_bg.jpg";
   }
 
   getFriendAddIcon(friend: UserModel) {
@@ -229,6 +230,38 @@ export class NavbarComponent implements OnInit {
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.logout();
+    });
+  }
+
+  deleteSessionData() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete all your session data?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restService.deleteSessionData().subscribe({
+          next: () => {
+            Swal.fire({
+              title: "Success",
+              text: "Successfully deleted sessions",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: "Couldn't delete data",
+              text: err || "Something went wrong",
+              icon: "error",
+              confirmButtonText: "OK",
+            });
+          },
+        });
+      }
     });
   }
 

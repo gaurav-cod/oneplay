@@ -706,7 +706,7 @@ export class RestService {
       .pipe(
         map((res) => res),
         catchError((err) => {
-          throw new Error(err.message);
+          throw new Error(err.error.message);
         })
       );
   }
@@ -717,7 +717,18 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError((err) => {
-          throw new Error(err.message);
+          throw new Error(err.error.message);
+        })
+      );
+  }
+
+  deleteSessionData(): Observable<void> {
+    return this.http
+      .post<void>(this.client_api + "/delete_user_data", new FormData())
+      .pipe(
+        map(() => {}),
+        catchError((err) => {
+          throw new Error(err.error.message);
         })
       );
   }
