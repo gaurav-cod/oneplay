@@ -49,10 +49,14 @@
 }
   
 @media (max-width: 480px) {
-    h2 {
-      font-size: 16px;
-      font-weight: 100;
-      margin-bottom: -7px;
+
+    .font20 {
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    .removePaddingContainer {
+        padding: 0px !important;
     }
 }
   
@@ -63,4 +67,8 @@
 
 .borderRadius15 {
     border-radius: 15px !important;
+}
+
+.removeWhiteSpace {
+    white-space: normal !important;
 }
