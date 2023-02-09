@@ -721,3 +721,55 @@ input[type="checkbox"] {
     font-weight: 500 !important;
   }
 }
+
+// Error Modal Style Css
+
+.swal2-popup {
+  background-color: #212123 !important;
+}
+
+.swal2-icon.swal2-error.swal2-icon-show {
+  background-image: url('./assets/img/error\ 1.svg');
+  background-repeat: no-repeat;
+  height: 90px;
+  width: 90px;
+}
+
+.swal2-x-mark {
+  display: none;
+}
+
+.swal2-icon.swal2-error {
+  border-color: transparent !important;
+  color: transparent !important;
+}
+
+.swal2-title {
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  line-height: 34px !important;
+  letter-spacing: 0.02em !important;
+  color: #FFFFFF !important;
+}
+
+.swal2-html-container {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+  color: #959595 !important;
+  letter-spacing: 0.02em !important;
+}
+
+.swal2-popup {
+  width: 24rem !important;
+  border-radius: 6px !important;
+}
+
+.swal2-actions {
+  width: 90% !important;
+}
+
+.swal2-styled.swal2-confirm {
+  width: 100% !important;
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
+}
