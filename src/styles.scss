@@ -683,17 +683,17 @@ input:-webkit-autofill:active {
   }
 }
 
-*:focus {
+*:focus-visible {
   outline: 2px solid white !important;
 }
 
-button:focus {
+button:focus-visible {
   border: 2px solid #1a1a1a !important;
 }
 
 input[type="radio"],
 input[type="checkbox"] {
-  &:focus {
+  &:focus-visible {
     opacity: 1 !important;
   }
 }
