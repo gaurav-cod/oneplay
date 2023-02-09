@@ -701,3 +701,12 @@ input[type="checkbox"] {
 .btn-github {
   background-color: #151617 !important;
 }
+
+
+@media (max-width: 500px) {
+  .btn-lg {
+    font-size: 16px !important;
+    line-height: 26px !important;
+    font-weight: 500 !important;
+  }
+}
