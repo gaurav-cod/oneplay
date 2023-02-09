@@ -41,9 +41,9 @@
 
 <div class="row mb-5">
   <div class="col-md-10 col-lg-10 mt-4">
-    <p class="font18 font500 text-white mb-2 mt-2">Current Subscription</p>
+    <p class="font18 font500 text-white">Current Subscription</p>
     <div class="row">
-      <div class="col-md-12 mt-4">
+      <div class="col-md-12 mt-2">
         <div class="card lightBg borderRadius10 p-2">
           <div class="card-body p-lg-4 p-md-4 p-0">
             <div *ngIf="currentSubscriptions.length" class="row">
@@ -78,34 +78,34 @@
         </div>
       </div>
     </div>
-    <p class="font18 font500 text-white mb-0 mt-5">Subscription History</p>
+    <p class="font18 font500 text-white mb-0 mt-4">Subscription History</p>
     <div class="row">
-      <div class="col-md-12 mt-4">
+      <div class="col-md-12 mt-2">
         <div class="table-responsive">
           <table class="customTable table">
             <thead>
               <tr scope="row">
-                <th scope="col" class="text-capitalize">Date of Purchase</th>
-                <th scope="col" class="text-capitalize">Subscription Type</th>
-                <th scope="col" class="text-capitalize">Price</th>
-                <th scope="col" class="text-capitalize">Status</th>
+                <th scope="col">Date of Purchase</th>
+                <th scope="col">Subscription Type</th>
+                <th scope="col">Price</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let subscription of subscriptions">
-                <td class="align-middle pt-4 pb-4">
+                <td class="align-middle py-3">
                   {{ subscription.purchasedAt | date: "dd.MM.yyyy" }}
                 </td>
-                <td class="align-middle pt-4 pb-4">
+                <td class="align-middle py-3">
                   {{ subscription.planName }} Edition
                   <p class="customTableText mb-0">{{ subscription.planDesc }}</p>
                 </td>
-                <td class="align-middle pt-4 pb-4">
+                <td class="align-middle py-3">
                   {{ subscription.amount }}
                   {{ subscription.currency | uppercase }}
                 </td>
                 <td
-                  class="align-middle pt-4 pb-4"
+                  class="align-middle py-3"
                   [ngClass]="{
                     gradientText: subscription.status === 'active',
                     cancelgradientText: subscription.status === 'pending'

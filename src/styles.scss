@@ -555,8 +555,11 @@ input:-webkit-autofill:active {
   padding-top: 150px;
 }
 
-.customNavTab.nav-tabs {
-  border-color: #3e4246 !important;
+.borderBottomTab {
+  border-bottom: 1px solid #3e4246 !important;
+  @media (max-width: 548px) {
+    margin-top: -17px;
+  }
 }
 
 .customNavTab.nav-tabs a {
@@ -613,6 +616,7 @@ input:-webkit-autofill:active {
 .customTable.table th,
 .customTable.table thead th {
   border-top: none;
+  text-transform: capitalize;
 }
 
 .customTable.table thead th {
