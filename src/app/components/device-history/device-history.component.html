@@ -1,15 +1,15 @@
-<div class="row mt-3">
+<div class="row mt-4">
   <div class="col-md-10 col-lg-10">
-    <div class="row mt-3">
-      <div class="col-md-4 align-self-center">
+    <div class="row">
+      <div class="col-md-4 col-4 align-self-center pr-0">
         <p class="font18 font500 text-white mb-0">
-          <span class="pt-3 mt-3">Device History</span>
+          Device History
         </p>
       </div>
-      <div class="col-md-8 mt-4 mt-lg-0 mt-md-0">
+      <div class="col-md-8 col-8">
         <span class="float-right">
           <button
-            class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500"
+            class="btn mutedBg text-white borderRadius10 border-0 pl-lg-4 pr-lg-4 font18 font500"
             [disabled]="loggingOut"
             (click)="logoutAll()"
           >
@@ -19,36 +19,36 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="customTable table w-100 mt-5">
+      <table class="customTable table w-100 mt-4">
         <thead>
           <tr>
             <th scope="col">Device</th>
             <th scope="col">Location</th>
-            <th scope="col">Activity</th>
-            <th scope="col">Status</th>
+            <th scope="col" class="text-center">Activity</th>
+            <th scope="col" class="text-right">Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let session of sessions">
-            <td class="align-middle pt-4 pb-4" scope="row">
+            <td class="align-middle py-3" scope="row">
               {{ session.browser }}
               <p class="customTableText mb-0">{{ session.os }}</p>
             </td>
-            <td class="align-middle pt-4 pb-4">
+            <td class="align-middle py-3">
               {{ getLocation(session.ip)[0] }}
               <p class="customTableText mb-0">{{ getLocation(session.ip)[1] }}</p>
             </td>
             <td
-              class="align-middle pt-4 pb-4"
+              class="align-middle text-center py-3"
               [ngClass]="{ activeGradientText: isActive(session) }"
             >
               {{
                 isActive(session) ? "Active Now" : (session.timestamp | time_ago)
               }}
             </td>
-            <td class="align-middle pt-4 pb-4">
+            <td class="align-middle py-3 text-right">
               <button
-                class="btn btn-link customgradientText"
+                class="btn btn-link customgradientText p-0"
                 [disabled]="loggingOut"
                 (click)="deleteSession(session)"
               >

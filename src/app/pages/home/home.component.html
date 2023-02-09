@@ -12,7 +12,7 @@
     *ngIf="!!firstRow"
   >
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
-      <div class="row">
+      <div class="row mt-4">
         <div class="col p-lg-2 p-1 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
@@ -82,11 +82,11 @@
 <div class="container-fluid customFluid pt-3 pb-3 d-none d-md-block">
   <div class="row justify-content-center">
     <div class="col-auto">
-      <div class="row justify-content-center mt-lg-4 mt-3 scrolltab">
+      <div class="row justify-content-center mt-lg-4 scrolltab">
         <div class="col-auto px-2 tabOptions">
           <a
             href="javascript:void(0)"
-            class="card bg-dark bgColor mb-3 mutedColor"
+            class="card bgColor mb-3 mt-3 mutedColor"
             [ngClass]="{activeBG: !genreSelected}"
             [routerLink]="['/home']"
           >
@@ -96,7 +96,7 @@
         <div class="col-auto px-2 tabOptions" *ngFor="let route of routes">
           <a
             href="javascript:void(0)"
-            class="card bg-dark bgColor mb-2 mutedColor"
+            class="card bgColor mb-3 mt-3 mutedColor"
             routerLinkActive="activeBG"
             [routerLink]="['/home/' + route]"
           >

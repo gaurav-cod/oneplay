@@ -131,9 +131,14 @@
                     [formControl]="showSettings"
                   />
                   <label
-                    class="custom-control-label font16 font500 text-white"
+                    class="custom-control-label font16 font500 text-white d-none d-sm-block"
                     for="customCheck1"
                     >Show gameplay settings before launch</label
+                  >
+                  <label
+                    class="custom-control-label font16 font500 text-white d-block d-sm-none"
+                    for="customCheck1"
+                    >Show settings before launch</label
                   >
                 </div>
               </form>
@@ -144,20 +149,20 @@
     </div>
     <div class="col-md-11">
       <div class="row">
-        <div class="col-md-6 mt-5 pr-lg-5">
-          <div class="row">
+        <div class="col-md-6 pt-5 pr-lg-5">
+          <div class="row mt-5 mt-lg-0">
             <div class="col-lg-10">
               <h1 class="font700 text-white mb-0">About Game</h1>
               <p
                 id="description"
                 [ngClass]="{ limitTextHeight: isReadMore }"
                 [innerHTML]="game.description"
-                class="font20 font500 muteText mt-4 mb-0"
+                class="font20 font500 muteText mt-2 mb-0"
               ></p>
               <a
                 href="javascript:void(0)"
                 type="button"
-                class="muteText d-inline mt-1"
+                class="font20 offWhiteText font500 d-inline mt-1"
                 (click)="showText()"
               >
                 {{ isReadMore ? "...Read More" : "Read Less" }}
@@ -189,21 +194,24 @@
             </div>
             <div class="col mt-3">
               <p class="font16 font500 muteText">Developer</p>
-              <p class="font600 font20 text-white">
-                <span
-                  *ngFor="let dev of game.developer; let i = index"
-                  class="align-middle mr-3"
-                  >{{ dev | titlecase }}</span
-                >
-              </p>
+              <div class="row">
+                <div class="col-auto" *ngFor="let dev of game.developer; let i = index">
+                  <p class="font600 font20 text-white mb-0">
+                    <span class="align-middle"
+                      >{{ dev | titlecase }}</span
+                    >
+                  </p>
+                </div>
+              </div>
+              
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <p class="font16 font500 muteText mt-lg-3 mt-1 mb-0">Tags</p>
+              <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
               <span
                 *ngFor="let genre of game.genreMappings"
-                class="badge badge-pill customLinearGradient font16 mr-2 text-white pl-3 pt-1 pb-1 pr-3 mt-3"
+                class="badge badge-pill customLinearGradient font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
                 >{{ genre }}</span
               >
             </div>
@@ -216,7 +224,7 @@
 
 <div class="pb-lg-8 pb-5 overflow-hidden">
   <div *ngIf="!!game">
-    <div *ngIf="videos.length" class="mt-lg-5 mt-4">
+    <div *ngIf="videos.length" class="mt-4">
       <app-stream-card
         [title]="'Top Videos'"
         [gameId]="game.id"
@@ -224,14 +232,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="similarGames.length" class="mt-lg-5 mt-4">
+    <div *ngIf="similarGames.length" class="mt-4">
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="liveVideos.length" class="mt-lg-5 mt-4">
+    <div *ngIf="liveVideos.length" class="mt-4">
       <app-stream-card
         [title]="'Top Live Streams'"
         [gameId]="game.id"
@@ -239,14 +247,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="genreGames.length" class="mt-lg-5 mt-4">
+    <div *ngIf="genreGames.length" class="mt-4">
       <app-similar-games
         [title]="'From Genre'"
         [games]="genreGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="devGames.length" class="mt-lg-5 mt-4">
+    <div *ngIf="devGames.length" class="mt-4">
       <app-similar-games
         [title]="'From Developer'"
         [games]="devGames"
@@ -467,13 +475,16 @@
                     </div>
                     <div class="col-md-12 col-10 pl-0 pl-lg-3">
                       <p class="mb-0 font16 font500 muteText mt-lg-3">
-                        Show Stats
+                        Show
+                      </p>
+                      <p class="mb-0 font16 font500 muteText">
+                        Stats
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-12 col-md-4 pl-0">
                 <div
                   class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2"
                 >
@@ -500,7 +511,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-12 col-md-4 pl-0">
                 <div
                   class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2"
                 >
@@ -534,7 +545,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn btn-secondary width35 mr-4"
+                    class="btn customBtn width35 mr-4"
                     [ngClass]="{ active: audio_type === 'stereo' }"
                   >
                     <input
@@ -548,7 +559,7 @@
                     <span>Stereo</span>
                   </label>
                   <label
-                    class="btn btn-secondary width35"
+                    class="btn customBtn width35"
                     [ngClass]="{ active: audio_type === '5_1' }"
                   >
                     <input
@@ -570,7 +581,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn btn-secondary width35 mr-4"
+                    class="btn customBtn width35 mr-4"
                     [ngClass]="{ active: stream_codec === 'auto' }"
                   >
                     <input
@@ -583,7 +594,7 @@
                     <span>Auto</span>
                   </label>
                   <label
-                    class="btn btn-secondary width35 mr-4"
+                    class="btn customBtn width35 mr-4"
                     [ngClass]="{ active: stream_codec === 'forceh265' }"
                   >
                     <input
@@ -597,7 +608,7 @@
                     <span>HEVC</span>
                   </label>
                   <label
-                    class="btn btn-secondary width35"
+                    class="btn customBtn width35"
                     [ngClass]="{ active: stream_codec === 'neverh265' }"
                   >
                     <input
@@ -620,7 +631,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn btn-secondary width35 mr-4"
+                    class="btn customBtn width35 mr-4"
                     [ngClass]="{ active: video_decoder_selection === 'auto' }"
                   >
                     <input
@@ -634,7 +645,7 @@
                     <span>Auto</span>
                   </label>
                   <label
-                    class="btn btn-secondary width35 mr-4"
+                    class="btn customBtn width35 mr-4"
                     [ngClass]="{
                       active: video_decoder_selection === 'hardware'
                     }"
@@ -649,7 +660,7 @@
                     <span>Hardware</span>
                   </label>
                   <label
-                    class="btn btn-secondary width35"
+                    class="btn customBtn width35"
                     [ngClass]="{
                       active: video_decoder_selection === 'software'
                     }"
@@ -669,7 +680,7 @@
                 <button
                   type="submit"
                   (click)="d('dismiss')"
-                  class="btn btn-block linearGradient text-white border-0 btn-lg h56 font18 font14responsive font500"
+                  class="btn btn-block linearGradient text-white border-0 btn-lg font18 font14responsive font500"
                 >
                   Save & Launch Game
                 </button>
@@ -731,7 +742,7 @@
           <a
             href="javascript:void(0)"
             class="btn btn-link btn-block text-info"
-            (click)="startGameWithWebRTCToken()"
+            (click)="launchWebRTC()"
           >
             Play on browser
             <i class="fas fa-globe ml-2"></i>

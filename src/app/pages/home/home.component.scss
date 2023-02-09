@@ -51,7 +51,7 @@
 }
 
 .legalModalBg {
-  background-color: #151515 !important;
+  background-color: #212123 !important;
 }
 
 .removeFocus:focus {
@@ -124,21 +124,21 @@
 
 @media (max-width: 1025px) {
   .customWidth {
-    width: 20% !important;
+    width: 15% !important;
   }
 
   .customWidth1 {
-    width: 60% !important;
+    width: 70% !important;
   }
 }
 
 .bgColor {
-  background-color: #212123;
+  background-color: #151617;
   border-radius: 60px;
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
-  padding: 2px;
+  border: 2px solid #3E4246;
 }
 
 .activeBG {
