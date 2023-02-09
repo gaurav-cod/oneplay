@@ -510,22 +510,24 @@ input:-webkit-autofill:active {
   background-color: #151515;
 }
 
-.radioBtns .btn-secondary:not(:disabled):not(.disabled).active {
+.radioBtns .customBtn:not(:disabled):not(.disabled).active {
   color: #a83afe !important;
-  background-color: #151515 !important;
+  background-color: #212123 !important;
   background-image: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   border-radius: 10px;
   box-sizing: border-box;
   padding: 2px;
+  border: none !important;
 }
 
-.radioBtns .btn-secondary:not(:disabled):not(.disabled).active:focus {
+.radioBtns .customBtn:not(:disabled):not(.disabled).active:focus {
   box-shadow: none;
+  border-color: transparent !important;
 }
 
 .radioBtns span {
   align-items: center;
-  background: #151515 !important;
+  background: #212123 !important;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -535,13 +537,18 @@ input:-webkit-autofill:active {
   padding: 0px 30px;
 }
 
-.radioBtns .btn-secondary {
+.radioBtns .customBtn {
   padding: 2px;
   border-radius: 10px !important;
   height: 52px;
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
+  color: #dcdcdc;
+  border: 2px solid #3E4246;
+}
+
+.radioBtns .customBtn:hover {
   color: #dcdcdc;
 }
 
