@@ -1,38 +1,39 @@
 <div class="container py-7">
   <div class="row justify-content-center">
-    <div class="col-md-12 col-lg-10 mt-4 mt-lg-0">
+    <div class="col-md-12 col-lg-10">
       <h1 class="font700 text-white mt-3">Settings</h1>
       <nav >
-        <div class="customNavTab customCareerTab nav nav-tabs pl-1">
+        <div class="customNavTab customCareerTab border-0 nav nav-tabs pl-1">
           <a
             href="javascript:void(0)"
-            class="nav-item nav-link border-0 pb-3 mr-3 mt-4"
-            routerLinkActive="active pl-0"
+            class="nav-item nav-link border-0 py-3 mr-3 mt-3"
+            routerLinkActive="active"
             [routerLink]="['/settings', 'profile']"
             >Profile</a
           >
           <a
             href="javascript:void(0)"
-            class="nav-item nav-link border-0 pb-3 mr-3 mt-4"
-            routerLinkActive="active pl-0"
+            class="nav-item nav-link border-0 py-3 mr-3 mt-3"
+            routerLinkActive="active"
             [routerLink]="['/settings', 'security']"
             >Login & Security</a
           >
           <a
             href="javascript:void(0)"
-            class="nav-item nav-link border-0 pb-3 mr-3 mt-4"
-            routerLinkActive="active pl-0"
+            class="nav-item nav-link border-0 py-3 mr-3 mt-3"
+            routerLinkActive="active"
             [routerLink]="['/settings', 'subscription']"
             >Subscription</a
           >
           <a
             href="javascript:void(0)"
-            class="nav-item nav-link border-0 pb-3 mr-3 mt-4"
-            routerLinkActive="active pl-0"
+            class="nav-item nav-link border-0 py-3 mr-3 mt-3"
+            routerLinkActive="active"
             [routerLink]="['/settings', 'device-history']"
             >Device History</a
           >
         </div>
+        <div class="borderBottomTab"></div>
       </nav>
       <div class="tab-content">
         <ng-container *ngIf="activeTab === 'profile'">

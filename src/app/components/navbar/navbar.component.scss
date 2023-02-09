@@ -144,9 +144,15 @@
 }
 
 .modalBG {
-    background-color: #151515;
+    background-color: #212123;
 }
 
 .customWhite {
     color: #DCDCDC;
+}
+
+@media (max-width: 548px) {
+    .xsborderBottom {
+        border-bottom: 1px solid #3E4246;
+    }
 }
