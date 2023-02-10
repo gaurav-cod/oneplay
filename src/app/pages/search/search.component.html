@@ -1,4 +1,4 @@
-<div class="container-fluid pt-7">
+<div class="container-fluid py-7">
   <div class="container-fluid mt-2">
     <form class="navbar-search d-block d-lg-none mb-3" (submit)="search()">
       <div class="form-group mb-0" [ngClass]="{ focused: isFocused === true }">
@@ -27,7 +27,7 @@
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
           (click)="changeTab(t)"
-          class="mx-1"
+          class="mx-1 d-none d-md-inline-block"
           [ngClass]="{
             'text-primary': t === tab,
             'text-white-50': t !== tab
@@ -39,22 +39,50 @@
     </div>
 
     <div
-      *ngIf="games.length !== 0 && tab === 'games'"
+      *ngIf="games.length !== 0"
       class="py-lg-4 pb-2 row"
       infinite-scroll
       [infiniteScrollDistance]="5"
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let game of games" class="col-6 col-md-4 col-lg-3 col-xxl-3 col-xxxl-3 p-2">
-        <div class="zoom">
-          <app-game-card
-            [game]="game"
-            [queryParams]="keywordQuery"
-          ></app-game-card>
+    <div *ngFor="let game of games" class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+      <div
+        class="list-group-item bg-dark d-flex border-0 h-100"
+        [routerLink]="['/view/' + (game | glink)]"
+        [queryParams]="keywordQuery"
+        style="cursor: pointer"
+      >
+        <img
+          [src]="game.textBgImage"
+          (error)="onImgError($event)"
+          [ngStyle]="{
+            filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+          }"
+          class="mr-3"
+          width="80"
+          height="50"
+          alt=""
+        />
+        <div>
+          <p class="list-group-heading text-white m-0">
+            {{ game.title }}
+          </p>
+          <p class="list-group-content text-white-50 small m-0">
+            {{ game.releaseDate.getFullYear() }}
+          </p>
         </div>
       </div>
     </div>
+    </div>
+
+    <button
+      *ngIf="games.length === 4 && !tab"
+      class="btn btn-block mutedBg text-white border-0"
+      (click)="searchNavigate('games')"
+    >
+      See more games
+    </button>
 
     <div
       *ngIf="games.length === 0 && tab === 'games'"
@@ -64,57 +92,64 @@
     </div>
 
     <div
-      *ngIf="users.length !== 0 && tab === 'users'"
+      *ngIf="users.length !== 0"
       class="py-5 row"
       infinite-scroll
       [infiniteScrollDistance]="5"
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let user of users" class="col-sm-12 col-md-6 col-lg-3 mb-4">
+      <div *ngFor="let user of users" class="col-12 col-md-6 col-lg-3 mb-4">
         <div class="row">
-          <div class="col-auto">
-            <img
-              [src]="user.photo || (user.name | avatar)"
-              height="50"
-              alt=""
-            />
-          </div>
-          <div class="col-auto align-self-center">
-            <p class="list-group-heading text-white m-0">{{ user.name }}</p>
+          <img
+            [src]="user.photo || (user.name | avatar)"
+            class="mr-3"
+            width="80"
+            height="50"
+            alt=""
+          />
+          <div class="flex-grow-1">
+            <p class="list-group-heading text-white m-0">
+              {{ user.name }}
+            </p>
             <p class="list-group-content text-white-50 small m-0">
               {{ user.username }}
             </p>
           </div>
-          <div class="col-auto align-self-center">
-            <button
-              type="button"
-              class="btn btn-sm btn-outline-light"
-              (click)="addFriend(user)"
-            >
-              <i class="fas fa-user-plus"></i>
-            </button>
-          </div>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-light"
+            (click)="addFriend(user)"
+          >
+            <i class="fas {{ getFriendAddIcon(user) }}"></i>
+          </button>
         </div>
-        <!-- <p>{{ user.name }}</p> -->
+      </div>
+
+      <button
+        *ngIf="users.length === 4 && !tab"
+        class="btn btn-block mutedBg text-white border-0"
+        (click)="searchNavigate('users')"
+      >
+        See more users
+      </button>
+
+      <div
+        *ngIf="users.length === 0 && tab === 'users'"
+        class="text-center text-lg text-white-50 my-5"
+      >
+        No users found
+      </div>
+
+      <div class="position-relative">
+        <ngx-ui-loader
+          [fgsColor]="'#c32ead'"
+          [loaderId]="'scroll'"
+          [hasProgressBar]="false"
+        ></ngx-ui-loader>
       </div>
     </div>
-
-    <div
-      *ngIf="users.length === 0 && tab === 'users'"
-      class="text-center text-lg text-white-50 my-5"
-    >
-      No users found
-    </div>
-
-    <div class="position-relative">
-      <ngx-ui-loader
-        [fgsColor]="'#c32ead'"
-        [loaderId]="'scroll'"
-        [hasProgressBar]="false"
-      ></ngx-ui-loader>
-    </div>
   </div>
-</div>
 
-<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+  <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+</div>
