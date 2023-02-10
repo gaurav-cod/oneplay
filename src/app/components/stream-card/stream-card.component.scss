@@ -72,3 +72,12 @@
 .removeWhiteSpace {
     white-space: normal !important;
 }
+
+.truncate-line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    height: 55px;
+    -webkit-box-orient: vertical; 
+    width: 100%;
+    overflow: hidden;
+}

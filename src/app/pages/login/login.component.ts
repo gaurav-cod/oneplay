@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {
       Swal.fire({
         title: "Opps...",
-        text: "Email or Phone number and Password cannot be empty.",
+        text: "Email and Password cannot be empty.",
         icon: "error",
         confirmButtonText: "OK",
       });
