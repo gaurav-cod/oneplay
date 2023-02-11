@@ -1,11 +1,13 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { VideoWithGameId } from "src/app/interface";
 import { VideoModel } from "src/app/models/video.model";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 
 @Component({
   selector: "app-stream-card",
   templateUrl: "./stream-card.component.html",
   styleUrls: ["./stream-card.component.scss"],
+  providers: [AvatarPipe],
 })
 export class StreamCardComponent implements OnInit {
   @Input("title") title: string;
@@ -14,7 +16,9 @@ export class StreamCardComponent implements OnInit {
 
   @ViewChild("container") containerRef: ElementRef;
 
-  constructor() {}
+  constructor(
+    private readonly gavatar: AvatarPipe,
+  ) {}
 
   ngOnInit(): void {}
 
@@ -48,5 +52,9 @@ export class StreamCardComponent implements OnInit {
         window.clearInterval(slideTimer);
       }
     }, 25);
+  }
+
+  onImgError(event, video: VideoModel) {
+    event.target.src = this.gavatar.transform(video.creatorName)
   }
 }

@@ -224,6 +224,9 @@ live {
 
 .font600 {
   font-weight: 600;
+  @media (max-width: 548px) {
+    font-weight: 500 !important;
+  }
 }
 
 .garadientColor {
@@ -305,4 +308,8 @@ live {
 
 .hide-text {
   color: rgba(0, 0, 0, 0) !important;
+}
+
+.borderColor {
+  border-color: 1px solid #3E4246;
 }
