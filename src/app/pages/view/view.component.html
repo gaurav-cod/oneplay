@@ -211,7 +211,7 @@
               <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
               <span
                 *ngFor="let genre of game.genreMappings"
-                class="badge badge-pill customLinearGradient font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
+                class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
                 >{{ genre }}</span
               >
             </div>
@@ -221,6 +221,8 @@
     </div>
   </div>
 </div>
+
+<hr class="borderColor mb-0 d-block d-sm-none"/>
 
 <div class="pb-lg-8 pb-5 overflow-hidden">
   <div *ngIf="!!game">

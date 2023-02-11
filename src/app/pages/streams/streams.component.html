@@ -9,7 +9,7 @@
 >
   <ng-template *ngFor="let banner of banners" ngbSlide>
     <div class="container pt-7">
-      <div class="card bg-dark mb-5" style="width: 100%">
+      <div class="card bg-dark" style="width: 100%">
         <div class="row m-0">
           <div
             class="col-md-8 p-0 position-relative banner-img"
@@ -69,7 +69,7 @@
   </ng-template>
 </ngb-carousel>
 
-<div class="pb-7" [ngClass]="{ 'mt-5': banners.length === 0 }">
+<div class="pb-8" [ngClass]="{ 'mt-5': banners.length === 0 }">
   <div *ngFor="let feed of feeds">
     <app-stream-card
       [title]="'Streams of ' + feed.title"
