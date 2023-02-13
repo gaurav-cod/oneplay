@@ -33,7 +33,7 @@ export class ForgotPassComponent implements OnInit {
           title: "Error",
           text: error,
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         })
     );
   }

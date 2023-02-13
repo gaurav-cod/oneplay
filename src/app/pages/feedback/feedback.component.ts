@@ -64,7 +64,7 @@ export class FeedbackComponent implements OnInit {
             title: "Error!",
             text: err,
             icon: "error",
-            confirmButtonText: "OK",
+            confirmButtonText: "Try Again",
           });
         }
       );

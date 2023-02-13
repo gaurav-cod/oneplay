@@ -419,7 +419,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           title: "Opps...",
           text: err || "Something went wrong",
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         });
         this.stopTerminating();
       }
@@ -490,7 +490,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               title: "Opps...",
               text: data.msg || "Something went wrong",
               icon: "error",
-              confirmButtonText: "OK",
+              confirmButtonText: "Try Again",
             });
           }
         },
@@ -500,7 +500,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
-            confirmButtonText: "OK",
+            confirmButtonText: "Try Again",
           });
         }
       );
@@ -513,7 +513,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         title: "Opps...",
         text: "Something went wrong",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Try Again",
       });
       return;
     }
@@ -565,7 +565,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
-            confirmButtonText: "OK",
+            confirmButtonText: "Try Again",
           });
         }
       );
@@ -580,7 +580,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         title: "Opps...",
         text: "Something went wrong",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Try Again",
       });
       return;
     }
@@ -611,7 +611,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Opps...",
             text: err || "Something went wrong",
             icon: "error",
-            confirmButtonText: "OK",
+            confirmButtonText: "Try Again",
           });
         }
       );
@@ -641,7 +641,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               title: "Opps...",
               text: err || "Something went wrong",
               icon: "error",
-              confirmButtonText: "OK",
+              confirmButtonText: "Try Again",
             });
           }
         );

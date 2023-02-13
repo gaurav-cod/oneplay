@@ -183,7 +183,7 @@ export class SidebarComponent implements OnInit {
               title: "Couldn't delete data",
               text: err || "Something went wrong",
               icon: "error",
-              confirmButtonText: "OK",
+              confirmButtonText: "Try Again",
             });
           },
         });

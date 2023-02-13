@@ -41,7 +41,7 @@ export class ResetPassComponent implements OnInit {
           title: "Opps...",
           text: error,
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         })
     );
   }
