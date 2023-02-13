@@ -133,7 +133,7 @@
               >
                 <img
                   [src]="user.photo || (user.name | avatar)"
-                  class="mr-3 rounded-circle"
+                  class="mr-3"
                   width="80"
                   height="50"
                   alt=""
@@ -339,18 +339,18 @@
   <div class="modal-content modalBG position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right-0"
+      class="position-absolute btn modalBG rounded-circle top--3 right--2"
       style="padding: 5px 10px;"
       (click)="d('Cross click')"
     >
-      <i class="fas fa-times" style="font-size: 20px"></i>
+      <i class="fas fa-times text-white" style="font-size: 20px"></i>
     </a>
     <div class="modal-body">
       <div class="row justify-content-center">
-        <div class="col-12">
-          <h2 class="customWhite mb-4">Share/Copy Referral Link</h2>
+        <div class="col-12 text-center">
+          <h3 class="customWhite mb-3">Share/Copy Referral Link</h3>
         </div>
-        <div class="col">
+        <div class="w-75">
           <share-buttons
             [url]="link"
             [include]="[

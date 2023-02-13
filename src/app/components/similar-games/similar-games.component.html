@@ -1,13 +1,13 @@
 <div class="container-fluid">
-  <div class="container-fluid mt-2 mb-3">
-    <p class="position-relative railHeading mb-0">{{ title }}</p>
+  <div class="container-fluid removePaddingContainer">
+    <p class="position-relative railHeading mb-2 mt-4 mt-lg-2">{{ title }}</p>
   </div>
 </div>
 <div class="position-relative">
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="mt-3 row scrollGame">
+        <div #container class="row scrollGame">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard w290 pr-0">
             <app-game-card [game]="game"></app-game-card>
           </div>
@@ -17,7 +17,7 @@
   </div>
 
   <button
-    class="btn position-absolute d-none d-md-block h80"
+    class="btn position-absolute d-none d-lg-block h80"
     style="
       top: 0;
       left: 0;
@@ -32,7 +32,7 @@
   </button>
 
   <button
-    class="btn position-absolute d-none d-md-block h80"
+    class="btn position-absolute d-none d-lg-block h80"
     style="
       top: 0;
       right: 0px;

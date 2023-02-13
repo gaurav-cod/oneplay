@@ -103,7 +103,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   open(container) {
     this.ngbModal.open(container, {
       centered: true,
-      modalDialogClass: "modal-md",
+      modalDialogClass: "modal-sm",
     });
   }
 

@@ -150,8 +150,18 @@
     color: #DCDCDC;
 }
 
-@media (max-width: 548px) {
+@media (max-width: 1200px) {
     .xsborderBottom {
         border-bottom: 1px solid #3E4246;
     }
 }
+
+.sb-group {
+    justify-content: center !important;
+}
+
+.modal-dialog.modal-sm {
+    max-width: 320px !important;
+    width: 320px !important;
+}
+  

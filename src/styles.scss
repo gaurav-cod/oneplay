@@ -564,9 +564,6 @@ input:-webkit-autofill:active {
 
 .borderBottomTab {
   border-bottom: 1px solid #3e4246 !important;
-  @media (max-width: 548px) {
-    margin-top: -17px;
-  }
 }
 
 .customNavTab.nav-tabs a {

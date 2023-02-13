@@ -1,5 +1,5 @@
 <div
-  class="container-fluid paddingtop100 pb-3"
+  class="container-fluid paddingtop100 pb-2 mb-lg-0 pb-lg-0"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
   <ngb-carousel
@@ -79,7 +79,7 @@
   </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid pt-3 pb-3 d-none d-md-block">
+<div class="container-fluid customFluid pb-3 d-none d-md-block">
   <div class="row justify-content-center">
     <div class="col-auto">
       <div class="row justify-content-center mt-lg-4 scrolltab">
@@ -110,13 +110,13 @@
 
 <div class="pb-6">
   <div class="mb-0">
-    <div *ngIf="genreSelected && genreGames.length > 0" class="pb-lg-3 pb-0">
+    <div *ngIf="genreSelected && genreGames.length > 0">
       <app-similar-games
         [title]="genreSelected"
         [games]="genreGames"
       ></app-similar-games>
     </div>
-    <div class="pb-lg-3 pb-0">
+    <div>
       <app-similar-games
         *ngIf="library.length != 0"
         [title]="'My Library'"

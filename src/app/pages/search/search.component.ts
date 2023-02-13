@@ -3,8 +3,11 @@ import { FormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { zip } from "rxjs";
+import { FriendModel } from "src/app/models/friend.model";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
+import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -16,7 +19,7 @@ export class SearchComponent implements OnInit {
   query: string;
   games: GameModel[] = [];
   users: UserModel[] = [];
-  tab: "games" | "users" = "games";
+  tab: "games" | "users";
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
@@ -26,6 +29,8 @@ export class SearchComponent implements OnInit {
 
   private keyword = "";
   private keywordHash = "";
+  private acceptedFriends: FriendModel[] = [];
+  private pendingFriends: FriendModel[] = [];
 
   get keywordQuery() {
     if (!!this.keyword && !!this.keywordHash) {
@@ -42,22 +47,22 @@ export class SearchComponent implements OnInit {
     private readonly router: Router,
     private readonly restService: RestService,
     private readonly title: Title,
-    private readonly loaderService: NgxUiLoaderService
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly friendsService: FriendsService,
   ) {}
 
   ngOnInit(): void {
+    this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
+    this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
     this.route.params.subscribe((params) => {
       this.route.queryParams.subscribe((query) => {
-        if (!(params.tab === "games" || params.tab === "users")) {
-          this.router.navigate(["search", "games"], {
-            queryParams: { q: query.q },
-          });
-        }
         this.tab = params.tab;
         this.query = query.q;
         this.title.setTitle("OnePlay | Search " + params.tab + " - " + query.q);
         this.canLoadMore = true;
         this.currentPage = 0;
+        this.games = [];
+        this.users = [];
         switch (this.tab) {
           case "games":
             this.loadGames();
@@ -65,15 +70,28 @@ export class SearchComponent implements OnInit {
           case "users":
             this.loadUsers();
             break;
+          default:
+            this.laodGamesAndUsers();
+            break;
         }
       });
     });
   }
 
   search() {
-    this.router.navigate(["search", this.tab], {
+    const path = ["search"];
+    if (this.tab) {
+      path.push(this.tab);
+    }
+    this.router.navigate(path, {
       queryParams: { q: this.queryControl.value },
       replaceUrl: true,
+    });
+  }
+
+  searchNavigate(tab: "games" | "users") {
+    this.router.navigate(["/search", tab], {
+      queryParams: { q: this.query },
     });
   }
 
@@ -91,6 +109,36 @@ export class SearchComponent implements OnInit {
   changeTab(tab: "games" | "users") {
     this.router.navigate(["search", tab], {
       queryParams: { q: this.query },
+    });
+  }
+
+  getFriendAddIcon(friend: UserModel) {
+    if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
+      return "fa-user-check";
+    } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
+      return "fa-user-clock";
+    } else {
+      return "fa-user-plus";
+    }
+  }
+
+  private laodGamesAndUsers() {
+    this.startLoading(0);
+    zip([
+      this.restService.search(this.query, 0, 4),
+      this.restService.searchUsers(this.query, 0, 4),
+    ]).subscribe({
+      next: ([gRes, users]) => {
+        this.games = gRes.results;
+        this.keyword = gRes.keyword;
+        this.keywordHash = gRes.keywordHash;
+        this.users = users;
+        this.canLoadMore = false;
+        this.stopLoading(0);
+      },
+      error: () => {
+        this.stopLoading(0);
+      }
     });
   }
 

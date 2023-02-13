@@ -1,219 +1,222 @@
-<div *ngIf="!!game" class="container-fluid customFluid paddingtop100">
-  <div class="row mt-4 justify-content-center">
-    <div class="col-md-11">
-      <div class="card border-0 bgTransparent borderRadius10">
-        <img
-          class="card-img height80 borderRadius10 loadingBg"
-          style="object-fit: cover; object-position: top"
-          [src]="game.bgImage"
-          (error)="$event.target.src = 'assets/img/default_bg.jpg'"
-          [ngStyle]="{
-            filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-          }"
-          alt="Card image"
-        />
-        <div
-          class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
-        >
-          <div class="row justify-content-end">
-            <div class="col-auto d-block d-sm-none customTopButton">
-              <button
-                *ngIf="!isInWishlist"
-                (click)="addToWishlist()"
-                [disabled]="loadingWishlist"
-                class="btn p-0"
-              >
-                <img
-                  src="assets/icons/Speedtest (2).svg"
-                  class="img-fluid"
-                  alt=""
-                />
-              </button>
-              <button
-                *ngIf="isInWishlist"
-                (click)="removeFromWishlist()"
-                [disabled]="loadingWishlist"
-                class="btn p-0"
-              >
-                <img
-                  src="assets/icons/Speedtest (2).svg"
-                  class="img-fluid"
-                  alt=""
-                />
-              </button>
-            </div>
-          </div>
-          <div class="row imagesText">
-            <div class="col-md-12">
-              <img [src]="game.textLogo" class="text-logo" alt="" />
-            </div>
-            <div class="col-md-12">
-              <p class="font16 font500 text-white mt-lg-4">
-                {{ game.releaseDate | date : "MMM, yyyy" }} -
-                {{ game.ageRating }}
-                {{ game.isFree ? " - Free" : "" }}
-              </p>
-              <div class="row">
-                <div *ngIf="game.status === 'unlive'" class="col-12 text-red mb-2">
-                  **This game is not available at the moment**
-                </div>
-                <div class="col-auto align-self-center fullWidthBtn">
-                  <button
-                    *ngIf="!terminatingGame"
-                    class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
-                    [disabled]="startingGame || game.status === 'unlive'"
-                    [ngClass]="{'hide-text': startingGame}"
-                    (click)="playGame(smallModal)"
-                  >
-                    <ngx-ui-loader
-                      [fgsColor]="'#c32ead'"
-                      [hasProgressBar]="false"
-                      [fgsSize]="14"
-                      [fgsPosition]="'center-left'"
-                      [text]="'Initializing...'"
-                      [overlayBorderRadius]="'90px'"
-                      [loaderId]="'play-loader'"
-                    ></ngx-ui-loader>
-                    {{ !startingGame ? action + " Now" : "Initializing..." }}
-                  </button>
-                  <button
-                    *ngIf="action !== 'Play' && !startingGame"
-                    class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
-                    [disabled]="terminatingGame"
-                    [ngClass]="{'hide-text': terminatingGame}"
-                    (click)="terminateSession()"
-                  >
-                    <ngx-ui-loader
-                      [fgsColor]="'#c32ead'"
-                      [hasProgressBar]="false"
-                      [fgsSize]="14"
-                      [fgsPosition]="'center-left'"
-                      [text]="'Terminating...'"
-                      [overlayBorderRadius]="'90px'"
-                      [loaderId]="'terminate-loader'"
-                    ></ngx-ui-loader>
-                    {{ !terminatingGame ? "Terminate" : "Terminating..." }}
-                  </button>
-                </div>
-                <div class="col-auto d-none d-sm-block align-self-center">
-                  <button
-                    *ngIf="!isInWishlist"
-                    (click)="addToWishlist()"
-                    [disabled]="loadingWishlist"
-                    class="btn mt-3 p-0"
-                  >
-                    <img
-                      src="assets/icons/Speedtest (2).svg"
-                      class="img-fluid"
-                      alt=""
-                    />
-                  </button>
-                  <button
-                    *ngIf="isInWishlist"
-                    (click)="removeFromWishlist()"
-                    [disabled]="loadingWishlist"
-                    class="btn mt-3 p-0"
-                  >
-                    <img
-                      src="assets/icons/Speedtest (2).svg"
-                      class="img-fluid"
-                      alt=""
-                    />
-                  </button>
-                </div>
-              </div>
-              <form class="pb-4">
-                <div class="custom-control custom-checkbox mt-4">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input my-error"
-                    id="customCheck1"
-                    [formControl]="showSettings"
+<div *ngIf="!!game" class="container-fluid paddingtop100">
+  <div class="container-fluid removePaddingContainer">
+    <div class="row mt-4 justify-content-center">
+      <div class="col-md-12">
+        <div class="card border-0 bgTransparent borderRadius10">
+          <img
+            class="card-img height80 borderRadius10"
+            style="object-fit: cover; object-position: top"
+            [src]="game.bgImage"
+            (error)="$event.target.src = 'assets/img/default_bg.jpg'"
+            [ngStyle]="{
+              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+            }"
+            alt="Card image"
+          />
+          <div
+            class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
+          >
+            <div class="row justify-content-end">
+              <div class="col-auto d-block d-sm-none customTopButton">
+                <button
+                  *ngIf="!isInWishlist"
+                  (click)="addToWishlist()"
+                  [disabled]="loadingWishlist"
+                  class="btn p-0"
+                >
+                  <img
+                    src="assets/icons/Speedtest (2).svg"
+                    class="img-fluid"
+                    alt=""
                   />
-                  <label
-                    class="custom-control-label font16 font500 text-white d-none d-sm-block"
-                    for="customCheck1"
-                    >Show gameplay settings before launch</label
-                  >
-                  <label
-                    class="custom-control-label font16 font500 text-white d-block d-sm-none"
-                    for="customCheck1"
-                    >Show settings before launch</label
-                  >
+                </button>
+                <button
+                  *ngIf="isInWishlist"
+                  (click)="removeFromWishlist()"
+                  [disabled]="loadingWishlist"
+                  class="btn p-0"
+                >
+                  <img
+                    src="assets/icons/Speedtest (2).svg"
+                    class="img-fluid"
+                    alt=""
+                  />
+                </button>
+              </div>
+            </div>
+            <div class="row imagesText">
+              <div class="col-md-12">
+                <img [src]="game.textLogo" class="text-logo" alt="" />
+              </div>
+              <div class="col-md-12">
+                <p class="font16 font500 text-white mt-lg-4">
+                  {{ game.releaseDate | date : "MMM, yyyy" }} -
+                  {{ game.ageRating }}
+                  {{ game.isFree ? " - Free" : "" }}
+                </p>
+                <div class="row">
+                  <div *ngIf="game.status === 'unlive'" class="col-12 text-red mb-2">
+                    **This game is not available at the moment**
+                  </div>
+                  <div class="col-auto align-self-center fullWidthBtn">
+                    <button
+                      *ngIf="!terminatingGame"
+                      class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+                      [disabled]="startingGame || game.status === 'unlive'"
+                      [ngClass]="{'hide-text': startingGame}"
+                      (click)="playGame(smallModal)"
+                    >
+                      <ngx-ui-loader
+                        [fgsColor]="'#c32ead'"
+                        [hasProgressBar]="false"
+                        [fgsSize]="14"
+                        [fgsPosition]="'center-left'"
+                        [text]="'Initializing...'"
+                        [overlayBorderRadius]="'90px'"
+                        [loaderId]="'play-loader'"
+                      ></ngx-ui-loader>
+                      {{ !startingGame ? action + " Now" : "Initializing..." }}
+                    </button>
+                    <button
+                      *ngIf="action !== 'Play' && !startingGame"
+                      class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
+                      [disabled]="terminatingGame"
+                      [ngClass]="{'hide-text': terminatingGame}"
+                      (click)="terminateSession()"
+                    >
+                      <ngx-ui-loader
+                        [fgsColor]="'#c32ead'"
+                        [hasProgressBar]="false"
+                        [fgsSize]="14"
+                        [fgsPosition]="'center-left'"
+                        [text]="'Terminating...'"
+                        [overlayBorderRadius]="'90px'"
+                        [loaderId]="'terminate-loader'"
+                      ></ngx-ui-loader>
+                      {{ !terminatingGame ? "Terminate" : "Terminating..." }}
+                    </button>
+                  </div>
+                  <div class="col-auto d-none d-sm-block align-self-center">
+                    <button
+                      *ngIf="!isInWishlist"
+                      (click)="addToWishlist()"
+                      [disabled]="loadingWishlist"
+                      class="btn mt-3 p-0"
+                    >
+                      <img
+                        src="assets/icons/Speedtest (2).svg"
+                        class="img-fluid"
+                        alt=""
+                      />
+                    </button>
+                    <button
+                      *ngIf="isInWishlist"
+                      (click)="removeFromWishlist()"
+                      [disabled]="loadingWishlist"
+                      class="btn mt-3 p-0"
+                    >
+                      <img
+                        src="assets/icons/Speedtest (2).svg"
+                        class="img-fluid"
+                        alt=""
+                      />
+                    </button>
+                  </div>
                 </div>
-              </form>
+                <form class="pb-4">
+                  <div class="custom-control custom-checkbox mt-4">
+                    <input
+                      type="checkbox"
+                      class="custom-control-input my-error"
+                      id="customCheck1"
+                      [formControl]="showSettings"
+                    />
+                    <label
+                      class="custom-control-label font16 font500 text-white d-none d-sm-block"
+                      for="customCheck1"
+                      >Show gameplay settings before launch</label
+                    >
+                    <label
+                      class="custom-control-label font16 font500 text-white d-block d-sm-none"
+                      for="customCheck1"
+                      >Show settings before launch</label
+                    >
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-11">
-      <div class="row">
-        <div class="col-md-6 pt-5 pr-lg-5">
-          <div class="row mt-5 mt-lg-0">
-            <div class="col-lg-10">
-              <h1 class="font700 text-white mb-0">About Game</h1>
-              <p
-                id="description"
-                [ngClass]="{ limitTextHeight: isReadMore }"
-                [innerHTML]="game.description"
-                class="font20 font500 muteText mt-2 mb-0"
-              ></p>
-              <a
-                href="javascript:void(0)"
-                type="button"
-                class="font20 offWhiteText font500 d-inline mt-1"
-                (click)="showText()"
-              >
-                {{ isReadMore ? "...Read More" : "Read Less" }}
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="row mt-2 mt-lg-4">
-            <div
-              *ngIf="game.storesMapping.length"
-              class="col-auto pr-lg-5 mt-3"
-            >
-              <p class="font16 font500 muteText">Store</p>
-              <a
-                href="{{ store.link }}"
-                target="_blank"
-                *ngFor="let store of game.storesMapping"
-                class="font600 font20 text-white"
-              >
-                <img
-                  [src]="store.name | store"
-                  height="32"
-                  class="mr-2"
-                  [alt]="store.name"
-                  onerror="this.style.display = 'none'"
-                />
-              </a>
-            </div>
-            <div class="col mt-3">
-              <p class="font16 font500 muteText">Developer</p>
-              <div class="row">
-                <div class="col-auto" *ngFor="let dev of game.developer; let i = index">
-                  <p class="font600 font20 text-white mb-0">
-                    <span class="align-middle"
-                      >{{ dev | titlecase }}</span
-                    >
-                  </p>
-                </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6 pt-5 pt-md-0">
+            <div class="row mt-5 mt-md-4">
+              <div class="col-lg-10">
+                <h1 class="font700 text-white mb-0">About Game</h1>
+                <p
+                  id="description"
+                  [ngClass]="{ limitTextHeight: isReadMore }"
+                  [innerHTML]="game.description"
+                  class="font20 font500 descriptionText muteText mt-2 mb-0"
+                >
+                </p>
+                <a
+                  href="javascript:void(0)"
+                  type="button"
+                  class="font16 muteText font-weight-500 d-inline mt-1"
+                  (click)="showText()"
+                >
+                  {{ isReadMore ? "...Read More" : "Read Less" }}
+                </a>
               </div>
-              
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
-              <span
-                *ngFor="let genre of game.genreMappings"
-                class="badge badge-pill customLinearGradient font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
-                >{{ genre }}</span
+          <div class="col-md-6">
+            <div class="row mt-2 mt-md-4">
+              <div
+                *ngIf="game.storesMapping.length"
+                class="col-auto pr-lg-5 mt-3"
               >
+                <p class="font16 font500 muteText">Store</p>
+                <a
+                  href="{{ store.link }}"
+                  target="_blank"
+                  *ngFor="let store of game.storesMapping"
+                  class="font600 font20 text-white"
+                >
+                  <img
+                    [src]="store.name | store"
+                    height="32"
+                    class="mr-2"
+                    [alt]="store.name"
+                    onerror="this.style.display = 'none'"
+                  />
+                </a>
+              </div>
+              <div class="col mt-3">
+                <p class="font16 font500 muteText">Developer</p>
+                <div class="row">
+                  <div class="col-auto" *ngFor="let dev of game.developer; let i = index">
+                    <p class="font600 font20 text-white mb-0">
+                      <span class="align-middle"
+                        >{{ dev | titlecase }}</span
+                      >
+                    </p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
+                <span
+                  *ngFor="let genre of game.genreMappings"
+                  class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
+                  >{{ genre }}</span
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -222,9 +225,11 @@
   </div>
 </div>
 
+<hr class="borderColor mb-0 d-block d-sm-none"/>
+
 <div class="pb-lg-8 pb-5 overflow-hidden">
   <div *ngIf="!!game">
-    <div *ngIf="videos.length" class="mt-4">
+    <div *ngIf="videos.length" class="mt-2 mt-lg-4">
       <app-stream-card
         [title]="'Top Videos'"
         [gameId]="game.id"
@@ -232,14 +237,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="similarGames.length" class="mt-4">
+    <div *ngIf="similarGames.length" class="mt-2 mt-lg-4">
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="liveVideos.length" class="mt-4">
+    <div *ngIf="liveVideos.length" class="mt-2 mt-lg-4">
       <app-stream-card
         [title]="'Top Live Streams'"
         [gameId]="game.id"
@@ -247,14 +252,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="genreGames.length" class="mt-4">
+    <div *ngIf="genreGames.length" class="mt-2 mt-lg-4">
       <app-similar-games
         [title]="'From Genre'"
         [games]="genreGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="devGames.length" class="mt-4">
+    <div *ngIf="devGames.length" class="mt-2 mt-lg-4">
       <app-similar-games
         [title]="'From Developer'"
         [games]="devGames"
@@ -454,7 +459,7 @@
         <div class="row pl-lg-3 pr-lg-3">
           <div class="col-md-12">
             <div class="row">
-              <div class="col-12 col-md-4">
+              <div class="col-12 col-md-4 pl-0">
                 <div
                   class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-lg-4 pt-2 pb-lg-3 pb-2 mt-lg-4 mt-2"
                 >
@@ -474,11 +479,8 @@
                       </div>
                     </div>
                     <div class="col-md-12 col-10 pl-0 pl-lg-3">
-                      <p class="mb-0 font16 font500 muteText mt-lg-3">
-                        Show
-                      </p>
-                      <p class="mb-0 font16 font500 muteText">
-                        Stats
+                      <p class="mb-0 font16 font500 muteText mt-lg-3 px-lg-4">
+                        Show Stats
                       </p>
                     </div>
                   </div>
