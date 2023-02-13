@@ -24,15 +24,19 @@
 }
   
 .scrollGame {
-    overflow: auto;
+    overflow-x: scroll;
     white-space: nowrap;
     display: block;
-    padding-left: 70px;
-    padding-right: 80px;
+    padding-left: 80px;
+    padding-right: 100px;
+
+    @media (max-width: 1024px) {
+        padding-left: 39px;
+    }
   
-    @media (max-width: 768px) {
-      padding-left: 32px;
-      padding-right: 70px;
+    @media (max-width: 480px) {
+      padding-left: 15px;
+      padding-right: 30px;
     }
 }
   
@@ -57,6 +61,12 @@
 
     .removePaddingContainer {
         padding: 0px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .removePaddingContainer {
+      padding: 0px !important;
     }
 }
   

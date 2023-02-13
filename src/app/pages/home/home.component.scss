@@ -124,11 +124,11 @@
 
 @media (max-width: 1025px) {
   .customWidth {
-    width: 15% !important;
+    width: 17.5% !important;
   }
 
   .customWidth1 {
-    width: 70% !important;
+    width: 65% !important;
   }
 }
 
@@ -148,15 +148,19 @@
 }
 
 .scrollGame {
-  overflow: auto;
+  overflow-x: scroll;
   white-space: nowrap;
   display: block;
-  padding-left: 70px;
+  padding-left: 78px;
   padding-right: 80px;
 
-  @media (max-width: 768px) {
-    padding-left: 32px;
-    padding-right: 32px;
+  @media (max-width: 1024px) {
+    padding-left: 39px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 15px;
+    padding-right: 30px;
   }
 }
 
