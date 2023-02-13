@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         title: "Opps...",
         text: "Email and Password cannot be empty.",
         icon: "error",
-        confirmButtonText: "OK",
+        confirmButtonText: "Try Again",
       });
       return;
     }
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           title: "Error",
           text: error,
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         });
       }
     );

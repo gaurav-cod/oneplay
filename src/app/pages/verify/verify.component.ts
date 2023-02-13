@@ -42,7 +42,7 @@ export class VerifyComponent implements OnInit {
           title: "Opps...",
           text: err,
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         });
       }
     );
@@ -65,7 +65,7 @@ export class VerifyComponent implements OnInit {
           title: "Opps...",
           text: error,
           icon: "error",
-          confirmButtonText: "OK",
+          confirmButtonText: "Try Again",
         })
     );
   }
