@@ -1,6 +1,6 @@
 <!-- Page content -->
 <div class="row justify-content-center loginBg">
-  <div class="col-lg-12 col-11 col-md-6 height100vh overflowYScroll">
+  <div class="col-lg-12 col-11 col-md-12 height100vh overflowYScroll">
     <div class="mobileView">
       <div class="text-center">
         <a href="https://oneplay.in">
@@ -14,10 +14,10 @@
     </div>
     <div class="container">
       <div class="row largeScreenHeight justify-content-center">
-        <div class="col-md-12 custompaddingLeftRight">
+        <div class="col-lg-9 pb-4">
           <form [formGroup]="registerForm" (submit)="register()" role="form" autocomplete="off">
             <div class="row">
-              <div class="col-md-12 mt-3">
+              <div class="col-md-12 mt-lg-5 mt-3">
                 <h1 class="text-white font38 font800 mb-0 textCenterCustom">
                   Create an account
                 </h1>
@@ -104,7 +104,7 @@
                     class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   />
                   <span
-                    class="input-group-text bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput"
+                    class="input-group-text pb-0 bgTransparent border-start-0 offWhiteColor borderRadius0 font20 font500 border-0 border-bottomInput"
                   >
                     <button
                       class="btn p-0 bgTransparent borderRadius0"
@@ -224,7 +224,7 @@
                   type="button"
                   [disabled]="registerForm.invalid || loading"
                   (click)="register()"
-                  class="btn btn-block linearGradient h60 border-0 font18 borderRadius10 font500 text-white"
+                  class="btn btn-block linearGradient border-0 font18 borderRadius10 font500 text-white"
                   value="Create Account"
                 />
               </div>
@@ -239,7 +239,7 @@
                 </p>
               </div>
               <div class="col-md-12">
-                <div class="mobileView">
+                <div class="mobileView d-block d-lg-none">
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-3 mb-4 borderBottom" />
