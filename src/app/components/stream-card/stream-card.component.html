@@ -13,7 +13,7 @@
           <div *ngFor="let video of videos" class="zoom col-auto gameCard w290 pr-0">
             <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
               <img
-                class="image borderRadius15"
+                class="image borderRadius15 loadingBg"
                 [src]="video.thumbnail"
                 alt=""
               />

@@ -12,13 +12,14 @@
   >
     <img
       #image
-      class="card-img borderRadius10 w290h185"
+      class="card-img borderRadius10 w290h185 loadingBg"
       [src]="game.textBgImage"
       (error)="onImgError($event)"
       [ngStyle]="{
         filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
       }"
       alt=""
+      loading="lazy"
     />
     <h4 *ngIf="showTitle" class="game-title">{{game.title}}</h4>
     <div
