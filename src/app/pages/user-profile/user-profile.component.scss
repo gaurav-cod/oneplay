@@ -17,6 +17,12 @@
   overflow-y:hidden;
   flex-wrap: nowrap !important;
 }
+
+.customCareerTab::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
 .customCareerTab .nav-link {
  white-space: nowrap;
 }

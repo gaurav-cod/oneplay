@@ -164,6 +164,11 @@
   }
 }
 
+.scrollGame::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
 .scrollGame .gameCard {
   display: inline-block;
 }
