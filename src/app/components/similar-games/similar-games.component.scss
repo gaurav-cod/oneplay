@@ -1,13 +1,13 @@
 .zoom {
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 
   &:hover {
-    transform: scale(1.1) translateZ(0px);
+    transform: scale(1.2);
     z-index: 9;
   }
 
   &:first-child:hover {
-    transform: scale(1.1) translateZ(0px) translateX(16px);
+    transform: scale(1.2);
   }
 }
 
@@ -20,6 +20,16 @@
     font-size: 16px;
     font-weight: 100;
     margin-bottom: -7px;
+  }
+
+  .removePaddingContainer {
+    padding: 0px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .removePaddingContainer {
+    padding: 0px !important;
   }
 }
 
@@ -37,15 +47,23 @@
 }
 
 .scrollGame {
-  overflow: auto;
+  overflow-x: scroll;
   white-space: nowrap;
   display: block;
-  padding-left: 70px;
-  padding-right: 80px;
+  padding-left: 78px;
+  padding-right: 110px;
+  padding-top: 24px;
+  padding-bottom: 20px;
 
-  @media (max-width: 768px) {
-    padding-left: 32px;
-    padding-right: 32px;
+  @media (max-width: 1024px) {
+    padding-left: 39px;
+    padding-bottom: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 15px;
+    padding-right: 30px;
+    padding-bottom: 5px;
   }
 }
 
@@ -57,7 +75,7 @@
   width: 320px;
 
   @media (max-width: 486px) {
-    width: 166px;
+    width: 215px;
   }
 }
 

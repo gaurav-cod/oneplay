@@ -208,6 +208,16 @@ live {
     height: 40px;
   }
 
+  .removePaddingContainer {
+    padding: 0px !important;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .removePaddingContainer {
+    padding: 0px !important;
+  }
 }
 
 .borderRadius10 {
