@@ -323,3 +323,7 @@ live {
 .borderColor {
   border-color: 1px solid #3E4246;
 }
+
+::ng-deep .tooltip-inner {
+  width: 180px;
+}
