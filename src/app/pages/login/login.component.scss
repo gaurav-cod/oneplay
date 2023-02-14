@@ -49,8 +49,8 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .font38 {
-    font-size: 30px !important;
-    line-height: 40px !important;
+    font-size: 27px !important;
+    line-height: 37px !important;
   }
 
   .custompaddingLeftRight {
@@ -68,6 +68,11 @@
 
   .h60 {
     height: 50px !important;
+  }
+
+  .font20 {
+    font-size: 16px !important;
+    line-height: 26px !important;
   }
 }
 
@@ -90,8 +95,8 @@
   }
 
   .font38 {
-    font-size: 34px !important;
-    line-height: 45px !important;
+    font-size: 30px !important;
+    line-height: 40px !important;
   }
 
 }
@@ -141,6 +146,14 @@
 .font20 {
   font-size: 20px;
   line-height: 34px;
+  @media (max-width: 805px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  @media (max-width: 1370px) {
+    font-size: 18px;
+    line-height: 28px;
+  } 
 }
 
 .h60 {
@@ -248,8 +261,8 @@ input:-webkit-autofill:active  {
 }
 
 .font38 {
-  font-size: 38px;
-  line-height: 50px;
+  font-size: 30px;
+  line-height: 40px;
   letter-spacing: 0.02em;
 }
 
@@ -284,4 +297,10 @@ input:-internal-autofill-selected {
 
 .font800 {
   font-weight: 800 !important;
+}
+
+.textLabel {
+  margin-left: -20px;
+  top: 0 !important;
+  color: #959595;
 }
