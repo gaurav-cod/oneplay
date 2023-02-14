@@ -1,5 +1,5 @@
 <div
-  class="container-fluid paddingtop100 pb-2 mb-lg-0 pb-lg-0"
+  class="container-fluid paddingtop100 pb-3 mb-lg-0 pb-lg-0"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
   <ngb-carousel
@@ -12,7 +12,7 @@
     *ngIf="!!firstRow"
   >
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
-      <div class="row mt-4">
+      <div class="row mt-4 mt-lg-0">
         <div class="col p-lg-2 p-1 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
@@ -79,7 +79,7 @@
   </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid pb-3 d-none d-md-block">
+<div class="container-fluid customFluid pb-3 pb-md-0 pb-lg-3 d-none d-md-block">
   <div class="row justify-content-center">
     <div class="col-auto">
       <div class="row justify-content-center mt-lg-4 scrolltab">
