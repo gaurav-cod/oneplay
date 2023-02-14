@@ -30,7 +30,7 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/home']"
-            class="nav-link mt-2"
+            class="nav-link mt-2 mr-3"
             (click)="isMenuCollapsed = true"
             >Home</a
           >
@@ -40,7 +40,7 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/store']"
-            class="nav-link mt-2"
+            class="nav-link mt-2 mr-3"
             (click)="isMenuCollapsed = true"
             >Store</a
           >
@@ -50,7 +50,7 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/streams']"
-            class="nav-link mt-2"
+            class="nav-link mt-2 mr-3"
             (click)="isMenuCollapsed = true"
             >Streams</a
           >
@@ -199,6 +199,8 @@
                 class="img-fluid"
                 alt=""
                 aria-hidden="true"
+                width="36px"
+                height="36px"
               />
               <img
                 *ngIf="!isGameRunning"
@@ -206,6 +208,8 @@
                 class="img-fluid"
                 alt=""
                 aria-hidden="true"
+                width="36px"
+                height="36px"
               />
               <span *ngIf="isUserLive" id="live">LIVE</span>
             </a>

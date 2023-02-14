@@ -91,14 +91,14 @@
 }
 
 .height40vh {
-  height: 50vh;
+  height: 59vh;
   @media (max-width: 480px) {
     height: 200px;
   }
 }
 
 .height30vh {
-  height: 45vh;
+  height: 54vh;
   @media (max-width: 480px) {
     height: 200px;
   }
@@ -124,11 +124,11 @@
 
 @media (max-width: 1025px) {
   .customWidth {
-    width: 17.5% !important;
+    width: 14% !important;
   }
 
   .customWidth1 {
-    width: 65% !important;
+    width: 72% !important;
   }
 }
 
@@ -182,4 +182,9 @@
 
 .scrolltab .tabOptions {
   display: inline-block;
+}
+
+.scrolltab::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
