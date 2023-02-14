@@ -1,10 +1,10 @@
-<div class="container-fluid py-7">
-  <div class="container-fluid mt-2">
-    <form class="navbar-search d-block d-lg-none mb-3" (submit)="search()">
+<div class="container-fluid py-7 searchComponent">
+  <div class="container-fluid mt-2 mt-md-4 px-0">
+    <form class="navbar-search" (submit)="search()">
       <div class="form-group mb-0" [ngClass]="{ focused: isFocused === true }">
         <div class="input-group input-group-alternative border-0">
           <input
-            class="form-control"
+            class="form-control searchPleaceholder"
             placeholder="Search games or users"
             type="text"
             [formControl]="queryControl"
@@ -12,12 +12,13 @@
             (blur)="isFocused = false"
           />
           <div class="input-group-prepend">
-            <button class="btn input-group-text" type="submit">
+            <button class="btn input-group-text searchPleaceholder" type="submit">
               <i class="fas fa-search"></i>
             </button>
           </div>
         </div>
       </div>
+      <p class="mt-3 mb-1 font16 font500 mutedTextColor mb-md-2">4 games found</p>
     </form>
 
     <div class="d-flex justify-content-between mb-1">
@@ -40,35 +41,37 @@
 
     <div
       *ngIf="games.length !== 0"
-      class="py-lg-4 pb-2 row"
+      class="pb-2 row"
       infinite-scroll
       [infiniteScrollDistance]="5"
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-    <div *ngFor="let game of games" class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+    <div *ngFor="let game of games" class="col-12 col-md-12 col-lg-6 col-xxl-3 mb-3">
       <div
-        class="list-group-item bg-dark d-flex border-0 h-100"
+        class="row h-100 gameRowHover"
         [routerLink]="['/view/' + (game | glink)]"
         [queryParams]="keywordQuery"
         style="cursor: pointer"
       >
-        <img
-          [src]="game.textBgImage"
-          (error)="onImgError($event)"
-          [ngStyle]="{
-            filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-          }"
-          class="mr-3"
-          width="80"
-          height="50"
-          alt=""
-        />
-        <div>
-          <p class="list-group-heading text-white m-0">
-            {{ game.title }}
+        <div class="col-auto">
+          <img
+            [src]="game.textBgImage"
+            (error)="onImgError($event)"
+            [ngStyle]="{
+              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+            }"
+            class="br6"
+            width="125"
+            height="80"
+            alt=""
+          />
+        </div>
+        <div class="col pl-0 align-self-center">
+          <p class="font16 font500 offWhitecolor mb-0">
+            <span class="truncate-line-clamp">{{ game.title }}</span>
           </p>
-          <p class="list-group-content text-white-50 small m-0">
+          <p class="font14 font500 mb-0 mutedTextColor">
             {{ game.releaseDate.getFullYear() }}
           </p>
         </div>
@@ -78,7 +81,7 @@
 
     <button
       *ngIf="games.length === 4 && !tab"
-      class="btn btn-block mutedBg text-white border-0"
+      class="btn btn-block linearMutedBg text-white border-0 mt-2"
       (click)="searchNavigate('games')"
     >
       See more games
