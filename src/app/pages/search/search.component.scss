@@ -26,6 +26,70 @@
 }
 
 .navbar-search .input-group {
-  background-color: #212123 !important;
+  background-color: #3E4246 !important;
   border-radius: 6px !important;
+  border-radius: 10px !important;
+}
+
+.searchPleaceholder::placeholder {
+  letter-spacing: 0.02em;
+  color: #DCDCDC;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.searchPleaceholder {
+  letter-spacing: 0.02em;
+  color: #DCDCDC;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.br6 {
+  border-radius: 6px;
+}
+
+.offWhitecolor {
+  color: #DCDCDC;
+}
+
+.mutedTextColor {
+  color: #959595;
+}
+
+.linearMutedBg {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  border-radius: 60px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.truncate-line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; 
+  width: 100%;
+  overflow: hidden;
+}
+
+.gameRowHover:hover {
+  background-color: #2B2B2E;
+  cursor: pointer;
+}
+
+@media (min-width: 1199px)
+{
+    .searchComponent {
+      display: none;
+    }
+}
+
+@media (max-width: 1200px)
+{
+    .searchComponent {
+      display: inline-block;
+    }
 }
