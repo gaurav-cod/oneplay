@@ -45,6 +45,12 @@
     font-size: 16px;
     line-height: 26px;
   }
+
+  .textLabel {
+    margin-left: -20px;
+    top: -0px !important;
+    color: #959595;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -301,6 +307,9 @@ input:-internal-autofill-selected {
 
 .textLabel {
   margin-left: -20px;
-  top: 0 !important;
+  top: -5px !important;
   color: #959595;
+  @media (max-width: 1368px) {
+    top: -0px !important;
+  }
 }
