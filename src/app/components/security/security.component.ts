@@ -43,7 +43,7 @@ export class SecurityComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: "error",
-          title: "Opps...",
+          title: "Oops...",
           text: error,
         });
       }
@@ -63,7 +63,7 @@ export class SecurityComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: "error",
-          title: "Opps...",
+          title: "Oops...",
           text: error,
         });
       }
@@ -84,7 +84,7 @@ export class SecurityComponent implements OnInit {
       (error) => {
         Swal.fire({
           icon: "error",
-          title: "Opps...",
+          title: "Oops...",
           text: error,
         });
       }

@@ -39,7 +39,7 @@ export class VerifyComponent implements OnInit {
       },
       (err) => {
         Swal.fire({
-          title: "Opps...",
+          title: "Oops...",
           text: err,
           icon: "error",
           confirmButtonText: "Try Again",
@@ -62,7 +62,7 @@ export class VerifyComponent implements OnInit {
       },
       (error) =>
         Swal.fire({
-          title: "Opps...",
+          title: "Oops...",
           text: error,
           icon: "error",
           confirmButtonText: "Try Again",

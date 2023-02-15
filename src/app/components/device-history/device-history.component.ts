@@ -53,7 +53,7 @@ export class DeviceHistoryComponent implements OnInit {
         this.loggingOut = false;
         Swal.fire({
           icon: "error",
-          title: "Opps...",
+          title: "Oops...",
           text: error,
         });
       }

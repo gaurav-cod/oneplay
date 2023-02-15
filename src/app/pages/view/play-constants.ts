@@ -26,7 +26,7 @@ export class PlayConstants {
     Elite: 3840,
   };
 
-  static readonly FPS = [30, 60];
+  static readonly FPS = [30, 60, 90, 120];
 
   static readonly DEFAULT_FPS = 60;
 
