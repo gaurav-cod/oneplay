@@ -85,15 +85,15 @@
           <table class="customTable table">
             <thead>
               <tr scope="row">
-                <th scope="col">Date of Purchase</th>
+                <th scope="col" class="pl-0">Date of Purchase</th>
                 <th scope="col">Subscription Type</th>
                 <th scope="col">Price</th>
-                <th scope="col">Status</th>
+                <th scope="col" class="pr-0">Status</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let subscription of subscriptions">
-                <td class="align-middle py-3">
+                <td class="align-middle py-3 pl-0">
                   {{ subscription.purchasedAt | date: "dd.MM.yyyy" }}
                 </td>
                 <td class="align-middle py-3">
@@ -105,7 +105,7 @@
                   {{ subscription.currency | uppercase }}
                 </td>
                 <td
-                  class="align-middle py-3"
+                  class="align-middle py-3 pr-0"
                   [ngClass]="{
                     gradientText: subscription.status === 'active',
                     cancelgradientText: subscription.status === 'pending'
