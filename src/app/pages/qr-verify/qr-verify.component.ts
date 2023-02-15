@@ -79,7 +79,7 @@ export class QrVerifyComponent implements OnInit {
         error: (err) => {
           this.loading = false;
           Swal.fire({
-            title: "Opps...",
+            title: "Oops...",
             text: err.error.message,
             icon: "error",
           });

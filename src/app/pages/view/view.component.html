@@ -138,12 +138,12 @@
                     <label
                       class="custom-control-label font16 font500 text-white d-none d-sm-block"
                       for="customCheck1"
-                      >Show gameplay settings before launch</label
+                      ><span class="marginLeftNegative">Show gameplay settings before launch</span></label
                     >
                     <label
                       class="custom-control-label font16 font500 text-white d-block d-sm-none"
                       for="customCheck1"
-                      >Show settings before launch</label
+                      ><span class="marginLeftNegative">Show settings before launch</span></label
                     >
                   </div>
                 </form>
@@ -156,7 +156,7 @@
         <div class="row">
           <div class="col-md-6 pt-5 pt-md-0">
             <div class="row mt-5 mt-md-4">
-              <div class="col-lg-10">
+              <div class="col-lg-10 mt-lg-4">
                 <h1 class="font700 text-white mb-0">About Game</h1>
                 <p
                   id="description"
@@ -168,7 +168,7 @@
                 <a
                   href="javascript:void(0)"
                   type="button"
-                  class="font16 muteText font-weight-500 d-inline mt-1"
+                  class="font16 text-white font-weight-500 d-inline mt-1"
                   (click)="showText()"
                 >
                   {{ isReadMore ? "...Read More" : "Read Less" }}
@@ -180,7 +180,7 @@
             <div class="row mt-2 mt-md-4">
               <div
                 *ngIf="game.storesMapping.length"
-                class="col-auto pr-lg-5 mt-3"
+                class="col-auto pr-lg-5 mt-3 mt-lg-4"
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
@@ -198,10 +198,10 @@
                   />
                 </a>
               </div>
-              <div class="col mt-3">
+              <div class="col mt-3 mt-lg-4">
                 <p class="font16 font500 muteText">Developer</p>
                 <div class="row">
-                  <div class="col-auto" *ngFor="let dev of game.developer; let i = index">
+                  <div class="col-auto pr-0" *ngFor="let dev of game.developer; let i = index">
                     <p class="font600 font20 text-white mb-0">
                       <span class="align-middle"
                         >{{ dev | titlecase }}</span
@@ -214,10 +214,10 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <p class="font16 font500 muteText mt-3 mb-0">Tags</p>
+                <p class="font16 font500 muteText mt-5 mb-0">Tags</p>
                 <span
                   *ngFor="let genre of game.genreMappings"
-                  class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 py-sm-1 mt-3"
+                  class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
                   >{{ genre }}</span
                 >
               </div>

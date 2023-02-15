@@ -65,7 +65,7 @@
 
 .font16 {
   font-size: 16px;
-  line-height: 21px;
+  line-height: 26px;
   font-weight: 500;
 }
 
@@ -91,14 +91,14 @@
 }
 
 .height40vh {
-  height: 59vh;
+  height: 55vh;
   @media (max-width: 480px) {
     height: 200px;
   }
 }
 
 .height30vh {
-  height: 54vh;
+  height: 50vh;
   @media (max-width: 480px) {
     height: 200px;
   }
@@ -120,6 +120,14 @@
   .center-img {
     object-position: top;
   }
+}
+
+.customWidth {
+  width: 27.5%;
+}
+
+.customWidth1 {
+  width: 45%;
 }
 
 @media (max-width: 1025px) {

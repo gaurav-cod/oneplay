@@ -12,7 +12,8 @@
   >
     <img
       #image
-      class="card-img borderRadius10 w290h185 loadingBg"
+      [ngClass] = "{w290h185: hfw}"
+      class="card-img borderRadius10 loadingBg"
       [src]="game.textBgImage"
       (error)="onImgError($event)"
       [ngStyle]="{

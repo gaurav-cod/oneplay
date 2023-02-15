@@ -366,7 +366,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   playGame(container): void {
     if (this.user.status !== "active") {
       Swal.fire({
-        title: "Opps...",
+        title: "Oops...",
         text: "Your account needs to be subjected to availability by Oneplay to play games",
         icon: "error",
       });
@@ -374,7 +374,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
     if (!this.user.subscriptionIsActive) {
       Swal.fire({
-        title: "Opps...",
+        title: "Oops...",
         html: !this.user.subscribedPlan
           ? `You haven't bought any subscription yet. Please visit <a href="${this.domain}/subscription.html">here</a>`
           : "Your subscription is not active. Please renew your subscription",
@@ -416,7 +416,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       },
       (err) => {
         Swal.fire({
-          title: "Opps...",
+          title: "Oops...",
           text: err || "Something went wrong",
           icon: "error",
           confirmButtonText: "Try Again",
@@ -487,7 +487,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else {
             this.stopLoading();
             Swal.fire({
-              title: "Opps...",
+              title: "Oops...",
               text: data.msg || "Something went wrong",
               icon: "error",
               confirmButtonText: "Try Again",
@@ -497,7 +497,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.stopLoading();
           Swal.fire({
-            title: "Opps...",
+            title: "Oops...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "Try Again",
@@ -507,10 +507,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
-    if (millis > 60000) {
+    if (millis > 120000) {
       this.stopLoading();
       Swal.fire({
-        title: "Opps...",
+        title: "Oops...",
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
@@ -562,7 +562,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.stopLoading();
           Swal.fire({
-            title: "Opps...",
+            title: "Oops...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "Try Again",
@@ -577,7 +577,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else if (count > 2) {
       this.loaderService.stop();
       Swal.fire({
-        title: "Opps...",
+        title: "Oops...",
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
@@ -608,7 +608,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.loaderService.stop();
           Swal.fire({
-            title: "Opps...",
+            title: "Oops...",
             text: err || "Something went wrong",
             icon: "error",
             confirmButtonText: "Try Again",
@@ -638,7 +638,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           (err) => {
             this.stopLoading();
             Swal.fire({
-              title: "Opps...",
+              title: "Oops...",
               text: err || "Something went wrong",
               icon: "error",
               confirmButtonText: "Try Again",

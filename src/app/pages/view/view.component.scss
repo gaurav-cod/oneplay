@@ -148,7 +148,7 @@ live {
 }
 
 .limitTextHeight {
-  height: 55px;
+  height: 119px;
   overflow: hidden;
 }
 
@@ -296,7 +296,7 @@ live {
 
 .font16 {
   font-size: 16px;
-  line-height: 21px;
+  line-height: 26px;
   @media (max-width: 480px) {
     font-size: 14px;
     line-height: 24px;
@@ -326,4 +326,12 @@ live {
 
 ::ng-deep .tooltip-inner {
   width: 180px;
+}
+
+.marginLeftNegative {
+  margin-left: -15px;
+}
+
+.custom-control-label span {
+  top: 0px;
 }
