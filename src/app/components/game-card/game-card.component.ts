@@ -15,6 +15,7 @@ import { v4 } from "uuid";
 export class GameCardComponent implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
+  @Input("hasFixedWidth") hfw:boolean = false;
 
   timer: NodeJS.Timeout;
   muted = true;
