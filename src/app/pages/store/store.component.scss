@@ -52,3 +52,9 @@
   padding: 2px;
   color: #FFFFFF !important;
 }
+
+@media (min-width: 576px) and (max-width: 1200px) {
+  .mid-screen {
+    padding-top: 100px !important;
+  }
+}

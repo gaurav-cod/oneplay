@@ -22,7 +22,7 @@
       <table class="customTable table w-100 mt-4">
         <thead>
           <tr>
-            <th scope="col">Device</th>
+            <th scope="col" class="pl-0">Device</th>
             <th scope="col">Location</th>
             <th scope="col" class="text-center">Activity</th>
             <th scope="col" class="text-right">Status</th>
@@ -30,7 +30,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let session of sessions">
-            <td class="align-middle py-3" scope="row">
+            <td class="align-middle py-3 pl-0" scope="row">
               {{ session.browser }}
               <p class="customTableText mb-0">{{ session.os }}</p>
             </td>

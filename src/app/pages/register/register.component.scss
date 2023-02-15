@@ -316,3 +316,15 @@ input:-internal-autofill-selected {
 .font800 {
   font-weight: 800 !important;
 }
+
+.checkBoxCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  clip-path: circle(46% at 50% 50%);
+}
+
+input[type=checkbox]:checked {
+  accent-color: #59FEF4;
+  // background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%)!important;
+}

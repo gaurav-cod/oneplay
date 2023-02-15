@@ -1,4 +1,4 @@
-<div *ngIf="!!game" class="container-fluid paddingtop100">
+<div *ngIf="!!game" class="container-fluid mid-screen pt-6">
   <div class="container-fluid removePaddingContainer">
     <div class="row mt-4 justify-content-center">
       <div class="col-md-12">
@@ -63,7 +63,7 @@
                   <div class="col-auto align-self-center fullWidthBtn">
                     <button
                       *ngIf="!terminatingGame"
-                      class="btn btn-lg px-5 py-lg-3 fullWidthBtn py-2 mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+                      class="btn font20 GradientBtnPadding fullWidthBtn mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
                       [disabled]="startingGame || game.status === 'unlive'"
                       [ngClass]="{'hide-text': startingGame}"
                       (click)="playGame(smallModal)"
@@ -71,7 +71,7 @@
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
                         [hasProgressBar]="false"
-                        [fgsSize]="14"
+                        [fgsSize]="20"
                         [fgsPosition]="'center-left'"
                         [text]="'Initializing...'"
                         [overlayBorderRadius]="'90px'"
@@ -81,7 +81,7 @@
                     </button>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
-                      class="btn btn-danger fullWidthBtn borderRadius90 btn-lg px-5 py-lg-3 py-2 mt-3 position-relative"
+                      class="btn font20 btn-danger fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
                       [disabled]="terminatingGame"
                       [ngClass]="{'hide-text': terminatingGame}"
                       (click)="terminateSession()"
@@ -89,7 +89,7 @@
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
                         [hasProgressBar]="false"
-                        [fgsSize]="14"
+                        [fgsSize]="20"
                         [fgsPosition]="'center-left'"
                         [text]="'Terminating...'"
                         [overlayBorderRadius]="'90px'"
@@ -98,7 +98,7 @@
                       {{ !terminatingGame ? "Terminate" : "Terminating..." }}
                     </button>
                   </div>
-                  <div class="col-auto d-none d-sm-block align-self-center">
+                  <div class="col-auto pl-0 d-none d-sm-block align-self-center">
                     <button
                       *ngIf="!isInWishlist"
                       (click)="addToWishlist()"
@@ -127,7 +127,7 @@
                     </button>
                   </div>
                 </div>
-                <form class="pb-4">
+                <form class="pb-4 checkBox">
                   <div class="custom-control custom-checkbox mt-4">
                     <input
                       type="checkbox"
@@ -154,15 +154,15 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 pt-5 pt-md-0">
-            <div class="row mt-5 mt-md-4">
-              <div class="col-lg-10 mt-lg-4">
-                <h1 class="font700 text-white mb-0">About Game</h1>
+          <div class="col-md-6 mt-5 mt-md-4 mt-lg-5">
+            <div class="row">
+              <div class="col-lg-10 mt-5 mt-md-0">
+                <h1 class="font700 text-white">About Game</h1>
                 <p
                   id="description"
                   [ngClass]="{ limitTextHeight: isReadMore }"
                   [innerHTML]="game.description"
-                  class="font20 font500 descriptionText muteText mt-2 mb-0"
+                  class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
                 >
                 </p>
                 <a
@@ -177,10 +177,10 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="row mt-2 mt-md-4">
+            <div class="row">
               <div
                 *ngIf="game.storesMapping.length"
-                class="col-auto pr-lg-5 mt-3 mt-lg-4"
+                class="col-auto pr-lg-5 mt-lg-5 mt-4"
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
@@ -198,8 +198,8 @@
                   />
                 </a>
               </div>
-              <div class="col mt-3 mt-lg-4">
-                <p class="font16 font500 muteText">Developer</p>
+              <div class="col mt-lg-5 mt-4">
+                <p class="font16 font500 muteText mb-2">Developer</p>
                 <div class="row">
                   <div class="col-auto pr-0" *ngFor="let dev of game.developer; let i = index">
                     <p class="font600 font20 text-white mb-0">
@@ -209,12 +209,11 @@
                     </p>
                   </div>
                 </div>
-                
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-4 mt-lg-5">
               <div class="col-12">
-                <p class="font16 font500 muteText mt-5 mb-0">Tags</p>
+                <p class="font16 font500 muteText mb-0">Tags</p>
                 <span
                   *ngFor="let genre of game.genreMappings"
                   class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
@@ -241,7 +240,7 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="similarGames.length" class="mt-2 mt-lg-4">
+    <div *ngIf="similarGames.length">
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
@@ -256,14 +255,14 @@
       ></app-stream-card>
     </div>
 
-    <div *ngIf="genreGames.length" class="mt-2 mt-lg-4">
+    <div *ngIf="genreGames.length">
       <app-similar-games
         [title]="'From Genre'"
         [games]="genreGames"
       ></app-similar-games>
     </div>
 
-    <div *ngIf="devGames.length" class="mt-2 mt-lg-4">
+    <div *ngIf="devGames.length">
       <app-similar-games
         [title]="'From Developer'"
         [games]="devGames"
@@ -337,7 +336,7 @@
         </div>
         <div class="col-12 text-center mt-2 d-none d-sm-inline">
           <p class="garadientColor">
-            <i class="fa fa-download"></i>
+            <img src="assets/img/Dashboard/Download.svg" class="img-fluid" alt="" />
             <span class="ml-2">
               <a
                 [href]="domain + '/download.html'"
@@ -411,7 +410,7 @@
             class="btn btn-link btn-block font16 font500 lightGrayColor"
             (click)="openAdvanceOptions(advanced)"
           >
-            <i class="fas fa-external-link-alt mr-2"></i>
+            <img src="assets/img/Dashboard/Vector.svg" class="img-fluid mr-2" alt="" />
             Advanced game options
           </button>
         </div>

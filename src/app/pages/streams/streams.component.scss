@@ -12,3 +12,9 @@
 .carousel-control-next {
   width: 5% !important;
 }
+
+@media (min-width: 576px) and (max-width: 1200px) {
+  .mid-screen {
+    padding-top: 100px !important;
+  }
+}

@@ -150,6 +150,9 @@ live {
 .limitTextHeight {
   height: 119px;
   overflow: hidden;
+  @media (max-width: 1200px) {
+    height: 50px;
+  }
 }
 
 .customOverlay {
@@ -271,10 +274,24 @@ live {
   box-shadow: none;
 }
 
+.custom-control-label::before {
+  background-color: #363636;
+}
+
+.checkBox .custom-control-input:checked ~ .custom-control-label::before {
+  background: #ffffff;
+  border: none;
+  box-shadow: none;
+}
+
 .custom-control-input:checked ~ .custom-control-label::before {
   background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
   border: none;
   box-shadow: none;
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+  background-image: url('../../../assets/img/Tick.svg') !important;
 }
 
 .font18 {
@@ -334,4 +351,19 @@ live {
 
 .custom-control-label span {
   top: 0px;
+}
+
+.font20 {
+  font-size: 20px !important;
+  line-height: 34px !important;
+  @media (max-width: 480px) {
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 1200px) {
+  .mid-screen {
+    padding-top: 100px !important;
+  }
 }
