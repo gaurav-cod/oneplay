@@ -148,7 +148,7 @@ live {
 }
 
 .limitTextHeight {
-  height: 55px;
+  height: 119px;
   overflow: hidden;
 }
 
@@ -332,8 +332,6 @@ live {
   margin-left: -15px;
 }
 
-@media (max-width: 480px) {
-  .custom-control-label span {
-    top: 0px;
-  }
+.custom-control-label span {
+  top: 0px;
 }
