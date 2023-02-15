@@ -1,5 +1,5 @@
 <div
-  class="container-fluid paddingtop100 pb-3 mb-lg-0 pb-lg-0"
+  class="container-fluid pb-3 mb-lg-0 pb-lg-0 pt-6"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
   <ngb-carousel
@@ -65,7 +65,7 @@
                   <br />
                   <button
                     [routerLink]="['/view/' + (game | glink)]"
-                    class="btn btn-lg playBtn borderRadius90 border-0 text-white pl-5 pr-5 mt-3 mb-4 d-none d-sm-block"
+                    class="btn playBtn borderRadius90 font20 border-0 text-white customBtnPadding mt-3 mb-4 d-none d-sm-block"
                   >
                     Play Now
                   </button>
@@ -79,28 +79,28 @@
   </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid pb-3 pb-md-0 pb-lg-3 d-none d-md-block">
-  <div class="row justify-content-center">
+<div class="container-fluid customFluid pb-3 mt-4 pb-md-0 d-none d-md-block">
+  <div class="row justify-content-center pt-2 pb-2">
     <div class="col-auto">
-      <div class="row justify-content-center mt-lg-4 scrolltab">
+      <div class="row justify-content-center scrolltab">
         <div class="col-auto px-2 tabOptions">
           <a
             href="javascript:void(0)"
-            class="card bgColor mb-3 mt-3 mutedColor"
+            class="card bgColor mutedColor"
             [ngClass]="{activeBG: !genreSelected}"
             [routerLink]="['/home']"
           >
-            <div class="pt-3 pb-3 pl-5 pr-5 bgColor">For You</div>
+            <div class="customBtnPadding bgColor">For You</div>
           </a>
         </div>
         <div class="col-auto px-2 tabOptions" *ngFor="let route of routes">
           <a
             href="javascript:void(0)"
-            class="card bgColor mb-3 mt-3 mutedColor"
+            class="card bgColor mutedColor"
             routerLinkActive="activeBG"
             [routerLink]="['/home/' + route]"
           >
-            <div class="pt-3 pb-3 pl-5 pr-5 bgColor">{{ route }}</div>
+            <div class="customBtnPadding bgColor">{{ route }}</div>
           </a>
         </div>
       </div>

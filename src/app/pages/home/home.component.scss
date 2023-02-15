@@ -196,3 +196,16 @@
   width: 0px;
   height: 0px;
 }
+
+.customBtnPadding {
+  padding: 13px 26px;
+}
+
+.font20 {
+  font-size: 20px !important;
+  line-height: 34px !important;
+  @media (max-width: 480px) {
+    font-size: 16px !important;
+    line-height: 26px !important;
+  }
+}
