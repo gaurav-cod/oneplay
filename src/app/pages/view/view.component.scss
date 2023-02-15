@@ -327,3 +327,13 @@ live {
 ::ng-deep .tooltip-inner {
   width: 180px;
 }
+
+.marginLeftNegative {
+  margin-left: -15px;
+}
+
+@media (max-width: 480px) {
+  .custom-control-label span {
+    top: 0px;
+  }
+}
