@@ -42,6 +42,8 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   game: GameModel;
   playing: string = "";
+  showAllVideos = false;
+  showAllLiveVideos = false;
   startingGame = false;
   terminatingGame = false;
 
@@ -58,9 +60,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
-
-  videos: VideoModel[] = [];
-  liveVideos: VideoModel[] = [];
 
   showSettings = new FormControl();
 
@@ -86,6 +85,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _webplayTokenSubscription: Subscription;
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
+
+  private videos: VideoModel[] = [];
+  private liveVideos: VideoModel[] = [];
 
   constructor(
     private readonly location: Location,
@@ -269,6 +271,17 @@ export class ViewComponent implements OnInit, OnDestroy {
   get allGenres(): string {
     return "From " + this.game?.genreMappings?.join(", ") || "";
   }
+
+  get _videos(): VideoModel[] {
+    return !this.showAllVideos ? this.videos.slice(0, 2) : this.videos;
+  }
+
+  get _liveVideos(): VideoModel[] {
+    return !this.showAllLiveVideos
+      ? this.liveVideos.slice(0, 2)
+      : this.liveVideos;
+  }
+
 
   get releaseYear() {
     return this.game?.releaseDate.getFullYear();
