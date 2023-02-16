@@ -58,10 +58,10 @@
                 <label class="font16 font500 customOffWhite required"
                   >Phone</label
                 >
-                <div class="input-group">
+                <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append">
                     <select
-                      class="form-control p-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+                      class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
                       formControlName="country_code"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
@@ -77,7 +77,7 @@
                         !registerForm.controls.phone.valid &&
                         registerForm.controls.phone.touched
                     }"
-                    class="form-control p-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput pl-2"
+                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 pl-2"
                     placeholder="9999999999"
                   />
                 </div>
