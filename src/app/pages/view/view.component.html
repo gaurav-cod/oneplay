@@ -232,7 +232,110 @@
 
 <div class="pb-lg-8 pb-5 overflow-hidden">
   <div *ngIf="!!game">
-    <div *ngIf="videos.length" class="mt-2 mt-lg-4">
+    <div class="row px-3 d-block d-md-none">
+      <div class="col-md-6 col-12" *ngIf="_videos.length > 0">
+        <h2 class="font18 font500 offWhiteText mt-4 mb-0">Top Videos</h2>
+        <div
+          *ngFor="let video of _videos"
+          class="mt-4"
+          (click)="open(modal, video)"
+          style="cursor: pointer;"
+        >
+          <img
+            [src]="video.thumbnail"
+            (click)="open(modal, video)"
+            class="removecover borderRadius10"
+            alt=""
+            height="248px"
+          />
+          <div class="row">
+            <div class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace">
+              {{ video.title }}
+            </div>
+            <div class="col-auto mt-4">
+              <img
+              [src]=
+                " !!video.creatorThumbnail
+                  ? video.creatorThumbnail
+                  : (video.creatorName | avatar)
+                "
+                class="rounded-circle"
+                width="50"
+                height="50"
+                alt=""
+              />
+            </div>
+            <div class="col text-truncate mt-4 pl-0">
+              <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
+              <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="videos.length >= 2" class="text-center my-4">
+          <button
+            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            (click)="showAllVideos = !showAllVideos"
+          >
+            {{ showAllVideos ? "Show Less" : "Browse more videos" }}
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-12 pr-lg-4" *ngIf="_liveVideos.length > 0">
+        <h2 class="font18 font500 offWhiteText mt-4 mb-0">Top Live Streams</h2>
+        <div
+          *ngFor="let video of _liveVideos"
+          class="mt-4"
+          (click)="open(modal, video)"
+          style="cursor: pointer;"
+        >
+          <div class="card bgTransparent border-0 borderRadius10">
+            <img
+              [src]="video.thumbnail"
+              (click)="open(modal, video)"
+              class="card-img removecover borderRadius10"
+              alt=""
+              height="248px"
+            />
+            <div class="card-img-overlay p-2 text-right">
+              <live>LIVE</live>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace">
+              {{ video.title }}
+            </div>
+            <div class="col-auto mt-4">
+              <img
+                [src]="
+                  !!video.creatorThumbnail || (video.creatorName | avatar)
+                "
+                class="rounded-circle"
+                width="50"
+                height="50"
+                alt=""
+              />
+            </div>
+            <div class="col text-truncate mt-4 pl-0">
+              <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
+              <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="liveVideos.length >= 2" class="text-center my-4">
+          <button
+            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            (click)="showAllLiveVideos = !showAllLiveVideos"
+          >
+            {{ showAllLiveVideos ? "Show Less" : "Browse more streams" }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <hr class="borderColor d-block d-md-none"/>
+
+    <div *ngIf="videos.length" class="mt-2 mt-lg-4 d-none d-md-block">
       <app-stream-card
         [title]="'Top Videos'"
         [gameId]="game.id"
@@ -247,7 +350,7 @@
       ></app-similar-games>
     </div>
 
-    <div *ngIf="liveVideos.length" class="mt-2 mt-lg-4">
+    <div *ngIf="liveVideos.length" class="mt-2 mt-lg-4 d-none d-md-block">
       <app-stream-card
         [title]="'Top Live Streams'"
         [gameId]="game.id"

@@ -81,8 +81,8 @@ body {
 
 #live {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  // top: -8px;
+  // right: -8px;
   font-size: 8px;
   font-weight: bold;
   color: #fff;
@@ -782,4 +782,12 @@ input[type="checkbox"] {
 .sb-group, .sb-button {
   align-items: center !important;
   justify-content: center !important;
+}
+
+.br60 {
+  border-radius: 60px !important;
+}
+
+.removecover {
+  object-fit: none;
 }

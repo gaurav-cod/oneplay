@@ -62,14 +62,6 @@ live {
   padding: 2px 4px;
   font-size: 12px;
   font-weight: bold;
-  position: absolute;
-  top: 130px;
-  left: 224px;
-
-  @media (max-width: 480px) {
-    top: 20px;
-    left: 20px;
-  }
 }
 
 #description {
