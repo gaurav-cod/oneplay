@@ -303,7 +303,11 @@ export class RestService {
 
   getSimilarGames(id: string): Observable<GameModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/" + id + "/similar")
+      .get<any[]>(this.r_mix_api + "/games/" + id + "/similar", {
+        params: {
+          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
+        },
+      })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
@@ -337,7 +341,11 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+        params: {
+          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
+        },
+      })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
@@ -347,7 +355,11 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+        params: {
+          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
+        },
+      })
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
@@ -385,7 +397,7 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
         params: {
-          textBackground: "280x170",
+          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
           textLogo: "400x320",
           poster: "528x704",
         },
