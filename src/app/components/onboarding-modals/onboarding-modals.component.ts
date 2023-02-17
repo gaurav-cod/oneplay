@@ -48,7 +48,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     const wishlist = await this.gameWishlist();
     if (localStorage.getItem("#onboardingUser") !== "true") {
       this.onboardingUser();
-      localStorage.setItem("#onboardingUser", "true");
+      localStorage.setItem("#closeonboardingGame", "true");
     }
 
     else if (wishlist.length < 1) {
@@ -143,6 +143,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   }
 
   public async closeonboardingGame() {
+    localStorage.setItem("#onboardingUser", "true");
     const wishlist = await this.gameWishlist();
     this._onboardingUserRef.close()
     if (wishlist.length < 1) {
