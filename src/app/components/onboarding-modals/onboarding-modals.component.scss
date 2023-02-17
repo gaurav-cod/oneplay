@@ -1,7 +1,7 @@
 
   
 .customBtnBg {
-  background-color: #3f00b4;
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
 }
 
 .customOffWhite {
@@ -22,6 +22,10 @@
   line-height: 42px;
   color: #DCDCDC;
   letter-spacing: 0.02em;
+  @media (max-width: 767px) {
+    font-size: 20px;
+    line-height: 30px;
+  }
 }
 
 .borderBottomColor {
@@ -46,7 +50,11 @@
 }
 
 .customColor a {
-  color: #3f00b4;
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }
 
 .customColor {
@@ -61,10 +69,6 @@
   accent-color: #959595;
 }
 
-.backgroundCustom {
-  background-color: #3f00b4;
-}
-
 .display-hide {
   display: none;
 }
@@ -75,7 +79,22 @@
   }
 }
 
+@media (max-width: 991px) {
+  .textCenterMobile {
+    text-align: center !important;
+  }
+}
+
 .hoverdisabled:hover {
   background-color: transparent;
   color: #ffffff;
+}
+
+.font18 {
+  font-size: 18px;
+  line-height: 20px;
+  @media (max-width: 767px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
