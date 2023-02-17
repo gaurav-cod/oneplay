@@ -2,7 +2,7 @@
   <div class="modal-header d-inline modalBG customOffWhite borderBottomColor">
     <div class="row">
       <div class="col-md-12 text-center">
-        <h2 class="modalHeading">Before you start</h2>
+        <h2 class="modalHeading mb-0">Before you start</h2>
       </div>
     </div>
   </div>
@@ -103,9 +103,9 @@
       </div>
     </div>
   </div>
-  <div class="modal-footer pl-0 pr-0 d-inline modalBG bordertopColor">
+  <div class="modal-footer pl-0 pr-0 pt-0 pb-3 d-inline modalBG bordertopColor">
     <div class="row">
-      <div class="col-lg-7 col-md-6 col-sm-6 col-8 pr-0 align-self-center">
+      <div class="col-lg-7 col-md-12 col-12 col-12 mt-3 textCenterMobile pr-0 align-self-center">
         <div class="form-check form-check-inline">
           <input
             class="form-check-input"
@@ -117,25 +117,28 @@
           <label
             class="form-check-label font16 font500 customColor ml-1"
             for="inlineCheckbox1"
-            >I agree to these terms.</label
+          >
+            <span class="d-none d-md-inline-block">I understand and agree to these steps.</span>
+            <span class="d-block d-md-none">I agree to these steps.</span>
+          </label
           >
         </div>
       </div>
-      <div class="col-lg-5 col-md-6 col-sm-6 col-4 text-right">
+      <div class="col-lg-5 col-md-12 col-12 col-12 mt-3 textCenterMobile text-right">
         <button
-          class="btn text-white customBtnBg borderRadius60 d-none d-sm-inline"
+          class="btn text-white customBtnBg font18 py-lg-3 font500 borderRadius60 border-0"
           [disabled]="!checked"
           (click)="closeonboardingGame()"
         >
           Agree & Continue
         </button>
-        <button
+        <!-- <button
           class="btn text-white customBtnBg borderRadius60 d-inline d-sm-none"
           [disabled]="!checked"
           (click)="closeonboardingGame()"
         >
           Agree
-        </button>
+        </button> -->
       </div>
     </div>
   </div>
