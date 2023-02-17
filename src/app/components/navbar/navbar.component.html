@@ -30,7 +30,7 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/home']"
-            class="nav-link mt-2 mr-3"
+            class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="isMenuCollapsed = true"
             >Home</a
           >
@@ -40,7 +40,7 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/store']"
-            class="nav-link mt-2 mr-3"
+            class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="isMenuCollapsed = true"
             >Store</a
           >
@@ -50,12 +50,12 @@
             href="javascript:void(0)"
             routerLinkActive="active"
             [routerLink]="['/streams']"
-            class="nav-link mt-2 mr-3"
+            class="nav-link p-0 mt-2 pt-1 mr-3"
             (click)="isMenuCollapsed = true"
             >Streams</a
           >
         </li>
-        <li class="d-none d-lg-inline ml-3">
+        <li class="d-none d-lg-inline ml-2">
           <form
             class="navbar-search form-inline d-none d-md-flex mt-md-3 mt-lg-0 ml-lg-auto position-relative"
           >
@@ -176,7 +176,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link"
+              class="nav-link p-0 mr-3"
               (click)="toggleFriendsList()"
             >
               <span class="avatar avatar-sm rounded-circle bg-gray-dark">
@@ -189,13 +189,23 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link"
+              class="nav-link p-0 mr-3"
               [routerLink]="gameLink"
               ngbTooltip="{{ gamePlayTooltip }}"
             >
               <img
-                *ngIf="isGameRunning"
+                *ngIf="isUserLive"
                 src="assets/img/Dashboard/Speedtest.svg"
+                class="img-fluid"
+                alt=""
+                aria-hidden="true"
+                width="36px"
+                height="36px"
+              />
+              <span *ngIf="isUserLive" id="live">LIVE</span>
+              <img
+                *ngIf="isGameRunning"
+                src="assets/img/Dashboard/resumeSpeedtest.svg"
                 class="img-fluid"
                 alt=""
                 aria-hidden="true"
@@ -211,7 +221,8 @@
                 width="36px"
                 height="36px"
               />
-              <span *ngIf="isUserLive" id="live">LIVE</span>
+              <!-- <span *ngIf="isUserLive" id="live">LIVE</span> -->
+              
             </a>
           </div>
           <!-- notifications dropdown -->
@@ -222,7 +233,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link mt-2"
+              class="nav-link pr-0 mt-2"
               role="button"
               ngbDropdownToggle
             >
