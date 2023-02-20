@@ -269,7 +269,12 @@ export class RestService {
   getGameDetails(id: string, params?: any): Observable<GameModel> {
     return this.http
       .get(this.r_mix_api + "/games/" + id + "/info", { params })
-      .pipe(map((res) => new GameModel(res)));
+      .pipe(
+        map((res) => new GameModel(res)),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   searchUsers(
@@ -375,7 +380,15 @@ export class RestService {
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
         params: { page, limit: 12 },
       })
-      .pipe(map((res) => res.map((d) => new GameModel(d))));
+      .pipe(
+        map(
+          (res) => res.map((d) => new GameModel(d))
+        ),
+        catchError(({ error }) => {
+          console.log(error,'serveerror')
+          throw error;
+        })
+      );
   }
 
   getWishlistGames(ids: string[]): Observable<GameModel[]> {
@@ -410,6 +423,9 @@ export class RestService {
             categories: [],
             banners: [],
           };
+        }),
+        catchError(({ error }) => {
+          throw error;
         })
       );
   }
@@ -417,7 +433,12 @@ export class RestService {
   getStreamsFeed(): Observable<VideoFeedModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/streams")
-      .pipe(map((res) => res.map((d) => new VideoFeedModel(d))));
+      .pipe(
+        map((res) => res.map((d) => new VideoFeedModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getVideos(id: string): Observable<VideoModel[]> {

@@ -1,0 +1,46 @@
+.errorHeading {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 34px;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+}
+
+body {
+    font-family: 'Poppins' !important;
+    background-color: #151617 !important;
+}
+
+.bodHeight {
+    height: 100vh;
+    align-items: center;
+}
+
+.subErrorHeading {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    letter-spacing: 0.02em;
+    color: #959595;
+}
+
+.confirmBtn {
+    background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+    border-radius: 6px !important;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0.02em;
+    color: #FFFFFF !important;
+}
+
+@media (max-width: 576px) {
+    .errorHeading {
+        font-size: 30px !important;
+        line-height: 40px !important;
+    }
+
+    .confirmBtn {
+        border-radius: 60px !important;
+    }
+}

@@ -8,7 +8,7 @@ import {
 } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -100,7 +100,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly gameService: GameService,
     private readonly gamepadService: GamepadService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly router: Router,
   ) {
     const userAgent = new UAParser();
     this.authService.wishlist.subscribe(
@@ -213,9 +214,14 @@ export class ViewComponent implements OnInit, OnDestroy {
                     ]))
                 )
             );
-            this.loaderService.stop();
+            // this.loaderService.stop();
           },
-          (err) => this.loaderService.stop()
+          (err) => {
+            if(err.timeout) {
+              this.router.navigateByUrl('/server-error')
+            }
+            this.loaderService.stop()
+          }
         );
       this.restService
         .getSimilarGames(id)
