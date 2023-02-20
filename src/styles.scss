@@ -81,8 +81,8 @@ body {
 
 #live {
   position: absolute;
-  // top: -8px;
-  // right: -8px;
+  top: -8px;
+  right: -8px;
   font-size: 8px;
   font-weight: bold;
   color: #fff;
@@ -725,18 +725,18 @@ input[type="checkbox"] {
   background-color: #212123 !important;
 }
 
-.swal2-icon.swal2-error.swal2-icon-show {
+.swal2-icon.swal2-error.swal2-icon-show, .swal2-icon.swal2-warning.swal2-icon-show {
   background-image: url('./assets/img/error\ 1.svg');
   background-repeat: no-repeat;
   height: 90px;
   width: 90px;
 }
 
-.swal2-x-mark {
-  display: none;
+.swal2-x-mark, .swal2-icon-content {
+  display: none !important;
 }
 
-.swal2-icon.swal2-error {
+.swal2-icon.swal2-error, .swal2-icon.swal2-warning.swal2-icon-show {
   border-color: transparent !important;
   color: transparent !important;
 }
@@ -771,6 +771,11 @@ input[type="checkbox"] {
   background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
 }
 
+.swal2-cancel.swal2-styled {
+  width: 100% !important;
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+}
+
 .loadingBg {
   background: #212123;
 }
@@ -790,4 +795,11 @@ input[type="checkbox"] {
 
 .removecover {
   object-fit: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
 }

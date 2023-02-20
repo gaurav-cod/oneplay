@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
+import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -15,7 +16,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   name = new FormControl("", Validators.required);
   bio = new FormControl("", Validators.required);
   saveProfileLoder = false;
-  private userSubscription: Subscription
+  private userSubscription: Subscription;
+  private currentUserState: UserModel;
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService
@@ -26,10 +29,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userSubscription = 
     this.authService.user.subscribe((user) => {
+      this.currentUserState = user
       this.username.setValue(user.username);
       this.name.setValue(user.name);
       this.bio.setValue(user.bio);
     });
+
   }
 
   ngOnDestroy(): void {
@@ -54,6 +59,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       body['bio'] = this.bio.value
     } else {
       body['bio'] = ''
+    }
+
+    if(this.currentUserState.username == (this.username.value ?? null) && this.currentUserState.name == (this.name.value) && this.currentUserState.bio == (this.bio.value ?? null)) {
+      return
     }
 
     this.saveProfileLoder = true;

@@ -578,7 +578,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Oops...",
             text: err || "Something went wrong",
             icon: "error",
-            confirmButtonText: "Try Again",
+            confirmButtonText: "Relaunch the game",
           });
         }
       );

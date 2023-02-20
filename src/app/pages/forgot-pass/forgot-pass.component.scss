@@ -41,6 +41,10 @@
     font-size: 16px;
     line-height: 26px;
   }
+
+  .largeScreenHeight {
+    height: 100% !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
