@@ -55,30 +55,34 @@
                   </span>
                 </div>
               </div>
-              <div class="col-lg-6 col-md-6 col-6 mt-5 custom align-self-center pr-0">
-                <div class="custom-control custom-switch">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input font16 align-middle"
-                    id="customCheckLogin"
-                    checked
-                  />
-                  <label
-                    class="custom-control-label font20 mb-0 align-middle font500 customOffWhite"
-                    for="customCheckLogin"
-                    ><span class="textLabel">Remember me</span></label
-                  >
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-auto mt-5 custom align-self-center pr-0">
+                    <div class="custom-control custom-switch">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input font16 align-middle"
+                        id="customCheckLogin"
+                        checked
+                      />
+                      <label
+                        class="custom-control-label font20 mb-0 align-middle font500 customOffWhite"
+                        for="customCheckLogin"
+                        ><span class="textLabel">Remember me</span></label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-auto mt-5 align-self-center">
+                    <span class="float-right font20 font500"
+                      ><a
+                        href="javascript:void(0)"
+                        [routerLink]="['/forgot-password']"
+                        class="customOffWhite"
+                        >Forgot Password?</a
+                      ></span
+                    >
+                  </div>
                 </div>
-              </div>
-              <div class="col-lg-6 col-md-6 col-6 mt-5 align-self-center pl-0">
-                <span class="float-right font20 font500"
-                  ><a
-                    href="javascript:void(0)"
-                    [routerLink]="['/forgot-password']"
-                    class="customOffWhite"
-                    >Forgot Password?</a
-                  ></span
-                >
               </div>
               <div class="col-md-12 mt-5 margintop20">
                 <input
