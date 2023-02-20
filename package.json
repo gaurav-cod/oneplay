@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --deploy-url=https://www.oneream.com/dashboard/",
-    "build:prod": "ng build --prod --deploy-url=https://www.oneplay.in/dashboard/",
+    "build": "ng build --deploy-url=https://www.oneream.com/new/",
+    "build:prod": "ng build --prod --deploy-url=https://www.oneplay.in/new/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

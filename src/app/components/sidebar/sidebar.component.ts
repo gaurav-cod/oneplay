@@ -203,4 +203,9 @@ export class SidebarComponent implements OnInit {
   toggleFriendsList() {
     this.toggleFriends.emit();
   }
+
+  switchToV1() {
+    localStorage.removeItem('oneplayv2');
+    location.reload();
+  }
 }
