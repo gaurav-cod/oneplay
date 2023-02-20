@@ -74,11 +74,22 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // this.route.queryParams.subscribe((params) => {
-    //   if (params.subscribe && confirm("Proceed to pay?")) {
-    //     this.handlePay(params.subscribe);
-    //   }
-    // });
+    this.route.queryParams.subscribe((params) => {
+      if (params.subscribe) {
+        Swal.fire({
+          title: "Proceed to pay?",
+          text: "You are going to pay for the selected subscription package.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.handlePay(params.subscribe);
+          }
+        });
+      }
+    });
   }
 
   toggleFriendsCollapsed() {
@@ -135,7 +146,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       (data) => {
         const config = {
           root: "",
-          flow: "DEFAULT",
+          flow: "WEBSTAGING",
           data: {
             orderId: data.orderId,
             token: data.token,
