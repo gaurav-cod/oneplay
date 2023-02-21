@@ -12,7 +12,7 @@ import { ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { combineLatest, Subscription, zip } from "rxjs";
+import { combineLatest, merge, Subscription, zip } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -57,6 +57,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   resolution = new FormControl();
   fps = new FormControl();
   vsync = new FormControl();
+  bitrate = new FormControl();
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
@@ -102,6 +103,15 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly gamepadService: GamepadService,
     private readonly toastService: ToastService
   ) {
+    merge<[string, number]>(
+      this.resolution.valueChanges,
+      this.fps.valueChanges
+    ).subscribe(() => {
+      this.bitrate.setValue(
+        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
+      );
+    });
+
     const userAgent = new UAParser();
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
@@ -282,7 +292,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       : this.liveVideos;
   }
 
-
   get releaseYear() {
     return this.game?.releaseDate.getFullYear();
   }
@@ -338,6 +347,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   get domain() {
     return environment.domain;
+  }
+
+  get bitrateInMb() {
+    return ((this.bitrate.value ?? 0) / 1000).toFixed(2);
   }
 
   open(content: any, video: VideoModel): void {
@@ -478,7 +491,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.resolution.value,
         this.vsync.value,
         this.fps.value,
-        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value),
+        this.bitrate.value,
         this.advancedOptions.value
       )
       .subscribe(
