@@ -21,7 +21,7 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
 
-if (localStorage.getItem("oneplayv2") !== "true") {
+if (localStorage.getItem("oneplayv2") !== "true" && environment.production) {
   const restURL = location.href.replace(environment.domain + "/new", "");
   location.replace(environment.domain + "/dashboard" + restURL);
 } else {
