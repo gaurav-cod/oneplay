@@ -287,7 +287,12 @@ export class RestService {
       .get<any[]>(this.r_mix_api + "/accounts/search/", {
         params: { query, page, limit },
       })
-      .pipe(map((res) => res.map((d) => new UserModel(d))));
+      .pipe(
+        map((res) => res.map((d) => new UserModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   search(
@@ -304,7 +309,12 @@ export class RestService {
       .get<any[]>(this.r_mix_api + "/games/search", {
         params,
       })
-      .pipe(map((res) => new GameSearch(res)));
+      .pipe(
+        map((res) => new GameSearch(res)),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getSimilarGames(id: string): Observable<GameModel[]> {
