@@ -10,9 +10,9 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import Cookies from "js-cookie";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { combineLatest, merge, Subscription, zip } from "rxjs";
+import { combineLatest, merge, Subscription } from "rxjs";
+import { PurchaseStore } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -61,6 +61,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
+  selectedStore: PurchaseStore;
 
   showSettings = new FormControl();
 
@@ -201,6 +202,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "keywords", content: game.tagsMapping?.join(", ") },
               { name: "description", content: game.description },
             ]);
+            this.selectedStore = game.storesMapping[0];
             game.developer.forEach((dev) =>
               this.restService
                 .getGamesByDeveloper(dev)
@@ -492,7 +494,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.vsync.value,
         this.fps.value,
         this.bitrate.value,
-        this.advancedOptions.value
+        this.advancedOptions.value,
+        this.selectedStore
       )
       .subscribe(
         (data) => {
@@ -724,5 +727,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       `${environment.webrtc_domain}/?token=${token}&fps=55&resolution=&bitrate=10000`,
       "_blank"
     );
+  }
+
+  selectStore(store: PurchaseStore) {
+    this.selectedStore = store;
   }
 }
