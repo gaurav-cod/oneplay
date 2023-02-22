@@ -285,4 +285,9 @@ export class NavbarComponent implements OnInit {
       queryParams: { q: this.query.value },
     });
   }
+
+  switchToV1() {
+    localStorage.removeItem('oneplayv2');
+    location.reload();
+  }
 }

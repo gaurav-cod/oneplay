@@ -506,6 +506,18 @@
             </option>
           </select>
         </div>
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label class="text-light">Bitrate ({{bitrateInMb}} mb)</label>
+            <input
+              class="customFormControl form-control inputBorder text-light"
+              type="range"
+              [formControl]="bitrate"
+              min="5000"
+              max="80000"
+            />
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col-12 mt-3">
