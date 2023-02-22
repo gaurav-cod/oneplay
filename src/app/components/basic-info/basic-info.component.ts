@@ -86,8 +86,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         this.saveProfileLoder = false;
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: error,
+          title: "Error Code: " + error.code,
+          text: error.message,
         });
       }
     );

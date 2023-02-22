@@ -48,7 +48,7 @@ export class AuthInterceptor implements HttpInterceptor {
           status: error.status,
           statusText: error.statusText,
           error: {
-            code: error.status,
+            code: error.status || 503,
             message:
               error.error?.message ||
               error.error?.msg ||

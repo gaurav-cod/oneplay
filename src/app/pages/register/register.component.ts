@@ -140,8 +140,8 @@ export class RegisterComponent implements OnInit {
         (error) => {
           this.loading = false;
           Swal.fire({
-            title: "Error",
-            text: error,
+            title: "Error Code: " + error.code,
+            text: error.message,
             icon: "error",
             confirmButtonText: "Try Again",
           });
@@ -156,7 +156,7 @@ export class RegisterComponent implements OnInit {
     }
     this.restService.getName(id).subscribe(
       (name) => (this.referralName = name),
-      (error) => (this.referralName = error)
+      (error) => (this.referralName = error.message)
     );
   }
 }

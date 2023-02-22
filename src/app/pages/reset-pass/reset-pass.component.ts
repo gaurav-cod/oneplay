@@ -38,8 +38,8 @@ export class ResetPassComponent implements OnInit {
       },
       (error) =>
         Swal.fire({
-          title: "Oops...",
-          text: error,
+          title: "Error Code: " + error.code,
+          text: error.message,
           icon: "error",
           confirmButtonText: "Try Again",
         })

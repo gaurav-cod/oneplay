@@ -64,7 +64,7 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -75,7 +75,7 @@ export class RestService {
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -84,7 +84,7 @@ export class RestService {
     return this.http.get(this.r_mix_api + "/accounts/profile").pipe(
       map((res) => new UserModel(res)),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }
@@ -97,7 +97,7 @@ export class RestService {
     return this.http.put(this.r_mix_api + "/accounts/profile", formData).pipe(
       map(() => {}),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }
@@ -108,7 +108,7 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -117,7 +117,7 @@ export class RestService {
     return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
       map((res) => res["msg"]),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }
@@ -128,7 +128,7 @@ export class RestService {
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -139,7 +139,7 @@ export class RestService {
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -150,7 +150,7 @@ export class RestService {
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -161,7 +161,7 @@ export class RestService {
       .pipe(
         map((res) => {}),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -176,7 +176,7 @@ export class RestService {
     return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
       map(() => {}),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }

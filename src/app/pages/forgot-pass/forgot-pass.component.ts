@@ -30,8 +30,8 @@ export class ForgotPassComponent implements OnInit {
         },
       (error) =>
         Swal.fire({
-          title: "Error",
-          text: error,
+          title: "Error Code: " + error.code,
+          text: error.message,
           icon: "error",
           confirmButtonText: "Try Again",
         })
