@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { VideoFeedModel } from "src/app/models/streamFeed.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -18,6 +19,7 @@ export class StreamsComponent implements OnInit {
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService,
     private readonly title: Title,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +34,9 @@ export class StreamsComponent implements OnInit {
         this.loaderService.stop();
       },
       (error) => {
+        if(error.timeout) {
+          this.router.navigateByUrl('/server-error')
+        }
         this.loaderService.stop();
       }
     );

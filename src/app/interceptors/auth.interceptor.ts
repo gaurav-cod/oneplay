@@ -6,7 +6,8 @@ import {
   HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { catchError, filter } from "rxjs/operators";
+import { TimeoutError } from "rxjs";
+import { catchError, filter, timeout } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
 
@@ -30,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(req).pipe(
+    return next.handle(req).pipe(timeout(10000)).pipe(
       filter((res) => res instanceof HttpResponse),
       catchError((error: HttpErrorResponse) => {
         if (
@@ -39,7 +40,10 @@ export class AuthInterceptor implements HttpInterceptor {
         ) {
           this.authService.logout();
         }
-        console.log(error.error);
+        // if(error instanceof TimeoutError) {
+        //   console.log(error,'server-error');
+        // }
+        
         throw new HttpErrorResponse({
           status: error.status,
           statusText: error.statusText,
@@ -50,6 +54,7 @@ export class AuthInterceptor implements HttpInterceptor {
               error.error?.msg ||
               error.message ||
               "Server is not responding",
+            timeout: error instanceof TimeoutError
           },
         });
       })
