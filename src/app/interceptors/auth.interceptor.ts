@@ -48,7 +48,6 @@ export class AuthInterceptor implements HttpInterceptor {
             message:
               error.error?.message ||
               error.error?.msg ||
-              error.message ||
               "Server is not responding",
           },
         });

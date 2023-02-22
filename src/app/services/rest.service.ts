@@ -50,7 +50,7 @@ export class RestService {
       .pipe(
         map((res) => res["session_token"]),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
