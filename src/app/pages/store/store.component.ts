@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
@@ -94,7 +94,8 @@ export class StoreComponent implements OnInit {
     private readonly restService: RestService,
     private readonly title: Title,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -167,6 +168,9 @@ export class StoreComponent implements OnInit {
         },
         (error) => {
           this.stopLoading(0);
+          if(error.timeout) {
+            this.router.navigateByUrl('/server-error')
+          }
         }
       );
   }

@@ -11,6 +11,7 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { ComponentsModule } from "src/app/components/components.module";
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
+import { ServerErrorComponent } from "src/app/pages/server-error/server-error.component";
 
 @NgModule({
   imports: [
@@ -25,6 +26,6 @@ import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
     PipesModule,
     NgxUiLoaderModule,
   ],
-  declarations: [ErrorComponent, FeedbackComponent],
+  declarations: [ErrorComponent, FeedbackComponent, ServerErrorComponent],
 })
 export class CommonLayoutModule {}
