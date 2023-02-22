@@ -13,6 +13,7 @@ import {
   ILocation,
   LoginDTO,
   PaytmTxn,
+  PurchaseStore,
   SignupDTO,
   StartGameRO,
   UpdateProfileDTO,
@@ -658,20 +659,22 @@ export class RestService {
     is_vsync_enabled: boolean,
     fps: number,
     bitrate: number,
-    advanced_options: any
+    advanced_options: any,
+    store?: PurchaseStore
   ): Observable<StartGameRO> {
+    const payload = {
+      resolution,
+      is_vsync_enabled,
+      fps,
+      bitrate,
+      ...advanced_options,
+    };
+    if (store) {
+      payload["store"] = store.name.replace(/\s/g, "").toLowerCase();
+    }
     const formData = new FormData();
     formData.append("game_id", gameId);
-    formData.append(
-      "launch_payload",
-      JSON.stringify({
-        resolution,
-        is_vsync_enabled,
-        fps,
-        bitrate,
-        ...advanced_options,
-      })
-    );
+    formData.append("launch_payload", JSON.stringify(payload));
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)
       .pipe(

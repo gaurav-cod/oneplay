@@ -184,10 +184,12 @@
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
-                  href="{{ store.link }}"
+                  href="javascript:void(0)"
                   target="_blank"
                   *ngFor="let store of game.storesMapping"
-                  class="font600 font20 text-white"
+                  class="font600 font20 text-white p-2 pr-3 store selected"
+                  [ngClass]="{ selected: store === selectedStore }"
+                  (click)="selectStore(store)"
                 >
                   <img
                     [src]="store.name | store"
@@ -195,6 +197,12 @@
                     class="mr-2"
                     [alt]="store.name"
                     onerror="this.style.display = 'none'"
+                  />
+                  <input
+                    type="checkbox"
+                    class="checkbox"
+                    [checked]="store === selectedStore"
+                    (change)="selectStore(store)"
                   />
                 </a>
               </div>
@@ -425,13 +433,11 @@
             <p class="mb-0 mt-1 mb-1 font14responsive">
               You need to
               {{ game.isFree ? "have account" : "purchase this game" }} in
-              {{ game.storesMapping.length > 1 ? "any of" : "" }}
               <a
-                *ngFor="let store of game.storesMapping"
-                [href]="store.link"
+                [href]="selectedStore.link"
                 target="_blank"
                 class="d-inline-block mx-1 text-white"
-                >{{ store.name }}</a
+                >{{ selectedStore.name }}</a
               >
               to play this game
             </p>
@@ -506,9 +512,9 @@
             </option>
           </select>
         </div>
-        <div class="col-12 col-md-6">
-          <div class="form-group">
-            <label class="text-light">Bitrate ({{bitrateInMb}} mb)</label>
+        <div class="col-12 col-md-6 mt-3">
+          <div class="form-group mb-0">
+            <label class="font18 font500 lightGrayColor">Bitrate ({{bitrateInMb}} Mbps)</label>
             <input
               class="customFormControl form-control inputBorder text-light"
               type="range"
@@ -520,7 +526,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-12 mt-3">
+        <div class="col-12 mt-1">
           <button
             class="btn btn-link btn-block font16 font500 lightGrayColor"
             (click)="openAdvanceOptions(advanced)"
