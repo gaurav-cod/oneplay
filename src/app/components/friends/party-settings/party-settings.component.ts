@@ -51,8 +51,8 @@ export class PartySettingsComponent implements OnInit {
       (error) => {
         this.loading = false;
         Swal.fire({
-          title: "Error",
-          text: error,
+          title: "Error Code: " + error.code,
+          text: error.message,
           icon: "error",
         });
       }

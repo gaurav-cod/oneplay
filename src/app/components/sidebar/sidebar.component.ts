@@ -180,8 +180,8 @@ export class SidebarComponent implements OnInit {
           },
           error: (err) => {
             Swal.fire({
-              title: "Couldn't delete data",
-              text: err || "Something went wrong",
+              title: "Error Code: " + err.code,
+              text: err.message,
               icon: "error",
               confirmButtonText: "Try Again",
             });

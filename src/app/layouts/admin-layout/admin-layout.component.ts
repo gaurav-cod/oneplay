@@ -177,7 +177,12 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           });
         }
       },
-      (error) => Swal.fire({ title: "Error", text: error, icon: "error" })
+      (error) =>
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+        })
     );
   }
 }

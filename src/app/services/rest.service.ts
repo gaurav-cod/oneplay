@@ -190,7 +190,7 @@ export class RestService {
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
-          throw new Error(error.message);
+          throw error;
         })
       );
   }
@@ -211,7 +211,7 @@ export class RestService {
     return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
       map((res) => {}),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }
@@ -220,7 +220,7 @@ export class RestService {
     return this.http.get(this.r_mix_api + "/accounts/online/" + userId).pipe(
       map((res) => res["status"]),
       catchError(({ error }) => {
-        throw new Error(error.message);
+        throw error;
       })
     );
   }
@@ -392,11 +392,8 @@ export class RestService {
         params: { page, limit: 12 },
       })
       .pipe(
-        map(
-          (res) => res.map((d) => new GameModel(d))
-        ),
+        map((res) => res.map((d) => new GameModel(d))),
         catchError(({ error }) => {
-          console.log(error,'serveerror')
           throw error;
         })
       );
@@ -442,14 +439,12 @@ export class RestService {
   }
 
   getStreamsFeed(): Observable<VideoFeedModel[]> {
-    return this.http
-      .get<any[]>(this.r_mix_api + "/streams")
-      .pipe(
-        map((res) => res.map((d) => new VideoFeedModel(d))),
-        catchError(({ error }) => {
-          throw error;
-        })
-      );
+    return this.http.get<any[]>(this.r_mix_api + "/streams").pipe(
+      map((res) => res.map((d) => new VideoFeedModel(d))),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   getVideos(id: string): Observable<VideoModel[]> {
@@ -488,7 +483,7 @@ export class RestService {
       .pipe(
         map((data) => data["id"]),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -499,7 +494,7 @@ export class RestService {
       .pipe(
         map((data) => {}),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -508,7 +503,7 @@ export class RestService {
     return this.http.delete<any>(this.r_mix_api + "/social/friends/" + id).pipe(
       map(() => {}),
       catchError(({ error }) => {
-        throw Error(error.message);
+        throw error;
       })
     );
   }
@@ -517,7 +512,7 @@ export class RestService {
     return this.http.post<any>(this.r_mix_api + "/social/groups", data).pipe(
       map((res) => new PartyModel(res)),
       catchError(({ error }) => {
-        throw Error(error.message);
+        throw error;
       })
     );
   }
@@ -526,7 +521,7 @@ export class RestService {
     return this.http.put(this.r_mix_api + "/social/groups/" + id, data).pipe(
       map(() => {}),
       catchError(({ error }) => {
-        throw Error(error.message);
+        throw error;
       })
     );
   }
@@ -551,7 +546,7 @@ export class RestService {
           return new PartyInviteModel(data);
         }),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -577,7 +572,7 @@ export class RestService {
       .pipe(
         map((data) => {}),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -591,7 +586,7 @@ export class RestService {
       .pipe(
         map((data) => {}),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -638,7 +633,7 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -649,7 +644,7 @@ export class RestService {
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
-          throw Error(error.message);
+          throw error;
         })
       );
   }
@@ -658,7 +653,7 @@ export class RestService {
     return this.http.get(this.r_mix_api + "/notification/serious").pipe(
       map((res) => res["text"]),
       catchError(({ error }) => {
-        throw Error(error.message);
+        throw error;
       })
     );
   }
@@ -689,8 +684,8 @@ export class RestService {
       .post<StartGameRO>(this.client_api + "/start_game", formData)
       .pipe(
         map((res) => res),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({ error }) => {
+          throw error;
         })
       );
   }
@@ -702,8 +697,8 @@ export class RestService {
       .post<string>(this.client_api + "/get_session", formData)
       .pipe(
         map((res) => res["data"]),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -715,8 +710,8 @@ export class RestService {
       .post<WebPlayTokenRO>(this.client_api + "/get_web_play_token", formData)
       .pipe(
         map((res) => res),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -728,8 +723,8 @@ export class RestService {
       .post<void>(this.client_api + "/terminate_stream", formData)
       .pipe(
         map(() => {}),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -740,8 +735,8 @@ export class RestService {
       .post(this.client_api + "/get_any_active_session_status", formData)
       .pipe(
         map((res) => (!!Object.keys(res["data"]).length ? res["data"] : null)),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -751,8 +746,8 @@ export class RestService {
       .get<GameSessionRO>(this.r_mix_api + "/logging/game_session/" + launchKey)
       .pipe(
         map((res) => res),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -762,8 +757,8 @@ export class RestService {
       .post<void>(this.r_mix_api + "/logging/feedback", feedback)
       .pipe(
         map(() => {}),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }
@@ -773,8 +768,8 @@ export class RestService {
       .post<void>(this.client_api + "/delete_user_data", new FormData())
       .pipe(
         map(() => {}),
-        catchError((err) => {
-          throw new Error(err.error.message);
+        catchError(({error}) => {
+          throw error;
         })
       );
   }

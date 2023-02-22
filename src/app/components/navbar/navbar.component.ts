@@ -183,18 +183,35 @@ export class NavbarComponent implements OnInit {
       (f) => f.user_id === friend.id
     );
     if (acceptedFriend) {
-      this.restService.deleteFriend(acceptedFriend.id).subscribe(() => {
-        this.friendsService.deleteFriend(acceptedFriend);
-      });
+      this.restService.deleteFriend(acceptedFriend.id).subscribe(
+        () => {
+          this.friendsService.deleteFriend(acceptedFriend);
+        },
+        (err) => this.showError(err)
+      );
     } else if (pendingFriend) {
-      this.restService.deleteFriend(pendingFriend.id).subscribe(() => {
-        this.friendsService.cancelRequest(pendingFriend);
-      });
+      this.restService.deleteFriend(pendingFriend.id).subscribe(
+        () => {
+          this.friendsService.cancelRequest(pendingFriend);
+        },
+        (err) => this.showError(err)
+      );
     } else {
-      this.restService.addFriend(friend.id).subscribe((id) => {
-        this.friendsService.addFriend(friend, id);
-      });
+      this.restService.addFriend(friend.id).subscribe(
+        (id) => {
+          this.friendsService.addFriend(friend, id);
+        },
+        (err) => this.showError(err)
+      );
     }
+  }
+
+  private showError(error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error Code: " + error.code,
+      text: error.message,
+    });
   }
 
   getTitle() {
@@ -254,8 +271,8 @@ export class NavbarComponent implements OnInit {
           },
           error: (err) => {
             Swal.fire({
-              title: "Couldn't delete data",
-              text: err || "Something went wrong",
+              title: "Error Code: " + err.code,
+              text: err.message,
               icon: "error",
               confirmButtonText: "Try Again",
             });
@@ -287,7 +304,7 @@ export class NavbarComponent implements OnInit {
   }
 
   switchToV1() {
-    localStorage.removeItem('oneplayv2');
+    localStorage.removeItem("oneplayv2");
     location.reload();
   }
 }

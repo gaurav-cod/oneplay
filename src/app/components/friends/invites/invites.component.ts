@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { PartyInviteModel } from "src/app/models/partyInvite.model";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-invites",
@@ -25,14 +26,28 @@ export class InvitesComponent implements OnInit {
   ngOnInit(): void {}
 
   accept(invite: PartyInviteModel) {
-    this.restService.acceptPartyInvite(invite.party.id).subscribe(() => {
-      this.partyService.acceptInvite(invite);
-    });
+    this.restService.acceptPartyInvite(invite.party.id).subscribe(
+      () => {
+        this.partyService.acceptInvite(invite);
+      },
+      (err) => this.showError(err)
+    );
   }
 
   decline(invite: PartyInviteModel) {
-    this.restService.rejectPartyInvite(invite.party.id).subscribe(() => {
-      this.partyService.rejectInvite(invite);
+    this.restService.rejectPartyInvite(invite.party.id).subscribe(
+      () => {
+        this.partyService.rejectInvite(invite);
+      },
+      (err) => this.showError(err)
+    );
+  }
+
+  private showError(error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error Code: " + error.code,
+      text: error.message,
     });
   }
 }

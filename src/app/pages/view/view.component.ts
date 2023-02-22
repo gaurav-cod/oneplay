@@ -226,7 +226,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                     ]))
                 )
             );
-            // this.loaderService.stop();
+            this.loaderService.stop();
           },
           (err) => {
             if(err.timeout) {
@@ -450,8 +450,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       },
       (err) => {
         Swal.fire({
-          title: "Oops...",
-          text: err || "Something went wrong",
+          title: "Error Code: " + err.code,
+          text: err.message,
           icon: "error",
           confirmButtonText: "Try Again",
         });
@@ -532,8 +532,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.stopLoading();
           Swal.fire({
-            title: "Oops...",
-            text: err || "Something went wrong",
+            title: "Error Code: " + err.code,
+            text: err.message,
             icon: "error",
             confirmButtonText: "Try Again",
           });
@@ -597,8 +597,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.stopLoading();
           Swal.fire({
-            title: "Oops...",
-            text: err || "Something went wrong",
+            title: "Error Code: " + err.code,
+            text: err.message,
             icon: "error",
             confirmButtonText: "Relaunch the game",
           });
@@ -643,8 +643,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.loaderService.stop();
           Swal.fire({
-            title: "Oops...",
-            text: err || "Something went wrong",
+            title: "Error Code: " + err.code,
+            text: err.message,
             icon: "error",
             confirmButtonText: "Try Again",
           });
@@ -673,8 +673,8 @@ export class ViewComponent implements OnInit, OnDestroy {
           (err) => {
             this.stopLoading();
             Swal.fire({
-              title: "Oops...",
-              text: err || "Something went wrong",
+              title: "Error Code: " + err.code,
+              text: err.message,
               icon: "error",
               confirmButtonText: "Try Again",
             });
