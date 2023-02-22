@@ -136,7 +136,10 @@ export class SearchComponent implements OnInit {
         this.canLoadMore = false;
         this.stopLoading(0);
       },
-      error: () => {
+      error: (error) => {
+        if(error.timeout) {
+          this.router.navigateByUrl('/server-error')
+        }
         this.stopLoading(0);
       }
     });
@@ -155,6 +158,9 @@ export class SearchComponent implements OnInit {
         this.stopLoading(0);
       },
       (error) => {
+        if(error.timeout) {
+          this.router.navigateByUrl('/server-error')
+        }
         this.stopLoading(0);
       }
     );
@@ -213,6 +219,9 @@ export class SearchComponent implements OnInit {
         this.stopLoading(0);
       },
       (error) => {
+        if(error.timeout) {
+          this.router.navigateByUrl('/server-error')
+        }
         this.stopLoading(0);
       }
     );
