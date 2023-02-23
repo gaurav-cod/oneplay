@@ -475,6 +475,23 @@ input:-webkit-autofill:active {
 .modal-body::-webkit-scrollbar {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
+  height: 0px;
+}
+
+::-webkit-scrollbar {
+  background: transparent;
+  width: 0px;
+  height: 0px;
+}
+ 
+/* Handle */
+body::-webkit-scrollbar-thumb {
+  background: #b6b3b3; 
+}
+
+body::-webkit-scrollbar {
+  width: auto !important;
+  height: auto !important;
 }
 
 .redBtn {
