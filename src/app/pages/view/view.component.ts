@@ -358,7 +358,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get bitrateInMb() {
-    return ((this.bitrate.value ?? 0) / 1000).toFixed(2);
+    return Math.floor((this.bitrate.value ?? 0) / 1000);
   }
 
   open(content: any, video: VideoModel): void {
@@ -498,8 +498,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.game.oneplayId,
         this.resolution.value,
         this.vsync.value,
-        this.fps.value,
-        this.bitrate.value,
+        Number(this.fps.value),
+        Number(this.bitrate.value),
         this.advancedOptions.value,
         this.selectedStore
       )
