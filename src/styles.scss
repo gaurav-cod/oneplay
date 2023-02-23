@@ -263,7 +263,11 @@ input:-webkit-autofill:active {
 }
 
 .offWhiteText {
-  color: #dcdcdc;
+  color: #DCDCDC;
+}
+
+.offWhiteText:hover {
+  color: #DCDCDC;
 }
 
 // .w290h185 {
@@ -810,4 +814,28 @@ input:-webkit-autofill:active {
 
 .errorBorder {
   border: 2px solid #D71F7B !important;
+}
+
+.font24 {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.font800 {
+  font-weight: 800;
+}
+
+.middleBorder82 {
+  border: 2px solid #3E4246;
+  width: 82px;
+}
+
+.modalBorderGradient {
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  padding: 2px;
+  border-radius: 0.4375rem;
+}
+
+.borderRadius60 {
+  border-radius: 60px !important;
 }

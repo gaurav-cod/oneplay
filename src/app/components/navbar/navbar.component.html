@@ -359,21 +359,26 @@
 </nav>
 
 <ng-template #share let-d="dismiss">
-  <div class="modal-content modalBG position-relative">
-    <a
-      href="javascript:void(0)"
-      class="position-absolute btn modalBG rounded-circle top--3 right--2"
-      style="padding: 5px 10px;"
-      (click)="d('Cross click')"
-    >
-      <i class="fas fa-times text-white" style="font-size: 20px"></i>
-    </a>
-    <div class="modal-body">
+  <div class="modal-content position-relative modalBorderGradient">
+    <div class="modal-body modalBG">
+      <a
+        href="javascript:void(0)"
+        class="position-absolute btn modalBG rounded-circle right-0 top-2"
+        style="padding: 5px 10px;"
+        (click)="d('Cross click')"
+      >
+        <i class="fas fa-times-circle text-white" style="font-size: 20px"></i>
+      </a>
       <div class="row justify-content-center">
-        <div class="col-12 text-center">
-          <h3 class="customWhite mb-3">Share/Copy Referral Link</h3>
-        </div>
-        <div class="col-auto mx-auto">
+        <div class="col-lg-9 col-md-11 col-sm-11 col-12 text-center mt-4">
+          <img src="assets/img/refer/image 31.svg" class="img-fluid" alt="" />
+          <p class="customWhite font800 mb-3 font24 mt-5">Refer a Friend</p>
+          <p class="font16 font500 muteText mt-4 mb-0">Enjoy one month of Free OnePlay Subscription when you invite someone</p>
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <div class="middleBorder82 my-4"></div>
+            </div>
+          </div>
           <share-buttons
             [url]="link"
             [include]="[
@@ -389,6 +394,32 @@
             theme="circles-dark"
             show="11"
           ></share-buttons>
+          <div class="text-center my-4">
+            <u><a href="javascript:void(0)" (click)="TermsConditions(TermsAndConditions)" class="font16 font500 offWhiteText">T&C Applicable</a></u>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #TermsAndConditions let-d="dismiss">
+  <div class="modal-content position-relative modalBorderGradient">
+    <div class="modal-body modalBG">  
+      <div class="row justify-content-center">
+        <div class="col-lg-9 col-md-10 col-11 text-center">
+          <p class="font16 font500 offWhiteText mb-4">Terms and Conditions</p>
+          <p class="font16 font500 muteText mt-4 mb-0">Offer is valid only when your friend successfully signs up OnePlay platform using your referral link.</p>
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <div class="middleBorder82 my-4"></div>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-10 col-md-8 mt-2">
+              <button (click)="d('Cross click')" class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 mb-4">Okay</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

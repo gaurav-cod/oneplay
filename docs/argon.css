@@ -6071,9 +6071,9 @@ button.close {
   pointer-events: auto;
 
   border: 0 solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.4375rem;
+  border-radius: 15px !important;
   outline: 0;
-  background-color: #fff;
+  background-color: transparent !important;
   background-clip: padding-box;
   box-shadow: 0 15px 35px rgba(50, 50, 93, 0.2), 0 5px 15px rgba(0, 0, 0, 0.17);
 }
