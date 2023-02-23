@@ -16,7 +16,7 @@ import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -52,6 +52,7 @@ export class NavbarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
+  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
 
   isMenuCollapsed = true;
 
@@ -111,6 +112,8 @@ export class NavbarComponent implements OnInit {
     }
     return {};
   }
+
+  private _TermsAndConditionsRef: NgbModalRef;
 
   constructor(
     location: Location,
@@ -293,7 +296,7 @@ export class NavbarComponent implements OnInit {
   open(container) {
     this.ngbModal.open(container, {
       centered: true,
-      modalDialogClass: "modal-sm",
+      modalDialogClass: "modal-md",
     });
   }
 
@@ -306,5 +309,13 @@ export class NavbarComponent implements OnInit {
   switchToV1() {
     localStorage.removeItem("oneplayv2");
     location.reload();
+  }
+
+  private TermsConditions() {
+    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+    });
   }
 }

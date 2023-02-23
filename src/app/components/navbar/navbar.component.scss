@@ -144,6 +144,11 @@
 
 .modalBG {
     background-color: #212123;
+    border-radius: 0.4375rem;
+}
+
+.modal-dialog .modal-content {
+    background-color: transparent !important;
 }
 
 .customWhite {
