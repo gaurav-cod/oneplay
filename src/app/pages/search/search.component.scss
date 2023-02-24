@@ -79,3 +79,9 @@
   background-color: #2B2B2E;
   cursor: pointer;
 }
+
+@media (min-width: 1201px) {
+  .largeScreenHide {
+    display: none;
+  }
+}
