@@ -9,7 +9,7 @@
   <app-navbar (toggleFriends)="toggleFriendsCollapsed()"></app-navbar>
   <!-- Pages -->
   <router-outlet></router-outlet>
-  <div class="container-fluid pb-5 pb-lg-0" *ngIf="!isApp">
+  <div class="container-fluid pb-5 pb-lg-0 height130" *ngIf="!isApp">
     <app-footer></app-footer>
   </div>
   <app-bottom-nav (toggleFriends)="toggleFriendsCollapsed()"></app-bottom-nav>
