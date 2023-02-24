@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   domain: "https://www.oneplay.in",
-  client_api: "https://client-apis.oneplay.in/services/v1",
+  client_api: "https://client-apis.oneplay.in/services/v2",
   render_mix_api: "https://rendermix.oneplay.in/v1",
   socket_endpoint: "https://chatservices.oneplay.in",
   game_assets: "https://cdn.edge-net.co/game_assets/",
