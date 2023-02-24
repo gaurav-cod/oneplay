@@ -207,7 +207,7 @@
                 </a>
               </div>
               <div class="col mt-lg-5 mt-4">
-                <p class="font16 font500 muteText mb-2">Developer</p>
+                <p class="font16 font500 muteText mb-2" (click)="reportError(reportErrorModal)">Developer</p>
                 <div class="row">
                   <div class="col-auto pr-0" *ngFor="let dev of game.developer; let i = index">
                     <p class="font600 font20 text-white mb-0">
@@ -888,3 +888,22 @@
 </ng-template>
 
 <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+
+
+<ng-template #reportErrorModal>
+  <div class="modal-content modalBg">
+    <div class="modal-body p-0">
+      <h2 class="text-white font600 text-center font18responsive border-bottom borderColor py-3">
+        Report Error
+      </h2>
+      <div class="row p-4">
+        <div class="col-12">
+          <textarea class="form-control customFormControl font18 inputBorder font500 offWhiteText h-100" rows="3" placeholder="write here..."></textarea>
+        </div>
+        <div class="col-12 mt-4">
+          <button class="btn btn-block linearGradient text-white border-0">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

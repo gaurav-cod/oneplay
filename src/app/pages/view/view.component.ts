@@ -36,6 +36,7 @@ declare var gtag: Function;
 export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
+  @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -87,6 +88,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _webplayTokenSubscription: Subscription;
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
+  private _reportErrorModalRef: NgbModalRef;
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
@@ -535,7 +537,9 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Error Code: " + err.code,
             text: err.message,
             icon: "error",
+            showCancelButton: true,
             confirmButtonText: "Try Again",
+            cancelButtonText: "Report Error"
           });
         }
       );
@@ -737,5 +741,15 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   selectStore(store: PurchaseStore) {
     this.selectedStore = store;
+  }
+
+  private reportError() {
+    this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      // scrollable: true,
+      // backdrop: "static",
+      // keyboard: false,
+    });
   }
 }
