@@ -89,3 +89,9 @@
 .input-group {
   flex-wrap: initial !important;
 }
+
+@media (min-width: 1201px) {
+  .hideLargeScreen {
+    display: none;
+  }
+}
