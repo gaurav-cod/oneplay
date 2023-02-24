@@ -307,9 +307,13 @@ input:-internal-autofill-selected {
 
 .textLabel {
   margin-left: -20px;
-  top: -5px !important;
+  top: -3px !important;
   color: #959595;
   @media (max-width: 1368px) {
     top: -0px !important;
   }
+}
+
+input:focus {
+  padding-left: 15px !important;
 }
