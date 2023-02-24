@@ -35,7 +35,6 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
-  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
 
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -48,8 +47,6 @@ export class SidebarComponent implements OnInit {
 
   private keyword = "";
   private keywordHash = "";
-
-  private _TermsAndConditionsRef: NgbModalRef;
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -212,8 +209,8 @@ export class SidebarComponent implements OnInit {
     location.reload();
   }
 
-  private TermsConditions() {
-    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+  TermsConditions(container: ElementRef<HTMLDivElement >) {
+    this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,

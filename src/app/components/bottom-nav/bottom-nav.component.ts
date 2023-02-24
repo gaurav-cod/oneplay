@@ -20,7 +20,6 @@ import { RestService } from 'src/app/services/rest.service';
 export class BottomNavComponent implements OnInit, OnDestroy {
 
   @Output() toggleFriends = new EventEmitter();
-  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
   
   public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
@@ -35,8 +34,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly ngbModal: NgbModal,
   ) { }
-
-  private _TermsAndConditionsRef: NgbModalRef;
   
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
@@ -111,8 +108,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
-  private TermsConditions() {
-    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+  TermsConditions(container: ElementRef<HTMLDivElement >) {
+    this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,

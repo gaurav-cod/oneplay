@@ -52,7 +52,6 @@ export class NavbarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
-  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
 
   isMenuCollapsed = true;
 
@@ -112,8 +111,6 @@ export class NavbarComponent implements OnInit {
     }
     return {};
   }
-
-  private _TermsAndConditionsRef: NgbModalRef;
 
   constructor(
     location: Location,
@@ -311,8 +308,8 @@ export class NavbarComponent implements OnInit {
     location.reload();
   }
 
-  private TermsConditions() {
-    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+  TermsConditions(container: ElementRef<HTMLDivElement >) {
+    this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,
