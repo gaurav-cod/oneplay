@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject } from "rxjs";
 import { GameStatusRO } from "src/app/interface";
@@ -35,6 +35,7 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
+  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
 
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -47,6 +48,8 @@ export class SidebarComponent implements OnInit {
 
   private keyword = "";
   private keywordHash = "";
+
+  private _TermsAndConditionsRef: NgbModalRef;
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -207,5 +210,13 @@ export class SidebarComponent implements OnInit {
   switchToV1() {
     localStorage.removeItem('oneplayv2');
     location.reload();
+  }
+
+  private TermsConditions() {
+    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+    });
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { GameStatusRO } from 'src/app/interface';
 import { GameModel } from 'src/app/models/game.model';
@@ -20,6 +20,7 @@ import { RestService } from 'src/app/services/rest.service';
 export class BottomNavComponent implements OnInit, OnDestroy {
 
   @Output() toggleFriends = new EventEmitter();
+  @ViewChild("TermsAndConditions") TermsAndConditions: ElementRef<HTMLDivElement >;
   
   public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
@@ -34,6 +35,9 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly ngbModal: NgbModal,
   ) { }
+
+  private _TermsAndConditionsRef: NgbModalRef;
+  
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.gameStatusSubscription.unsubscribe();
@@ -107,4 +111,12 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
+  private TermsConditions() {
+    this._TermsAndConditionsRef = this.ngbModal.open(this.TermsAndConditions, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+    });
+  }
+  
 }
