@@ -18,6 +18,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   saveProfileLoder = false;
   private userSubscription: Subscription;
   private currentUserState: UserModel;
+  private user: UserModel;
 
   constructor(
     private readonly restService: RestService,
@@ -39,6 +40,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSubscription?.unsubscribe()
+  }
+
+  get title() {
+    return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
 
   saveChanges(): void {
