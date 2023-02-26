@@ -784,4 +784,17 @@ export class RestService {
         })
       );
   }
+
+  setSearchPrivacy(isPrivate: boolean): Observable<void> {
+    return this.http
+      .put<void>(this.r_mix_api + "/accounts/set_search_privacy", {
+        search_privacy: isPrivate,
+      })
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
 }

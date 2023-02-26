@@ -12,6 +12,7 @@ export class UserModel {
   readonly subscriptionIsActive: boolean;
   readonly isVerified: boolean;
   readonly photo: string | null;
+  readonly searchPrivacy: boolean;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["user_id"];
@@ -27,23 +28,25 @@ export class UserModel {
     this.subscriptionIsActive = json["subscription_is_active"];
     this.isVerified = json["is_verified_profile"];
     this.photo = json["profile_image"];
+    this.searchPrivacy = json["search_privacy"];
   }
 
   copyWith(data: Partial<UserModel>) {
     return new UserModel({
       user_id: this.id,
-      status: data.status || this.status,
-      username: data.username || this.username,
-      first_name: data.firstName || this.firstName,
+      status: data.status ?? this.status,
+      username: data.username ?? this.username,
+      first_name: data.firstName ?? this.firstName,
       last_name: data.lastName ?? this.lastName,
       bio: data.bio ?? this.bio,
-      email: data.email || this.email,
-      phone: data.phone || this.phone,
+      email: data.email ?? this.email,
+      phone: data.phone ?? this.phone,
       user_type: this.type,
       subscribed_plan: this.subscribedPlan,
       subscription_is_active: this.subscriptionIsActive,
       is_verified_profile: this.isVerified,
-      profile_image: data.photo || this.photo,
+      profile_image: data.photo ?? this.photo,
+      search_privacy: data.searchPrivacy ?? this.searchPrivacy,
     });
   }
 
@@ -66,6 +69,7 @@ export class UserModel {
       subscription_is_active: this.subscriptionIsActive,
       is_verified_profile: this.isVerified,
       profile_image: this.photo,
+      search_privacy: this.searchPrivacy,
     };
   }
 }

@@ -112,6 +112,10 @@ export class NavbarComponent implements OnInit {
     return {};
   }
 
+  get isPrivate() {
+    return this.user?.searchPrivacy;
+  }
+
   constructor(
     location: Location,
     private readonly authService: AuthService,
@@ -308,11 +312,33 @@ export class NavbarComponent implements OnInit {
     location.reload();
   }
 
-  TermsConditions(container: ElementRef<HTMLDivElement >) {
+  TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,
+    });
+  }
+
+  switchSearchPrivacy() {
+    const privacy = !this.isPrivate;
+    this.authService.updateProfile({ searchPrivacy: privacy });
+    this.restService.setSearchPrivacy(privacy).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `Successfully turned ${privacy ? "on" : "off"} search privacy.`,
+        });
+      },
+      error: (err) => {
+        this.authService.updateProfile({ searchPrivacy: !privacy });
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      },
     });
   }
 }
