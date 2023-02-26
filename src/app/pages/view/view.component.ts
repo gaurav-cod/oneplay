@@ -366,6 +366,28 @@ export class ViewComponent implements OnInit, OnDestroy {
     return Math.floor((this.bitrate.value ?? 0) / 1000);
   }
 
+  get shortDescLength() {
+    if (screen.width >= 2438) {
+      return 276;
+    } else if (screen.width >= 1440) {
+      return 145;
+    } else if (screen.width >= 1024) {
+      return 100;
+    } else if (screen.width >= 768) {
+      return 84;
+    } else if (screen.width >= 425) {
+      return 145;
+    } else if (screen.width >= 375) {
+      return 125;
+    } else {
+      return 92;
+    }
+  }
+
+  get shortDesc() {
+    return this.game?.description?.slice(0, this.shortDescLength - 1) ?? "";
+  }
+
   open(content: any, video: VideoModel): void {
     this.playing = video.sourceLink.replace("watch?v=", "embed/");
     this.ngbModal.open(content, {
@@ -670,14 +692,14 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService
       .postAReport(this.reportText.value, this.reportResponse)
       .subscribe({
-        next:() => {
+        next: () => {
           Swal.fire({
             icon: "success",
             title: "Reported!",
             text: "We have recieve your report. We will look into it.",
           });
         },
-        error:(err) => {
+        error: (err) => {
           Swal.fire({
             title: "Error Code: " + err.code,
             text: err.message,
@@ -685,9 +707,9 @@ export class ViewComponent implements OnInit, OnDestroy {
           });
         },
       });
-      this.reportText.setValue('');
-      this.reportResponse = null;
-      this._reportErrorModalRef.close();
+    this.reportText.setValue("");
+    this.reportResponse = null;
+    this._reportErrorModalRef.close();
   }
 
   private terminateGame(sessionId: string): void {

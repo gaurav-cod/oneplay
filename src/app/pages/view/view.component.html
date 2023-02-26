@@ -171,14 +171,23 @@
                 <h1 class="font700 text-white">About Game</h1>
                 <p
                   id="description"
-                  [ngClass]="{ limitTextHeight: isReadMore }"
-                  [innerHTML]="game.description"
+                  [innerHTML]="
+                    isReadMore && shortDescLength < game.description.length
+                      ? shortDesc
+                      : game.description
+                  "
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
                 ></p>
                 <a
                   href="javascript:void(0)"
                   type="button"
-                  class="font16 text-white font-weight-500 d-inline mt-1"
+                  class="font16 text-white font-weight-500 mt-1"
+                  [ngStyle]="{
+                    display:
+                      shortDescLength < game.description.length
+                        ? 'inline'
+                        : 'none'
+                  }"
                   (click)="showText()"
                 >
                   {{ isReadMore ? "...Read More" : "Read Less" }}
