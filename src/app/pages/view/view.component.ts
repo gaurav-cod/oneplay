@@ -6,7 +6,7 @@ import {
   ViewChild,
   OnDestroy,
 } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -22,7 +22,7 @@ import { GamepadService } from "src/app/services/gamepad.service";
 import { RestService } from "src/app/services/rest.service";
 import { ToastService } from "src/app/services/toast.service";
 import { environment } from "src/environments/environment";
-import Swal from "sweetalert2";
+import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 
@@ -75,6 +75,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     video_decoder_selection: new FormControl("auto"),
   });
 
+  reportText = new FormControl("", { validators: Validators.required });
+
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
   private _clientToken: string;
@@ -92,6 +94,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
+  private reportResponse: any = null;
 
   constructor(
     private readonly location: Location,
@@ -105,7 +108,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly gamepadService: GamepadService,
     private readonly toastService: ToastService,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
     merge<[string, number]>(
       this.resolution.valueChanges,
@@ -231,10 +234,10 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.loaderService.stop();
           },
           (err) => {
-            if(err.timeout) {
-              this.router.navigateByUrl('/server-error')
+            if (err.timeout) {
+              this.router.navigateByUrl("/server-error");
             }
-            this.loaderService.stop()
+            this.loaderService.stop();
           }
         );
       this.restService
@@ -524,11 +527,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else {
             this.stopLoading();
             Swal.fire({
-              title: "Oops...",
+              title: "Error Code: " + data.code,
               text: data.msg || "Something went wrong",
               icon: "error",
+              showCancelButton: true,
               confirmButtonText: "Try Again",
-            });
+              cancelButtonText: "Report Error",
+            }).then((_) => this.reportErrorOrTryAgain(_, data));
           }
         },
         (err) => {
@@ -539,8 +544,8 @@ export class ViewComponent implements OnInit, OnDestroy {
             icon: "error",
             showCancelButton: true,
             confirmButtonText: "Try Again",
-            cancelButtonText: "Report Error"
-          });
+            cancelButtonText: "Report Error",
+          }).then((_) => this.reportErrorOrTryAgain(_, err));
         }
       );
   }
@@ -656,6 +661,30 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
+  reportError() {
+    this.restService
+      .postAReport(this.reportText.value, this.reportResponse)
+      .subscribe({
+        next:() => {
+          Swal.fire({
+            icon: "success",
+            title: "Reported!",
+            text: "We have recieve your report. We will look into it.",
+          });
+        },
+        error:(err) => {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+          });
+        },
+      });
+      this.reportText.setValue('');
+      this.reportResponse = null;
+      this._reportErrorModalRef.close();
+  }
+
   private terminateGame(sessionId: string): void {
     Swal.fire({
       title: "Are you sure?",
@@ -743,13 +772,18 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.selectedStore = store;
   }
 
-  private reportError() {
-    this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      // scrollable: true,
-      // backdrop: "static",
-      // keyboard: false,
-    });
+  private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {
+    if (result.dismiss == Swal.DismissReason.cancel) {
+      this.reportResponse = response;
+      this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
+        centered: true,
+        modalDialogClass: "modal-sm",
+        // scrollable: true,
+        // backdrop: "static",
+        // keyboard: false,
+      });
+    } else if (result.isConfirmed) {
+      this.startGame();
+    }
   }
 }
