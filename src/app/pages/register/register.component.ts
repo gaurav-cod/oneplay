@@ -18,7 +18,11 @@ export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
     name: new FormControl("", Validators.required),
     email: new FormControl("", [Validators.required, Validators.email]),
-    country_code: new FormControl("+91", [Validators.required]),
+    country_code: new FormControl("+91", [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+    ]),
     phone: new FormControl("", [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/),
@@ -37,19 +41,19 @@ export class RegisterComponent implements OnInit {
 
   passwordChecks = [
     {
-      name: "1 uppercase character",
+      name: "*atleast 1 uppercase",
       regex: /[A-Z]/,
     },
     {
-      name: "1 lowercase character",
+      name: "*atleast 1 lowercase",
       regex: /[a-z]/,
     },
     {
-      name: "1 number",
+      name: "*atleast 1 number",
       regex: /[0-9]/,
     },
     {
-      name: "8 characters minimum",
+      name: "*8 characters minimum",
       regex: /.{8,}/,
     },
   ];
@@ -66,8 +70,24 @@ export class RegisterComponent implements OnInit {
     "+971",
   ];
 
-  get password(): string {
-    return this.registerForm.controls["password"].value || "";
+  get nameErrored() {
+    const control = this.registerForm.controls["name"];
+    return control.touched && control.invalid;
+  }
+
+  get emailErrored() {
+    const control = this.registerForm.controls["email"];
+    return control.touched && control.invalid;
+  }
+
+  get phoneErrored() {
+    const control = this.registerForm.controls["phone"];
+    return control.touched && control.invalid;
+  }
+
+  get passwordErrored() {
+    const control = this.registerForm.controls["password"];
+    return control.touched && control.invalid;
   }
 
   get domain(): string {

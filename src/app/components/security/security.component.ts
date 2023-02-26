@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
+import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -11,14 +12,21 @@ import Swal from "sweetalert2";
 })
 export class SecurityComponent implements OnInit {
   password = new FormControl("", Validators.required);
-  phone = new FormControl("", Validators.required);
+  phone = new FormControl("", [
+    Validators.required,
+    Validators.pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/),
+  ]);
   email = new FormControl("", [Validators.required, Validators.email]);
+
+  private user: UserModel;
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService
   ) {
     this.authService.user.subscribe((user) => {
+      this.user = user;
+
       this.phone.setValue(user.phone);
       this.email.setValue(user.email);
 
@@ -35,10 +43,16 @@ export class SecurityComponent implements OnInit {
 
   updatePhone(): void {
     if (!this.phone.valid) return;
+    this.phone.disable();
+    if (this.user.phone === this.phone.value.trim()) return;
     this.restService.updateProfile({ phone: this.phone.value }).subscribe(
       () => {
         this.authService.updateProfile({ phone: this.phone.value });
-        this.phone.disable();
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Successfully updated phone number.",
+        });
       },
       (error) => {
         Swal.fire({
@@ -51,6 +65,9 @@ export class SecurityComponent implements OnInit {
   }
 
   updateEmail(): void {
+    if (this.email.invalid) return;
+    this.email.disable();
+    if (this.user.email === this.email.value.trim()) return;
     this.restService.updateEmail(this.email.value).subscribe(
       (msg) => {
         Swal.fire({

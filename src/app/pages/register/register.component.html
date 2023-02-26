@@ -15,7 +15,12 @@
     <div class="container">
       <div class="row largeScreenHeight justify-content-center">
         <div class="col-lg-10 pb-4">
-          <form [formGroup]="registerForm" (submit)="register()" role="form" autocomplete="off">
+          <form
+            [formGroup]="registerForm"
+            (submit)="register()"
+            role="form"
+            autocomplete="off"
+          >
             <div class="row">
               <div class="col-md-12 mt-lg-5 mt-3">
                 <h1 class="text-white font38 font800 mb-0 textCenterCustom">
@@ -25,15 +30,14 @@
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite required"
                   >Name</label
+                ><span
+                  *ngIf="nameErrored"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*invalid name</span
                 >
                 <input
                   type="text"
                   formControlName="name"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.name.valid &&
-                      registerForm.controls.name.touched
-                  }"
                   class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   placeholder="Name"
                 />
@@ -41,6 +45,10 @@
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite required"
                   >Email</label
+                ><span
+                  *ngIf="emailErrored"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*invalid email</span
                 >
                 <input
                   type="email"
@@ -57,6 +65,10 @@
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite required"
                   >Phone</label
+                ><span
+                  *ngIf="phoneErrored"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*invalid phone number</span
                 >
                 <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append">
@@ -72,11 +84,6 @@
                   <input
                     type="number"
                     formControlName="phone"
-                    [ngClass]="{
-                      'border-danger':
-                        !registerForm.controls.phone.valid &&
-                        registerForm.controls.phone.touched
-                    }"
                     class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 pl-2"
                     placeholder="9999999999"
                   />
@@ -85,9 +92,10 @@
               <div class="col-md-12 mt-4">
                 <label class="font16 font500 customOffWhite required"
                   >Password</label
-                >
-                <span class="font16 font500 mutedColor float-right"
-                  >at least 8 characters</span
+                ><span
+                  *ngIf="passwordErrored"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*Invalid password</span
                 >
                 <div class="input-group">
                   <input
@@ -95,11 +103,6 @@
                     ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
                     triggers="click:blur"
                     placement="top"
-                    [ngClass]="{
-                      'border-danger':
-                        !registerForm.controls.password.valid &&
-                        registerForm.controls.password.touched
-                    }"
                     formControlName="password"
                     class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   />
@@ -177,8 +180,7 @@
                 </div>
               </div>
               <div class="col-md-12 mt-4 mb-3">
-                <label class="font16 font500 customOffWhite"
-                  >Referral ID</label
+                <label class="font16 font500 customOffWhite">Referral ID</label
                 ><span class="float-right font16 font500 mutedColor"
                   >Referral Name</span
                 >
@@ -193,7 +195,12 @@
               <div class="col-md-12 mt-4">
                 <div class="row mb-2">
                   <div class="col-auto pr-0 pt-1">
-                    <input id="customCheckRegister" type="checkbox" class="checkBoxCircle" formControlName="terms_checked" />
+                    <input
+                      id="customCheckRegister"
+                      type="checkbox"
+                      class="checkBoxCircle"
+                      formControlName="terms_checked"
+                    />
                   </div>
                   <div class="col">
                     <label for="customCheckRegister">
@@ -243,16 +250,16 @@
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-3 mb-4 borderBottom" />
-                      <p class="offWhiteColor pt-2 mb-0 font16 font500"
-                        >Need help?<span class="purpleGradient"
+                      <p class="offWhiteColor pt-2 mb-0 font16 font500">
+                        Need help?<span class="purpleGradient"
                           ><a
                             href="https://www.oneplay.in/contact.html"
                             target="_blank"
                           >
                             Browse FAQ</a
                           ></span
-                        ></p
-                      >
+                        >
+                      </p>
                     </div>
                     <div class="col-12 mt-2 mb-4">
                       <p class="font14 font500 footerWhiteColor mb-0">
