@@ -458,7 +458,6 @@ export class ViewComponent implements OnInit, OnDestroy {
           title: "Error Code: " + err.code,
           text: err.message,
           icon: "error",
-          confirmButtonText: "Try Again",
         });
         this.stopTerminating();
       }
@@ -558,6 +557,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.startGame();
+        }
       });
       return;
     }
@@ -610,6 +613,10 @@ export class ViewComponent implements OnInit, OnDestroy {
             text: err.message,
             icon: "error",
             confirmButtonText: "Relaunch the game",
+          }).then((res) => {
+            if (res.isConfirmed) {
+              this.startGame();
+            }
           });
         }
       );
@@ -624,7 +631,6 @@ export class ViewComponent implements OnInit, OnDestroy {
         title: "Oops...",
         text: "Something went wrong",
         icon: "error",
-        confirmButtonText: "Try Again",
       });
       return;
     }
@@ -655,7 +661,6 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Error Code: " + err.code,
             text: err.message,
             icon: "error",
-            confirmButtonText: "Try Again",
           });
         }
       );
@@ -710,6 +715,10 @@ export class ViewComponent implements OnInit, OnDestroy {
               text: err.message,
               icon: "error",
               confirmButtonText: "Try Again",
+            }).then((res) => {
+              if (res.isConfirmed) {
+                this.terminateGame(sessionId);
+              }
             });
           }
         );
