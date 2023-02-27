@@ -645,6 +645,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGameWithWebRTCToken(count = 0): void {
+    if (environment.production) {
+      Swal.fire({
+        icon: "info",
+        title: "Web-Play",
+        text: "Play on web is coming soon!",
+      });
+      return;
+    }
+
     if (count === 0) {
       this.loaderService.start();
     } else if (count > 2) {
