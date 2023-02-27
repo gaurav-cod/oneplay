@@ -341,3 +341,7 @@ input[type=checkbox]:checked {
 .mutedColor {
   color: #959595 !important;
 }
+
+input:focus {
+  padding-left: 15px !important;
+}

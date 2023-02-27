@@ -139,14 +139,6 @@ live {
   100% {-webkit-transform: scale(1, 1);opacity:0;}
 }
 
-.limitTextHeight {
-  height: 119px;
-  overflow: hidden;
-  @media (max-width: 1200px) {
-    height: 50px;
-  }
-}
-
 .customOverlay {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0) 7.12%, rgba(0, 0, 0, 0.52) 51.58%, rgba(0, 0, 0, 0.8) 100%);
   bottom: 0;
@@ -155,12 +147,16 @@ live {
 
 @media (max-width: 480px) {
   .customOverlay {
-    height: 270px;
+    height: 300px;
   }
 
   .imagesText {
-    height: 293px;
+    height: 300px;
     align-items: flex-end;
+  }
+
+  .custom-control-label span {
+    top: 1px !important;
   }
 }
 
@@ -170,7 +166,7 @@ live {
     height: 60vh;
   }
   @media (max-width: 480px) {
-    height: 270px;
+    height: 300px;
   }
 }
 

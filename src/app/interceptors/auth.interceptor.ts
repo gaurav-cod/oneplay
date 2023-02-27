@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(req).pipe(timeout(10000)).pipe(
+    return next.handle(req).pipe(timeout(60000)).pipe(
       filter((res) => res instanceof HttpResponse),
       catchError((error: HttpErrorResponse) => {
         if (

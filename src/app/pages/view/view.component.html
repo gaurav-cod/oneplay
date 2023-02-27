@@ -57,7 +57,10 @@
                   {{ game.isFree ? " - Free" : "" }}
                 </p>
                 <div class="row">
-                  <div *ngIf="game.status === 'unlive'" class="col-12 text-red mb-2">
+                  <div
+                    *ngIf="game.status === 'unlive'"
+                    class="col-12 text-red mb-2"
+                  >
                     **This game is not available at the moment**
                   </div>
                   <div class="col-auto align-self-center fullWidthBtn">
@@ -65,7 +68,7 @@
                       *ngIf="!terminatingGame"
                       class="btn font20 GradientBtnPadding fullWidthBtn mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
                       [disabled]="startingGame || game.status === 'unlive'"
-                      [ngClass]="{'hide-text': startingGame}"
+                      [ngClass]="{ 'hide-text': startingGame }"
                       (click)="playGame(smallModal)"
                     >
                       <ngx-ui-loader
@@ -83,7 +86,7 @@
                       *ngIf="action !== 'Play' && !startingGame"
                       class="btn font20 btn-danger fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
                       [disabled]="terminatingGame"
-                      [ngClass]="{'hide-text': terminatingGame}"
+                      [ngClass]="{ 'hide-text': terminatingGame }"
                       (click)="terminateSession()"
                     >
                       <ngx-ui-loader
@@ -98,7 +101,9 @@
                       {{ !terminatingGame ? "Terminate" : "Terminating..." }}
                     </button>
                   </div>
-                  <div class="col-auto pl-0 d-none d-sm-block align-self-center">
+                  <div
+                    class="col-auto pl-0 d-none d-sm-block align-self-center"
+                  >
                     <button
                       *ngIf="!isInWishlist"
                       (click)="addToWishlist()"
@@ -128,7 +133,9 @@
                   </div>
                 </div>
                 <form class="row pb-4 justify-content-center checkBox pl-3">
-                  <div class="col-md-12 col-auto custom-control custom-checkbox mt-4">
+                  <div
+                    class="col-md-12 col-auto custom-control custom-checkbox mt-4"
+                  >
                     <input
                       type="checkbox"
                       class="custom-control-input my-error"
@@ -138,12 +145,16 @@
                     <label
                       class="custom-control-label font16 font500 text-white d-none d-sm-block"
                       for="customCheck1"
-                      ><span class="marginLeftNegative">Show gameplay settings before launch</span></label
+                      ><span class="marginLeftNegative"
+                        >Show gameplay settings before launch</span
+                      ></label
                     >
                     <label
                       class="custom-control-label font16 font500 text-white d-block d-sm-none"
                       for="customCheck1"
-                      ><span class="marginLeftNegative">Show settings before launch</span></label
+                      ><span class="marginLeftNegative"
+                        >Show settings before launch</span
+                      ></label
                     >
                   </div>
                 </form>
@@ -156,19 +167,27 @@
         <div class="row">
           <div class="col-md-6 mt-5 mt-md-4 mt-lg-5">
             <div class="row">
-              <div class="col-lg-10 mt-5 mt-md-0">
+              <div class="col-lg-10 mt-4 mt-md-0">
                 <h1 class="font700 text-white">About Game</h1>
                 <p
                   id="description"
-                  [ngClass]="{ limitTextHeight: isReadMore }"
-                  [innerHTML]="game.description"
+                  [innerHTML]="
+                    isReadMore && shortDescLength < game.description.length
+                      ? shortDesc
+                      : game.description
+                  "
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
-                >
-                </p>
+                ></p>
                 <a
                   href="javascript:void(0)"
                   type="button"
-                  class="font16 text-white font-weight-500 d-inline mt-1"
+                  class="font16 text-white font-weight-500 mt-1"
+                  [ngStyle]="{
+                    display:
+                      shortDescLength < game.description.length
+                        ? 'inline'
+                        : 'none'
+                  }"
                   (click)="showText()"
                 >
                   {{ isReadMore ? "...Read More" : "Read Less" }}
@@ -185,7 +204,6 @@
                 <p class="font16 font500 muteText">Store</p>
                 <a
                   href="javascript:void(0)"
-                  target="_blank"
                   *ngFor="let store of game.storesMapping"
                   class="font600 font20 text-white p-2 pr-3 store selected"
                   [ngClass]="{ selected: store === selectedStore }"
@@ -207,13 +225,19 @@
                 </a>
               </div>
               <div class="col mt-lg-5 mt-4">
-                <p class="font16 font500 muteText mb-2" (click)="reportError(reportErrorModal)">Developer</p>
+                <p
+                  class="font16 font500 muteText mb-2"
+                  (click)="reportError(reportErrorModal)"
+                >
+                  Developer
+                </p>
                 <div class="row">
-                  <div class="col-auto pr-0" *ngFor="let dev of game.developer; let i = index">
+                  <div
+                    class="col-auto pr-0"
+                    *ngFor="let dev of game.developer; let i = index"
+                  >
                     <p class="font600 font20 text-white mb-0">
-                      <span class="align-middle"
-                        >{{ dev | titlecase }}</span
-                      >
+                      <span class="align-middle">{{ dev | titlecase }}</span>
                     </p>
                   </div>
                 </div>
@@ -236,9 +260,9 @@
   </div>
 </div>
 
-<hr class="borderColor mb-0 d-block d-sm-none"/>
+<hr class="borderColor mb-0 d-block d-sm-none" />
 
-<div class="pb-lg-8 pb-5 overflow-hidden">
+<div class="overflow-hidden">
   <div *ngIf="!!game">
     <div class="row px-3 d-block d-md-none">
       <div class="col-md-6 col-12" *ngIf="_videos.length > 0">
@@ -247,7 +271,7 @@
           *ngFor="let video of _videos"
           class="mt-4"
           (click)="open(modal, video)"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           <img
             [src]="video.thumbnail"
@@ -257,15 +281,17 @@
             height="248px"
           />
           <div class="row">
-            <div class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace">
+            <div
+              class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace"
+            >
               {{ video.title }}
             </div>
             <div class="col-auto mt-4">
               <img
-              [src]=
-                " !!video.creatorThumbnail
-                  ? video.creatorThumbnail
-                  : (video.creatorName | avatar)
+                [src]="
+                  !!video.creatorThumbnail
+                    ? video.creatorThumbnail
+                    : (video.creatorName | avatar)
                 "
                 class="rounded-circle"
                 width="50"
@@ -274,8 +300,12 @@
               />
             </div>
             <div class="col text-truncate mt-4 pl-0">
-              <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
-              <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+              <p class="font16 font500 muteText mb-0">
+                {{ video.creatorName }}
+              </p>
+              <p class="font16 font500 muteText mb-0">
+                {{ video.addedAt | date }}
+              </p>
             </div>
           </div>
         </div>
@@ -296,7 +326,7 @@
           *ngFor="let video of _liveVideos"
           class="mt-4"
           (click)="open(modal, video)"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           <div class="card bgTransparent border-0 borderRadius10">
             <img
@@ -311,14 +341,14 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace">
+            <div
+              class="col-12 mt-4 font16 font500 offWhiteText mt-3 removeWhiteSpace"
+            >
               {{ video.title }}
             </div>
             <div class="col-auto mt-4">
               <img
-                [src]="
-                  !!video.creatorThumbnail || (video.creatorName | avatar)
-                "
+                [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
                 class="rounded-circle"
                 width="50"
                 height="50"
@@ -326,8 +356,12 @@
               />
             </div>
             <div class="col text-truncate mt-4 pl-0">
-              <p class="font16 font500 muteText mb-0">{{ video.creatorName }}</p>
-              <p class="font16 font500 muteText mb-0">{{ video.addedAt | date }}</p>
+              <p class="font16 font500 muteText mb-0">
+                {{ video.creatorName }}
+              </p>
+              <p class="font16 font500 muteText mb-0">
+                {{ video.addedAt | date }}
+              </p>
             </div>
           </div>
         </div>
@@ -341,7 +375,7 @@
         </div>
       </div>
     </div>
-    <hr class="borderColor d-block d-md-none"/>
+    <hr class="borderColor d-block d-md-none" />
 
     <div *ngIf="videos.length" class="mt-2 mt-lg-4 d-none d-md-block">
       <app-stream-card
@@ -386,7 +420,7 @@
   <div class="modal-content position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      class="position-absolute btn btn-github rounded-circle top--4 right--1 py-3"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
@@ -445,7 +479,11 @@
         </div>
         <div class="col-12 text-center mt-2 d-none d-sm-inline">
           <p class="garadientColor">
-            <img src="assets/img/Dashboard/Download.svg" class="img-fluid" alt="" />
+            <img
+              src="assets/img/Dashboard/Download.svg"
+              class="img-fluid"
+              alt=""
+            />
             <span class="ml-2">
               <a
                 [href]="domain + '/download.html'"
@@ -514,7 +552,9 @@
         </div>
         <div class="col-12 col-md-6 mt-3">
           <div class="form-group mb-0">
-            <label class="font18 font500 lightGrayColor">Bitrate ({{bitrateInMb}} Mbps)</label>
+            <label class="font18 font500 lightGrayColor"
+              >Bitrate ({{ bitrateInMb }} Mbps)</label
+            >
             <input
               class="customFormControl form-control inputBorder text-light"
               type="range"
@@ -531,7 +571,11 @@
             class="btn btn-link btn-block font16 font500 lightGrayColor"
             (click)="openAdvanceOptions(advanced)"
           >
-            <img src="assets/img/Dashboard/Vector.svg" class="img-fluid mr-2" alt="" />
+            <img
+              src="assets/img/Dashboard/Vector.svg"
+              class="img-fluid mr-2"
+              alt=""
+            />
             Advanced game options
           </button>
         </div>
@@ -868,7 +912,7 @@
           <a
             href="javascript:void(0)"
             class="btn btn-link btn-block text-info"
-            (click)="launchWebRTC()"
+            (click)="startGameWithWebRTCToken()"
           >
             Play on browser
             <i class="fas fa-globe ml-2"></i>
@@ -887,23 +931,35 @@
   </div>
 </ng-template>
 
-<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
-
-
 <ng-template #reportErrorModal>
   <div class="modal-content modalBg">
     <div class="modal-body p-0">
-      <h2 class="text-white font600 text-center font18responsive border-bottom borderColor py-3">
+      <h2
+        class="text-white font600 text-center font18responsive border-bottom borderColor py-3"
+      >
         Report Error
       </h2>
       <div class="row p-4">
         <div class="col-12">
-          <textarea class="form-control customFormControl font18 inputBorder font500 offWhiteText h-100" rows="3" placeholder="write here..."></textarea>
+          <textarea
+            [formControl]="reportText"
+            class="form-control customFormControl font18 inputBorder font500 offWhiteText h-100"
+            rows="3"
+            placeholder="write here..."
+          ></textarea>
         </div>
         <div class="col-12 mt-4">
-          <button class="btn btn-block linearGradient text-white border-0">Send</button>
+          <button
+            class="btn btn-block linearGradient text-white border-0"
+            [disabled]="reportText.invalid"
+            (click)="reportError()"
+          >
+            Send
+          </button>
         </div>
       </div>
     </div>
   </div>
 </ng-template>
+
+<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>

@@ -697,7 +697,7 @@ export class RestService {
       .post<string>(this.client_api + "/get_session", formData)
       .pipe(
         map((res) => res["data"]),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -710,7 +710,7 @@ export class RestService {
       .post<WebPlayTokenRO>(this.client_api + "/get_web_play_token", formData)
       .pipe(
         map((res) => res),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -723,7 +723,7 @@ export class RestService {
       .post<void>(this.client_api + "/terminate_stream", formData)
       .pipe(
         map(() => {}),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -735,7 +735,7 @@ export class RestService {
       .post(this.client_api + "/get_any_active_session_status", formData)
       .pipe(
         map((res) => (!!Object.keys(res["data"]).length ? res["data"] : null)),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -746,7 +746,7 @@ export class RestService {
       .get<GameSessionRO>(this.r_mix_api + "/logging/game_session/" + launchKey)
       .pipe(
         map((res) => res),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -757,7 +757,7 @@ export class RestService {
       .post<void>(this.r_mix_api + "/logging/feedback", feedback)
       .pipe(
         map(() => {}),
-        catchError(({error}) => {
+        catchError(({ error }) => {
           throw error;
         })
       );
@@ -768,7 +768,31 @@ export class RestService {
       .post<void>(this.client_api + "/delete_user_data", new FormData())
       .pipe(
         map(() => {}),
-        catchError(({error}) => {
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  postAReport(message: string, response: any): Observable<void> {
+    return this.http
+      .post<void>(this.r_mix_api + "/logging/report", { message, response })
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  setSearchPrivacy(isPrivate: boolean): Observable<void> {
+    return this.http
+      .put<void>(this.r_mix_api + "/accounts/set_search_privacy", {
+        search_privacy: isPrivate,
+      })
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
           throw error;
         })
       );

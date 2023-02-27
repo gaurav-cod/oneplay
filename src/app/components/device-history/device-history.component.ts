@@ -48,6 +48,9 @@ export class DeviceHistoryComponent implements OnInit {
       () => {
         this.loggingOut = false;
         this.sessions = this.sessions.filter((s) => s.key !== session.key);
+        if (session.key === this.authService.sessionKey) {
+          this.authService.logout();
+        }
       },
       (error) => {
         this.loggingOut = false;

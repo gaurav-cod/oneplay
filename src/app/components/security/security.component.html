@@ -4,8 +4,13 @@
     <form autocomplete="on">
       <div class="row">
         <div class="col-md-12 mt-2">
-          <label class="font16 font500 offWhiteText">Email</label>
-          <div class="input-group">
+          <label class="font16 font500 offWhiteText">Email</label
+          ><span
+            *ngIf="email.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid email</span
+          >
+          <div class="input-group" [ngClass]="{ errorBorder: email.invalid }">
             <input
               type="email"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
@@ -14,35 +19,32 @@
             />
             <div class="input-group-append">
               <span class="input-group-text lightBg border-0">
-                <img src="assets\img\setting\Verified.svg" class="img-fluid mr-2" alt="" />
-                <i class="fas fa-pen-fancy text-white"></i>
+                <img
+                  *ngIf="email.enabled"
+                  (click)="updateEmail()"
+                  src="assets\img\setting\Verified.svg"
+                  class="img-fluid mr-2"
+                  alt=""
+                />
+                <i
+                  *ngIf="email.disabled"
+                  (click)="email.enable()"
+                  class="fas fa-pen-fancy text-white"
+                ></i>
               </span>
             </div>
           </div>
         </div>
-        <!-- In valid phone number UI -->
-        <!-- <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Phone number</label><span class="font16 font500 errorGradientColor float-right">*invalid phone number</span>
-          <div class="input-group errorBorder">
-            <input
-              type="text"
-              [formControl]="phone"
-              class="form-control height52 font18 font500 text-white border-0 lightBg"
-              placeholder="+19999999999"
-              inputmode="tel"
-            />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg border-0"
-                ><i class="fas fa-pen-fancy text-white"></i
-              ></span>
-            </div>
-          </div>
-        </div> -->
 
         <!-- Valid phone number UI -->
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Phone number</label>
-          <div class="input-group">
+          <label class="font16 font500 offWhiteText">Phone number</label
+          ><span
+            *ngIf="phone.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid phone number</span
+          >
+          <div class="input-group" [ngClass]="{ errorBorder: phone.invalid }">
             <input
               type="text"
               [formControl]="phone"
@@ -51,9 +53,20 @@
               inputmode="tel"
             />
             <div class="input-group-append">
-              <span class="input-group-text lightBg border-0"
-                ><i class="fas fa-pen-fancy text-white"></i
-              ></span>
+              <span class="input-group-text lightBg border-0">
+                <img
+                  *ngIf="phone.enabled"
+                  (click)="updatePhone()"
+                  src="assets\img\setting\Verified.svg"
+                  class="img-fluid mr-2"
+                  alt=""
+                />
+                <i
+                  *ngIf="phone.disabled"
+                  (click)="phone.enable()"
+                  class="fas fa-pen-fancy text-white"
+                ></i>
+              </span>
             </div>
           </div>
         </div>

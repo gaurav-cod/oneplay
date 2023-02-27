@@ -69,7 +69,7 @@
   </ng-template>
 </ngb-carousel>
 
-<div class="pb-8" [ngClass]="{ 'mt-5': banners.length === 0 }">
+<div [ngClass]="{ 'mt-5': banners.length === 0 }">
   <div *ngFor="let feed of feeds">
     <app-stream-card
       [title]="'Streams of ' + feed.title"
