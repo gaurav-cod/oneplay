@@ -1,4 +1,5 @@
 <ngb-carousel
+  *ngIf="banners.length"
   id="home-header"
   [interval]="4000"
   [pauseOnFocus]="false"
@@ -69,7 +70,7 @@
   </ng-template>
 </ngb-carousel>
 
-<div [ngClass]="{ 'mt-5': banners.length === 0 }">
+<div [ngClass]="{ 'mt-7': banners.length === 0 }">
   <div *ngFor="let feed of feeds">
     <app-stream-card
       [title]="'Streams of ' + feed.title"
