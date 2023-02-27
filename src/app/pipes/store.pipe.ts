@@ -14,7 +14,7 @@ export class StorePipe implements PipeTransform {
     } else if (/^battle/i.exec(store_name)) {
       return "battle_net.png";
     } else if (/^(origin|ea)/i.exec(store_name)) {
-      return "origin.png";
+      return "ea.png";
     } else if (/^steam/i.exec(store_name)) {
       return "steam.png";
     } else if (/^(uplay|ubisoft)/i.exec(store_name)) {
