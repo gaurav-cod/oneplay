@@ -59,6 +59,10 @@ export class NavbarComponent implements OnInit {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
 
+  get photo() {
+    return this.user?.photo;
+  }
+
   get isFocused() {
     return this.focus.asObservable();
   }

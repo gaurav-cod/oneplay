@@ -276,8 +276,8 @@
               role="button"
               ngbDropdownToggle
             >
-              <span class="avatar avatar-sm rounded-circle">
-                <img alt="Image placeholder" [src]="title | avatar" />
+              <span class="avatar avatar-sm rounded-circle bg-white">
+                <img alt="Image placeholder" [src]="photo || (title | avatar)" />
               </span>
             </a>
             <div

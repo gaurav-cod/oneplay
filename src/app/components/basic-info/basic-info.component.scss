@@ -1,4 +1,24 @@
 .input-group-text {
-    cursor: pointer;
+  cursor: pointer;
 }
 
+.profile-image {
+  div {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+  }
+
+  &:hover {
+    div {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
