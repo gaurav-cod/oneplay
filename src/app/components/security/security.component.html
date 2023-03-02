@@ -80,14 +80,12 @@
               type="password"
               [formControl]="password"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
+              #passwordField
             />
             <div class="input-group-append">
-              <span class="input-group-text lightBg border-0"
-                ><img
-                  src="assets\img\setting\Views.svg"
-                  class="img-fluid"
-                  alt=""
-              /></span>
+              <span class="input-group-text lightBg text-white border-0"
+                ><i class="fas fa-eye" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" [ngClass]="(passwordField.type=='password')?' fa-eye-slash':' fa-eye'"></i>
+              </span>
             </div>
           </div>
           <span class="font16 font500 muteText">at least 8 characters</span>
