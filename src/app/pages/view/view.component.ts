@@ -385,7 +385,11 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get shortDesc() {
-    return this.game?.description?.slice(0, this.shortDescLength - 1) ?? "";
+    return this.game?.description?.slice(0, this.shortDescLength - 1).replace(/<[^>]*>|&[^;]+;/gm, '') ?? "";
+  }
+
+  get longDesc() {
+    return this.game?.description?.replace(/<[^>]*>|&[^;]+;/gm, '') ?? "";
   }
 
   open(content: any, video: VideoModel): void {

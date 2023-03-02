@@ -169,15 +169,14 @@
             <div class="row">
               <div class="col-lg-10 mt-3 mt-md-0">
                 <h1 class="font700 text-white">About Game</h1>
-                <p
+                <span
                   id="description"
-                  [innerHTML]="
-                    isReadMore && shortDescLength < game.description.length
-                      ? shortDesc
-                      : game.description
-                  "
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
-                ></p>
+                >
+                  {{isReadMore && shortDescLength < game.description.length
+                  ? shortDesc
+                  : longDesc}}
+                </span>
                 <a
                   href="javascript:void(0)"
                   type="button"
