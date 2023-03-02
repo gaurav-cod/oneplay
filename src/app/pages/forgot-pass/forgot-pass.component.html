@@ -29,6 +29,10 @@
               <div class="col-md-12 mt-3">
                 <label class="font16 font500 customOffWhite"
                   >Email / Phone</label
+                ><span
+                  *ngIf="email.touched && email.invalid"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*invalid email</span
                 >
                 <div class="input-group">
                   <input
@@ -42,6 +46,7 @@
               <div class="col-md-12 mt-5">
                 <input
                   type="button"
+                  [disabled]="email.invalid"
                   (click)="submit()"
                   class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
                   value="Submit"
@@ -60,16 +65,16 @@
                   <div class="text-center">
                     <div class="col-12">
                       <hr class="mt-3 mb-4 borderBottom" />
-                      <p class="offWhiteColor mb-0 pt-2 font18 font500"
-                        >Need help?<span class="purpleGradient"
+                      <p class="offWhiteColor mb-0 pt-2 font18 font500">
+                        Need help?<span class="purpleGradient"
                           ><a
                             href="https://www.oneplay.in/contact.html"
                             target="_blank"
                           >
                             Browse FAQ</a
                           ></span
-                        ></p
-                      >
+                        >
+                      </p>
                     </div>
                     <div class="col-12 mt-2">
                       <p class="font16 font500 footerWhiteColor mb-0">
