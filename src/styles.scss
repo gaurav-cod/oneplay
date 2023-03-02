@@ -823,3 +823,12 @@ input:-webkit-autofill:active {
 #description p {
   margin-bottom: 0px !important;
 }
+
+select option {
+  margin: 40px;
+  background: #212123;
+  color: #959595;
+  font-weight: 500;
+  text-shadow: 0 1px 0 #212123;
+  border: none;
+}
