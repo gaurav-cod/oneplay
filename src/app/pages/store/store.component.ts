@@ -17,12 +17,13 @@ export class StoreComponent implements OnInit {
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
+  genreSelected: string = '';
 
   private queries = {
-    "All Games": {
-      label: "common",
-      value: {},
-    },
+    // "All Games": {
+    //   label: "common",
+    //   value: {},
+    // },
     "Best of 2021": {
       label: "common",
       value: {
@@ -99,13 +100,20 @@ export class StoreComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.params.subscribe({
+      next: (params) => {
       this.heading = params.filter || "All Games";
+      const query = params.filter;
+      if (!query) {
+        this.genreSelected = '';
+      } else {
+        this.genreSelected = query;
+      } 
       this.title.setTitle("OnePlay | " + (params.filter || "Store"));
       this.canLoadMore = true;
       this.currentPage = 0;
       this.loadGames();
-    });
+    }});
 
     this.restService.getTopGenres(3).subscribe((genres) => {
       genres.forEach((genre) => {
