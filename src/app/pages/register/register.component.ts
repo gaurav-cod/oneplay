@@ -23,8 +23,6 @@ export class RegisterComponent implements OnInit {
     email: new FormControl("", [Validators.required, Validators.email]),
     country_code: new FormControl("+91", [
       Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
     ]),
     phone: new FormControl("", [
       Validators.required,
@@ -72,6 +70,10 @@ export class RegisterComponent implements OnInit {
     "+98",
     "+971",
   ];
+
+  get checkvalidationValue() {
+    return this.registerForm.invalid || this.loading;
+  }
 
   get nameErrored() {
     const control = this.registerForm.controls["name"];

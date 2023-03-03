@@ -230,7 +230,7 @@
                 <input
                   type="button"
                   (click)="register()"
-                  [disabled]="registerForm.invalid || loading"
+                  [disabled]="checkvalidationValue"
                   class="btn btn-block linearGradient border-0 font18 borderRadius10 font500 text-white"
                   value="Create Account"
                 />
