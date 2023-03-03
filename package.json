@@ -37,6 +37,7 @@
     "core-js": "3.15.2",
     "firebase": "^9.7.0",
     "js-cookie": "^2.2.1",
+    "libphonenumber-js": "^1.10.21",
     "memoizee": "^0.4.15",
     "ngx-clipboard": "14.0.1",
     "ngx-infinite-scroll": "^10.0.1",
