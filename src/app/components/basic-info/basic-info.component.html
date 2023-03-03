@@ -4,7 +4,12 @@
     <form>
       <div class="row mt-2">
         <div class="col-md-12">
-          <input type="file" class="d-none" id="editProfile" (change)="onFileChanged($event)" />
+          <input
+            type="file"
+            class="d-none"
+            id="editProfile"
+            (change)="onFileChanged($event)"
+          />
           <label for="editProfile" class="d-flex">
             <div class="row">
               <div class="col">
@@ -42,12 +47,21 @@
           </div>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Full Name</label>
+          <label class="font16 font500 offWhiteText">Full Name</label
+          ><span
+            *ngIf="name.touched && name.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid name</span
+          >
           <input
             type="text"
             [formControl]="name"
-            class="form-control height52 font18 font500 text-white border-0 lightBg"
+            class="form-control height52 font18 font500 text-white lightBg"
             placeholder="Your name"
+            [ngClass]="{
+              errorBorder: name.touched && name.invalid,
+              'border-0': name.valid
+            }"
           />
         </div>
         <div class="col-md-12 mt-4">
@@ -63,7 +77,7 @@
           <input
             type="submit"
             (click)="saveChanges()"
-            [disabled]="saveProfileLoder"
+            [disabled]="saveProfileLoder || !isValid"
             class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500"
             value="Save Changes"
           />

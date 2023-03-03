@@ -6,11 +6,14 @@
         <div class="col-md-12 mt-2">
           <label class="font16 font500 offWhiteText">Email</label
           ><span
-            *ngIf="email.invalid"
+            *ngIf="email.touched && email.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid email</span
           >
-          <div class="input-group" [ngClass]="{ errorBorder: email.invalid }">
+          <div
+            class="input-group"
+            [ngClass]="{ errorBorder: email.touched && email.invalid }"
+          >
             <input
               type="email"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
@@ -40,11 +43,14 @@
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText">Phone number</label
           ><span
-            *ngIf="phone.invalid"
+            *ngIf="phone.touched && phone.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid phone number</span
           >
-          <div class="input-group" [ngClass]="{ errorBorder: phone.invalid }">
+          <div
+            class="input-group"
+            [ngClass]="{ errorBorder: phone.touched && phone.invalid }"
+          >
             <input
               type="text"
               [formControl]="phone"
@@ -74,17 +80,28 @@
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Update Password</label>
-          <div class="input-group">
+          <label class="font16 font500 offWhiteText">Update Password</label
+          ><span
+            *ngIf="password.touched && password.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid password</span
+          >
+          <div
+            class="input-group"
+            [ngClass]="{ errorBorder: password.touched && password.invalid }"
+          >
             <input
-              type="password"
+              [type]="showPass ? 'text' : 'password'"
               [formControl]="password"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
-              #passwordField
             />
             <div class="input-group-append">
               <span class="input-group-text lightBg text-white border-0"
-                ><i class="fas fa-eye" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" [ngClass]="(passwordField.type=='password')?' fa-eye-slash':' fa-eye'"></i>
+                ><i
+                  class="fas"
+                  (click)="showPass = !showPass"
+                  [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"
+                ></i>
               </span>
             </div>
           </div>
@@ -95,11 +112,13 @@
           <input type="password" class="form-control height52 font18 font500 text-white border-0 lightBg"/>
         </div> -->
         <div class="col-md-12 mt-4 text-right">
-          <input
-            type="submit"
+          <button
             class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500"
-            value="Save Changes"
-          />
+            [disabled]="password.invalid"
+            (click)="updatePassword()"
+          >
+            Save Changes
+          </button>
         </div>
       </div>
     </form>

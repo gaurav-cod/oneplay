@@ -13,9 +13,12 @@ import Swal from "sweetalert2";
   styleUrls: ["./basic-info.component.scss"],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
-  username = new FormControl("", Validators.required);
-  name = new FormControl("", Validators.required);
-  bio = new FormControl("", Validators.required);
+  username = new FormControl("");
+  name = new FormControl("", [
+    Validators.required,
+    Validators.pattern(/^[a-zA-Z\s]*$/),
+  ]);
+  bio = new FormControl("");
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
   private userSubscription: Subscription;
@@ -44,6 +47,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
+  }
+
+  get isValid() {
+    return this.name.valid && this.username.valid && this.bio.valid;
   }
 
   onFileChanged(input) {

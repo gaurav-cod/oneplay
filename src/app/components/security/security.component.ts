@@ -3,6 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { phoneValidator } from "src/app/utils/validators.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -11,12 +12,13 @@ import Swal from "sweetalert2";
   styleUrls: ["./security.component.scss"],
 })
 export class SecurityComponent implements OnInit {
-  password = new FormControl("", Validators.required);
-  phone = new FormControl("", [
+  password = new FormControl("", [
     Validators.required,
-    Validators.pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/),
+    Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
   ]);
+  phone = new FormControl("", [Validators.required, phoneValidator()]);
   email = new FormControl("", [Validators.required, Validators.email]);
+  showPass = false;
 
   private user: UserModel;
 
@@ -96,7 +98,6 @@ export class SecurityComponent implements OnInit {
           text: "Password updated successfully",
         });
         this.password.reset();
-        this.password.disable();
       },
       (error) => {
         Swal.fire({

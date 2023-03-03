@@ -16,7 +16,10 @@ declare var gtag: Function;
 export class RegisterComponent implements OnInit {
   referralName = "";
   registerForm = new FormGroup({
-    name: new FormControl("", Validators.required),
+    name: new FormControl("", [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z\s]*$/),
+    ]),
     email: new FormControl("", [Validators.required, Validators.email]),
     country_code: new FormControl("+91", [
       Validators.required,
