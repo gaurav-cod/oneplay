@@ -52,6 +52,7 @@ export interface PaytmTxn {
 }
 
 export interface UpdateProfileDTO {
+  profile_image?: File;
   first_name?: string;
   last_name?: string;
   username?: string;

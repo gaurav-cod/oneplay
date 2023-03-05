@@ -104,6 +104,7 @@
                     triggers="click:blur"
                     placement="top"
                     formControlName="password"
+                    autocomplete="off"
                     class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
                   />
                   <span
@@ -117,8 +118,8 @@
                       <em
                         class="fa"
                         [ngClass]="{
-                          'fa-eye': !showPassword,
-                          'fa-eye-slash': showPassword
+                          'fa-eye': showPassword,
+                          'fa-eye-slash': !showPassword
                         }"
                       ></em>
                     </button>
@@ -229,8 +230,8 @@
               <div class="col-md-12 mt-4">
                 <input
                   type="button"
-                  [disabled]="registerForm.invalid || loading"
                   (click)="register()"
+                  [disabled]="checkvalidationValue"
                   class="btn btn-block linearGradient border-0 font18 borderRadius10 font500 text-white"
                   value="Create Account"
                 />

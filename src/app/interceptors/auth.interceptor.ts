@@ -31,32 +31,35 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    return next.handle(req).pipe(timeout(60000)).pipe(
-      filter((res) => res instanceof HttpResponse),
-      catchError((error: HttpErrorResponse) => {
-        if (
-          req.urlWithParams.startsWith(environment.render_mix_api) &&
-          error.status === 401
-        ) {
-          this.authService.logout();
-        }
-        // if(error instanceof TimeoutError) {
-        //   console.log(error,'server-error');
-        // }
-        
-        throw new HttpErrorResponse({
-          status: error.status,
-          statusText: error.statusText,
-          error: {
-            code: error.status || 503,
-            message:
-              error.error?.message ||
-              error.error?.msg ||
-              "Server is not responding",
-            timeout: error instanceof TimeoutError
-          },
-        });
-      })
-    );
+    return next
+      .handle(req)
+      .pipe(timeout(30000))
+      .pipe(
+        filter((res) => res instanceof HttpResponse),
+        catchError((error: HttpErrorResponse) => {
+          if (
+            req.urlWithParams.startsWith(environment.render_mix_api) &&
+            error.status === 401
+          ) {
+            this.authService.logout();
+          }
+          // if(error instanceof TimeoutError) {
+          //   console.log(error,'server-error');
+          // }
+
+          throw new HttpErrorResponse({
+            status: error.status,
+            statusText: error.statusText,
+            error: {
+              code: error.status || 503,
+              message:
+                error.error?.message ||
+                error.error?.msg ||
+                "Server is not responding",
+              timeout: error instanceof TimeoutError || error.status === 408,
+            },
+          });
+        })
+      );
   }
 }

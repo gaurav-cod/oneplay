@@ -150,7 +150,7 @@
                       ></label
                     >
                     <label
-                      class="custom-control-label font16 font500 text-white d-block d-sm-none"
+                      class="custom-control-label font16 font500 muteText d-block d-sm-none"
                       for="customCheck1"
                       ><span class="marginLeftNegative"
                         >Show settings before launch</span
@@ -167,17 +167,16 @@
         <div class="row">
           <div class="col-md-6 mt-5 mt-md-4 mt-lg-5">
             <div class="row">
-              <div class="col-lg-10 mt-4 mt-md-0">
+              <div class="col-lg-10 mt-3 mt-md-0">
                 <h1 class="font700 text-white">About Game</h1>
-                <p
+                <span
                   id="description"
-                  [innerHTML]="
-                    isReadMore && shortDescLength < game.description.length
-                      ? shortDesc
-                      : game.description
-                  "
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
-                ></p>
+                >
+                  {{isReadMore && shortDescLength < game.description.length
+                  ? shortDesc
+                  : longDesc}}
+                </span>
                 <a
                   href="javascript:void(0)"
                   type="button"
@@ -624,16 +623,16 @@
     </div>
     <div class="modal-body pt-0">
       <form [formGroup]="advancedOptions">
-        <div class="row pl-lg-3 pr-lg-3">
+        <div class="row pl-md-3 pr-md-3">
           <div class="col-md-12">
             <div class="row">
               <div class="col-12 col-md-4 pl-0">
                 <div
-                  class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-2 py-lg-3 pb-2 mt-lg-4 mt-2"
+                  class="text-center customBodyColor borderRadius10 px-md-2 px-1 pt-2 py-md-3 pb-2 mt-md-4 mt-2"
                 >
                   <div class="row">
                     <div class="col-md-12 col-2 align-self-center">
-                      <div class="custom-control custom-switch pl-lg-7">
+                      <div class="custom-control custom-switch pl-md-7">
                         <input
                           type="checkbox"
                           class="custom-control-input"
@@ -646,8 +645,8 @@
                         ></label>
                       </div>
                     </div>
-                    <div class="col-md-12 col-10 pl-0 pl-lg-3">
-                      <p class="mb-0 font16 font500 muteText mt-lg-3 px-lg-4">
+                    <div class="col-md-12 col-10 pl-0 pl-md-3">
+                      <p class="mb-0 font16 font500 muteText mt-md-3 px-md-4">
                         Show Stats
                       </p>
                     </div>
@@ -656,11 +655,11 @@
               </div>
               <div class="col-12 col-md-4 pl-0">
                 <div
-                  class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-2 py-lg-3 pb-2 mt-lg-4 mt-2"
+                  class="text-center customBodyColor borderRadius10 px-md-2 px-1 pt-2 py-md-3 pb-2 mt-md-4 mt-2"
                 >
                   <div class="row">
                     <div class="col-md-12 col-2 align-self-center">
-                      <div class="custom-control custom-switch pl-lg-7">
+                      <div class="custom-control custom-switch pl-md-7">
                         <input
                           type="checkbox"
                           class="custom-control-input"
@@ -674,7 +673,7 @@
                       </div>
                     </div>
                     <div class="col-10 col-md-12">
-                      <p class="mb-0 font16 font500 muteText mt-lg-3">
+                      <p class="mb-0 font16 font500 muteText mt-md-3">
                         Fullscreen Mode
                       </p>
                     </div>
@@ -683,11 +682,11 @@
               </div>
               <div class="col-12 col-md-4 pl-0">
                 <div
-                  class="text-center customBodyColor borderRadius10 px-lg-2 px-1 pt-2 py-lg-3 pb-2 mt-lg-4 mt-2"
+                  class="text-center customBodyColor borderRadius10 px-md-2 px-1 pt-2 py-md-3 pb-2 mt-md-4 mt-2"
                 >
                   <div class="row">
                     <div class="col-md-12 col-2 align-self-center">
-                      <div class="custom-control custom-switch pl-lg-7">
+                      <div class="custom-control custom-switch pl-md-7">
                         <input
                           type="checkbox"
                           class="custom-control-input"
@@ -701,7 +700,7 @@
                       </div>
                     </div>
                     <div class="col-10 col-md-12">
-                      <p class="mb-0 font16 font500 muteText mt-lg-3">
+                      <p class="mb-0 font16 font500 muteText mt-md-3">
                         Onscreen Controls
                       </p>
                     </div>
@@ -715,7 +714,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn customBtn width35 mr-4"
+                    class="btn customBtn width35 mr-md-4 mr-2"
                     [ngClass]="{ active: audio_type === 'stereo' }"
                   >
                     <input
@@ -751,7 +750,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn customBtn width35 mr-4"
+                    class="btn customBtn width35 mr-md-4 mr-2"
                     [ngClass]="{ active: stream_codec === 'auto' }"
                   >
                     <input
@@ -764,7 +763,7 @@
                     <span>Auto</span>
                   </label>
                   <label
-                    class="btn customBtn width35 mr-4"
+                    class="btn customBtn width35 mr-md-4 mr-2"
                     [ngClass]="{ active: stream_codec === 'forceh265' }"
                   >
                     <input
@@ -801,7 +800,7 @@
                   data-toggle="buttons"
                 >
                   <label
-                    class="btn customBtn width35 mr-4"
+                    class="btn customBtn width35 mr-md-4 mr-2"
                     [ngClass]="{ active: video_decoder_selection === 'auto' }"
                   >
                     <input
@@ -815,7 +814,7 @@
                     <span>Auto</span>
                   </label>
                   <label
-                    class="btn customBtn width35 mr-4"
+                    class="btn customBtn width35 mr-md-4 mr-2"
                     [ngClass]="{
                       active: video_decoder_selection === 'hardware'
                     }"

@@ -16,12 +16,13 @@ declare var gtag: Function;
 export class RegisterComponent implements OnInit {
   referralName = "";
   registerForm = new FormGroup({
-    name: new FormControl("", Validators.required),
+    name: new FormControl("", [
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z\s]*$/),
+    ]),
     email: new FormControl("", [Validators.required, Validators.email]),
     country_code: new FormControl("+91", [
       Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
     ]),
     phone: new FormControl("", [
       Validators.required,
@@ -69,6 +70,10 @@ export class RegisterComponent implements OnInit {
     "+98",
     "+971",
   ];
+
+  get checkvalidationValue() {
+    return this.registerForm.invalid || this.loading;
+  }
 
   get nameErrored() {
     const control = this.registerForm.controls["name"];

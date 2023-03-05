@@ -1,47 +1,88 @@
 <div class="row mb-5">
   <div class="col-md-10 col-lg-8 mt-4">
-      <p class="font18 font500 text-white">Profile Settings</p>
-      <form>
-          <div class="row mt-2">
-              <div class="col-md-12">
-                  <input type="file" class="d-none" id="editProfile" />
-                  <label for="editProfile" class="d-flex">
-                      <div class="row">
-                          <div class="col">
-                              <div class="card transparentBg cursorPointer">
-                                  <img class="card-img rounded-circle wh48" [src]="title | avatar" alt="">
-                                  <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
-                                      <i class="fas fa-pen-fancy text-white mt-2"></i>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-auto align-self-center pl-0">
-                              <div class="align-middle font16 font500 muteText">Edit profile picture.</div>
-                          </div>
-                      </div>
-                  </label>
+    <p class="font18 font500 text-white">Profile Settings</p>
+    <form>
+      <div class="row mt-2">
+        <div class="col-md-12">
+          <input
+            type="file"
+            class="d-none"
+            id="editProfile"
+            (change)="onFileChanged($event)"
+          />
+          <label for="editProfile" class="d-flex">
+            <div class="row">
+              <div class="col">
+                <div class="card transparentBg cursorPointer profile-image">
+                  <img
+                    class="card-img rounded-circle wh48"
+                    [src]="photo || (title | avatar)"
+                    alt=""
+                  />
+                  <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
+                    <i class="fas fa-pen-fancy text-white mt-2"></i>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-12 mt-4">
-                  <label class="font16 font500 offWhiteText">Username</label>
-                  <div class="input-group">
-                      <input type="text" [formControl]="username" class="form-control height52 font18 font500 text-white border-0 lightBg" placeholder="username" />
-                      <!-- <div class="input-group-append">
+              <div class="col-auto align-self-center pl-0">
+                <div class="align-middle font16 font500 muteText">
+                  Edit profile picture.
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="col-md-12 mt-4">
+          <label class="font16 font500 offWhiteText">Username</label>
+          <div class="input-group">
+            <input
+              type="text"
+              [formControl]="username"
+              class="form-control height52 font18 font500 text-white border-0 lightBg"
+              placeholder="username"
+            />
+            <!-- <div class="input-group-append">
                           <span class="input-group-text lightBg border-0"><i class="fas fa-pen-fancy text-white"></i></span>
                       </div> -->
-                  </div>
-              </div>
-              <div class="col-md-12 mt-4">
-                  <label class="font16 font500 offWhiteText">Full Name</label>
-                  <input type="text" [formControl]="name" class="form-control height52 font18 font500 text-white border-0 lightBg" placeholder="Your name"/>
-              </div>
-              <div class="col-md-12 mt-4">
-                  <label class="font16 font500 offWhiteText">Bio</label>
-                  <textarea [formControl]="bio" class="form-control font18 font500 text-white border-0 lightBg" rows="3" placeholder="Write a short bio in under 300 characters"></textarea>
-              </div>
-              <div class="col-md-12 mt-4 text-right">
-                  <input type="submit" (click)="saveChanges()" [disabled]="saveProfileLoder" class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500 " value="Save Changes" />
-              </div>
           </div>
-      </form>
+        </div>
+        <div class="col-md-12 mt-4">
+          <label class="font16 font500 offWhiteText">Full Name</label
+          ><span
+            *ngIf="name.touched && name.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid name</span
+          >
+          <input
+            type="text"
+            [formControl]="name"
+            class="form-control height52 font18 font500 text-white lightBg"
+            placeholder="Your name"
+            [ngClass]="{
+              errorBorder: name.touched && name.invalid,
+              'border-0': name.valid
+            }"
+          />
+        </div>
+        <div class="col-md-12 mt-4">
+          <label class="font16 font500 offWhiteText">Bio</label>
+          <textarea
+            [formControl]="bio"
+            class="form-control font18 font500 text-white border-0 lightBg"
+            rows="3"
+            placeholder="Write a short bio in under 300 characters"
+          ></textarea>
+        </div>
+        <div class="col-md-12 mt-4 text-right">
+          <input
+            type="submit"
+            (click)="saveChanges()"
+            [disabled]="saveProfileLoder || !isValid"
+            class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500"
+            value="Save Changes"
+          />
+        </div>
+      </div>
+    </form>
   </div>
 </div>

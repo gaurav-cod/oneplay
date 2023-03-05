@@ -1,4 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -97,6 +104,10 @@ export class SidebarComponent implements OnInit {
 
   get isPrivate() {
     return this.user?.searchPrivacy;
+  }
+
+  get photo() {
+    return this.user?.photo;
   }
 
   constructor(
@@ -209,11 +220,11 @@ export class SidebarComponent implements OnInit {
   }
 
   switchToV1() {
-    localStorage.removeItem('oneplayv2');
+    localStorage.removeItem("oneplayv2");
     location.reload();
   }
 
-  TermsConditions(container: ElementRef<HTMLDivElement >) {
+  TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",

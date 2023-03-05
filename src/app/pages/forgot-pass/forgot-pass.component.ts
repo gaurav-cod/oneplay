@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./forgot-pass.component.scss"],
 })
 export class ForgotPassComponent implements OnInit {
-  email = new FormControl("", Validators.required);
+  email = new FormControl("", [Validators.required, Validators.email]);
   resetemail = false;
 
   constructor(
