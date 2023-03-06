@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GameService } from 'src/app/services/game.service';
 import { MessagingService } from 'src/app/services/messaging.service';
 import { RestService } from 'src/app/services/rest.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -66,7 +67,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   get link() {
-    return "https://www.oneplay.in/dashboard/register?ref=" + this.user.id;
+    return environment.domain + "/new/register?ref=" + this.user.id;
   }
 
   get gamePlayTooltip() {

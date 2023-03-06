@@ -68,7 +68,7 @@ export class SidebarComponent implements OnInit {
   }
 
   get link() {
-    return this.domain + "/dashboard/register?ref=" + this.user.id;
+    return this.domain + "/new/register?ref=" + this.user.id;
   }
 
   get gameLink() {
