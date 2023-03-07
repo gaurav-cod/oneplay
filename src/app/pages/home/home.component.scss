@@ -91,14 +91,20 @@
 }
 
 .height40vh {
-  height: 59vh;
+  height: 450px;
+  @media (min-width: 481px) and (max-width: 1200px) {
+    height: 300px;
+  }
   @media (max-width: 480px) {
     height: 200px;
   }
 }
 
 .height30vh {
-  height: 54vh;
+  height: 405px;
+  @media (min-width: 481px) and (max-width: 1200px) {
+    height: 250px;
+  }
   @media (max-width: 480px) {
     height: 200px;
   }

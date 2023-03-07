@@ -29,6 +29,9 @@
   max-width: 300px;
   max-height: 160px;
   margin-bottom: 24px;
+  @media (min-width: 1300px) {
+    max-height: 100px;
+  }
 
   @media (max-width: 480px) {
     width: 180px;
@@ -161,9 +164,9 @@ live {
 }
 
 .height80 {
-  height: 70vh;
+  height: 470px;
   @media (max-width: 968px) {
-    height: 60vh;
+    height: 450px;
   }
   @media (max-width: 480px) {
     height: 300px;
