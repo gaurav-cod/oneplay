@@ -96,7 +96,7 @@
     height: 300px;
   }
   @media (max-width: 480px) {
-    height: 200px;
+    height: 150px;
   }
 }
 
@@ -106,7 +106,7 @@
     height: 250px;
   }
   @media (max-width: 480px) {
-    height: 200px;
+    height: 120px;
   }
 }
 
@@ -138,11 +138,11 @@
 
 @media (max-width: 1025px) {
   .customWidth {
-    width: 18.5% !important;
+    width: 20% !important;
   }
 
   .customWidth1 {
-    width: 63% !important;
+    width: 60% !important;
   }
 }
 
@@ -173,6 +173,7 @@
   }
 
   @media (max-width: 480px) {
+    overflow-y: hidden;
     padding-left: 15px;
     padding-right: 30px;
   }
