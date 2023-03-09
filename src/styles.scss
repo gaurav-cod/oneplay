@@ -672,7 +672,8 @@ body::-webkit-scrollbar {
 }
 
 *:focus-visible {
-  outline: 2px solid white !important;
+  box-shadow: 0 1px #8A54D0 !important;
+  transition: 0.4s;
 }
 
 button:focus-visible {
@@ -831,4 +832,11 @@ select option {
   font-weight: 500;
   text-shadow: 0 1px 0 #212123;
   border: none;
+}
+
+.fixedIcon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 3;
 }
