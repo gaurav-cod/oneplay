@@ -173,3 +173,9 @@
 ::ng-deep .tooltip-inner {
     width: 180px;
 }
+
+@media (max-width: 767px) {
+    .w120 {
+        width: 120px;
+    }
+}
