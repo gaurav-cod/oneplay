@@ -13,12 +13,17 @@ import Swal from "sweetalert2";
   styleUrls: ["./basic-info.component.scss"],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
-  username = new FormControl("");
+  username = new FormControl("", [
+    Validators.required,
+  ]);
   name = new FormControl("", [
     Validators.required,
     Validators.pattern(/^[a-zA-Z\s]*$/),
   ]);
-  bio = new FormControl("");
+  bio = new FormControl("", [
+    Validators.required,
+    Validators.pattern(/^[a-zA-Z\s]*$/),
+  ]);
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
   private userSubscription: Subscription;

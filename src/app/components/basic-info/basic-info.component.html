@@ -33,17 +33,23 @@
           </label>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Username</label>
+          <label class="font16 font500 offWhiteText required">Username</label>
+          <span
+            *ngIf="username.touched && username.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid username</span
+          >
           <div class="input-group">
             <input
               type="text"
               [formControl]="username"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
               placeholder="username"
+              [ngClass]="{
+                errorBorder: username.touched && username.invalid,
+                'border-0': username.valid
+              }"
             />
-            <!-- <div class="input-group-append">
-                          <span class="input-group-text lightBg border-0"><i class="fas fa-pen-fancy text-white"></i></span>
-                      </div> -->
           </div>
         </div>
         <div class="col-md-12 mt-4">
@@ -66,11 +72,20 @@
         </div>
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText">Bio</label>
+          <span
+            *ngIf="bio.touched && bio.invalid"
+            class="font16 font500 errorGradientColor float-right"
+            >*invalid bio</span
+          >
           <textarea
             [formControl]="bio"
             class="form-control font18 font500 text-white border-0 lightBg"
             rows="3"
             placeholder="Write a short bio in under 300 characters"
+            [ngClass]="{
+              errorBorder: bio.touched && bio.invalid,
+              'border-0': bio.valid
+            }"
           ></textarea>
         </div>
         <div class="col-md-12 mt-4 text-right">
