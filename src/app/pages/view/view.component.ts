@@ -568,6 +568,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             title: "Error Code: " + err.code,
             text: err.message,
             icon: "error",
+            showCloseButton: true,
             showCancelButton: true,
             confirmButtonText: "Try Again",
             cancelButtonText: "Report Error",

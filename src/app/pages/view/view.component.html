@@ -931,8 +931,15 @@
   </div>
 </ng-template>
 
-<ng-template #reportErrorModal>
+<ng-template #reportErrorModal let-d="dismiss">
   <div class="modal-content modalBg">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute btn btn-github rounded-circle top--4 right--2 py-3"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </a>
     <div class="modal-body p-0">
       <h2
         class="text-white font600 text-center font18responsive border-bottom borderColor py-3"

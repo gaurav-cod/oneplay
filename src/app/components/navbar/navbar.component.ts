@@ -48,6 +48,7 @@ export class NavbarComponent implements OnInit {
   private dontClose = false;
   private keyword = "";
   private keywordHash = "";
+  showTitle = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -170,6 +171,11 @@ export class NavbarComponent implements OnInit {
 
   onImgError(event) {
     event.target.src = "assets/img/default_bg.jpg";
+  }
+
+  onUserError(event) {
+    event.target.src = "title | avatar";
+    this.showTitle = true;
   }
 
   getFriendAddIcon(friend: UserModel) {
