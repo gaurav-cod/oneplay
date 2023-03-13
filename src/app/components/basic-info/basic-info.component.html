@@ -18,7 +18,7 @@
                     class="card-img rounded-circle wh48"
                     [src]="photo || (title | avatar)"
                     alt=""
-                    (error)="$event.target.src = 'assets/img/default_bg.jpg'"
+                    (error)="onUserError($event)"
                   />
                   <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
                     <i class="fas fa-pen-fancy text-white mt-2"></i>

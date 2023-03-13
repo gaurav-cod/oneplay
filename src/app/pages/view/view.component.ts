@@ -37,6 +37,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
+  @ViewChild("serverNotAvailableModal") serverNotAvailableModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -91,6 +92,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
   private _reportErrorModalRef: NgbModalRef;
+  private _serverNotAvailableModalRef: NgbModalRef;
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
@@ -462,6 +464,18 @@ export class ViewComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-md",
     });
+  }
+  private serverNotAvailable() {
+    console.log('serverError');
+    this._serverNotAvailableModalRef = this.ngbModal.open(this.serverNotAvailableModal, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+    });
+  }
+
+  public closeServerNotAvailableModal() {
+    this._serverNotAvailableModalRef.close()  
   }
 
   terminateSession(): void {

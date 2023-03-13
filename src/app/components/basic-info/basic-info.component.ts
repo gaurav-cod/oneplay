@@ -3,6 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -11,6 +12,7 @@ import Swal from "sweetalert2";
   selector: "app-basic-info",
   templateUrl: "./basic-info.component.html",
   styleUrls: ["./basic-info.component.scss"],
+  providers: [AvatarPipe],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
   username = new FormControl("", [
@@ -33,7 +35,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly gavatar: AvatarPipe
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +59,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   get isValid() {
     return this.name.valid && this.username.valid && this.bio.valid;
+  }
+
+  onUserError(event) {
+    event.target.src = this.gavatar.transform(this.title);
   }
 
   onFileChanged(input) {
