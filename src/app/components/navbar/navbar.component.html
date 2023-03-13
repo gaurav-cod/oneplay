@@ -276,8 +276,8 @@
               role="button"
               ngbDropdownToggle
             >
-              <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" />
-              <!-- <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" (error)="onUserError($event)" /> -->
+              <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" (error)="onUserError($event)" />
+              <!-- <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" /> -->
             </a>
             <div
               class="dropdown-menu-arrow menudropdown dropdown-menu-right"

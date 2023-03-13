@@ -14,6 +14,7 @@ import { BehaviorSubject } from "rxjs";
 import { GameStatusRO } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { GameService } from "src/app/services/game.service";
@@ -38,7 +39,7 @@ export const ROUTES: RouteInfo[] = [
   selector: "app-sidebar",
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"],
-  providers: [GLinkPipe],
+  providers: [GLinkPipe, AvatarPipe],
 })
 export class SidebarComponent implements OnInit {
   @Output() toggleFriends = new EventEmitter();
@@ -110,6 +111,10 @@ export class SidebarComponent implements OnInit {
     return this.user?.photo;
   }
 
+  onUserError(event) {
+    event.target.src = this.gavatar.transform(this.title);
+  }
+
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -117,6 +122,7 @@ export class SidebarComponent implements OnInit {
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
+    private readonly gavatar: AvatarPipe,
     private readonly messagingService: MessagingService
   ) {}
 
