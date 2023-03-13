@@ -78,12 +78,14 @@ body {
 #live {
   position: absolute;
   top: -8px;
-  right: -8px;
+  right: 10px;
   font-size: 8px;
+  line-height: 11px;
   font-weight: bold;
   color: #fff;
   background-color: #d80000;
   padding: 2px;
+  border-radius: 4px;
 }
 
 #free {
@@ -737,10 +739,11 @@ input[type="checkbox"] {
   line-height: 26px !important;
   color: #959595 !important;
   letter-spacing: 0.02em !important;
+  padding: 0px 20px !important;
 }
 
 .swal2-popup {
-  width: 24rem !important;
+  width: 28rem !important;
   border-radius: 6px !important;
 }
 
@@ -750,12 +753,12 @@ input[type="checkbox"] {
 
 .swal2-styled.swal2-confirm {
   width: 100% !important;
-  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
 }
 
 .swal2-cancel.swal2-styled {
   width: 100% !important;
-  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+  background: none !important;
 }
 
 .loadingBg {
@@ -840,4 +843,8 @@ select option {
   right: 10px;
   bottom: 10px;
   z-index: 3;
+}
+
+.swal2-image {
+  margin: 4em auto 1em !important;
 }

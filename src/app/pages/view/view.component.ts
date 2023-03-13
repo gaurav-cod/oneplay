@@ -37,7 +37,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
-  @ViewChild("serverNotAvailableModal") serverNotAvailableModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -92,7 +91,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
   private _reportErrorModalRef: NgbModalRef;
-  private _serverNotAvailableModalRef: NgbModalRef;
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
@@ -465,18 +463,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       modalDialogClass: "modal-md",
     });
   }
-  private serverNotAvailable() {
-    console.log('serverError');
-    this._serverNotAvailableModalRef = this.ngbModal.open(this.serverNotAvailableModal, {
-      centered: true,
-      modalDialogClass: "modal-md",
-      scrollable: true,
-    });
-  }
-
-  public closeServerNotAvailableModal() {
-    this._serverNotAvailableModalRef.close()  
-  }
 
   terminateSession(): void {
     this.startTerminating();
@@ -572,21 +558,45 @@ export class ViewComponent implements OnInit, OnDestroy {
               showCancelButton: true,
               showCloseButton: true,
               confirmButtonText: "Try Again",
-              cancelButtonText: "Report Error",
+              cancelButtonText: "Send Error Report",
             }).then((_) => this.reportErrorOrTryAgain(_, data));
           }
         },
         (err) => {
           this.stopLoading();
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-            showCloseButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Try Again",
-            cancelButtonText: "Report Error",
-          }).then((_) => this.reportErrorOrTryAgain(_, err));
+          if(err.code == 610) {
+            Swal.fire({
+              title: "Alert !",
+              text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
+              imageUrl: 'assets/img/error/time_limit 1.svg',
+              confirmButtonText: "Okay",
+            });
+          }
+          else if(err.code == 655) {
+            Swal.fire({
+              title: "No server available!",
+              text: "Please try again in sometime, thank you for your patience!",
+              imageUrl: 'assets/img/error/Group.svg',
+              showCancelButton: true,
+              confirmButtonText: "Try Again",
+              cancelButtonText: "Close",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.startGame();
+              }});
+          }
+          else {
+            Swal.fire({
+              title: "Error Code: " + err.code,
+              text: err.message,
+              icon: "error",
+              // imageUrl: 'assets/img/error/Group.svg',
+              showCloseButton: true,
+              showCancelButton: true,
+              confirmButtonText: "Try Again",
+              cancelButtonText: "Send Error Report",
+            }).then((_) => this.reportErrorOrTryAgain(_, err));
+          }
         }
       );
   }
