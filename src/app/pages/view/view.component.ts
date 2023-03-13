@@ -681,7 +681,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           if (res.data.service === "running" && !!res.data.token) {
-            this.launchWebRTC(res.data.token);
+            // this.launchWebRTC(res.data.token);
+            window.open(res.data.token, '_blank');
             this.loaderService.stop();
           } else {
             const timeTaken = new Date().getTime() - startTime;
