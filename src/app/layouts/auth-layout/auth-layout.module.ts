@@ -11,6 +11,7 @@ import { VerifyComponent } from 'src/app/pages/verify/verify.component';
 import { ForgotPassComponent } from 'src/app/pages/forgot-pass/forgot-pass.component';
 import { ResetPassComponent } from 'src/app/pages/reset-pass/reset-pass.component';
 import { PipesModule } from 'src/app/pipes/pipes.module';
+import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
     ReactiveFormsModule,
     NgbModule,
     PipesModule,
+    NgxUiLoaderModule,
   ],
   declarations: [
     LoginComponent,
