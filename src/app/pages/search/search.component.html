@@ -138,13 +138,14 @@
           <div class="col-auto">
             <img
               [src]="user.photo || (user.name | avatar)"
+              (error)="onUserError($event)"
               class="rounded-circle"
               width="40"
               height="40"
               alt=""
             />
           </div>
-          <div class="col align-self-center p-0">
+          <div class="col align-self-center p-0 text-truncate">
             <p class="m-0 font16 font500 offWhitecolor">
               {{ user.name }}
             </p>
