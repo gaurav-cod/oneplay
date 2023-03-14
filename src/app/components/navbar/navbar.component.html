@@ -84,88 +84,97 @@
                 </div>
               </div>
             </div>
-            <ul
+            <div
               *ngIf="results.length || uResults.length"
-              class="position-absolute w-100 card list-group border-0"
+              class="position-absolute w-100 bg-dark list-group border-0"
               style="top: calc(100% + 8px)"
             >
-              <li
+              <div
                 *ngFor="let game of results"
-                class="list-group-item bg-dark d-flex border-0 searchListing"
+                class="row gameRowHover py-2 mx-1 searchListing"
                 [routerLink]="['/view/' + (game | glink)]"
                 [queryParams]="keywordQuery"
                 style="cursor: pointer"
                 (click)="isMenuCollapsed = true"
               >
-                <img
-                  [src]="game.textBgImage"
-                  (error)="onImgError($event)"
-                  [ngStyle]="{
-                    filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-                  }"
-                  class="mr-3"
-                  width="80"
-                  height="50"
-                  alt=""
-                />
-                <div>
-                  <p class="list-group-heading text-white m-0">
-                    {{ game.title }}
+                <div class="col-auto align-self-center">
+                  <img
+                    [src]="game.textBgImage"
+                    (error)="onImgError($event)"
+                    [ngStyle]="{
+                      filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+                    }"
+                    class="br6"
+                    width="125"
+                    height="80"
+                    alt=""
+                  />
+                </div>
+                <div class="col pl-0 align-self-center">
+                  <p class="font16 font500 offWhitecolor mb-0">
+                    <span class="truncate-line-clamp">{{ game.title }}</span>
                   </p>
-                  <p class="list-group-content text-white-50 small m-0">
+                  <p class="font14 font500 mb-0 mutedTextColor">
                     {{ game.releaseDate.getFullYear() }}
                   </p>
                 </div>
-              </li>
-              <li
+              </div>
+              <div
                 *ngIf="results.length === 5"
                 class="text-center bg-dark p-3"
                 (click)="isMenuCollapsed = true"
               >
                 <button
-                  class="btn btn-block mutedBg text-white border-0"
+                  class="btn btn-block linearMutedBg text-white border-0 mt-2"
                   (click)="searchNavigate('games')"
                 >
                   See more games
                 </button>
-              </li>
-              <li
+              </div>
+              <div
                 *ngFor="let user of uResults"
-                class="list-group-item bg-dark d-flex border-0 searchListing"
+                class="row bg-dark border-0 searchListing mx-1 py-2"
                 (click)="isMenuCollapsed = true"
               >
-                <img
-                  [src]="user.photo || (user.name | avatar)"
-                  class="mr-3"
-                  width="80"
-                  height="50"
-                  alt=""
-                />
-                <div class="flex-grow-1">
-                  <p class="list-group-heading text-white m-0">
-                    {{ user.name }}
-                  </p>
-                  <p class="list-group-content text-white-50 small m-0">
+                <div class="col-auto align-self-center">
+                  <img
+                    [src]="user.photo || (user.name | avatar)"
+                    (error)="onUserError($event)"
+                    class="rounded-circle"
+                    width="48"
+                    height="48"
+                    alt=""
+                  />
+                </div>
+                <div class="col p-0 align-self-center text-truncate">
+                  <div class="">
+                    <p class="font16 font500 offWhitecolor mb-0">
+                      {{ user.name }}
+                    </p>
+                  </div>
+                  <p class="font14 font500 mb-0 mutedTextColor">
                     {{ user.username }}
                   </p>
                 </div>
+                <div class="col-auto align-self-center pr-0">
+                  <button
+                    type="button"
+                    class="btn"
+                    (click)="addFriend(user)"
+                  >
+                    <i class="fas {{ getFriendAddIcon(user) }} offWhitecolor"></i>
+                  </button>
+                </div>
+              </div>
+              <div *ngIf="uResults.length === 5" class="text-center bg-dark p-3">
                 <button
-                  type="button"
-                  class="btn btn-sm btn-outline-light"
-                  (click)="addFriend(user)"
-                >
-                  <i class="fas {{ getFriendAddIcon(user) }}"></i>
-                </button>
-              </li>
-              <li *ngIf="uResults.length === 5" class="text-center bg-dark p-3">
-                <button
-                  class="btn btn-block mutedBg text-white border-0"
+                  class="btn btn-block linearMutedBg text-white border-0"
                   (click)="searchNavigate('users')"
                 >
                   See more users
                 </button>
-              </li>
-            </ul>
+              </div>
+            </div>
           </form>
         </li>
       </ul>

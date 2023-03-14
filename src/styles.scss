@@ -854,3 +854,31 @@ select option {
     border-radius: 60px !important;
   }
 }
+
+.offWhitecolor {
+  color: #DCDCDC;
+}
+
+.mutedTextColor {
+  color: #959595;
+}
+
+.truncate-line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  width: 100%;
+  overflow: hidden;
+}
+
+.br6 {
+  border-radius: 6px;
+}
+
+.linearMutedBg {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  border-radius: 60px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+}
