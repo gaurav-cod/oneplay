@@ -140,7 +140,7 @@
                   <img
                     (error)="onUsersError($event, user)"
                     [src]="user.photo || (user.name | avatar)"
-                    class="rounded-circle"
+                    class="rounded-circle profileImgCover"
                     width="48"
                     height="48"
                     alt=""
@@ -285,8 +285,7 @@
               role="button"
               ngbDropdownToggle
             >
-              <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" (error)="onUserError($event)" />
-              <!-- <img alt="" width="36px" height="36px" class="rounded-circle" [src]="photo || (title | avatar)" /> -->
+              <img alt="" width="36px" height="36px" class="rounded-circle profileImgCover" [src]="photo || (title | avatar)" (error)="onUserError($event)" />
             </a>
             <div
               class="dropdown-menu-arrow menudropdown dropdown-menu-right"
