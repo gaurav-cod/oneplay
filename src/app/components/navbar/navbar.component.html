@@ -138,8 +138,8 @@
               >
                 <div class="col-auto align-self-center">
                   <img
+                    (error)="onUsersError($event, user)"
                     [src]="user.photo || (user.name | avatar)"
-                    (error)="onUserError($event)"
                     class="rounded-circle"
                     width="48"
                     height="48"

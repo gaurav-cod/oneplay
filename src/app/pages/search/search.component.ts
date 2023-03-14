@@ -135,8 +135,8 @@ export class SearchComponent implements OnInit {
     event.target.src = "assets/img/default_bg.jpg";
   }
 
-  onUserError(event) {
-    event.target.src = this.gavatar.transform(this.usertitle);
+  onUsersError(event, user: UserModel) {
+    event.target.src = this.gavatar.transform(user.name);
   }
 
   private laodGamesAndUsers() {

@@ -178,6 +178,10 @@ export class NavbarComponent implements OnInit {
     event.target.src = this.gavatar.transform(this.title);
   }
 
+  onUsersError(event, user: UserModel) {
+    event.target.src = this.gavatar.transform(user.name);
+  }
+
   getFriendAddIcon(friend: UserModel) {
     if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-check";
