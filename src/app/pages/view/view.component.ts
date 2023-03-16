@@ -552,28 +552,6 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else {
             this.stopLoading();
             Swal.fire({
-              title: "Error Code: " + data.code,
-              text: data.msg || "Something went wrong",
-              icon: "error",
-              showCancelButton: true,
-              showCloseButton: true,
-              confirmButtonText: "Try Again",
-              cancelButtonText: "Send Error Report",
-            }).then((_) => this.reportErrorOrTryAgain(_, data));
-          }
-        },
-        (err) => {
-          this.stopLoading();
-          if(err.code == 610) {
-            Swal.fire({
-              title: "Alert !",
-              text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
-              imageUrl: 'assets/img/error/time_limit 1.svg',
-              confirmButtonText: "Okay",
-            });
-          }
-          else if(err.code == 655) {
-            Swal.fire({
               title: "No server available!",
               text: "Please try again in sometime, thank you for your patience!",
               imageUrl: 'assets/img/error/Group.svg',
@@ -584,6 +562,17 @@ export class ViewComponent implements OnInit, OnDestroy {
               if (result.isConfirmed) {
                 this.startGame();
               }});
+          }
+        },
+        (err) => {
+          this.stopLoading();
+          if(err.code == 610 || err.message == 'Your 4 hours per day max Gaming Quota has been exhausted.') {
+            Swal.fire({
+              title: "Alert !",
+              text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
+              imageUrl: 'assets/img/error/time_limit 1.svg',
+              confirmButtonText: "Okay",
+            });
           }
           else {
             Swal.fire({
