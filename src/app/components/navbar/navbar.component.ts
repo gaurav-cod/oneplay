@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -33,7 +34,7 @@ import { AvatarPipe } from "src/app/pipes/avatar.pipe";
   styleUrls: ["./navbar.component.scss"],
   providers: [GLinkPipe, AvatarPipe],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public listTitles: any[];
   public location: Location;
@@ -137,6 +138,10 @@ export class NavbarComponent implements OnInit {
     this.authService.user.subscribe((u) => (this.user = u));
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
     this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
   }
 
   ngOnInit() {
