@@ -71,6 +71,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     clearInterval(this.oneMinuteTimer);
     this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
+    Swal.close();
   }
 
   ngAfterViewInit(): void {

@@ -181,6 +181,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._gameStatusSubscription?.unsubscribe();
+    Swal.close();
   }
 
   ngOnInit(): void {

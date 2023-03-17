@@ -54,6 +54,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.userSubscription?.unsubscribe();
+    Swal.close();
   }
 
   get title() {
@@ -89,7 +90,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       body.username = this.username.value;
     }
     if (!!this.name.value) {
-      const [first_name, last_name] = this.name.value.split(" ");
+      const [first_name, ...rest] = this.name.value.split(" ");
+      const last_name = rest.join(" ") || '';
       body.first_name = first_name;
       if (!!last_name) {
         body.last_name = last_name;

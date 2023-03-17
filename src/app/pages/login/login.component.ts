@@ -43,7 +43,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.title.setTitle("Login");
   }
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    Swal.close();
+  }
 
   get isTV() {
     const userAgent = new UAParser();
