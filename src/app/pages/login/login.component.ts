@@ -11,6 +11,7 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from "ua-parser-js";
 
@@ -84,5 +85,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     );
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }

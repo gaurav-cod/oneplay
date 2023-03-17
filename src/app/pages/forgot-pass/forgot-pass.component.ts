@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -36,5 +37,9 @@ export class ForgotPassComponent implements OnInit {
           confirmButtonText: "Try Again",
         })
     );
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }

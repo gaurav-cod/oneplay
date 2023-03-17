@@ -11,6 +11,7 @@ import { RestService } from "src/app/services/rest.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { FormControl } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-onboarding-modals',
@@ -168,4 +169,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     }
   }
 
+  get domain() {
+    return environment.domain;
+  }
 }

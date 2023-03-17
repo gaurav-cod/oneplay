@@ -3,7 +3,7 @@
   <div class="col-lg-12 col-12 col-md-12 height100vh overflowYScroll">
     <div class="mobileView">
       <div class="text-center">
-        <a href="https://oneplay.in">
+        <a [href]="domain">
           <img
             src="assets/img/brandLogo.svg"
             class="img-fluid mt-4 mb-3"
@@ -254,7 +254,7 @@
                       <p class="offWhiteColor pt-2 mb-0 font16 font500">
                         Need help?<span class="purpleGradient"
                           ><a
-                            href="https://www.oneplay.in/contact.html#FAQs"
+                            [href]="domain + '/contact.html#FAQs'"
                             target="_blank"
                           >
                             Browse FAQ</a
