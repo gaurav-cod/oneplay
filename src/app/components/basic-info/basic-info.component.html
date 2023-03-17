@@ -76,7 +76,7 @@
           <span
             *ngIf="bio.touched && bio.invalid"
             class="font16 font500 errorGradientColor float-right"
-            >*invalid bio</span
+            >* {{ bio.value.length > 300 ? "You have exhausted the bio limit" : "invalid bio"  }}</span
           >
           <textarea
             [formControl]="bio"
