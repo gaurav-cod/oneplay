@@ -102,7 +102,8 @@
                     [src]="game.textBgImage"
                     (error)="onImgError($event)"
                     [ngStyle]="{
-                      filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+                      filter:
+                        game.status === 'live' ? 'none' : 'grayscale(100%)'
                     }"
                     class="br6"
                     width="125"
@@ -157,16 +158,17 @@
                   </p>
                 </div>
                 <div class="col-auto align-self-center pr-0">
-                  <button
-                    type="button"
-                    class="btn"
-                    (click)="addFriend(user)"
-                  >
-                    <i class="fas {{ getFriendAddIcon(user) }} offWhitecolor"></i>
+                  <button type="button" class="btn" (click)="addFriend(user)">
+                    <i
+                      class="fas {{ getFriendAddIcon(user) }} offWhitecolor"
+                    ></i>
                   </button>
                 </div>
               </div>
-              <div *ngIf="uResults.length === 5" class="text-center bg-dark p-3">
+              <div
+                *ngIf="uResults.length === 5"
+                class="text-center bg-dark p-3"
+              >
                 <button
                   class="btn btn-block linearMutedBg text-white border-0"
                   (click)="searchNavigate('users')"
@@ -206,7 +208,7 @@
               ngbTooltip="{{ gamePlayTooltip }}"
             >
               <img
-                *ngIf="isUserLive"
+                *ngIf="isGameRunning && isUserLive"
                 src="assets/img/Dashboard/Speedtest.svg"
                 class="img-fluid"
                 alt=""
@@ -214,9 +216,9 @@
                 width="36px"
                 height="36px"
               />
-              <span *ngIf="isUserLive" id="live">LIVE</span>
+              <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span>
               <img
-                *ngIf="isGameRunning"
+                *ngIf="isGameRunning && !isUserLive"
                 src="assets/img/Dashboard/resumeSpeedtest.svg"
                 class="img-fluid"
                 alt=""
@@ -233,7 +235,6 @@
                 width="36px"
                 height="36px"
               />
-              <!-- <span *ngIf="isUserLive" id="live">LIVE</span> -->
             </a>
           </div>
           <!-- notifications dropdown -->
@@ -285,7 +286,14 @@
               role="button"
               ngbDropdownToggle
             >
-              <img alt="" width="36px" height="36px" class="rounded-circle profileImgCover" [src]="photo || (title | avatar)" (error)="onUserError($event)" />
+              <img
+                alt=""
+                width="36px"
+                height="36px"
+                class="rounded-circle profileImgCover"
+                [src]="photo || (title | avatar)"
+                (error)="onUserError($event)"
+              />
             </a>
             <div
               class="dropdown-menu-arrow menudropdown dropdown-menu-right"
@@ -402,7 +410,7 @@
             </div>
           </div>
           <share-buttons
-            [url] = "link"
+            [url]="link"
             [include]="[
               'facebook',
               'twitter',
