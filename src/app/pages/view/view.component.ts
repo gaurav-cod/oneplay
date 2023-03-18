@@ -181,6 +181,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._gameStatusSubscription?.unsubscribe();
+    Swal.close();
   }
 
   ngOnInit(): void {
@@ -552,25 +553,40 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else {
             this.stopLoading();
             Swal.fire({
-              title: "Error Code: " + data.code,
-              text: data.msg || "Something went wrong",
-              icon: "error",
+              title: "No server available!",
+              text: "Please try again in sometime, thank you for your patience!",
+              imageUrl: 'assets/img/error/Group.svg',
               showCancelButton: true,
               confirmButtonText: "Try Again",
-              cancelButtonText: "Report Error",
-            }).then((_) => this.reportErrorOrTryAgain(_, data));
+              cancelButtonText: "Close",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.startGame();
+              }});
           }
         },
         (err) => {
           this.stopLoading();
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-            showCancelButton: true,
-            confirmButtonText: "Try Again",
-            cancelButtonText: "Report Error",
-          }).then((_) => this.reportErrorOrTryAgain(_, err));
+          if(err.code == 610 || err.message == 'Your 4 hours per day max Gaming Quota has been exhausted.') {
+            Swal.fire({
+              title: "Alert !",
+              text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
+              imageUrl: 'assets/img/error/time_limit 1.svg',
+              confirmButtonText: "Okay",
+            });
+          }
+          else {
+            Swal.fire({
+              title: "Error Code: " + err.code,
+              text: err.message,
+              icon: "error",
+              // imageUrl: 'assets/img/error/Group.svg',
+              showCloseButton: true,
+              showCancelButton: true,
+              confirmButtonText: "Try Again",
+              cancelButtonText: "Send Error Report",
+            }).then((_) => this.reportErrorOrTryAgain(_, err));
+          }
         }
       );
   }
@@ -679,7 +695,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       .subscribe(
         (res) => {
           if (res.data.service === "running" && !!res.data.token) {
-            this.launchWebRTC(res.data.token);
+            // this.launchWebRTC(res.data.token);
+            window.open(res.data.token, '_blank');
             this.loaderService.stop();
           } else {
             const timeTaken = new Date().getTime() - startTime;

@@ -132,7 +132,7 @@
                     </button>
                   </div>
                 </div>
-                <form class="row pb-4 justify-content-center checkBox pl-3">
+                <form class="row pb-3 justify-content-center checkBox pl-3">
                   <div
                     class="col-md-12 col-auto custom-control custom-checkbox mt-4"
                   >
@@ -168,7 +168,7 @@
           <div class="col-md-6 mt-5 mt-md-4 mt-lg-5">
             <div class="row">
               <div class="col-lg-10 mt-3 mt-md-0">
-                <h1 class="font700 text-white">About Game</h1>
+                <h1 class="font700 text-white" (click)="TimeOutAlert(timeAlertModal)">About Game</h1>
                 <span
                   id="description"
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
@@ -226,7 +226,6 @@
               <div class="col mt-lg-5 mt-4">
                 <p
                   class="font16 font500 muteText mb-2"
-                  (click)="reportError(reportErrorModal)"
                 >
                   Developer
                 </p>
@@ -419,7 +418,7 @@
   <div class="modal-content position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right--1 py-3"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
@@ -440,7 +439,7 @@
   <div class="modal-content position-relative modalBg">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right--2 py-3"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
@@ -520,6 +519,7 @@
               type="text"
               class="customFormControl form-control border-right-0 font18 inputBorder font500 offWhiteText"
               placeholder="Vsync"
+              disabled
             />
             <div class="input-group-append">
               <span
@@ -611,7 +611,7 @@
   <div class="modal-content position-relative modalBg">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right--2 py-3"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
@@ -866,7 +866,7 @@
   <div class="modal-content position-relative">
     <a
       href="javascript:void(0)"
-      class="position-absolute btn btn-github rounded-circle top--4 right--6 py-3"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
       (click)="d('Cross click')"
     >
       <i class="fas fa-times"></i>
@@ -930,8 +930,15 @@
   </div>
 </ng-template>
 
-<ng-template #reportErrorModal>
+<ng-template #reportErrorModal let-d="dismiss">
   <div class="modal-content modalBg">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times"></i>
+    </a>
     <div class="modal-body p-0">
       <h2
         class="text-white font600 text-center font18responsive border-bottom borderColor py-3"
@@ -949,7 +956,7 @@
         </div>
         <div class="col-12 mt-4">
           <button
-            class="btn btn-block linearGradient text-white border-0"
+            class="btn btn-block customLinearGradient text-white border-0"
             [disabled]="reportText.invalid"
             (click)="reportError()"
           >

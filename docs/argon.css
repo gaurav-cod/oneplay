@@ -12704,6 +12704,8 @@ button.bg-translucent-neutral:focus {
 
 .bg-translucent-darker {
   background-color: rgba(0, 0, 0, 0.6) !important;
+  width: 100px;
+  height: 100px;
 }
 
 a.bg-translucent-darker:hover,

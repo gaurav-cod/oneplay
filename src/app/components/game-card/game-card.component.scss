@@ -3,8 +3,8 @@
   height: 185px !important;
 
   @media (max-width: 486px) {
-    width: 200px !important;
-    height: 127px !important;
+    width: 160px !important;
+    height: 95px !important;
   }
 }
 
@@ -50,7 +50,7 @@
 @media (max-width: 480px) {
   .card {
     // width: 150px;
-    height: 127px;
+    height: 95px;
   }
 }
 
@@ -96,3 +96,6 @@
   border-radius: 10px !important;
 }
 
+.bg-translucent-darker {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}

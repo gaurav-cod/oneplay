@@ -43,6 +43,7 @@ export class PartyInviteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.invites = [];
+    Swal.close();
   }
 
   isInvited(friend: FriendModel): boolean {

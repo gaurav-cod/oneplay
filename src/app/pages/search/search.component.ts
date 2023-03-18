@@ -7,6 +7,7 @@ import { zip } from "rxjs";
 import { FriendModel } from "src/app/models/friend.model";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -14,6 +15,7 @@ import { RestService } from "src/app/services/rest.service";
   selector: "app-search",
   templateUrl: "./search.component.html",
   styleUrls: ["./search.component.scss"],
+  providers: [AvatarPipe],
 })
 export class SearchComponent implements OnInit {
   query: string;
@@ -32,6 +34,8 @@ export class SearchComponent implements OnInit {
   private acceptedFriends: FriendModel[] = [];
   private pendingFriends: FriendModel[] = [];
 
+  private user: UserModel;
+
   get keywordQuery() {
     if (!!this.keyword && !!this.keywordHash) {
       return {
@@ -42,6 +46,10 @@ export class SearchComponent implements OnInit {
     return {};
   }
 
+  get usertitle() {
+    return this.user ? this.user.firstName + " " + this.user.lastName : "User";
+  }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -49,6 +57,7 @@ export class SearchComponent implements OnInit {
     private readonly title: Title,
     private readonly loaderService: NgxUiLoaderService,
     private readonly friendsService: FriendsService,
+    private readonly gavatar: AvatarPipe,
   ) {}
 
   ngOnInit(): void {
@@ -120,6 +129,14 @@ export class SearchComponent implements OnInit {
     } else {
       return "fa-user-plus";
     }
+  }
+
+  onImgError(event) {
+    event.target.src = "assets/img/default_bg.jpg";
+  }
+
+  onUsersError(event, user: UserModel) {
+    event.target.src = this.gavatar.transform(user.name);
   }
 
   private laodGamesAndUsers() {

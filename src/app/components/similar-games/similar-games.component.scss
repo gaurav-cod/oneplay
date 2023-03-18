@@ -63,6 +63,7 @@
   }
 
   @media (max-width: 480px) {
+    overflow-y: hidden;
     padding-left: 15px;
     padding-right: 30px;
     padding-bottom: 5px;
@@ -84,8 +85,8 @@
   height: 185px;
 
   @media (max-width: 486px) {
-    width: 215px;
-    height: 127px;
+    width: 175px;
+    height: 95px;
   }
 }
 
@@ -99,4 +100,8 @@
   line-height: 20px;
   color: #dcdcdc;
   letter-spacing: 0.02em;
+  @media (max-width: 480px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
 }

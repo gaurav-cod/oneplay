@@ -53,7 +53,7 @@
           ngbDropdownToggle
         >
           <span class="avatar avatar-sm rounded-circle bg-white">
-            <img alt="Image placeholder" [src]="photo || (title | avatar)" />
+            <img alt="Image placeholder" [src]="photo || (title | avatar)" (error)="onUserError($event)" />
           </span>
         </a>
         <div class="dropdown-menu-arrow dropdown-menu-right" ngbDropdownMenu>

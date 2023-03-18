@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -25,14 +26,15 @@ import { FriendsService } from "src/app/services/friends.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.scss"],
-  providers: [GLinkPipe],
+  providers: [GLinkPipe, AvatarPipe],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public listTitles: any[];
   public location: Location;
@@ -68,7 +70,7 @@ export class NavbarComponent implements OnInit {
   }
 
   get link() {
-    return environment.domain + "/dashboard/register?ref=" + this.user.id;
+    return environment.domain + "/new/register?ref=" + this.user.id;
   }
 
   get domain() {
@@ -128,6 +130,7 @@ export class NavbarComponent implements OnInit {
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
+    private readonly gavatar: AvatarPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router
   ) {
@@ -135,6 +138,10 @@ export class NavbarComponent implements OnInit {
     this.authService.user.subscribe((u) => (this.user = u));
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
     this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
+  }
+
+  ngOnDestroy(): void {
+    Swal.close();
   }
 
   ngOnInit() {
@@ -170,6 +177,14 @@ export class NavbarComponent implements OnInit {
 
   onImgError(event) {
     event.target.src = "assets/img/default_bg.jpg";
+  }
+
+  onUserError(event) {
+    event.target.src = this.gavatar.transform(this.title);
+  }
+
+  onUsersError(event, user: UserModel) {
+    event.target.src = this.gavatar.transform(user.name);
   }
 
   getFriendAddIcon(friend: UserModel) {

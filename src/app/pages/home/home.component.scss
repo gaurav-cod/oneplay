@@ -91,16 +91,22 @@
 }
 
 .height40vh {
-  height: 59vh;
+  height: 450px;
+  @media (min-width: 481px) and (max-width: 1200px) {
+    height: 300px;
+  }
   @media (max-width: 480px) {
-    height: 200px;
+    height: 190px;
   }
 }
 
 .height30vh {
-  height: 54vh;
+  height: 405px;
+  @media (min-width: 481px) and (max-width: 1200px) {
+    height: 250px;
+  }
   @media (max-width: 480px) {
-    height: 200px;
+    height: 160px;
   }
 }
 
@@ -132,11 +138,11 @@
 
 @media (max-width: 1025px) {
   .customWidth {
-    width: 18.5% !important;
+    width: 17% !important;
   }
 
   .customWidth1 {
-    width: 63% !important;
+    width: 66% !important;
   }
 }
 
@@ -167,6 +173,7 @@
   }
 
   @media (max-width: 480px) {
+    overflow-y: hidden;
     padding-left: 15px;
     padding-right: 30px;
   }

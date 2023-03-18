@@ -68,6 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
+    Swal.close();
   }
 
   ngOnInit(): void {
