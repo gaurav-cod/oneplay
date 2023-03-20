@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./feedback.component.scss"],
 })
 export class FeedbackComponent implements OnInit {
+  feedPage = false;
   rate = 0;
   choice = "Great Experience/Highly Recommend to friends & family";
   comment = "";
@@ -38,6 +39,10 @@ export class FeedbackComponent implements OnInit {
         });
       }
     });
+  }
+
+  feedBackPage() {
+    this.feedPage = true;
   }
 
   onSubmit() {
