@@ -91,7 +91,7 @@
 }
 
 .height40vh {
-  height: 450px;
+  height: 300px;
   @media (min-width: 481px) and (max-width: 1200px) {
     height: 300px;
   }
@@ -101,7 +101,7 @@
 }
 
 .height30vh {
-  height: 405px;
+  height: 280px;
   @media (min-width: 481px) and (max-width: 1200px) {
     height: 250px;
   }
@@ -129,11 +129,11 @@
 }
 
 .customWidth {
-  width: 27.5%;
+  width: 30%;
 }
 
 .customWidth1 {
-  width: 45%;
+  width: 40%;
 }
 
 @media (max-width: 1025px) {
