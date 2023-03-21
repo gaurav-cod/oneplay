@@ -939,3 +939,7 @@ select option {
     width: 100% !important;
   }
 }
+
+.overflow-auto {
+  scrollbar-color: transparent transparent; 
+}
