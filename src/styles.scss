@@ -943,3 +943,7 @@ select option {
 .overflow-auto {
   scrollbar-color: transparent transparent; 
 }
+
+.btn:hover {
+  transform: translateY(0px) !important;
+}
