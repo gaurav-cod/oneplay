@@ -68,13 +68,14 @@ export class DeviceHistoryComponent implements OnInit {
 
     Promise.all(
       this.sessions.map(async (session) => {
-        if (!this.isActive(session)) {
+        // if (!this.isActive(session)) {
           await this.restService.deleteSession(session.key).toPromise();
-        }
+        // }
       })
     ).finally(() => {
       this.loggingOut = false;
-      this.sessions = this.sessions.filter((s) => this.isActive(s));
+      // this.sessions = this.sessions.filter((s) => this.isActive(s));
+      window.location.href = '/new/login';
     });
   }
 }
