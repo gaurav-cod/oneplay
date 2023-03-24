@@ -947,3 +947,8 @@ select option {
 .btn:hover {
   transform: translateY(0px) !important;
 }
+
+html.swal2-shown,body.swal2-shown { 
+  overflow-y: hidden !important; 
+  height: auto!important;
+}

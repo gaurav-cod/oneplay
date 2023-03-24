@@ -76,6 +76,7 @@
                   (focus)="onFocus()"
                   (blur)="onBlur()"
                   (click)="isMenuCollapsed = true"
+                  (keyup.enter)="results.length === 5 ? search.blur() : ''"
                 />
                 <div class="input-group-prepend">
                   <a href="javascript:void(0)" class="input-group-text"
