@@ -220,7 +220,7 @@
                     class="checkbox"
                     [checked]="store === selectedStore"
                     (change)="selectStore(store)"
-                    disabled
+                    [disabled]="store === selectedStore ? true : null"
                   />
                 </a>
               </div>
