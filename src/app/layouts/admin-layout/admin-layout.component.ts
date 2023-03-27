@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -17,7 +16,7 @@ import Swal from "sweetalert2";
 })
 export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
-  isApp = Cookies.get("src") === "oneplay_app";
+  isApp = localStorage.getItem("src") === "oneplay_app";
 
   private fiveMinutesTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
@@ -60,8 +59,11 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
       if (params.src === "oneplay_app") {
-        Cookies.set("src", "oneplay_app");
+        localStorage.setItem("src", "oneplay_app");
         this.isApp = true;
+      } else if (localStorage.getItem("src") === "oneplay_app") {
+        localStorage.removeItem("src");
+        this.isApp = false;
       }
     });
   }

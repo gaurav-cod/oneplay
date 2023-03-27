@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
-import * as Cookies from "js-cookie";
 
 @Injectable({
   providedIn: "root",
@@ -18,7 +17,7 @@ export class AuthService {
     new BehaviorSubject(null);
 
   constructor() {
-    const sessionToken = Cookies.get("op_session_token");
+    const sessionToken = localStorage.getItem("op_session_token");
     if (sessionToken) {
       this._$sessionToken.next(sessionToken);
     }
@@ -45,7 +44,7 @@ export class AuthService {
   }
 
   get sessionToken() {
-    return Cookies.get("op_session_token") || '';
+    return localStorage.getItem("op_session_token") || '';
   }
 
   get userIdAndToken() {
@@ -63,7 +62,7 @@ export class AuthService {
   }
 
   login(sessionToken: string) {
-    Cookies.set("op_session_token", sessionToken);
+    localStorage.setItem("op_session_token", sessionToken);
     this._$sessionToken.next(sessionToken);
   }
 
@@ -74,7 +73,7 @@ export class AuthService {
   }
 
   logout() {
-    Cookies.remove("op_session_token");
+    localStorage.removeItem("op_session_token");
     this._$sessionToken.next(null);
     this._$user.next(null);
     this._$wishlist.next([]);
