@@ -11,7 +11,7 @@ export class SimilarGamesComponent {
 
   @Input() games: GameModel[];
 
-  @ViewChild("container") containerRef: ElementRef;
+  @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
   constructor() {}
 
@@ -20,6 +20,18 @@ export class SimilarGamesComponent {
     return this.games.filter((game, index, self) => {
       return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
     });
+  }
+
+  get showRightArrow() {
+    const el = this.containerRef?.nativeElement;
+    if (!el) return false;
+    return el.scrollWidth - el.scrollLeft - el.clientWidth >= 1;
+  }
+
+  get showLeftArrow() {
+    const el = this.containerRef?.nativeElement;
+    if (!el) return false;
+    return el.scrollLeft > 0;
   }
 
   scrollRight() {
