@@ -1,9 +1,45 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { GameSessionRO } from "src/app/interface";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
+
+const qnaData = [
+  [
+    { q: "Which network you were using?", a: ["5G", "Wifi 2.4ghz", "Others"] },
+    {
+      q: "Was the stream/picture quality pixelated and lagging?",
+      a: ["Yes", "No"],
+    },
+  ],
+  [
+    { q: "Which network you were using?", a: ["5G", "Wifi 2.4ghz", "Others"] },
+    {
+      q: "Was the stream/picture quality pixelated and lagging?",
+      a: ["Yes", "No"],
+    },
+  ],
+  [
+    {
+      q: "Do you already own a gaming pc or laptop or console?",
+      a: ["Yes", "No"],
+    },
+    { q: "Was the picture/stream freezing?", a: ["Yes", "No"] },
+  ],
+  [
+    {
+      q: "Are you active gamer playing more than 40 hours per month?",
+      a: ["Yes", "No"],
+    },
+    { q: "Do you have internet with more 50Mbps speed?", a: ["Yes", "No"] },
+  ],
+  [
+    { q: "Will you refer Oneplay to your friends?", a: ["Yes", "No"] },
+    { q: "What you loved the most?", a: ["Quality", "Value of money"] },
+  ],
+];
 
 @Component({
   selector: "app-feedback",
@@ -12,23 +48,22 @@ import Swal from "sweetalert2";
 })
 export class FeedbackComponent implements OnInit {
   feedPage = false;
-  rate = 0;
-  choice = "Great Experience/Highly Recommend to friends & family";
+  rate = 5;
   comment = "";
 
-  options = [
-    "Great Experience/Highly Recommend to friends & family",
-    "Moderate lag/hang/latency, but mostly playable experience",
-    "Too much lag/hang/latency and unplayable experience",
-  ];
-
   gameSession: GameSessionRO;
+
+  answeres: string[] = [];
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly restService: RestService,
-    private readonly title: Title,
+    private readonly title: Title
   ) {}
+
+  get qna() {
+    return qnaData[this.rate - 1];
+  }
 
   ngOnInit(): void {
     this.title.setTitle("Feedback");
@@ -42,18 +77,32 @@ export class FeedbackComponent implements OnInit {
   }
 
   feedBackPage() {
+    this.answeres = this.qna.map((qna) => qna.a[0]);
     this.feedPage = true;
   }
 
   onSubmit() {
+    if (!this.gameSession) {
+      Swal.fire({
+        title: "Oops...",
+        text: "Invalid Session",
+        icon: "error",
+        confirmButtonText: "Try Again",
+      });
+      return;
+    }
     this.restService
       .saveFeedback({
-        game_id: this.gameSession.game_id,
-        user_id: this.gameSession.user_id,
-        session_id: this.gameSession.user_session_id,
+        game_id: this.gameSession?.game_id,
+        user_id: this.gameSession?.user_id,
+        session_id: this.gameSession?.user_session_id,
         rating: this.rate,
-        suggestion: this.choice,
+        suggestion: "",
         comment: this.comment,
+        qna: this.qna.map((qna, i) => ({
+          question: qna.q,
+          answer: this.answeres[i],
+        })),
       })
       .subscribe(
         () => {
