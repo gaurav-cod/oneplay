@@ -623,7 +623,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.stopLoading();
               this._launchModalRef = this.ngbModal.open(this.launchModal, {
                 centered: true,
-                modalDialogClass: "modal-sm",
+                modalDialogClass: "modal-md",
               });
               setTimeout(() => {
                 this._launchModalRef?.close();

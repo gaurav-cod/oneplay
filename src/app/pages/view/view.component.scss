@@ -409,3 +409,19 @@ live {
     border-color: #A83AFE;
   }
 }
+
+.activeBG {
+  background: linear-gradient(349.3deg, #a83afe 0%, #6e59fe 100%);
+  padding: 1.6px;
+  color: #ffffff !important;
+  border-radius: 6px;
+}
+
+.font18btn {
+  font-size: 18px;
+  line-height: 24px;
+  @media (max-width: 700px) {
+    font-size: 14px;
+    line-height: 21px;
+  }
+}
