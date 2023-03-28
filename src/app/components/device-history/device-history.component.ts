@@ -3,6 +3,7 @@ import { Session } from "src/app/models/session.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-device-history",
@@ -13,10 +14,12 @@ export class DeviceHistoryComponent implements OnInit {
   sessions: Session[] = [];
   ipLocationMap: { [key: string]: string } = {};
   loggingOut: boolean = false;
+  private logoutRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly ngbModal: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +47,7 @@ export class DeviceHistoryComponent implements OnInit {
 
   deleteSession(session: Session): void {
     this.loggingOut = true;
+    this.logoutRef.close();
     this.restService.deleteSession(session.key).subscribe(
       () => {
         this.loggingOut = false;
@@ -69,6 +73,7 @@ export class DeviceHistoryComponent implements OnInit {
     Promise.all(
       this.sessions.map(async (session) => {
         // if (!this.isActive(session)) {
+          this.logoutRef.close();
           await this.restService.deleteSession(session.key).toPromise();
         // }
       })
@@ -76,6 +81,13 @@ export class DeviceHistoryComponent implements OnInit {
       this.loggingOut = false;
       // this.sessions = this.sessions.filter((s) => this.isActive(s));
       window.location.href = '/new/login';
+    });
+  }
+
+  LogoutAlert(container) {
+    this.logoutRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
     });
   }
 }
