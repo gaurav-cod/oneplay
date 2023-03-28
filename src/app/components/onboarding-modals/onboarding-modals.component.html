@@ -158,7 +158,7 @@
               placeholder="Search Games"
               type="text"
               [formControl]="query"
-              (keydown.enter)="onSearch()"
+              (keydown)="onSearch()"
             />
             <div class="input-group-prepend">
               <a
@@ -198,7 +198,7 @@
   <div class="modal-footer bg-dark">
     <button
       type="submit"
-      class="btn customBtnBg text-white"
+      class="btn customBtnBg border-left-0 border-right-0 border-top-0 text-white"
       [disabled]="selectedGameIds.length < 1"
       (click)="closeSelectGame()"
     >
