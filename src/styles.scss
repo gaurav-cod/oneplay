@@ -952,3 +952,11 @@ html.swal2-shown,body.swal2-shown {
   overflow-y: hidden !important; 
   height: auto!important;
 }
+
+.dropdown-menu .dropdown-item > img {
+  margin-right: 1rem;
+}
+
+.navbarSvg:hover {
+  fill: red !important;
+}

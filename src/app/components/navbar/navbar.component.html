@@ -321,8 +321,8 @@
                 class="dropdown-item"
                 (click)="open(share)"
               >
-                <i class="fa fa-link" aria-hidden="true"></i>
-                <span>Referral Link</span>
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                <span>Refer</span>
               </a>
               <a [href]="domain + '/speed-test/run'" class="dropdown-item">
                 <i class="fas fa-tachometer-alt"></i>
@@ -351,7 +351,7 @@
                 class="dropdown-item"
                 (click)="switchSearchPrivacy()"
               >
-                <i class="ni ni-ui-04"></i>
+                <img src="assets/img/Privacy.svg" width="16px" height="16px" class="img-fluid align-middle" alt="" />
                 <span>Turn {{ isPrivate ? "off" : "on" }} privacy</span>
               </a>
               <a
@@ -368,7 +368,7 @@
                 class="dropdown-item"
                 (click)="deleteSessionData()"
               >
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-chart-pie"></i>
                 <span>Delete Session Data</span>
               </a>
               <a
@@ -376,8 +376,8 @@
                 class="dropdown-item"
                 (click)="logout()"
               >
-                <i class="ni ni-button-power"></i>
-                <span>Logout</span>
+                <i class="fas fa-sign-out-alt fa-flip-both"></i>
+                <span>Log out</span>
               </a>
             </div>
           </div>
