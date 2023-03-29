@@ -562,6 +562,7 @@
               [formControl]="bitrate"
               min="5000"
               max="80000"
+              id="rangeTag"
             />
           </div>
         </div>
@@ -866,6 +867,13 @@
 
 <ng-template #launchModal let-d="dismiss">
   <div class="modal-content position-relative modalBg">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times-circle"></i>
+    </a>
     <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100 text-center">
       <h2 class="text-white w-100 font600 mb-0 test-center font18responsive">
         Game on!

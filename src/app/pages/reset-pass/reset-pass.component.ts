@@ -3,6 +3,7 @@ import { FormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -11,7 +12,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./reset-pass.component.scss"],
 })
 export class ResetPassComponent implements OnInit {
-  password = new FormControl("", Validators.required);
+  password = new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]);
 
   constructor(
     private route: ActivatedRoute,
@@ -23,6 +24,8 @@ export class ResetPassComponent implements OnInit {
   ngOnInit(): void {
     this.title.setTitle("Reset Password");
   }
+
+  showPassword = false;
 
   reset() {
     const token = this.route.snapshot.paramMap.get("token");
@@ -44,5 +47,9 @@ export class ResetPassComponent implements OnInit {
           confirmButtonText: "Try Again",
         })
     );
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }
