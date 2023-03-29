@@ -11,7 +11,7 @@
             >*invalid email</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: email.touched && email.invalid }"
           >
             <input
@@ -20,22 +20,20 @@
               placeholder="email@example.com"
               [formControl]="email"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg border-0">
-                <img
-                  *ngIf="email.enabled"
-                  (click)="updateEmail()"
-                  src="assets\img\setting\Verified.svg"
-                  class="img-fluid mr-2"
-                  alt=""
-                />
-                <i
-                  *ngIf="email.disabled"
-                  (click)="email.enable()"
-                  class="fas fa-pen-fancy text-white"
-                ></i>
-              </span>
-            </div>
+            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+              <img
+                *ngIf="email.enabled"
+                (click)="updateEmail()"
+                src="assets\img\setting\Verified.svg"
+                class="img-fluid"
+                alt=""
+              />
+              <i
+                *ngIf="email.disabled"
+                (click)="email.enable()"
+                class="fas fa-pen-fancy text-white"
+              ></i>
+            </span>
           </div>
         </div>
 
@@ -48,7 +46,7 @@
             >*invalid phone number</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: phone.touched && phone.invalid }"
           >
             <input
@@ -58,22 +56,20 @@
               placeholder="+19999999999"
               inputmode="tel"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg border-0">
-                <img
-                  *ngIf="phone.enabled"
-                  (click)="updatePhone()"
-                  src="assets\img\setting\Verified.svg"
-                  class="img-fluid mr-2"
-                  alt=""
-                />
-                <i
-                  *ngIf="phone.disabled"
-                  (click)="phone.enable()"
-                  class="fas fa-pen-fancy text-white"
-                ></i>
-              </span>
-            </div>
+            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+              <img
+                *ngIf="phone.enabled"
+                (click)="updatePhone()"
+                src="assets\img\setting\Verified.svg"
+                class="img-fluid"
+                alt=""
+              />
+              <i
+                *ngIf="phone.disabled"
+                (click)="phone.enable()"
+                class="fas fa-pen-fancy text-white"
+              ></i>
+            </span>
           </div>
         </div>
         <div class="col-md-12 mt-4">
@@ -87,7 +83,7 @@
             >*invalid password</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: password.touched && password.invalid }"
           >
             <input
@@ -97,15 +93,17 @@
               [formControl]="password"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg text-white border-0"
-                ><i
-                  class="fas"
-                  (click)="showPass = !showPass"
-                  [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"
-                ></i>
-              </span>
-            </div>
+            <span
+              class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-2"
+            >
+              <button class="btn btn-sm text-white border-0 text">
+                <i
+                    class="fas"
+                    (click)="showPass = !showPass"
+                    [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"
+                > </i>
+              </button>
+            </span>
           </div>
         </div>
         <!-- <div class="col-md-12 mt-3">

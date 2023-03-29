@@ -111,15 +111,15 @@
                     class="bgTransparent fixedIcon offWhiteColor font16 font500"
                   >
                     <button
-                      class="btn p-0 bgTransparent borderRadius0"
+                      class="btn p-0 bgTransparent customOffWhite borderRadius0"
                       type="button"
                       (click)="showPassword = !showPassword"
                     >
                       <em
                         class="fa"
                         [ngClass]="{
-                          'fa-eye': showPassword,
-                          'fa-eye-slash': !showPassword
+                          'fa-eye': !showPassword,
+                          'fa-eye-slash': showPassword
                         }"
                       ></em>
                     </button>
