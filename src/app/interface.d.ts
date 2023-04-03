@@ -45,7 +45,7 @@ export interface PurchaseStore {
   link: string;
 }
 
-export interface PaytmTxn {
+export interface StripeTxn {
   token: string;
   orderId: string;
   amount: string;

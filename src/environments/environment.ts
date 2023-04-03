@@ -13,6 +13,8 @@ export const environment = {
   ga_tracking_id: "UA-220923953-2",
   oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
   webrtc_domain: "https://remote.dev.thinkmay.net",
+  stripe_key:
+    "pk_test_51MqHiCSIFX9lGIVVPlfmun4lNf8r5p19kxLAhVsdtXHtLzbvGsVeOov7tIskv6UfMlxwZvhQzKcxGZCeEIlDKS9u00t2KiVeVV",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",
