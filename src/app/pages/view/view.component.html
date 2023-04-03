@@ -556,8 +556,13 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
+            <!-- <div class="range-slider grad" style='--min:0; --max:10000; --step:100; --value:200; --text-value:"200"; --prefix:"$"'>
+              <input type="range" min="0" max="10000" step="100" value="200" oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
+              <output></output>
+              <div class='range-slider__progress'></div>
+            </div> -->
             <input
-              class="customFormControl form-control inputBorder text-light"
+              class=""
               type="range"
               [formControl]="bitrate"
               min="5000"
