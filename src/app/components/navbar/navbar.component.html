@@ -88,7 +88,7 @@
             <div
               *ngIf="results.length || uResults.length"
               class="position-absolute w-100 bg-dark list-group border-0"
-              style="top: calc(100% + 8px)"
+              style="top: calc(100% + 8px); overflow: auto;"
             >
               <div
                 *ngFor="let game of results"
@@ -98,7 +98,7 @@
                 style="cursor: pointer"
                 (click)="isMenuCollapsed = true"
               >
-                <div class="col-auto align-self-center">
+                <div class="col-6 align-self-center">
                   <img
                     [src]="game.textBgImage"
                     (error)="onImgError($event)"
@@ -112,9 +112,9 @@
                     alt=""
                   />
                 </div>
-                <div class="col pl-0 align-self-center">
+                <div class="col-6 align-self-center">
                   <p class="font16 font500 offWhitecolor mb-0">
-                    <span class="truncate-line-clamp">{{ game.title }}</span>
+                    <span class=" truncate-line-clamp">{{ game.title }}</span>
                   </p>
                   <p class="font14 font500 mb-0 mutedTextColor">
                     {{ game.releaseDate.getFullYear() }}
@@ -296,103 +296,105 @@
                 (error)="onUserError($event)"
               />
             </a>
-            <div
-              class="dropdown-menu-arrow menudropdown dropdown-menu-right"
-              ngbDropdownMenu
-            >
-              <div class="dropdown-header noti-title">
-                <h6 class="text-overflow m-0 text-white">{{ title }}</h6>
-              </div>
-              <a
-                href="javascript:void(0)"
-                routerLinkActive="active"
-                [routerLink]="['wishlist']"
-                class="dropdown-item"
+            <div class="dropdown-bug">
+              <div
+                class="dropdown-menu-arrow menudropdown dropdown-menu-right"
+                ngbDropdownMenu
               >
-                <i class="ni ni-favourite-28"></i>
-                <span>My Library</span>
-              </a>
-              <a [href]="domain + '/subscription.html'" class="dropdown-item">
-                <i class="ni ni-credit-card"></i>
-                <span>Subscription</span>
-              </a>
-              <a
-                href="javascript:void(0)"
-                class="dropdown-item"
-                (click)="open(share)"
-              >
-                <i class="fa fa-user-plus" aria-hidden="true"></i>
-                <span>Refer</span>
-              </a>
-              <a [href]="domain + '/speed-test/run'" class="dropdown-item">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Speed Test</span>
-              </a>
+                <div class="dropdown-header noti-title">
+                  <h6 class="text-overflow m-0 text-white">{{ title }}</h6>
+                </div>
+                <a
+                  href="javascript:void(0)"
+                  routerLinkActive="active"
+                  [routerLink]="['wishlist']"
+                  class="dropdown-item"
+                >
+                  <i class="ni ni-favourite-28"></i>
+                  <span>My Library</span>
+                </a>
+                <a [href]="domain + '/subscription.html'" class="dropdown-item">
+                  <i class="ni ni-credit-card"></i>
+                  <span>Subscription</span>
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="open(share)"
+                >
+                  <i class="fa fa-user-plus" aria-hidden="true"></i>
+                  <span>Refer</span>
+                </a>
+                <a [href]="domain + '/speed-test/run'" class="dropdown-item">
+                  <i class="fas fa-tachometer-alt"></i>
+                  <span>Speed Test</span>
+                </a>
 
-              <div class="dropdown-divider borderColor"></div>
-              <a
-                [href]="domain + '/download.html'"
-                class="dropdown-item d-none d-sm-inline"
-              >
-                <i class="ni ni-cloud-download-95"></i>
-                <span>Downloads</span>
-              </a>
-              <a
-                href="javascript:void(0)"
-                routerLinkActive="active"
-                [routerLink]="['settings', 'profile']"
-                class="dropdown-item"
-              >
-                <i class="ni ni-settings"></i>
-                <span>Settings</span>
-              </a>
-              <a
-                href="javascript:void(0)"
-                class="dropdown-item"
-                (click)="switchSearchPrivacy()"
-              >
-                <svg width="16" height="16" viewBox="0 0 20 20">
-                  <path class="navbarSvg" fill-rule="evenodd" clip-rule="evenodd" d="M1.46744 10.4868L1.19145 6.071C1.07828 4.26044 2.19774 2.60041 3.91875 2.02675L9.05081 0.316059C9.66661 0.110792 10.3324 0.110793 10.9482 0.31606L16.0803 2.02675C17.8013 2.60042 18.9207 4.26043 18.8076 6.07099L18.5316 10.4867C18.5102 10.8286 18.4727 11.1691 18.3793 11.4986C18.1029 12.474 17.2624 14.7369 14.9995 16.9998C11.9995 19.9998 9.99949 19.9998 9.99949 19.9998C9.99949 19.9998 7.99949 19.9998 4.99949 16.9998C2.73654 14.7369 1.89608 12.4739 1.6197 11.4986C1.52633 11.1691 1.48881 10.8286 1.46744 10.4868ZM12.9995 7.99983C12.9995 9.30605 12.1647 10.4173 10.9995 10.8291V12.9998C10.9995 13.5521 10.5518 13.9998 9.99949 13.9998C9.44721 13.9998 8.99949 13.5521 8.99949 12.9998V10.8291C7.8343 10.4173 6.99949 9.30605 6.99949 7.99983C6.99949 6.34298 8.34264 4.99983 9.99949 4.99983C11.6563 4.99983 12.9995 6.34298 12.9995 7.99983Z" />
-                </svg>
-                <span>Turn {{ isPrivate ? "off" : "on" }} privacy</span>
-              </a>
-              <a
-                href="javascript:void(0)"
-                class="dropdown-item"
-                (click)="switchToV1()"
-              >
-                <i class="ni ni-ui-04"></i>
-                <span>Switch to V1</span>
-              </a>
-              <div class="dropdown-divider borderColor"></div>
-              <a
-                href="javascript:void(0)"
-                class="dropdown-item"
-                (click)="deleteSessionData()"
-              >
-                <svg width="16" height="16" viewBox="0 0 20 20">
-                  <path d="M19.8878 5.8002C18.8242 4.01359 17.3102 2.53755 15.4972 1.5197C13.6841 0.501858 11.6356 -0.0221133 9.55651 0.000195444H9.37526C9.25302 0.000955172 9.13242 0.0284682 9.02194 0.0808023C8.91146 0.133136 8.81377 0.209023 8.73575 0.303132C8.65772 0.397241 8.60124 0.507291 8.57028 0.625554C8.53931 0.743816 8.53462 0.867424 8.55651 0.987695L10.0878 8.9502C10.1124 9.06657 10.1614 9.17641 10.2315 9.27252C10.3016 9.36862 10.3913 9.44881 10.4946 9.50783C10.5978 9.56685 10.7124 9.60336 10.8308 9.61497C10.9492 9.62658 11.0687 9.61303 11.1815 9.5752L19.4003 7.0002C19.5193 6.96446 19.6288 6.9025 19.7207 6.81886C19.8126 6.73523 19.8846 6.63205 19.9313 6.51692C19.9781 6.4018 19.9985 6.27765 19.9909 6.15361C19.9834 6.02957 19.9481 5.90881 19.8878 5.8002Z" />
-                  <path d="M17.9688 9.4937L9.6875 12.0875C9.57508 12.1232 9.45643 12.1352 9.33912 12.1227C9.2218 12.1101 9.10839 12.0733 9.00609 12.0145C8.9038 11.9557 8.81487 11.8762 8.74495 11.7812C8.67504 11.6862 8.62567 11.5776 8.6 11.4625L7.04375 3.34995C7.01881 3.2271 6.96719 3.11121 6.89255 3.0105C6.81791 2.90978 6.72206 2.82668 6.61178 2.76706C6.5015 2.70745 6.37947 2.67278 6.25432 2.66551C6.12917 2.65823 6.00395 2.67852 5.8875 2.72495C4.18328 3.35095 2.70861 4.47841 1.65767 5.95887C0.606732 7.43934 0.0288085 9.20337 0 11.0187C0 15.9812 4.275 20 9.55625 20C14.8375 20 19.1125 15.9812 19.1125 11.0187C19.1125 10.7437 19.1125 10.4687 19.0688 10.1937C19.0537 10.0699 19.0114 9.95104 18.9449 9.84558C18.8784 9.74012 18.7894 9.6507 18.6842 9.58376C18.579 9.51683 18.4603 9.47403 18.3366 9.45846C18.2129 9.44289 18.0872 9.45492 17.9688 9.4937Z" />
-                </svg>
-                <span>Delete Session Data</span>
-              </a>
-              <a
-                href="javascript:void(0)"
-                class="dropdown-item"
-                (click)="LogoutAlert(LogoutModal)"
-              >
-                <svg width="16" height="22" viewBox="0 0 20 22">
-                  <g clip-path="url(#clip0_1984_1296)">
-                  <path d="M12.2213 13.3829V15.6175C12.2213 16.0269 11.984 16.1255 11.6953 15.8354L7.39136 11.5259C7.10267 11.2358 7.10267 10.7625 7.39136 10.4724L11.6953 6.16432C11.984 5.87424 12.2213 5.97278 12.2213 6.38222V8.61678C12.2213 9.02622 12.5558 9.36209 12.9653 9.36209H19.9243C19.1429 4.61678 15.0291 0.99707 10.0673 0.99707C4.54889 0.99707 0.0742188 5.4759 0.0742188 10.9998C0.0742188 16.5238 4.54889 21.0026 10.0673 21.0026C15.0291 21.0026 19.1429 17.3829 19.9243 12.6376H12.9653C12.5558 12.6376 12.2213 12.9735 12.2213 13.3829Z"/>
-                  </g>
-                  <defs>
-                  <clipPath id="clip0_1984_1296">
-                  <rect width="20" height="20.0056" fill="white" transform="translate(0 0.99707)"/>
-                  </clipPath>
-                  </defs>
-                </svg>                
-                <span>Log out</span>
-              </a>
+                <div class="dropdown-divider borderColor"></div>
+                <a
+                  [href]="domain + '/download.html'"
+                  class="dropdown-item d-none d-sm-inline"
+                >
+                  <i class="ni ni-cloud-download-95"></i>
+                  <span>Downloads</span>
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  routerLinkActive="active"
+                  [routerLink]="['settings', 'profile']"
+                  class="dropdown-item"
+                >
+                  <i class="ni ni-settings"></i>
+                  <span>Settings</span>
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="switchSearchPrivacy()"
+                >
+                  <svg width="16" height="16" viewBox="0 0 20 20">
+                    <path class="navbarSvg" fill-rule="evenodd" clip-rule="evenodd" d="M1.46744 10.4868L1.19145 6.071C1.07828 4.26044 2.19774 2.60041 3.91875 2.02675L9.05081 0.316059C9.66661 0.110792 10.3324 0.110793 10.9482 0.31606L16.0803 2.02675C17.8013 2.60042 18.9207 4.26043 18.8076 6.07099L18.5316 10.4867C18.5102 10.8286 18.4727 11.1691 18.3793 11.4986C18.1029 12.474 17.2624 14.7369 14.9995 16.9998C11.9995 19.9998 9.99949 19.9998 9.99949 19.9998C9.99949 19.9998 7.99949 19.9998 4.99949 16.9998C2.73654 14.7369 1.89608 12.4739 1.6197 11.4986C1.52633 11.1691 1.48881 10.8286 1.46744 10.4868ZM12.9995 7.99983C12.9995 9.30605 12.1647 10.4173 10.9995 10.8291V12.9998C10.9995 13.5521 10.5518 13.9998 9.99949 13.9998C9.44721 13.9998 8.99949 13.5521 8.99949 12.9998V10.8291C7.8343 10.4173 6.99949 9.30605 6.99949 7.99983C6.99949 6.34298 8.34264 4.99983 9.99949 4.99983C11.6563 4.99983 12.9995 6.34298 12.9995 7.99983Z" />
+                  </svg>
+                  <span>Turn {{ isPrivate ? "off" : "on" }} privacy</span>
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="switchToV1()"
+                >
+                  <i class="ni ni-ui-04"></i>
+                  <span>Switch to V1</span>
+                </a>
+                <div class="dropdown-divider borderColor"></div>
+                <a
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="deleteSessionData()"
+                >
+                  <svg width="16" height="16" viewBox="0 0 20 20">
+                    <path d="M19.8878 5.8002C18.8242 4.01359 17.3102 2.53755 15.4972 1.5197C13.6841 0.501858 11.6356 -0.0221133 9.55651 0.000195444H9.37526C9.25302 0.000955172 9.13242 0.0284682 9.02194 0.0808023C8.91146 0.133136 8.81377 0.209023 8.73575 0.303132C8.65772 0.397241 8.60124 0.507291 8.57028 0.625554C8.53931 0.743816 8.53462 0.867424 8.55651 0.987695L10.0878 8.9502C10.1124 9.06657 10.1614 9.17641 10.2315 9.27252C10.3016 9.36862 10.3913 9.44881 10.4946 9.50783C10.5978 9.56685 10.7124 9.60336 10.8308 9.61497C10.9492 9.62658 11.0687 9.61303 11.1815 9.5752L19.4003 7.0002C19.5193 6.96446 19.6288 6.9025 19.7207 6.81886C19.8126 6.73523 19.8846 6.63205 19.9313 6.51692C19.9781 6.4018 19.9985 6.27765 19.9909 6.15361C19.9834 6.02957 19.9481 5.90881 19.8878 5.8002Z" />
+                    <path d="M17.9688 9.4937L9.6875 12.0875C9.57508 12.1232 9.45643 12.1352 9.33912 12.1227C9.2218 12.1101 9.10839 12.0733 9.00609 12.0145C8.9038 11.9557 8.81487 11.8762 8.74495 11.7812C8.67504 11.6862 8.62567 11.5776 8.6 11.4625L7.04375 3.34995C7.01881 3.2271 6.96719 3.11121 6.89255 3.0105C6.81791 2.90978 6.72206 2.82668 6.61178 2.76706C6.5015 2.70745 6.37947 2.67278 6.25432 2.66551C6.12917 2.65823 6.00395 2.67852 5.8875 2.72495C4.18328 3.35095 2.70861 4.47841 1.65767 5.95887C0.606732 7.43934 0.0288085 9.20337 0 11.0187C0 15.9812 4.275 20 9.55625 20C14.8375 20 19.1125 15.9812 19.1125 11.0187C19.1125 10.7437 19.1125 10.4687 19.0688 10.1937C19.0537 10.0699 19.0114 9.95104 18.9449 9.84558C18.8784 9.74012 18.7894 9.6507 18.6842 9.58376C18.579 9.51683 18.4603 9.47403 18.3366 9.45846C18.2129 9.44289 18.0872 9.45492 17.9688 9.4937Z" />
+                  </svg>
+                  <span>Delete Session Data</span>
+                </a>
+                <a
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="LogoutAlert(LogoutModal)"
+                >
+                  <svg width="16" height="22" viewBox="0 0 20 22">
+                    <g clip-path="url(#clip0_1984_1296)">
+                    <path d="M12.2213 13.3829V15.6175C12.2213 16.0269 11.984 16.1255 11.6953 15.8354L7.39136 11.5259C7.10267 11.2358 7.10267 10.7625 7.39136 10.4724L11.6953 6.16432C11.984 5.87424 12.2213 5.97278 12.2213 6.38222V8.61678C12.2213 9.02622 12.5558 9.36209 12.9653 9.36209H19.9243C19.1429 4.61678 15.0291 0.99707 10.0673 0.99707C4.54889 0.99707 0.0742188 5.4759 0.0742188 10.9998C0.0742188 16.5238 4.54889 21.0026 10.0673 21.0026C15.0291 21.0026 19.1429 17.3829 19.9243 12.6376H12.9653C12.5558 12.6376 12.2213 12.9735 12.2213 13.3829Z"/>
+                    </g>
+                    <defs>
+                    <clipPath id="clip0_1984_1296">
+                    <rect width="20" height="20.0056" fill="white" transform="translate(0 0.99707)"/>
+                    </clipPath>
+                    </defs>
+                  </svg>                
+                  <span>Log out</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
