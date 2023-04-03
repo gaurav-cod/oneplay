@@ -54,11 +54,10 @@
   }
 }
 
-
 @media (min-width: 481px) and (max-width: 767px) {
   .card {
     // width: 150px;
-    height: 157px;
+    height: 121px;
   }
 }
 
@@ -72,14 +71,14 @@
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    height: 160px !important;
+    height: 130px !important;
   }
 }
 
 @media (min-width: 1300px) {
   .card {
     // width: 150px;
-    height: 130px !important;
+    height: 150px !important;
   }
 }
 

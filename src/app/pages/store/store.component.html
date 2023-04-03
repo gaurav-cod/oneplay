@@ -100,13 +100,13 @@
       </div>
 
       <div
-        class="pt-2 pt-lg-4 row"
+        class="pt-2 pt-lg-3 row"
         infinite-scroll
         [infiniteScrollDistance]="5"
         [infiniteScrollThrottle]="200"
         (scrolled)="onScroll()"
       >
-        <div *ngFor="let game of games" class="col-6 col-md-6 col-lg-4 col-xxl-3 col-xxxl-3 mb-4 ">
+        <div *ngFor="let game of games" class="col-6 col-md-6 col-lg-4 col-xxl-3 col-xxxl-3 mb-3 px-2">
           <div class="zoom">
             <app-game-card [game]="game"></app-game-card>
           </div>
