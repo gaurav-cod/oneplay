@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RestService } from "src/app/services/rest.service";
@@ -12,7 +12,35 @@ import Swal from "sweetalert2";
   styleUrls: ["./reset-pass.component.scss"],
 })
 export class ResetPassComponent implements OnInit {
-  password = new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]);
+
+  resetForm = new FormGroup({
+    password: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
+    confirmPassword: new FormControl("",  [Validators.required]),
+  });
+
+  get checkvalidationValue() {
+    if(this.resetForm.value.password.length && this.resetForm.value.password === this.resetForm.value.confirmPassword) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  get passwordErrored() {
+    const control = this.resetForm.controls["password"];
+    return control.touched && control.invalid;
+  }
+
+  get confirmPasswordErrored() {
+    const control = this.resetForm.controls["confirmPassword"];
+    if(this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
+      return control.touched && true;
+    } else {
+      return control.touched && false;
+    }
+    
+  }
+  
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +57,7 @@ export class ResetPassComponent implements OnInit {
 
   reset() {
     const token = this.route.snapshot.paramMap.get("token");
-    this.restService.resetPassword(token, this.password.value).subscribe(
+    this.restService.resetPassword(token, this.resetForm.value).subscribe(
       () => {
         Swal.fire({
           title: "Success",

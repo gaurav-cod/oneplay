@@ -15,7 +15,7 @@
       <div class="container">
         <div class="row largeScreenHeight justify-content-center">
           <div class="col-md-12 col-lg-10">
-            <form role="form">
+            <form role="form" [formGroup]="resetForm">
               <div class="row mt-4">
                 <div class="col-md-12">
                   <h1 class="text-white font38 font800 textCenterCustom">
@@ -26,17 +26,17 @@
                   </p>
                 </div>
                 <div class="col-md-12 mt-3">
-                  <label for="" class="font16 font500 customOffWhite"
+                  <label for="" class="font16 font500 customOffWhite mb-0"
                     >Password</label
                   ><span
-                    *ngIf="password.touched && password.invalid"
+                    *ngIf="passwordErrored"
                     class="font16 font500 errorGradientColor float-right"
                     >*invalid password</span
                   >
                   <div class="input-group">
                     <input
                       [type]="showPassword ? 'text' : 'password'"
-                      [formControl]="password"
+                      formControlName="password"
                       ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
                       triggers="click:blur"
                       class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
@@ -61,10 +61,29 @@
                     </span>
                   </div>
                 </div>
+                <div class="col-md-12 mt-4">
+                  <label for="" class="font16 font500 customOffWhite mb-0"
+                    >Confirm Password</label
+                  ><span
+                    *ngIf="confirmPasswordErrored"
+                    class="font16 font500 errorGradientColor float-right"
+                  >
+                    *Password does not match
+                  </span
+                  >
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      formControlName="confirmPassword"
+                      class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+                      placeholder=""
+                    />
+                  </div>
+                </div>
                 <div class="col-md-12 mt-5">
                   <input
                     type="button"
-                    [disabled]="password.invalid"
+                    [disabled]="checkvalidationValue"
                     (click)="reset()"
                     class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
                     value="Reset"
