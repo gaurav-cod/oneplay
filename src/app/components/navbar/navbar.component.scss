@@ -42,6 +42,7 @@
 
 .menudropdown {
     background-color: #151515 !important;
+    overflow: auto;
 }
 
 .menudropdown a {
@@ -111,6 +112,7 @@
 
 .navbar-nav .dropdown-menu {
     position: absolute;
+    max-height: calc(100vh - 79px);
 }
 
 .navbar-search .form-control {
