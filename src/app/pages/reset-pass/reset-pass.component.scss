@@ -266,3 +266,9 @@ input:-webkit-autofill:active  {
 input:-internal-autofill-selected {
   background-color: transparent !important;
 }
+
+::ng-deep .tooltip-inner {
+  max-width: 90%;
+  width: 90%; 
+  margin: 1px auto;
+}

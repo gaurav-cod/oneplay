@@ -969,10 +969,14 @@ html.swal2-shown,body.swal2-shown {
   font-weight: 600;
   font-size: 28px;
   line-height: 42px;
+  @media (max-width: 1200.9px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 }
 
 .max-width1500 {
-  margin: 16px auto;
+  margin: 1px auto;
   max-width: 1500px;
 }
 

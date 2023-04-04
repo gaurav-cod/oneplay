@@ -388,7 +388,7 @@ export class RestService {
     };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: { page, limit: 12 },
+        params: { page, limit: 24 },
       })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),

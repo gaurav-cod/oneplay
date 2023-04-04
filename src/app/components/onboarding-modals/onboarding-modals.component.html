@@ -67,9 +67,6 @@
               </p>
             </div>
           </div>
-          <!-- <div class="col-lg-1 col-md-1 col-2 p-0">
-            <img src="assets/img/onboarding-img/Group 293.svg" class="img-fluid" alt="" />
-          </div> -->
         </div>
       </div>
       <div class="col-lg-4 col-md-4">
@@ -87,15 +84,13 @@
       </div>
       <div class="col-lg-4 col-md-4 d-none d-sm-inline">
         <div class="row justify-content-center">
-          <!-- <div class="col-lg-1 col-md-1 col-2 p-0">
-            <img src="assets/img/onboarding-img/Group 293.svg" class="img-fluid" alt="" />
-          </div> -->
           <div class="col-lg-10 col-md-11 col-11">
             <div class="mt-5 text-center">
               <h4 class="text-center font700 customOffWhite">Step 3</h4>
               <p class="font16 font500 customColor">
-                Install OnePlay Client <a [href]="domain/download.html" target="_blank" class="text-white pl-1 pr-1"><u>here</u></a>. Skip if already
-                downloaded.
+                Install OnePlay Client 
+                <a [href]="domain + '/download.html'" target="_blank" class="text-white pl-1 pr-1"><u>here</u></a>. 
+                Skip if already downloaded.
               </p>
             </div>
           </div>
@@ -126,19 +121,12 @@
       </div>
       <div class="col-lg-5 col-md-12 col-12 col-12 mt-3 textCenterMobile text-right">
         <button
-          class="btn text-white customBtnBg font18 py-lg-3 font500 borderRadius60 border-0"
+          class="btn text-white customBtnBg borderRadius60 border-0"
           [disabled]="!checked"
           (click)="closeonboardingGame()"
         >
           Agree & Continue
         </button>
-        <!-- <button
-          class="btn text-white customBtnBg borderRadius60 d-inline d-sm-none"
-          [disabled]="!checked"
-          (click)="closeonboardingGame()"
-        >
-          Agree
-        </button> -->
       </div>
     </div>
   </div>

@@ -66,3 +66,20 @@
     padding-top: 100px !important;
   }
 }
+
+.scrollGame {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: block;
+  scrollbar-color: transparent transparent; 
+}
+
+.scrollGame::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.scrollGame .gameCard {
+  display: inline-block;
+}

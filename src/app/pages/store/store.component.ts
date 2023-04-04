@@ -169,7 +169,7 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = games;
-          if (games.length < 12) {
+          if (games.length < 24) {
             this.canLoadMore = false;
           }
           this.stopLoading(0);
@@ -193,7 +193,7 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = [...this.games, ...games];
-          if (games.length < 12) {
+          if (games.length < 24) {
             this.canLoadMore = false;
           }
           if (this.heading === "Top 20" && this.games.length > 20) {
