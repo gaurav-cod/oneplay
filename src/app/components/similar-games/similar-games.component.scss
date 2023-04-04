@@ -45,6 +45,7 @@
 
 .scrollGame {
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   display: block;
   padding-left: 78px;
@@ -67,6 +68,16 @@
   }
 }
 
+.paddingLeft {
+  @media (max-width: 767.9px) {
+    padding-left: 25px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 0px;
+  }
+}
+
 .scrollGame::-webkit-scrollbar {
   width: 0px;
   height: 0px;
@@ -77,8 +88,8 @@
 }
 
 .w290 {
-  width: 220px;
-  height: 127px;
+  width: 270px;
+  height: 150px;
 
   @media (max-width: 486px) {
     width: 175px;

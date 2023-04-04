@@ -4,7 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:staging": "ng serve --configuration=staging",
     "build": "ng build --deploy-url=https://www.oneream.com/new/",
+    "build:staging": "ng build --configuration=staging --deploy-url=https://qa.oneream.com/dashboard/",
     "build:prod": "ng build --prod --deploy-url=https://www.oneplay.in/new/",
     "test": "ng test",
     "lint": "ng lint",
@@ -29,6 +31,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@ng-bootstrap/ng-bootstrap": "10.0.0",
+    "@stripe/stripe-js": "^1.52.0",
     "angularx-qrcode": "12.0.3",
     "awesome-debounce-promise": "^2.1.0",
     "bootstrap": "4.5.2",

@@ -1,5 +1,14 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -7,6 +16,8 @@ import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
+import { CARD_STYLE } from "src/app/variables/card-style";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -17,10 +28,14 @@ import Swal from "sweetalert2";
 export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
+  stripeLoad = false;
+
+  @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
 
   private fiveMinutesTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
-
+  private stripeIntent: Stripe;
+  private stripeElements: StripeElements;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
 
@@ -32,7 +47,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +102,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           showCancelButton: true,
           confirmButtonText: "Yes",
           cancelButtonText: "No",
-        }).then((result) => {
+        }).then(async (result) => {
           if (result.isConfirmed) {
             this.handlePay(params.subscribe);
           }
@@ -101,6 +117,25 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       this.initParties();
     }
     this.friendsCollapsed = !this.friendsCollapsed;
+  }
+
+  async onPay() {
+    this.stripeLoad = true;
+    const { error } = await this.stripeIntent.confirmPayment({
+      elements: this.stripeElements,
+      confirmParams: {
+        return_url: environment.domain + "/dashboard/settings/subscription",
+      },
+    });
+
+    if (error) {
+      Swal.fire({
+        title: "Error Code: " + error.code,
+        text: error.message,
+        icon: "error",
+      });
+    }
+    this.stripeLoad = false;
   }
 
   private initAuth() {
@@ -144,48 +179,28 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.restService.setOnline().subscribe();
   }
 
-  private handlePay(packageName: string) {
-    this.restService.payForSubscription(packageName).subscribe(
-      (data) => {
-        const config = {
-          root: "",
-          flow: "WEBSTAGING",
-          data: {
-            orderId: data.orderId,
-            token: data.token,
-            tokenType: "TXN_TOKEN",
-            amount: data.amount,
-          },
-          handler: {
-            notifyMerchant: function (eventName, data) {
-              console.log("notifyMerchant handler function called");
-              console.log("eventName => ", eventName);
-              console.log("data => ", data);
-            },
-          },
-        };
-        // @ts-ignore
-        if (window.Paytm && window.Paytm.CheckoutJS) {
-          // @ts-ignore
-          window.Paytm.CheckoutJS.onLoad(function excecuteAfterCompleteLoad() {
-            // @ts-ignore
-            window.Paytm.CheckoutJS.init(config)
-              .then(function onSuccess() {
-                // @ts-ignore
-                window.Paytm.CheckoutJS.invoke();
-              })
-              .catch(function onError(error) {
-                console.log("error => ", error);
-              });
-          });
-        }
+  private handlePay(packageId: string) {
+    this.restService.payForSubscription(packageId).subscribe({
+      next: async (data) => {
+        this.stripeIntent = await loadStripe(environment.stripe_key);
+        this.stripeElements = this.stripeIntent.elements({
+          clientSecret: data.client_secret,
+        });
+        this.ngbModal.open(this.stripeModal, {
+          centered: true,
+          modalDialogClass: "modal-xl",
+          scrollable: true,
+          backdrop: "static",
+          keyboard: false,
+        });
+        this.stripeElements.create("payment").mount("#stripe-card");
       },
-      (error) =>
+      error: (error) =>
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
-        })
-    );
+        }),
+    });
   }
 }

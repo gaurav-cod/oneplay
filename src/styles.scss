@@ -969,9 +969,81 @@ html.swal2-shown,body.swal2-shown {
   font-weight: 600;
   font-size: 28px;
   line-height: 42px;
+  @media (max-width: 1200.9px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 }
 
 .max-width1500 {
-  margin: 16px auto;
+  margin: 1px auto;
   max-width: 1500px;
+}
+
+
+/********** Range Input Styles **********/
+/*Range Reset*/
+input[type="range"] {
+  -webkit-appearance: none;
+   appearance: none;
+   background: transparent;
+   cursor: pointer;
+   width: 15rem;
+}
+
+/* Removes default focus */
+input[type="range"]:focus {
+ outline: none;
+}
+
+/***** Chrome, Safari, Opera and Edge Chromium styles *****/
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  border-radius: 0.5rem;
+  height: 0.5rem;  
+}
+
+/* slider thumb */
+input[type="range"]::-webkit-slider-thumb {
+ -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -4px; /* Centers thumb on the track */
+
+  /*custom styles*/
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {   
+ border: 1px solid #A83AFE;
+ outline: 3px solid #A83AFE;
+ outline-offset: 0.125rem; 
+}
+
+/******** Firefox styles ********/
+/* slider track */
+input[type="range"]::-moz-range-track {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  border-radius: 0.5rem;
+  height: 0.5rem;
+}
+
+/* slider thumb */
+input[type="range"]::-moz-range-thumb {
+  border: none; /*Removes extra border that FF applies*/
+
+  /*custom styles*/
+  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  height:1rem;
+  width: 1rem;
+  border-radius: 50%;
+}
+
+input[type="range"]:focus::-moz-range-thumb {
+ border: 1px solid #A83AFE;
+ outline: 3px solid #A83AFE;
+ outline-offset: 0.125rem; 
 }
