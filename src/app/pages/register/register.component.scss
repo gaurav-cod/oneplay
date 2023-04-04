@@ -346,3 +346,9 @@ input::placeholder {
   font-size: 16px;
   line-height: 26px;
 }
+
+::ng-deep .tooltip-inner {
+  max-width: 90%;
+  width: 90%; 
+  margin: 1px auto;
+}

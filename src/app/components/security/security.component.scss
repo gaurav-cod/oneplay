@@ -1,3 +1,9 @@
 .fixedIcon {
     bottom: 8px !important;
 }
+
+::ng-deep .tooltip-inner {
+    max-width: 90%;
+    width: 90%; 
+    margin: 1px auto;
+}
