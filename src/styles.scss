@@ -995,7 +995,7 @@ input[type="range"]:focus {
 /***** Chrome, Safari, Opera and Edge Chromium styles *****/
 /* slider track */
 input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
   border-radius: 0.5rem;
   height: 0.5rem;  
 }
@@ -1022,7 +1022,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
 /******** Firefox styles ********/
 /* slider track */
 input[type="range"]::-moz-range-track {
-  background: linear-gradient(300.3deg, #0575e6 9.6%, #ff0cf5 92.85%);
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
   border-radius: 0.5rem;
   height: 0.5rem;
 }
