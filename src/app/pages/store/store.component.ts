@@ -15,6 +15,7 @@ export class StoreComponent implements OnInit {
   games: GameModel[] = [];
   heading: string = "All Games";
   currentPage = 0;
+  pagelimit = 24;
   isLoading = false;
   canLoadMore = true;
   genreSelected: string = '';
@@ -165,11 +166,11 @@ export class StoreComponent implements OnInit {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     this.restService
-      .getFilteredGames(this.queries[this.heading]?.value, 0)
+      .getFilteredGames(this.queries[this.heading]?.value, 0, this.pagelimit)
       .subscribe(
         (games) => {
           this.games = games;
-          if (games.length < 24) {
+          if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }
           this.stopLoading(0);
@@ -189,11 +190,11 @@ export class StoreComponent implements OnInit {
     }
     this.startLoading(this.currentPage + 1);
     this.restService
-      .getFilteredGames(this.queries[this.heading]?.value, this.currentPage + 1)
+      .getFilteredGames(this.queries[this.heading]?.value, this.currentPage + 1, this.pagelimit)
       .subscribe(
         (games) => {
           this.games = [...this.games, ...games];
-          if (games.length < 24) {
+          if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }
           if (this.heading === "Top 20" && this.games.length > 20) {
