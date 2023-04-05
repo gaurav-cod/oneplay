@@ -423,12 +423,6 @@ input:-webkit-autofill:active {
   line-height: 24px;
 }
 
-.secondaryGradientBtn {
-  background: linear-gradient(270deg, #616161 0%, #434343 100%);
-  border-radius: 10px;
-  height: 48px;
-}
-
 .anchorGradientPurple {
   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   -webkit-background-clip: text;
@@ -880,14 +874,6 @@ select option {
 
 .br6 {
   border-radius: 6px;
-}
-
-.linearMutedBg {
-  background: linear-gradient(270deg, #616161 0%, #434343 100%);
-  border-radius: 60px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 20px;
 }
 
 .main-content {

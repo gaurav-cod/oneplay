@@ -312,7 +312,7 @@
 
         <div *ngIf="videos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllVideos = !showAllVideos"
           >
             {{ showAllVideos ? "Show Less" : "Browse more videos" }}
@@ -367,7 +367,7 @@
         </div>
         <div *ngIf="liveVideos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllLiveVideos = !showAllLiveVideos"
           >
             {{ showAllLiveVideos ? "Show Less" : "Browse more streams" }}
