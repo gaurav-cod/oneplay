@@ -84,7 +84,7 @@
                     </button>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
-                      class="btn font20 btn-danger fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
+                      class="btn font20 text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
                       [disabled]="terminatingGame"
                       [ngClass]="{ 'hide-text': terminatingGame }"
                       (click)="terminateSession()"
