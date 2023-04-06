@@ -145,13 +145,22 @@
           </div>
           <div class="form-group mx-md-4 mx-2">
             <label class="font16 font500 offWhitecolor mb-0" for=""
-              >Manual Answer</label
+              >Suggestions</label
+            >
+            <span
+              *ngIf="comment?.length > 300"
+              class="font16 font600 errorGradientColor float-right"
+              >* You have exhausted the Suggestions limit</span
             >
             <textarea
               class="form-control customBodyColor font18 font500 offWhitecolor mt-3 border-0"
               placeholder="Write a short answer"
               [(ngModel)]="comment"
               type="text"
+              [ngClass]="{
+                errorBorder: comment?.length > 300,
+                'border-0': comment?.length < 300
+              }"
             ></textarea>
           </div>
         </div>
@@ -165,6 +174,7 @@
             <button
               class="btn font18 font500 text-white customLinearGradient px-4 border-left-0 border-top-0 border-right-0 responsiveBr60"
               (click)="onSubmit()"
+              [disabled]="comment?.length > 300"
             >
               Submit
             </button>
