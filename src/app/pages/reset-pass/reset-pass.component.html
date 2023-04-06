@@ -73,11 +73,28 @@
                   >
                   <div class="input-group">
                     <input
-                      type="password"
+                      [type]="showConfirmPassword ? 'text' : 'password'"
                       formControlName="confirmPassword"
                       class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                       placeholder=""
                     />
+                    <span
+                      class="bgTransparent fixedIcon offWhiteColor font16 font500"
+                    >
+                      <button
+                        class="btn p-0 bgTransparent customOffWhite borderRadius0"
+                        type="button"
+                        (click)="showConfirmPassword = !showConfirmPassword"
+                      >
+                        <em
+                          class="fa"
+                          [ngClass]="{
+                            'fa-eye': !showConfirmPassword,
+                            'fa-eye-slash': showConfirmPassword
+                          }"
+                        ></em>
+                      </button>
+                    </span>
                   </div>
                 </div>
                 <div class="col-md-12 mt-5">

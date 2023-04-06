@@ -54,6 +54,7 @@ export class ResetPassComponent implements OnInit {
   }
 
   showPassword = false;
+  showConfirmPassword = false;
 
   reset() {
     const token = this.route.snapshot.paramMap.get("token");
