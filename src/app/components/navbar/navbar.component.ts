@@ -329,6 +329,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  TermsConditions(container: ElementRef<HTMLDivElement >) {
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+    });
+  }
+
   searchNavigate(tab: "games" | "users") {
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query.value },
