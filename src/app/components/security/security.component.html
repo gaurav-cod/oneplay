@@ -28,11 +28,13 @@
                 class="img-fluid"
                 alt=""
               />
-              <i
+              <img
                 *ngIf="email.disabled"
                 (click)="email.enable()"
-                class="fas fa-pen-fancy text-white"
-              ></i>
+                src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid"
+                alt=""
+              />
             </span>
           </div>
         </div>
@@ -64,11 +66,13 @@
                 class="img-fluid"
                 alt=""
               />
-              <i
+              <img
                 *ngIf="phone.disabled"
-                (click)="phone.enable()"
-                class="fas fa-pen-fancy text-white"
-              ></i>
+                (click)="phone.enable()"  
+                src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid"
+                alt=""
+              />
             </span>
           </div>
         </div>
@@ -76,8 +80,14 @@
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Update Password</label
-          ><span
+          <label class="font16 font500 offWhiteText">Update Password
+            <i class="fas fa-info-circle ml-1"
+              ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
+              placement="bottom"
+              triggers="click:blur">
+            </i>
+          </label>
+          <span
             *ngIf="password.touched && password.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid password</span
@@ -88,21 +98,14 @@
           >
             <input
               [type]="showPass ? 'text' : 'password'"
-              ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
-              triggers="click:blur"
               [formControl]="password"
-              placement="bottom" 
               class="form-control height52 font18 font500 text-white border-0 lightBg"
             />
             <span
               class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-2"
             >
-              <button class="btn btn-sm text-white border-0 text">
-                <i
-                    class="fas"
-                    (click)="showPass = !showPass"
-                    [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"
-                > </i>
+              <button class="btn btn-sm text-white border-0 text"(click)="showPass = !showPass">
+                <img [src]="showPass ? 'assets/img/singup-login/Group.svg': 'assets/img/singup-login/Views.svg'" class="img-fluid" alt="" />
               </button>
             </span>
           </div>
