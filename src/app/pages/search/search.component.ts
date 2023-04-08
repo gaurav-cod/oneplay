@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -10,6 +10,7 @@ import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-search",
@@ -17,7 +18,7 @@ import { RestService } from "src/app/services/rest.service";
   styleUrls: ["./search.component.scss"],
   providers: [AvatarPipe],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   query: string;
   games: GameModel[] = [];
   users: UserModel[] = [];
@@ -33,6 +34,7 @@ export class SearchComponent implements OnInit {
   private keywordHash = "";
   private acceptedFriends: FriendModel[] = [];
   private pendingFriends: FriendModel[] = [];
+  private dontClose = false;
 
   private user: UserModel;
 
@@ -59,6 +61,10 @@ export class SearchComponent implements OnInit {
     private readonly friendsService: FriendsService,
     private readonly gavatar: AvatarPipe,
   ) {}
+
+  ngOnDestroy(): void {
+    Swal.close();
+  }
 
   ngOnInit(): void {
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
@@ -260,5 +266,45 @@ export class SearchComponent implements OnInit {
       this.loaderService.stopLoader("scroll");
     }
     this.isLoading = false;
+  }
+
+  addFriend(friend: UserModel) {
+    this.dontClose = true;
+    const acceptedFriend = this.acceptedFriends.find(
+      (f) => f.user_id === friend.id
+    );
+    const pendingFriend = this.pendingFriends.find(
+      (f) => f.user_id === friend.id
+    );
+    if (acceptedFriend) {
+      this.restService.deleteFriend(acceptedFriend.id).subscribe(
+        () => {
+          this.friendsService.deleteFriend(acceptedFriend);
+        },
+        (err) => this.showError(err)
+      );
+    } else if (pendingFriend) {
+      this.restService.deleteFriend(pendingFriend.id).subscribe(
+        () => {
+          this.friendsService.cancelRequest(pendingFriend);
+        },
+        (err) => this.showError(err)
+      );
+    } else {
+      this.restService.addFriend(friend.id).subscribe(
+        (id) => {
+          this.friendsService.addFriend(friend, id);
+        },
+        (err) => this.showError(err)
+      );
+    }
+  }
+
+  private showError(error) {
+    Swal.fire({
+      icon: "error",
+      title: "Error Code: " + error.code,
+      text: error.message,
+    });
   }
 }

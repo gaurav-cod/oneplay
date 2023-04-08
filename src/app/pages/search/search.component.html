@@ -35,15 +35,15 @@
 
     <div class="d-flex justify-content-between mb-1 mt-3">
       <h1 class="text-white font20 font500 text-center">
-        <span *ngIf="!!query">You searched for "{{ query }}" </span>
+        <span *ngIf="!!query">You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
         <a
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
           (click)="changeTab(t)"
-          class="mx-1 d-none d-md-inline-block"
+          class="mx-2 d-none d-md-inline-block"
           [ngClass]="{
-            'text-primary': t === tab,
-            'text-white-50': t !== tab
+            'anchorGradientPurple': t === tab,
+            'text-white': t !== tab
           }"
         >
           {{ t | titlecase }}
@@ -135,7 +135,7 @@
     >
       <div *ngFor="let user of users" class="col-12 col-md-6 col-lg-4 mb-1 col-xxl-3">
         <div class="row gameRowHover py-2">
-          <div class="col-auto">
+          <div class="col-auto align-self-center">
             <img
               [src]="user.photo || (user.name | avatar)"
               (error)="onUsersError($event, user)"

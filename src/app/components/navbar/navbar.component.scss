@@ -130,7 +130,8 @@
 .width200 {
     width: 200px;
 }
-@media (max-width: 1200px)
+
+@media (max-width: 1280.9px)
 {
     .navbar-expand-lg .navbar-collapse {
         flex-basis: auto;
@@ -159,7 +160,7 @@
     color: #DCDCDC;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1280.9px) {
     .xsborderBottom {
         border-bottom: 1px solid #3E4246;
     }

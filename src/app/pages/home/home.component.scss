@@ -92,7 +92,7 @@
 
 .height40vh {
   height: 50vh;
-  @media (min-width: 481px) and (max-width: 1200px) {
+  @media (min-width: 481px) and (max-width: 1280.9px) {
     height: 300px;
   }
   @media (max-width: 480px) {
@@ -102,8 +102,8 @@
 
 .height30vh {
   height: 46vh;
-  @media (min-width: 481px) and (max-width: 1200px) {
-    height: 250px;
+  @media (min-width: 481px) and (max-width: 1280.9px) {
+    height: 270px;
   }
   @media (max-width: 480px) {
     height: 160px;
@@ -138,6 +138,16 @@
 
 @media (max-width: 1025px) {
   .customWidth {
+    width: 25%;
+  }
+  
+  .customWidth1 {
+    width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .customWidth {
     width: 17% !important;
   }
 
@@ -163,6 +173,7 @@
 
 .scrollGame {
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   display: block;
   padding-left: 78px;
