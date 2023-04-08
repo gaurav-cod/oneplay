@@ -204,7 +204,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         });
         this.stripeModalRef = this.ngbModal.open(this.stripeModal, {
           centered: true,
-          modalDialogClass: "modal-xl",
+          modalDialogClass: "modal-md",
           scrollable: true,
           backdrop: "static",
           keyboard: false,
