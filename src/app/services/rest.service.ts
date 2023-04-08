@@ -15,6 +15,7 @@ import {
   PurchaseStore,
   SignupDTO,
   StartGameRO,
+  TokensUsageDTO,
   UpdateProfileDTO,
   VerifySignupDTO,
   WebPlayTokenRO,
@@ -791,6 +792,19 @@ export class RestService {
       })
       .pipe(
         map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getTokensUsage(): Observable<TokensUsageDTO> {
+    return this.http
+      .get<TokensUsageDTO>(
+        this.r_mix_api + "/accounts/subscription/remaining_stream_time"
+      )
+      .pipe(
+        map((data) => data),
         catchError(({ error }) => {
           throw error;
         })

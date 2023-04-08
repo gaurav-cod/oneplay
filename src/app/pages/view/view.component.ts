@@ -53,7 +53,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   loadingWishlist = false;
 
   constants = PlayConstants;
-  allowedResolutions: string[] = [];
 
   resolution = new FormControl();
   fps = new FormControl();
@@ -142,12 +141,8 @@ export class ViewComponent implements OnInit, OnDestroy {
           resolution ||
             (window.innerWidth < 768
               ? PlayConstants.MOBILE_RESOLUTION
-              : PlayConstants.DEFAULT_RESOLUTIONS[
-                  user.subscribedPlan ?? "Founder"
-                ])
+              : PlayConstants.DEFAULT_RESOLUTIONS["Founder"])
         );
-        this.allowedResolutions =
-          PlayConstants.RESOLUTIONS_PACKAGES[user.subscribedPlan ?? "Founder"];
         this.user = user;
       }
     });
@@ -314,13 +309,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     return `${screen.width}x${screen.height}`;
   }
 
-  get allowAutoResolution() {
-    return (
-      PlayConstants.MAX_RESOLUTION_WIDTH[this.user?.subscribedPlan] >=
-      screen.width
-    );
-  }
-
   get audio_type() {
     return this.advancedOptions.value?.audio_type;
   }
@@ -386,11 +374,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get shortDesc() {
-    return this.game?.description?.slice(0, this.shortDescLength - 1).replace(/<[^>]*>|&[^;]+;/gm, '') ?? "";
+    return (
+      this.game?.description
+        ?.slice(0, this.shortDescLength - 1)
+        .replace(/<[^>]*>|&[^;]+;/gm, "") ?? ""
+    );
   }
 
   get longDesc() {
-    return this.game?.description?.replace(/<[^>]*>|&[^;]+;/gm, '') ?? "";
+    return this.game?.description?.replace(/<[^>]*>|&[^;]+;/gm, "") ?? "";
   }
 
   open(content: any, video: VideoModel): void {
@@ -438,24 +430,24 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
       return;
     }
-    if (!this.user.subscriptionIsActive) {
-      Swal.fire({
-        title: "Oops...",
-        html: !this.user.subscribedPlan
-          ? `You haven't bought any subscription yet. Please visit <a href="${this.domain}/subscription.html">here</a>`
-          : "Your subscription is not active. Please renew your subscription",
-        icon: "error",
-      });
-      return;
-    }
-    if (this.showSettings.value) {
-      this._settingsModalRef = this.ngbModal.open(container, {
-        centered: true,
-        modalDialogClass: "modal-md",
-      });
-    } else {
-      this.startGame();
-    }
+    this.restService.getTokensUsage().subscribe((data) => {
+      if (data.remaining_tokens <= 0) {
+        Swal.fire({
+          title: "Oops...",
+          html: `You don't have any playtime. Please visit <a href="${this.domain}/subscription.html">here</a>`,
+          icon: "error",
+        });
+      } else {
+        if (this.showSettings.value) {
+          this._settingsModalRef = this.ngbModal.open(container, {
+            centered: true,
+            modalDialogClass: "modal-md",
+          });
+        } else {
+          this.startGame();
+        }
+      }
+    });
   }
 
   openAdvanceOptions(container): void {
@@ -555,27 +547,31 @@ export class ViewComponent implements OnInit, OnDestroy {
             Swal.fire({
               title: "No server available!",
               text: "Please try again in sometime, thank you for your patience!",
-              imageUrl: 'assets/img/error/Group.svg',
+              imageUrl: "assets/img/error/Group.svg",
               showCancelButton: true,
               confirmButtonText: "Try Again",
               cancelButtonText: "Close",
             }).then((result) => {
               if (result.isConfirmed) {
                 this.startGame();
-              }});
+              }
+            });
           }
         },
         (err) => {
           this.stopLoading();
-          if(err.code == 610 || err.message == 'Your 4 hours per day max Gaming Quota has been exhausted.') {
+          if (
+            err.code == 610 ||
+            err.message ==
+              "Your 4 hours per day max Gaming Quota has been exhausted."
+          ) {
             Swal.fire({
               title: "Alert !",
               text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
-              imageUrl: 'assets/img/error/time_limit 1.svg',
+              imageUrl: "assets/img/error/time_limit 1.svg",
               confirmButtonText: "Okay",
             });
-          }
-          else {
+          } else {
             Swal.fire({
               title: "Error Code: " + err.code,
               text: err.message,
@@ -696,7 +692,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (res) => {
           if (res.data.service === "running" && !!res.data.token) {
             // this.launchWebRTC(res.data.token);
-            window.open(res.data.token, '_blank');
+            window.open(res.data.token, "_blank");
             this.loaderService.stop();
           } else {
             const timeTaken = new Date().getTime() - startTime;

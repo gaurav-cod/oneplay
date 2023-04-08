@@ -508,7 +508,6 @@
               <option
                 *ngFor="let res of constants.RESOLUTIONS"
                 [value]="res"
-                [disabled]="!allowedResolutions.includes(res)"
               >
                 {{ res }}
               </option>

@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
@@ -31,6 +31,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   stripeLoad = false;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
+  stripeModalRef: NgbModalRef;
 
   private fiveMinutesTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
@@ -105,9 +106,24 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         }).then(async (result) => {
           if (result.isConfirmed) {
             this.handlePay(params.subscribe);
+          } else {
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: { subscribe: null },
+              queryParamsHandling: "merge",
+            });
           }
         });
       }
+    });
+  }
+
+  closeStripeModal() {
+    this.stripeModalRef?.close();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { subscribe: null },
+      queryParamsHandling: "merge",
     });
   }
 
@@ -186,7 +202,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         this.stripeElements = this.stripeIntent.elements({
           clientSecret: data.client_secret,
         });
-        this.ngbModal.open(this.stripeModal, {
+        this.stripeModalRef = this.ngbModal.open(this.stripeModal, {
           centered: true,
           modalDialogClass: "modal-xl",
           scrollable: true,

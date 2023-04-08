@@ -51,6 +51,12 @@ export interface StripeTxn {
   amount: string;
 }
 
+export interface TokensUsageDTO {
+  total_tokens: number;
+  used_tokens: number;
+  remaining_tokens: number;
+}
+
 export interface UpdateProfileDTO {
   profile_image?: File;
   first_name?: string;
