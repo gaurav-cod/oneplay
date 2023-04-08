@@ -51,7 +51,7 @@
                   <span
                     class="bgTransparent fixedIcon offWhiteColor font16 font500"
                     >
-                    <i class="fas fa-eye" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" [ngClass]="(passwordField.type=='password')?' fa-eye':' fa-eye-slash'"></i>
+                    <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Views.svg':'assets/img/singup-login/Group.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
                   </span>
                 </div>
               </div>
@@ -105,7 +105,7 @@
                       <a
                         href="javascript:void(0)"
                         [routerLink]="['/qr-login']"
-                        class="btn btn-block borderRadius10 border-0 font16 font500 btnGradient"
+                        class="btn btn-block borderRadius10 border-0 font18 font500 activelinear text-white"
                       >
                         <span className="align-middle">Sign In with QR or Web</span>
                       </a>

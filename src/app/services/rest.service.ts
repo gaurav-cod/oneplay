@@ -381,7 +381,8 @@ export class RestService {
 
   getFilteredGames(
     query: { [key: string]: string },
-    page: number
+    page: number,
+    limit: number = 12
   ): Observable<GameModel[]> {
     const data = {
       order_by: "release_date:desc",
@@ -389,7 +390,7 @@ export class RestService {
     };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: { page, limit: 24 },
+        params: { page, limit},
       })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),

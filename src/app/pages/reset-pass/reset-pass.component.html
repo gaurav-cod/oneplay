@@ -27,7 +27,13 @@
                 </div>
                 <div class="col-md-12 mt-3">
                   <label for="" class="font16 font500 customOffWhite mb-0"
-                    >Password</label
+                    >Password
+                    <i class="fas fa-info-circle ml-1"
+                      ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
+                      placement="bottom"
+                      triggers="click:blur">
+                    </i>
+                  </label
                   ><span
                     *ngIf="passwordErrored"
                     class="font16 font500 errorGradientColor float-right"
@@ -37,8 +43,6 @@
                     <input
                       [type]="showPassword ? 'text' : 'password'"
                       formControlName="password"
-                      ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
-                      triggers="click:blur"
                       class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                       placeholder=""
                     />
@@ -50,13 +54,11 @@
                         type="button"
                         (click)="showPassword = !showPassword"
                       >
-                        <em
-                          class="fa"
-                          [ngClass]="{
-                            'fa-eye': !showPassword,
-                            'fa-eye-slash': showPassword
-                          }"
-                        ></em>
+                        <img
+                          class="img-fluid"
+                          [src]="showPassword ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
+                          alt=""
+                        />
                       </button>
                     </span>
                   </div>
@@ -73,11 +75,26 @@
                   >
                   <div class="input-group">
                     <input
-                      type="password"
+                      [type]="showConfirmPassword ? 'text' : 'password'"
                       formControlName="confirmPassword"
                       class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                       placeholder=""
                     />
+                    <span
+                      class="bgTransparent fixedIcon offWhiteColor font16 font500"
+                    >
+                      <button
+                        class="btn p-0 bgTransparent customOffWhite borderRadius0"
+                        type="button"
+                        (click)="showConfirmPassword = !showConfirmPassword"
+                      >
+                        <img
+                          class="img-fluid"
+                          [src]="showConfirmPassword ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
+                          alt=""
+                        />
+                      </button>
+                    </span>
                   </div>
                 </div>
                 <div class="col-md-12 mt-5">

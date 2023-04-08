@@ -352,3 +352,11 @@ input::placeholder {
   width: 90%; 
   margin: 1px auto;
 }
+
+.tooltip {
+  transform: translate(0px, 21px) !important;
+}
+
+ngb-tooltip-window.bs-tooltip-bottom .arrow, ngb-tooltip-window.bs-tooltip-top .arrow {
+  left: calc(21% - 0.4rem) !important;
+}

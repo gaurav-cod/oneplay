@@ -84,7 +84,7 @@
                     </button>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
-                      class="btn font20 btn-danger fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
+                      class="btn font20 text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
                       [disabled]="terminatingGame"
                       [ngClass]="{ 'hide-text': terminatingGame }"
                       (click)="terminateSession()"
@@ -312,7 +312,7 @@
 
         <div *ngIf="videos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllVideos = !showAllVideos"
           >
             {{ showAllVideos ? "Show Less" : "Browse more videos" }}
@@ -367,7 +367,7 @@
         </div>
         <div *ngIf="liveVideos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllLiveVideos = !showAllLiveVideos"
           >
             {{ showAllLiveVideos ? "Show Less" : "Browse more streams" }}
@@ -555,19 +555,7 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
-            <!-- <div class="range-slider grad" style='--min:0; --max:10000; --step:100; --value:200; --text-value:"200"; --prefix:"$"'>
-              <input type="range" min="0" max="10000" step="100" value="200" oninput="this.parentNode.style.setProperty('--value',this.value); this.parentNode.style.setProperty('--text-value', JSON.stringify((+this.value).toLocaleString()))">
-              <output></output>
-              <div class='range-slider__progress'></div>
-            </div> -->
-            <input
-              class=""
-              type="range"
-              [formControl]="bitrate"
-              min="5000"
-              max="80000"
-              id="rangeTag"
-            />
+            <input class="range" type="range" [formControl]="bitrate" id="rangeTag" value="0" min="5000" max="80000" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" />
           </div>
         </div>
       </div>
