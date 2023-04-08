@@ -21,16 +21,10 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./app/app.module";
 import { environment } from "./environments/environment";
 
-if (localStorage.getItem("oneplayv2") !== "true" && !location.href.startsWith('http://localhost:4200')) {
-  const restURL = location.href.replace(environment.domain + "/new", "");
-  location.replace(environment.domain + "/dashboard" + restURL);
-} else {
-  if (environment.production) {
-    enableProdMode();
-  }
-  
-  platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch((err) => console.error(err));
-  
+if (environment.production) {
+  enableProdMode();
 }
+
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
+  .catch((err) => console.error(err));
