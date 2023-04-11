@@ -972,6 +972,6 @@ html.swal2-shown,body.swal2-shown {
 
 @media (min-width: 991.1px) {
   .height100vh {
-    overflow-y: scroll;
+    overflow-y: scroll !important;
   }
 }
