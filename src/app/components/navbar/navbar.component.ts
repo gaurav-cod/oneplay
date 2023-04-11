@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   get link() {
-    return environment.domain + "/new/register?ref=" + this.user.id;
+    return environment.domain + "/dashboard/register?ref=" + this.user.id;
   }
 
   get domain() {

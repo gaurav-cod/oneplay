@@ -61,7 +61,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/new/"
+              "baseHref": "/dashboard/"
             },
             "development": {
               "buildOptimizer": false,
@@ -74,7 +74,7 @@
                 "fonts": true
               },
               "outputHashing": "all",
-              "baseHref": "/new/"
+              "baseHref": "/dashboard/"
             },
             "staging": {
               "buildOptimizer": false,
