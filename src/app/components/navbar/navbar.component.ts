@@ -343,11 +343,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  switchToV1() {
-    localStorage.removeItem("oneplayv2");
-    location.reload();
-  }
-
   switchSearchPrivacy() {
     const privacy = !this.isPrivate;
     this.authService.updateProfile({ searchPrivacy: privacy });
