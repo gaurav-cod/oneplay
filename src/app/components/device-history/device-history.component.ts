@@ -80,7 +80,7 @@ export class DeviceHistoryComponent implements OnInit {
     ).finally(() => {
       this.loggingOut = false;
       // this.sessions = this.sessions.filter((s) => this.isActive(s));
-      window.location.href = '/new/login';
+      window.location.href = '/dashboard/login';
     });
   }
 
