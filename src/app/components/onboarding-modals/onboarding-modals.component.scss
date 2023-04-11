@@ -102,3 +102,15 @@
     line-height: 20px;
   }
 }
+
+@media (max-width: 1280.9px) {
+  .tabScreen {
+    display: none;
+  }
+}
+
+@media (min-width: 1281px) {
+  .tabScreen {
+    display: inline;
+  }
+}
