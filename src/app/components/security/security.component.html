@@ -11,7 +11,7 @@
             >*invalid email</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: email.touched && email.invalid }"
           >
             <input
@@ -20,22 +20,22 @@
               placeholder="email@example.com"
               [formControl]="email"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg border-0">
-                <img
-                  *ngIf="email.enabled"
-                  (click)="updateEmail()"
-                  src="assets\img\setting\Verified.svg"
-                  class="img-fluid mr-2"
-                  alt=""
-                />
-                <i
-                  *ngIf="email.disabled"
-                  (click)="email.enable()"
-                  class="fas fa-pen-fancy text-white"
-                ></i>
-              </span>
-            </div>
+            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+              <img
+                *ngIf="email.enabled"
+                (click)="updateEmail()"
+                src="assets\img\setting\Verified.svg"
+                class="img-fluid"
+                alt=""
+              />
+              <img
+                *ngIf="email.disabled"
+                (click)="email.enable()"
+                src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid"
+                alt=""
+              />
+            </span>
           </div>
         </div>
 
@@ -48,7 +48,7 @@
             >*invalid phone number</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: phone.touched && phone.invalid }"
           >
             <input
@@ -58,36 +58,42 @@
               placeholder="+19999999999"
               inputmode="tel"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg border-0">
-                <img
-                  *ngIf="phone.enabled"
-                  (click)="updatePhone()"
-                  src="assets\img\setting\Verified.svg"
-                  class="img-fluid mr-2"
-                  alt=""
-                />
-                <i
-                  *ngIf="phone.disabled"
-                  (click)="phone.enable()"
-                  class="fas fa-pen-fancy text-white"
-                ></i>
-              </span>
-            </div>
+            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+              <img
+                *ngIf="phone.enabled"
+                (click)="updatePhone()"
+                src="assets\img\setting\Verified.svg"
+                class="img-fluid"
+                alt=""
+              />
+              <img
+                *ngIf="phone.disabled"
+                (click)="phone.enable()"  
+                src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid"
+                alt=""
+              />
+            </span>
           </div>
         </div>
         <div class="col-md-12 mt-4">
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Update Password</label
-          ><span
+          <label class="font16 font500 offWhiteText">Update Password
+            <i class="fas fa-info-circle ml-1"
+              ngbTooltip="Password should be at least 8 characters, one UPPERCASE, one lowercase, one Symbol and one number!"
+              placement="bottom"
+              triggers="click:blur">
+            </i>
+          </label>
+          <span
             *ngIf="password.touched && password.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid password</span
           >
           <div
-            class="input-group"
+            class="borderRadius6"
             [ngClass]="{ errorBorder: password.touched && password.invalid }"
           >
             <input
@@ -95,17 +101,14 @@
               [formControl]="password"
               class="form-control height52 font18 font500 text-white border-0 lightBg"
             />
-            <div class="input-group-append">
-              <span class="input-group-text lightBg text-white border-0"
-                ><i
-                  class="fas"
-                  (click)="showPass = !showPass"
-                  [ngClass]="showPass ? 'fa-eye-slash' : 'fa-eye'"
-                ></i>
-              </span>
-            </div>
+            <span
+              class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-2"
+            >
+              <button class="btn btn-sm text-white border-0 text"(click)="showPass = !showPass">
+                <img [src]="showPass ? 'assets/img/singup-login/Group.svg': 'assets/img/singup-login/Views.svg'" class="img-fluid" alt="" />
+              </button>
+            </span>
           </div>
-          <span class="font16 font500 muteText">at least 8 characters</span>
         </div>
         <!-- <div class="col-md-12 mt-3">
           <label class="font16 font500 offWhiteText">Re-type Password</label>
@@ -113,7 +116,7 @@
         </div> -->
         <div class="col-md-12 mt-4 text-right">
           <button
-            class="btn mutedBg text-white borderRadius10 border-0 pl-4 pr-4 font18 font500"
+            class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
             [disabled]="password.invalid"
             (click)="updatePassword()"
           >

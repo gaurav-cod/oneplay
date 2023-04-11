@@ -1,6 +1,6 @@
 .w290h185 {
-  width: 290px !important;
-  height: 185px !important;
+  width: 256px !important;
+  height: 150px !important;
 
   @media (max-width: 486px) {
     width: 160px !important;
@@ -54,11 +54,10 @@
   }
 }
 
-
 @media (min-width: 481px) and (max-width: 767px) {
   .card {
     // width: 150px;
-    height: 157px;
+    height: 121px;
   }
 }
 
@@ -72,14 +71,14 @@
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    height: 160px !important;
+    height: 130px !important;
   }
 }
 
 @media (min-width: 1300px) {
   .card {
     // width: 150px;
-    height: 175px !important;
+    height: 150px !important;
   }
 }
 

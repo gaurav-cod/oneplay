@@ -39,7 +39,7 @@
                   ngbTooltip="Remove from Library"
                 >
                   <img
-                    src="assets/img/icons/Speedtest.svg"
+                    src="assets/icons/Speedtest.svg"
                     class="img-fluid"
                     alt=""
                   />
@@ -84,7 +84,7 @@
                     </button>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
-                      class="btn font20 btn-danger fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
+                      class="btn font20 text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
                       [disabled]="terminatingGame"
                       [ngClass]="{ 'hide-text': terminatingGame }"
                       (click)="terminateSession()"
@@ -125,7 +125,7 @@
                       ngbTooltip="Remove from Library"
                     >
                       <img
-                        src="assets/img/icons/Speedtest.svg"
+                        src="assets/icons/Speedtest.svg"
                         class="img-fluid"
                         alt=""
                       />
@@ -220,12 +220,14 @@
                     class="checkbox"
                     [checked]="store === selectedStore"
                     (change)="selectStore(store)"
+                    [disabled]="store === selectedStore ? true : null"
                   />
                 </a>
               </div>
               <div class="col mt-lg-5 mt-4">
                 <p
                   class="font16 font500 muteText mb-2"
+                  (click)="testModal(launchModal)"
                 >
                   Developer
                 </p>
@@ -310,7 +312,7 @@
 
         <div *ngIf="videos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllVideos = !showAllVideos"
           >
             {{ showAllVideos ? "Show Less" : "Browse more videos" }}
@@ -365,7 +367,7 @@
         </div>
         <div *ngIf="liveVideos.length >= 2" class="text-center my-4">
           <button
-            class="btn btn-block text-white font16 font500 border-0 mutedBg br60"
+            class="btn btn-block text-white font16 font500 border-0 activelinear br60"
             (click)="showAllLiveVideos = !showAllLiveVideos"
           >
             {{ showAllLiveVideos ? "Show Less" : "Browse more streams" }}
@@ -506,7 +508,6 @@
               <option
                 *ngFor="let res of constants.RESOLUTIONS"
                 [value]="res"
-                [disabled]="!allowedResolutions.includes(res)"
               >
                 {{ res }}
               </option>
@@ -554,13 +555,7 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
-            <input
-              class="customFormControl form-control inputBorder text-light"
-              type="range"
-              [formControl]="bitrate"
-              min="5000"
-              max="80000"
-            />
+            <input class="range" type="range" [formControl]="bitrate" id="rangeTag" value="0" min="5000" max="80000" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" />
           </div>
         </div>
       </div>
@@ -863,69 +858,61 @@
 </ng-template>
 
 <ng-template #launchModal let-d="dismiss">
-  <div class="modal-content position-relative">
+  <div class="modal-content position-relative modalBg">
     <a
       href="javascript:void(0)"
       class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
       (click)="d('Cross click')"
     >
-      <i class="fas fa-times"></i>
+      <i class="fas fa-times-circle"></i>
     </a>
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-12">
-          <h2 class="text-dark text-center">Your game has been launched!</h2>
+    <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100 text-center">
+      <h2 class="text-white w-100 font600 mb-0 test-center font18responsive">
+        Game on!
+      </h2>
+    </div>
+    <div class="modal-body p-3 p-md-4">
+      <div class="row justify-content-center">
+        <div class="col-9 col-md-11 mt-2">
+          <h2 class="font16 font500 muteText text-center">Your game is running and ready for action!</h2>
         </div>
       </div>
-      <div class="dropdown-divider"></div>
-      <div class="row">
-        <div class="col-12">
-          <h4 class="text-gray-dark text-center mb-4">Didn't it launch yet?</h4>
-        </div>
-      </div>
-      <div class="row text-center">
-        <div class="col-12 mb-2">
+      <div class="row text-center mt-md-2 justify-content-center">
+        <div class="col-md-11 col-12 mt-md-4 mt-3">
           <button
-            class="btn btn-primary btn-block"
+            class="btn text-white customLinearGradient font18btn responsiveBr60 font500 p-md-3 p-2 border-left-0 border-right-0 border-top-0 btn-block"
             (click)="clickLaunchAgain()"
           >
-            Launch again!
+            <div class="p-1 p-md-0">Launch Gaming Client</div>
           </button>
         </div>
-        <div *ngIf="!!clientDownloadLink" class="col-12 mb-2">
-          <code class="text-gray-dark">OR,</code>
-        </div>
-        <div *ngIf="!!clientDownloadLink" class="col-12">
+        <div *ngIf="!!clientDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
           <a
             [href]="clientDownloadLink"
-            class="btn btn-link btn-block text-danger"
+            class="btn btn-link btn-block activeBG responsiveBr60"
           >
-            Download client
-            <i class="fas fa-download ml-2"></i>
+          <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg">
+            Download Gaming Client
+            <img src="assets/img/Vector 67.svg" class="img-fluid align-middle ml-2" alt="" />
+          </div>
           </a>
         </div>
-        <div class="col-12 mb-2">
-          <code class="text-gray-dark">OR,</code>
-        </div>
-        <div class="col-12">
+        <div class="col-12 col-md-11 mt-md-4 mt-3">
           <a
             href="javascript:void(0)"
-            class="btn btn-link btn-block text-info"
+            class="btn btn-link btn-block activeBG responsiveBr60"
             (click)="startGameWithWebRTCToken()"
           >
-            Play on browser
-            <i class="fas fa-globe ml-2"></i>
+          <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg">
+            Start Your Journey on Browser
+            <img src="assets/img/web 1.svg" class="img-fluid align-middle ml-2" alt="" />
+          </div>
           </a>
         </div>
       </div>
-      <div *ngIf="!!exitCommand" class="dropdown-divider"></div>
-      <div *ngIf="!!exitCommand" class="row">
-        <div class="col-12">
-          <div class="text-gray text-center">
-            To Quit Game Press {{ exitCommand }}
-          </div>
-        </div>
-      </div>
+    </div>
+    <div class="modal-footer d-inline text-center border-top borderColor mt-3" *ngIf="!!exitCommand">
+      <p class="font16 font500 muteText">To Quit Game Press {{ exitCommand }}</p>
     </div>
   </div>
 </ng-template>

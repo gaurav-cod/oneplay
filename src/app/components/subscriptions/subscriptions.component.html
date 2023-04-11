@@ -1,73 +1,57 @@
-<!-- <div class="card bg-dark">
-  <div class="card-header bg-dark border-0">
-    <div class="row align-items-center">
-      <div class="col-8">
-        <h3 class="mb-0 text-white">Subscription History</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="card-body">
-    <p *ngIf="subscriptions.length === 0" class="text-white-50 text-center">
-      No history found
-    </p>
-    <div *ngFor="let subscription of subscriptions">
-      <div class="d-flex justify-content-between align-items-center">
-        <div class="text-white-50">
-          <span class="text-white">{{ subscription.planName }},</span>
-          {{ subscription.amount }}/-
-          <br class="d-block d-lg-none" />
-          {{ subscription.isFree ? "(Free Trial)" : "" }}
-        </div>
-        <div class="d-flex text-right align-items-center">
-          <div class="text-white-50 mr-2">
-            <span class="text-white">{{
-              subscription.endsAt | date: "mediumDate"
-            }}</span>
-            <span class="d-none d-lg-inline-block mx-1">|</span>
-            <br class="d-block d-lg-none" />
-            <span
-              [ngClass]="{ 'text-success': subscription.status === 'active' }"
-              >{{ subscription.status | titlecase }}</span
-            >
-          </div>
-          <button class="btn btn-primary" (click)="onRenew()">Renew</button>
-        </div>
-      </div>
-      <div class="dropdown-divider"></div>
-    </div>
-  </div>
-</div> -->
-
 <div class="row mb-5">
   <div class="col-md-10 col-lg-10 mt-4">
-    <p class="font18 font500 text-white">Current Subscription</p>
-    <div class="row">
-      <div class="col-md-12 mt-2">
+    <p *ngIf="totalTokens !== undefined" class="font18 font500 text-white">
+      Subscription Usage
+    </p>
+    <div *ngIf="totalTokens !== undefined" class="py-3">
+      <p>
+        <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
+        <span class="text-muted font700">Total Playtime : </span
+        ><span class="offWhiteText font700">{{ totalTokens | tokens }}</span>
+      </p>
+      <p>
+        <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
+        <span class="text-muted font700">Remaining Playtime : </span
+        ><span class="offWhiteText font700">{{
+          remainingTokens | tokens
+        }}</span>
+      </p>
+    </div>
+    <p *ngIf="currentSubscriptions.length" class="font18 font500 text-white">
+      Current Subscription
+    </p>
+    <div *ngIf="currentSubscriptions.length" class="row">
+      <div *ngFor="let sub of currentSubscriptions" class="col-md-12 mt-2">
         <div class="card lightBg borderRadius10 p-2">
           <div class="card-body p-lg-4 p-md-4 p-0">
-            <div *ngIf="currentSubscriptions.length" class="row">
+            <div class="row">
               <div class="col-md-9 col-8">
                 <p class="font16 font500 muteText mb-2">
-                  {{ currentSubscriptions[0].planName }}
+                  {{ sub.planName }} ({{ sub.planType | titlecase }} Plan)
                 </p>
                 <h2 class="font38 font700 text-white">
-                  {{ currentSubscriptions[0].amount }}
-                  {{ currentSubscriptions[0].planCurrency | uppercase }}
+                  {{ sub.amount }}
+                  {{ sub.planCurrency | uppercase }}
                 </h2>
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-                <span class="font18 font500 offWhiteText d-none d-sm-inline-block"
-                  >{{currentSubscriptions[0].duration}} days plan . </span
-                >
-                <span class="font18 font500 muteText"
-                  >Expires on
-                  {{
-                    currentSubscriptions[0].endsAt | date: "mediumDate"
-                  }}</span
+                <span class="font18 font500 offWhiteText"
+                  >{{ sub.tokens | tokens }} -
+                </span>
+                <span
+                  class="font18 font500 offWhiteText d-none d-sm-inline-block"
+                  >{{ sub.duration }} days plan -
+                </span>
+                <span class="font18 font500 muteText ml-2"
+                  >Expires on {{ sub.endsAt | date : "mediumDate" }}</span
                 >
               </div>
-              <div class="col-md-3 col-4 align-self-center text-right pl-0">
+              <div
+                *ngIf="sub.planType === 'base'"
+                class="col-md-3 col-4 align-self-center text-right pl-0"
+              >
                 <button
+                  [routerLink]="['/settings/subscription']"
+                  [queryParams]="{ subscribe: sub.planId }"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew
@@ -94,11 +78,13 @@
             <tbody>
               <tr *ngFor="let subscription of subscriptions">
                 <td class="align-middle py-3 pl-0">
-                  {{ subscription.purchasedAt | date: "dd.MM.yyyy" }}
+                  {{ subscription.purchasedAt | date : "dd.MM.yyyy" }}
                 </td>
                 <td class="align-middle py-3">
                   {{ subscription.planName }} Edition
-                  <p class="customTableText mb-0">{{ subscription.planDesc }}</p>
+                  <p class="customTableText mb-0">
+                    {{ subscription.planDesc }}
+                  </p>
                 </td>
                 <td class="align-middle py-3">
                   {{ subscription.amount }}
@@ -108,7 +94,7 @@
                   class="align-middle py-3 pr-0"
                   [ngClass]="{
                     gradientText: subscription.status === 'active',
-                    cancelgradientText: subscription.status === 'pending'
+                    cancelgradientText: subscription.status === 'upcoming'
                   }"
                 >
                   {{ subscription.status | titlecase }}

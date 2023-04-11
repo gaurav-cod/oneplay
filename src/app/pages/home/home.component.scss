@@ -91,8 +91,8 @@
 }
 
 .height40vh {
-  height: 450px;
-  @media (min-width: 481px) and (max-width: 1200px) {
+  height: 50vh;
+  @media (min-width: 481px) and (max-width: 1280.9px) {
     height: 300px;
   }
   @media (max-width: 480px) {
@@ -101,9 +101,9 @@
 }
 
 .height30vh {
-  height: 405px;
-  @media (min-width: 481px) and (max-width: 1200px) {
-    height: 250px;
+  height: 46vh;
+  @media (min-width: 481px) and (max-width: 1280.9px) {
+    height: 270px;
   }
   @media (max-width: 480px) {
     height: 160px;
@@ -129,14 +129,24 @@
 }
 
 .customWidth {
-  width: 27.5%;
+  width: 30%;
 }
 
 .customWidth1 {
-  width: 45%;
+  width: 40%;
 }
 
 @media (max-width: 1025px) {
+  .customWidth {
+    width: 25%;
+  }
+  
+  .customWidth1 {
+    width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
   .customWidth {
     width: 17% !important;
   }
@@ -150,23 +160,25 @@
   background-color: #151617;
   border-radius: 60px;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 20px;
-  border: 2px solid #3E4246;
+  font-size: 14px;
+  line-height: 16px;
+  border: 1.5px solid #3E4246;
 }
 
 .activeBG {
   background: linear-gradient(349.3deg, #a83afe 0%, #6e59fe 100%);
-  padding: 2px;
+  padding: 1.6px;
   color: #ffffff !important;
 }
 
 .scrollGame {
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   display: block;
   padding-left: 78px;
   padding-right: 80px;
+  scrollbar-color: transparent transparent; 
 
   @media (max-width: 1024px) {
     padding-left: 39px;
@@ -205,7 +217,7 @@
 }
 
 .customBtnPadding {
-  padding: 13px 26px;
+  padding: 9px 18px;
 }
 
 .font20 {

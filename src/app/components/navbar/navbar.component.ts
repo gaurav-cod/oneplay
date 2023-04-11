@@ -50,6 +50,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private dontClose = false;
   private keyword = "";
   private keywordHash = "";
+  private logoutRef: NgbModalRef;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -267,9 +268,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    this.logoutRef.close();
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.logout();
+    });
+  }
+
+  LogoutAlert(container) {
+    this.logoutRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
     });
   }
 
@@ -320,22 +329,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  searchNavigate(tab: "games" | "users") {
-    this.router.navigate(["/search", tab], {
-      queryParams: { q: this.query.value },
-    });
-  }
-
-  switchToV1() {
-    localStorage.removeItem("oneplayv2");
-    location.reload();
-  }
-
-  TermsConditions(container: ElementRef<HTMLDivElement>) {
+  TermsConditions(container: ElementRef<HTMLDivElement >) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,
+    });
+  }
+
+  searchNavigate(tab: "games" | "users") {
+    this.router.navigate(["/search", tab], {
+      queryParams: { q: this.query.value },
     });
   }
 

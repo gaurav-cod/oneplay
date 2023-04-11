@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -59,7 +58,7 @@ export class QrVerifyComponent implements OnInit {
   }
 
   verify() {
-    const sessionToken = Cookies.get("op_session_token");
+    const sessionToken = localStorage.getItem("op_session_token");
     const c = Object.values(
       this.codeForm.value as { [key: string]: string }
     ).map((el) => `${el}`);

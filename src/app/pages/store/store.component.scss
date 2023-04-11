@@ -15,10 +15,16 @@
     margin-bottom: -7px;
   }
 }
-@media (min-width: 2000px) {
-  .col-xxl-3 {
+@media (min-width: 1300px) {
+  .col-lg-4 {
     max-width: 25% !important;
     flex: 0 0 25% !important;
+  }
+}
+@media (min-width: 2000px) {
+  .col-xxl-3 {
+    max-width: 20% !important;
+    flex: 0 0 20% !important;
   }
 }
 
@@ -36,6 +42,10 @@
   font-size: 18px;
   line-height: 20px;
   padding: 2px;
+  @media (max-width: 1200px) {
+    font-size: 14px;
+    line-height: 21px;
+  }
 }
 
 .mutedColor {
@@ -59,4 +69,21 @@
   .mid-screen {
     padding-top: 100px !important;
   }
+}
+
+.scrollGame {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  display: block;
+  scrollbar-color: transparent transparent; 
+}
+
+.scrollGame::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.scrollGame .gameCard {
+  display: inline-block;
 }

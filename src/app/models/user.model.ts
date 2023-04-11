@@ -8,8 +8,6 @@ export class UserModel {
   readonly email: string;
   readonly phone: number;
   readonly type: string;
-  readonly subscribedPlan: string;
-  readonly subscriptionIsActive: boolean;
   readonly isVerified: boolean;
   readonly photo: string | null;
   readonly searchPrivacy: boolean;
@@ -24,8 +22,6 @@ export class UserModel {
     this.email = json["email"];
     this.phone = json["phone"];
     this.type = json["user_type"];
-    this.subscribedPlan = json["subscribed_plan"];
-    this.subscriptionIsActive = json["subscription_is_active"];
     this.isVerified = json["is_verified_profile"];
     this.photo = json["profile_image"];
     this.searchPrivacy = json["search_privacy"];
@@ -42,8 +38,6 @@ export class UserModel {
       email: data.email ?? this.email,
       phone: data.phone ?? this.phone,
       user_type: this.type,
-      subscribed_plan: this.subscribedPlan,
-      subscription_is_active: this.subscriptionIsActive,
       is_verified_profile: this.isVerified,
       profile_image: data.photo ?? this.photo,
       search_privacy: data.searchPrivacy ?? this.searchPrivacy,
@@ -65,8 +59,6 @@ export class UserModel {
       email: this.email,
       phone: this.phone,
       user_type: this.type,
-      subscribed_plan: this.subscribedPlan,
-      subscription_is_active: this.subscriptionIsActive,
       is_verified_profile: this.isVerified,
       profile_image: this.photo,
       search_privacy: this.searchPrivacy,

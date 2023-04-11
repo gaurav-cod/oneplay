@@ -35,11 +35,6 @@
   }
 }
 
-.h80 {
-  height: 82%;
-  margin-top: 16px;
-}
-
 .padding-right-0 {
   padding-right: 0px !important;
 }
@@ -50,12 +45,14 @@
 
 .scrollGame {
   overflow-x: scroll;
+  overflow-y: hidden;
   white-space: nowrap;
   display: block;
   padding-left: 78px;
   padding-right: 110px;
-  padding-top: 24px;
+  padding-top: 15px;
   padding-bottom: 20px;
+  scrollbar-color: transparent transparent; 
 
   @media (max-width: 1024px) {
     padding-left: 39px;
@@ -71,6 +68,16 @@
   }
 }
 
+.paddingLeft {
+  @media (max-width: 767.9px) {
+    padding-left: 25px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 0px;
+  }
+}
+
 .scrollGame::-webkit-scrollbar {
   width: 0px;
   height: 0px;
@@ -81,8 +88,8 @@
 }
 
 .w290 {
-  width: 305px;
-  height: 185px;
+  width: 270px;
+  height: 150px;
 
   @media (max-width: 486px) {
     width: 175px;

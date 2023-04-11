@@ -11,10 +11,16 @@ import Swal from "sweetalert2";
 export class SubscriptionsComponent implements OnInit {
   subscriptions: SubscriptionModel[] = [];
   currentSubscriptions: SubscriptionModel[] = [];
+  totalTokens: number;
+  remainingTokens: number;
 
   constructor(private readonly restService: RestService) {}
 
   ngOnInit(): void {
+    this.restService.getTokensUsage().subscribe((data) => {
+      this.totalTokens = data.total_tokens;
+      this.remainingTokens = data.remaining_tokens;
+    });
     this.restService
       .getSubscriptions()
       .subscribe((s) => (this.subscriptions = s));

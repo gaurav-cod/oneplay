@@ -189,9 +189,9 @@
   background-color: #151515;
 }
 
-.overflowYScroll {
-  overflow-y: scroll;
-}
+// .overflowYScroll {
+//   overflow-y: scroll;
+// }
 
 .largeScreenHeight {
   height: 100vh;
@@ -285,12 +285,6 @@ input:-webkit-autofill:active  {
 
 input:-internal-autofill-selected {
   background-color: transparent !important;
-}
-
-.btnGradient {
-  background: linear-gradient(270deg, #616161 0%, #434343 100%);
-  border-radius: 10px;
-  color: #ffffff;
 }
 
 .field-icon {

@@ -1,6 +1,6 @@
 .navbar {
-    background-image: #151515;
-    position: absolute;
+    background-color: #151617 !important;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -9,8 +9,8 @@
 
 .navbar-nav .nav-link {
     letter-spacing: 0.02em;
-    font-size: 18px !important;
-    line-height: 20px;
+    font-size: 16px !important;
+    line-height: 18px;
     font-weight: 500;
 }
 
@@ -42,16 +42,19 @@
 
 .menudropdown {
     background-color: #151515 !important;
+    overflow: auto;
 }
 
 .menudropdown a {
     color: #959595 !important;
     font-weight: 500;
+    fill: #959595;
 }
 
 .menudropdown a:hover {
     color: #ffffff !important;
     background-color: #151515 !important;
+    fill: #ffffff;
 }
 
 .borderColor {
@@ -109,10 +112,11 @@
 
 .navbar-nav .dropdown-menu {
     position: absolute;
+    max-height: calc(85vh - 79px);
 }
 
 .navbar-search .form-control {
-    width: 300px !important;
+    width: 250px !important;
     background-color: transparent;
 }
 
@@ -126,7 +130,8 @@
 .width200 {
     width: 200px;
 }
-@media (max-width: 1200px)
+
+@media (max-width: 1280.9px)
 {
     .navbar-expand-lg .navbar-collapse {
         flex-basis: auto;
@@ -155,7 +160,7 @@
     color: #DCDCDC;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1280.9px) {
     .xsborderBottom {
         border-bottom: 1px solid #3E4246;
     }
@@ -172,6 +177,10 @@
 
 ::ng-deep .tooltip-inner {
     width: 180px;
+}
+
+.w120 {
+    width: 120px;
 }
 
 @media (max-width: 767px) {

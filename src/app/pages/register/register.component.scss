@@ -181,9 +181,9 @@
   background-color: #151515;
 }
 
-.overflowYScroll {
-  overflow-y: scroll;
-}
+// .overflowYScroll {
+//   overflow-y: scroll;
+// }
 
 .largeScreenHeight {
   height: 100vh;
@@ -345,4 +345,18 @@ input[type=checkbox]:checked {
 input::placeholder {
   font-size: 16px;
   line-height: 26px;
+}
+
+::ng-deep .tooltip-inner {
+  max-width: 90%;
+  width: 90%; 
+  margin: 1px auto;
+}
+
+.tooltip {
+  transform: translate(0px, 21px) !important;
+}
+
+ngb-tooltip-window.bs-tooltip-bottom .arrow, ngb-tooltip-window.bs-tooltip-top .arrow {
+  left: calc(21% - 0.4rem) !important;
 }

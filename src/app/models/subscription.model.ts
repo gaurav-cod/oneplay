@@ -1,6 +1,7 @@
 import { SubscriptionPackageModel } from "./subscriptionPackage.model";
 
 export class SubscriptionModel {
+  planId: string;
   planName: string;
   planDesc: string;
   planCurrency: string;
@@ -8,21 +9,29 @@ export class SubscriptionModel {
   currency: string;
   isFree: boolean;
   duration: number;
-  status: "active" | "expired" | "pending";
+  status: "active" | "expired" | "upcoming";
   endsAt: Date;
   purchasedAt: Date;
+  tokens: number;
+  planType: 'base' | 'topup';
 
   constructor(json: any) {
     const plan = new SubscriptionPackageModel(json.subscriptionPackage);
+    this.planId = plan.id;
     this.planName = plan.name;
     this.planDesc = plan.description;
     this.planCurrency = plan.currency;
     this.amount = plan.amount;
     this.currency = plan.currency;
     this.isFree = json.was_free_plan === "true";
-    this.duration = json.subscribed_duration_in_days;
-    this.status = json.subscription_status;
+    this.duration = plan.plan_duration_in_days;
+    this.status =
+      json.subscription_status === "pending"
+        ? "upcoming"
+        : json.subscription_status;
     this.endsAt = new Date(json.subscription_active_till);
     this.purchasedAt = new Date(json.subscription_brought_at_time);
+    this.tokens = plan.tokens;
+    this.planType = plan.type;
   }
 }

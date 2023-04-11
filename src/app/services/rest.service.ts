@@ -12,10 +12,10 @@ import {
   HomeFeeds,
   ILocation,
   LoginDTO,
-  PaytmTxn,
   PurchaseStore,
   SignupDTO,
   StartGameRO,
+  TokensUsageDTO,
   UpdateProfileDTO,
   VerifySignupDTO,
   WebPlayTokenRO,
@@ -33,7 +33,7 @@ import { VideoFeedModel } from "../models/streamFeed.model";
 import { SubscriptionModel } from "../models/subscription.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
-import { AuthService } from "./auth.service";
+import { PaymentIntent } from "@stripe/stripe-js";
 
 @Injectable({
   providedIn: "root",
@@ -181,9 +181,9 @@ export class RestService {
     );
   }
 
-  payForSubscription(packageName: string): Observable<PaytmTxn> {
+  payForSubscription(packageName: string): Observable<PaymentIntent> {
     return this.http
-      .post<PaytmTxn>(
+      .post<PaymentIntent>(
         this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
         null
       )
@@ -381,7 +381,8 @@ export class RestService {
 
   getFilteredGames(
     query: { [key: string]: string },
-    page: number
+    page: number,
+    limit: number = 12
   ): Observable<GameModel[]> {
     const data = {
       order_by: "release_date:desc",
@@ -389,7 +390,7 @@ export class RestService {
     };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: { page, limit: 12 },
+        params: { page, limit},
       })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),
@@ -792,6 +793,19 @@ export class RestService {
       })
       .pipe(
         map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getTokensUsage(): Observable<TokensUsageDTO> {
+    return this.http
+      .get<TokensUsageDTO>(
+        this.r_mix_api + "/accounts/subscription/remaining_stream_time"
+      )
+      .pipe(
+        map((data) => data),
         catchError(({ error }) => {
           throw error;
         })

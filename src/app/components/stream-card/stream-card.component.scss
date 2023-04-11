@@ -25,10 +25,12 @@
   
 .scrollGame {
     overflow-x: scroll;
+    overflow-y: hidden;
     white-space: nowrap;
     display: block;
     padding-left: 80px;
     padding-right: 100px;
+    scrollbar-color: transparent transparent; 
 
     @media (max-width: 1024px) {
         padding-left: 39px;

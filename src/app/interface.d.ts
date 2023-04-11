@@ -45,10 +45,16 @@ export interface PurchaseStore {
   link: string;
 }
 
-export interface PaytmTxn {
+export interface StripeTxn {
   token: string;
   orderId: string;
   amount: string;
+}
+
+export interface TokensUsageDTO {
+  total_tokens: number;
+  used_tokens: number;
+  remaining_tokens: number;
 }
 
 export interface UpdateProfileDTO {

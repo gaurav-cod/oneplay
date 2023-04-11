@@ -225,11 +225,6 @@ export class SidebarComponent implements OnInit {
     this.toggleFriends.emit();
   }
 
-  switchToV1() {
-    localStorage.removeItem("oneplayv2");
-    location.reload();
-  }
-
   TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,

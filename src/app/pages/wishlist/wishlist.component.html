@@ -1,11 +1,10 @@
-<div class="container-fluid pt-8">
+<div class="container-fluid pt-6 max-width1500">
   <div class="container-fluid">
     <div class="d-flex justify-content-between">
-      <h1 class="text-white">My Library</h1>
+      <h3 class="font700 font28 text-white">My Library</h3>
     </div>
-
-    <div class="py-5 row">
-      <div *ngFor="let game of games" class="col-6 col-md-4 col-lg-3 col-xxl-3 col-xxxl-3 mb-4">
+    <div class="pb-4 mt-3 row">
+      <div *ngFor="let game of games" class="col-6 col-sm-4 col-md-4 col-lg-3 mb-3 px-2">
         <div class="zoom">
           <app-game-card [game]="game"></app-game-card>
         </div>
