@@ -150,12 +150,12 @@ live {
 
 @media (max-width: 480px) {
   .customOverlay {
-    height: 300px;
+    height: 350px;
   }
 
   .imagesText {
-    height: 300px;
-    align-items: flex-end;
+    height: 350px;
+    align-items: end;
   }
 
   .custom-control-label span {
@@ -169,7 +169,7 @@ live {
     height: 450px;
   }
   @media (max-width: 480px) {
-    height: 300px;
+    height: 350px;
   }
 }
 
@@ -182,7 +182,7 @@ live {
   }
 
   .height300 {
-    height: 300px;
+    height: 350px;
     overflow-y: scroll;
   }
 
