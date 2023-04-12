@@ -15,42 +15,37 @@
           />
           <div
             class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
-          >
-            <div class="row justify-content-end">
-              <div class="col-auto d-block d-sm-none customTopButton">
-                <button
-                  *ngIf="!isInWishlist"
-                  (click)="addToWishlist()"
-                  [disabled]="loadingWishlist"
-                  class="btn p-0"
-                  ngbTooltip="Add to Library"
-                >
-                  <img
-                    src="assets/icons/Speedtest (2).svg"
-                    class="img-fluid"
-                    alt=""
-                  />
-                </button>
-                <button
-                  *ngIf="isInWishlist"
-                  (click)="removeFromWishlist()"
-                  [disabled]="loadingWishlist"
-                  class="btn p-0"
-                  ngbTooltip="Remove from Library"
-                >
-                  <img
-                    src="assets/icons/Speedtest.svg"
-                    class="img-fluid"
-                    alt=""
-                  />
-                </button>
-              </div>
+          > <div class="d-block d-sm-none customTopButton position-absolute right-2 top-2">
+              <button
+                *ngIf="!isInWishlist"
+                (click)="addToWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn p-0"
+                ngbTooltip="Add to Library"
+              >
+                <img
+                  src="assets/icons/Speedtest (2).svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
+              <button
+                *ngIf="isInWishlist"
+                (click)="removeFromWishlist()"
+                [disabled]="loadingWishlist"
+                class="btn p-0"
+                ngbTooltip="Remove from Library"
+              >
+                <img
+                  src="assets/icons/Speedtest.svg"
+                  class="img-fluid"
+                  alt=""
+                />
+              </button>
             </div>
             <div class="row imagesText">
               <div class="col-md-12">
                 <img [src]="game.textLogo" class="text-logo" alt="" />
-              </div>
-              <div class="col-md-12">
                 <p class="font16 font500 text-white mt-lg-4">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
@@ -165,9 +160,9 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 mt-5 mt-md-4 mt-lg-5">
+          <div class="col-md-6 mt-3 mt-md-4 mt-lg-5">
             <div class="row">
-              <div class="col-lg-10 mt-3 mt-md-0">
+              <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 text-white" (click)="TimeOutAlert(timeAlertModal)">About Game</h1>
                 <span
                   id="description"

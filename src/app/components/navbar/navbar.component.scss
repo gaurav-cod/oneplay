@@ -116,7 +116,7 @@
 }
 
 .navbar-search .form-control {
-    width: 250px !important;
+    width: 330px !important;
     background-color: transparent;
 }
 
@@ -131,7 +131,7 @@
     width: 200px;
 }
 
-@media (max-width: 1280.9px)
+@media (max-width: 1200.9px)
 {
     .navbar-expand-lg .navbar-collapse {
         flex-basis: auto;
@@ -160,7 +160,7 @@
     color: #DCDCDC;
 }
 
-@media (max-width: 1280.9px) {
+@media (max-width: 1200.9px) {
     .xsborderBottom {
         border-bottom: 1px solid #3E4246;
     }
@@ -191,4 +191,13 @@
 
 .profileImgCover {
     object-fit: cover;
+}
+
+.font14 {
+    font-size: 14px !important;
+    line-height: 21px;
+}
+
+.fixedIcon {
+    bottom: 7px !important;
 }
