@@ -671,7 +671,7 @@ body::-webkit-scrollbar {
 }
 
 *:focus-visible {
-  box-shadow: 0 1px #ffffff !important;
+  box-shadow: 0 1px transparent !important;
   transition: 0.4s;
 }
 
