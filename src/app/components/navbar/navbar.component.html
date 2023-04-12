@@ -88,7 +88,7 @@
             <div
               *ngIf="results.length || uResults.length"
               class="position-absolute w-100 bg-dark list-group border-0"
-              style="top: calc(100% + 8px); overflow: auto;"
+              style="top: calc(100% + 8px); overflow: auto; max-height: calc(99vh - 79px);"
             >
               <div
                 *ngFor="let game of results"
