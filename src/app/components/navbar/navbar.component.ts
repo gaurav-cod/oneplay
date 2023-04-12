@@ -253,13 +253,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   search(value: string) {
-    this.restService.search(value, 0, 5).subscribe((res) => {
+    this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
       this.keyword = res.keyword;
       this.keywordHash = res.keywordHash;
     });
     this.restService
-      .searchUsers(value, 0, 5)
+      .searchUsers(value, 0, 3)
       .subscribe((users) => (this.uResults = users));
   }
 
