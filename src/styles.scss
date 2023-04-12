@@ -671,7 +671,7 @@ body::-webkit-scrollbar {
 }
 
 *:focus-visible {
-  box-shadow: 0 1px #8A54D0 !important;
+  box-shadow: 0 1px #ffffff !important;
   transition: 0.4s;
 }
 
@@ -974,4 +974,9 @@ html.swal2-shown,body.swal2-shown {
   .height100vh {
     overflow-y: scroll !important;
   }
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: transparent !important;
+  color: #ffffff !important;
 }

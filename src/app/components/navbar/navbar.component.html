@@ -66,24 +66,24 @@
               class="form-group mb-0"
               [ngClass]="{ focused: (isFocused | async) === true }"
             >
-              <div class="input-group input-group-alternative border-0">
-                <input
-                  #search
-                  class="form-control font18 font500 width200"
-                  placeholder="Search"
-                  type="text"
-                  [formControl]="query"
-                  (focus)="onFocus()"
-                  (blur)="onBlur()"
-                  (click)="isMenuCollapsed = true"
-                  (keyup.enter)="results.length === 5 ? search.blur() : ''"
-                />
-                <div class="input-group-prepend">
-                  <a href="javascript:void(0)" class="input-group-text"
-                    ><i class="fas fa-search text-white"></i
-                  ></a>
-                </div>
-              </div>
+              <input
+                #search
+                class="form-control font18 font500 width200 border-0 modalBG"
+                placeholder="Search"
+                type="text"
+                [formControl]="query"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+                (click)="isMenuCollapsed = true"
+                (keyup.enter)="results.length === 5 ? search.blur() : ''"
+              />
+              <span
+                class="bgTransparent fixedIcon offWhiteColor font16 font500"
+              >
+                <a href="javascript:void(0)"
+                  ><i class="fas fa-search text-white"></i
+                ></a>
+              </span>
             </div>
             <div
               *ngIf="results.length || uResults.length"
@@ -310,24 +310,24 @@
                   [routerLink]="['wishlist']"
                   class="dropdown-item"
                 >
-                  <i class="ni ni-favourite-28"></i>
-                  <span>My Library</span>
+                  <i class="ni ni-favourite-28 font14 align-middle"></i>
+                  <span class="align-middle">My Library</span>
                 </a>
                 <a [href]="domain + '/subscription.html'" class="dropdown-item">
-                  <i class="ni ni-credit-card"></i>
-                  <span>Subscription</span>
+                  <i class="ni ni-credit-card font14 align-middle"></i>
+                  <span class="align-middle">Subscription</span>
                 </a>
                 <a
                   href="javascript:void(0)"
                   class="dropdown-item"
                   (click)="open(share)"
                 >
-                  <i class="fa fa-user-plus" aria-hidden="true"></i>
-                  <span>Refer</span>
+                  <i class="fa fa-user-plus font14 align-middle" aria-hidden="true"></i>
+                  <span class="align-middle">Refer</span>
                 </a>
                 <a [href]="domain + '/speed-test/run'" class="dropdown-item">
-                  <i class="fas fa-tachometer-alt"></i>
-                  <span>Speed Test</span>
+                  <i class="fas fa-tachometer-alt font14 align-middle"></i>
+                  <span class="align-middle">Speed Test</span>
                 </a>
 
                 <div class="dropdown-divider borderColor"></div>
@@ -335,8 +335,8 @@
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
                 >
-                  <i class="ni ni-cloud-download-95"></i>
-                  <span>Downloads</span>
+                  <i class="ni ni-cloud-download-95 font14 align-middle"></i>
+                  <span class="align-middle">Downloads</span>
                 </a>
                 <a
                   href="javascript:void(0)"
@@ -344,8 +344,8 @@
                   [routerLink]="['settings', 'profile']"
                   class="dropdown-item"
                 >
-                  <i class="ni ni-settings"></i>
-                  <span>Settings</span>
+                  <i class="ni ni-settings font14 align-middle"></i>
+                  <span class="align-middle">Settings</span>
                 </a>
                 <a
                   href="javascript:void(0)"
