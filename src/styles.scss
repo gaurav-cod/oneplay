@@ -980,3 +980,11 @@ html.swal2-shown,body.swal2-shown {
   background-color: transparent !important;
   color: #ffffff !important;
 }
+
+.customTooltip {
+  transform: translate(0px, 21px) !important;
+}
+
+.customTooltip .arrow {
+  left: calc(21% - 0.4rem) !important;
+}

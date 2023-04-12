@@ -75,7 +75,7 @@
                 (focus)="onFocus()"
                 (blur)="onBlur()"
                 (click)="isMenuCollapsed = true"
-                (keyup.enter)="results.length === 5 ? search.blur() : ''"
+                (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
               <span
                 class="bgTransparent fixedIcon offWhiteColor font16 font500"
@@ -122,7 +122,7 @@
                 </div>
               </div>
               <div
-                *ngIf="results.length === 5"
+                *ngIf="results.length === 3"
                 class="text-center bg-dark p-3"
                 (click)="isMenuCollapsed = true"
               >
@@ -167,7 +167,7 @@
                 </div>
               </div>
               <div
-                *ngIf="uResults.length === 5"
+                *ngIf="uResults.length === 3"
                 class="text-center bg-dark p-3"
               >
                 <button
