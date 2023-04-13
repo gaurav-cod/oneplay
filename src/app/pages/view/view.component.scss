@@ -286,7 +286,7 @@ live {
 }
 
 .font18 {
-  font-size: 18px;
+  font-size: 18px !important;
   line-height: 24px;
 }
 
@@ -466,4 +466,14 @@ live {
   cursor: pointer;
   border: 2px solid #333;
   box-shadow: -407px 0 0 400px #a83afe;
+}
+
+.font24 {
+  font-size: 24px;
+  line-height: 34px;
+}
+
+.font14 {
+  font-size: 14px;
+  line-height: 21px;
 }

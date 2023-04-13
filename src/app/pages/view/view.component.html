@@ -61,7 +61,7 @@
                   <div class="col-auto align-self-center fullWidthBtn">
                     <button
                       *ngIf="!terminatingGame"
-                      class="btn font20 GradientBtnPadding fullWidthBtn mt-3 linearGradient text-white font600 border-0 borderRadius90 position-relative"
+                      class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
                       [disabled]="startingGame || game.status === 'unlive'"
                       [ngClass]="{ 'hide-text': startingGame }"
                       (click)="playGame(smallModal)"
@@ -79,7 +79,7 @@
                     </button>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
-                      class="btn font20 text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 position-relative"
+                      class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
                       [disabled]="terminatingGame"
                       [ngClass]="{ 'hide-text': terminatingGame }"
                       (click)="terminateSession()"
@@ -97,32 +97,36 @@
                     </button>
                   </div>
                   <div
-                    class="col-auto pl-0 d-none d-sm-block align-self-center"
+                    class="col-auto pl-1 d-none d-sm-block align-self-center"
                   >
                     <button
                       *ngIf="!isInWishlist"
                       (click)="addToWishlist()"
                       [disabled]="loadingWishlist"
-                      class="btn mt-3 p-0"
+                      class="btn p-0"
                       ngbTooltip="Add to Library"
                     >
                       <img
                         src="assets/icons/Speedtest (2).svg"
                         class="img-fluid"
                         alt=""
+                        width="41px"
+                        height="41px"
                       />
                     </button>
                     <button
                       *ngIf="isInWishlist"
                       (click)="removeFromWishlist()"
                       [disabled]="loadingWishlist"
-                      class="btn mt-3 p-0"
+                      class="btn p-0"
                       ngbTooltip="Remove from Library"
                     >
                       <img
                         src="assets/icons/Speedtest.svg"
                         class="img-fluid"
                         alt=""
+                        width="41px"
+                        height="41px"
                       />
                     </button>
                   </div>
@@ -163,7 +167,7 @@
           <div class="col-md-6 mt-3 mt-md-4 mt-lg-5">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
-                <h1 class="font700 text-white">About Game</h1>
+                <h1 class="font700 font24 text-white">About Game</h1>
                 <span
                   id="description"
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
@@ -219,10 +223,9 @@
                   />
                 </a>
               </div>
-              <div class="col mt-lg-5 mt-4">
+              <div class="col mt-lg-5 mt-4" *ngIf="game.developer.length">
                 <p
                   class="font16 font500 muteText mb-2"
-                  (click)="testModal(launchModal)"
                 >
                   Developer
                 </p>
@@ -231,7 +234,7 @@
                     class="col-auto pr-0"
                     *ngFor="let dev of game.developer; let i = index"
                   >
-                    <p class="font600 font20 text-white mb-0">
+                    <p class="font600 font18 text-white mb-0">
                       <span class="align-middle">{{ dev | titlecase }}</span>
                     </p>
                   </div>
@@ -243,7 +246,7 @@
                 <p class="font16 font500 muteText mb-0">Tags</p>
                 <span
                   *ngFor="let genre of game.genreMappings"
-                  class="badge badge-pill text-capitalize customLinearGradient font600 font16 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
+                  class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
                   >{{ genre }}</span
                 >
               </div>
