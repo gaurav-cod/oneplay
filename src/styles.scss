@@ -494,6 +494,7 @@ input:-webkit-autofill:active {
   box-sizing: border-box;
   padding: 2px;
   border: none !important;
+  font-weight: 600;
 }
 
 .radioBtns .customBtn:not(:disabled):not(.disabled).active:focus {
@@ -517,8 +518,8 @@ input:-webkit-autofill:active {
   border-radius: 10px !important;
   height: 52px;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 16px;
+  line-height: 21px;
   color: #dcdcdc;
   border: 2px solid #3E4246;
   @media (max-width: 480px) {
