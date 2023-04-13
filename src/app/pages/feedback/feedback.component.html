@@ -148,7 +148,7 @@
               >Suggestions</label
             >
             <span
-              *ngIf="comment?.length > 300"
+              *ngIf="comment?.length > 500"
               class="font16 font600 errorGradientColor float-right"
               >* You have exhausted the Suggestions limit</span
             >
@@ -158,8 +158,8 @@
               [(ngModel)]="comment"
               type="text"
               [ngClass]="{
-                errorBorder: comment?.length > 300,
-                'border-0': comment?.length < 300
+                errorBorder: comment?.length > 500,
+                'border-0': comment?.length < 500
               }"
             ></textarea>
           </div>
