@@ -746,6 +746,14 @@ input[type="checkbox"] {
   border-radius: 6px !important;
 }
 
+.swal2-close {
+  font-size: 2em !important;
+}
+
+.swal2-close:focus {
+  box-shadow: none !important;
+}
+
 .swal2-actions {
   width: 90% !important;
 }
