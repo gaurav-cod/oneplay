@@ -61,7 +61,7 @@
                   <div class="col-auto align-self-center fullWidthBtn">
                     <button
                       *ngIf="!terminatingGame"
-                      class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                      class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
                       [disabled]="startingGame || game.status === 'unlive'"
                       [ngClass]="{ 'hide-text': startingGame }"
                       (click)="playGame(smallModal)"
@@ -97,7 +97,7 @@
                     </button>
                   </div>
                   <div
-                    class="col-auto pl-1 d-none d-sm-block align-self-center"
+                    class="col-auto pl-1 d-none d-sm-block mt-3 align-self-center"
                   >
                     <button
                       *ngIf="!isInWishlist"
