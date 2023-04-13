@@ -420,7 +420,7 @@ input:-webkit-autofill:active {
 
 .font14 {
   font-size: 14px;
-  line-height: 24px;
+  line-height: 21px;
 }
 
 .anchorGradientPurple {
@@ -437,21 +437,21 @@ input:-webkit-autofill:active {
   height: 0px;
 }
 
-::-webkit-scrollbar {
-  background: transparent;
-  width: 0px;
-  height: 0px;
-}
+// ::-webkit-scrollbar {
+//   background: transparent;
+//   width: 0px;
+//   height: 0px;
+// }
  
-/* Handle */
-body::-webkit-scrollbar-thumb {
-  background: #b6b3b3; 
-}
+// /* Handle */
+// body::-webkit-scrollbar-thumb {
+//   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);; 
+// }
 
-body::-webkit-scrollbar {
-  width: auto !important;
-  height: auto !important;
-}
+// body::-webkit-scrollbar {
+//   width: 10px !important;
+//   height: auto !important;
+// }
 
 .redBtn {
   background-color: #e31c34;
@@ -953,12 +953,8 @@ html.swal2-shown,body.swal2-shown {
 
 .font28 {
   font-weight: 600;
-  font-size: 28px;
-  line-height: 42px;
-  @media (max-width: 1200.9px) {
-    font-size: 24px;
-    line-height: 34px;
-  }
+  font-size: 24px;
+  line-height: 34px;
 }
 
 .max-width1500 {
