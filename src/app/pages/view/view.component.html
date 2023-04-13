@@ -164,10 +164,10 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 mt-3 mt-md-4 mt-lg-5">
+          <div class="col-md-6 mt-3 mt-md-4">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
-                <h1 class="font700 font24 text-white">About Game</h1>
+                <h1 class="font700 font24 text-white mb-0">About Game</h1>
                 <!-- <h1 class="font700 font24 text-white" (click)="playGame(launchModal)">About Game</h1> -->
                 <span
                   id="description"
@@ -180,7 +180,7 @@
                 <a
                   href="javascript:void(0)"
                   type="button"
-                  class="font16 text-white font-weight-500 mt-1"
+                  class="font16 text-white font-weight-500 mt-1 mb-4"
                   [ngStyle]="{
                     display:
                       shortDescLength < game.description.length
@@ -198,7 +198,7 @@
             <div class="row">
               <div
                 *ngIf="game.storesMapping.length"
-                class="col-auto pr-lg-5 mt-lg-5 mt-4"
+                class="col-auto pr-lg-5 mt-4"
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
@@ -224,7 +224,7 @@
                   />
                 </a>
               </div>
-              <div class="col mt-lg-5 mt-4" *ngIf="game.developer.length">
+              <div class="col mt-4" *ngIf="game.developer.length">
                 <p
                   class="font16 font500 muteText mb-2"
                 >
@@ -242,7 +242,7 @@
                 </div>
               </div>
             </div>
-            <div class="row mt-4 mt-lg-5">
+            <div class="row mt-4">
               <div class="col-12">
                 <p class="font16 font500 muteText mb-0">Tags</p>
                 <span
