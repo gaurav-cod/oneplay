@@ -452,6 +452,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         Swal.fire({
         title: "Wait!",
         html: swal_html,
+        showCloseButton: true,
         showConfirmButton: false
       });
       }
