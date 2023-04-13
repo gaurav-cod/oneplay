@@ -10,7 +10,7 @@
             [ngClass]="{activeBG: !genreSelected}"
             [routerLink]="['/store/']"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">All Games</div>
+            <div class="bgColor customPaddign">All Games</div>
           </a>
         </div>
         <div class="col-auto pr-0" *ngFor="let route of commonRoutes">
@@ -20,7 +20,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
@@ -34,7 +34,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
@@ -48,7 +48,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
@@ -62,7 +62,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
@@ -76,7 +76,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
