@@ -13,6 +13,11 @@
   }
 }
 
+.overflow-auto {
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
+}
+
 .overflow-auto::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }

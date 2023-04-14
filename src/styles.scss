@@ -439,6 +439,11 @@ input:-webkit-autofill:active {
   height: 0px;
 }
 
+.modal-body {
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
+}
+
 // ::-webkit-scrollbar {
 //   background: transparent;
 //   width: 0px;
