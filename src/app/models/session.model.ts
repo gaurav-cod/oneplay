@@ -1,23 +1,39 @@
-import { UAParser } from "ua-parser-js";
+type DeviceInfo = {
+  app: string;
+  device: string;
+};
+
+type Location = {
+  city: string;
+  country: string;
+};
 
 export class Session {
-    readonly userId: string;
-    readonly device: string;
-    readonly ip: string;
-    readonly browser: string;
-    readonly os: string;
-    readonly key: string;
-    readonly timestamp: Date;
+  readonly userId: string;
+  readonly key: string;
+  readonly timestamp: Date;
+  readonly device?: DeviceInfo;
+  readonly location?: Location;
 
-    constructor(json: {[key: string]: any}) {
-        const ua = new UAParser(json.uagent);
+  constructor(json: { [key: string]: any }) {
+    this.userId = json.userId;
+    this.key = json.key;
+    this.timestamp = new Date(json.timestamp);
 
-        this.userId = json.userId;
-        this.device = ua.getDevice().type || json.device;
-        this.ip = json.ip;
-        this.browser = ua.getBrowser().name;
-        this.os = ua.getOS().name;
-        this.key = json.key;
-        this.timestamp = new Date(json.timestamp);
+    const { app, device } = json.device_info;
+    if (app !== "-" || device !== "-") {
+      this.device = {
+        app: app === "-" ? "Oneplay App" : app,
+        device: device === "-" ? "Unknown Device" : device,
+      };
     }
+
+    const { city, country_name } = json.location_info;
+    if (city !== "-" || !!country_name) {
+      this.location = {
+        city: city === "-" ? "Unknown City" : city,
+        country: country_name ? country_name : "Unknown Country",
+      };
+    }
+  }
 }

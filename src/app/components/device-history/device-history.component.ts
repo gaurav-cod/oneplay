@@ -23,22 +23,7 @@ export class DeviceHistoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.restService.getSessions().subscribe((res) => {
-      this.sessions = res;
-      this.sessions.forEach((session) => {
-        this.restService.getLocation(session.ip).subscribe((res) => {
-          this.ipLocationMap[session.ip] = `${res.city}, ${res.country_name}`;
-        });
-      });
-    });
-  }
-
-  getLocation(ip: string): [string, string] {
-    let [state, country] = (this.ipLocationMap[ip] || ip).split(",");
-
-    if (!country) country = "Unknown";
-
-    return [state, country];
+    this.restService.getSessions().subscribe((res) => this.sessions = res);
   }
 
   isActive(session: Session): boolean {
