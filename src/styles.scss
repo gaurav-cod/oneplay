@@ -29,6 +29,8 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
 }
 
 body {
@@ -435,6 +437,11 @@ input:-webkit-autofill:active {
   width: 0; /* Remove scrollbar space */
   background: transparent; /* Optional: just make scrollbar invisible */
   height: 0px;
+}
+
+.modal-body {
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
 }
 
 // ::-webkit-scrollbar {
@@ -888,6 +895,8 @@ select option {
 
 .main-content {
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
 }
 
 .br50 {

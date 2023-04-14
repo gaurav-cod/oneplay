@@ -73,6 +73,8 @@
 
 .scrollGame {
   overflow-x: scroll;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
   overflow-y: hidden;
   white-space: nowrap;
   display: block;

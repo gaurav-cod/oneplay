@@ -31,6 +31,8 @@
     padding-left: 80px;
     padding-right: 100px;
     scrollbar-color: transparent transparent; 
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
 
     @media (max-width: 1024px) {
         padding-left: 39px;

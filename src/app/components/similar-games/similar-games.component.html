@@ -18,15 +18,7 @@
 
   <button
     *ngIf="showLeftArrow"
-    class="btn position-absolute d-none d-lg-block h-100"
-    style="
-      top: 0;
-      left: 0;
-      z-index: 10;
-      border-radius: 0px;
-      background: #151515a8;
-      padding-right: 35px;
-    "
+    class="btn position-absolute h-100 arrowPaddingLeft d-none d-sm-block"
     (click)="scrollLeft()"
   >
     <img src="assets/img/Vector.svg" height="20px" alt="" />
@@ -34,15 +26,7 @@
 
   <button
     *ngIf="showRightArrow"
-    class="btn position-absolute d-none d-lg-block h-100"
-    style="
-      top: 0;
-      right: 0px;
-      z-index: 10;
-      border-radius: 0px;
-      background: #151515a8;
-      padding-right: 50px;
-    "
+    class="btn position-absolute h-100 arrowPaddingright d-none d-sm-block"
     (click)="scrollRight()"
   >
     <img src="assets/img/Vector (1).svg" height="20px" alt="" />

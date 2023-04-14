@@ -43,6 +43,8 @@
 .menudropdown {
     background-color: #151515 !important;
     overflow: auto;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
 }
 
 .menudropdown a {
