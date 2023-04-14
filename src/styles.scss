@@ -29,6 +29,8 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
 }
 
 body {
@@ -888,6 +890,8 @@ select option {
 
 .main-content {
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
 }
 
 .br50 {

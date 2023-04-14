@@ -184,6 +184,8 @@ live {
   .height300 {
     height: 350px;
     overflow-y: scroll;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
   }
 
   .font18responsive {
