@@ -98,7 +98,7 @@
   width: 270px;
   height: 150px;
 
-  @media (max-width: 486px) {
+  @media (max-width: 767.9px) {
     width: 175px;
     height: 95px;
   }
@@ -121,7 +121,7 @@
 }
 
 .arrowPaddingLeft {
-  padding-right: 35px;
+  padding-left: 50px;
   top: 0;
   left: 0;
   z-index: 10;
@@ -129,6 +129,10 @@
   background: #151515a8;
 
   @media (max-width: 1300px) {
+    padding-left: 30px;
+  }
+
+  @media (max-width: 767.9px) {
     padding-left: 10px;
   }
 }
@@ -143,5 +147,9 @@
 
   @media (max-width: 1300px) {
     padding-right: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-right: 10px;
   }
 }
