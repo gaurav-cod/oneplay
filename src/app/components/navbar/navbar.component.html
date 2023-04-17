@@ -141,7 +141,7 @@
                 <div class="col-auto align-self-center">
                   <img
                     (error)="onUsersError($event, user)"
-                    [src]="user.photo || (user.name | avatar)"
+                    [src]="user.photo || 'assets/img/defaultUser.svg'"
                     class="rounded-circle profileImgCover"
                     width="48"
                     height="48"
@@ -292,7 +292,7 @@
                 width="36px"
                 height="36px"
                 class="rounded-circle profileImgCover"
-                [src]="photo || (title | avatar)"
+                [src]="photo || 'assets/img/defaultUser.svg'"
                 (error)="onUserError($event)"
               />
             </a>

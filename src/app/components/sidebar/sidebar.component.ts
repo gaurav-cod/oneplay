@@ -112,7 +112,7 @@ export class SidebarComponent implements OnInit {
   }
 
   onUserError(event) {
-    event.target.src = this.gavatar.transform(this.title);
+    event.target.src = 'assets/img/defaultUser.svg';
   }
 
   constructor(

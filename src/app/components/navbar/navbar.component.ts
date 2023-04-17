@@ -181,11 +181,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onUserError(event) {
-    event.target.src = this.gavatar.transform(this.title);
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
-  onUsersError(event, user: UserModel) {
-    event.target.src = this.gavatar.transform(user.name);
+  onUsersError(event) {
+    event.target.src = 'assets/img/defaultUser.svg';
   }
 
   getFriendAddIcon(friend: UserModel) {
