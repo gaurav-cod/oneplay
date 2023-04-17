@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: "",
     component: AdminLayoutComponent,
-    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: "",
@@ -33,7 +33,7 @@ const routes: Routes = [
   {
     path: "",
     component: AuthLayoutComponent,
-    canActivate: [LoginGuard],
+    canActivateChild: [LoginGuard],
     children: [
       {
         path: "",
