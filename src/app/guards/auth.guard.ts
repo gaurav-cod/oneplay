@@ -1,23 +1,31 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRoute, CanActivate, Router } from "@angular/router";
+import {
+  ActivatedRouteSnapshot,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+} from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivateChild {
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly router: Router
   ) {}
-
-  canActivate(): Observable<boolean> {
+  canActivateChild(
+    _: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (!u) {
-        const redirectUrl = this.router.url;
-        this.router.navigate(["/login"], { queryParams: { redirectUrl } });
+        console.log(state.url);
+        this.router.navigate(["/login"], {
+          queryParams: { redirectUrl: state.url },
+        });
       }
     });
 

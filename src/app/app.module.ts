@@ -25,7 +25,7 @@ import { TvAuthLayoutComponent } from './layouts/tv-auth-layout/tv-auth-layout.c
     HttpClientModule,
     ComponentsModule,
     NgbModule,
-    RouterModule,
+    RouterModule.forRoot([]),
     AppRoutingModule
   ],
   declarations: [
