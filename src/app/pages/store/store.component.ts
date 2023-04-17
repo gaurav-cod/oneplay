@@ -31,19 +31,19 @@ export class StoreComponent implements OnInit {
         release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
       },
     },
-    "Best of 2020": {
+    "Best of 2022": {
       label: "common",
       value: {
         release_date: "2019-12-31T18:30:00.000Z#2020-12-31T18:30:00.000Z",
       },
     },
-    "Top 20": {
-      label: "common",
-      value: {
-        play_time: "10",
-        order_by: "play_time:desc",
-      },
-    },
+    // "Top 20": {
+    //   label: "common",
+    //   value: {
+    //     play_time: "10",
+    //     order_by: "play_time:desc",
+    //   },
+    // },
     "Free Games": {
       label: "common",
       value: {

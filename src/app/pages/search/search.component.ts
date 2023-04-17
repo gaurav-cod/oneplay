@@ -141,8 +141,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     event.target.src = "assets/img/default_bg.jpg";
   }
 
-  onUsersError(event, user: UserModel) {
-    event.target.src = this.gavatar.transform(user.name);
+  onUsersError(event) {
+    event.target.src = 'assets/img/defaultUser.svg';
   }
 
   private laodGamesAndUsers() {

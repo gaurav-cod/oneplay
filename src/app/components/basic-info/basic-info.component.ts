@@ -66,7 +66,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   onUserError(event) {
-    event.target.src = this.gavatar.transform(this.title);
+    event.target.src = 'assets/img/defaultUser.svg';
   }
 
   onFileChanged(input) {
