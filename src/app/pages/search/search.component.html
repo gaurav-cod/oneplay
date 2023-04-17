@@ -137,7 +137,7 @@
         <div class="row gameRowHover py-2">
           <div class="col-auto align-self-center">
             <img
-              [src]="user.photo || (user.name | avatar)"
+              [src]="user.photo || 'assets/img/defaultUser.svg'"
               (error)="onUsersError($event, user)"
               class="rounded-circle"
               width="40"

@@ -97,8 +97,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.route.queryParams.subscribe((params) => {
       if (params.subscribe) {
         Swal.fire({
-          title: "Proceed to pay?",
-          text: "You are going to pay for the selected subscription package.",
+          title: "Ready to unlock?",
+          text: "you're about to purchase the selected subscription package.",
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "Yes",
