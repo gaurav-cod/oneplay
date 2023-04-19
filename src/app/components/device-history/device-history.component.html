@@ -8,7 +8,7 @@
         <span class="float-right">
           <button
             class="btn text-white activelinear borderRadius10 border-0 pl-lg-4 pr-lg-4 font18 font500"
-            (click)="LogoutAlert(LogoutAllModal)"
+            (click)="logoutAlert(LogoutAllModal)"
           >
             Logout from all devices
           </button>
@@ -54,7 +54,7 @@
             <td class="align-middle py-3 text-right">
               <button
                 class="btn btn-link customgradientText p-0"
-                (click)="LogoutAlert(LogoutModal)"
+                (click)="logoutAlert(LogoutModal, session)"
               >
                 Logout
               </button>
@@ -113,7 +113,7 @@
           <p class="font16 font500 offWhiteText pb-3">Do you want to logout?</p>
           <button
             [disabled]="loggingOut"
-            (click)="deleteSession(session)"
+            (click)="deleteSession()"
             class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
           >
             Yes

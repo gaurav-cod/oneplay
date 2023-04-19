@@ -40,12 +40,6 @@ export class StreamsComponent implements OnInit {
         this.loaderService.stop();
       }
     );
-    this.router.events.subscribe((event) => {
-      if (!(event instanceof NavigationEnd)) {
-          return;
-      }
-      window.scrollTo(0, 0)
-    });
   }
 
   getId(video: VideoModel): string {

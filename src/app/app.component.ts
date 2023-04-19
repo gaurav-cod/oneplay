@@ -28,6 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
       filter((event) => event instanceof NavigationEnd)
     );
     navEvents.subscribe((event: NavigationEnd) => {
+      window.scrollTo(0, 0);
       gtag("config", environment.ga_tracking_id, {
         page_path: event.urlAfterRedirects,
       });
