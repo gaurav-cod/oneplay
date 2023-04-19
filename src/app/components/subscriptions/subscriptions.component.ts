@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 export class SubscriptionsComponent implements OnInit {
   subscriptions: SubscriptionModel[] = [];
   currentSubscriptions: SubscriptionModel[] = [];
-  filterSubscriptions: SubscriptionModel[] = [];
   totalTokens: number;
   remainingTokens: number;
   showBody = false;
@@ -29,9 +28,18 @@ export class SubscriptionsComponent implements OnInit {
     this.restService
       .getCurrentSubscription()
       .subscribe((s) => (this.currentSubscriptions = s));
+  }
 
-    this.restService.getFilterSubscription().subscribe((s) => (this.filterSubscriptions = s));
-    
+  processingFilter() {
+    this.restService
+      .getProcessingSubscription()
+      .subscribe((s) => (this.subscriptions = s));
+  }
+
+  failedFilter() {
+    this.restService
+      .getFailedSubscription()
+      .subscribe((s) => (this.subscriptions = s));
   }
   
   onRenew() {

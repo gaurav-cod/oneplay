@@ -33,16 +33,9 @@
             <div class="outerRange">
               <div class="innerRange" [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}"></div>
             </div>
-            <div class="row">
-              <div class="col">
-                <p class="mb-0 font16 font500 muteText">0</p>
-              </div>
-              <div class="col text-center">
-                <p class="mb-0 font16 font500 muteText">10</p>
-              </div>
-              <div class="col text-right">
-                <p class="mb-0 font16 font500 muteText">30</p>
-              </div>
+            <div [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
+              <span class="font16 font500 muteText">0</span>
+              <span class="font16 font500 muteText float-right">{{ remainingTokens | tokens }}</span>
             </div>
           </div>
         </div>
@@ -76,7 +69,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
                 <span class="font18 font500 offWhiteText"
-                  >{{ sub.tokens | tokens }}/{{
+                  >{{ totalTokens | tokens }}/{{
                     remainingTokens | tokens
                   }} left .
                 </span>
@@ -125,10 +118,10 @@
             <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
               Successful
             </a>
-            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
               Processing
             </a>
-            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
               Failed
             </a>
             <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">

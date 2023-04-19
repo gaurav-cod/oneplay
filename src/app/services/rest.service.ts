@@ -221,9 +221,15 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
-  getFilterSubscription(): Observable<SubscriptionModel[]> {
+  getProcessingSubscription(): Observable<SubscriptionModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing")
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+  }
+
+  getFailedSubscription(): Observable<SubscriptionModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed")
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
