@@ -6,30 +6,36 @@
         <div class="col-auto p-1">
           <input
             formControlName="one"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
             autofocus
+            maxlength="1" 
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+            (keyup)="onDigitInput($event)"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="two"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="three"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="four"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
@@ -38,29 +44,33 @@
         <div class="col-auto p-1">
           <input
             formControlName="five"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="six"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="seven"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="eight"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
       </div>
