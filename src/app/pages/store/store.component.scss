@@ -39,8 +39,8 @@
   background-color: #212123;
   border-radius: 60px;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 20px;
+  font-size: 14px;
+  line-height: 16px;
   padding: 2px;
   @media (max-width: 1200px) {
     font-size: 14px;
@@ -73,6 +73,8 @@
 
 .scrollGame {
   overflow-x: scroll;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
   overflow-y: hidden;
   white-space: nowrap;
   display: block;
@@ -86,4 +88,8 @@
 
 .scrollGame .gameCard {
   display: inline-block;
+}
+
+.customPaddign {
+  padding: 9px 18px;
 }

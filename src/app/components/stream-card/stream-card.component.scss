@@ -31,6 +31,8 @@
     padding-left: 80px;
     padding-right: 100px;
     scrollbar-color: transparent transparent; 
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
 
     @media (max-width: 1024px) {
         padding-left: 39px;
@@ -97,4 +99,38 @@
     -webkit-box-orient: vertical; 
     width: 100%;
     overflow: hidden;
+}
+
+.arrowPaddingLeft {
+    padding-left: 50px;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    border-radius: 0px;
+    background: #151515a8;
+  
+    @media (max-width: 1300px) {
+      padding-left: 30px;
+    }
+  
+    @media (max-width: 767.9px) {
+      padding-left: 10px;
+    }
+}
+  
+.arrowPaddingright {
+    padding-right: 50px;
+    top: 0;
+    right: 0px;
+    z-index: 10;
+    border-radius: 0px;
+    background: #151515a8;
+  
+    @media (max-width: 1300px) {
+      padding-right: 30px;
+    }
+  
+    @media (max-width: 767.9px) {
+      padding-right: 10px;
+    }
 }

@@ -1,7 +1,7 @@
 <div class="container-fluid mid-screen pt-6 max-width1500">
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-lg-3 d-none d-lg-block">
-      <h3 class="tabHeading mb-3">Games</h3>
+      <h3 class="tabHeading">Games</h3>
       <div class="row">
         <div class="col-auto pr-0">
           <a
@@ -10,7 +10,7 @@
             [ngClass]="{activeBG: !genreSelected}"
             [routerLink]="['/store/']"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">All Games</div>
+            <div class="bgColor customPaddign">All Games</div>
           </a>
         </div>
         <div class="col-auto pr-0" *ngFor="let route of commonRoutes">
@@ -20,12 +20,12 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
       
-      <h3 class="tabHeading mb-3">Stores</h3>
+      <h3 class="tabHeading">Stores</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of storeRoutes">
           <a
@@ -34,12 +34,12 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
       
-      <h3 class="tabHeading mb-3">Genres</h3>
+      <h3 class="tabHeading">Top Genres</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of genreRoutes">
           <a
@@ -48,12 +48,12 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
       
-      <h3 class="tabHeading mb-3">Developers</h3>
+      <h3 class="tabHeading">Top Developers</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of developerRoutes">
           <a
@@ -62,12 +62,12 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
       
-      <h3 class="tabHeading mb-3">Publishers</h3>
+      <h3 class="tabHeading">Top Publishers</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of publisherRoutes">
           <a
@@ -76,7 +76,7 @@
             routerLinkActive="activeBG"
             [routerLink]="['/store/' + route]"
           >
-            <div class="pt-3 pb-3 pl-4 pr-4 bgColor">{{ route }}</div>
+            <div class="customPaddign bgColor">{{ route }}</div>
           </a>
         </div>
       </div>
@@ -114,7 +114,7 @@
     <div class="col-lg-9">
       <h3 class="font700 font28 text-white">{{ heading }}</h3>
       <div
-        class="pt-2 pt-lg-3 row"
+        class="pt-2 row"
         infinite-scroll
         [infiniteScrollDistance]="5"
         [infiniteScrollThrottle]="200"

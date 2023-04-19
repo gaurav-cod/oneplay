@@ -148,7 +148,7 @@
               >Suggestions</label
             >
             <span
-              *ngIf="comment?.length > 300"
+              *ngIf="comment?.length > 500"
               class="font16 font600 errorGradientColor float-right"
               >* You have exhausted the Suggestions limit</span
             >
@@ -158,8 +158,8 @@
               [(ngModel)]="comment"
               type="text"
               [ngClass]="{
-                errorBorder: comment?.length > 300,
-                'border-0': comment?.length < 300
+                errorBorder: comment?.length > 500,
+                'border-0': comment?.length < 500
               }"
             ></textarea>
           </div>
@@ -174,7 +174,7 @@
             <button
               class="btn font18 font500 text-white customLinearGradient px-4 border-left-0 border-top-0 border-right-0 responsiveBr60"
               (click)="onSubmit()"
-              [disabled]="comment?.length > 300"
+              [disabled]="comment?.length > 500"
             >
               Submit
             </button>

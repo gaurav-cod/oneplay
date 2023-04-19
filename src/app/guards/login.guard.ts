@@ -1,21 +1,28 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { Injectable } from "@angular/core";
+import {
+  ActivatedRouteSnapshot,
+  CanActivateChild,
+  Router,
+} from "@angular/router";
+import { map, Observable } from "rxjs";
+import { AuthService } from "../services/auth.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class LoginGuard implements CanActivate {
-  constructor(private readonly authService: AuthService, private readonly router: Router) { }
-  canActivate(): Observable<boolean> {
+export class LoginGuard implements CanActivateChild {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
+  canActivateChild(childRoute: ActivatedRouteSnapshot): Observable<boolean> {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u) {
-        this.router.navigateByUrl('/');
+        const { redirectUrl } = childRoute.queryParams;
+        this.router.navigateByUrl(redirectUrl ?? "/");
       }
     });
 
-    return this.authService.sessionTokenExists.pipe(map(u => !u));
+    return this.authService.sessionTokenExists.pipe(map((u) => !u));
   }
-
 }

@@ -431,13 +431,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
     this.restService.getTokensUsage().subscribe((data) => {
-      if (data.remaining_tokens <= 0) {
-        Swal.fire({
-          title: "Oops...",
-          html: `You don't have any playtime. Please visit <a href="${this.domain}/subscription.html">here</a>`,
-          icon: "error",
-        });
-      } else {
+      let swal_html = null;
+      if (data.total_tokens === 0) {
+        swal_html = `Looks like your gaming subscription has expired, and it's time to renew to keep the adventure going! <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+      }
+      else if(data.total_tokens > 0 && data.remaining_tokens < 1) {
+        swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+      }
+      else {
         if (this.showSettings.value) {
           this._settingsModalRef = this.ngbModal.open(container, {
             centered: true,
@@ -446,6 +447,14 @@ export class ViewComponent implements OnInit, OnDestroy {
         } else {
           this.startGame();
         }
+      }
+      if(swal_html != null) {
+        Swal.fire({
+        title: "Wait!",
+        html: swal_html,
+        showCloseButton: true,
+        showConfirmButton: false
+      });
       }
     });
   }

@@ -2,15 +2,13 @@
   <div class="col-md-10 col-lg-10">
     <div class="row">
       <div class="col-md-4 col-4 align-self-center pr-0">
-        <p class="font18 font500 text-white mb-0">
-          Device History
-        </p>
+        <p class="font18 font500 text-white mb-0">Device History</p>
       </div>
       <div class="col-md-8 col-8">
         <span class="float-right">
           <button
             class="btn text-white activelinear borderRadius10 border-0 pl-lg-4 pr-lg-4 font18 font500"
-            (click)="LogoutAlert(LogoutAllModal)"
+            (click)="logoutAlert(LogoutAllModal)"
           >
             Logout from all devices
           </button>
@@ -30,25 +28,33 @@
         <tbody>
           <tr *ngFor="let session of sessions">
             <td class="align-middle py-3 pl-0" scope="row">
-              {{ session.browser }}
-              <p class="customTableText mb-0">{{ session.os }}</p>
+              <ng-container *ngIf="session.device">
+                {{ session.device.app }}
+                <p class="customTableText mb-0">{{ session.device.device }}</p>
+              </ng-container>
+              <div *ngIf="!session.device">-</div>
             </td>
             <td class="align-middle py-3">
-              {{ getLocation(session.ip)[0] }}
-              <p class="customTableText mb-0">{{ getLocation(session.ip)[1] }}</p>
+              <ng-container *ngIf="session.location">
+                {{ session.location.city }}
+                <p class="customTableText mb-0">{{ session.location.country }}</p>
+              </ng-container>
+              <div *ngIf="!session.location">-</div>
             </td>
             <td
               class="align-middle text-center py-3"
               [ngClass]="{ activeGradientText: isActive(session) }"
             >
               {{
-                isActive(session) ? "Active Now" : (session.timestamp | time_ago)
+                isActive(session)
+                  ? "Active Now"
+                  : (session.timestamp | time_ago)
               }}
             </td>
             <td class="align-middle py-3 text-right">
               <button
                 class="btn btn-link customgradientText p-0"
-                (click)="LogoutAlert(LogoutModal)"
+                (click)="logoutAlert(LogoutModal, session)"
               >
                 Logout
               </button>
@@ -65,8 +71,15 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-9 text-center">
-          <img src="assets/img/Logout.svg" width="40" class="img-fluid py-4" alt="" />
-          <p class="font16 font500 offWhiteText pb-3">Do you want to logout from all devices?</p>
+          <img
+            src="assets/img/Logout.svg"
+            width="40"
+            class="img-fluid py-4"
+            alt=""
+          />
+          <p class="font16 font500 offWhiteText pb-3">
+            Do you want to logout from all devices?
+          </p>
           <button
             [disabled]="loggingOut"
             (click)="logoutAll()"
@@ -91,11 +104,16 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-9 text-center">
-          <img src="assets/img/Logout.svg" width="40" class="img-fluid py-4" alt="" />
+          <img
+            src="assets/img/Logout.svg"
+            width="40"
+            class="img-fluid py-4"
+            alt=""
+          />
           <p class="font16 font500 offWhiteText pb-3">Do you want to logout?</p>
           <button
             [disabled]="loggingOut"
-            (click)="deleteSession(session)"
+            (click)="deleteSession()"
             class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
           >
             Yes

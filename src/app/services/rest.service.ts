@@ -133,6 +133,20 @@ export class RestService {
       );
   }
 
+  resendVerificationLink(email: string, password: string): Observable<void> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/resend_signup_email", {
+        email,
+        password,
+      })
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
   sendOTP(token: string): Observable<void> {
     return this.http
       .post(this.r_mix_api + "/accounts/send_otp/" + token, null)
@@ -390,7 +404,7 @@ export class RestService {
     };
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: { page, limit},
+        params: { page, limit },
       })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),

@@ -13,6 +13,11 @@
   }
 }
 
+.overflow-auto {
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
+}
+
 .overflow-auto::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
@@ -46,6 +51,8 @@
 .scrollGame {
   overflow-x: scroll;
   overflow-y: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none; 
   white-space: nowrap;
   display: block;
   padding-left: 78px;
@@ -54,7 +61,7 @@
   padding-bottom: 20px;
   scrollbar-color: transparent transparent; 
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1300px) {
     padding-left: 39px;
     padding-bottom: 10px;
   }
@@ -91,7 +98,7 @@
   width: 270px;
   height: 150px;
 
-  @media (max-width: 486px) {
+  @media (max-width: 767.9px) {
     width: 175px;
     height: 95px;
   }
@@ -110,5 +117,39 @@
   @media (max-width: 480px) {
     font-size: 16px;
     line-height: 26px;
+  }
+}
+
+.arrowPaddingLeft {
+  padding-left: 50px;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  border-radius: 0px;
+  background: #151515a8;
+
+  @media (max-width: 1300px) {
+    padding-left: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-left: 10px;
+  }
+}
+
+.arrowPaddingright {
+  padding-right: 50px;
+  top: 0;
+  right: 0px;
+  z-index: 10;
+  border-radius: 0px;
+  background: #151515a8;
+
+  @media (max-width: 1300px) {
+    padding-right: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-right: 10px;
   }
 }

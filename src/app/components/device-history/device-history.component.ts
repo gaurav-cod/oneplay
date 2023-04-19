@@ -4,6 +4,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { MessagingService } from "src/app/services/messaging.service";
 
 @Component({
   selector: "app-device-history",
@@ -15,56 +16,56 @@ export class DeviceHistoryComponent implements OnInit {
   ipLocationMap: { [key: string]: string } = {};
   loggingOut: boolean = false;
   private logoutRef: NgbModalRef;
+  private logoutSession: Session;
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly ngbModal: NgbModal,
+    private readonly messagingService: MessagingService,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
-    this.restService.getSessions().subscribe((res) => {
-      this.sessions = res;
-      this.sessions.forEach((session) => {
-        this.restService.getLocation(session.ip).subscribe((res) => {
-          this.ipLocationMap[session.ip] = `${res.city}, ${res.country_name}`;
-        });
-      });
-    });
-  }
-
-  getLocation(ip: string): [string, string] {
-    let [state, country] = (this.ipLocationMap[ip] || ip).split(",");
-
-    if (!country) country = "Unknown";
-
-    return [state, country];
+    this.restService.getSessions().subscribe((res) => (this.sessions = res));
   }
 
   isActive(session: Session): boolean {
     return session.key === this.authService.sessionKey;
   }
 
-  deleteSession(session: Session): void {
+  async deleteSession() {
+    if (!this.logoutSession) {
+      return;
+    }
+
     this.loggingOut = true;
     this.logoutRef.close();
-    this.restService.deleteSession(session.key).subscribe(
-      () => {
-        this.loggingOut = false;
-        this.sessions = this.sessions.filter((s) => s.key !== session.key);
-        if (session.key === this.authService.sessionKey) {
-          this.authService.logout();
-        }
-      },
-      (error) => {
-        this.loggingOut = false;
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+
+    try {
+      if (this.isActive(this.logoutSession)) {
+        await this.messagingService.removeToken();
       }
-    );
+    } finally {
+      this.restService.deleteSession(this.logoutSession.key).subscribe(
+        () => {
+          this.loggingOut = false;
+          this.sessions = this.sessions.filter(
+            (s) => s.key !== this.logoutSession.key
+          );
+          if (this.isActive(this.logoutSession)) {
+            this.authService.logout();
+          }
+        },
+        (error) => {
+          this.loggingOut = false;
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
+        }
+      );
+    }
   }
 
   logoutAll() {
@@ -72,19 +73,26 @@ export class DeviceHistoryComponent implements OnInit {
 
     Promise.all(
       this.sessions.map(async (session) => {
-        // if (!this.isActive(session)) {
+        if (!this.isActive(session)) {
           this.logoutRef.close();
           await this.restService.deleteSession(session.key).toPromise();
-        // }
+        }
       })
     ).finally(() => {
-      this.loggingOut = false;
-      // this.sessions = this.sessions.filter((s) => this.isActive(s));
-      window.location.href = '/dashboard/login';
+      this.messagingService.removeToken().finally(() => {
+        this.restService
+          .deleteSession(this.authService.sessionKey)
+          .toPromise()
+          .finally(() => {
+            this.loggingOut = false;
+            window.location.href = "/dashboard/login";
+          });
+      });
     });
   }
 
-  LogoutAlert(container) {
+  logoutAlert(container, session?: Session) {
+    this.logoutSession = session;
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",

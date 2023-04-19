@@ -59,6 +59,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: () => {
+        this.loaderService.stopLoader("verify");
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified. You can now login.",
@@ -69,23 +70,55 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           this.router.navigateByUrl("/login");
         });
       },
-      error: (error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-          allowEscapeKey: false,
-        }).then((res) => {
-          if (res.isConfirmed) {
-            this.verify();
-          } else {
-            this.router.navigateByUrl("/login");
-          }
-        }),
-      complete: () => {
+      error: (error) => {
         this.loaderService.stopLoader("verify");
+        this.resendVerificationLink(error, token);
       },
+    });
+  }
+
+  private resendVerificationLink(error: any, token: string) {
+    Swal.fire({
+      title: "Error Code: " + error.code,
+      text: error.message,
+      icon: "error",
+      confirmButtonText: "Resend Verification Link",
+      cancelButtonText: "Report Issue",
+      showCancelButton: true,
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        Swal.fire({
+          title: "Enter your password",
+          input: "password",
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          confirmButtonText: "Proceed",
+          showLoaderOnConfirm: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const password = result.value;
+            const [encodedEmail] = atob(token).split(":");
+            const email = atob(encodedEmail);
+            Swal.showLoading();
+            this.restService.resendVerificationLink(email, password).subscribe({
+              next: () => {
+                Swal.fire({
+                  icon: "success",
+                  title: "Check your email and verify again",
+                }).then(() => this.router.navigateByUrl("/login"));
+              },
+              error: (error) => this.resendVerificationLink(error, token),
+            });
+          }
+        });
+      } else {
+        location.href = "/contact.html";
+      }
     });
   }
 }

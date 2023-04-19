@@ -38,6 +38,8 @@
         overflow-y: auto;
         height: 95vh !important;
         opacity: 0;
+        -ms-overflow-style: none; /* IE 11 */
+        scrollbar-width: none; 
 
         .navbar-toggler {
             width: 20px;

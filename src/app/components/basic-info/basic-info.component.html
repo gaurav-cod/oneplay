@@ -16,7 +16,7 @@
                 <div class="card transparentBg cursorPointer profile-image">
                   <img
                     class="card-img rounded-circle wh48"
-                    [src]="photo || (title | avatar)"
+                    [src]="photo || 'assets/img/defaultUser.svg'"
                     alt=""
                     (error)="onUserError($event)"
                   />
