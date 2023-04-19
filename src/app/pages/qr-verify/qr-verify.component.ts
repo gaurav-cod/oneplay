@@ -57,21 +57,6 @@ export class QrVerifyComponent implements OnInit {
     });
   }
 
-  onDigitInput(event){
-
-    let element;
-    if (event.code !== 'Backspace')
-         element = event.srcElement.nextElementSibling;
- 
-     if (event.code === 'Backspace')
-         element = event.srcElement.previousElementSibling;
- 
-     if(element == null)
-         return;
-     else
-         element.focus();
-  }
-
   verify() {
     const sessionToken = localStorage.getItem("op_session_token");
     const c = Object.values(
