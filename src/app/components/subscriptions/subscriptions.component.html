@@ -1,9 +1,12 @@
 <div class="row mb-5">
-  <div class="col-md-10 col-lg-10 mt-4">
-    <p *ngIf="totalTokens !== undefined" class="font18 font500 text-white">
+  <div class="col-md-11 col-lg-12 mt-4">
+    <!-- <p *ngIf="totalTokens !== undefined" class="font18 font500 text-white">
       Subscription Usage
     </p>
     <div *ngIf="totalTokens !== undefined" class="py-3">
+      <div class="outerRange">
+        <div class="innerRange"></div>
+      </div>
       <p>
         <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
         <span class="text-muted font700">Total Playtime : </span
@@ -16,10 +19,35 @@
           remainingTokens | tokens
         }}</span>
       </p>
+    </div> -->
+    <div class="row mb-3">
+      <div class="col-6 align-self-center">
+        <p *ngIf="currentSubscriptions.length" class="font18 font500 text-white mb-0">
+          Current Subscription
+        </p>
+      </div>
+      <div *ngIf="totalTokens !== undefined" class="col-6 pl-0">
+        <div class="row justify-content-end">
+          <div class="col-auto pl-0">
+            <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
+            <div class="outerRange">
+              <div class="innerRange" [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}"></div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <p class="mb-0 font16 font500 muteText">0</p>
+              </div>
+              <div class="col text-center">
+                <p class="mb-0 font16 font500 muteText">10</p>
+              </div>
+              <div class="col text-right">
+                <p class="mb-0 font16 font500 muteText">30</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <p *ngIf="currentSubscriptions.length" class="font18 font500 text-white">
-      Current Subscription
-    </p>
     <div *ngIf="currentSubscriptions.length" class="row">
       <div *ngFor="let sub of currentSubscriptions" class="col-md-12 mt-2">
         <div class="card lightBg borderRadius10 p-2">
@@ -30,20 +58,8 @@
                   {{ sub.planName }} ({{ sub.planType | titlecase }} Plan)
                 </p>
                 <h2 class="font38 font700 text-white">
-                  {{ sub.amount }}
-                  {{ sub.planCurrency | uppercase }}
+                  ₹ {{ sub.amount }}
                 </h2>
-                <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-                <span class="font18 font500 offWhiteText"
-                  >{{ sub.tokens | tokens }} -
-                </span>
-                <span
-                  class="font18 font500 offWhiteText d-none d-sm-inline-block"
-                  >{{ sub.duration }} days plan -
-                </span>
-                <span class="font18 font500 muteText ml-2"
-                  >Expires on {{ sub.endsAt | date : "mediumDate" }}</span
-                >
               </div>
               <div
                 *ngIf="sub.planType === 'base'"
@@ -57,22 +73,84 @@
                   Renew
                 </button>
               </div>
+              <div class="col-12">
+                <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
+                <span class="font18 font500 offWhiteText"
+                  >{{ sub.tokens | tokens }}/{{
+                    remainingTokens | tokens
+                  }} left .
+                </span>
+                <!-- <span
+                  class="font18 font500 offWhiteText d-none d-sm-inline-block"
+                  >{{ sub.duration }} days plan .
+                </span> -->
+                <span class="font16 font500 muteText"
+                  >Expires on {{ sub.endsAt | date : "mediumDate" }}</span
+                >
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <p class="font18 font500 text-white mb-0 mt-4">Subscription History</p>
-    <div class="row">
+    <div class="row mb-2">
+      <div class="col-auto mt-4">
+        <div class="row onlyTransition cursorPointer" data-toggle="collapse" (click)="showBody=!showBody" [ngClass]="showBody ? 'arrowTansfrom' : ' '">
+          <div class="col-auto align-self-end pb-1"><p class="font18 font500 text-white mb-0">Subscription History</p></div>
+          <div class="col p-0"><i class="fas fa-caret-down font20 text-white"></i></div>
+        </div>
+      </div>
+      <div
+        class="col text-right align-self-end"
+        ngbDropdown
+        placement="bottom-right"
+      >
+        <a
+          href="javascript:void(0)"
+          class="nav-link p-0"
+          role="button"
+          ngbDropdownToggle
+        >
+          <img
+            alt=""
+            class="img-fluid"
+            src="assets/img/Filter_2.svg"
+          />
+        </a>
+        <div class="dropdown-bug">
+          <div
+            class="dropdown-menu-arrow menudropdown"
+            ngbDropdownMenu
+          >
+            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+              Successful
+            </a>
+            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+              Processing
+            </a>
+            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+              Failed
+            </a>
+            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+              Cancelled
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2 collapseDiv" *ngIf="showBody">
       <div class="col-md-12 mt-2">
         <div class="table-responsive">
-          <table class="customTable table">
+          <table class="customTable table mb-0">
             <thead>
               <tr scope="row">
-                <th scope="col" class="pl-0">Date of Purchase</th>
+                <th scope="col" class="pl-0 d-block d-lg-none">Date</th>
+                <th scope="col" class="pl-0 d-none d-lg-block">Date of Purchase</th>
                 <th scope="col">Subscription Type</th>
-                <th scope="col">Price</th>
-                <th scope="col" class="pr-0">Status</th>
+                <th scope="col" class="text-center">Price</th>
+                <th scope="col" class="text-center">Status</th>
+                <th scope="col">Start Date</th>
+                <th scope="col" class="pr-0 text-right">End Date</th>
               </tr>
             </thead>
             <tbody>
@@ -86,12 +164,11 @@
                     {{ subscription.planDesc }}
                   </p>
                 </td>
-                <td class="align-middle py-3">
-                  {{ subscription.amount }}
-                  {{ subscription.currency | uppercase }}
+                <td class="align-middle text-center py-3">
+                  ₹ {{ subscription.amount }}
                 </td>
                 <td
-                  class="align-middle py-3 pr-0"
+                  class="align-middle py-3 text-center"
                   [ngClass]="{
                     gradientText: subscription.status === 'active',
                     cancelgradientText: subscription.status === 'upcoming'
@@ -99,11 +176,18 @@
                 >
                   {{ subscription.status | titlecase }}
                 </td>
+                <td class="align-middle py-3">
+                  {{ subscription.startsAt | date : "dd.MM.yyyy" }}
+                </td>
+                <td class="align-middle text-right py-3 pr-0">
+                  {{ subscription.endsAt | date : "dd.MM.yyyy" }}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </div> 
+    <hr class="borderBottomTab mt-0"/>
   </div>
 </div>

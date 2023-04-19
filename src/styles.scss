@@ -209,6 +209,10 @@ input:-webkit-autofill:active {
 .font16 {
   font-size: 16px;
   line-height: 26px;
+  @media (max-width: 480px) {
+    font-size: 14px;
+    line-height: 21px;
+  }
 }
 
 .font500 {
@@ -267,7 +271,7 @@ input:-webkit-autofill:active {
 }
 
 .offWhiteText {
-  color: #DCDCDC;
+  color: #DCDCDC !important;
 }
 
 .offWhiteText:hover {
@@ -626,11 +630,20 @@ input:-webkit-autofill:active {
   color: #959595;
 }
 
+.customTable.table thead th {
+  padding: 0rem 0.5rem;
+}
+
 .customTable.table tbody td {
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
   color: #dcdcdc;
+  padding: 0rem 0.5rem;
+  @media (max-width: 767px) {
+   font-size: 16px;
+   line-height: 26px; 
+  }
 }
 
 .gradientText {
@@ -672,7 +685,7 @@ input:-webkit-autofill:active {
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 0.02em;
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     font-size: 14px;
     line-height: 18px;
   }
@@ -1002,4 +1015,42 @@ html.swal2-shown,body.swal2-shown {
 
 .customTooltip .arrow {
   left: calc(21% - 0.4rem) !important;
+}
+
+.accordion > .card, .accordion > .card > .card-header{
+  background-color: transparent !important;
+  padding: 0px !important;
+}
+
+.accordion > .card > .card-body {
+  padding: 0px !important;
+}
+
+.arrowTansfrom i {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  // transition: transform 330ms ease-in-out;
+}
+
+.onlyTransition i {
+  transition: transform 330ms ease-in-out; 
+}
+
+.collapseDiv {
+  animation: fade_in_show 0.5s
+}
+
+@keyframes fade_in_show {
+  0% {
+       opacity: 0;
+       transform: scale(0)
+  }
+
+  100% {
+       opacity: 1;
+       transform: scale(1)
+  }
 }

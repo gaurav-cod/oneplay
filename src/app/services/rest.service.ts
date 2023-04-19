@@ -221,6 +221,12 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
+  getFilterSubscription(): Observable<SubscriptionModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing")
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+  }
+
   setOnline(): Observable<void> {
     return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
       map((res) => {}),

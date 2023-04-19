@@ -11,8 +11,10 @@ import Swal from "sweetalert2";
 export class SubscriptionsComponent implements OnInit {
   subscriptions: SubscriptionModel[] = [];
   currentSubscriptions: SubscriptionModel[] = [];
+  filterSubscriptions: SubscriptionModel[] = [];
   totalTokens: number;
   remainingTokens: number;
+  showBody = false;
 
   constructor(private readonly restService: RestService) {}
 
@@ -27,13 +29,20 @@ export class SubscriptionsComponent implements OnInit {
     this.restService
       .getCurrentSubscription()
       .subscribe((s) => (this.currentSubscriptions = s));
-  }
 
+    this.restService.getFilterSubscription().subscribe((s) => (this.filterSubscriptions = s));
+    
+  }
+  
   onRenew() {
     Swal.fire({
       icon: "warning",
       title: "Not available at the moment",
       text: "",
     });
+  }
+
+  calculatePercentage(remaining= 0, total=0) {
+    return Math.round( remaining/total*100)+'%'
   }
 }

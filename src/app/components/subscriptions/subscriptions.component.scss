@@ -1,0 +1,23 @@
+.menudropdown {
+    background-color: #212123 !important;
+    overflow: auto;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
+}
+
+.outerRange {
+    height: 10px;
+    width: 286px;
+    background: #3E4246;
+    border-radius: 15px;
+    @media (max-width: 480px) {
+        width: 150px;
+    }
+}
+
+.innerRange {
+    background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
+    border-radius: 15px;
+    // width: 169px;
+    height: 10px;
+}

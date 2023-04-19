@@ -11,6 +11,7 @@ export class SubscriptionModel {
   duration: number;
   status: "active" | "expired" | "upcoming";
   endsAt: Date;
+  startsAt: Date;
   purchasedAt: Date;
   tokens: number;
   planType: 'base' | 'topup';
@@ -30,6 +31,7 @@ export class SubscriptionModel {
         ? "upcoming"
         : json.subscription_status;
     this.endsAt = new Date(json.subscription_active_till);
+    this.startsAt = new Date(json.subscription_active_from)
     this.purchasedAt = new Date(json.subscription_brought_at_time);
     this.tokens = plan.tokens;
     this.planType = plan.type;
