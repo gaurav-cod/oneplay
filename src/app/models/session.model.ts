@@ -23,7 +23,7 @@ export class Session {
     const { app, device } = json.device_info;
     if (app || device) {
       this.device = {
-        app: !app ? "Unkwon App" : app,
+        app: !app ? "Unknown App" : app,
         device: !device ? "Unknown Device" : device,
       };
     }
