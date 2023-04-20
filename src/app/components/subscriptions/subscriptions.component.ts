@@ -14,6 +14,8 @@ export class SubscriptionsComponent implements OnInit {
   totalTokens: number;
   remainingTokens: number;
   showBody = false;
+  failedProcess = false;
+  allSub = true;
 
   constructor(private readonly restService: RestService) {}
 
@@ -30,13 +32,25 @@ export class SubscriptionsComponent implements OnInit {
       .subscribe((s) => (this.currentSubscriptions = s));
   }
 
+  successFilter() {
+    this.allSub = true;
+    this.failedProcess = false;
+    this.restService
+      .getSubscriptions()
+      .subscribe((s) => (this.subscriptions = s));
+  }
+
   processingFilter() {
+    this.allSub = false;
+    this.failedProcess = true;
     this.restService
       .getProcessingSubscription()
       .subscribe((s) => (this.subscriptions = s));
   }
 
   failedFilter() {
+    this.allSub = false;
+    this.failedProcess = true;
     this.restService
       .getFailedSubscription()
       .subscribe((s) => (this.subscriptions = s));

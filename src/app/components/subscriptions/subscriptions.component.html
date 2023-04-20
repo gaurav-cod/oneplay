@@ -31,11 +31,14 @@
           <div class="col-auto pl-0">
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
-              <div class="innerRange" [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}"></div>
+              <div class="innerRange" 
+                ngbTooltip="{{ remainingTokens | tokens }} left"
+                [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
+              </div>
             </div>
-            <div [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
+            <div>
               <span class="font16 font500 muteText">0</span>
-              <span class="font16 font500 muteText float-right">{{ remainingTokens | tokens }}</span>
+              <span class="font16 font500 muteText float-right">{{ totalTokens | tokens }}</span>
             </div>
           </div>
         </div>
@@ -69,16 +72,14 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
                 <span class="font18 font500 offWhiteText"
-                  >{{ totalTokens | tokens }}/{{
-                    remainingTokens | tokens
-                  }} left .
+                  >{{ sub.tokens | tokens }} . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
                   >{{ sub.duration }} days plan .
                 </span> -->
                 <span class="font16 font500 muteText"
-                  >Expires on {{ sub.endsAt | date : "mediumDate" }}</span
+                  > Expires on {{ sub.endsAt | date : "mediumDate" }}</span
                 >
               </div>
             </div>
@@ -115,7 +116,7 @@
             class="dropdown-menu-arrow menudropdown"
             ngbDropdownMenu
           >
-            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" (click)="successFilter()" class="dropdown-item font16 font500 offWhiteText">
               Successful
             </a>
             <a href="javascript:void(0)" (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
@@ -123,9 +124,6 @@
             </a>
             <a href="javascript:void(0)" (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
               Failed
-            </a>
-            <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText">
-              Cancelled
             </a>
           </div>
         </div>
@@ -142,8 +140,9 @@
                 <th scope="col">Subscription Type</th>
                 <th scope="col" class="text-center">Price</th>
                 <th scope="col" class="text-center">Status</th>
-                <th scope="col">Start Date</th>
-                <th scope="col" class="pr-0 text-right">End Date</th>
+                <th scope="col" *ngIf="allSub">Start Date</th>
+                <th scope="col" class="pr-0 text-right" *ngIf="allSub">End Date</th>
+                <th scope="col" class="pr-0 text-right" *ngIf="failedProcess">Transaction ID</th>
               </tr>
             </thead>
             <tbody>
@@ -161,19 +160,23 @@
                   ₹ {{ subscription.amount }}
                 </td>
                 <td
-                  class="align-middle py-3 text-center"
+                  class="align-middle py-3 text-center font500"
                   [ngClass]="{
-                    gradientText: subscription.status === 'active',
-                    cancelgradientText: subscription.status === 'upcoming'
+                    gradientText: subscription.status === 'processing',
+                    gradientInfoText: subscription.status === 'active',
+                    cancelgradientText: subscription.status === 'failed' || subscription.status === 'upcoming'
                   }"
                 >
                   {{ subscription.status | titlecase }}
                 </td>
-                <td class="align-middle py-3">
+                <td class="align-middle py-3" *ngIf="allSub">
                   {{ subscription.startsAt | date : "dd.MM.yyyy" }}
                 </td>
-                <td class="align-middle text-right py-3 pr-0">
+                <td class="align-middle text-right py-3 pr-0" *ngIf="allSub">
                   {{ subscription.endsAt | date : "dd.MM.yyyy" }}
+                </td>
+                <td class="align-middle text-right py-3 pr-0" *ngIf="failedProcess">
+                  {{ subscription.transitionId }}
                 </td>
               </tr>
             </tbody>

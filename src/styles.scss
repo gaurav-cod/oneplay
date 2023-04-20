@@ -630,8 +630,10 @@ input:-webkit-autofill:active {
   color: #959595;
 }
 
-.customTable.table thead th {
-  padding: 0rem 0.5rem;
+@media (max-width:1200px) {
+  .customTable.table thead th {
+    padding: 0rem 0.5rem;
+  }
 }
 
 .customTable.table tbody td {
@@ -639,10 +641,10 @@ input:-webkit-autofill:active {
   font-size: 18px;
   line-height: 20px;
   color: #dcdcdc;
-  padding: 0rem 0.5rem;
-  @media (max-width: 767px) {
+  @media (max-width: 1200px) {
    font-size: 16px;
-   line-height: 26px; 
+   line-height: 26px;
+   padding: 0rem 0.5rem; 
   }
 }
 
