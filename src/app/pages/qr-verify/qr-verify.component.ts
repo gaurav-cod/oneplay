@@ -90,8 +90,7 @@ export class QrVerifyComponent implements OnInit {
         },
       });
     } else {
-      console.log(this.codeForm.value);
-      // this.router.navigateByUrl("/login?code=" + code);
+      this.router.navigateByUrl("/login?code=" + code);
     }
   }
 
