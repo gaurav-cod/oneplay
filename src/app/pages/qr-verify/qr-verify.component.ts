@@ -96,13 +96,15 @@ export class QrVerifyComponent implements OnInit {
   }
 
   keyUpEvent(event, index) {
+    if(index > 3) {
+      index--
+    }
     let pos = index;
     event = (event) ? event : window.event;
-    var charCode = (event.which) ? event.which : event.keyCode;
-    
+    var pattern = /^\d+\.?\d*$/;
     if (event.keyCode === 8 && event.which === 8) {
       pos = index - 1 ;
-    } else if(charCode > 31 && (charCode < 48 || charCode > 57)) {
+    } else if(!pattern.test(event.key)) {
       return false;
     }
     else {
