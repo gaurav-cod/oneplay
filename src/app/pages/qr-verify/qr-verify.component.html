@@ -1,35 +1,58 @@
 <div class="row justify-content-center">
   <div class="col-lg-9 col-md-11 text-center">
     <h1 class="font38 text-white">Enter the code displayed on your TV</h1>
+
+    <!-- <form (ngSubmit)="onSubmit()" [formGroup]="codeForm">
+      <div class="row justify-content-center">
+          <div class="form-group col-auto" *ngFor="let input of formInput;  index as i">
+              <input #formRow type="text" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="keyUpEvent($event, i)">
+            </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form> -->
+
     <form [formGroup]="codeForm">
+      
       <div class="row mt-lg-8 mt-md-7 mt-7 justify-content-center">
-        <div class="col-auto p-1">
+        <div class="form-group col-auto otpInput" *ngFor="let input of formInput;  index as i">
+          <input #formRow type="text" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');" (keyup)="keyUpEvent($event, i)">
+          <div class="col-auto p-1" *ngIf="input === 'indicator'">
+            <div class="w70h61 border-bottom-0 mutedColor p-0">-</div>
+          </div>
+        </div>
+        
+        <!-- <div class="col-auto p-1">
           <input
             formControlName="one"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
             autofocus
+            maxlength="1" 
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="two"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="three"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="four"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
@@ -38,31 +61,35 @@
         <div class="col-auto p-1">
           <input
             formControlName="five"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="six"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="seven"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
         </div>
         <div class="col-auto p-1">
           <input
             formControlName="eight"
-            type="number"
+            type="text"
             class="form-control w70h61 p-1"
+            maxlength="1" oninput="this.value=this.value.replace(/[^0-9]/g,'');"
           />
-        </div>
+        </div> -->
       </div>
       <div class="row mt-lg-8 mt-md-7 mt-7">
         <div class="col-md-12 text-center">
