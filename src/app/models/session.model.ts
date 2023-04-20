@@ -21,18 +21,18 @@ export class Session {
     this.timestamp = new Date(json.timestamp);
 
     const { app, device } = json.device_info;
-    if (app !== "-" || device !== "-") {
+    if (app || device) {
       this.device = {
-        app: app === "-" ? "Oneplay App" : app,
-        device: device === "-" ? "Unknown Device" : device,
+        app: !app ? "Unkwon App" : app,
+        device: !device ? "Unknown Device" : device,
       };
     }
 
-    const { city, country_name } = json.location_info;
-    if (city !== "-" || !!country_name) {
+    const { city, country } = json.location_info;
+    if (city || country) {
       this.location = {
-        city: city === "-" ? "Unknown City" : city,
-        country: country_name ? country_name : "Unknown Country",
+        city: !city ? "Unknown City" : city,
+        country: !country ? "Unknown Country" : country,
       };
     }
   }
