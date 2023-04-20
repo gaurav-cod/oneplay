@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChildren } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -11,17 +11,22 @@ import Swal from "sweetalert2";
   styleUrls: ["./qr-verify.component.scss"],
 })
 export class QrVerifyComponent implements OnInit {
+
+  form: FormGroup;
+  formInput = ['one', 'two', 'three', 'four', 'indicator', 'five', 'six', 'seven', 'eight'];
+  @ViewChildren('formRow') rows: any;
+
   public loading = false;
 
   public codeForm = new FormGroup({
-    one: new FormControl("", Validators.required),
-    two: new FormControl("", Validators.required),
-    three: new FormControl("", Validators.required),
-    four: new FormControl("", Validators.required),
-    five: new FormControl("", Validators.required),
-    six: new FormControl("", Validators.required),
-    seven: new FormControl("", Validators.required),
-    eight: new FormControl("", Validators.required),
+    one: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    two: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    three: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    four: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    five: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    six: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    seven: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    eight: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
   });
 
   private routeSubscription: Subscription;
@@ -29,7 +34,7 @@ export class QrVerifyComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   ngOnDestroy(): void {
@@ -87,5 +92,26 @@ export class QrVerifyComponent implements OnInit {
     } else {
       this.router.navigateByUrl("/login?code=" + code);
     }
+  }
+
+  keyUpEvent(event, index) {
+    if(index > 3) {
+      index--
+    }
+    let pos = index;
+    event = (event) ? event : window.event;
+    var pattern = /^\d+\.?\d*$/;
+    if (event.keyCode === 8 && event.which === 8) {
+      pos = index - 1 ;
+    } else if(!pattern.test(event.key)) {
+      return false;
+    }
+    else {
+      pos = index + 1 ;
+    }
+    if (pos > -1 && pos < this.formInput.length ) {
+      this.rows._results[pos].nativeElement.focus();
+    }
+
   }
 }

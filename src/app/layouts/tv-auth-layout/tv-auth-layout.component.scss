@@ -1,6 +1,14 @@
 .h100 {
     height: 100vh;
     overflow-y: scroll;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none;
+}
+
+.h100::-webkit-scrollbar {
+    background: transparent;
+    width: 0px;
+    height: 0px;
 }
 
 .customBG {
