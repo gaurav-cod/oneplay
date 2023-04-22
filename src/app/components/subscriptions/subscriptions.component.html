@@ -140,8 +140,8 @@
                 <th scope="col">Subscription Type</th>
                 <th scope="col" class="text-center">Price</th>
                 <th scope="col" class="text-center">Status</th>
-                <th scope="col" *ngIf="allSub">Start Date</th>
-                <th scope="col" class="pr-0 text-right" *ngIf="allSub">End Date</th>
+                <th scope="col" *ngIf="sucess">Start Date</th>
+                <th scope="col" class="pr-0 text-right" *ngIf="sucess">End Date</th>
                 <th scope="col" class="pr-0 text-right" *ngIf="failedProcess">Transaction ID</th>
               </tr>
             </thead>
@@ -169,10 +169,10 @@
                 >
                   {{ subscription.status | titlecase }}
                 </td>
-                <td class="align-middle py-3" *ngIf="allSub">
+                <td class="align-middle py-3" *ngIf="sucess">
                   {{ subscription.startsAt | date : "dd.MM.yyyy" }}
                 </td>
-                <td class="align-middle text-right py-3 pr-0" *ngIf="allSub">
+                <td class="align-middle text-right py-3 pr-0" *ngIf="sucess">
                   {{ subscription.endsAt | date : "dd.MM.yyyy" }}
                 </td>
                 <td class="align-middle text-right py-3 pr-0" *ngIf="failedProcess">
@@ -181,6 +181,11 @@
               </tr>
             </tbody>
           </table>
+          <div class="text-center border-top borderColor py-3" *ngIf="subscriptions.length > 4  && loadMoreBtn" >
+            <button (click)="loadMore()" *ngIf="sucessLoad" class="btn btn-outline-info btn-sm">Load more</button>
+            <button (click)="failedLoadMore()" *ngIf="failedLoad" class="btn btn-outline-info btn-sm">Load more</button>
+            <button (click)="processignLoadMore()" *ngIf="processLoad" class="btn btn-outline-info btn-sm">Load more</button>
+          </div>
         </div>
       </div>
     </div> 

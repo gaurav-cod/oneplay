@@ -210,9 +210,12 @@ export class RestService {
       );
   }
 
-  getSubscriptions(limit: number = 2): Observable<SubscriptionModel[]> {
+  getSubscriptions(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", { params: { limit } })
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {params: { page, limit },})
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
@@ -222,15 +225,21 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
-  getProcessingSubscription(limit: number = 2): Observable<SubscriptionPaymentModel[]> {
+  getProcessingSubscription(
+      page: number,
+      limit: number
+    ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing", { params: { limit } })
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing", {params: { page, limit },})
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
-  getFailedSubscription(limit: number = 2): Observable<SubscriptionPaymentModel[]> {
+  getFailedSubscription(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed", { params: { limit } })
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed", {params: { page, limit },})
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
