@@ -27,7 +27,7 @@
                   <div class="avatar rounded-circle">
                     <img
                       (error)="onImgError($event, video)"
-                      [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+                      [src]="video.creatorThumbnail || (video.creatorName | avatar)"
                       class="img-fluid wh50"
                       alt=""
                     />
