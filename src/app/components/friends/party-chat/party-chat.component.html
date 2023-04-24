@@ -13,10 +13,9 @@
       [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
     >
       <div
-        class="avatar avatar-sm rounded-circle mr-2"
-        style="width: 24px; height: 24px"
+        class="mr-2"
       >
-        <img [src]="getSenderName(msg) | async | avatar" alt="" />
+        <img [src]="getSenderName(msg) | async | avatar" width="24px" height="24px" class="avatar avatar-sm rounded-circle" alt="" />
       </div>
       <div class="text-white-50 mr-2 text-sm">
         {{ getSenderName(msg) | async }}
