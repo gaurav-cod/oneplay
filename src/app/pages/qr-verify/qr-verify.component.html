@@ -7,7 +7,7 @@
         <div class="form-group col-auto p-1 otpInput" *ngFor="let input of formInput;  index as i">
           <input #formRow type="tel" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keyup)="jumpPrev($event, i)">
           <div class="col-auto p-1" *ngIf="input === 'indicator'">
-            <div class="w70h61 border-bottom-0 mutedColor p-0">-</div>
+            <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
           </div>
         </div>
         
