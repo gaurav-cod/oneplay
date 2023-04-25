@@ -381,7 +381,6 @@ live {
   margin-left: auto;
   flex: none;
   outline: none;
-  position: relative;
   transition: all 0.2s;
   width: 1em;
   position: absolute;
@@ -478,6 +477,10 @@ live {
 .font14 {
   font-size: 14px;
   line-height: 21px;
+}
+
+.w50 {
+  width: 50px;
 }
 
 .font17 {
