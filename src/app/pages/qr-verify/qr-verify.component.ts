@@ -100,7 +100,7 @@ export class QrVerifyComponent implements OnInit {
     }
     let pos = index;
     event = (event) ? event : window.event;
-    var pattern = /^\d+\.?\d*$/;
+    var pattern = /[0-9]/g;
     if (event.keyCode === 8 && event.which === 8) {
       pos = index - 1 ;
     } else if(!pattern.test(event.key)) {
