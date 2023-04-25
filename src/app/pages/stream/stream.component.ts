@@ -15,6 +15,7 @@ import { GameModel } from "src/app/models/game.model";
 import { MessageModel } from "src/app/models/message.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
+import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { StreamChatService } from "src/app/services/stream-chat.service";
@@ -24,6 +25,7 @@ import { memoize } from "src/app/utils/memoize.util";
   selector: "app-stream",
   templateUrl: "./stream.component.html",
   styleUrls: ["./stream.component.scss"],
+  providers: [AvatarPipe],
 })
 export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   chats: MessageModel[] = [];
@@ -47,7 +49,8 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly meta: Meta,
     private readonly restService: RestService,
     private readonly streamChatService: StreamChatService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly gavatar: AvatarPipe,
   ) {
     this.authService.user.subscribe((user) => (this.user = user));
     this.streamChatService.messages$.subscribe((chats) => {
@@ -110,5 +113,9 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   private scrollToBottom() {
     this.chatBox.nativeElement.scrollTop =
       this.chatBox.nativeElement.scrollHeight;
+  }
+
+  onImgError(event, video: VideoModel) {
+    event.target.src = this.gavatar.transform(video.creatorName)
   }
 }

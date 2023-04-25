@@ -1,4 +1,4 @@
-<div *ngIf="!!video" class="row m-0 pt-8 stream">
+<div *ngIf="!!video" class="row m-0 pt-7 stream">
   <div class="col-md-9 col-sm-12 d-flex flex-column px-0">
     <iframe
       class="youtube-player"
@@ -15,8 +15,9 @@
       <div class="d-flex align-items-center">
         <div class="avatar avatar-lg rounded-circle mr-2">
           <img
-            [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+            [src]="video.creatorThumbnail || (video.creatorName | avatar)"
             alt=""
+            (error)="onImgError($event, video)"
           />
         </div>
         <div>
@@ -30,7 +31,7 @@
       <div class="d-flex align-items-center">
         <a
           [href]="'https://www.youtube.com/channel/' + video.channelId"
-          class="btn btn-primary"
+          class="btn linearGradient border-0 br60 text-white"
           >Follow</a
         >
         <!-- <div class="text-dark mr-1 text-lg">|</div>
@@ -80,7 +81,7 @@
         placeholder="Type something..."
         [formControl]="message"
       />
-      <button type="submit" class="btn btn-primary">Send</button>
+      <button type="submit" class="btn activelinear border-0 text-white">Send</button>
     </form>
   </div>
 </div>
@@ -138,8 +139,8 @@
                 <a
                   [href]="store.link"
                   target="_blank"
-                  class="btn btn-sm btn-primary"
-                  >View</a
+                  class="btn btn-sm activelinear border-0 text-white"
+                  >Get</a
                 >
               </div>
             </div>

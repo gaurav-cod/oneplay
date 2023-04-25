@@ -26,7 +26,7 @@
                     <div class="avatar rounded-circle mr-2">
                       <img
                         [src]="
-                          !!banner.creatorThumbnail ||
+                          banner.creatorThumbnail ||
                           (banner.creatorName | avatar)
                         "
                         alt=""
@@ -59,7 +59,7 @@
               <a
                 href="javascript:void(0)"
                 [routerLink]="['/streams/' + getId(banner)]"
-                class="btn btn-primary"
+                class="btn linearGradient border-0 br60 text-white"
                 >Watch live stream</a
               >
             </div>

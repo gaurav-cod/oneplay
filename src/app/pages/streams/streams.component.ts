@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { Router } from "@angular/router";
+import { Router, NavigationEnd } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { VideoFeedModel } from "src/app/models/streamFeed.model";
 import { VideoModel } from "src/app/models/video.model";
