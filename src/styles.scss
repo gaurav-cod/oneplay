@@ -911,13 +911,9 @@ select option {
     width: 55px;
     height: 55px;
   }
-  @media (max-width: 506px) and (min-width: 375px) {
-    width: 42px;
-    height: 42px;
-  }
-  @media (max-width: 374px) {
-    width: 34px;
-    height: 34px;
+  @media (max-width: 506px) {
+    width: 40px;
+    height: 40px;
   }
 }
 
@@ -926,11 +922,8 @@ select option {
   @media (max-width: 1200px) and (min-width: 505px) {
     line-height: 55px;
   }
-  @media (max-width: 506px) and (min-width: 375px) {
-    line-height: 42px;
-  }
-  @media (max-width: 374px) {
-    line-height: 34px;
+  @media (max-width: 506px){
+    line-height: 40px;
   }
 }
 
