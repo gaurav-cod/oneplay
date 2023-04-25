@@ -168,7 +168,6 @@
             <div class="row">
               <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 font24 text-white">About Game</h1>
-                <!-- <h1 class="font700 font24 text-white mb-0" (click)="playGame(launchModal)">About Game</h1> -->
                 <span
                   id="description"
                   class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
@@ -586,17 +585,13 @@
 </ng-template>
 
 <ng-template #initializedModal>
-  <div class="modal-content" [ngStyle]="{ display: display }">
-    <div class="modal-body pl-4 pr-4 pt-4 pb-0 text-center">
-      <h2 class="text-dark mb-2">{{ initialized }}</h2>
-      <p class="text-muted mb-0">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <h2 class="offWhiteText font28 font600 mb-2 mt-2">{{ initialized }}</h2>
+      <p class="muteText font500 mb-4">
         Please wait while we connect you to the game
       </p>
-      <img
-        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
-        alt=" "
-        width="300px"
-      />
+      <object type="image/svg+xml" class="w50" data="assets/img/Animated_Loading_Oneplay.svg"></object>
     </div>
   </div>
 </ng-template>
