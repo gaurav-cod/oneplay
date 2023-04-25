@@ -13,11 +13,12 @@
       class="d-flex justify-content-between align-items-center container-fluid py-4"
     >
       <div class="d-flex align-items-center">
-        <div class="avatar avatar-lg rounded-circle mr-2">
+        <div class="mr-2">
           <img
             [src]="video.creatorThumbnail || (video.creatorName | avatar)"
             alt=""
             (error)="onImgError($event, video)"
+            class="avatar avatar-lg rounded-circle"
           />
         </div>
         <div>
@@ -64,10 +65,9 @@
           [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
         >
           <div
-            class="avatar avatar-sm rounded-circle mr-2"
-            style="width: 24px; height: 24px"
+            class="mr-2"
           >
-            <img [src]="(getSenderName(msg) | async) | avatar" alt="" />
+            <img [src]="(getSenderName(msg) | async) | avatar" width="24px" height="24px" class="avatar avatar-sm rounded-circle" alt="" />
           </div>
           <div class="text-white-50 mr-2 text-sm">{{ getSenderName(msg) | async }}</div>
           <div class="text-white text-sm">{{ msg.message }}</div>
@@ -148,7 +148,6 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3 col-sm-12"></div>
   </div>
   <div *ngIf="topVideos.length && !!game" class="mt-5 pb-5">
     <app-stream-card

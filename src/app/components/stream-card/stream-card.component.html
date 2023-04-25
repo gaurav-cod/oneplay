@@ -24,11 +24,11 @@
               </div>
               <div class="row mt-2">
                 <div class="col-auto pr-0">
-                  <div class="avatar rounded-circle">
+                  <div>
                     <img
                       (error)="onImgError($event, video)"
+                      class="img-fluid wh50 avatar rounded-circle"
                       [src]="video.creatorThumbnail || (video.creatorName | avatar)"
-                      class="img-fluid wh50"
                       alt=""
                     />
                   </div>
