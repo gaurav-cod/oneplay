@@ -33,6 +33,6 @@ export class SubscriptionPaymentModel {
     this.purchasedAt = new Date(json.createdAt);
     this.tokens = plan.tokens;
     this.planType = plan.type;
-    this.transitionId = json.provider_payment_id;
+    this.transitionId = json.id;
   }
 }

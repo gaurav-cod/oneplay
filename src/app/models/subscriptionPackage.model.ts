@@ -10,7 +10,6 @@ export class SubscriptionPackageModel {
   plan_duration_in_days: number;
   tokens: number;
   type: 'base' | 'topup';
-  transitionId: string;
 
   constructor(json: any) {
     this.id = json.id;
@@ -24,6 +23,5 @@ export class SubscriptionPackageModel {
     this.plan_duration_in_days = json.plan_duration_in_days;
     this.tokens = json.total_offered_tokens;
     this.type = json.package_type;
-    this.transitionId = json.provider_payment_id;
   }
 }

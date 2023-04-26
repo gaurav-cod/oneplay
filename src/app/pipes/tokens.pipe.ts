@@ -4,9 +4,9 @@ import { Pipe, PipeTransform } from "@angular/core";
 export class TokensPipe implements PipeTransform {
   transform(tokens: number) {
     if (tokens < 60) {
-      return `${tokens.toFixed()} minutes`;
+      return `${Math.round(tokens)} minutes`;
     } else {
-      return `${(tokens / 60).toFixed()} hours`;
+      return `${Math.round(tokens / 60)} hours`;
     }
   }
 }

@@ -25,6 +25,7 @@ export class SubscriptionsComponent implements OnInit {
   sucessLoad = true;
   failedLoad = false;
   processLoad = false;
+  public copy: string;
 
   constructor(
     private readonly restService: RestService,

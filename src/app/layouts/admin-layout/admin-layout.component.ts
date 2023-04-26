@@ -29,7 +29,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
   stripeLoad = false;
-  currentamount: number;
+  currentamount: string;
+  currency: string;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
@@ -200,7 +201,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.restService.payForSubscription(packageId).subscribe({
       
       next: async (data) => {
-        this.currentamount = Math.round(data.amount/100);
+        this.currentamount = (data.amount/100).toFixed(2);
+        this.currency = data.currency;
         this.stripeIntent = await loadStripe(environment.stripe_key);
         this.stripeElements = this.stripeIntent.elements({
           clientSecret: data.client_secret,

@@ -25,3 +25,11 @@
 .border-top {
     border-top: 1px solid #3E4246 !important;
 }
+
+.characterLimit {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 145px;
+    cursor: pointer;
+}
