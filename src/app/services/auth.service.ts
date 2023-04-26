@@ -16,6 +16,8 @@ export class AuthService {
   private readonly _$sessionToken: BehaviorSubject<string | null> =
     new BehaviorSubject(null);
 
+  loggedOutByUser: boolean = false;
+
   constructor() {
     const sessionToken = localStorage.getItem("op_session_token");
     if (sessionToken) {
