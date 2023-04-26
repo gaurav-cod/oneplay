@@ -415,6 +415,9 @@ export class RestService {
   }
 
   getWishlistGames(ids: string[]): Observable<GameModel[]> {
+    if (ids.length === 0) {
+      return of([]);
+    }
     const data = {
       content_ids: ids.join(","),
     };
