@@ -434,11 +434,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       let swal_html = null;
       if (data.total_tokens === 0) {
         swal_html = `Looks like your gaming subscription has expired, and it's time to renew to keep the adventure going! <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
-      }
-      else if(data.total_tokens > 0 && data.remaining_tokens < 1) {
+      } else if (data.total_tokens > 0 && data.remaining_tokens < 1) {
         swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
-      }
-      else {
+      } else {
         if (this.showSettings.value) {
           this._settingsModalRef = this.ngbModal.open(container, {
             centered: true,
@@ -448,13 +446,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.startGame();
         }
       }
-      if(swal_html != null) {
+      if (swal_html != null) {
         Swal.fire({
-        title: "Wait!",
-        html: swal_html,
-        showCloseButton: true,
-        showConfirmButton: false
-      });
+          title: "Wait!",
+          html: swal_html,
+          showCloseButton: true,
+          showConfirmButton: false,
+        });
       }
     });
   }
@@ -612,7 +610,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const startTime = new Date().getTime();
+    const startTime = Date.now();
 
     this._clientTokenSubscription?.unsubscribe();
 
@@ -638,17 +636,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else {
             this.initialized = data.msg || "Please wait...";
 
-            const timeTaken = new Date().getTime() - startTime;
+            const timeTaken = Date.now() - startTime;
             if (timeTaken >= 2000) {
               this.startGameWithClientToken(sessionId, timeTaken + millis);
             } else {
+              const delay = 2000 - timeTaken;
               setTimeout(
                 () =>
                   this.startGameWithClientToken(
                     sessionId,
-                    timeTaken + millis + 1000
+                    timeTaken + millis + delay
                   ),
-                1000
+                delay
               );
             }
           }
@@ -669,7 +668,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  startGameWithWebRTCToken(count = 0): void {
+  startGameWithWebRTCToken(millis = 0): void {
     if (environment.production) {
       Swal.fire({
         icon: "info",
@@ -679,9 +678,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (count === 0) {
+    if (millis === 0) {
       this.loaderService.start();
-    } else if (count > 2) {
+    } else if (millis > 60000) {
       this.loaderService.stop();
       Swal.fire({
         title: "Oops...",
@@ -691,7 +690,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const startTime = new Date().getTime();
+    const startTime = Date.now();
 
     this._gameStatusSubscription?.unsubscribe();
 
@@ -699,16 +698,19 @@ export class ViewComponent implements OnInit, OnDestroy {
       .getWebPlayToken(this.sessionToTerminate)
       .subscribe(
         (res) => {
-          if (res.data.service === "running" && !!res.data.token) {
-            // this.launchWebRTC(res.data.token);
-            window.open(res.data.token, "_blank");
+          if (res.data.service === "running" && !!res.data.web_url) {
+            window.open(res.data.web_url, "_self");
             this.loaderService.stop();
           } else {
-            const timeTaken = new Date().getTime() - startTime;
+            const timeTaken = Date.now() - startTime;
             if (timeTaken >= 2000) {
-              this.startGameWithWebRTCToken(count + 1);
+              this.startGameWithWebRTCToken(timeTaken + millis);
             } else {
-              setTimeout(() => this.startGameWithWebRTCToken(count + 1), 1000);
+              const delay = 2000 - timeTaken;
+              setTimeout(
+                () => this.startGameWithWebRTCToken(timeTaken + millis + delay),
+                delay
+              );
             }
           }
         },
@@ -825,13 +827,6 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   showText() {
     this.isReadMore = !this.isReadMore;
-  }
-
-  private launchWebRTC(token: string) {
-    window.open(
-      `${environment.webrtc_domain}/?token=${token}&fps=55&resolution=&bitrate=10000`,
-      "_blank"
-    );
   }
 
   selectStore(store: PurchaseStore) {

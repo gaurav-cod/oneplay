@@ -112,7 +112,7 @@ export interface WebPlayTokenRO {
   code: number;
   data: {
     service?: "running" | "stopped";
-    token?: string;
+    web_url?: string;
   };
   msg: string;
   status: "success" | "fail";
