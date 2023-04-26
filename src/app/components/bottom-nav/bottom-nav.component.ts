@@ -98,6 +98,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   logout() {
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
       this.authService.logout();
     });
   }

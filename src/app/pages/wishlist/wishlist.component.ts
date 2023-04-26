@@ -1,16 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { GameModel } from "src/app/models/game.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-wishlist",
   templateUrl: "./wishlist.component.html",
   styleUrls: ["./wishlist.component.scss"],
 })
-export class WishlistComponent implements OnInit {
+export class WishlistComponent implements OnInit, OnDestroy {
   games: GameModel[] = [];
+  private wishlistSubscription: Subscription;
 
   constructor(
     private readonly restService: RestService,
@@ -18,9 +20,13 @@ export class WishlistComponent implements OnInit {
     private readonly title: Title
   ) {}
 
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.title.setTitle("OnePlay | Wishlist");
-    this.authService.wishlist.subscribe((ids) => {
+    this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
       this.restService
         .getWishlistGames(ids)
         .subscribe((games) => (this.games = games));

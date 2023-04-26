@@ -16,6 +16,8 @@ export class AuthService {
   private readonly _$sessionToken: BehaviorSubject<string | null> =
     new BehaviorSubject(null);
 
+  loggedOutByUser: boolean = false;
+
   constructor() {
     const sessionToken = localStorage.getItem("op_session_token");
     if (sessionToken) {
@@ -44,7 +46,7 @@ export class AuthService {
   }
 
   get sessionToken() {
-    return localStorage.getItem("op_session_token") || '';
+    return localStorage.getItem("op_session_token") || "";
   }
 
   get userIdAndToken() {
@@ -75,8 +77,10 @@ export class AuthService {
   logout() {
     localStorage.removeItem("op_session_token");
     this._$sessionToken.next(null);
-    this._$user.next(null);
-    this._$wishlist.next([]);
+    setTimeout(() => {
+      this._$user.next(null);
+      this._$wishlist.next([]);
+    }, 100);
   }
 
   addToWishlist(id: string) {
