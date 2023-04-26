@@ -58,36 +58,6 @@
               >
                 Logout
               </button>
-              <ng-template #LogoutModal let-d="dismiss">
-                <div class="modal-content position-relative modalBG">
-                  <div class="modal-body">
-                    <div class="row justify-content-center">
-                      <div class="col-9 text-center">
-                        <img
-                          src="assets/img/Logout.svg"
-                          width="40"
-                          class="img-fluid py-4"
-                          alt=""
-                        />
-                        <p class="font16 font500 offWhiteText pb-3">Do you want to logout?</p>
-                        <button
-                          [disabled]="loggingOut"
-                          (click)="deleteSession(session)"
-                          class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          (click)="d('Cross click')"
-                          class="btn btn-block text-white font16 font500 borderRadius60 border-0"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ng-template>
             </td>
           </tr>
         </tbody>
@@ -129,4 +99,33 @@
   </div>
 </ng-template>
 
-
+<ng-template #LogoutModal let-d="dismiss">
+  <div class="modal-content position-relative modalBG">
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-9 text-center">
+          <img
+            src="assets/img/Logout.svg"
+            width="40"
+            class="img-fluid py-4"
+            alt=""
+          />
+          <p class="font16 font500 offWhiteText pb-3">Do you want to logout?</p>
+          <button
+            [disabled]="loggingOut"
+            (click)="deleteSession()"
+            class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
+          >
+            Yes
+          </button>
+          <button
+            (click)="d('Cross click')"
+            class="btn btn-block text-white font16 font500 borderRadius60 border-0"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
