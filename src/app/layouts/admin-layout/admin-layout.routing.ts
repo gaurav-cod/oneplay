@@ -10,6 +10,7 @@ import { StreamsComponent } from 'src/app/pages/streams/streams.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
+import { PlayComponent } from 'src/app//pages/play/play.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -26,4 +27,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'wishlist',             component: WishlistComponent },
     { path: 'search',               component: SearchComponent },
     { path: 'search/:tab',          component: SearchComponent },
+    { path: 'play',                   component: PlayComponent },
 ];
