@@ -6,7 +6,6 @@ import { GLinkPipe } from "./glink.pipe";
 import { TimeAgoPipe } from "./time-ago.pipe";
 import { StorePipe } from "./store.pipe";
 import { TokensPipe } from "./tokens.pipe";
-import { CurrencyPipe } from './currency.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +15,6 @@ import { CurrencyPipe } from './currency.pipe';
     TimeAgoPipe,
     StorePipe,
     TokensPipe,
-    CurrencyPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -26,7 +24,6 @@ import { CurrencyPipe } from './currency.pipe';
     TimeAgoPipe,
     StorePipe,
     TokensPipe,
-    CurrencyPipe,
   ],
 })
 export class PipesModule {}

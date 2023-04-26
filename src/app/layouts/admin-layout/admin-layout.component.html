@@ -25,7 +25,7 @@
           <p class="font500 darkText mb-0">Total Amount</p>
         </div>
         <div class="col-auto">
-          <h2 class="font800 darkText mb-0 text-right">{{ currency | uppercase }} {{ currentamount }}</h2>
+          <h2 class="font800 darkText mb-0 text-right">{{ currentamount | currency : (currency | uppercase) }}</h2>
         </div>
       </div>
       <hr class="mt-2 mb-3"/>

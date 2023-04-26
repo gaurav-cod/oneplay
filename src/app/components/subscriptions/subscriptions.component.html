@@ -54,7 +54,7 @@
                   {{ sub.planName }} ({{ sub.planType | titlecase }} Plan)
                 </p>
                 <h2 class="font38 font700 text-white">
-                  ₹ {{ sub.amount }}
+                  {{ sub.amount | currency : (sub.planCurrency | uppercase) }}
                 </h2>
               </div>
               <div
@@ -157,7 +157,7 @@
                   </p>
                 </td>
                 <td class="align-middle text-center py-3">
-                  ₹ {{ subscription.amount }}
+                  {{ subscription.amount | currency : (subscription.planCurrency | uppercase) }}
                 </td>
                 <td
                   class="align-middle py-3 text-center font500"
