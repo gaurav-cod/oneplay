@@ -34,6 +34,7 @@ import { SubscriptionModel } from "../models/subscription.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
+import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 
 @Injectable({
   providedIn: "root",
@@ -209,9 +210,12 @@ export class RestService {
       );
   }
 
-  getSubscriptions(): Observable<SubscriptionModel[]> {
+  getSubscriptions(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/all")
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {params: { page, limit },})
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
@@ -219,6 +223,24 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/current")
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+  }
+
+  getProcessingSubscription(
+      page: number,
+      limit: number
+    ): Observable<SubscriptionPaymentModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing", {params: { page, limit },})
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+  }
+
+  getFailedSubscription(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed", {params: { page, limit },})
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
   setOnline(): Observable<void> {

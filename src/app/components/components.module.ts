@@ -28,6 +28,7 @@ import { ToastsComponent } from './toasts/toasts.component';
 import { OnboardingModalsComponent } from './onboarding-modals/onboarding-modals.component';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SelectGameCardComponent } from './select-game-card/select-game-card.component';
+import { ClipboardModule } from "ngx-clipboard";
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { SelectGameCardComponent } from './select-game-card/select-game-card.com
     ShareButtonsModule,
     ShareIconsModule,
     InfiniteScrollModule,
+    ClipboardModule,
   ],
   declarations: [
     GameCardComponent,
