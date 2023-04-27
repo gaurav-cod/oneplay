@@ -1,25 +1,25 @@
 <!-- Page content -->
 
 <div class="row justify-content-center loginBg">
-  <div class="col-lg-12 col-12 col-md-12 height100vh overflowYScroll">
-    <div class="mobileView d-block d-lg-none">
-      <div class="text-center">
+  <div class="col-lg-12 col-12 col-md-12">
+    <div class="d-block d-lg-none">
+      <div class="text-center pt-2">
         <a [href]="domain">
           <img
             src="assets/img/brandLogo.svg"
-            class="img-fluid mt-4 mb-0"
+            class="img-fluid"
             alt="logo"
           />
         </a>
       </div>
     </div>
     <div class="container">
-      <div class="row largeScreenHeight justify-content-center">
-        <div class="col-md-12 col-lg-10">
+      <div class="row justify-content-center height100vh">
+        <div class="col-auto width410">
           <form role="form" *ngIf="!resetemail">
             <div class="row mt-4">
               <div class="col-md-12">
-                <h1 class="text-white font38 font800 textCenterCustom">
+                <h1 class="text-white font30 font800 textCenterCustom">
                   Forgot Password
                 </h1>
                 <p class="font20 font500 offWhiteColor mt-4">
@@ -105,17 +105,15 @@
             </div>
           </form>
           <div class="row justify-content-center" *ngIf="resetemail">
-            <div class="col-lg-11 col-9 mb-3 textCenterCustom">
-              <div class="row text-center mb-2 justify-content-center">
-                <div class="col-7">
-                  <img
-                    src="assets/img/singup-login/Group 250.svg"
-                    class="img-fluid"
-                    alt=""
-                  />
-                </div>
+            <div class="col-auto width410 textCenterCustom">
+              <div class="text-center">
+                <img
+                  src="assets/img/singup-login/Group 250.svg"
+                  class="img-fluid wh70"
+                  alt=""
+                />
               </div>
-              <h1 class="text-white font38 font800 mb-4 mt-4">
+              <h1 class="text-white font30 font800 mb-4 mt-4">
                 Recovery Email Sent
               </h1>
               <p class="font20 font500 offWhiteColor">
