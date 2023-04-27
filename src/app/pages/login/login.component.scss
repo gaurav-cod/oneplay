@@ -307,3 +307,15 @@ input:-internal-autofill-selected {
     top: -0px !important;
   }
 }
+
+// @media (max-width: 1280.9px) {
+//   .hideInSmallScreen {
+//     display: none;
+//   }
+// }
+
+@media (any-pointer: coarse) {
+  .hideInSmallScreen {
+    display: none;
+  }
+}
