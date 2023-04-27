@@ -433,7 +433,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.getTokensUsage().subscribe((data) => {
       let swal_html = null;
       if (data.total_tokens === 0) {
-        swal_html = `Looks like your gaming subscription has expired, and it's time to renew to keep the adventure going! <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+        swal_html = `Level up and purchase a new subscription to continue Gaming. <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
       } else if (data.total_tokens > 0 && data.remaining_tokens < 1) {
         swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
       } else {
