@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  cookie_domain: "qa.oneream.com",
   domain: "https://qa.oneream.com",
   client_api: "https://client-apis.qa.oneream.com/services/v2",
   render_mix_api: "https://rendermix.qa.oneream.com/v1",

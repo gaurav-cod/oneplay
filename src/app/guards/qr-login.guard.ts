@@ -16,7 +16,11 @@ export class QrLoginGuard implements CanActivate {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u) {
         const { redirectUrl } = route.queryParams;
-        this.router.navigateByUrl(redirectUrl ?? "/");
+        if (redirectUrl?.startsWith('http')) {
+          window.location.href = redirectUrl;
+        } else {
+          this.router.navigateByUrl(redirectUrl ?? "/");
+        }
       }
     });
 

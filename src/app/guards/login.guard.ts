@@ -19,7 +19,11 @@ export class LoginGuard implements CanActivateChild {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u) {
         const { redirectUrl } = childRoute.queryParams;
-        this.router.navigateByUrl(redirectUrl ?? "/");
+        if (redirectUrl?.startsWith('http')) {
+          window.location.href = redirectUrl;
+        } else {
+          this.router.navigateByUrl(redirectUrl ?? "/");
+        }
       }
     });
 
