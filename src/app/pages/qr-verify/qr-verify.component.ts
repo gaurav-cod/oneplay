@@ -79,6 +79,10 @@ export class QrVerifyComponent implements OnInit {
             title: "Success",
             text: "You are successfully logged in!",
             icon: "success",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigateByUrl("/home");
+            }
           });
         },
         error: (err) => {
