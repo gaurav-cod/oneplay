@@ -148,9 +148,22 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
     if (error) {
       Swal.fire({
-        title: "Error Code: " + error.code,
-        text: error.message,
         icon: "error",
+        title: "Oops!",
+        text: "It looks like there's an issue with your payment method.",
+        showCancelButton: true,
+        confirmButtonText: "Retry",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.onPay();
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Kudos!",
+        text: "Your new plan will kick in right after your current one ends.",
       });
     }
     this.stripeLoad = false;
