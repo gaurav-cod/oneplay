@@ -167,7 +167,7 @@
           <div class="col-md-6 mt-3 mt-md-4">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
-                <h1 class="font700 font24 text-white">About Game</h1>
+                <h1 class="font700 font24 text-white" (click)="test(waitQueueModal)">About Game</h1>
                 <span
                   id="description"
                   class="font17 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
@@ -860,8 +860,8 @@
     >
       <i class="fas fa-times-circle"></i>
     </a>
-    <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100 text-center">
-      <h2 class="text-white w-100 font600 mb-0 test-center font18responsive">
+    <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100">
+      <h2 class="text-white w-100 font600 mb-0 text-center font18responsive">
         Game on!
       </h2>
     </div>
@@ -945,6 +945,22 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #waitQueueModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <h2 class="text-white w-100 font600 text-center font20">
+        Scouting for the Next Open Rig
+      </h2>
+      <p class="mb-0"><img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" /></p>
+      <span class="font38 font700 text-white borderBottomTab">05</span>
+      <p class="mb-0 font16 font500 muteText mt-2">Gamers ahead</p>
+      <p class="font16 font500 muteText">of you</p>
+      <p class="font16 font500 muteText my-4 mx-lg-4">Hang tight, we'll get you back in the game as soon as possible!</p>
+      <button class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60" (click)="d('Cross click')">Cancel</button>
     </div>
   </div>
 </ng-template>

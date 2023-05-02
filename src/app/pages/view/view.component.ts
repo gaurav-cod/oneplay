@@ -37,6 +37,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
+  @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -90,6 +91,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
   private _reportErrorModalRef: NgbModalRef;
+  private _waitQueueModalRef: NgbModalRef;
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
@@ -567,6 +569,15 @@ export class ViewComponent implements OnInit, OnDestroy {
         },
         (err) => {
           this.stopLoading();
+          // if(err.code == 801) {
+          //   this._waitQueueModalRef = this.ngbModal.open({
+          //     centered: true,
+          //     modalDialogClass: "modal-sm",
+          //     scrollable: true,
+          //     backdrop: "static",
+          //     keyboard: false,
+          //   })
+          // }
           if (
             err.code == 610 ||
             err.message ==
@@ -592,6 +603,16 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         }
       );
+  }
+
+  test(container):void {
+    this._waitQueueModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    })
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
