@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
 import { RestService } from "src/app/services/rest.service";
@@ -29,6 +31,7 @@ export class SubscriptionsComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
+    private readonly route: ActivatedRoute,
     ) {}
 
   ngOnInit(): void {
@@ -40,6 +43,21 @@ export class SubscriptionsComponent implements OnInit {
     this.restService
       .getCurrentSubscription()
       .subscribe((s) => (this.currentSubscriptions = s));
+
+    const params = this.route.snapshot.queryParams
+
+    if (params.swal) {
+      try{
+        const swal = decodeURIComponent(params.swal);
+        const obj = JSON.parse(swal);
+        Swal.fire({
+          icon: "success",
+          title: obj.title,
+          html: obj.html,
+        }).then(()=>{window.location.href = "/dashboard/settings/subscription"});
+      }
+      catch {}
+    }
   }
 
   private resetData(tab: 'success' | 'processing' | 'failed') {

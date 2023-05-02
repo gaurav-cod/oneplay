@@ -19,19 +19,20 @@
 
 <ng-template #stripeModal let-c="cose">
   <form (submit)="onPay()">
-    <div class="modal-body">
-      <div class="row">
-        <div class="col pr-0 align-self-center">
-          <p class="font500 darkText mb-0">Total Amount</p>
+    <div class="modal-header modalBG borderBottomTab">
+      <div class="row w-100">
+        <div class="col align-self-center">
+          <p class="font500 offWhiteText mb-0 ml-2">Total Amount</p>
         </div>
-        <div class="col-auto">
-          <h2 class="font800 darkText mb-0 text-right">{{ currentamount | currency : (currency | uppercase) }}</h2>
+        <div class="col-auto p-0">
+          <h2 class="font800 text-white mb-0 text-right">{{ currentamount | currency : (currency | uppercase) }}</h2>
         </div>
       </div>
-      <hr class="mt-2 mb-3"/>
+    </div>
+    <div class="modal-body modalBG borderBottomTab">
       <div id="stripe-card"></div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer modalBG">
       <button type="submit" class="btn linearGradient text-white border-0" [disabled]="stripeLoad">
         {{ stripeLoad ? "Proccessing..." : "Submit Payment" }}
       </button>
