@@ -569,16 +569,16 @@ export class ViewComponent implements OnInit, OnDestroy {
         },
         (err) => {
           this.stopLoading();
-          // if(err.code == 801) {
-          //   this._waitQueueModalRef = this.ngbModal.open({
-          //     centered: true,
-          //     modalDialogClass: "modal-sm",
-          //     scrollable: true,
-          //     backdrop: "static",
-          //     keyboard: false,
-          //   })
-          // }
-          if (
+          if(err.code == 801) {
+            this._waitQueueModalRef = this.ngbModal.open({
+              centered: true,
+              modalDialogClass: "modal-sm",
+              scrollable: true,
+              backdrop: "static",
+              keyboard: false,
+            })
+          }
+          else if (
             err.code == 610 ||
             err.message ==
               "Your 4 hours per day max Gaming Quota has been exhausted."
@@ -605,15 +605,15 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  test(container):void {
-    this._waitQueueModalRef = this.ngbModal.open(container, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    })
-  }
+  // test(container):void {
+  //   this._waitQueueModalRef = this.ngbModal.open(container, {
+  //     centered: true,
+  //     modalDialogClass: "modal-sm",
+  //     scrollable: true,
+  //     backdrop: "static",
+  //     keyboard: false,
+  //   })
+  // }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
