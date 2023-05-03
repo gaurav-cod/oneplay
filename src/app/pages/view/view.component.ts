@@ -570,13 +570,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (err) => {
           this.stopLoading();
           if(err.code == 801) {
-            this._waitQueueModalRef = this.ngbModal.open({
-              centered: true,
-              modalDialogClass: "modal-sm",
-              scrollable: true,
-              backdrop: "static",
-              keyboard: false,
-            })
+            this.waitQueue(err);
           }
           else if (
             err.code == 610 ||
@@ -603,6 +597,16 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         }
       );
+  }
+
+  private waitQueue(error): void {
+    this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    })
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
