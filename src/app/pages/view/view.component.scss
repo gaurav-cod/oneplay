@@ -489,17 +489,19 @@ live {
 }
 
 .blink {
-  animation: blink-animation 1s steps(5, start) infinite;
-  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  animation: blink-animation 1.5s steps(20, start) infinite;
+  -webkit-animation: blink-animation 1.5s steps(20, start) infinite;
 }
 
 @keyframes blink-animation {
   to {
     visibility: hidden;
+    opacity:0;
   }
 }
 @-webkit-keyframes blink-animation {
   to {
     visibility: hidden;
+    opacity:0;  
   }
 }

@@ -605,16 +605,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
   }
 
-  // test(container):void {
-  //   this._waitQueueModalRef = this.ngbModal.open(container, {
-  //     centered: true,
-  //     modalDialogClass: "modal-sm",
-  //     scrollable: true,
-  //     backdrop: "static",
-  //     keyboard: false,
-  //   })
-  // }
-
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
       this.stopLoading();
