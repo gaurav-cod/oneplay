@@ -37,6 +37,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
+  @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -90,6 +91,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
   private _reportErrorModalRef: NgbModalRef;
+  private _waitQueueModalRef: NgbModalRef;
 
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
@@ -567,7 +569,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         },
         (err) => {
           this.stopLoading();
-          if (
+          if(err.code == 801) {
+            this.waitQueue(err);
+          }
+          else if (
             err.code == 610 ||
             err.message ==
               "Your 4 hours per day max Gaming Quota has been exhausted."
@@ -592,6 +597,16 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         }
       );
+  }
+
+  private waitQueue(error): void {
+    this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    })
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
