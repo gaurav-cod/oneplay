@@ -11,6 +11,7 @@ import {
   GameStatusRO,
   HomeFeeds,
   ILocation,
+  IPayment,
   LoginDTO,
   PurchaseStore,
   SignupDTO,
@@ -196,9 +197,9 @@ export class RestService {
     );
   }
 
-  payForSubscription(packageName: string): Observable<PaymentIntent> {
+  payForSubscription(packageName: string): Observable<IPayment> {
     return this.http
-      .post<PaymentIntent>(
+      .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
         null
       )

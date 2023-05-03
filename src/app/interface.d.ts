@@ -1,3 +1,4 @@
+import { PaymentIntent } from "@stripe/stripe-js";
 import { GameModel } from "./models/game.model";
 import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
@@ -18,6 +19,14 @@ export interface SignupDTO {
   referred_by_id?: string;
 }
 
+export interface IPayment extends PaymentIntent {
+  metadata: {
+    userId: string;
+    orderId: string;
+    action: string;
+    plan_type: 'base'|'topup';
+  }
+}
 export interface VerifySignupDTO {
   token: string;
   otp: string;

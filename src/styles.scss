@@ -736,11 +736,18 @@ input[type="checkbox"] {
   width: 90px;
 }
 
-.swal2-x-mark, .swal2-icon-content {
+.swal2-icon.swal2-success.swal2-icon-show {
+  background-image: url('./assets/img/singup-login/Group 250.svg');
+  background-repeat: no-repeat;
+  height: 90px;
+  width: 90px;
+}
+
+.swal2-x-mark, .swal2-icon-content, .swal2-success-line-tip, .swal2-success-ring, .swal2-success-fix, .swal2-success-circular-line-right, .swal2-success-circular-line-left, .swal2-success-line-long {
   display: none !important;
 }
 
-.swal2-icon.swal2-error, .swal2-icon.swal2-warning.swal2-icon-show {
+.swal2-icon.swal2-error, .swal2-icon.swal2-warning.swal2-icon-show, .swal2-icon.swal2-success {
   border-color: transparent !important;
   color: transparent !important;
 }
@@ -751,7 +758,6 @@ input[type="checkbox"] {
   line-height: 34px !important;
   letter-spacing: 0.02em !important;
   color: #FFFFFF !important;
-  margin-top: 11px !important;
 }
 
 .swal2-html-container {
@@ -1069,4 +1075,14 @@ select {
 
 .modal-content {
   box-shadow: none !important;
+}
+
+.modal-dialog-scrollable .modal-content.stripeModal {
+  max-height: calc(100vh - 1rem) !important;
+  overflow-y: scroll !important;
+}
+
+.modal-dialog-scrollable .modal-content.stripeModal::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
