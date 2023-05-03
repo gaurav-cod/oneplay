@@ -11,8 +11,15 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { combineLatest, merge, Subscription } from "rxjs";
-import { PurchaseStore } from "src/app/interface";
+import {
+  combineLatest,
+  merge,
+  Subscription,
+  lastValueFrom,
+  map,
+  of,
+} from "rxjs";
+import { ClientTokenRO, PurchaseStore, StartGameRO } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -77,6 +84,9 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   reportText = new FormControl("", { validators: Validators.required });
 
+  queueSequence = "";
+  queueMessge = "";
+
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
   private _clientToken: string;
@@ -86,6 +96,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _launchModalRef: NgbModalRef;
   private _advancedModalRef: NgbModalRef;
   private _gamepads: Gamepad[] = [];
+  private _startGameSubscription: Subscription;
   private _clientTokenSubscription: Subscription;
   private _webplayTokenSubscription: Subscription;
   private _pageChangeSubscription: Subscription;
@@ -174,10 +185,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsModalRef?.close();
     this._launchModalRef?.close();
     this._advancedModalRef?.close();
+    this._waitQueueModalRef?.close();
+    this._startGameSubscription?.unsubscribe();
     this._clientTokenSubscription?.unsubscribe();
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
-    this._gameStatusSubscription?.unsubscribe();
+    this._webplayTokenSubscription?.unsubscribe();
     Swal.close();
   }
 
@@ -525,7 +538,12 @@ export class ViewComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.restService
+    this.startSession();
+  }
+
+  private startSession() {
+    this._startGameSubscription?.unsubscribe();
+    this._startGameSubscription = this.restService
       .startGame(
         this.game.oneplayId,
         this.resolution.value,
@@ -535,78 +553,92 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.advancedOptions.value,
         this.selectedStore
       )
-      .subscribe(
-        (data) => {
-          if (data.data.api_action === "call_session") {
-            this._initializedModalRef = this.ngbModal.open(
-              this.initializedModal,
-              {
-                centered: true,
-                modalDialogClass: "modal-sm",
-                backdrop: "static",
-                keyboard: false,
-              }
-            );
-            this.sessionToTerminate = data.data.session.id;
-            this.startGameWithClientToken(data.data.session.id);
-          } else if (data.data.api_action === "call_terminate") {
-            this.terminateGame(data.data.session.id);
-          } else {
-            this.stopLoading();
-            Swal.fire({
-              title: "No server available!",
-              text: "Please try again in sometime, thank you for your patience!",
-              imageUrl: "assets/img/error/Group.svg",
-              showCancelButton: true,
-              confirmButtonText: "Try Again",
-              cancelButtonText: "Close",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.startGame();
-              }
-            });
-          }
-        },
-        (err) => {
-          this.stopLoading();
-          if(err.code == 801) {
-            this.waitQueue(err);
-          }
-          else if (
-            err.code == 610 ||
-            err.message ==
-              "Your 4 hours per day max Gaming Quota has been exhausted."
-          ) {
-            Swal.fire({
-              title: "Alert !",
-              text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
-              imageUrl: "assets/img/error/time_limit 1.svg",
-              confirmButtonText: "Okay",
-            });
-          } else {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              // imageUrl: 'assets/img/error/Group.svg',
-              showCloseButton: true,
-              showCancelButton: true,
-              confirmButtonText: "Try Again",
-              cancelButtonText: "Send Error Report",
-            }).then((_) => this.reportErrorOrTryAgain(_, err));
-          }
-        }
-      );
+      .subscribe({
+        next: (data) => this.startSessionSuccess(data),
+        error: (err) => this.startSessionFailed(err),
+      });
   }
 
-  private waitQueue(error): void {
-    this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    })
+  private startSessionSuccess(data: StartGameRO) {
+    this._waitQueueModalRef?.close();
+    this._waitQueueModalRef = undefined;
+    if (data.data.api_action === "call_session") {
+      this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
+        centered: true,
+        modalDialogClass: "modal-sm",
+        backdrop: "static",
+        keyboard: false,
+      });
+      this.sessionToTerminate = data.data.session.id;
+      this.startGameWithClientToken(data.data.session.id);
+    } else if (data.data.api_action === "call_terminate") {
+      this.terminateGame(data.data.session.id);
+    } else {
+      this.stopLoading();
+      Swal.fire({
+        title: "No server available!",
+        text: "Please try again in sometime, thank you for your patience!",
+        imageUrl: "assets/img/error/Group.svg",
+        showCancelButton: true,
+        confirmButtonText: "Try Again",
+        cancelButtonText: "Close",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.startGame();
+        }
+      });
+    }
+  }
+
+  private startSessionFailed(err: any) {
+    if (err.code != 801) {
+      this.stopLoading();
+      this._waitQueueModalRef.close();
+      this._waitQueueModalRef = undefined;
+    }
+
+    if (err.code == 801) {
+      this.waitQueue(err.message);
+    } else if (
+      err.code == 610 ||
+      err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
+    ) {
+      Swal.fire({
+        title: "Alert !",
+        text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
+        imageUrl: "assets/img/error/time_limit 1.svg",
+        confirmButtonText: "Okay",
+      });
+    } else {
+      Swal.fire({
+        title: "Error Code: " + err.code,
+        text: err.message,
+        icon: "error",
+        // imageUrl: 'assets/img/error/Group.svg',
+        showCloseButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Try Again",
+        cancelButtonText: "Send Error Report",
+      }).then((_) => this.reportErrorOrTryAgain(_, err));
+    }
+  }
+
+  private async waitQueue(message: string) {
+    const [seq, text] = message.split(":");
+    this.queueSequence = seq;
+    this.queueMessge = text;
+
+    if (!this._waitQueueModalRef) {
+      this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
+        centered: true,
+        modalDialogClass: "modal-sm",
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      });
+    }
+
+    setTimeout(() => this.startSession(), 3000);
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
@@ -631,56 +663,71 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     this._clientTokenSubscription = this.restService
       .getClientToken(sessionId)
-      .subscribe(
-        (data) => {
-          if (!!data.client_token) {
-            this._clientToken = data.client_token;
-            this.launchGame();
+      .subscribe({
+        next: (data) =>
+          this.startGameWithClientTokenSuccess(
+            data,
+            startTime,
+            sessionId,
+            millis
+          ),
+        error: (err) => this.startGameWithClientTokenFailed(err),
+      });
+  }
 
-            setTimeout(() => {
-              this.stopLoading();
-              this._launchModalRef = this.ngbModal.open(this.launchModal, {
-                centered: true,
-                modalDialogClass: "modal-md",
-              });
-              setTimeout(() => {
-                this._launchModalRef?.close();
-              }, 30000);
-              this.gameService.gameStatus = this.restService.getGameStatus();
-            }, 3000);
-          } else {
-            this.initialized = data.msg || "Please wait...";
+  private startGameWithClientTokenSuccess(
+    data: ClientTokenRO,
+    startTime: number,
+    sessionId: string,
+    millis: number
+  ) {
+    if (!!data.client_token) {
+      this._clientToken = data.client_token;
+      this.launchGame();
 
-            const timeTaken = Date.now() - startTime;
-            if (timeTaken >= 2000) {
-              this.startGameWithClientToken(sessionId, timeTaken + millis);
-            } else {
-              const delay = 2000 - timeTaken;
-              setTimeout(
-                () =>
-                  this.startGameWithClientToken(
-                    sessionId,
-                    timeTaken + millis + delay
-                  ),
-                delay
-              );
-            }
-          }
-        },
-        (err) => {
-          this.stopLoading();
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-            confirmButtonText: "Relaunch the game",
-          }).then((res) => {
-            if (res.isConfirmed) {
-              this.startGame();
-            }
-          });
-        }
-      );
+      setTimeout(() => {
+        this.stopLoading();
+        this._launchModalRef = this.ngbModal.open(this.launchModal, {
+          centered: true,
+          modalDialogClass: "modal-md",
+        });
+        setTimeout(() => {
+          this._launchModalRef?.close();
+        }, 30000);
+        this.gameService.gameStatus = this.restService.getGameStatus();
+      }, 3000);
+    } else {
+      this.initialized = data.msg || "Please wait...";
+
+      const timeTaken = Date.now() - startTime;
+      if (timeTaken >= 2000) {
+        this.startGameWithClientToken(sessionId, timeTaken + millis);
+      } else {
+        const delay = 2000 - timeTaken;
+        setTimeout(
+          () =>
+            this.startGameWithClientToken(
+              sessionId,
+              timeTaken + millis + delay
+            ),
+          delay
+        );
+      }
+    }
+  }
+
+  private startGameWithClientTokenFailed(err: any) {
+    this.stopLoading();
+    Swal.fire({
+      title: "Error Code: " + err.code,
+      text: err.message,
+      icon: "error",
+      confirmButtonText: "Relaunch the game",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.startGame();
+      }
+    });
   }
 
   startGameWithWebRTCToken(millis = 0): void {
@@ -707,9 +754,9 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     const startTime = Date.now();
 
-    this._gameStatusSubscription?.unsubscribe();
+    this._webplayTokenSubscription?.unsubscribe();
 
-    this._gameStatusSubscription = this.restService
+    this._webplayTokenSubscription = this.restService
       .getWebPlayToken(this.sessionToTerminate)
       .subscribe(
         (res) => {
@@ -778,12 +825,10 @@ export class ViewComponent implements OnInit, OnDestroy {
           () => {
             setTimeout(() => {
               this.gameService.gameStatus = this.restService.getGameStatus();
-              this.stopLoading();
-              this.startGame();
+              this.startSession();
             }, 2000);
           },
           (err) => {
-            this.stopLoading();
             Swal.fire({
               title: "Error Code: " + err.code,
               text: err.message,
@@ -792,11 +837,13 @@ export class ViewComponent implements OnInit, OnDestroy {
             }).then((res) => {
               if (res.isConfirmed) {
                 this.terminateGame(sessionId);
+              } else {
+                this.stopLoading();
               }
             });
           }
         );
-      } else if (result.isDenied || result.isDismissed) {
+      } else {
         this.stopLoading();
       }
     });
