@@ -122,16 +122,23 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService,
     private readonly router: Router
   ) {
+    const userAgent = new UAParser();
+
     merge<[string, number]>(
       this.resolution.valueChanges,
       this.fps.valueChanges
     ).subscribe(() => {
-      this.bitrate.setValue(
-        PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
-      );
+      if (window.innerHeight < 768 || window.innerWidth < 768) {
+        if (!this.bitrate.value) {
+          this.bitrate.setValue(5000);
+        }
+      } else {
+        this.bitrate.setValue(
+          PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
+        );
+      }
     });
 
-    const userAgent = new UAParser();
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
     );
@@ -152,7 +159,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         const resolution = localStorage.getItem("resolution");
         this.resolution.setValue(
           resolution ||
-            (window.innerWidth < 768
+            (window.innerHeight < 768 || window.innerWidth < 768
               ? PlayConstants.MOBILE_RESOLUTION
               : PlayConstants.DEFAULT_RESOLUTIONS["Founder"])
         );
@@ -850,7 +857,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private launchGame() {
-    const userAgent = new UAParser(window.navigator.userAgent);
+    const userAgent = new UAParser();
     if (userAgent.getOS().name === "Android") {
       window.open(
         `${this.domain}/launch/app?payload=${this._clientToken}`,
