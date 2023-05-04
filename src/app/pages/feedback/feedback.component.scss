@@ -8,6 +8,21 @@
 }
 
 .Height100 {
-  height: 100vh;
+  height: calc(100vh + 79px);
   align-items: center;
+  position: fixed;
+  left: 15px;
+  width: 100%;
+}
+
+@media (min-width: 500.9px) {
+  .width485 {
+    width: 485px !important;
+  }
+}
+
+@media (max-width: 501px) {
+  .width485 {
+    width: 320px !important;
+  }
 }
