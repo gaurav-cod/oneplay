@@ -11,15 +11,13 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { combineLatest, merge, Subscription } from "rxjs";
 import {
-  combineLatest,
-  merge,
-  Subscription,
-  lastValueFrom,
-  map,
-  of,
-} from "rxjs";
-import { ClientTokenRO, PurchaseStore, StartGameRO } from "src/app/interface";
+  ClientTokenRO,
+  PurchaseStore,
+  StartGameRO,
+  WebPlayTokenRO,
+} from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { VideoModel } from "src/app/models/video.model";
@@ -103,7 +101,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _gameStatusSubscription: Subscription;
   private _reportErrorModalRef: NgbModalRef;
   private _waitQueueModalRef: NgbModalRef;
-
+  private _launchModalCloseTimeout: NodeJS.Timeout;
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
@@ -701,7 +699,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           centered: true,
           modalDialogClass: "modal-md",
         });
-        setTimeout(() => {
+        this._launchModalCloseTimeout = setTimeout(() => {
           this._launchModalRef?.close();
         }, 30000);
         this.gameService.gameStatus = this.restService.getGameStatus();
@@ -750,6 +748,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this._launchModalCloseTimeout !== undefined) {
+      clearTimeout(this._launchModalCloseTimeout);
+      this._launchModalCloseTimeout = undefined;
+    }
+
     if (millis === 0) {
       this.loaderService.start();
     } else if (millis > 60000) {
@@ -768,33 +771,48 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     this._webplayTokenSubscription = this.restService
       .getWebPlayToken(this.sessionToTerminate)
-      .subscribe(
-        (res) => {
-          if (res.data.service === "running" && !!res.data.web_url) {
-            window.open(res.data.web_url, "_self");
-            this.loaderService.stop();
-          } else {
-            const timeTaken = Date.now() - startTime;
-            if (timeTaken >= 2000) {
-              this.startGameWithWebRTCToken(timeTaken + millis);
-            } else {
-              const delay = 2000 - timeTaken;
-              setTimeout(
-                () => this.startGameWithWebRTCToken(timeTaken + millis + delay),
-                delay
-              );
-            }
-          }
-        },
-        (err) => {
-          this.loaderService.stop();
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-          });
-        }
-      );
+      .subscribe({
+        next: (res) =>
+          this.startGameWithWebRTCTokenSuccess(res, startTime, millis),
+        error: (err) => this.startGameWithWebRTCTokenFailed(err),
+      });
+  }
+
+  private startGameWithWebRTCTokenSuccess(
+    res: WebPlayTokenRO,
+    startTime: number,
+    millis: number
+  ) {
+    if (res.data.service === "running" && !!res.data.web_url) {
+      window.open(res.data.web_url, "_self");
+      this.loaderService.stop();
+    } else {
+      const timeTaken = Date.now() - startTime;
+      if (timeTaken >= 2000) {
+        this.startGameWithWebRTCToken(timeTaken + millis);
+      } else {
+        const delay = 2000 - timeTaken;
+        setTimeout(
+          () => this.startGameWithWebRTCToken(timeTaken + millis + delay),
+          delay
+        );
+      }
+    }
+  }
+
+  private startGameWithWebRTCTokenFailed(err: any) {
+    this.loaderService.stop();
+    Swal.fire({
+      title: "Error Code: " + err.code,
+      text: err.message,
+      icon: "error",
+      confirmButtonText: "Try Again",
+      showCancelButton: true,
+    }).then((res) => {
+      if (res.isConfirmed) {
+        this.startGameWithWebRTCToken();
+      }
+    });
   }
 
   reportError() {
