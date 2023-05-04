@@ -42,6 +42,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private stripeElements: StripeElements;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
+  private packageID: string;
 
   constructor(
     private readonly restService: RestService,
@@ -160,6 +161,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     if (error) {
+      this.closeStripeModal();
       Swal.fire({
         icon: "error",
         title: "Oops!",
@@ -169,7 +171,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.onPay();
+          this.handlePay(this.packageID);
         }
       });
     }
@@ -218,6 +220,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private handlePay(packageId: string) {
+    this.packageID = packageId;
     const stripeAppearance = { theme: 'night' } as Appearance;
     this.restService.payForSubscription(packageId).subscribe({
       next: async (data) => {
