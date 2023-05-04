@@ -567,8 +567,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startSessionSuccess(data: StartGameRO) {
-    this._waitQueueModalRef?.close();
-    this._waitQueueModalRef = undefined;
+    if (!!this._waitQueueModalRef) {
+      this._waitQueueModalRef.close();
+      this._waitQueueModalRef = undefined;
+    }
     if (data.data.api_action === "call_session") {
       this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
         centered: true,
@@ -598,8 +600,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startSessionFailed(err: any) {
-    if (err.code != 801) {
-      this.stopLoading();
+    if (!!this._waitQueueModalRef) {
       this._waitQueueModalRef.close();
       this._waitQueueModalRef = undefined;
     }
@@ -610,6 +611,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       err.code == 610 ||
       err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
     ) {
+      this.stopLoading();
       Swal.fire({
         title: "Alert !",
         text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
@@ -617,6 +619,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         confirmButtonText: "Okay",
       });
     } else {
+      this.stopLoading();
       Swal.fire({
         title: "Error Code: " + err.code,
         text: err.message,
