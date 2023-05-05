@@ -58,14 +58,3 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-
-.otpInput:nth-child(5) {
-  background-color: #3e4246;
-  width: 20px;
-  height: 5px;
-  overflow: hidden;
-  margin-top: 24px;
-  margin-left: 10px;
-  margin-right: 10px;
-  pointer-events:none;
-}

@@ -25,7 +25,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   ]);
 
   bio = new FormControl("", [
-    Validators.required,
+    // Validators.required,
     Validators.maxLength(300),
   ]);
   

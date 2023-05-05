@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-
-import { IconsComponent } from '../../pages/icons/icons.component';
 import { UserProfileComponent } from '../../pages/user-profile/user-profile.component';
 import { HomeComponent } from 'src/app/pages/home/home.component';
 import { StoreComponent } from 'src/app/pages/store/store.component';
@@ -13,7 +11,6 @@ import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
-    { path: 'icons',                component: IconsComponent },
     { path: 'home',                 component: HomeComponent },
     { path: 'home/:filter',         component: HomeComponent },
     { path: 'store',                component: StoreComponent },

@@ -168,10 +168,9 @@
             <div class="row">
               <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 font24 text-white">About Game</h1>
-                <!-- <h1 class="font700 font24 text-white mb-0" (click)="playGame(launchModal)">About Game</h1> -->
                 <span
                   id="description"
-                  class="font20 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
+                  class="font17 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
                 >
                   {{isReadMore && shortDescLength < game.description.length
                   ? shortDesc
@@ -288,7 +287,7 @@
             <div class="col-auto mt-4">
               <img
                 [src]="
-                  !!video.creatorThumbnail
+                  video.creatorThumbnail
                     ? video.creatorThumbnail
                     : (video.creatorName | avatar)
                 "
@@ -347,7 +346,7 @@
             </div>
             <div class="col-auto mt-4">
               <img
-                [src]="!!video.creatorThumbnail || (video.creatorName | avatar)"
+                [src]="video.creatorThumbnail || (video.creatorName | avatar)"
                 class="rounded-circle"
                 width="50"
                 height="50"
@@ -450,12 +449,6 @@
         Select your game settings
       </h2>
     </div>
-
-    <!-- <div class="row border-bottom borderColor">
-      <div class="col-12 text-center">
-        
-      </div>
-    </div> -->
     <div class="modal-body pb-0 height300">
       <div class="row">
         <div *ngIf="game.storesMapping.length" class="col-12">
@@ -463,16 +456,14 @@
             class="alert alert-danger dangerBg border-0 p-2 text-center"
             role="alert"
           >
-            <p class="mb-0 mt-1 mb-1 font14responsive">
-              You need to
-              {{ game.isFree ? "have account" : "purchase this game" }} in
+            <p class="mb-0 font500 font14responsive">
+              To play this game, you must own it on
               <a
                 [href]="selectedStore.link"
                 target="_blank"
-                class="d-inline-block mx-1 text-white"
-                >{{ selectedStore.name }}</a
+                class="d-inline-block mx-1 text-white font600"
+                ><u>{{ selectedStore.name }}</u></a
               >
-              to play this game
             </p>
           </div>
         </div>
@@ -586,17 +577,13 @@
 </ng-template>
 
 <ng-template #initializedModal>
-  <div class="modal-content" [ngStyle]="{ display: display }">
-    <div class="modal-body pl-4 pr-4 pt-4 pb-0 text-center">
-      <h2 class="text-dark mb-2">{{ initialized }}</h2>
-      <p class="text-muted mb-0">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <h2 class="offWhiteText font20 font600 mb-2 mt-2">{{ initialized }}</h2>
+      <p class="muteText font500 mb-4">
         Please wait while we connect you to the game
       </p>
-      <img
-        src="https://miro.medium.com/max/1400/1*CsJ05WEGfunYMLGfsT2sXA.gif"
-        alt=" "
-        width="300px"
-      />
+      <object type="image/svg+xml" class="w50" data="assets/img/Animated_Loading_Oneplay.svg"></object>
     </div>
   </div>
 </ng-template>
@@ -865,8 +852,8 @@
     >
       <i class="fas fa-times-circle"></i>
     </a>
-    <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100 text-center">
-      <h2 class="text-white w-100 font600 mb-0 test-center font18responsive">
+    <div class="modal-header py-md-4 py-3 border-bottom borderColor w-100">
+      <h2 class="text-white w-100 font600 mb-0 text-center font18responsive">
         Game on!
       </h2>
     </div>
@@ -950,6 +937,21 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #waitQueueModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <h2 class="text-white w-100 font600 text-center font20">
+        Scouting for the Next Open Rig
+      </h2>
+      <p class="mb-0"><img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" /></p>
+      <span class="font38 font700 text-white borderBottomTab"><span class="blink">{{ queueSequence }}</span></span>
+      <p class="font16 font500 muteText mt-2">{{ queueMessge }}</p>
+      <p class="font16 font500 muteText my-4 mx-lg-4">Hang tight, we'll get you back in the game as soon as possible!</p>
+      <button class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60" (click)="d('Cross click')">Cancel</button>
     </div>
   </div>
 </ng-template>

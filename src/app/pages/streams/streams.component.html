@@ -23,13 +23,14 @@
               <div class="flex-grow-1">
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="d-flex align-items-center">
-                    <div class="avatar rounded-circle mr-2">
+                    <div class="mr-2">
                       <img
                         [src]="
-                          !!banner.creatorThumbnail ||
+                          banner.creatorThumbnail ||
                           (banner.creatorName | avatar)
                         "
                         alt=""
+                        class="avatar rounded-circle"
                       />
                     </div>
                     <div>
@@ -42,13 +43,12 @@
                     </div>
                   </div>
                   <div class="d-flex align-items-center">
-                    <img src="assets/img/singup-login/Views" class="img-fluid" alt="" aria-hidden="true" />
-                    <!-- <i
-                      class="fa fa-eye text-white-50 mr-1"
-                    ></i> -->
-                    <span class="text-xs text-white-50"
-                      >{{ nFormatter(banner.sourceViews, 1) }} viewers</span
-                    >
+                    <span class="text-xs text-white-50">
+                      <i
+                        class="fa fa-eye mr-1"
+                      ></i>
+                      {{ nFormatter(banner.sourceViews, 1) }} viewers
+                    </span>
                   </div>
                 </div>
                 <hr class="my-3 bg-gray" />

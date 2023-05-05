@@ -1,16 +1,4 @@
-.card {
-  @media (max-width: 756px) {
-    background-color: transparent !important;
-    box-shadow: none !important;
-  }
-}
-
 @media (max-width: 548px) {
-  .font38 {
-    font-size: 23px !important;
-    line-height: 33px !important;
-  }
-
   .font20 {
     font-size: 14px !important;
     line-height: 24px !important;
@@ -20,25 +8,8 @@
     margin-top: 20px !important;
   }
 
-  .mobileView {
-    display: inline !important;
-  }
-
-  .custompaddingLeftRight {
-    padding-left: 2% !important;
-    padding-right: 2% !important;
-  }
-
-  .largeScreenHeight {
-    height: 100% !important;
-  }
-
   .textCenterCustom {
     text-align: center;
-  }
-
-  .h60 {
-    height: 50px !important;
   }
 
   .font18 {
@@ -53,83 +24,12 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1023px) {
-  .font38 {
-    font-size: 27px !important;
-    line-height: 37px !important;
-  }
-
-  .custompaddingLeftRight {
-    padding-left: 3% !important;
-    padding-right: 3% !important;
-  }
-
-  .mobileView {
-    display: inline !important;
-  }
-
-  .textCenterCustom {
-    text-align: center;
-  }
-
-  .h60 {
-    height: 50px !important;
-  }
-
-  .font20 {
-    font-size: 16px !important;
-    line-height: 26px !important;
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .font38 {
-    font-size: 30px !important;
-    line-height: 40px !important;
-  }
-
-  .custompaddingLeftRight {
-    padding-left: 3% !important;
-    padding-right: 3% !important;
-  }
-}
-
-@media (min-width: 1200px) and (max-width: 1440px) {
-  .custompaddingLeftRight {
-    padding-left: 10% !important;
-    padding-right: 10% !important;
-  }
-
-  .font38 {
-    font-size: 30px !important;
-    line-height: 40px !important;
-  }
-
-}
-
-@media (min-width: 1700px) and (max-width: 2600px) {
-  .custompaddingLeftRight {
-    padding-left: 20% !important;
-    padding-right: 20% !important;
-  }
-
-}
-
 .footerWhiteColor {
   color: #E1E1E1;
 }
 
 .borderBottom {
   border-bottom: 1px solid #3E4246;
-}
-
-.mobileView {
-  display: none;
-}
-
-.custompaddingLeftRight {
-  padding-left: 10%;
-  padding-right: 10%;
 }
 
 .offWhiteColor {
@@ -162,10 +62,6 @@
   } 
 }
 
-.h60 {
-  height: 60px;
-}
-
 .removeFocus:focus {
   box-shadow: none;
 }
@@ -179,31 +75,12 @@
   }
 }
 
-
-.height100vh {
-  height: 100vh;
-  align-items: center;
-}
-
 .loginBg {
   background-color: #151515;
 }
 
-// .overflowYScroll {
-//   overflow-y: scroll;
-// }
-
-.largeScreenHeight {
-  height: 100vh;
-  align-items: center;
-}
-
 .customOffWhite {
   color: #DCDCDC !important;
-}
-
-.h56 {
-  height: 56px;
 }
 
 .borderRadius10 {
@@ -266,14 +143,14 @@ input:-webkit-autofill:active  {
   border-radius: 0px !important;
 }
 
-.font38 {
+.font30 {
   font-size: 30px;
   line-height: 40px;
   letter-spacing: 0.02em;
-}
-
-.form-check-input {
-  margin-top: 0.6rem !important;
+  @media (max-width: 991.9px) {
+    font-size: 24px;
+    line-height: 34px;
+  }
 }
 
 .purpleGradient {
@@ -287,14 +164,6 @@ input:-internal-autofill-selected {
   background-color: transparent !important;
 }
 
-.field-icon {
-  float: right;
-  left: -15px;
-  margin-top: -25px;
-  position: relative;
-  z-index: 2;
-}
-
 .font800 {
   font-weight: 800 !important;
 }
@@ -306,4 +175,28 @@ input:-internal-autofill-selected {
   @media (max-width: 1368px) {
     top: -0px !important;
   }
+}
+
+@media (max-width: 1280.9px) {
+  .hideInSmallScreen {
+    display: none;
+  }
+}
+
+@media (any-pointer: coarse) {
+  .hideInSmallScreen {
+    display: none;
+  }
+}
+
+.width450 {
+  width: 450px;
+}
+
+.height100vh {
+  height: 100vh;
+  @media (max-width: 991.9px) {
+    height: 90vh;
+  }
+  align-items: center;
 }

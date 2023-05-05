@@ -1,24 +1,21 @@
 import { Injectable } from "@angular/core";
-import {
-  ActivatedRouteSnapshot,
-  CanActivateChild,
-  Router,
-} from "@angular/router";
-import { map, Observable } from "rxjs";
+import { ActivatedRouteSnapshot, CanActivate, Router } from "@angular/router";
+import { Observable, map } from "rxjs";
 import { AuthService } from "../services/auth.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class LoginGuard implements CanActivateChild {
+export class QrLoginGuard implements CanActivate {
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router
   ) {}
-  canActivateChild(childRoute: ActivatedRouteSnapshot): Observable<boolean> {
+
+  canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u) {
-        const { redirectUrl } = childRoute.queryParams;
+        const { redirectUrl } = route.queryParams;
         if (redirectUrl?.startsWith('http')) {
           window.location.href = redirectUrl;
         } else {

@@ -8,8 +8,8 @@ import {
 } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
-import { Subscription } from "rxjs";
+import { Appearance, Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
+import { Subscription, lastValueFrom, map } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -29,6 +29,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
   stripeLoad = false;
+  currentamount: string;
+  currency: string;
+  planType: 'base'|'topup';
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
@@ -39,6 +42,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private stripeElements: StripeElements;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
+  private packageID: string;
 
   constructor(
     private readonly restService: RestService,
@@ -137,18 +141,38 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   async onPay() {
     this.stripeLoad = true;
+    let html = "Your plan is now activated, and you're ready to start your journey!";
+    let title = "Awesome!";
+
+    if(this.planType == 'base') {
+      const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
+      const planTypes = subscriptions.map((s) => s.planType)
+      if(planTypes.includes('base')) {
+        html = "Your new plan will kick in right after your current one ends.";
+        title = "Kudos!";
+      }
+    }
+
     const { error } = await this.stripeIntent.confirmPayment({
       elements: this.stripeElements,
       confirmParams: {
-        return_url: environment.domain + "/dashboard/settings/subscription",
+        return_url: environment.domain + "/dashboard/settings/subscription?swal=" + encodeURIComponent(JSON.stringify({html,title})),
       },
     });
 
     if (error) {
+      this.closeStripeModal();
       Swal.fire({
-        title: "Error Code: " + error.code,
-        text: error.message,
         icon: "error",
+        title: "Oops!",
+        text: "It looks like there's an issue with your payment method.",
+        showCancelButton: true,
+        confirmButtonText: "Retry",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.handlePay(this.packageID);
+        }
       });
     }
     this.stripeLoad = false;
@@ -196,11 +220,16 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private handlePay(packageId: string) {
+    this.packageID = packageId;
+    const stripeAppearance = { theme: 'night' } as Appearance;
     this.restService.payForSubscription(packageId).subscribe({
       next: async (data) => {
+        this.currentamount = (data.amount/100).toFixed(2);
+        this.currency = data.currency;
+        this.planType = data.metadata.plan_type;
         this.stripeIntent = await loadStripe(environment.stripe_key);
         this.stripeElements = this.stripeIntent.elements({
-          clientSecret: data.client_secret,
+          clientSecret: data.client_secret, appearance: stripeAppearance
         });
         this.stripeModalRef = this.ngbModal.open(this.stripeModal, {
           centered: true,

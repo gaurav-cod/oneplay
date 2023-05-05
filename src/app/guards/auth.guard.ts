@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import {
   ActivatedRouteSnapshot,
   CanActivateChild,
+  Params,
   Router,
   RouterStateSnapshot,
 } from "@angular/router";
@@ -22,9 +23,14 @@ export class AuthGuard implements CanActivateChild {
   ): Observable<boolean> {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (!u) {
-        console.log(state.url);
-        this.router.navigate(["/login"], {
-          queryParams: { redirectUrl: state.url },
+        const queryParams: Params = {};
+
+        if (!this.authService.loggedOutByUser) {
+          queryParams.redirectUrl = state.url;
+        }
+
+        this.router.navigate(["/login"], { queryParams }).then(() => {
+          this.authService.loggedOutByUser = false;
         });
       }
     });

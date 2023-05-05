@@ -6,3 +6,29 @@
   text-fill-color: transparent;
   font-size: 40px;
 }
+
+.Height100 {
+  height: calc(100vh + 79px);
+  align-items: center;
+  position: fixed;
+  left: 15px;
+  width: 100%;
+}
+
+.width485 {
+  width: 485px;
+  min-height: 0px;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+@media (max-width: 500px) {
+  .width485 {
+    width: 320px !important;
+  }
+}
+
+.width485::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+

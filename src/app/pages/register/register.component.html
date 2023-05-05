@@ -1,7 +1,7 @@
 <!-- Page content -->
 <div class="row justify-content-center loginBg">
-  <div class="col-lg-12 col-12 col-md-12 height100vh overflowYScroll">
-    <div class="mobileView">
+  <div class="col-lg-12">
+    <div class="d-block d-lg-none">
       <div class="text-center">
         <a [href]="domain">
           <img
@@ -13,8 +13,8 @@
       </div>
     </div>
     <div class="container">
-      <div class="row largeScreenHeight justify-content-center">
-        <div class="col-lg-10 pb-4">
+      <div class="row justify-content-center height100vh">
+        <div class="col-auto width450">
           <form
             [formGroup]="registerForm"
             (submit)="register()"
@@ -22,8 +22,8 @@
             autocomplete="off"
           >
             <div class="row">
-              <div class="col-md-12 mt-lg-5 mt-3">
-                <h1 class="text-white font38 font800 mb-0 textCenterCustom">
+              <div class="col-md-12 mt-4">
+                <h1 class="text-white font30 font800 mb-0 textCenterCustom">
                   Create an account
                 </h1>
               </div>
@@ -73,7 +73,7 @@
                 <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append borderRadius0">
                     <select
-                      class="form-control mr-2 p-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
+                      class="form-control pl-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
                       formControlName="country_code"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
@@ -84,7 +84,7 @@
                   <input
                     type="number"
                     formControlName="phone"
-                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 pl-2"
+                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
                     placeholder="9999999999"
                   />
                 </div>

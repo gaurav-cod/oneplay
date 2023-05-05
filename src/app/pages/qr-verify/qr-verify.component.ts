@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChildren } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -19,14 +20,14 @@ export class QrVerifyComponent implements OnInit {
   public loading = false;
 
   public codeForm = new FormGroup({
-    one: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    two: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    three: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    four: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    five: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    six: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    seven: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
-    eight: new FormControl("", [Validators.required, Validators.pattern("^[0-9]*$")]),
+    one: new FormControl("", [Validators.required]),
+    two: new FormControl("", [Validators.required]),
+    three: new FormControl("", [Validators.required]),
+    four: new FormControl("", [Validators.required]),
+    five: new FormControl("", [Validators.required]),
+    six: new FormControl("", [Validators.required]),
+    seven: new FormControl("", [Validators.required]),
+    eight: new FormControl("", [Validators.required]),
   });
 
   private routeSubscription: Subscription;
@@ -63,7 +64,7 @@ export class QrVerifyComponent implements OnInit {
   }
 
   verify() {
-    const sessionToken = localStorage.getItem("op_session_token");
+    const sessionToken = Cookies.get("op_session_token");
     const c = Object.values(
       this.codeForm.value as { [key: string]: string }
     ).map((el) => `${el}`);
@@ -78,6 +79,10 @@ export class QrVerifyComponent implements OnInit {
             title: "Success",
             text: "You are successfully logged in!",
             icon: "success",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigateByUrl("/home");
+            }
           });
         },
         error: (err) => {
@@ -94,24 +99,31 @@ export class QrVerifyComponent implements OnInit {
     }
   }
 
-  keyUpEvent(event, index) {
+  jump(event: any, index: number) {
+    const input = event.target as HTMLInputElement;
+    if(/^[0-9]$/.test(input.value)) {
+      if(index > 3) {
+        index--
+      }
+      if (input.value.length === input.maxLength && index < this.formInput.length-2) {
+        this.rows._results[index+1].nativeElement.focus();
+      }
+       
+    } else {
+      input.value = ''
+    }
+  }
+
+  jumpPrev(event: any, index: number) {
     if(index > 3) {
       index--
     }
-    let pos = index;
-    event = (event) ? event : window.event;
-    var pattern = /^\d+\.?\d*$/;
-    if (event.keyCode === 8 && event.which === 8) {
-      pos = index - 1 ;
-    } else if(!pattern.test(event.key)) {
-      return false;
+    if (event.key === 'Backspace' || event.key === 'Delete') {
+      const input = event.target as HTMLInputElement;
+      if (input.value.length === 0 && index > 0) {
+        this.rows._results[index-1].nativeElement.focus();
+      }
     }
-    else {
-      pos = index + 1 ;
-    }
-    if (pos > -1 && pos < this.formInput.length ) {
-      this.rows._results[pos].nativeElement.focus();
-    }
-
   }
+
 }
