@@ -84,7 +84,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   reportText = new FormControl("", { validators: Validators.required });
 
   queueSequence = "";
-  queueMessge = "";
+  queueMessge1 = "";
+  queueMessge2 = "";
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -631,9 +632,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private async waitQueue(message: string) {
-    const [seq, text] = message.split(":");
-    this.queueSequence = seq;
-    this.queueMessge = text;
+    [this.queueSequence, this.queueMessge1, this.queueMessge2] =
+      message.split(";");
 
     if (!this._waitQueueModalRef) {
       this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
