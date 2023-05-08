@@ -183,11 +183,11 @@ input:-internal-autofill-selected {
   }
 }
 
-@media (any-pointer: coarse) {
-  .hideInSmallScreen {
-    display: none;
-  }
-}
+// @media (any-pointer: coarse) {
+//   .hideInSmallScreen {
+//     display: none;
+//   }
+// }
 
 .width450 {
   width: 450px;
