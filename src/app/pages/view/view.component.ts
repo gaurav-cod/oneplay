@@ -30,6 +30,7 @@ import { environment } from "src/environments/environment";
 import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
+import { MediaQueries } from "src/app/utils/media-queries";
 
 declare var gtag: Function;
 
@@ -83,7 +84,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   reportText = new FormControl("", { validators: Validators.required });
 
   queueSequence = "";
-  queueMessge = "";
+  queueMessge1 = "";
+  queueMessge2 = "";
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -122,20 +124,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
     const userAgent = new UAParser();
 
-    merge<[string, number]>(
-      this.resolution.valueChanges,
-      this.fps.valueChanges
-    ).subscribe(() => {
-      if (window.innerHeight < 768 || window.innerWidth < 768) {
-        if (!this.bitrate.value) {
-          this.bitrate.setValue(5000);
-        }
-      } else {
+    if (MediaQueries.isMobile) {
+      this.bitrate.setValue(5000);
+    } else {
+      merge<[string, number]>(
+        this.resolution.valueChanges,
+        this.fps.valueChanges
+      ).subscribe(() => {
         this.bitrate.setValue(
           PlayConstants.getIdleBitrate(this.resolution.value, this.fps.value)
         );
-      }
-    });
+      });
+    }
 
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
@@ -157,7 +157,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         const resolution = localStorage.getItem("resolution");
         this.resolution.setValue(
           resolution ||
-            (window.innerHeight < 768 || window.innerWidth < 768
+            (MediaQueries.isMobile
               ? PlayConstants.MOBILE_RESOLUTION
               : PlayConstants.DEFAULT_RESOLUTIONS["Founder"])
         );
@@ -632,9 +632,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private async waitQueue(message: string) {
-    const [seq, text] = message.split(":");
-    this.queueSequence = seq;
-    this.queueMessge = text;
+    [this.queueSequence, this.queueMessge1, this.queueMessge2] =
+      message.split(";");
 
     if (!this._waitQueueModalRef) {
       this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
