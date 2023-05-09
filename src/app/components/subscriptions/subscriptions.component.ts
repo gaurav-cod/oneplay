@@ -69,7 +69,7 @@ export class SubscriptionsComponent implements OnInit {
     this.subscriptions = [];
     // Button hide and Show
     this.sucessLoad = tab == 'success';
-    this.failedLoad = tab !== 'failed';
+    this.failedLoad = tab == 'failed';
     this.processLoad = tab == 'processing'
     // start Data & End Date and Transition ID hide and show
     this.sucess = tab == 'success';
