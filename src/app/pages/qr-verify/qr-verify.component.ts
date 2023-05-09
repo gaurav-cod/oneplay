@@ -122,6 +122,7 @@ export class QrVerifyComponent implements OnInit {
       const input = event.target as HTMLInputElement;
       if (input.value.length === 0 && index > 0) {
         this.rows._results[index-1].nativeElement.focus();
+        this.rows._results[index-1].nativeElement.value = '';
       }
     }
   }
