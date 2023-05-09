@@ -28,6 +28,9 @@ export class SubscriptionsComponent implements OnInit {
   failedLoad = false;
   processLoad = false;
   public copy: string;
+  filterSuccess = false;
+  filterProcess = false;
+  filterFailed = false;
 
   constructor(
     private readonly restService: RestService,
@@ -71,6 +74,10 @@ export class SubscriptionsComponent implements OnInit {
     // start Data & End Date and Transition ID hide and show
     this.sucess = tab == 'success';
     this.failedProcess = tab != 'success';
+    // Filter Active InActive CSS Changes
+    this.filterFailed = tab == 'failed';
+    this.filterProcess = tab == 'processing';
+    this.filterSuccess = tab == 'success';
   }
 
   successFilter() {

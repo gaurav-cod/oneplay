@@ -113,16 +113,16 @@
         </a>
         <div class="dropdown-bug">
           <div
-            class="dropdown-menu-arrow menudropdown"
+            class="dropdown-menu-arrow menudropdown py-0"
             ngbDropdownMenu
           >
-            <a href="javascript:void(0)" (click)="successFilter()" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" [ngClass]="filterSuccess ? 'activeLinear' : '' " (click)="successFilter()" class="dropdown-item font16 font500 offWhiteText">
               Successful
             </a>
-            <a href="javascript:void(0)" (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" [ngClass]="filterProcess ? 'activeLinear' : '' " (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
               Processing
             </a>
-            <a href="javascript:void(0)" (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
+            <a href="javascript:void(0)" [ngClass]="filterFailed ? 'activeLinear' : '' " (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
               Failed
             </a>
           </div>
