@@ -164,7 +164,7 @@
                   <th scope="col" class="text-center">Price</th>
                   <th scope="col" class="text-center">Status</th>
                   <th scope="col" *ngIf="sucess">Start Date</th>
-                  <th scope="col" class="pr-0 text-right" *ngIf="sucess">End Date</th>
+                  <th scope="col" class="pr-0" *ngIf="sucess">End Date</th>
                   <th scope="col" class="pr-0" *ngIf="failedProcess">Transaction ID</th>
                 </tr>
               </thead>
@@ -198,10 +198,11 @@
                   <td class="align-middle text-right py-3 pr-0" *ngIf="sucess">
                     {{ subscription.endsAt | date : "dd.MM.yyyy" }}
                   </td>
-                  <td class="align-middle characterLimit py-3 pr-0" 
+                  <td class="align-middle py-3 pr-0" 
                     *ngIf="failedProcess"
                   >
                     <div
+                      class="characterLimit"
                       placement="top-center"
                       triggers="hover focus click" 
                       ngbTooltip="{{copy === subscription.transitionId ? 'Copied':'Copy to Clipboard'}}" 
