@@ -33,3 +33,41 @@
     max-width: 145px;
     cursor: pointer;
 }
+
+.btnGradient {
+    background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+    border-radius: 10px !important;
+    padding-left: 50px;
+    padding-right: 50px;
+    @media (max-width: 767.9px) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+.gardientCard {
+    background: linear-gradient(270deg, #212123 0%, #2A1A9A 100%);
+    border-radius: 10px;
+}
+
+.negativeTopMargin {
+    margin-top: -70px;
+}
+
+.marginBottom {
+    margin-bottom: 70px;
+    @media (max-width: 767.9px) {
+        margin-bottom: 0px;
+    }
+}
+
+.headingSub {
+    font-size: 38px;
+    line-height: 50px;
+}
+
+@media (max-width: 767.9px) {
+    .textResponsive {
+        text-align: center;
+    }
+}

@@ -244,6 +244,12 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
+  hasPreviousPayments(): Observable<boolean> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/all")
+      .pipe(map((res) => res.length > 0));
+  }
+
   setOnline(): Observable<void> {
     return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
       map((res) => {}),

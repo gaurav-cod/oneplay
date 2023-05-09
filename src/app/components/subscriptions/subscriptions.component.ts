@@ -4,6 +4,8 @@ import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
 import { RestService } from "src/app/services/rest.service";
+import { memoize } from "src/app/utils/memoize.util";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -28,6 +30,7 @@ export class SubscriptionsComponent implements OnInit {
   failedLoad = false;
   processLoad = false;
   public copy: string;
+  isCurrentLoading = true;
 
   constructor(
     private readonly restService: RestService,
@@ -42,7 +45,7 @@ export class SubscriptionsComponent implements OnInit {
     this.successFilter();
     this.restService
       .getCurrentSubscription()
-      .subscribe((s) => (this.currentSubscriptions = s));
+      .subscribe((s) => {this.currentSubscriptions = s; this.isCurrentLoading = false});
 
     const params = this.route.snapshot.queryParams
 
@@ -71,6 +74,11 @@ export class SubscriptionsComponent implements OnInit {
     // start Data & End Date and Transition ID hide and show
     this.sucess = tab == 'success';
     this.failedProcess = tab != 'success';
+  }
+
+  @memoize()
+  hasPreviousPayments() {
+    return this.restService.hasPreviousPayments();
   }
 
   successFilter() {
@@ -152,5 +160,9 @@ export class SubscriptionsComponent implements OnInit {
 
   calculatePercentage(remaining= 0, total=0) {
     return Math.round( remaining/total*100)+'%'
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }
