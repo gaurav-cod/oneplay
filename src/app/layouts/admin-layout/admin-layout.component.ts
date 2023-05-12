@@ -118,8 +118,38 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
             });
           }
         });
+      } else if(params.renew) {
+        Swal.fire({
+          title: "Ready to unlock?",
+          icon: "warning",
+          text: "you're about to purchase the selected subscription package.",
+          // html: `you're about to purchase the selected subscription package.<p class="mt-4 mb-0"><a href="" class="btn btn-block mutedBg border-0 text-white">Change plan</a></p>`,
+          // showCancelButton: true,
+          confirmButtonText: "Yes",
+          showDenyButton: true,
+          denyButtonText: 'Change plan',
+          showCloseButton: true,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            this.handlePay(params.renew);
+          }
+          else if (result.isDenied) {
+            window.location.href = `${this.domain}/subscription.html#Monthly_Plan`
+          }
+          else {
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: { renew: null },
+              queryParamsHandling: "merge",
+            });
+          }
+        });
       }
     });
+  }
+
+  get domain() {
+    return environment.domain;
   }
 
   closeStripeModal() {

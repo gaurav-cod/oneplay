@@ -84,20 +84,19 @@
               >
                 <a
                   [href]="domain + '/subscription.html#Hourly_Plan'"
-                  *ngIf="remainingDays(sub.endsAt) && sub.tokensRemaining < 120"
-                  [queryParams]="{ subscribe: sub.planId }"
+                  *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Buy Top-up
                 </a>
-                <a
-                  [href]="domain + '/subscription.html#Monthly_Plan'"
+                <button
+                  [routerLink] = "['settings/subscription']"
                   *ngIf="isAboutToExpire(sub.endsAt)"
-                  [queryParams]="{ subscribe: sub.planId }"
+                  [queryParams]="{ renew: sub.planId }"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew
-                </a>
+              </button>
               </div>
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />

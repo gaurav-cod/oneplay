@@ -178,10 +178,4 @@ export class SubscriptionsComponent implements OnInit {
     sub_date.setDate(sub_date.getDate() - 2); //Two day less;
     return sub_date < new Date();
   }
-
-  remainingDays(date: any) {
-    let sub_date = new Date(date);
-    sub_date.setDate(sub_date.getDate() - 2); //Two day more;
-    return sub_date > new Date();
-  }
 }
