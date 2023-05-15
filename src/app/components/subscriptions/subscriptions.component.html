@@ -101,7 +101,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"
-                  >{{sub.tokensRemaining | tokens}}/{{ sub.tokens | tokens }} left . 
+                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens }} left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
