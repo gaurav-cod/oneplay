@@ -68,10 +68,10 @@
     </div>
     <div *ngIf="currentSubscriptions.length && !isCurrentLoading" class="row">
       <div *ngFor="let sub of currentSubscriptions" class="col-md-12 mt-2">
-        <div class="card lightBg borderRadius10 p-2">
-          <div class="card-body p-lg-4 p-md-4 p-0">
+        <div class="card border-0" [ngClass]="sub.planType === 'base' ? 'gradientBG' : 'lightBg'">
+          <div class="card-body p-lg-4 lightBg borderRadius10 p-md-4 p-2">
             <div class="row">
-              <div class="col-md-9 col-8">
+              <div class="col pr-0">
                 <p class="font16 font500 muteText mb-2">
                   {{ sub.planName }} ({{ sub.planType | titlecase }} Plan)
                 </p>
@@ -80,21 +80,28 @@
                 </h2>
               </div>
               <div
-                *ngIf="sub.planType === 'base'"
-                class="col-md-3 col-4 align-self-center text-right pl-0"
+                class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
+                <a
+                  [href]="domain + '/subscription.html#Hourly_Plan'"
+                  *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
+                  class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
+                >
+                  Buy Top-up
+                </a>
                 <button
-                  [routerLink]="['/settings/subscription']"
-                  [queryParams]="{ subscribe: sub.planId }"
+                  [routerLink] = "['settings/subscription']"
+                  *ngIf="isAboutToExpire(sub.endsAt)"
+                  [queryParams]="{ renew: sub.planId }"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew
-                </button>
+              </button>
               </div>
               <div class="col-12">
-                <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-                <span class="font18 font500 offWhiteText"
-                  >{{ sub.tokens | tokens }} . 
+                <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
+                <span class="font18 font500 offWhiteText align-middle"
+                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens }} left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"

@@ -48,7 +48,7 @@ export class SubscriptionsComponent implements OnInit {
     this.successFilter();
     this.restService
       .getCurrentSubscription()
-      .subscribe((s) => {this.currentSubscriptions = s; this.isCurrentLoading = false});
+      .subscribe((s) => {this.currentSubscriptions = s; this.isCurrentLoading = false; });
 
     const params = this.route.snapshot.queryParams
 
@@ -171,5 +171,15 @@ export class SubscriptionsComponent implements OnInit {
 
   get domain() {
     return environment.domain;
+  }
+
+  isAboutToExpire(date: any) {
+    let sub_date = new Date(date);
+    sub_date.setDate(sub_date.getDate() - 2); //Two day less;
+    return sub_date < new Date();
+  }
+
+  calculateRemainingTime(remaining= 0) {
+    return remaining.toFixed(2);
   }
 }

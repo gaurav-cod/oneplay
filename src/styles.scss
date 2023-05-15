@@ -796,6 +796,11 @@ input[type="checkbox"] {
   background: none !important;
 }
 
+.swal2-styled.swal2-deny {
+  width: 100% !important;
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+}
+
 .loadingBg {
   background: #212123;
 }
