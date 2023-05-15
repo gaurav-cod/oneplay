@@ -11,6 +11,7 @@ export class UserModel {
   readonly isVerified: boolean;
   readonly photo: string | null;
   readonly searchPrivacy: boolean;
+  readonly partnerId: string;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["user_id"];
@@ -25,6 +26,7 @@ export class UserModel {
     this.isVerified = json["is_verified_profile"];
     this.photo = json["profile_image"];
     this.searchPrivacy = json["search_privacy"];
+    this.partnerId = json["partner_id"];
   }
 
   copyWith(data: Partial<UserModel>) {
@@ -41,6 +43,7 @@ export class UserModel {
       is_verified_profile: this.isVerified,
       profile_image: data.photo ?? this.photo,
       search_privacy: data.searchPrivacy ?? this.searchPrivacy,
+      partner_id: this.partnerId,
     });
   }
 
@@ -62,6 +65,7 @@ export class UserModel {
       is_verified_profile: this.isVerified,
       profile_image: this.photo,
       search_privacy: this.searchPrivacy,
+      partner_id: this.partnerId,
     };
   }
 }
