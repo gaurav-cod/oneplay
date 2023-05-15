@@ -941,7 +941,7 @@
   </div>
 </ng-template>
 
-<ng-template #waitQueueModal let-d="dismiss">
+<ng-template #waitQueueModal>
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
       <h2 class="text-white w-100 font600 text-center font20">
@@ -951,7 +951,7 @@
       <span class="font38 font700 text-white borderBottomTab"><span class="blink">{{ queueSequence }}</span></span>
       <p class="font16 font500 muteText mt-2" [innerText]="queueMessge1"></p>
       <p class="font16 font500 muteText my-4 mx-lg-4" [innerText]="queueMessge2"></p>
-      <button class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60" (click)="d('Cross click')">Cancel</button>
+      <button class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60" (click)="cancelWaitQueue()">Cancel</button>
     </div>
   </div>
 </ng-template>

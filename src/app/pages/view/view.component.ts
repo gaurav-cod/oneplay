@@ -598,7 +598,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startSessionFailed(err: any) {
-    if (!!this._waitQueueModalRef) {
+    if (!!this._waitQueueModalRef && err.code != 801) {
       this._waitQueueModalRef.close();
       this._waitQueueModalRef = undefined;
     }
@@ -622,7 +622,6 @@ export class ViewComponent implements OnInit, OnDestroy {
         title: "Error Code: " + err.code,
         text: err.message,
         icon: "error",
-        // imageUrl: 'assets/img/error/Group.svg',
         showCloseButton: true,
         showCancelButton: true,
         confirmButtonText: "Try Again",
@@ -630,6 +629,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       }).then((_) => this.reportErrorOrTryAgain(_, err));
     }
   }
+
+  private queueStartSessionTimeout: NodeJS.Timeout;
 
   private async waitQueue(message: string) {
     [this.queueSequence, this.queueMessge1, this.queueMessge2] =
@@ -645,7 +646,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
     }
 
-    setTimeout(() => this.startSession(), 3000);
+    this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 3000);
+  }
+
+  public cancelWaitQueue() {
+    clearTimeout(this.queueStartSessionTimeout);
+    this._waitQueueModalRef?.close();
+    this._waitQueueModalRef = undefined;
+    this.stopLoading();
   }
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
@@ -898,6 +906,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.loaderService.stopLoader("play-loader");
     this._initializedModalRef?.close();
     this.initialized = "Please wait...";
+    this._startGameSubscription?.unsubscribe();
+    this._clientTokenSubscription?.unsubscribe();
   }
 
   private startTerminating(): void {

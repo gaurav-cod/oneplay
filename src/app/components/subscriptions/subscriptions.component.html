@@ -1,4 +1,26 @@
 <div class="row mb-5">
+  <div class="col-lg-12 mt-4" *ngIf="currentSubscriptions.length === 0 && !isCurrentLoading">
+    <div class="row pt-3">
+      <div class="col-lg-7 col-md-6 align-self-center pr-0">
+        <h1 class="headingSub font700 text-white marginBottom textResponsive">
+          Experience the Thrill of High Graphics at Low Prices!
+        </h1>
+      </div>
+      <div class="col-lg-5 col-md-6 text-center">
+        <img src="assets/img/gameImages.svg" class="img-fluid" alt="" />
+      </div>
+      <div class="col-12">
+        <div class="row gardientCard p-lg-4 p-3 negativeTopMargin">
+          <div class="col align-self-center pl-0">
+            <p class="font20 font500 text-white mb-0">Unlock the ultimate beast, offer ends soon!</p>
+          </div>
+          <div class="col-auto align-self-center p-0">
+            <a [href]="domain + '/subscription.html#Monthly_Plan'" class="btn btnGradient border-0 text-white">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="col-md-11 col-lg-12 mt-4">
     <!-- <p *ngIf="totalTokens !== undefined" class="font18 font500 text-white">
       Subscription Usage
@@ -20,14 +42,14 @@
         }}</span>
       </p>
     </div> -->
-    <div class="row mb-3">
+    <div class="row mb-3" *ngIf="currentSubscriptions.length && !isCurrentLoading">
       <div class="col-6 align-self-center">
-        <p *ngIf="currentSubscriptions.length" class="font18 font500 text-white mb-0">
+        <p class="font18 font500 text-white mb-0">
           Current Subscription
         </p>
       </div>
-      <div *ngIf="totalTokens !== undefined" class="col-6 pl-0">
-        <div class="row justify-content-end">
+      <div class="col-6 pl-0">
+        <div class="row justify-content-end" *ngIf="totalTokens !== undefined">
           <div class="col-auto pl-0">
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
@@ -44,12 +66,12 @@
         </div>
       </div>
     </div>
-    <div *ngIf="currentSubscriptions.length" class="row">
+    <div *ngIf="currentSubscriptions.length && !isCurrentLoading" class="row">
       <div *ngFor="let sub of currentSubscriptions" class="col-md-12 mt-2">
-        <div class="card lightBg borderRadius10 p-2">
-          <div class="card-body p-lg-4 p-md-4 p-0">
+        <div class="card border-0" [ngClass]="sub.planType === 'base' ? 'gradientBG' : 'lightBg'">
+          <div class="card-body p-lg-4 lightBg borderRadius10 p-md-4 p-2">
             <div class="row">
-              <div class="col-md-9 col-8">
+              <div class="col pr-0">
                 <p class="font16 font500 muteText mb-2">
                   {{ sub.planName }} ({{ sub.planType | titlecase }} Plan)
                 </p>
@@ -58,21 +80,28 @@
                 </h2>
               </div>
               <div
-                *ngIf="sub.planType === 'base'"
-                class="col-md-3 col-4 align-self-center text-right pl-0"
+                class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
+                <a
+                  [href]="domain + '/subscription.html#Hourly_Plan'"
+                  *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
+                  class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
+                >
+                  Buy Top-up
+                </a>
                 <button
-                  [routerLink]="['/settings/subscription']"
-                  [queryParams]="{ subscribe: sub.planId }"
+                  [routerLink] = "['settings/subscription']"
+                  *ngIf="isAboutToExpire(sub.endsAt)"
+                  [queryParams]="{ renew: sub.planId }"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew
-                </button>
+              </button>
               </div>
               <div class="col-12">
-                <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-                <span class="font18 font500 offWhiteText"
-                  >{{ sub.tokens | tokens }} . 
+                <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
+                <span class="font18 font500 offWhiteText align-middle"
+                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens }} left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
@@ -87,118 +116,121 @@
         </div>
       </div>
     </div>
-    <div class="row mb-2">
-      <div class="col-auto mt-4">
-        <div class="row onlyTransition cursorPointer" data-toggle="collapse" (click)="showBody=!showBody" [ngClass]="showBody ? 'arrowTansfrom' : ' '">
-          <div class="col-auto align-self-end pb-1"><p class="font18 font500 text-white mb-0">Subscription History</p></div>
-          <div class="col p-0"><i class="fas fa-caret-down font20 text-white"></i></div>
+    <div *ngIf="hasPreviousPayments() | async">
+      <div class="row mb-2">
+        <div class="col-auto mt-4">
+          <div class="row onlyTransition cursorPointer" data-toggle="collapse" (click)="showBody=!showBody" [ngClass]="showBody ? 'arrowTansfrom' : ' '">
+            <div class="col-auto align-self-end pb-1"><p class="font18 font500 text-white mb-0">Subscription History</p></div>
+            <div class="col p-0"><i class="fas fa-caret-down font20 text-white"></i></div>
+          </div>
         </div>
-      </div>
-      <div
-        class="col text-right align-self-end"
-        ngbDropdown
-        placement="bottom-right"
-      >
-        <a
-          href="javascript:void(0)"
-          class="nav-link p-0"
-          role="button"
-          ngbDropdownToggle
+        <div
+          class="col text-right align-self-end"
+          ngbDropdown
+          placement="bottom-right"
         >
-          <img
-            alt=""
-            class="img-fluid"
-            src="assets/img/Filter_2.svg"
-          />
-        </a>
-        <div class="dropdown-bug">
-          <div
-            class="dropdown-menu-arrow menudropdown"
-            ngbDropdownMenu
+          <a
+            href="javascript:void(0)"
+            class="nav-link p-0"
+            role="button"
+            ngbDropdownToggle
           >
-            <a href="javascript:void(0)" (click)="successFilter()" class="dropdown-item font16 font500 offWhiteText">
-              Successful
-            </a>
-            <a href="javascript:void(0)" (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
-              Processing
-            </a>
-            <a href="javascript:void(0)" (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
-              Failed
-            </a>
+            <img
+              alt=""
+              class="img-fluid"
+              src="assets/img/Filter_2.svg"
+            />
+          </a>
+          <div class="dropdown-bug">
+            <div
+              class="dropdown-menu-arrow menudropdown py-0"
+              ngbDropdownMenu
+            >
+              <a href="javascript:void(0)" [ngClass]="filterSuccess ? 'activeLinear' : '' " (click)="successFilter()" class="dropdown-item font16 font500 offWhiteText">
+                Successful
+              </a>
+              <a href="javascript:void(0)" [ngClass]="filterProcess ? 'activeLinear' : '' " (click)="processingFilter()" class="dropdown-item font16 font500 offWhiteText">
+                Processing
+              </a>
+              <a href="javascript:void(0)" [ngClass]="filterFailed ? 'activeLinear' : '' " (click)="failedFilter()" class="dropdown-item font16 font500 offWhiteText">
+                Failed
+              </a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row mt-2 collapseDiv" *ngIf="showBody">
-      <div class="col-md-12 mt-2">
-        <div class="table-responsive">
-          <table class="customTable table mb-0">
-            <thead>
-              <tr scope="row">
-                <th scope="col" class="pl-0 d-block d-lg-none">Date</th>
-                <th scope="col" class="pl-0 d-none d-lg-block">Date of Purchase</th>
-                <th scope="col">Subscription Type</th>
-                <th scope="col" class="text-center">Price</th>
-                <th scope="col" class="text-center">Status</th>
-                <th scope="col" *ngIf="sucess">Start Date</th>
-                <th scope="col" class="pr-0 text-right" *ngIf="sucess">End Date</th>
-                <th scope="col" class="pr-0" *ngIf="failedProcess">Transaction ID</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let subscription of subscriptions">
-                <td class="align-middle py-3 pl-0">
-                  {{ subscription.purchasedAt | date : "dd.MM.yyyy" }}
-                </td>
-                <td class="align-middle py-3">
-                  {{ subscription.planName }} Edition
-                  <p class="customTableText mb-0">
-                    {{ subscription.planDesc }}
-                  </p>
-                </td>
-                <td class="align-middle text-center py-3">
-                  {{ subscription.amount | currency : (subscription.planCurrency | uppercase) }}
-                </td>
-                <td
-                  class="align-middle py-3 text-center font500"
-                  [ngClass]="{
-                    gradientText: subscription.status === 'processing',
-                    gradientInfoText: subscription.status === 'active',
-                    cancelgradientText: subscription.status === 'failed' || subscription.status === 'upcoming'
-                  }"
-                >
-                  {{ subscription.status | titlecase }}
-                </td>
-                <td class="align-middle py-3" *ngIf="sucess">
-                  {{ subscription.startsAt | date : "dd.MM.yyyy" }}
-                </td>
-                <td class="align-middle text-right py-3 pr-0" *ngIf="sucess">
-                  {{ subscription.endsAt | date : "dd.MM.yyyy" }}
-                </td>
-                <td class="align-middle characterLimit py-3 pr-0" 
-                  *ngIf="failedProcess"
-                >
-                  <div
-                    placement="top-center"
-                    triggers="hover focus click" 
-                    ngbTooltip="{{copy === subscription.transitionId ? 'Copied':'Copy to Clipboard'}}" 
-                    ngxClipboard [cbContent]="subscription.transitionId" 
-                    (cbOnSuccess) = "copy = subscription.transitionId"
+      <div class="row mt-2 collapseDiv" *ngIf="showBody">
+        <div class="col-md-12 mt-2">
+          <div class="table-responsive">
+            <table class="customTable table mb-0">
+              <thead>
+                <tr scope="row">
+                  <th scope="col" class="pl-0 d-block d-lg-none">Date</th>
+                  <th scope="col" class="pl-0 d-none d-lg-block">Date of Purchase</th>
+                  <th scope="col">Subscription Type</th>
+                  <th scope="col" class="text-center">Price</th>
+                  <th scope="col" class="text-center">Status</th>
+                  <th scope="col" *ngIf="sucess">Start Date</th>
+                  <th scope="col" class="pr-0" *ngIf="sucess">End Date</th>
+                  <th scope="col" class="pr-0" *ngIf="failedProcess">Transaction ID</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subscription of subscriptions">
+                  <td class="align-middle py-3 pl-0">
+                    {{ subscription.purchasedAt | date : "dd.MM.yyyy" }}
+                  </td>
+                  <td class="align-middle py-3">
+                    {{ subscription.planName }} Edition
+                    <p class="customTableText mb-0">
+                      {{ subscription.planDesc }}
+                    </p>
+                  </td>
+                  <td class="align-middle text-center py-3">
+                    {{ subscription.amount | currency : (subscription.planCurrency | uppercase) }}
+                  </td>
+                  <td
+                    class="align-middle py-3 text-center font500"
+                    [ngClass]="{
+                      gradientText: subscription.status === 'processing',
+                      gradientInfoText: subscription.status === 'active',
+                      cancelgradientText: subscription.status === 'failed' || subscription.status === 'upcoming'
+                    }"
                   >
-                    {{ subscription.transitionId }}
-              </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="text-center border-top borderColor py-3" *ngIf="subscriptions.length > 4  && loadMoreBtn" >
-            <button (click)="loadMore()" *ngIf="sucessLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
-            <button (click)="failedLoadMore()" *ngIf="failedLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
-            <button (click)="processignLoadMore()" *ngIf="processLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
+                    {{ subscription.status | titlecase }}
+                  </td>
+                  <td class="align-middle py-3" *ngIf="sucess">
+                    {{ subscription.startsAt | date : "dd.MM.yyyy" }}
+                  </td>
+                  <td class="align-middle text-right py-3 pr-0" *ngIf="sucess">
+                    {{ subscription.endsAt | date : "dd.MM.yyyy" }}
+                  </td>
+                  <td class="align-middle py-3 pr-0" 
+                    *ngIf="failedProcess"
+                  >
+                    <div
+                      class="characterLimit"
+                      placement="top-center"
+                      triggers="hover focus click" 
+                      ngbTooltip="{{copy === subscription.transitionId ? 'Copied':'Copy to Clipboard'}}" 
+                      ngxClipboard [cbContent]="subscription.transitionId" 
+                      (cbOnSuccess) = "copy = subscription.transitionId"
+                    >
+                      {{ subscription.transitionId }}
+                </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="text-center border-top borderColor py-3" *ngIf="subscriptions.length > 4  && loadMoreBtn" >
+              <button (click)="loadMore()" *ngIf="sucessLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
+              <button (click)="failedLoadMore()" *ngIf="failedLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
+              <button (click)="processignLoadMore()" *ngIf="processLoad" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
+            </div>
           </div>
         </div>
-      </div>
-    </div> 
-    <hr class="borderBottomTab mt-0"/>
+      </div> 
+      <hr class="borderBottomTab mt-0"/>
+    </div>
   </div>
 </div>

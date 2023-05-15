@@ -226,7 +226,7 @@ input:-webkit-autofill:active {
 .font20 {
   font-size: 20px;
   line-height: 30px;
-  @media (max-width: 480px) {
+  @media (max-width: 767px) {
     font-size: 16px;
     line-height: 26px;
   }
@@ -796,6 +796,11 @@ input[type="checkbox"] {
   background: none !important;
 }
 
+.swal2-styled.swal2-deny {
+  width: 100% !important;
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+}
+
 .loadingBg {
   background: #212123;
 }
@@ -1082,6 +1087,7 @@ select {
 
 .modal-content {
   box-shadow: none !important;
+  background-color: #212123 !important;
 }
 
 .modal-dialog-scrollable .modal-content.stripeModal {
