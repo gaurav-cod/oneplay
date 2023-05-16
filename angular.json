@@ -36,27 +36,25 @@
               "node_modules/chart.js/dist/Chart.min.js",
               "node_modules/clipboard/dist/clipboard.min.js",
               "src/gamepad.js"
-            ]
+            ],
+            "baseHref": "/dashboard/"
           },
           "configurations": {
             "local": {
               "optimization": false,
-              "buildOptimizer": false,
-              "baseHref": "/dashboard/"
+              "buildOptimizer": false
             },
             "production": {
               "optimization": true,
               "buildOptimizer": true,
               "outputHashing": "all",
               "aot": true,
-              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/dashboard/",
               "deployUrl": "https://www.oneplay.in/dashboard/"
             },
             "development": {
@@ -64,8 +62,12 @@
               "buildOptimizer": true,
               "outputHashing": "all",
               "aot": true,
-              "outputPath": "dist",
-              "baseHref": "/dashboard/",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
               "deployUrl": "https://www.oneream.com/dashboard/"
             },
             "staging": {
@@ -73,14 +75,12 @@
               "buildOptimizer": true,
               "outputHashing": "all",
               "aot": true,
-              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "baseHref": "/dashboard/",
               "deployUrl": "https://qa.oneream.com/dashboard/"
             }
           }

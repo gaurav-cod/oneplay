@@ -746,7 +746,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGameWithWebRTCToken(millis = 0): void {
-    if (environment.production) {
+    if (!environment.webrtc_enabled) {
       Swal.fire({
         icon: "info",
         title: "Web-Play",
