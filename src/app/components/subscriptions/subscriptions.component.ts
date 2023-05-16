@@ -182,8 +182,4 @@ export class SubscriptionsComponent implements OnInit {
   calculateRemainingTime(remaining= 0) {
     return remaining.toFixed(2);
   }
-
-  get calculateRemaining() {
-    return (Math.floor(this.remainingTokens / 60) + 'h ' + this.remainingTokens % 60 + 'min');
-  }
 }

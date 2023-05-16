@@ -22,26 +22,6 @@
     </div>
   </div>
   <div class="col-md-11 col-lg-12 mt-4">
-    <!-- <p *ngIf="totalTokens !== undefined" class="font18 font500 text-white">
-      Subscription Usage
-    </p>
-    <div *ngIf="totalTokens !== undefined" class="py-3">
-      <div class="outerRange">
-        <div class="innerRange"></div>
-      </div>
-      <p>
-        <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-        <span class="text-muted font700">Total Playtime : </span
-        ><span class="offWhiteText font700">{{ totalTokens | tokens }}</span>
-      </p>
-      <p>
-        <img src="assets/img/Alarm.svg" class="img-fluid mr-2" alt="" />
-        <span class="text-muted font700">Remaining Playtime : </span
-        ><span class="offWhiteText font700">{{
-          remainingTokens | tokens
-        }}</span>
-      </p>
-    </div> -->
     <div class="row mb-3" *ngIf="currentSubscriptions.length && !isCurrentLoading">
       <div class="col-6 align-self-center">
         <p class="font18 font500 text-white mb-0">
@@ -54,13 +34,13 @@
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
               <div class="innerRange" 
-                ngbTooltip="{{ calculateRemaining }} left"
+                ngbTooltip="{{ remainingTokens | tokens }} left"
                 [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
               </div>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>
-              <span class="font16 font500 muteText float-right">{{ totalTokens | tokens }}</span>
+              <span class="font16 font500 muteText float-right">{{ totalTokens | tokens:true }}</span>
             </div>
           </div>
         </div>
@@ -101,7 +81,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"
-                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens }} left . 
+                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens:true }} left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
