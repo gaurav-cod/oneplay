@@ -4,10 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:staging": "ng serve --configuration=staging",
-    "build": "ng build --deploy-url=https://www.oneream.com/dashboard/",
-    "build:staging": "ng build --configuration=staging --deploy-url=https://qa.oneream.com/dashboard/",
-    "build:prod": "ng build --prod --deploy-url=https://www.oneplay.in/dashboard/",
+    "build": "ng build --configuration=development",
+    "build:staging": "ng build --configuration=staging",
+    "build:prod": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

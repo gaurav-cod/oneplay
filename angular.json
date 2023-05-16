@@ -39,61 +39,49 @@
             ]
           },
           "configurations": {
+            "local": {
+              "optimization": false,
+              "buildOptimizer": false,
+              "baseHref": "/dashboard/"
+            },
             "production": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
+              "optimization": true,
               "buildOptimizer": true,
+              "outputHashing": "all",
+              "aot": true,
+              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/dashboard/"
+              "baseHref": "/dashboard/",
+              "deployUrl": "https://www.oneplay.in/dashboard/"
             },
             "development": {
-              "buildOptimizer": false,
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": true
-                },
-                "fonts": true
-              },
+              "optimization": true,
+              "buildOptimizer": true,
               "outputHashing": "all",
-              "baseHref": "/dashboard/"
+              "aot": true,
+              "outputPath": "dist",
+              "baseHref": "/dashboard/",
+              "deployUrl": "https://www.oneream.com/dashboard/"
             },
             "staging": {
-              "buildOptimizer": false,
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": true
-                },
-                "fonts": true
-              },
+              "optimization": true,
+              "buildOptimizer": true,
               "outputHashing": "all",
+              "aot": true,
+              "outputPath": "dist",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "baseHref": "/dashboard/"
+              "baseHref": "/dashboard/",
+              "deployUrl": "https://qa.oneream.com/dashboard/"
             }
           }
         },
@@ -103,6 +91,9 @@
             "browserTarget": "argon-dashboard-angular:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "argon-dashboard-angular:build:local"
+            },
             "production": {
               "browserTarget": "argon-dashboard-angular:build:production"
             },
@@ -113,7 +104,7 @@
               "browserTarget": "argon-dashboard-angular:build:staging"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
