@@ -179,7 +179,7 @@ export class SubscriptionsComponent implements OnInit {
     return sub_date < new Date();
   }
 
-  calculateRemainingTime(remaining= 0) {
-    return remaining.toFixed(2);
+  calculateRemainingTime(remaining = 0) {
+    return (remaining / 60).toFixed(1);
   }
 }

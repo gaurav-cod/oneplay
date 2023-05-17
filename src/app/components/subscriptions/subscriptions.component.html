@@ -80,6 +80,7 @@
                 </h2>
               </div>
               <div
+                *ngIf="sub.planType == 'base'"
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
@@ -89,19 +90,20 @@
                 >
                   Buy Top-up
                 </a>
-                <button
-                  [routerLink] = "['settings/subscription']"
+                <a
                   *ngIf="isAboutToExpire(sub.endsAt)"
+                  [routerLink]="['/settings', 'subscription']"
                   [queryParams]="{ renew: sub.planId }"
+                  replaceUrl
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew
-              </button>
+                </a>
               </div>
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"
-                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens }} left . 
+                  >{{calculateRemainingTime(sub.tokensRemaining)}}/{{ sub.tokens | tokens }} left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
