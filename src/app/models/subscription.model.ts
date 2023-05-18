@@ -14,6 +14,7 @@ export class SubscriptionModel {
   startsAt: Date;
   purchasedAt: Date;
   tokens: number;
+  tokensRemaining: number;
   planType: 'base' | 'topup';
 
   constructor(json: any) {
@@ -35,5 +36,7 @@ export class SubscriptionModel {
     this.purchasedAt = new Date(json.subscription_brought_at_time);
     this.tokens = plan.tokens;
     this.planType = plan.type;
+    this.tokensRemaining = json.remaining_tokens;
+
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { GameStatusRO } from 'src/app/interface';
 import { GameModel } from 'src/app/models/game.model';
@@ -21,7 +21,6 @@ import { environment } from 'src/environments/environment';
 export class BottomNavComponent implements OnInit, OnDestroy {
 
   @Output() toggleFriends = new EventEmitter();
-  @ViewChild('gameStatusLink') gameStatusLink: ElementRef<HTMLAnchorElement>;
   
   public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
@@ -40,7 +39,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.gameStatusSubscription.unsubscribe();
-    window.removeEventListener("orientationchange", this.bodyFocus);
   }
 
   get gameLink() {
@@ -90,14 +88,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.user = user;
     });
-  }
-
-  ngAfterViewInit(): void {
-    window.addEventListener("orientationchange", this.bodyFocus);
-  }
-
-  bodyFocus = () => {
-    this.gameStatusLink.nativeElement.blur();
   }
 
   toggleFriendsList() {
