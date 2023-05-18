@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -12,12 +13,22 @@ import Swal from "sweetalert2";
   styleUrls: ["./qr-verify.component.scss"],
 })
 export class QrVerifyComponent implements OnInit {
-
   form: FormGroup;
-  formInput = ['one', 'two', 'three', 'four', 'indicator', 'five', 'six', 'seven', 'eight'];
-  @ViewChildren('formRow') rows: any;
+  formInput = [
+    "one",
+    "two",
+    "three",
+    "four",
+    "indicator",
+    "five",
+    "six",
+    "seven",
+    "eight",
+  ];
+  @ViewChildren("formRow") rows: any;
 
   public loading = false;
+  public isLoggedIn = false;
 
   public codeForm = new FormGroup({
     one: new FormControl("", [Validators.required]),
@@ -31,15 +42,18 @@ export class QrVerifyComponent implements OnInit {
   });
 
   private routeSubscription: Subscription;
+  private loginSubscription: Subscription;
 
   constructor(
     private readonly restService: RestService,
+    private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
+    this.loginSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -61,6 +75,10 @@ export class QrVerifyComponent implements OnInit {
         }
       },
     });
+
+    this.loginSubscription = this.authService.sessionTokenExists.subscribe(
+      (data) => (this.isLoggedIn = data)
+    );
   }
 
   verify() {
@@ -101,29 +119,31 @@ export class QrVerifyComponent implements OnInit {
 
   jump(event: any, index: number) {
     const input = event.target as HTMLInputElement;
-    if(/^[0-9]$/.test(input.value)) {
-      if(index > 3) {
-        index--
+    if (/^[0-9]$/.test(input.value)) {
+      if (index > 3) {
+        index--;
       }
-      if (input.value.length === input.maxLength && index < this.formInput.length-2) {
-        this.rows._results[index+1].nativeElement.focus();
+      if (
+        input.value.length === input.maxLength &&
+        index < this.formInput.length - 2
+      ) {
+        this.rows._results[index + 1].nativeElement.focus();
       }
-       
     } else {
-      input.value = ''
+      input.value = "";
     }
   }
 
   jumpPrev(event: any, index: number) {
-    if(index > 3) {
-      index--
+    if (index > 3) {
+      index--;
     }
-    if (event.key === 'Backspace' || event.key === 'Delete') {
+    if (event.key === "Backspace" || event.key === "Delete") {
       const input = event.target as HTMLInputElement;
       if (input.value.length === 0 && index > 0) {
-        this.rows._results[index-1].nativeElement.focus();
+        this.rows._results[index - 1].nativeElement.focus();
+        this.rows._results[index - 1].nativeElement.value = "";
       }
     }
   }
-
 }

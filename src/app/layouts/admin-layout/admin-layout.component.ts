@@ -111,22 +111,48 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           if (result.isConfirmed) {
             this.handlePay(params.subscribe);
           } else {
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { subscribe: null },
-              queryParamsHandling: "merge",
-            });
+            this.removeQueryParams();
+          }
+        });
+      } else if(params.renew) {
+        Swal.fire({
+          title: "Ready to unlock?",
+          icon: "warning",
+          text: "you're about to purchase the selected subscription package.",
+          confirmButtonText: "Yes",
+          showDenyButton: true,
+          denyButtonText: 'Change plan',
+          showCloseButton: true,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            this.handlePay(params.renew);
+          }
+          else if (result.isDenied) {
+            window.location.href = `${this.domain}/subscription.html#Monthly_Plan`
+          }
+          else {
+            this.removeQueryParams();
           }
         });
       }
     });
   }
 
+  get domain() {
+    return environment.domain;
+  }
+
   closeStripeModal() {
     this.stripeModalRef?.close();
+    this.removeQueryParams();
+    
+  }
+
+  private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null },
+      queryParams: { subscribe: null, renew: null },
+      replaceUrl: true,
       queryParamsHandling: "merge",
     });
   }
