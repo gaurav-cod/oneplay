@@ -3,7 +3,7 @@
     <div class="row justify-content-center hideLargeScreen">
       <div class="col-12 col-md-9 col-lg-6 col-xxl-3">
         <form class="navbar-search" (submit)="search()">
-          <div class="form-group mb-0" [ngClass]="{ focused: isFocused === true }">
+          <div class="form-group mb-0" [ngClass]="{ focused: (isFocused | async) === true }">
             <div class="input-group border-0">
               <input
                 class="form-control searchPleaceholder border-0"
@@ -12,6 +12,7 @@
                 [formControl]="queryControl"
                 (focus)="isFocused = true"
                 (blur)="isFocused = false"
+                (keyup)="search()"
               />
               <div class="input-group-append">
                 <button
