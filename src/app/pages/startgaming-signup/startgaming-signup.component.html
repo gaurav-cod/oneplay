@@ -20,6 +20,7 @@
                         (submit)="startGaming()"
                         role="form"
                         autocomplete="off"
+                        [formGroup]="startGameForm"
                     >
                         <div class="row mt-4">
                             <div class="col-md-12">
@@ -43,31 +44,16 @@
                                 </label
                                 ><span
                                     class="font16 font500 errorGradientColor float-right"
-                                    *ngIf="username.touched && username.invalid"
+                                    *ngIf="usernameErrored"
                                     >*invalid Username</span
                                 >
                                 <div class="input-group">
                                     <input
-                                        [type]="showUsername ? 'password' : 'text'"
+                                        type="text"
                                         class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                                         placeholder="exampleOnePlay"
                                         formControlName="username"
                                     />
-                                    <span
-                                        class="bgTransparent fixedIcon offWhiteColor font16 font500"
-                                    >
-                                    <button
-                                        class="btn p-0 bgTransparent customOffWhite borderRadius0"
-                                        type="button"
-                                        (click)="showUsername = !showUsername"
-                                    >
-                                        <img
-                                            class="img-fluid"
-                                            [src]="showUsername ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
-                                            alt=""
-                                        />
-                                    </button>
-                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-12 mt-3">
@@ -75,13 +61,19 @@
                                     >Date Of Birth*</label
                                 ><span
                                     class="font16 font500 errorGradientColor float-right"
+                                    *ngIf="dateOfBirthErrored"
                                     >*invalid Date of Birth</span
                                 >
-                                <div class="input-group">
+                                <div class="input-group dateDropdown">
                                     <input
-                                        type="date"
                                         class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
                                         formControlName="date_of_birth"
+                                        placeholder="DD\MM\YY"
+                                        ngbDatepicker
+                                        #d="ngbDatepicker"
+                                        (focus)="d.toggle()"
+                                        [maxDate]="maxDate" 
+                                        [minDate]="minDate"
                                     />
                                     <span
                                         class="bgTransparent fixedIcon offWhiteColor font16 font500"
@@ -97,7 +89,7 @@
                             <div class="col-md-12 mt-5">
                             <input
                                 type="button"
-                                [disabled]="username.invalid && date_of_birth.invalid"
+                                [disabled]="checkvalidationValue"
                                 class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
                                 value="Start Gaming"
                             />

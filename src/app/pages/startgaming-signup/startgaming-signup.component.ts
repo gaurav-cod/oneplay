@@ -9,9 +9,27 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 })
 export class StartgamingSignupComponent implements OnInit {
 
-  showUsername = false;
-  username = new FormControl("", [Validators.required]);
-  date_of_birth = new FormControl("", [Validators.required]);
+  startGameForm = new FormGroup({ 
+    username: new FormControl("", [Validators.required]),
+    // date_of_birth: new FormControl("", [Validators.required]),
+  });
+
+  maxDate ={year: new Date().getUTCFullYear()}
+  minDate ={year: new Date().getUTCFullYear()-100,month: 12, day: 31}
+
+  get usernameErrored() {
+    const control = this.startGameForm.controls["username"];
+    return control.touched && control.invalid;
+  }
+
+  get dateOfBirthErrored() {
+    const control = this.startGameForm.controls["date_of_birth"];
+    return control.touched && control.invalid;
+  }
+
+  get checkvalidationValue() {
+    return this.startGameForm.invalid;
+  }
 
   constructor() { }
 
