@@ -5,6 +5,7 @@ import { environment } from "src/environments/environment";
 import { GamepadService } from "./services/gamepad.service";
 import { RestService } from "./services/rest.service";
 import { ToastService } from "./services/toast.service";
+import Swal from "sweetalert2";
 declare var gtag: Function;
 
 @Component({
@@ -51,12 +52,19 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.gamepadService.init();
+
+    window.addEventListener("popstate", this.closeSwals.bind(this));
   }
 
   ngOnDestroy(): void {
     this.gamepadService.destroy();
     this.toastService.clear();
     this.gamepadMessageSubscription.unsubscribe();
+    window.removeEventListener("popstate", this.closeSwals.bind(this));
+  }
+
+  private closeSwals() {
+    Swal.close();
   }
 
   private getSeriousNotification() {

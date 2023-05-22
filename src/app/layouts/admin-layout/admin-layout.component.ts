@@ -111,11 +111,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           if (result.isConfirmed) {
             this.handlePay(params.subscribe);
           } else {
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { subscribe: null },
-              queryParamsHandling: "merge",
-            });
+            this.removeQueryParams();
           }
         });
       } else if(params.renew) {
@@ -123,8 +119,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           title: "Ready to unlock?",
           icon: "warning",
           text: "you're about to purchase the selected subscription package.",
-          // html: `you're about to purchase the selected subscription package.<p class="mt-4 mb-0"><a href="" class="btn btn-block mutedBg border-0 text-white">Change plan</a></p>`,
-          // showCancelButton: true,
           confirmButtonText: "Yes",
           showDenyButton: true,
           denyButtonText: 'Change plan',
@@ -137,11 +131,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
             window.location.href = `${this.domain}/subscription.html#Monthly_Plan`
           }
           else {
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { renew: null },
-              queryParamsHandling: "merge",
-            });
+            this.removeQueryParams();
           }
         });
       }
@@ -154,9 +144,15 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   closeStripeModal() {
     this.stripeModalRef?.close();
+    this.removeQueryParams();
+    
+  }
+
+  private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null },
+      queryParams: { subscribe: null, renew: null },
+      replaceUrl: true,
       queryParamsHandling: "merge",
     });
   }
