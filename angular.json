@@ -35,65 +35,54 @@
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js",
               "node_modules/clipboard/dist/clipboard.min.js",
-              "src/gamepad.js"
-            ]
+              "src/gamepad.js",
+              "src/script.js"
+            ],
+            "baseHref": "/dashboard/"
           },
           "configurations": {
+            "local": {
+              "optimization": false,
+              "buildOptimizer": false
+            },
             "production": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
+              "optimization": true,
               "buildOptimizer": true,
+              "outputHashing": "all",
+              "aot": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/dashboard/"
+              "deployUrl": "https://www.oneplay.in/dashboard/"
             },
             "development": {
-              "buildOptimizer": false,
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": true
-                },
-                "fonts": true
-              },
+              "optimization": true,
+              "buildOptimizer": true,
               "outputHashing": "all",
-              "baseHref": "/dashboard/"
+              "aot": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "deployUrl": "https://www.oneream.com/dashboard/"
             },
             "staging": {
-              "buildOptimizer": false,
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": false,
-                  "inlineCritical": true
-                },
-                "fonts": true
-              },
+              "optimization": true,
+              "buildOptimizer": true,
               "outputHashing": "all",
+              "aot": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.staging.ts"
                 }
               ],
-              "baseHref": "/dashboard/"
+              "deployUrl": "https://qa.oneream.com/dashboard/"
             }
           }
         },
@@ -103,6 +92,9 @@
             "browserTarget": "argon-dashboard-angular:build"
           },
           "configurations": {
+            "local": {
+              "browserTarget": "argon-dashboard-angular:build:local"
+            },
             "production": {
               "browserTarget": "argon-dashboard-angular:build:production"
             },
@@ -113,7 +105,7 @@
               "browserTarget": "argon-dashboard-angular:build:staging"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

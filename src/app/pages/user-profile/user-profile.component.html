@@ -1,6 +1,6 @@
 <div class="container pt-7">
   <div class="row justify-content-center">
-    <div class="col-md-12 col-lg-10">
+    <div class="col-md-12 col-lg-11">
       <h1 class="font700 text-white mt-3">Settings</h1>
       <nav >
         <div class="customNavTab customCareerTab border-0 nav nav-tabs pl-1">
@@ -19,6 +19,7 @@
             >Login & Security</a
           >
           <a
+            *ngIf="isOneplayUser"
             href="javascript:void(0)"
             class="nav-item nav-link border-0 py-3 mr-3"
             routerLinkActive="active"

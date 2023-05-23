@@ -327,6 +327,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
+      scrollable: true,
     });
   }
 

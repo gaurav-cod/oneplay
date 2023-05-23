@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
-  cookie_domain: "qa.oneream.com",
-  domain: "https://qa.oneream.com",
-  client_api: "https://client-apis.qa.oneream.com/services/v2",
-  render_mix_api: "https://rendermix.qa.oneream.com/v1",
-  socket_endpoint: "https://chatservices.qa.oneream.com",
+  cookie_domain: "oneream.com",
+  domain: "https://www.oneream.com",
+  client_api: "https://client-apis.oneream.com/services/v2",
+  render_mix_api: "https://rendermix.oneream.com/v1",
+  socket_endpoint: "https://chatservices.oneream.com",
   game_assets:
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
   ga_tracking_id: "UA-220923953-2",
@@ -20,5 +20,5 @@ export const environment = {
     appId: "1:744840875406:web:056e488d551ade3e9ba8df",
     measurementId: "G-X80K2YEKBS",
   },
-  webrtc_enabled: false,
+  webrtc_enabled: true,
 };
