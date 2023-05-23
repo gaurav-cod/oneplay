@@ -83,7 +83,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"
-                  >{{calculateRemainingTime(sub.tokensRemaining/60)}}/{{ sub.tokens | tokens:true }} left . 
+                  >{{ tokensToHour(sub.tokensRemaining) }}/{{ tokensToHour(sub.tokens) }} hours left . 
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
