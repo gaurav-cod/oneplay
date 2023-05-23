@@ -177,17 +177,11 @@ input:-internal-autofill-selected {
   }
 }
 
-@media (max-width: 1280.9px) {
+@media (max-width: 1200.9px) {
   .hideInSmallScreen {
     display: none;
   }
 }
-
-// @media (any-pointer: coarse) {
-//   .hideInSmallScreen {
-//     display: none;
-//   }
-// }
 
 .width450 {
   width: 450px;
