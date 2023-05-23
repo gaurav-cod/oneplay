@@ -36,7 +36,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
 
-  private fiveMinutesTimer: NodeJS.Timer;
+  private fiveSecondsTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
@@ -64,9 +64,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.initGames();
     this.initPushNotification();
 
-    this.fiveMinutesTimer = setInterval(() => {
+    this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
-    }, 5 * 60 * 1000);
+    }, 5 * 1000);
 
     this.oneMinuteTimer = setInterval(() => {
       this.setOnline();
@@ -90,7 +90,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.fiveMinutesTimer);
+    clearInterval(this.fiveSecondsTimer);
     clearInterval(this.oneMinuteTimer);
     this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
