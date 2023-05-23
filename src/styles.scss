@@ -1099,3 +1099,7 @@ select {
   width: 0px;
   height: 0px;
 }
+
+.tooltip {
+  z-index: 1 !important;
+}
