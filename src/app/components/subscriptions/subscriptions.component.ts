@@ -179,7 +179,10 @@ export class SubscriptionsComponent implements OnInit {
     return sub_date < new Date();
   }
 
-  calculateRemainingTime(remaining = 0) {
-    return (remaining / 60).toFixed(1);
+  tokensToHour(tokens: number) {
+    if (tokens % 60 !== 0) {
+      return Number((tokens / 60).toFixed(1));
+    }
+    return tokens / 60;
   }
 }
