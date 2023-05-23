@@ -206,6 +206,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       paramsObservable,
       queryParamsObservable
     ).subscribe((params) => {
+      this.game = undefined;
       const id = (params[0].id as string).replace(/(.*)\-/g, "");
       const keyword = params[1].keyword;
       const keywordHash = params[1].hash;
