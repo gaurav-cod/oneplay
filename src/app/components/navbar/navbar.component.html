@@ -73,7 +73,7 @@
                 type="text"
                 [formControl]="query"
                 (focus)="onFocus()"
-                
+                (blur)="onBlur()"
                 (click)="isMenuCollapsed = true"
                 (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
