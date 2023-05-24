@@ -85,7 +85,7 @@
     </form>
   </div>
 </div>
-<div class="pb-5">
+<div>
   <div *ngIf="!!game" class="row mt-4">
     <div class="col-md-9 col-sm-12">
       <div class="card bg-dark">
@@ -149,7 +149,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="topVideos.length && !!game" class="mt-5 pb-5">
+  <div *ngIf="topVideos.length && !!game" class="mt-5">
     <app-stream-card
       [title]="'Other streams you might like'"
       [gameId]="game.oneplayId"
