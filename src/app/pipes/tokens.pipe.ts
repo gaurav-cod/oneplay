@@ -12,6 +12,9 @@ export class TokensPipe implements PipeTransform {
     if(min > 0) {
       str = str + min + (fullForm ? ' minutes' : 'm');
     }
+    if (str === '') {
+      return '0';
+    }
     return str.trim();
   }
 }
