@@ -97,12 +97,20 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     Swal.close();
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
+    const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
     this.route.queryParams.subscribe((params) => {
       if (params.subscribe) {
+        let swal_text = "you're about to purchase the selected subscription package.";
+        if(this.planType == 'base') {
+          const planTypes = subscriptions.map((s) => s.planType)
+          if(planTypes.includes('base')) {
+            swal_text = "This Pack will starts after the current one ends.";
+          }
+        }
         Swal.fire({
           title: "Ready to unlock?",
-          text: "you're about to purchase the selected subscription package.",
+          text: swal_text,
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "Yes",
@@ -114,7 +122,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
             this.removeQueryParams();
           }
         });
-      } else if(params.renew) {
+      }
+      else if(params.renew) {
         Swal.fire({
           title: "Ready to unlock?",
           icon: "warning",
@@ -151,7 +160,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null, renew: null },
+      queryParams: { subscribe: null, renew: null, subscriptionType: null, },
       replaceUrl: true,
       queryParamsHandling: "merge",
     });
