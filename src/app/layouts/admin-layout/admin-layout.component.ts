@@ -98,23 +98,26 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
+    let swal_text = "you're about to purchase the selected subscription package.";
+
     const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
+    const planTypes = subscriptions.map((s) => s.planType)
+    
     this.route.queryParams.subscribe((params) => {
       if (params.subscribe) {
-        let swal_text = "you're about to purchase the selected subscription package.";
-        if(this.planType == 'base') {
-          const planTypes = subscriptions.map((s) => s.planType)
+        if(params.plan == 'base') {
           if(planTypes.includes('base')) {
-            swal_text = "This Pack will starts after the current one ends.";
+            swal_text = "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
           }
         }
         Swal.fire({
           title: "Ready to unlock?",
-          text: swal_text,
+          html: swal_text,
           icon: "warning",
           showCancelButton: true,
           confirmButtonText: "Yes",
           cancelButtonText: "No",
+          customClass: "swalPadding",
         }).then(async (result) => {
           if (result.isConfirmed) {
             this.handlePay(params.subscribe);
@@ -124,14 +127,20 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         });
       }
       else if(params.renew) {
+        if(params.plan == 'base') {
+          if(planTypes.includes('base')) {
+            swal_text = "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
+          }
+        }
         Swal.fire({
           title: "Ready to unlock?",
           icon: "warning",
-          text: "you're about to purchase the selected subscription package.",
+          html: swal_text,
           confirmButtonText: "Yes",
           showDenyButton: true,
           denyButtonText: 'Change plan',
           showCloseButton: true,
+          customClass: "swalPadding",
         }).then(async (result) => {
           if (result.isConfirmed) {
             this.handlePay(params.renew);
@@ -160,7 +169,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null, renew: null, subscriptionType: null, },
+      queryParams: { subscribe: null, renew: null, plan: null, },
       replaceUrl: true,
       queryParamsHandling: "merge",
     });
