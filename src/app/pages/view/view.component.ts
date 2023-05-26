@@ -511,6 +511,21 @@ export class ViewComponent implements OnInit, OnDestroy {
     );
   }
 
+  terminateButton() {
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      html: `The Game session will terminate!`,
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      cancelButtonText: "Resume",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.terminateSession();
+      }
+    });
+  }
+
   clickLaunchAgain() {
     this.launchGame();
     this._launchModalRef?.close();
