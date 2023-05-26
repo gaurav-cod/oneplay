@@ -97,18 +97,21 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     Swal.close();
   }
 
-  async ngAfterViewInit() {
-    let swal_text = "you're about to purchase the selected subscription package.";
-
+  async getSwalTextForBasePlan(defaultText: string) {
     const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
     const planTypes = subscriptions.map((s) => s.planType)
-    
-    this.route.queryParams.subscribe((params) => {
+    if(planTypes.includes('base')) {
+      return "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
+    }
+    return defaultText;
+  }
+
+  ngAfterViewInit() {
+    this.route.queryParams.subscribe(async(params) => {
+      let swal_text = "you're about to purchase the selected subscription package.";
       if (params.subscribe) {
         if(params.plan == 'base') {
-          if(planTypes.includes('base')) {
-            swal_text = "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
-          }
+          swal_text = await this.getSwalTextForBasePlan(swal_text);
         }
         Swal.fire({
           title: "Ready to unlock?",
@@ -127,11 +130,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         });
       }
       else if(params.renew) {
-        if(params.plan == 'base') {
-          if(planTypes.includes('base')) {
-            swal_text = "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
-          }
-        }
+        swal_text = await this.getSwalTextForBasePlan(swal_text);
         Swal.fire({
           title: "Ready to unlock?",
           icon: "warning",
