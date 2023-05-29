@@ -5,15 +5,17 @@ import {
   OnInit,
   ViewChild,
   OnDestroy,
+  HostListener,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { combineLatest, merge, Subscription } from "rxjs";
+import { combineLatest, lastValueFrom, merge, Subscription } from "rxjs";
 import {
   ClientTokenRO,
+  GameStatusRO,
   PurchaseStore,
   StartGameRO,
   WebPlayTokenRO,
@@ -271,23 +273,32 @@ export class ViewComponent implements OnInit, OnDestroy {
       this._gameStatusSubscription?.unsubscribe();
 
       this._gameStatusSubscription = this.gameService.gameStatus.subscribe(
-        (status) => {
-          if (!this.startingGame) {
-            if (status && status.game_id === id) {
-              this.isConnected = status.is_user_connected;
-              if (status.is_running) {
-                this.action = "Resume";
-              } else {
-                this.action = "Play";
-              }
-              this.sessionToTerminate = status.session_id;
-            } else {
-              this.action = "Play";
-            }
-          }
-        }
+        (status) => this.gameStatusSuccess(status)
       );
     });
+  }
+
+  private gameStatusSuccess(status: GameStatusRO) {
+    if (!this.startingGame) {
+      if (status && status.game_id === this.game.oneplayId) {
+        this.isConnected = status.is_user_connected;
+        if (status.is_running) {
+          this.action = "Resume";
+        } else {
+          this.action = "Play";
+        }
+        this.sessionToTerminate = status.session_id;
+      } else {
+        this.action = "Play";
+      }
+    }
+  }
+
+  @HostListener("window:beforeunload", ["$event"])
+  unloadNotification($event: any) {
+    if (this.startingGame) {
+      $event.returnValue = true;
+    }
   }
 
   get isInWishlist(): boolean {
@@ -445,7 +456,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   async playGame(container) {
-    if(this.action === 'Resume' && this.isConnected) {
+    if (this.action === "Resume" && this.isConnected) {
       const result = await Swal.fire({
         title: "Hold Up!",
         text: "Resuming your journey here? It will terminate from other!",
@@ -453,7 +464,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         confirmButtonText: "Yes",
         showCancelButton: true,
         cancelButtonText: "No",
-      })
+      });
       if (!result.isConfirmed) {
         return;
       }
@@ -729,19 +740,24 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
     if (!!data.client_token) {
       this._clientToken = data.client_token;
-      this.launchGame();
-
-      setTimeout(() => {
-        this.stopLoading();
-        this._launchModalRef = this.ngbModal.open(this.launchModal, {
-          centered: true,
-          modalDialogClass: "modal-md",
+      lastValueFrom(this.restService.getGameStatus())
+        .then((status) => {
+          this.stopLoading();
+          this.gameStatusSuccess(status);
+        })
+        .catch(() => {
+          this.stopLoading();
+        })
+        .finally(() => {
+          this.launchGame();
+          this._launchModalRef = this.ngbModal.open(this.launchModal, {
+            centered: true,
+            modalDialogClass: "modal-md",
+          });
+          this._launchModalCloseTimeout = setTimeout(() => {
+            this._launchModalRef?.close();
+          }, 30000);
         });
-        this._launchModalCloseTimeout = setTimeout(() => {
-          this._launchModalRef?.close();
-        }, 30000);
-        this.gameService.gameStatus = this.restService.getGameStatus();
-      }, 3000);
     } else {
       this.initialized = data.msg || "Please wait...";
 

@@ -8,6 +8,7 @@ import { StreamsComponent } from 'src/app/pages/streams/streams.component';
 import { LibraryComponent } from 'src/app/pages/library/library.component';
 import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
+import { ViewGuard } from 'src/app/guards/view.guard';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -15,7 +16,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'home/:filter',         component: HomeComponent },
     { path: 'store',                component: StoreComponent },
     { path: 'store/:filter',        component: StoreComponent },
-    { path: 'view/:id',             component: ViewComponent },
+    { path: 'view/:id',             component: ViewComponent, canDeactivate: [ViewGuard] },
     { path: 'streams/:id',          component: StreamComponent },
     { path: 'streams',              component: StreamsComponent },
     { path: 'library',              component: LibraryComponent },
