@@ -107,6 +107,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
+  private isConnected: boolean = false;
 
   constructor(
     private readonly location: Location,
@@ -273,6 +274,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         (status) => {
           if (!this.startingGame) {
             if (status && status.game_id === id) {
+              this.isConnected = status.is_user_connected;
               if (status.is_running) {
                 this.action = "Resume";
               } else {
@@ -442,7 +444,20 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  playGame(container): void {
+  async playGame(container) {
+    if(this.action === 'Resume' && this.isConnected) {
+      const result = await Swal.fire({
+        title: "Hold Up!",
+        text: "Resuming your journey here? It will terminate from other!",
+        icon: "warning",
+        confirmButtonText: "Yes",
+        showCancelButton: true,
+        cancelButtonText: "No",
+      })
+      if (!result.isConfirmed) {
+        return;
+      }
+    }
     if (this.user.status !== "active") {
       Swal.fire({
         title: "Oops...",
@@ -509,6 +524,21 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.stopTerminating();
       }
     );
+  }
+
+  terminateButton() {
+    Swal.fire({
+      icon: "warning",
+      title: "Are you sure?",
+      html: `The Game session will terminate!`,
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      cancelButtonText: "Resume",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.terminateSession();
+      }
+    });
   }
 
   clickLaunchAgain() {

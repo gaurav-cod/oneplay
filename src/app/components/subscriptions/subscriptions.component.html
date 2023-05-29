@@ -73,7 +73,7 @@
                 <a
                   *ngIf="isAboutToExpire(sub.endsAt)"
                   [routerLink]="['/settings', 'subscription']"
-                  [queryParams]="{ renew: sub.planId }"
+                  [queryParams]="{ renew: sub.planId}"
                   replaceUrl
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >

@@ -1103,3 +1103,7 @@ select {
 .tooltip {
   z-index: 1 !important;
 }
+
+.swalPadding .swal2-html-container {
+  padding: 0px !important;
+}
