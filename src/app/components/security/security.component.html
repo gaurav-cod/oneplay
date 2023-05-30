@@ -4,7 +4,7 @@
     <form autocomplete="on">
       <div class="row">
         <div class="col-md-12 mt-2">
-          <label class="font16 font500 offWhiteText">Email</label
+          <label class="font16 font500 offWhiteText mb-0">Email</label
           ><span
             *ngIf="email.touched && email.invalid"
             class="font16 font500 errorGradientColor float-right"
@@ -20,7 +20,7 @@
               placeholder="email@example.com"
               [formControl]="email"
             />
-            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+            <!-- <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
               <img
                 *ngIf="email.enabled"
                 (click)="updateEmail()"
@@ -35,13 +35,13 @@
                 class="img-fluid"
                 alt=""
               />
-            </span>
+            </span> -->
           </div>
         </div>
 
         <!-- Valid phone number UI -->
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Phone number</label
+          <label class="font16 font500 offWhiteText mb-0">Phone number</label
           ><span
             *ngIf="phone.touched && phone.invalid"
             class="font16 font500 errorGradientColor float-right"
@@ -58,7 +58,7 @@
               placeholder="+19999999999"
               inputmode="tel"
             />
-            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
+            <!-- <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
               <img
                 *ngIf="phone.enabled"
                 (click)="updatePhone()"
@@ -73,7 +73,7 @@
                 class="img-fluid"
                 alt=""
               />
-            </span>
+            </span> -->
           </div>
         </div>
         <div class="col-md-12 mt-4">
