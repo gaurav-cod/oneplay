@@ -282,3 +282,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #successSwalModal>
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 p-lg-5 text-center">
+      <div class="text-center">
+        <img
+          src="assets/img/singup-login/Group 250.svg"
+          class="img-fluid wh70"
+          alt=""
+        />
+      </div>
+      <h1 class="text-white font20 font600 mb-4 mt-4">
+        Success
+      </h1>
+      <p class="font16 font500 muteText">
+        Please check your email to confirm your email id
+      </p>
+      <p class="font16 font500 muteText">
+        Didn’t get mail?
+        <a href="javascript:void(0)" class="btn p-0 border-0 font18 borderRadius10 font500 gradientText" (click)="resendVerificationLink()"><u>send again</u></a>
+      </p>
+      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" [routerLink]="['/login']">OK</a>
+    </div>
+  </div>
+</ng-template>
