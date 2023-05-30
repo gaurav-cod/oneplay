@@ -545,12 +545,15 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes",
       denyButtonText: 'Resume',
       showDenyButton: true,
+
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
-      }else if (result.isDenied) {
+      }
+      else if (result.isDenied) {
         this.playGame(result);
       }
+
     });
   }
 
