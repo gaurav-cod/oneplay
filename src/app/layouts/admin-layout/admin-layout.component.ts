@@ -101,7 +101,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
     const planTypes = subscriptions.map((s) => s.planType)
     if(planTypes.includes('base')) {
-      return "This Pack will starts after the current one ends.<br/> <em>You can always level by hourly packs!</em>";
+      return "This Pack will starts after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
     }
     return defaultText;
   }
