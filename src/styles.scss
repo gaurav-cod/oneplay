@@ -1107,3 +1107,7 @@ select {
 .swalbuttonMargin .swal2-cancel.swal2-styled {
   background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
+
+.swalPadding .swal2-html-container {
+  padding: 0px !important;
+}
