@@ -543,11 +543,13 @@ export class ViewComponent implements OnInit, OnDestroy {
       title: "Are you sure?",
       html: `The Game session will terminate!`,
       confirmButtonText: "Yes",
-      showCancelButton: true,
-      cancelButtonText: "Resume",
+      denyButtonText: 'Resume',
+      showDenyButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
+      }else if (result.isDenied) {
+        this.playGame(result);
       }
     });
   }
