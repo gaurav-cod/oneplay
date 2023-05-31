@@ -73,10 +73,10 @@
                 <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append borderRadius0">
                     <select
-                      class="form-control pl-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
+                      class="form-control pl-0 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
                       formControlName="country_code"
                     >
-                      <option *ngFor="let code of countryCodes" [value]="code">
+                      <option class="border-0 lightBg pl-3" *ngFor="let code of countryCodes" [value]="code">
                         {{ code }}
                       </option>
                     </select>
@@ -93,7 +93,6 @@
                 <label class="font16 font500 customOffWhite required"
                   >Password
                   <i class="fas fa-info-circle ml-1"
-                    tooltipClass="customTooltip"
                     ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
                     placement="bottom"
                     triggers="click:blur">

@@ -23,6 +23,7 @@ import { WishlistComponent } from "src/app/pages/wishlist/wishlist.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { ViewGuard } from "src/app/guards/view.guard";
 
 @NgModule({
   imports: [
@@ -51,5 +52,6 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
     SearchComponent,
     WishlistComponent,
   ],
+  providers: [ViewGuard],
 })
 export class AdminLayoutModule {}
