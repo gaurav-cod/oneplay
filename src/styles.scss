@@ -798,7 +798,7 @@ input[type="checkbox"] {
 
 .swal2-styled.swal2-deny {
   width: 100% !important;
-  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+  background: linear-gradient(270deg, #8a54d0 0%, #d71f7b 100%) !important;
 }
 
 .loadingBg {
@@ -890,7 +890,7 @@ select option {
 }
 
 @media (max-width: 1200px) {
-  .swal2-styled.swal2-confirm {
+  .swal2-styled.swal2-confirm, .swal2-styled.swal2-deny {
     border-radius: 60px !important;
   }
 }

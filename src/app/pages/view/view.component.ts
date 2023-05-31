@@ -46,6 +46,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
+  @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -455,11 +456,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  async playGame(container) {
-    if (this.action === "Resume" && this.isConnected) {
+  async playGame(container: ElementRef<HTMLDivElement>, skipCheckResume = false) {
+    if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
       const result = await Swal.fire({
         title: "Hold Up!",
-        text: "Resuming your journey here? It will terminate from other!",
+        text: "Resuming your journey here? It will terminate your session from other device!",
         icon: "warning",
         confirmButtonText: "Yes",
         showCancelButton: true,
@@ -543,17 +544,16 @@ export class ViewComponent implements OnInit, OnDestroy {
       title: "Are you sure?",
       html: `The Game session will terminate!`,
       confirmButtonText: "Yes",
-      denyButtonText: 'Resume',
       showDenyButton: true,
-
+      showCloseButton: true,
+      denyButtonText: 'Resume',
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
       }
       else if (result.isDenied) {
-        this.playGame(result);
+        this.playGame(this.settingsModal, true);
       }
-
     });
   }
 
