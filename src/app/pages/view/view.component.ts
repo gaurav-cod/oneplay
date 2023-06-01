@@ -464,11 +464,19 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     if (
       uagent.getOS().name === "iOS" &&
-      /safari/i.test(uagent.getBrowser().name) &&
       MediaQueries.isInBrowser &&
       !skipCheckResume
     ) {
-      this.router.navigateByUrl("/install");
+      if (/safari/i.test(uagent.getBrowser().name)) {
+        this.router.navigateByUrl("/install");
+      } else {
+        Swal.fire({
+          title: "Set up on Safari",
+          text: "Streaming games is not supported in this browser",
+          icon: "info",
+          confirmButtonText: "Close",
+        });
+      }
       return;
     }
 
