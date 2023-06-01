@@ -24,6 +24,7 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ViewGuard } from "src/app/guards/view.guard";
+import { InstallComponent } from 'src/app/pages/install/install.component';
 
 @NgModule({
   imports: [
@@ -51,6 +52,7 @@ import { ViewGuard } from "src/app/guards/view.guard";
     LibraryComponent,
     SearchComponent,
     WishlistComponent,
+    InstallComponent,
   ],
   providers: [ViewGuard],
 })
