@@ -10,6 +10,7 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 import { ViewGuard } from 'src/app/guards/view.guard';
 import { InstallComponent } from 'src/app/pages/install/install.component';
+import { InstallGuard } from 'src/app/guards/install.guard';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -25,5 +26,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'wishlist',             component: WishlistComponent },
     { path: 'search',               component: SearchComponent },
     { path: 'search/:tab',          component: SearchComponent },
-    { path: 'install',              component: InstallComponent },
+    { path: 'install',              component: InstallComponent, canActivate: [InstallGuard] },
 ];

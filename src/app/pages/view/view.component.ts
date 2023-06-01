@@ -456,7 +456,22 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  async playGame(container: ElementRef<HTMLDivElement>, skipCheckResume = false) {
+  async playGame(
+    container: ElementRef<HTMLDivElement>,
+    skipCheckResume = false
+  ) {
+    const uagent = new UAParser();
+
+    if (
+      uagent.getOS().name === "iOS" &&
+      /safari/i.test(uagent.getBrowser().name) &&
+      MediaQueries.isInBrowser &&
+      !skipCheckResume
+    ) {
+      this.router.navigateByUrl("/install");
+      return;
+    }
+
     if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
       const result = await Swal.fire({
         title: "Hold Up!",
@@ -546,12 +561,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes",
       showDenyButton: true,
       showCloseButton: true,
-      denyButtonText: 'Resume',
+      denyButtonText: "Resume",
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
-      }
-      else if (result.isDenied) {
+      } else if (result.isDenied) {
         this.playGame(this.settingsModal, true);
       }
     });
