@@ -798,7 +798,7 @@ input[type="checkbox"] {
 
 .swal2-styled.swal2-deny {
   width: 100% !important;
-  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
+  background: linear-gradient(270deg, #8a54d0 0%, #d71f7b 100%) !important;
 }
 
 .loadingBg {
@@ -890,7 +890,7 @@ select option {
 }
 
 @media (max-width: 1200px) {
-  .swal2-styled.swal2-confirm {
+  .swal2-styled.swal2-confirm, .swal2-styled.swal2-deny {
     border-radius: 60px !important;
   }
 }
@@ -919,11 +919,11 @@ select option {
   border-radius: 6px;
 }
 
-.main-content {
-  overflow-x: hidden;
-  -ms-overflow-style: none; /* IE 11 */
-  scrollbar-width: none; 
-}
+// .main-content {
+//   overflow-x: hidden;
+//   -ms-overflow-style: none; /* IE 11 */
+//   scrollbar-width: none; 
+// }
 
 .br50 {
   border-radius: 50%;
@@ -1018,14 +1018,6 @@ html.swal2-shown,body.swal2-shown {
   color: #ffffff !important;
 }
 
-.customTooltip {
-  transform: translate(0px, 21px) !important;
-}
-
-.customTooltip .arrow {
-  left: calc(21% - 0.4rem) !important;
-}
-
 .accordion > .card, .accordion > .card > .card-header{
   background-color: transparent !important;
   padding: 0px !important;
@@ -1102,6 +1094,10 @@ select {
 
 .tooltip {
   z-index: 1 !important;
+}
+
+.swalbuttonMargin .swal2-cancel.swal2-styled {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
 
 .swalPadding .swal2-html-container {

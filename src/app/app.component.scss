@@ -1,0 +1,10 @@
+.alertBg {
+    background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%);
+}
+
+.responsivetextAlign {
+    text-align: center;
+    @media (max-width: 1024px) {
+        text-align: left;
+    }
+}

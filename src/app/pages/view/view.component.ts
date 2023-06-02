@@ -46,6 +46,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
+  @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Please Wait......";
   isReadMore = true;
@@ -455,11 +456,34 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  async playGame(container) {
-    if (this.action === "Resume" && this.isConnected) {
+  async playGame(
+    container: ElementRef<HTMLDivElement>,
+    skipCheckResume = false
+  ) {
+    const uagent = new UAParser();
+
+    if (
+      uagent.getOS().name === "iOS" &&
+      MediaQueries.isInBrowser &&
+      !skipCheckResume
+    ) {
+      if (/safari/i.test(uagent.getBrowser().name)) {
+        this.router.navigateByUrl("/install");
+      } else {
+        Swal.fire({
+          title: "Set up on Safari",
+          text: "Streaming games is not supported in this browser",
+          icon: "info",
+          confirmButtonText: "Close",
+        });
+      }
+      return;
+    }
+
+    if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
       const result = await Swal.fire({
         title: "Hold Up!",
-        text: "Resuming your journey here? It will terminate from other!",
+        text: "Resuming your journey here? It will terminate your session from other device!",
         icon: "warning",
         confirmButtonText: "Yes",
         showCancelButton: true,
@@ -543,11 +567,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       title: "Are you sure?",
       html: `The Game session will terminate!`,
       confirmButtonText: "Yes",
-      showCancelButton: true,
-      cancelButtonText: "Resume",
+      showDenyButton: true,
+      showCloseButton: true,
+      denyButtonText: "Resume",
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
+      } else if (result.isDenied) {
+        this.playGame(this.settingsModal, true);
       }
     });
   }

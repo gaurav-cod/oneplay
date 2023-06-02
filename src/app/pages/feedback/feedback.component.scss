@@ -8,11 +8,9 @@
 }
 
 .Height100 {
-  height: calc(100vh + 79px);
+  height: calc(100vh - 78px);
   align-items: center;
-  position: fixed;
   left: 15px;
-  width: 100%;
 }
 
 .width485 {
@@ -23,7 +21,7 @@
 }
 @media (max-width: 500px) {
   .width485 {
-    width: 320px !important;
+    width: 90% !important;
   }
 }
 
