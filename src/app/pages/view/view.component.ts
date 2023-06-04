@@ -776,14 +776,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.stopLoading();
         })
         .finally(() => {
-          this.launchGame();
-          this._launchModalRef = this.ngbModal.open(this.launchModal, {
-            centered: true,
-            modalDialogClass: "modal-md",
-          });
-          this._launchModalCloseTimeout = setTimeout(() => {
-            this._launchModalRef?.close();
-          }, 30000);
+          if (MediaQueries.isAddedToHomeScreen) {
+            this.startGameWithWebRTCToken();
+          } else {
+            this.launchGame();
+            this._launchModalRef = this.ngbModal.open(this.launchModal, {
+              centered: true,
+              modalDialogClass: "modal-md",
+            });
+            this._launchModalCloseTimeout = setTimeout(() => {
+              this._launchModalRef?.close();
+            }, 30000);
+          }
         });
     } else {
       this.initialized = data.msg || "Please wait...";
