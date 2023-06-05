@@ -25,7 +25,6 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ViewGuard } from "src/app/guards/view.guard";
 import { InstallComponent } from "src/app/pages/install/install.component";
-import { InstallGuard } from "src/app/guards/install.guard";
 
 @NgModule({
   imports: [
@@ -55,6 +54,6 @@ import { InstallGuard } from "src/app/guards/install.guard";
     WishlistComponent,
     InstallComponent,
   ],
-  providers: [ViewGuard, InstallGuard],
+  providers: [ViewGuard],
 })
 export class AdminLayoutModule {}
