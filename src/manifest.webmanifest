@@ -4,7 +4,7 @@
   "theme_color": "#151515",
   "background_color": "#151515",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/dashboard",
   "start_url": "/dashboard/login",
   "icons": [
     {
