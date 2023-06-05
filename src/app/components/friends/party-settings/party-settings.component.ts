@@ -5,7 +5,7 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { PartyModel } from "src/app/models/party.model";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
@@ -23,10 +23,10 @@ export class PartySettingsComponent implements OnInit {
   loading = false;
   party: PartyModel;
 
-  partyForm = new FormGroup({
-    name: new FormControl("", Validators.required),
-    description: new FormControl("", Validators.required),
-    type: new FormControl("", Validators.required),
+  partyForm = new UntypedFormGroup({
+    name: new UntypedFormControl("", Validators.required),
+    description: new UntypedFormControl("", Validators.required),
+    type: new UntypedFormControl("", Validators.required),
   });
 
   constructor(

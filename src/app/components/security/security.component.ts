@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -12,12 +12,12 @@ import Swal from "sweetalert2";
   styleUrls: ["./security.component.scss"],
 })
 export class SecurityComponent implements OnInit {
-  password = new FormControl("", [
+  password = new UntypedFormControl("", [
     Validators.required,
     Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
   ]);
-  phone = new FormControl("", [Validators.required, phoneValidator()]);
-  email = new FormControl("", [Validators.required, Validators.email]);
+  phone = new UntypedFormControl("", [Validators.required, phoneValidator()]);
+  email = new UntypedFormControl("", [Validators.required, Validators.email]);
   showPass = false;
 
   private user: UserModel;

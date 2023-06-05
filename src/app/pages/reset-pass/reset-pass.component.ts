@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { RestService } from "src/app/services/rest.service";
@@ -13,9 +13,9 @@ import Swal from "sweetalert2";
 })
 export class ResetPassComponent implements OnInit {
 
-  resetForm = new FormGroup({
-    password: new FormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
-    confirmPassword: new FormControl("",  [Validators.required]),
+  resetForm = new UntypedFormGroup({
+    password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
+    confirmPassword: new UntypedFormControl("",  [Validators.required]),
   });
 
   get checkvalidationValue() {
