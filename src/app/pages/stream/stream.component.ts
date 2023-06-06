@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { of } from "rxjs";
@@ -33,7 +33,7 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   video: VideoModel;
   topVideos: VideoModel[] = [];
 
-  message = new FormControl("", Validators.required);
+  message = new UntypedFormControl("", Validators.required);
 
   user: UserModel = {} as UserModel;
 

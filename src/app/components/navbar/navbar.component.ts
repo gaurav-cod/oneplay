@@ -12,7 +12,7 @@ import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public listTitles: any[];
   public location: Location;
-  public query = new FormControl("");
+  public query = new UntypedFormControl("");
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;

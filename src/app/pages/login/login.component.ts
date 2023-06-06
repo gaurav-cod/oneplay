@@ -6,7 +6,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
@@ -23,9 +23,9 @@ declare var gtag: Function;
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
-  loginForm = new FormGroup({
-    id: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
+  loginForm = new UntypedFormGroup({
+    id: new UntypedFormControl("", Validators.required),
+    password: new UntypedFormControl("", Validators.required),
   });
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
