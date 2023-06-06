@@ -17,4 +17,12 @@ export class MediaQueries {
       return false;
     }
   }
+
+  static get isInBrowser() {
+    return window.matchMedia("(display-mode: browser)").matches;
+  }
+
+  static get isAddedToHomeScreen() {
+    return window.matchMedia("(display-mode: standalone)").matches;
+  }
 }

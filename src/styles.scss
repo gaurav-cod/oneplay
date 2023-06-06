@@ -919,11 +919,11 @@ select option {
   border-radius: 6px;
 }
 
-.main-content {
-  overflow-x: hidden;
-  -ms-overflow-style: none; /* IE 11 */
-  scrollbar-width: none; 
-}
+// .main-content {
+//   overflow-x: hidden;
+//   -ms-overflow-style: none; /* IE 11 */
+//   scrollbar-width: none; 
+// }
 
 .br50 {
   border-radius: 50%;
@@ -1094,6 +1094,10 @@ select {
 
 .tooltip {
   z-index: 1 !important;
+}
+
+.swalbuttonMargin .swal2-cancel.swal2-styled {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
 
 .swalPadding .swal2-html-container {

@@ -456,7 +456,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  async playGame(container: ElementRef<HTMLDivElement>, skipCheckResume = false) {
+  async playGame(
+    container: ElementRef<HTMLDivElement>,
+    skipCheckResume = false
+  ) {
+    const uagent = new UAParser();
+
+    if (
+      uagent.getOS().name === "iOS" &&
+      MediaQueries.isInBrowser &&
+      !skipCheckResume
+    ) {
+      if (/safari/i.test(uagent.getBrowser().name)) {
+        this.router.navigateByUrl("/install");
+      } else {
+        Swal.fire({
+          title: "Set up on Safari",
+          text: "Streaming games is not supported in this browser",
+          icon: "info",
+          confirmButtonText: "Close",
+        });
+      }
+      return;
+    }
+
     if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
       const result = await Swal.fire({
         title: "Hold Up!",
@@ -546,12 +569,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes",
       showDenyButton: true,
       showCloseButton: true,
-      denyButtonText: 'Resume',
+      denyButtonText: "Resume",
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
-      }
-      else if (result.isDenied) {
+      } else if (result.isDenied) {
         this.playGame(this.settingsModal, true);
       }
     });
@@ -754,14 +776,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.stopLoading();
         })
         .finally(() => {
-          this.launchGame();
-          this._launchModalRef = this.ngbModal.open(this.launchModal, {
-            centered: true,
-            modalDialogClass: "modal-md",
-          });
-          this._launchModalCloseTimeout = setTimeout(() => {
-            this._launchModalRef?.close();
-          }, 30000);
+          if (MediaQueries.isAddedToHomeScreen) {
+            this.startGameWithWebRTCToken();
+          } else {
+            this.launchGame();
+            this._launchModalRef = this.ngbModal.open(this.launchModal, {
+              centered: true,
+              modalDialogClass: "modal-md",
+            });
+            this._launchModalCloseTimeout = setTimeout(() => {
+              this._launchModalRef?.close();
+            }, 30000);
+          }
         });
     } else {
       this.initialized = data.msg || "Please wait...";
