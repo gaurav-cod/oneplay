@@ -6,10 +6,9 @@
   [pauseOnHover]="true"
   [showNavigationArrows]="true"
   [showNavigationIndicators]="false"
-  class="pt-4"
 >
   <ng-template *ngFor="let banner of banners" ngbSlide>
-    <div class="container pt-6 mid-screen">
+    <div class="container mid-screen">
       <div class="card bg-dark" style="width: 100%">
         <div class="row m-0">
           <div
@@ -70,7 +69,7 @@
   </ng-template>
 </ngb-carousel>
 
-<div [ngClass]="{ 'pt-7': banners.length === 0 }">
+<div>
   <div *ngFor="let feed of feeds">
     <app-stream-card
       [title]="'Streams of ' + feed.title"

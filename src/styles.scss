@@ -1,9 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "~ngx-sharebuttons/themes/material/material-dark-theme";
-@import "~ngx-sharebuttons/themes/modern/modern-light-theme";
-@import "~ngx-sharebuttons/themes/circles/circles-dark-theme";
-@import "~sweetalert2/src/sweetalert2.scss";
+@import "../node_modules/ngx-sharebuttons/themes/material/material-dark-theme";
+@import "../node_modules/ngx-sharebuttons/themes/modern/modern-light-theme";
+@import "../node_modules/ngx-sharebuttons/themes/circles/circles-dark-theme";
+@import "../node_modules/sweetalert2/src/sweetalert2.scss";
 
 @font-face {
   font-family: "Poppins";
@@ -919,11 +919,11 @@ select option {
   border-radius: 6px;
 }
 
-.main-content {
-  overflow-x: hidden;
-  -ms-overflow-style: none; /* IE 11 */
-  scrollbar-width: none; 
-}
+// .main-content {
+//   overflow-x: hidden;
+//   -ms-overflow-style: none; /* IE 11 */
+//   scrollbar-width: none; 
+// }
 
 .br50 {
   border-radius: 50%;
@@ -1094,6 +1094,10 @@ select {
 
 .tooltip {
   z-index: 1 !important;
+}
+
+.swalbuttonMargin .swal2-cancel.swal2-styled {
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
 
 .swalPadding .swal2-html-container {

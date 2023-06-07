@@ -1,13 +1,17 @@
-<div *ngIf="!!seriousNotification" class="bg-danger p-3 text-center">
-  <span class="text-white">
-    {{ seriousNotification }}
-  </span>
-  <button
-    class="btn btn-sm btn-danger float-md-right"
-    (click)="seriousNotification = null"
-  >
-    <i class="fas fa-times"></i>
-  </button>
+<div *ngIf="!!seriousNotification" class="row alertBg py-1">
+  <div class="col align-self-center pr-0">
+    <p class="text-white font16 font500 mb-0 p-2 responsivetextAlign">
+      {{ seriousNotification }}
+    </p>
+  </div>
+  <div class="col-auto align-self-center pl-1">
+    <button
+      class="btn borderRadius50 pl-0"
+      (click)="seriousNotification = null"
+    >
+      <i class="fas fa-times-circle text-white"></i>
+    </button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

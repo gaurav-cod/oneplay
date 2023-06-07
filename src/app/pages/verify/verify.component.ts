@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -12,7 +12,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, AfterViewInit {
-  otp = new FormControl("", Validators.required);
+  otp = new UntypedFormControl("", Validators.required);
   otpSent = false;
 
   constructor(

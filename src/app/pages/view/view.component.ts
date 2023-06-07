@@ -7,7 +7,7 @@ import {
   OnDestroy,
   HostListener,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -64,27 +64,27 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constants = PlayConstants;
 
-  resolution = new FormControl();
-  fps = new FormControl();
-  vsync = new FormControl();
-  bitrate = new FormControl();
+  resolution = new UntypedFormControl();
+  fps = new UntypedFormControl();
+  vsync = new UntypedFormControl();
+  bitrate = new UntypedFormControl();
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
 
-  showSettings = new FormControl();
+  showSettings = new UntypedFormControl();
 
-  advancedOptions = new FormGroup({
-    show_stats: new FormControl(false),
-    fullscreen: new FormControl(true),
-    onscreen_controls: new FormControl(false),
-    audio_type: new FormControl("stereo"),
-    stream_codec: new FormControl("auto"),
-    video_decoder_selection: new FormControl("auto"),
+  advancedOptions = new UntypedFormGroup({
+    show_stats: new UntypedFormControl(false),
+    fullscreen: new UntypedFormControl(true),
+    onscreen_controls: new UntypedFormControl(false),
+    audio_type: new UntypedFormControl("stereo"),
+    stream_codec: new UntypedFormControl("auto"),
+    video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new FormControl("", { validators: Validators.required });
+  reportText = new UntypedFormControl("", { validators: Validators.required });
 
   queueSequence = "";
   queueMessge1 = "";
@@ -456,7 +456,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  async playGame(container: ElementRef<HTMLDivElement>, skipCheckResume = false) {
+  async playGame(
+    container: ElementRef<HTMLDivElement>,
+    skipCheckResume = false
+  ) {
+    const uagent = new UAParser();
+
+    if (
+      uagent.getOS().name === "iOS" &&
+      MediaQueries.isInBrowser &&
+      !skipCheckResume
+    ) {
+      if (/safari/i.test(uagent.getBrowser().name)) {
+        this.router.navigateByUrl("/install");
+      } else {
+        Swal.fire({
+          title: "Set up on Safari",
+          text: "Streaming games is not supported in this browser",
+          icon: "info",
+          confirmButtonText: "Close",
+        });
+      }
+      return;
+    }
+
     if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
       const result = await Swal.fire({
         title: "Hold Up!",
@@ -546,12 +569,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes",
       showDenyButton: true,
       showCloseButton: true,
-      denyButtonText: 'Resume',
+      denyButtonText: "Resume",
     }).then((result) => {
       if (result.isConfirmed) {
         this.terminateSession();
-      }
-      else if (result.isDenied) {
+      } else if (result.isDenied) {
         this.playGame(this.settingsModal, true);
       }
     });
@@ -754,14 +776,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.stopLoading();
         })
         .finally(() => {
-          this.launchGame();
-          this._launchModalRef = this.ngbModal.open(this.launchModal, {
-            centered: true,
-            modalDialogClass: "modal-md",
-          });
-          this._launchModalCloseTimeout = setTimeout(() => {
-            this._launchModalRef?.close();
-          }, 30000);
+          if (MediaQueries.isAddedToHomeScreen) {
+            this.startGameWithWebRTCToken();
+          } else {
+            this.launchGame();
+            this._launchModalRef = this.ngbModal.open(this.launchModal, {
+              centered: true,
+              modalDialogClass: "modal-md",
+            });
+            this._launchModalCloseTimeout = setTimeout(() => {
+              this._launchModalRef?.close();
+            }, 30000);
+          }
         });
     } else {
       this.initialized = data.msg || "Please wait...";
