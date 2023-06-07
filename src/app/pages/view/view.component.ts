@@ -7,7 +7,7 @@ import {
   OnDestroy,
   HostListener,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -64,27 +64,27 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constants = PlayConstants;
 
-  resolution = new FormControl();
-  fps = new FormControl();
-  vsync = new FormControl();
-  bitrate = new FormControl();
+  resolution = new UntypedFormControl();
+  fps = new UntypedFormControl();
+  vsync = new UntypedFormControl();
+  bitrate = new UntypedFormControl();
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
 
-  showSettings = new FormControl();
+  showSettings = new UntypedFormControl();
 
-  advancedOptions = new FormGroup({
-    show_stats: new FormControl(false),
-    fullscreen: new FormControl(true),
-    onscreen_controls: new FormControl(false),
-    audio_type: new FormControl("stereo"),
-    stream_codec: new FormControl("auto"),
-    video_decoder_selection: new FormControl("auto"),
+  advancedOptions = new UntypedFormGroup({
+    show_stats: new UntypedFormControl(false),
+    fullscreen: new UntypedFormControl(true),
+    onscreen_controls: new UntypedFormControl(false),
+    audio_type: new UntypedFormControl("stereo"),
+    stream_codec: new UntypedFormControl("auto"),
+    video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new FormControl("", { validators: Validators.required });
+  reportText = new UntypedFormControl("", { validators: Validators.required });
 
   queueSequence = "";
   queueMessge1 = "";

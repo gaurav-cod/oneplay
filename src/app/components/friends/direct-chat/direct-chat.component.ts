@@ -9,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { FriendModel } from "src/app/models/friend.model";
 import { MessageModel } from "src/app/models/message.model";
 import { UserModel } from "src/app/models/user.model";
@@ -31,7 +31,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   messages: MessageModel[] = [];
 
-  message = new FormControl("", Validators.required);
+  message = new UntypedFormControl("", Validators.required);
 
   user: UserModel = {} as UserModel;
 

@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
@@ -48,7 +48,7 @@ export class SidebarComponent implements OnInit {
 
   public menuItems: any[];
   public isCollapsed = true;
-  public query = new FormControl("");
+  public query = new UntypedFormControl("");
   public results: GameModel[] = [];
   public gameStatus: GameStatusRO | null = null;
   public user: UserModel;
