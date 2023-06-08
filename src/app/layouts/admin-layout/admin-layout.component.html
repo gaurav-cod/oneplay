@@ -8,7 +8,9 @@
   <!-- Top navbar -->
   <app-navbar (toggleFriends)="toggleFriendsCollapsed()"></app-navbar>
   <!-- Pages -->
-  <router-outlet></router-outlet>
+  <div class="container-fluid" style="padding-left: 0px !important; padding-right: 0px !important; overflow-x: hidden;">
+    <router-outlet></router-outlet>
+  </div>
   <div class="container-fluid" *ngIf="!isApp">
     <div class="height130">
       <app-footer></app-footer>
