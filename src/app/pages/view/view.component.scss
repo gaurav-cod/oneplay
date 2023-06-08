@@ -505,3 +505,9 @@ live {
     opacity:0;  
   }
 }
+
+@media (min-width: 480.1px) {
+  .customResponsiveWidth {
+    width: 100%;
+  }
+}
