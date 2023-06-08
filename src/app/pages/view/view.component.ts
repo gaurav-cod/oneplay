@@ -477,7 +477,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         Swal.fire({
           title: "Set up on Safari",
           text: "Streaming games is not supported in this browser",
-          icon: "info",
+          icon: "error",
           confirmButtonText: "Close",
         });
       }
@@ -830,7 +830,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   startGameWithWebRTCToken(millis = 0): void {
     if (!environment.webrtc_prefix) {
       Swal.fire({
-        icon: "info",
+        icon: "error",
         title: "Web-Play",
         text: "Play on web is coming soon!",
       });
