@@ -138,7 +138,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUsersError(event) {

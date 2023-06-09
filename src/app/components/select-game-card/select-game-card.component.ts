@@ -14,7 +14,7 @@ export class SelectGameCardComponent {
   showTitle = false;
 
   onImgError(event) {
-    event.target.src = 'assets/img/default_bg.jpg';
+    event.target.src = 'assets/img/default_bg.webp';
     this.showTitle = true;
   }
 
