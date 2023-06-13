@@ -34,9 +34,9 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-      <h1 class="text-white font20 font500 text-center">
-        <span *ngIf="!!query">You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
+    <div class="d-flex justify-content-between" *ngIf="!!query">
+      <h1 class="text-white font20 font500 text-center mt-2">
+        <span>You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
         <a
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
@@ -61,7 +61,7 @@
 
     <div
       *ngIf="games.length !== 0"
-      class="pb-2 row"
+      class="pb-2 row mt-2"
       infinite-scroll
       [infiniteScrollDistance]="5"
       [infiniteScrollThrottle]="200"
@@ -69,7 +69,7 @@
     >
       <div
         *ngFor="let game of games"
-        class="col-12 col-md-12 col-lg-4 mb-1"
+        class="col-12 col-md-6 col-lg-4 mb-1"
       >
         <div
           class="row h-100 gameRowHover py-2"
