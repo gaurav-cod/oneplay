@@ -76,7 +76,7 @@
                       class="form-control pl-0 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
                       formControlName="country_code"
                     >
-                      <option class="border-0 lightBg pl-3" *ngFor="let code of countryCodes" [value]="code">
+                      <option *ngFor="let code of countryCodes" [value]="code">
                         {{ code }}
                       </option>
                     </select>
