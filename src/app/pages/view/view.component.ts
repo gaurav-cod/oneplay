@@ -7,7 +7,11 @@ import {
   OnDestroy,
   HostListener,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -64,27 +68,27 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constants = PlayConstants;
 
-  resolution = new FormControl();
-  fps = new FormControl();
-  vsync = new FormControl();
-  bitrate = new FormControl();
+  resolution = new UntypedFormControl();
+  fps = new UntypedFormControl();
+  vsync = new UntypedFormControl();
+  bitrate = new UntypedFormControl();
   action: "Play" | "Resume" = "Play";
   user: UserModel;
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
 
-  showSettings = new FormControl();
+  showSettings = new UntypedFormControl();
 
-  advancedOptions = new FormGroup({
-    show_stats: new FormControl(false),
-    fullscreen: new FormControl(true),
-    onscreen_controls: new FormControl(false),
-    audio_type: new FormControl("stereo"),
-    stream_codec: new FormControl("auto"),
-    video_decoder_selection: new FormControl("auto"),
+  advancedOptions = new UntypedFormGroup({
+    show_stats: new UntypedFormControl(false),
+    fullscreen: new UntypedFormControl(true),
+    onscreen_controls: new UntypedFormControl(false),
+    audio_type: new UntypedFormControl("stereo"),
+    stream_codec: new UntypedFormControl("auto"),
+    video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new FormControl("", { validators: Validators.required });
+  reportText = new UntypedFormControl("", { validators: Validators.required });
 
   queueSequence = "";
   queueMessge1 = "";
@@ -776,14 +780,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.stopLoading();
         })
         .finally(() => {
-          this.launchGame();
-          this._launchModalRef = this.ngbModal.open(this.launchModal, {
-            centered: true,
-            modalDialogClass: "modal-md",
-          });
-          this._launchModalCloseTimeout = setTimeout(() => {
-            this._launchModalRef?.close();
-          }, 30000);
+          if (MediaQueries.isAddedToHomeScreen) {
+            this.startGameWithWebRTCToken();
+          } else {
+            this.launchGame();
+            this._launchModalRef = this.ngbModal.open(this.launchModal, {
+              centered: true,
+              modalDialogClass: "modal-md",
+            });
+            this._launchModalCloseTimeout = setTimeout(() => {
+              this._launchModalRef?.close();
+            }, 30000);
+          }
         });
     } else {
       this.initialized = data.msg || "Please wait...";
@@ -820,7 +828,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGameWithWebRTCToken(millis = 0): void {
-    if (!environment.webrtc_enabled) {
+    if (!environment.webrtc_prefix) {
       Swal.fire({
         icon: "info",
         title: "Web-Play",
@@ -865,7 +873,23 @@ export class ViewComponent implements OnInit, OnDestroy {
     millis: number
   ) {
     if (res.data.service === "running" && !!res.data.web_url) {
-      window.open(res.data.web_url, "_self");
+      const url = new URL(environment.webrtc_prefix);
+      const device = new UAParser().getDevice().type ?? "";
+
+      url.searchParams.set("title", this.game.title);
+      url.searchParams.set("bitrate", this.bitrate.value);
+      url.searchParams.set("fps", this.fps.value);
+      url.searchParams.set(
+        "show_stats",
+        this.advancedOptions.controls["show_stats"].value
+      );
+      url.searchParams.set(
+        "platform",
+        /mobile|tablet/i.test(device) ? "mobile" : "desktop"
+      );
+
+      window.open(url.href + "&" + res.data.web_url.replace(/\?/, ""), "_self");
+
       this.loaderService.stop();
     } else {
       const timeTaken = Date.now() - startTime;

@@ -12,6 +12,7 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { ServerErrorComponent } from "src/app/pages/server-error/server-error.component";
+import { InstallGuard } from "src/app/guards/install.guard";
 
 @NgModule({
   imports: [
@@ -27,5 +28,6 @@ import { ServerErrorComponent } from "src/app/pages/server-error/server-error.co
     NgxUiLoaderModule,
   ],
   declarations: [ErrorComponent, FeedbackComponent, ServerErrorComponent],
+  providers: [InstallGuard],
 })
 export class CommonLayoutModule {}

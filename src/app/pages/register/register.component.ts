@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -21,26 +21,26 @@ export class RegisterComponent implements OnInit {
   private _successSwalModalRef: NgbModalRef;
 
   referralName = "";
-  registerForm = new FormGroup({
-    name: new FormControl("", [
+  registerForm = new UntypedFormGroup({
+    name: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[a-zA-Z\s]*$/),
     ]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    country_code: new FormControl("+91", [
+    email: new UntypedFormControl("", [Validators.required, Validators.email]),
+    country_code: new UntypedFormControl("+91", [
       Validators.required,
     ]),
-    phone: new FormControl("", [
+    phone: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/),
     ]),
-    password: new FormControl("", [
+    password: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
     ]),
-    gender: new FormControl("", Validators.required),
-    referred_by_id: new FormControl(""),
-    terms_checked: new FormControl(false, [Validators.requiredTrue]),
+    gender: new UntypedFormControl("", Validators.required),
+    referred_by_id: new UntypedFormControl(""),
+    terms_checked: new UntypedFormControl(false, [Validators.requiredTrue]),
   });
   loading = false;
 

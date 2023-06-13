@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChildren } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./qr-verify.component.scss"],
 })
 export class QrVerifyComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   formInput = [
     "one",
     "two",
@@ -30,15 +30,15 @@ export class QrVerifyComponent implements OnInit {
   public loading = false;
   public isLoggedIn = false;
 
-  public codeForm = new FormGroup({
-    one: new FormControl("", [Validators.required]),
-    two: new FormControl("", [Validators.required]),
-    three: new FormControl("", [Validators.required]),
-    four: new FormControl("", [Validators.required]),
-    five: new FormControl("", [Validators.required]),
-    six: new FormControl("", [Validators.required]),
-    seven: new FormControl("", [Validators.required]),
-    eight: new FormControl("", [Validators.required]),
+  public codeForm = new UntypedFormGroup({
+    one: new UntypedFormControl("", [Validators.required]),
+    two: new UntypedFormControl("", [Validators.required]),
+    three: new UntypedFormControl("", [Validators.required]),
+    four: new UntypedFormControl("", [Validators.required]),
+    five: new UntypedFormControl("", [Validators.required]),
+    six: new UntypedFormControl("", [Validators.required]),
+    seven: new UntypedFormControl("", [Validators.required]),
+    eight: new UntypedFormControl("", [Validators.required]),
   });
 
   private routeSubscription: Subscription;

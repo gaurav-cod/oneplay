@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./forgot-pass.component.scss"],
 })
 export class ForgotPassComponent implements OnInit {
-  email = new FormControl("", [Validators.required, Validators.email]);
+  email = new UntypedFormControl("", [Validators.required, Validators.email]);
   resetemail = false;
 
   constructor(

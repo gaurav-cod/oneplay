@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -28,7 +28,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   canLoadMore = true;
   isFocused = false;
 
-  queryControl = new FormControl("");
+  queryControl = new UntypedFormControl("");
 
   private keyword = "";
   private keywordHash = "";

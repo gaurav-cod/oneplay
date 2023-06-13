@@ -44,7 +44,9 @@ export class AuthService {
   }
 
   get sessionTokenExists() {
-    return this._$sessionToken.asObservable().pipe(map((token) => !!token));
+    return this._$sessionToken
+      .asObservable()
+      .pipe<boolean>(map((token) => !!token));
   }
 
   get sessionToken() {
