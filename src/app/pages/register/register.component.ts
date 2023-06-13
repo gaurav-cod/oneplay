@@ -195,10 +195,9 @@ export class RegisterComponent implements OnInit {
       next: () => {
         Swal.fire({
           icon: "success",
-          title: "Check your email and verify again",
+          text: "Check your email and verify again",
         }).then(() => this.router.navigateByUrl("/login"));
-      },
-      error: (error) => this.resendVerificationLink(error, token),
+      }
     });
   }
 
