@@ -91,6 +91,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.restService.search('', 0, 12).subscribe(
+      (response) => {
+        this.games = response.results;
+      }
+    );
   }
 
   search() {
