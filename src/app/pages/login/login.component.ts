@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private resendVerificationLink(error: any, token: string) {
-    const email = this.loginForm.value.email;
+    const email = this.loginForm.value.id;
     const password = this.loginForm.value.password;
     this.restService.resendVerificationLink(email, password).subscribe({
       next: () => {
