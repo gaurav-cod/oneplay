@@ -216,3 +216,8 @@
 .height180 {
     height: 180px !important;
 }
+
+.boxShadowNone:focus {
+    box-shadow: none;
+    outline: none !important;
+}
