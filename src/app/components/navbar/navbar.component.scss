@@ -217,7 +217,6 @@
     height: 180px !important;
 }
 
-.boxShadowNone:focus {
-    box-shadow: none;
-    outline: none !important;
+.removeFocusVisible {
+    outline: none;
 }
