@@ -8,6 +8,7 @@ import { FriendModel } from "src/app/models/friend.model";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
+import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -60,7 +61,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly friendsService: FriendsService,
     private readonly gavatar: AvatarPipe,
-  ) {}
+    private readonly authService: AuthService,
+  ) {
+    this.authService.user.subscribe((u) => (this.user = u));
+  }
 
   ngOnDestroy(): void {
     Swal.close();
@@ -132,6 +136,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if(this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
