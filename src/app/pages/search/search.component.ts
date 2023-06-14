@@ -86,11 +86,20 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadUsers();
             break;
           default:
-            this.laodGamesAndUsers();
+            if(this.query == '') {
+              this.loadGames();
+            } else {
+              this.laodGamesAndUsers();
+            }
             break;
         }
       });
     });
+    this.restService.search('', 0, 12).subscribe(
+      (response) => {
+        this.games = response.results;
+      }
+    );
   }
 
   search() {
