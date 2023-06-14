@@ -193,6 +193,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if(this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
