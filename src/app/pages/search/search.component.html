@@ -101,11 +101,12 @@
         </div>
       </div>
     </div>
-    <div class="row justify-content-center borderTop mt-2" *ngIf="games.length === 4 && !tab">
-      <div class="col-12 col-md-6 col-lg-3 col-xxl-3">
+    <div class="row mt-2">
+      <div class="col-12">
         <button
-          class="btn btn-block muteText font500 font16 border-0"
+          class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
           (click)="searchNavigate('games')"
+          *ngIf="games.length === 4 && !tab"
         >
           See more games
         </button>
@@ -165,17 +166,14 @@
         </div>
       </div>
 
-      <div class="col-12">
-        <div class="row justify-content-center borderTop mt-2" *ngIf="users.length === 4 && !tab">
-          <div class="col-12 col-md-6 col-lg-3 col-xxl-3">
-            <button
-              class="btn btn-block muteText font500 font16 border-0"
-              (click)="searchNavigate('users')"
-            >
-              See more users
-            </button>
-          </div>
-        </div>
+      <div class="col-12 mt-2">
+        <button
+          class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
+          (click)="searchNavigate('users')"
+          *ngIf="users.length === 4 && !tab"
+        >
+          See more users
+        </button>
 
         <div
           *ngIf="users.length === 0 && tab === 'users'"
