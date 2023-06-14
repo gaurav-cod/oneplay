@@ -7,7 +7,11 @@ import {
   OnDestroy,
   HostListener,
 } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -824,7 +828,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGameWithWebRTCToken(millis = 0): void {
-    if (!environment.webrtc_enabled) {
+    if (!environment.webrtc_prefix) {
       Swal.fire({
         icon: "info",
         title: "Web-Play",
@@ -869,7 +873,23 @@ export class ViewComponent implements OnInit, OnDestroy {
     millis: number
   ) {
     if (res.data.service === "running" && !!res.data.web_url) {
-      window.open(res.data.web_url, "_self");
+      const url = new URL(environment.webrtc_prefix);
+      const device = new UAParser().getDevice().type ?? "";
+
+      url.searchParams.set("title", this.game.title);
+      url.searchParams.set("bitrate", this.bitrate.value);
+      url.searchParams.set("fps", this.fps.value);
+      url.searchParams.set(
+        "show_stats",
+        this.advancedOptions.controls["show_stats"].value
+      );
+      url.searchParams.set(
+        "platform",
+        /mobile|tablet/i.test(device) ? "mobile" : "desktop"
+      );
+
+      window.open(url.href + "&" + res.data.web_url.replace(/\?/, ""), "_self");
+
       this.loaderService.stop();
     } else {
       const timeTaken = Date.now() - startTime;
