@@ -250,7 +250,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         Swal.fire({
           title: message.notification.title,
           text: message.notification.body,
-          icon: "info",
+          icon: "error",
         });
         this.initParties();
         this.initFriends();
