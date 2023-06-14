@@ -7,7 +7,7 @@
             class="card-img height80 borderRadius10"
             style="object-fit: cover; object-position: top"
             [src]="game.bgImage"
-            (error)="$event.target.src = 'assets/img/default_bg.jpg'"
+            (error)="$event.target.src = 'assets/img/default_bg.webp'"
             [ngStyle]="{
               filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
             }"
