@@ -3,36 +3,34 @@
     <p class="font18 font500 text-white">Profile Settings</p>
     <form>
       <div class="row mt-2">
-        <div class="col-md-12">
+        <div class="col-auto">
           <input
             type="file"
             class="d-none"
             id="editProfile"
             (change)="onFileChanged($event)"
           />
-          <label for="editProfile" class="d-flex">
-            <div class="row">
-              <div class="col">
-                <div class="card transparentBg cursorPointer profile-image">
-                  <img
-                    class="card-img rounded-circle wh48"
-                    [src]="photo || 'assets/img/defaultUser.svg'"
-                    alt=""
-                    (error)="onUserError($event)"
-                  />
-                  <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
-                    <i class="fas fa-pen-fancy text-white mt-2"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="col-auto align-self-center pl-0">
-                <div class="align-middle font16 font500 muteText">
-                  Edit profile picture.
-                </div>
+          <label for="editProfile" class="d-flex mb-0">
+            <div class="card transparentBg cursorPointer profile-image">
+              <img
+                class="card-img rounded-circle wh48"
+                [src]="photo || 'assets/img/defaultUser.svg'"
+                alt=""
+                (error)="onUserError($event)"
+              />
+              <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
+                <i class="fas fa-pen-fancy text-white mt-2"></i>
               </div>
             </div>
           </label>
         </div>
+        <div class="col align-self-center pl-0">
+          <div class="align-middle font16 font500 muteText">
+            Edit profile picture.
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText required">Username</label>
           <span
@@ -54,7 +52,7 @@
           </div>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Full Name</label
+          <label class="font16 font500 offWhiteText required">Full Name</label
           ><span
             *ngIf="name.touched && name.invalid"
             class="font16 font500 errorGradientColor float-right"
