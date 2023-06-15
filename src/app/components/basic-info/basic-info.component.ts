@@ -72,7 +72,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   onFileChanged(input) {
     if (
       input.target.files[0] &&
-      input.target.value.match(/\.(jpg|png|svg|jpeg)$/)
+      input.target.value.match(/\.(jpg|png|webp|jpeg)$/)
     ) {
       const reader = new FileReader();
       this.photoFile = input.target.files[0] as File;
