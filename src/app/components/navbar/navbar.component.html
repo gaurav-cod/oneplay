@@ -123,11 +123,11 @@
               </div>
               <div
                 *ngIf="results.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
                 (click)="isMenuCollapsed = true"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0 mt-2"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop mt-2"
                   (click)="searchNavigate('games')"
                 >
                   See more games
@@ -168,10 +168,10 @@
               </div>
               <div
                 *ngIf="uResults.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
                   (click)="searchNavigate('users')"
                 >
                   See more users
@@ -283,7 +283,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 boxShadowNone br50"
               role="button"
               ngbDropdownToggle
             >
