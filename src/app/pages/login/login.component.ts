@@ -109,6 +109,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     const password = this.loginForm.value.password;
     this.restService.resendVerificationLink(email, password).subscribe({
       next: () => {
+        this._verifySwalModalRef.close();
         Swal.fire({
           icon: "success",
           text: "Check your email and verify again",

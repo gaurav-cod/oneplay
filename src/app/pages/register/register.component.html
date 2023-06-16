@@ -282,7 +282,7 @@
   </div>
 </div>
 
-<ng-template #successSwalModal>
+<ng-template #successSwalModal let-d="dismiss">
   <div class="modal-content modalBg">
     <div class="modal-body p-4 p-lg-5 text-center">
       <div class="text-center">
@@ -302,7 +302,7 @@
         Didn’t get mail?
         <a href="javascript:void(0)" class="btn p-0 border-0 font18 borderRadius10 font500 gradientText" (click)="resendVerificationLink()"><u>send again</u></a>
       </p>
-      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" [routerLink]="['/login']">OK</a>
+      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" [routerLink]="['/login']" (click)="d('Close')">OK</a>
     </div>
   </div>
 </ng-template>
