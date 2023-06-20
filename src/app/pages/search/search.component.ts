@@ -284,6 +284,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    if(this.user.id === friend.id) {
+      return
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id
