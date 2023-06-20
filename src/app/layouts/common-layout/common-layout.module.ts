@@ -13,7 +13,6 @@ import { PipesModule } from "src/app/pipes/pipes.module";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { ServerErrorComponent } from "src/app/pages/server-error/server-error.component";
 import { InstallGuard } from "src/app/guards/install.guard";
-import { SystemMaintenanceComponent } from 'src/app/pages/system-maintenance/system-maintenance.component';
 
 @NgModule({
   imports: [
@@ -28,7 +27,7 @@ import { SystemMaintenanceComponent } from 'src/app/pages/system-maintenance/sys
     PipesModule,
     NgxUiLoaderModule,
   ],
-  declarations: [ErrorComponent, FeedbackComponent, ServerErrorComponent, SystemMaintenanceComponent],
+  declarations: [ErrorComponent, FeedbackComponent, ServerErrorComponent],
   providers: [InstallGuard],
 })
 export class CommonLayoutModule {}
