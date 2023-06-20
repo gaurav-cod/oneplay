@@ -191,7 +191,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
               <span class="avatar avatar-sm rounded-circle bg-gray-dark">
@@ -211,7 +211,7 @@
               <img
                 *ngIf="isGameRunning && isUserLive"
                 src="assets/img/Dashboard/Speedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -221,7 +221,7 @@
               <img
                 *ngIf="isGameRunning && !isUserLive"
                 src="assets/img/Dashboard/resumeSpeedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -230,7 +230,7 @@
               <img
                 *ngIf="!isGameRunning"
                 src="assets/img/Dashboard/inactiveGame.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -277,13 +277,13 @@
             </div>
           </div> -->
           <div
-            class="col-auto align-self-center pr-3 pl-0"
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 boxShadowNone br50"
+              class="nav-link p-0 br50"
               role="button"
               ngbDropdownToggle
             >
