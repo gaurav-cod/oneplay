@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next
       .handle(req)
-      .pipe(timeout(50000))
+      .pipe(timeout(5000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
         catchError((error: HttpErrorResponse) => {
