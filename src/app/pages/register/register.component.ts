@@ -193,6 +193,7 @@ export class RegisterComponent implements OnInit {
     const email = this.registerForm.value.email;
     this.restService.resendVerificationLink(email, password).subscribe({
       next: () => {
+        this._successSwalModalRef.close();
         Swal.fire({
           icon: "success",
           text: "Check your email and verify again",

@@ -73,10 +73,10 @@
                 <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append borderRadius0">
                     <select
-                      class="form-control pl-0 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
+                      class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
                       formControlName="country_code"
                     >
-                      <option class="border-0 lightBg pl-3" *ngFor="let code of countryCodes" [value]="code">
+                      <option *ngFor="let code of countryCodes" [value]="code">
                         {{ code }}
                       </option>
                     </select>
@@ -282,7 +282,7 @@
   </div>
 </div>
 
-<ng-template #successSwalModal>
+<ng-template #successSwalModal let-d="dismiss">
   <div class="modal-content modalBg">
     <div class="modal-body p-4 p-lg-5 text-center">
       <div class="text-center">
@@ -302,7 +302,7 @@
         Didn’t get mail?
         <a href="javascript:void(0)" class="btn p-0 border-0 font18 borderRadius10 font500 gradientText" (click)="resendVerificationLink()"><u>send again</u></a>
       </p>
-      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" [routerLink]="['/login']">OK</a>
+      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" [routerLink]="['/login']" (click)="d('Close')">OK</a>
     </div>
   </div>
 </ng-template>

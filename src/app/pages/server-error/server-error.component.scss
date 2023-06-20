@@ -12,10 +12,14 @@ body {
 }
 
 .bodHeight {
-    height: 100vh;
+    height: calc(100vh - 78px);
     align-items: center;
-    padding-top: 70px;
     overflow-y: scroll;
+}
+
+.bodHeight::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
 }
 
 .subErrorHeading {
