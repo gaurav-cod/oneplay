@@ -548,10 +548,15 @@ export class ViewComponent implements OnInit, OnDestroy {
           text: "Your session has been terminated",
           icon: "success",
           confirmButtonText: "OK",
+        }).then(() => {
+          this.router.navigate(["/quit"], {
+            queryParams: {
+              session_id: this.sessionToTerminate,
+              game_id: this.game.oneplayId,
+            },
+          });
         });
-        setTimeout(() => {
-          this.gameService.gameStatus = this.restService.getGameStatus();
-        }, 3000);
+        this.gameService.gameStatus = this.restService.getGameStatus();
         this.stopTerminating();
       },
       (err) => {
