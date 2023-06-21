@@ -177,7 +177,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUserError(event) {
@@ -193,12 +193,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if(this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
   }
 
   addFriend(friend: UserModel) {
+    if(this.user.id === friend.id) {
+      return
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id

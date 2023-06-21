@@ -123,11 +123,11 @@
               </div>
               <div
                 *ngIf="results.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
                 (click)="isMenuCollapsed = true"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0 mt-2"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop mt-2"
                   (click)="searchNavigate('games')"
                 >
                   See more games
@@ -168,10 +168,10 @@
               </div>
               <div
                 *ngIf="uResults.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
                   (click)="searchNavigate('users')"
                 >
                   See more users
@@ -183,7 +183,7 @@
       </ul>
     </div>
     <!-- User -->
-    <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0">
+    <ul class="navbar-nav pl-md-4 pl-lg-0">
       <li class="nav-item">
         <div class="row">
           <div
@@ -191,7 +191,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
               <span class="avatar avatar-sm rounded-circle bg-gray-dark">
@@ -211,7 +211,7 @@
               <img
                 *ngIf="isGameRunning && isUserLive"
                 src="assets/img/Dashboard/Speedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -221,7 +221,7 @@
               <img
                 *ngIf="isGameRunning && !isUserLive"
                 src="assets/img/Dashboard/resumeSpeedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -230,7 +230,7 @@
               <img
                 *ngIf="!isGameRunning"
                 src="assets/img/Dashboard/inactiveGame.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -277,13 +277,13 @@
             </div>
           </div> -->
           <div
-            class="col-auto align-self-center pr-3 pl-0"
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 br50"
               role="button"
               ngbDropdownToggle
             >

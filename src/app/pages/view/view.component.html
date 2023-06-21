@@ -1,4 +1,4 @@
-<div *ngIf="!!game" class="container-fluid mid-screen">
+<div *ngIf="!!game" class="container-fluid">
   <div class="container-fluid removePaddingContainer">
     <div class="row justify-content-center">
       <div class="col-md-12">
@@ -7,7 +7,7 @@
             class="card-img height80 borderRadius10"
             style="object-fit: cover; object-position: top"
             [src]="game.bgImage"
-            (error)="$event.target.src = 'assets/img/default_bg.jpg'"
+            (error)="$event.target.src = 'assets/img/default_bg.webp'"
             [ngStyle]="{
               filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
             }"
@@ -133,7 +133,7 @@
                 </div>
                 <form class="row pb-3 justify-content-center checkBox pl-3">
                   <div
-                    class="col-md-12 col-auto custom-control custom-checkbox mt-4 mb-3 mb-md-0"
+                    class="col-auto customResponsiveWidth custom-control custom-checkbox mt-4 mb-3 mb-md-0"
                   >
                     <input
                       type="checkbox"
