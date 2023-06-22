@@ -42,6 +42,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private stripeElements: StripeElements;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
+  private userNameSubscription: Subscription;
   private packageID: string;
 
   constructor(
@@ -87,6 +88,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         this.isApp = false;
       }
     });
+
+    this.userNameSubscription = this.authService.userNameExists.subscribe(u => 
+      u ? null : this.router.navigateByUrl('/start-gaming'));
   }
 
   ngOnDestroy(): void {
@@ -94,6 +98,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     clearInterval(this.oneMinuteTimer);
     this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
+    this.userNameSubscription.unsubscribe();
     Swal.close();
   }
 

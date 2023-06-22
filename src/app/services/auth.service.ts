@@ -53,6 +53,11 @@ export class AuthService {
     return Cookies.get("op_session_token") || "";
   }
 
+  get userNameExists() {
+    return this._$user.asObservable()
+    .pipe<boolean>(map(user => !!user.username));
+  }
+
   get userIdAndToken() {
     if (this.sessionToken) {
       const str = atob(this.sessionToken);

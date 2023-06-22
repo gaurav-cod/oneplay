@@ -37,7 +37,7 @@
                                     Username*
                                     <i class="fas fa-info-circle ml-1"
                                         tooltipClass="customTooltip"
-                                        ngbTooltip="Minimum 3, Maximum 12 characters. Must start with letter, special characters and consecutive spaces not allowed."
+                                        ngbTooltip="Minimum 3, Maximum 12 characters. Must start with letter, special characters and spaces not allowed."
                                         placement="bottom"
                                         triggers="click:blur">
                                     </i>
@@ -45,7 +45,7 @@
                                 ><span
                                     class="font16 font500 errorGradientColor float-right"
                                     *ngIf="usernameErrored"
-                                    >*invalid Username</span
+                                    >{{ usernameError }}</span
                                 >
                                 <div class="input-group">
                                     <input
@@ -67,11 +67,12 @@
                                 <div class="input-group dateDropdown">
                                     <input
                                         class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-                                        formControlName="date_of_birth"
+                                        formControlName="dob"
                                         placeholder="DD\MM\YY"
                                         ngbDatepicker
                                         #d="ngbDatepicker"
                                         (focus)="d.toggle()"
+                                        (dateSelect)="d.toggle()"
                                         [maxDate]="maxDate" 
                                         [minDate]="minDate"
                                     />
@@ -88,7 +89,7 @@
                             </div>
                             <div class="col-md-12 mt-5">
                             <input
-                                type="button"
+                                type="submit"
                                 [disabled]="checkvalidationValue"
                                 class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
                                 value="Start Gaming"
