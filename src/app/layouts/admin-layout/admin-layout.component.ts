@@ -89,7 +89,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
 
-    this.userNameSubscription = this.authService.userNameExists.subscribe(u => 
+    this.userNameSubscription = this.authService.userCanGame.subscribe(u => 
       u ? null : this.router.navigateByUrl('/start-gaming'));
   }
 

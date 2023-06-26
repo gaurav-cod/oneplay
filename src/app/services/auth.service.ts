@@ -53,9 +53,9 @@ export class AuthService {
     return Cookies.get("op_session_token") || "";
   }
 
-  get userNameExists() {
+  get userCanGame() {
     return this._$user.asObservable()
-    .pipe<boolean>(map(user => !!user.username));
+    .pipe<boolean>(map(user => !!user.username && !!user.age));
   }
 
   get userIdAndToken() {
