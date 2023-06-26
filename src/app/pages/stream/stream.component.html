@@ -122,7 +122,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-sm-12">
+          <div class="col-md-4 col-sm-12" *ngIf="game.storesMapping.length">
             <h5 class="text-white">Get this game</h5>
             <div
               *ngFor="let store of game.storesMapping"
@@ -133,8 +133,14 @@
                 class="d-flex justify-content-between align-items-center text-white"
               >
                 <div class="d-flex align-items-center">
-                  <i class="fa fa-stop-circle text-xl"></i>
-                  <span class="text-sm ml-1">{{ store.name | titlecase }}</span>
+                  <img
+                    [src]="store.name | store"
+                    height="25"
+                    class="mr-2"
+                    [alt]="store.name"
+                    onerror="this.style.display = 'none'"
+                  />
+                  <span class="text-sm">{{ store.name | titlecase }}</span>
                 </div>
                 <a
                   [href]="store.link"

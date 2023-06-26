@@ -34,6 +34,7 @@
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
               <div class="innerRange" 
+                triggers="hover focus click"
                 ngbTooltip="{{ remainingTokens | tokens }} left"
                 [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
               </div>

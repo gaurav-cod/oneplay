@@ -477,7 +477,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         Swal.fire({
           title: "Set up on Safari",
           text: "Streaming games is not supported in this browser",
-          icon: "info",
+          icon: "error",
           confirmButtonText: "Close",
         });
       }
@@ -548,10 +548,15 @@ export class ViewComponent implements OnInit, OnDestroy {
           text: "Your session has been terminated",
           icon: "success",
           confirmButtonText: "OK",
+        }).then(() => {
+          this.router.navigate(["/quit"], {
+            queryParams: {
+              session_id: this.sessionToTerminate,
+              game_id: this.game.oneplayId,
+            },
+          });
         });
-        setTimeout(() => {
-          this.gameService.gameStatus = this.restService.getGameStatus();
-        }, 3000);
+        this.gameService.gameStatus = this.restService.getGameStatus();
         this.stopTerminating();
       },
       (err) => {
@@ -830,7 +835,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   startGameWithWebRTCToken(millis = 0): void {
     if (!environment.webrtc_prefix) {
       Swal.fire({
-        icon: "info",
+        icon: "error",
         title: "Web-Play",
         text: "Play on web is coming soon!",
       });
