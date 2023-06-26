@@ -30,12 +30,6 @@
  white-space: nowrap;
 }
 
-.defaultHeight {
-  height: calc(100vh - 136px);
-  overflow-y: scroll;
-}
-
-.defaultHeight::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
+.paddingBottom {
+  padding-bottom: 38px;
 }
