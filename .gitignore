@@ -24,6 +24,9 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# local dev script
+dev.sh
+
 # misc
 /.angular/cache
 /.sass-cache
