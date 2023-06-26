@@ -182,6 +182,18 @@ export class RestService {
       );
   }
 
+  verifyUserName(username: string): Observable<string> {
+    return this.http.post(this.r_mix_api + "/accounts/validate_username", { username })
+    .pipe(
+      map(res => res['success'] ?? false),
+      map(res => res ? "" : "Invalid username."),
+      catchError(({ error }) => {
+        if (error.code === 400) return of(error.message);
+        else throw error;
+      })
+    );
+  }
+
   getSessions(): Observable<Session[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/sessions")
