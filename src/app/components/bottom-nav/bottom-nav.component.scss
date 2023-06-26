@@ -26,3 +26,20 @@
 .sb-group {
     justify-content: center !important;
 }
+
+.gardientCard {
+    background: linear-gradient(270deg, #212123 0%, #2A1A9A 100%);
+    border-radius: 10px 10px 0px 0px;
+}
+
+.btnGradient {
+    background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    line-height: 14px !important;
+    padding: 0.655rem 1rem !important;
+}
+
+.alert-dismissible {
+    padding-right: 1.5rem !important;
+}

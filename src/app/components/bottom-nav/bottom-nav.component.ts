@@ -10,6 +10,7 @@ import { GameService } from 'src/app/services/game.service';
 import { MessagingService } from 'src/app/services/messaging.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import UAParser from 'ua-parser-js';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -78,6 +79,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       return "You are playing " + this.gameStatus.game_name;
     }
     return "No game is running!";
+  }
+
+  get isAndroid() {
+    const uagent = new UAParser();
+    return uagent.getOS().name === "Android"
   }
 
   ngOnInit(): void {
