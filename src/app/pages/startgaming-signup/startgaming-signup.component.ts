@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { RestService } from 'src/app/services/rest.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-startgaming-signup',
@@ -50,7 +51,14 @@ export class StartgamingSignupComponent {
     this.restService.updateProfile({
       username: this.startGameForm.value.username,
       dob: new Date(year, month-1, day).toISOString().split('T')[0],
-    }).subscribe(_ => this.router.navigateByUrl('/'))
+    }).subscribe({
+      next: () => this.router.navigateByUrl('/'),
+      error: (error) => Swal.fire({
+        icon: "error",
+        title: "Error Code: " + error.code,
+        text: error.message,
+      }),
+    });
   }
 
   get domain() {
