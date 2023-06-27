@@ -31,6 +31,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   query = new UntypedFormControl("");
   searchText = "";
   checked: boolean = false;
+  games_array = [];
 
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
@@ -53,7 +54,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     }
 
     else if (wishlist.length < 1) {
-      this.selectGame();
+      this.selectGame(); 
     }
   }
 
@@ -76,6 +77,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (this.games.length < 12) {
           this.canLoadMore = false;
         }
+        this.orderGames();
         this.stopLoading();
       },
       (error) => {
@@ -95,6 +97,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (games.results.length < 12) {
           this.canLoadMore = false;
         }
+        this.orderGames();
         this.stopLoading();
         this.currentPage++;
       },
@@ -141,6 +144,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     this._selectgameRef.close()  
     this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
     this.authService.wishlist = of(this.selectedGameIds)
+    localStorage.removeItem('selected_games');
   }
 
   public async closeonboardingGame() {
@@ -164,11 +168,24 @@ export class OnboardingModalsComponent implements AfterViewInit {
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
       this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
+      let selected_games = JSON.parse(localStorage.getItem('selected_games') || "[]");
+      selected_games.push(game);
+      localStorage.setItem('selected_games', JSON.stringify(selected_games));
     } else {
       this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
     }
+    console.log('selectedGames',this.selectedGameIds);
   }
 
+  public orderGames () {
+    let selected_games = JSON.parse(localStorage.getItem('selected_games') || "[]");
+    this.games_array = [...selected_games];
+    this.games.forEach(game => {
+      if(!this.isChecked(game)) {
+        this.games_array.push(game);
+      }
+    });
+  }
   get domain() {
     return environment.domain;
   }
