@@ -1,166 +1,102 @@
-<!-- Page content -->
-<div class="row justify-content-center loginBg">
-  <div class="col-12">
-    <div class="d-block d-lg-none">
-      <div class="text-center">
-        <a [href]="domain">
-          <img
-            src="assets/img/brandLogo.svg"
-            class="img-fluid mt-4 mb-0"
-            alt="logo"
-          />
-        </a>
+<form [formGroup]="loginForm" (submit)="login()" role="form">
+  <div class="row">
+    <div class="col-md-12 mb-3 mt-4">
+      <h1 class="text-white font30 font800 mb-0 textCenterCustom">
+        Log in to your account
+      </h1>
+    </div>
+    <div class="col-md-12 mt-3">
+      <label class="font16 font500 customOffWhite"
+        >Email / Phone</label
+      >
+      <input
+        type="email"
+        #emailId
+        formControlName="id"
+        class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+        name="name"
+        placeholder="example@oneplay.in"
+        size="small"
+      />
+    </div>
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite"
+        >Password</label
+      >
+      <div class="input-group">
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+          name="password"
+          #passwordField
+        />
+        <span
+          class="bgTransparent fixedIcon offWhiteColor font16 font500"
+          >
+          <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Views.svg':'assets/img/singup-login/Group.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
+        </span>
       </div>
     </div>
-    <div class="container">
-      <div class="row justify-content-center height100vh">
-        <div class="col-auto width450">
-          <form [formGroup]="loginForm" (submit)="login()" role="form">
-            <div class="row">
-              <div class="col-md-12 mb-3 mt-4">
-                <h1 class="text-white font30 font800 mb-0 textCenterCustom">
-                  Log in to your account
-                </h1>
-              </div>
-              <div class="col-md-12 mt-3">
-                <label class="font16 font500 customOffWhite"
-                  >Email / Phone</label
-                >
-                <input
-                  type="email"
-                  #emailId
-                  formControlName="id"
-                  class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-                  name="name"
-                  placeholder="example@oneplay.in"
-                  size="small"
-                />
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite"
-                  >Password</label
-                >
-                <div class="input-group">
-                  <input
-                    type="password"
-                    formControlName="password"
-                    class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-                    name="password"
-                    #passwordField
-                  />
-                  <span
-                    class="bgTransparent fixedIcon offWhiteColor font16 font500"
-                    >
-                    <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Views.svg':'assets/img/singup-login/Group.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
-                  </span>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-auto mt-5 custom align-self-center pr-0">
-                    <div class="custom-control custom-switch mt-lg-2">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input font16 align-middle"
-                        id="customCheckLogin"
-                        checked
-                      />
-                      <label
-                        class="custom-control-label font20 mb-0 align-middle font500 customOffWhite"
-                        for="customCheckLogin"
-                        ><span class="textLabel">Remember me</span></label
-                      >
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col text-right mt-5 align-self-center">
-                    <span class="float-right font20 font500"
-                      ><a
-                        href="javascript:void(0)"
-                        [routerLink]="['/forgot-password']"
-                        class="customOffWhite"
-                        >Forgot Password?</a
-                      ></span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 mt-5 margintop20">
-                <input
-                  type="submit"
-                  class="btn btn-block linearGradient border-0 borderRadius10 font18 mt-3 mt-lg-0 font500 text-white"
-                  value="Login"
-                />
-              </div>
-              <div class="col-md-12 mt-5 text-center margintop20">
-                <p class="font20 font500 offWhiteColor mt-3 mt-lg-0">
-                  Don’t have an account?
-                  <span class="purpleGradient"
-                    ><a href="javascript:void(0)" [routerLink]="['/register']"
-                      >Create a New</a
-                    ></span
-                  >
-                </p>
-                <div class="row mb-4 hideInSmallScreen">
-                  <div class="col-12 mt-3">
-                      <a
-                        href="javascript:void(0)"
-                        [routerLink]="['/qr-login']"
-                        class="btn btn-block borderRadius10 border-0 font18 font500 activelinear text-white"
-                      >
-                        <span className="align-middle">Sign In with QR or Web</span>
-                      </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="d-block d-lg-none">
-                  <div class="text-center">
-                    <div class="col-12">
-                      <hr class="mt-2 mb-4 borderBottom" />
-                      <span class="offWhiteColor font16 font500"
-                        >Need help?<span class="purpleGradient"
-                          ><a
-                            [href]="domain + '/FAQs.html'"
-                            target="_blank"
-                          >
-                            Browse FAQ</a
-                          ></span
-                        ></span
-                      >
-                    </div>
-                    <div class="col-12 mt-2">
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        © 2023 RainBox Media Pvt Ltd.
-                      </p>
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        All Rights Reserved.
-                      </p>
-                      <p class="font14 font500 purpleGradient">
-                        <a
-                          [href]="domain + '/privacy.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Privacy Policy</a
-                        >
-                        <span class="footerWhiteColor ml-1 mr-1">.</span>
-                        <a
-                          [href]="domain + '/tnc.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Terms & Conditions</a
-                        >
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-auto mt-5 custom align-self-center pr-0">
+          <div class="custom-control custom-switch mt-lg-2">
+            <input
+              type="checkbox"
+              class="custom-control-input font16 align-middle"
+              id="customCheckLogin"
+              checked
+            />
+            <label
+              class="custom-control-label font20 mb-0 align-middle font500 customOffWhite"
+              for="customCheckLogin"
+              ><span class="textLabel">Remember me</span></label
+            >
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col text-right mt-5 align-self-center">
+          <span class="float-right font20 font500"
+            ><a
+              href="javascript:void(0)"
+              [routerLink]="['/forgot-password']"
+              class="customOffWhite"
+              >Forgot Password?</a
+            ></span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-5 margintop20">
+      <input
+        type="submit"
+        class="btn btn-block linearGradient border-0 borderRadius10 font18 mt-3 mt-lg-0 font500 text-white"
+        value="Login"
+      />
+    </div>
+    <div class="col-md-12 mt-5 text-center margintop20">
+      <p class="font20 font500 offWhiteColor mt-3 mt-lg-0">
+        Don’t have an account?
+        <span class="purpleGradient"
+          ><a href="javascript:void(0)" [routerLink]="['/register']"
+            >Create a New</a
+          ></span
+        >
+      </p>
+      <div class="row mb-4 hideInSmallScreen">
+        <div class="col-12 mt-3">
+            <a
+              href="javascript:void(0)"
+              [routerLink]="['/qr-login']"
+              class="btn btn-block borderRadius10 border-0 font18 font500 activelinear text-white"
+            >
+              <span className="align-middle">Sign In with QR or Web</span>
+            </a>
         </div>
       </div>
     </div>
   </div>
-</div>
+</form>
 
 <ng-template #verifySwalModal let-d="dismiss">
   <div class="modal-content modalBg">

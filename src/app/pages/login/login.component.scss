@@ -75,10 +75,6 @@
   }
 }
 
-.loginBg {
-  background-color: #151515;
-}
-
 .customOffWhite {
   color: #DCDCDC !important;
 }
@@ -181,16 +177,4 @@ input:-internal-autofill-selected {
   .hideInSmallScreen {
     display: none;
   }
-}
-
-.width450 {
-  width: 450px;
-}
-
-.height100vh {
-  height: 100vh;
-  @media (max-width: 991.9px) {
-    height: 90vh;
-  }
-  align-items: center;
 }

@@ -29,14 +29,6 @@
   color: #E1E1E1;
 }
 
-.borderBottom {
-  border-bottom: 1px solid #3E4246;
-}
-
-.loginBg {
-  background-color: #151515;
-}
-
 .font16 {
   font-size: 16px;
   line-height: 26px;
@@ -144,18 +136,6 @@ input:-webkit-autofill:active  {
 
 input:-internal-autofill-selected {
   background-color: transparent !important;
-}
-
-.width450 {
-  width: 450px !important;
-}
-
-.height100vh {
-  height: 100vh;
-  @media (max-width: 991.9px) {
-    height: 90vh;
-  }
-  align-items: center;
 }
 
 .font30 {
