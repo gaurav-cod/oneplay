@@ -12,8 +12,4 @@ export class ServerErrorComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  onClick(): void {
-    this.location.back();
-  }
 }
