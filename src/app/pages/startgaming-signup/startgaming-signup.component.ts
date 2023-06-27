@@ -49,7 +49,7 @@ export class StartgamingSignupComponent {
     let { year, month, day } = this.startGameForm.value.dob;
     this.restService.updateProfile({
       username: this.startGameForm.value.username,
-      dob: new Date(year, month-1, day).toISOString(),
+      dob: new Date(year, month-1, day).toISOString().split('T')[0],
     }).subscribe(_ => this.router.navigateByUrl('/'))
   }
 
