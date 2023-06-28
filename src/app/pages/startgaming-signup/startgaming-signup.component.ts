@@ -31,10 +31,7 @@ export class StartgamingSignupComponent implements OnInit {
       Validators.required,
       Validators.pattern(this.usernameRegex),
     ]),
-    dob: new FormControl(
-      this.dateToNgbDate(this.dateMinusYears(new Date(), 13)),
-      [Validators.required],
-    ),
+    dob: new FormControl(undefined, [Validators.required]),
   });
 
   minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100))
@@ -65,10 +62,7 @@ export class StartgamingSignupComponent implements OnInit {
 
   async setUserDetails() {
     let user = await this.restService.getProfile().toPromise()
-    this.startGameForm.patchValue({
-      username: user.username ?? '',
-      dob: this.dateToNgbDate(new Date(user.dob)),
-    });
+    this.startGameForm.patchValue({ username: user.username ?? '' });
   }
 
   startGaming() {
