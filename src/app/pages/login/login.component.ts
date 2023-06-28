@@ -11,12 +11,11 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from "ua-parser-js";
-
-declare var gtag: Function;
 
 @Component({
   selector: "app-login",
@@ -40,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService,
   ) {}
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
@@ -73,10 +73,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        gtag("event", "login", {
+        this.countlyService.addEvent({ key: 'login', segmentation: {
           event_category: "user",
           event_label: this.loginForm.value.id,
-        });
+        }});
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();

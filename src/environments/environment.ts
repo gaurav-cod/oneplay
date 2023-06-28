@@ -1,4 +1,8 @@
+// import { version } from '../../package.json';
+
 export const environment = {
+  // appVersion: version,
+  appVersion: "1.2.0",
   production: false,
   cookie_domain: "localhost",
   domain: "https://www.oneream.com",
@@ -19,6 +23,11 @@ export const environment = {
     messagingSenderId: "744840875406",
     appId: "1:744840875406:web:056e488d551ade3e9ba8df",
     measurementId: "G-X80K2YEKBS",
+  },
+  countly: {
+    key: '19eab6488620f4a36d34a08519392028a1acd920',
+    url: 'https://dev.countly.oneream.com/',
+    src: 'https://dev.countly.oneream.com/sdk/web/countly.min.js',
   },
   webrtc_prefix: 'http://localhost:3000/webplay',
 };

@@ -37,8 +37,7 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
-
-declare var gtag: Function;
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-view",
@@ -128,7 +127,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly gamepadService: GamepadService,
     private readonly toastService: ToastService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly countlyService: CountlyService
   ) {
     const userAgent = new UAParser();
 
@@ -441,10 +441,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.addToWishlist(this.game.oneplayId);
-      gtag("event", "add_to_wishlist", {
-        event_category: "wishlist",
-        event_label: this.game.title,
-      });
+      this.countlyService.addEvent({
+        key: 'add_to_wishlist',
+        segmentation: {
+          event_category: "wishlist",
+          event_label: this.game.title,
+        }
+      })
     });
   }
 
@@ -453,10 +456,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
-      gtag("event", "remove_from_wishlist", {
+      this.countlyService.addEvent({key: 'remove_from_wishlist', segmentation: {
         event_category: "wishlist",
         event_label: this.game.title,
-      });
+      }})
     });
   }
 
@@ -606,10 +609,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       JSON.stringify(this.advancedOptions.value)
     );
 
-    gtag("event", "start_game", {
+    this.countlyService.addEvent({ key: 'start_game', segmentation: {
       event_category: "game",
       event_label: this.game.title,
-    });
+    }})
 
     this._settingsModalRef?.close();
     this.startLoading();

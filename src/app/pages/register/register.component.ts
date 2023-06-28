@@ -3,11 +3,10 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-
-declare var gtag: Function;
 
 @Component({
   selector: "app-register",
@@ -111,6 +110,7 @@ export class RegisterComponent implements OnInit {
     private readonly router: Router,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit() {
@@ -171,10 +171,10 @@ export class RegisterComponent implements OnInit {
           //     this.router.navigateByUrl("/login");
           //   }
           // });
-          gtag("event", "signup", {
+          this.countlyService.addEvent({key: 'signup', segmentation: {
             event_category: "user",
             event_label: this.registerForm.value.email,
-          });
+          }})
         },
         (error) => {
           this.loading = false;
