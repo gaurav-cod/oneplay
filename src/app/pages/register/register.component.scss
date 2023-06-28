@@ -27,10 +27,6 @@
   color: #E1E1E1;
 }
 
-.borderBottom {
-  border-bottom: 1px solid #3E4246;
-}
-
 .offWhiteColor {
   color: #959595;
 }
@@ -64,10 +60,6 @@
     font-size: 14px !important;
     line-height: 21px !important;
   }
-}
-
-.loginBg {
-  background-color: #151515;
 }
 
 .customOffWhite {
@@ -215,18 +207,6 @@ input[type=checkbox]:checked {
 input::placeholder {
   font-size: 16px;
   line-height: 26px;
-}
-
-.width450 {
-  width: 450px !important;
-}
-
-.height100vh {
-  height: 100vh;
-  @media (max-width: 991.9px) {
-    height: 90vh;
-  }
-  align-items: center;
 }
 
 .font30 {

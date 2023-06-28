@@ -1,0 +1,76 @@
+<form
+  (submit)="startGaming()"
+  role="form"
+  autocomplete="off"
+  [formGroup]="startGameForm"
+>
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <h1 class="text-white font30 font800 textCenterCustom">Almost there!</h1>
+      <p class="font20 font500 offWhiteColor mt-4">
+        Help us with more details.
+      </p>
+    </div>
+    <div class="col-md-12 mt-3">
+      <label class="font16 font500 customOffWhite">
+        Username*
+        <i
+          class="fas fa-info-circle ml-1"
+          tooltipClass="customTooltip"
+          ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
+          placement="bottom"
+          triggers="click:blur"
+        >
+        </i> </label
+      ><span
+        class="font16 font500 errorGradientColor float-right"
+        *ngIf="usernameErrored"
+        >*invalid Username</span
+      >
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+          placeholder="exampleOnePlay"
+          formControlName="username"
+        />
+      </div>
+    </div>
+    <div class="col-md-12 mt-3">
+      <label class="font16 font500 customOffWhite">Date Of Birth*</label
+      ><span
+        class="font16 font500 errorGradientColor float-right"
+        *ngIf="dateOfBirthErrored"
+        >*invalid Date of Birth</span
+      >
+      <div class="input-group dateDropdown">
+        <input
+          class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+          formControlName="dob"
+          placeholder="DD\MM\YY"
+          ngbDatepicker
+          #d="ngbDatepicker"
+          (click)="d.toggle()"
+          (dateSelect)="d.toggle()"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+        />
+        <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
+          <img
+            class="img-fluid"
+            src="assets/img/singup-login/Calendar.svg"
+            alt=""
+          />
+        </span>
+      </div>
+    </div>
+    <div class="col-md-12 mt-5">
+      <input
+        type="submit"
+        [disabled]="checkvalidationValue"
+        class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
+        value="Start Gaming"
+      />
+    </div>
+  </div>
+</form>

@@ -1,46 +1,37 @@
-<!-- Page content -->
-<div class="container pt-7 pt-lg-8 pb-9">
-  <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10">
-      <div class="card bg-dark shadow border-0">
-        <div class="card-header bg-transparent pb-1">
-          <h2 class="text-white mt-2 mb-1">Verifying Account...</h2>
-          <!-- <div class="text-muted">
-            <small> Check your mobile for the verification code </small>
-          </div> -->
-        </div>
-        <div class="card-body px-lg-4 py-lg-3">
-          <div class="position-relative" style="height: 80px;">
-            <ngx-ui-loader
-              [fgsColor]="'#c32ead'"
-              [hasProgressBar]="false"
-              [fgsSize]="40"
-              [loaderId]="'verify'"
-            ></ngx-ui-loader>
-          </div>
-          <!-- <div class="form-group mb-3">
-            <input
-              [formControl]="otp"
-              class="form-control bg-dark"
-              placeholder="Enter OTP"
-              type="text"
-            />
-          </div>
-          <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-link" (click)="getOTP()">
-              {{ otpSent ? "Resend" : "Get" }} OTP
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              (click)="verify()"
-              [disabled]="!otp.valid"
-            >
-              Verify
-            </button>
-          </div> -->
-        </div>
-      </div>
-    </div>
+<div class="card-header bg-transparent pb-1">
+  <h2 class="text-white mt-2 mb-1">Verify Mobile Number</h2>
+  <div *ngIf="otpSent" class="text-muted">
+    <small> Check your mobile for the verification code </small>
+  </div>
+</div>
+<div *ngIf="!otpSent" class="card-body px-lg-4 py-lg-3">
+  <button
+    class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
+    (click)="getOTP()"
+  >
+    Get OTP
+  </button>
+</div>
+<div *ngIf="otpSent" class="card-body px-lg-4 py-lg-3">
+  <div class="form-group mb-3">
+    <input
+      [formControl]="otp"
+      class="form-control bg-dark"
+      placeholder="Enter OTP"
+      type="text"
+    />
+  </div>
+  <div class="d-flex justify-content-between">
+    <button type="button" class="btn btn-link" (click)="getOTP()">
+      Resend OTP
+    </button>
+    <button
+      type="button"
+      class="btn linearGradient border-0 borderRadius10 font16 font500 text-white"
+      (click)="verify()"
+      [disabled]="!otp.valid"
+    >
+      Verify
+    </button>
   </div>
 </div>

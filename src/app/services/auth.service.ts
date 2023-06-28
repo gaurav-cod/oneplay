@@ -53,6 +53,14 @@ export class AuthService {
     return Cookies.get("op_session_token") || "";
   }
 
+  get userCanGame() {
+    return this._$user.asObservable()
+    .pipe<boolean | undefined>(map(user => {
+      if(!user) return undefined;
+      return !!user.username && !!user.age;
+    }));
+  }
+
   get userIdAndToken() {
     if (this.sessionToken) {
       const str = atob(this.sessionToken);

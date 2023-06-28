@@ -1000,19 +1000,6 @@ html.swal2-shown,body.swal2-shown {
   background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%);
 }
 
-@media (min-width: 991.1px) {
-  .height100vh {
-    overflow-y: scroll !important;
-    -ms-overflow-style: none; /* IE 11 */
-    scrollbar-width: none; 
-  }
-}
-
-.height100vh::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-
 .dropdown-item:hover, .dropdown-item:focus {
   background-color: transparent !important;
   color: #ffffff !important;
@@ -1102,4 +1089,67 @@ select {
 
 .swalPadding .swal2-html-container {
   padding: 0px !important;
+}
+.dateDropdown .dateDropdown .dropdown-menu, ngb-datepicker .ngb-dp-header, ngb-datepicker .ngb-dp-month {
+  background-color: #212123 !important;
+  border-radius: 10px;
+}
+
+.dateDropdown ngb-datepicker, ngb-datepicker .ngb-dp-header, ngb-datepicker .ngb-dp-month, ngb-datepicker .ngb-dp-month-name, ngb-datepicker .ngb-dp-day, ngb-datepicker .ngb-dp-week-number, ngb-datepicker .ngb-dp-weekday, ngb-datepicker .ngb-dp-weekdays {
+  background-color: #212123 !important;
+}
+
+.dateDropdown ngb-datepicker .ngb-dp-months .ngb-dp-week .ngb-dp-day .btn-light, ngb-datepicker .ngb-dp-months .ngb-dp-week .ngb-dp-day .custom-day {
+  color: #959595 !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+}
+
+.dateDropdown .ngb-dp-day ngb-dp-today .bg-primary {
+  background-color: #3E4246 !important;
+}
+
+.dateDropdown ngb-datepicker .ngb-dp-months .ngb-dp-week .ngb-dp-day .btn-light, ngb-datepicker .ngb-dp-months .ngb-dp-week .ngb-dp-day .custom-day {
+  border-radius: 6px !important;
+}
+
+.btn-light:hover {
+  color: #fff !important;
+  background-color: #3E4246 !important;
+  border-color: #3E4246 !important;
+}
+
+.dateDropdown .btn-light:not(:disabled):not(.disabled):active, .btn-light:not(:disabled):not(.disabled).active, .show > .btn-light.dropdown-toggle {
+  color: #fff !important;
+  background-color: #3E4246 !important;
+  border-color: #3E4246 !important;
+}
+
+.dateDropdown ngb-datepicker .ngb-dp-weekday {
+  color: #959595 !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+
+.dateDropdown ngb-datepicker {
+  padding: 10px !important;
+}
+
+.dateDropdown .ngb-dp-arrow, .ngb-dp-arrow.right {
+  display: none !important;
+}
+
+.dateDropdown ngb-datepicker .ngb-dp-header ngb-datepicker-navigation ngb-datepicker-navigation-select .custom-select {
+  background-color: #3E4246 !important;
+  color: #959595 !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 26px !important;
+  height: 40px;
+  margin: 0px 8px;
+}
+
+.dateDropdown .ngb-dp-navigation-select {
+  margin-bottom: 10px !important;
 }
