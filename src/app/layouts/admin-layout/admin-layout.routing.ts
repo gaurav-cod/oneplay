@@ -10,6 +10,7 @@ import { SearchComponent } from 'src/app/pages/search/search.component';
 import { WishlistComponent } from 'src/app/pages/wishlist/wishlist.component';
 import { ViewGuard } from 'src/app/guards/view.guard';
 import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
+import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -26,4 +27,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'search',               component: SearchComponent },
     { path: 'search/:tab',          component: SearchComponent },
     { path: "quit",                 component: FeedbackComponent },
+    { path: "speed-test",           component: SpeedTestComponent },
 ];

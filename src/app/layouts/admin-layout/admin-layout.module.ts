@@ -25,6 +25,7 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
+import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.component';
 
 @NgModule({
   imports: [
@@ -53,6 +54,7 @@ import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
     SearchComponent,
     WishlistComponent,
     FeedbackComponent,
+    SpeedTestComponent,
   ],
   providers: [ViewGuard],
 })
