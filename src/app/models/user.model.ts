@@ -6,6 +6,7 @@ export class UserModel {
   readonly lastName: string;
   readonly bio: string;
   readonly age: number;
+  readonly dob: string;
   readonly email: string;
   readonly phone: number;
   readonly type: string;
@@ -22,6 +23,7 @@ export class UserModel {
     this.lastName = json["last_name"];
     this.bio = json["bio"];
     this.age = json["age"];
+    this.dob = json["dob"];
     this.email = json["email"];
     this.phone = json["phone"];
     this.type = json["user_type"];
@@ -40,6 +42,7 @@ export class UserModel {
       last_name: data.lastName ?? this.lastName,
       bio: data.bio ?? this.bio,
       age: data.age ?? this.age,
+      dob: data.dob ?? this.dob,
       email: data.email ?? this.email,
       phone: data.phone ?? this.phone,
       user_type: this.type,
@@ -63,6 +66,7 @@ export class UserModel {
       last_name: this.lastName,
       bio: this.bio,
       age: this.age,
+      dob: this.dob,
       email: this.email,
       phone: this.phone,
       user_type: this.type,
