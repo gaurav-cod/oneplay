@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { RestService } from 'src/app/services/rest.service';
@@ -11,20 +11,31 @@ import Swal from 'sweetalert2';
   templateUrl: './startgaming-signup.component.html',
   styleUrls: ['./startgaming-signup.component.scss']
 })
-export class StartgamingSignupComponent {
+export class StartgamingSignupComponent implements OnInit {
 
   private usernameRegex = /^[^\W\d_]{1}[^\W_]{2,11}$/
+
+  private dateToNgbDate = (date: Date): NgbDateStruct => ({
+    year: date.getUTCFullYear(),
+    month: date.getMonth() +1,
+    day: date.getDate(),
+  })
+
+  private dateMinusYears = (date: Date, count: number): Date => {
+    date.setUTCFullYear(date.getUTCFullYear() - count);
+    return date;
+  }
 
   startGameForm = new FormGroup({ 
     username: new FormControl("", [
       Validators.required,
       Validators.pattern(this.usernameRegex),
     ]),
-    dob: new FormControl({} as NgbDateStruct, [Validators.required]),
+    dob: new FormControl(undefined, [Validators.required]),
   });
 
-  maxDate ={year: new Date().getUTCFullYear()}
-  minDate ={year: new Date().getUTCFullYear()-100,month: 12, day: 31}
+  minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100))
+  maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13))
 
   get usernameErrored() {
     const control = this.startGameForm.controls["username"];
@@ -44,6 +55,15 @@ export class StartgamingSignupComponent {
     private readonly restService: RestService,
     private readonly router: Router,
   ) { }
+
+  ngOnInit(): void {
+    this.setUserDetails();
+  }
+
+  async setUserDetails() {
+    let user = await this.restService.getProfile().toPromise()
+    this.startGameForm.patchValue({ username: user.username ?? '' });
+  }
 
   startGaming() {
     if (!this.startGameForm.valid) return;
