@@ -1,0 +1,17 @@
+{
+  "name": "OnePlay",
+  "short_name": "OnePlay",
+  "theme_color": "#151515",
+  "background_color": "#151515",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/dashboard/login",
+  "icons": [
+    {
+      "src": "assets/img/brand/favicon.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -53,6 +53,7 @@ export class DeviceHistoryComponent implements OnInit {
             (s) => s.key !== this.logoutSession.key
           );
           if (this.isActive(this.logoutSession)) {
+            this.authService.loggedOutByUser = true;
             this.authService.logout();
           }
         },

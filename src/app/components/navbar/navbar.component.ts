@@ -12,7 +12,7 @@ import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public listTitles: any[];
   public location: Location;
-  public query = new FormControl("");
+  public query = new UntypedFormControl("");
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
@@ -177,7 +177,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUserError(event) {
@@ -193,12 +193,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if(this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
   }
 
   addFriend(friend: UserModel) {
+    if(this.user.id === friend.id) {
+      return
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id
@@ -271,6 +276,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logoutRef.close();
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
       this.authService.logout();
     });
   }
@@ -326,6 +332,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
+      scrollable: true,
     });
   }
 

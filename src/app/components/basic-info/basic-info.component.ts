@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Subscription } from "rxjs";
 import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
@@ -15,17 +15,17 @@ import Swal from "sweetalert2";
   providers: [AvatarPipe],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
-  username = new FormControl("", [
+  username = new UntypedFormControl("", [
     Validators.required,
   ]);
 
-  name = new FormControl("", [
+  name = new UntypedFormControl("", [
     Validators.required,
     Validators.pattern(/^[a-zA-Z\s]*$/),
   ]);
 
-  bio = new FormControl("", [
-    Validators.required,
+  bio = new UntypedFormControl("", [
+    // Validators.required,
     Validators.maxLength(300),
   ]);
   
@@ -72,7 +72,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   onFileChanged(input) {
     if (
       input.target.files[0] &&
-      input.target.value.match(/\.(jpg|png|svg|jpeg)$/)
+      input.target.value.match(/\.(jpg|png|webp|jpeg)$/)
     ) {
       const reader = new FileReader();
       this.photoFile = input.target.files[0] as File;

@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -11,9 +11,10 @@ import Swal from "sweetalert2";
   templateUrl: "./verify.component.html",
   styleUrls: ["./verify.component.scss"],
 })
-export class VerifyComponent implements OnInit, AfterViewInit {
-  otp = new FormControl("", Validators.required);
-  otpSent = false;
+export class VerifyComponent implements OnInit {
+  otp = new UntypedFormControl("", Validators.required);
+  otpSent = localStorage.getItem('otpSent') === 'true';
+  sendingOTP = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -23,18 +24,16 @@ export class VerifyComponent implements OnInit, AfterViewInit {
     private readonly loaderService: NgxUiLoaderService
   ) {}
 
-  ngAfterViewInit(): void {
-    this.verify();
-  }
-
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
   }
 
   getOTP() {
     const token = this.route.snapshot.paramMap.get("token");
+    this.sendingOTP = true;
     this.restService.sendOTP(token).subscribe(
       () => {
+        this.sendingOTP = false;
         Swal.fire({
           title: "Success",
           text: "OTP sent successfully",
@@ -42,13 +41,15 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        localStorage.setItem('otpSent', 'true');
       },
       (err) => {
+        this.sendingOTP = false;
         Swal.fire({
           title: "Error Code: " + err.code,
           text: err.message,
           icon: "error",
-          confirmButtonText: "Try Again",
+          confirmButtonText: "OK",
         });
       }
     );
@@ -59,6 +60,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: () => {
+        localStorage.removeItem('otpSent');
         this.loaderService.stopLoader("verify");
         Swal.fire({
           title: "Verification Success",
@@ -107,6 +109,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
             Swal.showLoading();
             this.restService.resendVerificationLink(email, password).subscribe({
               next: () => {
+                localStorage.removeItem('otpSent');
                 Swal.fire({
                   icon: "success",
                   title: "Check your email and verify again",

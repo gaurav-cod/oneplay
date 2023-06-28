@@ -1,7 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -14,27 +15,32 @@ declare var gtag: Function;
   styleUrls: ["./register.component.scss"],
 })
 export class RegisterComponent implements OnInit {
+
+  @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
+
+  private _successSwalModalRef: NgbModalRef;
+
   referralName = "";
-  registerForm = new FormGroup({
-    name: new FormControl("", [
+  registerForm = new UntypedFormGroup({
+    name: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[a-zA-Z\s]*$/),
     ]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    country_code: new FormControl("+91", [
+    email: new UntypedFormControl("", [Validators.required, Validators.email]),
+    country_code: new UntypedFormControl("+91", [
       Validators.required,
     ]),
-    phone: new FormControl("", [
+    phone: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/),
     ]),
-    password: new FormControl("", [
+    password: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
     ]),
-    gender: new FormControl("", Validators.required),
-    referred_by_id: new FormControl(""),
-    terms_checked: new FormControl(false, [Validators.requiredTrue]),
+    gender: new UntypedFormControl("", Validators.required),
+    referred_by_id: new UntypedFormControl(""),
+    terms_checked: new UntypedFormControl(false, [Validators.requiredTrue]),
   });
   loading = false;
 
@@ -103,7 +109,8 @@ export class RegisterComponent implements OnInit {
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly ngbModal: NgbModal,
   ) {}
 
   ngOnInit() {
@@ -145,18 +152,25 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          Swal.fire({
-            title: "Success",
-            text: "Please check your email to confirm your email id",
-            icon: "success",
-            confirmButtonText: "OK",
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.router.navigateByUrl("/login");
-            }
+          this._successSwalModalRef = this.ngbModal.open(this.successSwalModal, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            scrollable: true,
+            backdrop: "static",
+            keyboard: false,
           });
+          // Swal.fire({
+          //   title: "Success",
+          //   text: "Please check your email to confirm your email id",
+          //   icon: "success",
+          //   confirmButtonText: "OK",
+          //   allowOutsideClick: false,
+          //   allowEscapeKey: false,
+          // }).then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.router.navigateByUrl("/login");
+          //   }
+          // });
           gtag("event", "signup", {
             event_category: "user",
             event_label: this.registerForm.value.email,
@@ -172,6 +186,20 @@ export class RegisterComponent implements OnInit {
           });
         }
       );
+  }
+
+  private resendVerificationLink(error: any, token: string) {
+    const password = this.registerForm.value.password;
+    const email = this.registerForm.value.email;
+    this.restService.resendVerificationLink(email, password).subscribe({
+      next: () => {
+        this._successSwalModalRef.close();
+        Swal.fire({
+          icon: "success",
+          text: "Check your email and verify again",
+        }).then(() => this.router.navigateByUrl("/login"));
+      }
+    });
   }
 
   private getName(id: string) {

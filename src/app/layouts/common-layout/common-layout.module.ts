@@ -10,8 +10,9 @@ import { ClipboardModule } from "ngx-clipboard";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { ComponentsModule } from "src/app/components/components.module";
 import { PipesModule } from "src/app/pipes/pipes.module";
-import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { ServerErrorComponent } from "src/app/pages/server-error/server-error.component";
+import { InstallGuard } from "src/app/guards/install.guard";
+import { InstallComponent } from "src/app/pages/install/install.component";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { ServerErrorComponent } from "src/app/pages/server-error/server-error.co
     PipesModule,
     NgxUiLoaderModule,
   ],
-  declarations: [ErrorComponent, FeedbackComponent, ServerErrorComponent],
+  declarations: [ErrorComponent, ServerErrorComponent, InstallComponent],
+  providers: [InstallGuard],
 })
 export class CommonLayoutModule {}

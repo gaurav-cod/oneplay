@@ -1,5 +1,5 @@
 <nav
-  class="navbar navbar-expand-lg navbar-dark navbarBg xsborderBottom"
+  class="navbar navbar-expand-lg navbar-dark sticky-top navbarBg xsborderBottom"
   id="navbar-main"
 >
   <div
@@ -87,8 +87,8 @@
             </div>
             <div
               *ngIf="results.length || uResults.length"
-              class="position-absolute w-100 bg-dark list-group border-0"
-              style="top: calc(100% + 8px); overflow: auto; max-height: calc(99vh - 79px);"
+              class="position-absolute w-100 bg-dark list-group border-0 searchDropdown"
+              style="top: calc(100% + 8px); max-height: calc(99vh - 79px);"
             >
               <div
                 *ngFor="let game of results"
@@ -123,11 +123,11 @@
               </div>
               <div
                 *ngIf="results.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
                 (click)="isMenuCollapsed = true"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0 mt-2"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop mt-2"
                   (click)="searchNavigate('games')"
                 >
                   See more games
@@ -168,10 +168,10 @@
               </div>
               <div
                 *ngIf="uResults.length === 3"
-                class="text-center bg-dark p-3"
+                class="text-center bg-dark py-3"
               >
                 <button
-                  class="btn btn-block activelinear text-white border-0"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
                   (click)="searchNavigate('users')"
                 >
                   See more users
@@ -183,7 +183,7 @@
       </ul>
     </div>
     <!-- User -->
-    <ul class="navbar-nav pl-md-4 pl-lg-0 mt-md-3 mt-lg-0">
+    <ul class="navbar-nav pl-md-4 pl-lg-0">
       <li class="nav-item">
         <div class="row">
           <div
@@ -191,7 +191,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
               <span class="avatar avatar-sm rounded-circle bg-gray-dark">
@@ -211,7 +211,7 @@
               <img
                 *ngIf="isGameRunning && isUserLive"
                 src="assets/img/Dashboard/Speedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -221,7 +221,7 @@
               <img
                 *ngIf="isGameRunning && !isUserLive"
                 src="assets/img/Dashboard/resumeSpeedtest.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -230,7 +230,7 @@
               <img
                 *ngIf="!isGameRunning"
                 src="assets/img/Dashboard/inactiveGame.svg"
-                class="img-fluid"
+                class="img-fluid br50"
                 alt=""
                 aria-hidden="true"
                 width="36px"
@@ -277,13 +277,13 @@
             </div>
           </div> -->
           <div
-            class="col-auto align-self-center pr-3 pl-0"
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 br50"
               role="button"
               ngbDropdownToggle
             >
@@ -317,14 +317,14 @@
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
                 </a>
-                <a
+                <!-- <a
                   href="javascript:void(0)"
                   class="dropdown-item"
                   (click)="open(share)"
                 >
                   <i class="fa fa-user-plus font14 align-middle" aria-hidden="true"></i>
                   <span class="align-middle">Refer</span>
-                </a>
+                </a> -->
                 <a [href]="domain + '/speed-test/run'" class="dropdown-item">
                   <i class="fas fa-tachometer-alt font14 align-middle"></i>
                   <span class="align-middle">Speed Test</span>
@@ -375,7 +375,7 @@
                   [routerLink]="['/tv']"
                 >
                   <i class="fas fa-tv font14 align-middle"></i>
-                  <span>Sign In with QR</span>
+                  <span> TV Sign in</span>
                 </a>
                 <a
                   href="javascript:void(0)"
@@ -416,14 +416,14 @@
       </a>
       <div class="row justify-content-center">
         <div class="col-lg-9 col-md-11 col-sm-11 col-12 text-center mt-4">
-          <img src="assets/img/refer/image 31.svg" class="img-fluid" alt="" />
+          <img src="assets/img/refer/image 31.svg" class="img-fluid height180" alt="" />
           <p class="customWhite font800 mb-3 font24 mt-4">Refer a Friend</p>
-          <p class="font16 font500 muteText mt-4 mb-0">
+          <p class="font16 font500 muteText mt-2 mb-0">
             Enjoy one month of Free OnePlay Subscription when you invite someone
           </p>
           <div class="row justify-content-center">
             <div class="col-auto">
-              <div class="middleBorder82 my-4"></div>
+              <div class="middleBorder82 my-3"></div>
             </div>
           </div>
           <share-buttons
@@ -440,7 +440,7 @@
             theme="circles-dark"
             show="11"
           ></share-buttons>
-          <div class="text-center mt-4">
+          <div class="text-center mt-3">
             <u
               ><a
                 href="javascript:void(0)"

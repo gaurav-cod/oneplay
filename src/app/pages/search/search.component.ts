@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -8,6 +8,7 @@ import { FriendModel } from "src/app/models/friend.model";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
+import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -28,7 +29,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   canLoadMore = true;
   isFocused = false;
 
-  queryControl = new FormControl("");
+  queryControl = new UntypedFormControl("");
 
   private keyword = "";
   private keywordHash = "";
@@ -60,7 +61,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly friendsService: FriendsService,
     private readonly gavatar: AvatarPipe,
-  ) {}
+    private readonly authService: AuthService,
+  ) {
+    this.authService.user.subscribe((u) => (this.user = u));
+  }
 
   ngOnDestroy(): void {
     Swal.close();
@@ -86,11 +90,20 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadUsers();
             break;
           default:
-            this.laodGamesAndUsers();
+            if(this.query == '') {
+              this.loadGames();
+            } else {
+              this.laodGamesAndUsers();
+            }
             break;
         }
       });
     });
+    this.restService.search('', 0, 12).subscribe(
+      (response) => {
+        this.games = response.results;
+      }
+    );
   }
 
   search() {
@@ -132,13 +145,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if(this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUsersError(event) {
@@ -269,6 +284,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    if(this.user.id === friend.id) {
+      return
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id

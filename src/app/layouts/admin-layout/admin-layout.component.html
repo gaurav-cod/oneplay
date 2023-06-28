@@ -8,9 +8,13 @@
   <!-- Top navbar -->
   <app-navbar (toggleFriends)="toggleFriendsCollapsed()"></app-navbar>
   <!-- Pages -->
-  <router-outlet></router-outlet>
-  <div class="container-fluid pb-5 pb-lg-0 height130" *ngIf="!isApp">
-    <app-footer></app-footer>
+  <div class="container-fluid" style="padding-left: 0px !important; padding-right: 0px !important; overflow-x: hidden;">
+    <router-outlet></router-outlet>
+  </div>
+  <div class="container-fluid" *ngIf="!isApp">
+    <div class="height130">
+      <app-footer></app-footer>
+    </div>
   </div>
   <app-bottom-nav (toggleFriends)="toggleFriendsCollapsed()"></app-bottom-nav>
 </div>
@@ -18,21 +22,32 @@
 <app-onboarding-modals></app-onboarding-modals>
 
 <ng-template #stripeModal let-c="cose">
-  <form (submit)="onPay()">
-    <div class="modal-body">
-      <div id="stripe-card"></div>
-    </div>
-    <div class="modal-footer">
-      <button type="submit" class="btn btn-primary" [disabled]="stripeLoad">
-        {{ stripeLoad ? "Proccessing..." : "Submit Payment" }}
-      </button>
-      <button
-        type="button"
-        (click)="closeStripeModal()"
-        class="btn btn-secondary"
-      >
-        Close
-      </button>
-    </div>
-  </form>
+  <div class="modal-content position-relative modalBG stripeModal">
+    <form (submit)="onPay()">
+      <div class="modal-body borderBottomTab">
+        <div class="row borderBottomTab pb-3 mb-3">
+          <div class="col align-self-center">
+            <p class="font500 offWhiteText mb-0">Total Amount</p>
+          </div>
+          <div class="col-auto">
+            <h2 class="font800 text-white mb-0 text-right">{{ currentamount | currency : (currency | uppercase) }}</h2>
+          </div>
+        </div>
+        <div id="stripe-card"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn linearGradient text-white border-0" [disabled]="stripeLoad">
+          {{ stripeLoad ? "Proccessing..." : "Confirm Payment" }}
+        </button>
+        <button
+          type="button"
+          (click)="closeStripeModal()"
+          class="btn mutedBg text-white border-0"
+        >
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
+  
 </ng-template>

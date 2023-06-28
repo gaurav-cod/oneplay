@@ -1,0 +1,10 @@
+.h100 {
+    height: 100vh;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.h100::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}

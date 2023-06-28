@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
+import Cookies from "js-cookie";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
@@ -16,8 +18,10 @@ export class AuthService {
   private readonly _$sessionToken: BehaviorSubject<string | null> =
     new BehaviorSubject(null);
 
+  loggedOutByUser: boolean = false;
+
   constructor() {
-    const sessionToken = localStorage.getItem("op_session_token");
+    const sessionToken = Cookies.get("op_session_token");
     if (sessionToken) {
       this._$sessionToken.next(sessionToken);
     }
@@ -40,11 +44,21 @@ export class AuthService {
   }
 
   get sessionTokenExists() {
-    return this._$sessionToken.asObservable().pipe(map((token) => !!token));
+    return this._$sessionToken
+      .asObservable()
+      .pipe<boolean>(map((token) => !!token));
   }
 
   get sessionToken() {
-    return localStorage.getItem("op_session_token") || '';
+    return Cookies.get("op_session_token") || "";
+  }
+
+  get userCanGame() {
+    return this._$user.asObservable()
+    .pipe<boolean | undefined>(map(user => {
+      if(!user) return undefined;
+      return !!user.username && !!user.age;
+    }));
   }
 
   get userIdAndToken() {
@@ -62,7 +76,10 @@ export class AuthService {
   }
 
   login(sessionToken: string) {
-    localStorage.setItem("op_session_token", sessionToken);
+    Cookies.set("op_session_token", sessionToken, {
+      domain: environment.cookie_domain,
+      path: "/",
+    });
     this._$sessionToken.next(sessionToken);
   }
 
@@ -73,10 +90,15 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem("op_session_token");
+    Cookies.remove("op_session_token", {
+      domain: environment.cookie_domain,
+      path: "/",
+    });
     this._$sessionToken.next(null);
-    this._$user.next(null);
-    this._$wishlist.next([]);
+    setTimeout(() => {
+      this._$user.next(null);
+      this._$wishlist.next([]);
+    }, 100);
   }
 
   addToWishlist(id: string) {

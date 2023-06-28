@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from "src/app/services/rest.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -28,7 +28,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   currentPage = 0;
   isLoading = false;
   canLoadMore = true;
-  query = new FormControl("");
+  query = new UntypedFormControl("");
   searchText = "";
   checked: boolean = false;
 

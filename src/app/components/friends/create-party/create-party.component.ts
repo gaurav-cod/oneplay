@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -15,10 +15,10 @@ export class CreatePartyComponent implements OnInit {
 
   loading = false;
 
-  partyForm = new FormGroup({
-    name: new FormControl("", Validators.required),
-    description: new FormControl("", Validators.required),
-    type: new FormControl("private", Validators.required),
+  partyForm = new UntypedFormGroup({
+    name: new UntypedFormControl("", Validators.required),
+    description: new UntypedFormControl("", Validators.required),
+    type: new UntypedFormControl("private", Validators.required),
   });
 
   constructor(

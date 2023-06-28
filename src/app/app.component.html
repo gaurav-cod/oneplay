@@ -1,13 +1,19 @@
-<div *ngIf="!!seriousNotification" class="bg-danger p-3 text-center">
-  <span class="text-white">
-    {{ seriousNotification }}
-  </span>
-  <button
-    class="btn btn-sm btn-danger float-md-right"
-    (click)="seriousNotification = null"
-  >
-    <i class="fas fa-times"></i>
-  </button>
+<div *ngIf="!!seriousNotification" class="container-fluid" style="padding-left: 0px !important; padding-right: 0px !important; overflow-x: hidden;">
+  <div class="row alertBg p-2">
+    <div class="col align-self-center pr-0 text-center p-lg-1">
+      <p class="text-white font16 font500 mb-0">
+        {{ seriousNotification }}
+      </p>
+    </div>
+    <div class="col-auto pl-2 pt-1">
+      <button
+        class="btn borderRadius50 p-0"
+        (click)="seriousNotification = null"
+      >
+        <i class="fas fa-times-circle text-white"></i>
+      </button>
+    </div>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

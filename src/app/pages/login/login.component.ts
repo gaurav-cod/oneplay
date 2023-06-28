@@ -6,9 +6,10 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
@@ -23,18 +24,22 @@ declare var gtag: Function;
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
-  loginForm = new FormGroup({
-    id: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
+  loginForm = new UntypedFormGroup({
+    id: new UntypedFormControl("", Validators.required),
+    password: new UntypedFormControl("", Validators.required),
   });
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
+  @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
+
+  private _verifySwalModalRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly ngbModal: NgbModal,
   ) {}
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
@@ -79,14 +84,38 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.login(token);
       },
       (error) => {
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
+        if(error.message == "Please verify your email and phone number") {
+          this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            scrollable: true,
+            backdrop: "static",
+            keyboard: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "Try Again",
+          });
+        }
       }
     );
+  }
+
+  private resendVerificationLink(error: any, token: string) {
+    const email = this.loginForm.value.id;
+    const password = this.loginForm.value.password;
+    this.restService.resendVerificationLink(email, password).subscribe({
+      next: () => {
+        this._verifySwalModalRef.close();
+        Swal.fire({
+          icon: "success",
+          text: "Check your email and verify again",
+        });
+      }
+    });
   }
 
   get domain() {

@@ -1,284 +1,260 @@
-<!-- Page content -->
-<div class="row justify-content-center loginBg">
-  <div class="col-lg-12 col-12 col-md-12 height100vh overflowYScroll">
-    <div class="mobileView">
-      <div class="text-center">
-        <a [href]="domain">
-          <img
-            src="assets/img/brandLogo.svg"
-            class="img-fluid mt-4 mb-3"
-            alt="logo"
-          />
-        </a>
+<form
+  [formGroup]="registerForm"
+  (submit)="register()"
+  role="form"
+  autocomplete="off"
+>
+  <div class="row">
+    <div class="col-md-12 mt-4">
+      <h1 class="text-white font30 font800 mb-0 textCenterCustom">
+        Create an account
+      </h1>
+    </div>
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite required">Name</label
+      ><span
+        *ngIf="nameErrored"
+        class="font16 font500 errorGradientColor float-right"
+        >*invalid name</span
+      >
+      <input
+        type="text"
+        formControlName="name"
+        class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+        placeholder="Name"
+      />
+    </div>
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite required">Email</label
+      ><span
+        *ngIf="emailErrored"
+        class="font16 font500 errorGradientColor float-right"
+        >*invalid email</span
+      >
+      <input
+        type="email"
+        formControlName="email"
+        [ngClass]="{
+          'border-danger':
+            !registerForm.controls.email.valid &&
+            registerForm.controls.email.touched
+        }"
+        class="form-control mutedColor p-0 borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+        placeholder="example@oneplay.in"
+      />
+    </div>
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite required">Phone</label
+      ><span
+        *ngIf="phoneErrored"
+        class="font16 font500 errorGradientColor float-right"
+        >*invalid phone number</span
+      >
+      <div class="input-group border-bottomInput borderRadius0">
+        <div class="input-group-append borderRadius0">
+          <select
+            class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
+            formControlName="country_code"
+          >
+            <option *ngFor="let code of countryCodes" [value]="code">
+              {{ code }}
+            </option>
+          </select>
+        </div>
+        <input
+          type="number"
+          formControlName="phone"
+          class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+          placeholder="9999999999"
+        />
       </div>
     </div>
-    <div class="container">
-      <div class="row largeScreenHeight justify-content-center">
-        <div class="col-lg-10 pb-4">
-          <form
-            [formGroup]="registerForm"
-            (submit)="register()"
-            role="form"
-            autocomplete="off"
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite required"
+        >Password
+        <i
+          class="fas fa-info-circle ml-1"
+          ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
+          placement="bottom"
+          triggers="click:blur"
+        >
+        </i> </label
+      ><span
+        *ngIf="passwordErrored"
+        class="font16 font500 errorGradientColor float-right"
+        >*Invalid password</span
+      >
+      <div class="input-group">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          autocomplete="off"
+          class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+        />
+        <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
+          <button
+            class="btn p-0 bgTransparent customOffWhite borderRadius0"
+            type="button"
+            (click)="showPassword = !showPassword"
           >
-            <div class="row">
-              <div class="col-md-12 mt-lg-5 mt-3">
-                <h1 class="text-white font38 font800 mb-0 textCenterCustom">
-                  Create an account
-                </h1>
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite required"
-                  >Name</label
-                ><span
-                  *ngIf="nameErrored"
-                  class="font16 font500 errorGradientColor float-right"
-                  >*invalid name</span
-                >
-                <input
-                  type="text"
-                  formControlName="name"
-                  class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
-                  placeholder="Name"
-                />
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite required"
-                  >Email</label
-                ><span
-                  *ngIf="emailErrored"
-                  class="font16 font500 errorGradientColor float-right"
-                  >*invalid email</span
-                >
-                <input
-                  type="email"
-                  formControlName="email"
-                  [ngClass]="{
-                    'border-danger':
-                      !registerForm.controls.email.valid &&
-                      registerForm.controls.email.touched
-                  }"
-                  class="form-control mutedColor p-0 borderRadius0 bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
-                  placeholder="example@oneplay.in"
-                />
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite required"
-                  >Phone</label
-                ><span
-                  *ngIf="phoneErrored"
-                  class="font16 font500 errorGradientColor float-right"
-                  >*invalid phone number</span
-                >
-                <div class="input-group border-bottomInput borderRadius0">
-                  <div class="input-group-append borderRadius0">
-                    <select
-                      class="form-control pl-0 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0"
-                      formControlName="country_code"
-                    >
-                      <option *ngFor="let code of countryCodes" [value]="code">
-                        {{ code }}
-                      </option>
-                    </select>
-                  </div>
-                  <input
-                    type="number"
-                    formControlName="phone"
-                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-                    placeholder="9999999999"
-                  />
-                </div>
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite required"
-                  >Password
-                  <i class="fas fa-info-circle ml-1"
-                    tooltipClass="customTooltip"
-                    ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
-                    placement="bottom"
-                    triggers="click:blur">
-                  </i>
-                </label
-                ><span
-                  *ngIf="passwordErrored"
-                  class="font16 font500 errorGradientColor float-right"
-                  >*Invalid password</span
-                >
-                <div class="input-group">
-                  <input
-                    [type]="showPassword ? 'text' : 'password'"
-                    formControlName="password"
-                    autocomplete="off"
-                    class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
-                  />
-                  <span
-                    class="bgTransparent fixedIcon offWhiteColor font16 font500"
-                  >
-                    <button
-                      class="btn p-0 bgTransparent customOffWhite borderRadius0"
-                      type="button"
-                      (click)="showPassword = !showPassword"
-                    >
-                      <img
-                        class="img-fluid"
-                        [src]="showPassword ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
-                        alt=""
-                      />
-                    </button>
-                  </span>
-                </div>
-              </div>
-              <div class="col-md-12 mt-4">
-                <label class="font16 font500 customOffWhite mb-3 required"
-                  >Gender</label
-                >
-                <div class="custom-choose">
-                  <div class="row">
-                    <div class="col text-center">
-                      <input
-                        type="radio"
-                        id="opt-1"
-                        value="male"
-                        formControlName="gender"
-                      />
-                      <label for="opt-1">
-                        <img
-                          src="assets/img/singup-login/Male.svg"
-                          class="img-fluid image rounded-circle"
-                          alt="male"
-                        />
-                      </label>
-                    </div>
-                    <div class="col text-center">
-                      <input
-                        type="radio"
-                        id="opt-2"
-                        value="female"
-                        formControlName="gender"
-                      />
-                      <label for="opt-2">
-                        <img
-                          src="assets/img/singup-login/female.svg"
-                          class="img-fluid image rounded-circle"
-                          alt="female"
-                        />
-                      </label>
-                    </div>
-                    <div class="col text-center">
-                      <input
-                        type="radio"
-                        id="opt-3"
-                        value="other"
-                        formControlName="gender"
-                      />
-                      <label for="opt-3">
-                        <img
-                          src="assets/img/singup-login/Trans.svg"
-                          class="img-fluid image rounded-circle"
-                          alt="other"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 mt-4 mb-3">
-                <label class="font16 font500 customOffWhite">Referral ID</label
-                ><span class="float-right font16 font500 mutedColor"
-                  >Referral Name</span
-                >
-                <input
-                  type="text"
-                  formControlName="referred_by_id"
-                  class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
-                  name="sampleID"
-                  placeholder="sampleID"
-                />
-              </div>
-              <div class="col-md-12 mt-4">
-                <div class="row mb-2">
-                  <div class="col-auto pr-0 pt-1">
-                    <input
-                      id="customCheckRegister"
-                      type="checkbox"
-                      class="checkBoxCircle"
-                      formControlName="terms_checked"
-                    />
-                  </div>
-                  <div class="col">
-                    <label for="customCheckRegister">
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        By signing up, you agree to OnePlay’s
-                      </p>
-                      <p class="font14 font500 gradientAnchor mb-0">
-                        <a
-                          [href]="domain + '/privacy.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Privacy Policy</a
-                        >
-                        <span class="footerWhiteColor pl-2 pr-2">&</span>
-                        <a
-                          [href]="domain + '/tnc.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Terms and Conditions</a
-                        >
-                      </p>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 mt-4">
-                <input
-                  type="button"
-                  (click)="register()"
-                  [disabled]="checkvalidationValue"
-                  class="btn btn-block linearGradient border-0 font18 borderRadius10 font500 text-white"
-                  value="Create Account"
-                />
-              </div>
-              <div class="col-md-12 mt-4 text-center">
-                <p class="font20 font500 mt-2 offWhiteColor">
-                  Already have an account?
-                  <span class="purpleGradient"
-                    ><a href="javascript:void(0)" [routerLink]="['/login']"
-                      >Login</a
-                    ></span
-                  >
-                </p>
-              </div>
-              <div class="col-md-12">
-                <div class="mobileView d-block d-lg-none">
-                  <div class="text-center">
-                    <div class="col-12">
-                      <hr class="mt-3 mb-4 borderBottom" />
-                      <p class="offWhiteColor pt-2 mb-0 font16 font500">
-                        Need help?<span class="purpleGradient"
-                          ><a
-                            [href]="domain + '/FAQs.html'"
-                            target="_blank"
-                          >
-                            Browse FAQ</a
-                          ></span
-                        >
-                      </p>
-                    </div>
-                    <div class="col-12 mt-2 mb-4">
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        © 2022 RainBox Media Pvt Ltd.
-                      </p>
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        All Rights Reserved.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+            <img
+              class="img-fluid"
+              [src]="
+                showPassword
+                  ? 'assets/img/singup-login/Group.svg'
+                  : 'assets/img/singup-login/Views.svg'
+              "
+              alt=""
+            />
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4">
+      <label class="font16 font500 customOffWhite mb-3 required">Gender</label>
+      <div class="custom-choose">
+        <div class="row">
+          <div class="col text-center">
+            <input
+              type="radio"
+              id="opt-1"
+              value="male"
+              formControlName="gender"
+            />
+            <label for="opt-1">
+              <img
+                src="assets/img/singup-login/Male.svg"
+                class="img-fluid image rounded-circle"
+                alt="male"
+              />
+            </label>
+          </div>
+          <div class="col text-center">
+            <input
+              type="radio"
+              id="opt-2"
+              value="female"
+              formControlName="gender"
+            />
+            <label for="opt-2">
+              <img
+                src="assets/img/singup-login/female.svg"
+                class="img-fluid image rounded-circle"
+                alt="female"
+              />
+            </label>
+          </div>
+          <div class="col text-center">
+            <input
+              type="radio"
+              id="opt-3"
+              value="other"
+              formControlName="gender"
+            />
+            <label for="opt-3">
+              <img
+                src="assets/img/singup-login/Trans.svg"
+                class="img-fluid image rounded-circle"
+                alt="other"
+              />
+            </label>
+          </div>
         </div>
       </div>
     </div>
+    <div class="col-md-12 mt-4 mb-3">
+      <label class="font16 font500 customOffWhite">Referral ID</label
+      ><span class="float-right font16 font500 mutedColor">Referral Name</span>
+      <input
+        type="text"
+        formControlName="referred_by_id"
+        class="form-control borderRadius0 p-0 mutedColor bgTransparent inputFocus font16 font500 border-0 border-bottomInput"
+        name="sampleID"
+        placeholder="sampleID"
+      />
+    </div>
+    <div class="col-md-12 mt-4">
+      <div class="row mb-2">
+        <div class="col-auto pr-0 pt-1">
+          <input
+            id="customCheckRegister"
+            type="checkbox"
+            class="checkBoxCircle"
+            formControlName="terms_checked"
+          />
+        </div>
+        <div class="col">
+          <label for="customCheckRegister">
+            <p class="font14 font500 footerWhiteColor mb-0">
+              By signing up, you agree to OnePlay’s
+            </p>
+            <p class="font14 font500 gradientAnchor mb-0">
+              <a
+                [href]="domain + '/privacy.html'"
+                target="_blank"
+                class="anchor"
+                >Privacy Policy</a
+              >
+              <span class="footerWhiteColor pl-2 pr-2">&</span>
+              <a [href]="domain + '/tnc.html'" target="_blank" class="anchor"
+                >Terms and Conditions</a
+              >
+            </p>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4">
+      <input
+        type="button"
+        (click)="register()"
+        [disabled]="checkvalidationValue"
+        class="btn btn-block linearGradient border-0 font18 borderRadius10 font500 text-white"
+        value="Create Account"
+      />
+    </div>
+    <div class="col-md-12 mt-4 text-center">
+      <p class="font20 font500 mt-2 offWhiteColor">
+        Already have an account?
+        <span class="purpleGradient"
+          ><a href="javascript:void(0)" [routerLink]="['/login']"
+            >Login</a
+          ></span
+        >
+      </p>
+    </div>
   </div>
-</div>
+</form>
+
+<ng-template #successSwalModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 p-lg-5 text-center">
+      <div class="text-center">
+        <img
+          src="assets/img/singup-login/Group 250.svg"
+          class="img-fluid wh70"
+          alt=""
+        />
+      </div>
+      <h1 class="text-white font20 font600 mb-4 mt-4">Success</h1>
+      <p class="font16 font500 muteText">
+        Please check your email to confirm your email id
+      </p>
+      <p class="font16 font500 muteText">
+        Didn’t get mail?
+        <a
+          href="javascript:void(0)"
+          class="btn p-0 border-0 font18 borderRadius10 font500 gradientText"
+          (click)="resendVerificationLink()"
+          ><u>send again</u></a
+        >
+      </p>
+      <a
+        class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white"
+        [routerLink]="['/login']"
+        (click)="d('Close')"
+        >OK</a
+      >
+    </div>
+  </div>
+</ng-template>

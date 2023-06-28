@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { GameStatusRO } from 'src/app/interface';
 import { GameModel } from 'src/app/models/game.model';
@@ -10,6 +10,7 @@ import { GameService } from 'src/app/services/game.service';
 import { MessagingService } from 'src/app/services/messaging.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import UAParser from 'ua-parser-js';
 
 @Component({
   selector: 'app-bottom-nav',
@@ -80,6 +81,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     return "No game is running!";
   }
 
+  get isAndroid() {
+    const uagent = new UAParser();
+    return uagent.getOS().name === "Android"
+  }
+
   ngOnInit(): void {
     this.gameStatusSubscription = this.gameService.gameStatus.subscribe((status) => {
       this.gameStatus = status;
@@ -88,7 +94,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.user = user;
     });
-
   }
 
   toggleFriendsList() {
@@ -98,6 +103,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   logout() {
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
       this.authService.logout();
     });
   }
