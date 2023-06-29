@@ -144,7 +144,7 @@ export class RegisterComponent implements OnInit {
       page: location.pathname + location.hash,
       trigger: 'CTA',
     });
-    this.countlyService.endEvent('signup - Form Submitted', {
+    this.countlyService.endEvent('signup - Form Submitted', { segments: {
       name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       phoneNumber: this.registerForm.value.country_code + this.registerForm.value.phone,
@@ -153,7 +153,7 @@ export class RegisterComponent implements OnInit {
       signupFromPage: location.pathname + location.hash,
       privacyPolicyPageViewed: this.privacyPolicyPageViewed ? 'yes' : 'no',
       TnCPageViewed: this.TnCPageViewed ? 'yes' : 'no',
-    })
+    }});
     this.restService
       .signup({
         first_name: first_name,

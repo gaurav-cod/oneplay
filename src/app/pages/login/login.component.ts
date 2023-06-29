@@ -24,6 +24,7 @@ import UAParser from "ua-parser-js";
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
+  rememberMe = true;
   loginForm = new UntypedFormGroup({
     id: new UntypedFormControl("", Validators.required),
     password: new UntypedFormControl("", Validators.required),
@@ -48,7 +49,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.title.setTitle("Login");
-    this.countlyService.startEvent('signin');
+    this.countlyService.startEvent('signin', {
+      data: { signinFromPage: location.pathname + location.hash }})
   }
   ngOnDestroy() {
     Swal.close();
@@ -76,6 +78,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.countlyService.addEvent('signINButtonClick', {
       page: location.pathname + location.hash,
       trigger: 'CTA',
+    })
+    this.countlyService.updateEventData('signin', {
+      segments: {
+        signinFromTrigger: 'CTA',
+        rememberMeActivated: this.rememberMe ? 'yes' : 'no',
+      }
     })
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {

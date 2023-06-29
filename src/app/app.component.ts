@@ -120,7 +120,7 @@ Countly.q.push(['track_forms', null, true]);
 // utility function to queue countly events
 function countlyPushAsync(a, e) {
   Countly.q.push([ a, e ]);
-  console.log('cc tag:', [ a, e ], Countly.q )
+  //console.log('cc tag:', [ a, e ], Countly.q )
 }
     `;
     this.elementRef.nativeElement.insertBefore(s,

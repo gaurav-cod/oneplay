@@ -126,10 +126,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         .getWishlistGames(ids)
         .subscribe((games) => (this.library = games));
     });
-  // this.countlyService.endEvent('signin', {
-  //   result: 'success',
-
-  // });
+  this.countlyService.endEvent('signin', { segments: { result: 'success' }});
   }
 
   isInWishlist(game: GameModel): boolean {

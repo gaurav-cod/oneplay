@@ -63,6 +63,8 @@
                         type="checkbox"
                         class="custom-control-input font16 align-middle"
                         id="customCheckLogin"
+                        [(ngModel)]="rememberMe"
+                        [ngModelOptions]="{standalone: true}"
                         checked
                       />
                       <label
