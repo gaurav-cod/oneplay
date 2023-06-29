@@ -441,7 +441,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.addToWishlist(this.game.oneplayId);
-      this.countlyService.addEvent({
+      this.countlyService.add_event({
         key: 'add_to_wishlist',
         segmentation: {
           event_category: "wishlist",
@@ -456,7 +456,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
-      this.countlyService.addEvent({key: 'remove_from_wishlist', segmentation: {
+      this.countlyService.add_event({key: 'remove_from_wishlist', segmentation: {
         event_category: "wishlist",
         event_label: this.game.title,
       }})
@@ -609,7 +609,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       JSON.stringify(this.advancedOptions.value)
     );
 
-    this.countlyService.addEvent({ key: 'start_game', segmentation: {
+    this.countlyService.add_event({ key: 'start_game', segmentation: {
       event_category: "game",
       event_label: this.game.title,
     }})

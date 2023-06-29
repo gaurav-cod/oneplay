@@ -20,6 +20,8 @@ export class RegisterComponent implements OnInit {
   private _successSwalModalRef: NgbModalRef;
 
   referralName = "";
+  privacyPolicyPageViewed = false;
+  TnCPageViewed = false;
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
       Validators.required,
@@ -114,6 +116,7 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.countlyService.startEvent('signup - Form Submitted');
     this.title.setTitle("Signup");
     const ctrl = this.registerForm.controls["referred_by_id"];
     this.route.queryParams.subscribe((params) => {
@@ -137,6 +140,20 @@ export class RegisterComponent implements OnInit {
   register() {
     const [first_name, last_name] = this.registerForm.value.name.split(" ");
     this.loading = true;
+    this.countlyService.addEvent('signUPButtonClick', {
+      page: location.pathname + location.hash,
+      trigger: 'CTA',
+    });
+    this.countlyService.endEvent('signup - Form Submitted', {
+      name: this.registerForm.value.name,
+      email: this.registerForm.value.email,
+      phoneNumber: this.registerForm.value.country_code + this.registerForm.value.phone,
+      gender: this.registerForm.value.gender,
+      referralID: this.registerForm.value.referred_by_id,
+      signupFromPage: location.pathname + location.hash,
+      privacyPolicyPageViewed: this.privacyPolicyPageViewed ? 'yes' : 'no',
+      TnCPageViewed: this.TnCPageViewed ? 'yes' : 'no',
+    })
     this.restService
       .signup({
         first_name: first_name,
@@ -171,10 +188,10 @@ export class RegisterComponent implements OnInit {
           //     this.router.navigateByUrl("/login");
           //   }
           // });
-          this.countlyService.addEvent({key: 'signup', segmentation: {
-            event_category: "user",
-            event_label: this.registerForm.value.email,
-          }})
+          // this.countlyService.add_event({key: 'signup', segmentation: {
+          //   event_category: "user",
+          //   event_label: this.registerForm.value.email,
+          // }})
         },
         (error) => {
           this.loading = false;

@@ -9,6 +9,7 @@ import {
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.title.setTitle("Login");
+    this.countlyService.startEvent('signin');
   }
   ngOnDestroy() {
     Swal.close();
@@ -71,12 +73,16 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    this.countlyService.addEvent('signINButtonClick', {
+      page: location.pathname + location.hash,
+      trigger: 'CTA',
+    })
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        this.countlyService.addEvent({ key: 'login', segmentation: {
-          event_category: "user",
-          event_label: this.loginForm.value.id,
-        }});
+        // this.countlyService.add_event({ key: 'login', segmentation: {
+        //   event_category: "user",
+        //   event_label: this.loginForm.value.id,
+        // }});
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();

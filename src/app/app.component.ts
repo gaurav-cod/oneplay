@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     navEvents.subscribe((event: NavigationEnd) => {
       window.scrollTo(0, 0);
-      countlyService.trackPageView(event.urlAfterRedirects);
+      countlyService.track_pageview(event.urlAfterRedirects);
     });
   }
 
@@ -118,14 +118,14 @@ Countly.q.push(['track_forms', null, true]);
 })();
 
 // utility function to queue countly events
-function countlyPushAsync(...e) {
-  Countly.q.push([ ...e ]);
-  console.log('cc tag:', ...e, Countly.q )
+function countlyPushAsync(a, e) {
+  Countly.q.push([ a, e ]);
+  console.log('cc tag:', [ a, e ], Countly.q )
 }
     `;
     this.elementRef.nativeElement.insertBefore(s,
       this.elementRef.nativeElement.firstChild);
-    this.countlyService.addEvent({ key: 'js', segmentation: {
+    this.countlyService.add_event({ key: 'js', segmentation: {
       time: new Date().toISOString(),
     }});
   }
