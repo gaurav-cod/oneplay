@@ -138,7 +138,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    const [first_name, last_name] = this.registerForm.value.name.split(" ");
+    const [first_name, ...last_name] = this.registerForm.value.name.split(" ");
     this.loading = true;
     this.countlyService.addEvent('signUPButtonClick', {
       page: location.pathname + location.hash,
@@ -157,7 +157,7 @@ export class RegisterComponent implements OnInit {
     this.restService
       .signup({
         first_name: first_name,
-        last_name: last_name ?? "",
+        last_name: last_name?.join(' ') ?? "",
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
         gender: this.registerForm.value.gender,

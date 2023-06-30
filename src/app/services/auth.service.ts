@@ -55,7 +55,10 @@ export class AuthService {
 
   get userCanGame() {
     return this._$user.asObservable()
-    .pipe<boolean>(map(user => !!user.username && !!user.age));
+    .pipe<boolean | undefined>(map(user => {
+      if(!user) return undefined;
+      return !!user.username && !!user.age;
+    }));
   }
 
   get userIdAndToken() {
