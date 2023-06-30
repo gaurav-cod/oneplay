@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   referralName = "";
   privacyPolicyPageViewed = false;
   TnCPageViewed = false;
+
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
       Validators.required,
@@ -43,6 +44,7 @@ export class RegisterComponent implements OnInit {
     referred_by_id: new UntypedFormControl(""),
     terms_checked: new UntypedFormControl(false, [Validators.requiredTrue]),
   });
+
   loading = false;
 
   showPassword = false;
