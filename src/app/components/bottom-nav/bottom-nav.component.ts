@@ -83,7 +83,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
 
   get isAndroid() {
     const uagent = new UAParser();
-    return uagent.getOS().name === "Android"
+    return uagent.getOS().name === "Android" &&
+    uagent.getDevice().type !== "smarttv"
   }
 
   ngOnInit(): void {
