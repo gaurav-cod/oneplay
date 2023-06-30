@@ -6,7 +6,6 @@ import { Subscription } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { AuthService } from "src/app/services/auth.service";
-import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -61,7 +60,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly router: Router,
-    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnDestroy(): void {
@@ -126,7 +124,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         .getWishlistGames(ids)
         .subscribe((games) => (this.library = games));
     });
-  this.countlyService.endEvent('signin', { segments: { result: 'success' }});
   }
 
   isInWishlist(game: GameModel): boolean {

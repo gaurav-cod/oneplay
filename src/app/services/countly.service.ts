@@ -15,17 +15,17 @@ export type CountlyEvent = [
 ]
 declare var countlyPushAsync: Function;
 export interface CustomSegments {
-  signUPButtonClick: {//ok
+  signUPButtonClick: {
     page: string,
     trigger: string,
     channel?: 'web',
   },
-  signINButtonClick: {//ok
+  signINButtonClick: {
     page: string,
     trigger: string,
     channel?: 'web',
   },
-  'signup - Form Submitted': {//ok
+  'signup - Form Submitted': {
     name: string,
     email: string,
     phoneNumber: string,
@@ -36,7 +36,7 @@ export interface CustomSegments {
     TnCPageViewed: 'yes' | 'no',
     channel?: 'web',
   },
-  'signup - Account Verification': {//--
+  'signup - Account Verification': {
     result: 'success' | 'failure',
     failReason: string,
     channel?: 'web',
@@ -93,12 +93,12 @@ export class CountlyService {
   data_postfix = ' - data'
 
   // native countly functions from countly web sdk.
-  push = (event: CountlyEvent) => countlyPushAsync(event[0], event[1])
+  // private push = (event: CountlyEvent) => countlyPushAsync(event[0], event[1])
   track_pageview = (url: string): void => countlyPushAsync("track_pageview", url)
-  add_event = (data: CountlyEventData): void => countlyPushAsync("add_event", data)
-  start_event = (key: CountlyEventData['key']): void => countlyPushAsync("start_event", key)
-  cancel_event = (key: CountlyEventData['key']): void => countlyPushAsync("cancel_event", key)
-  end_event = (dataOrKey: CountlyEventData | CountlyEventData['key']): void => countlyPushAsync("end_event", dataOrKey)
+  private add_event = (data: CountlyEventData): void => countlyPushAsync("add_event", data)
+  // private start_event = (key: CountlyEventData['key']): void => countlyPushAsync("start_event", key)
+  // private cancel_event = (key: CountlyEventData['key']): void => countlyPushAsync("cancel_event", key)
+  // private end_event = (dataOrKey: CountlyEventData | CountlyEventData['key']): void => countlyPushAsync("end_event", dataOrKey)
 
   addEvent<T extends keyof CustomSegments>(event: T, segments: CustomSegments[T]) {
     segments.channel = 'web';

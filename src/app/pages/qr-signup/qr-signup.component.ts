@@ -97,10 +97,10 @@ export class QrSignupComponent implements OnInit {
               setTimeout(() => this.loginWithSession(code, token), 1000);
             }
           } else {
-            this.countlyService.add_event({ key: 'login', segmentation: {
-              event_category: "user",
-              event_label: "tv",
-            }});
+            // this.countlyService.add_event({ key: 'login', segmentation: {
+            //   event_category: "user",
+            //   event_label: "tv",
+            // }});
             this.authService.login(sessionToken);
           }
         },
