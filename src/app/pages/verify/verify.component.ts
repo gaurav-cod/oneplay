@@ -3,6 +3,7 @@ import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -17,6 +18,7 @@ export class VerifyComponent implements OnInit {
   sendingOTP = false;
 
   constructor(
+    private readonly authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private restService: RestService,
@@ -59,17 +61,17 @@ export class VerifyComponent implements OnInit {
     this.loaderService.startLoader("verify");
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
-      next: () => {
+      next: (token) => {
         localStorage.removeItem('otpSent');
         this.loaderService.stopLoader("verify");
         Swal.fire({
           title: "Verification Success",
-          text: "Your account has been verified. You can now login.",
+          text: "Your account has been verified.",
           icon: "success",
           confirmButtonText: "OK",
           allowEscapeKey: false,
         }).then(() => {
-          this.router.navigateByUrl("/login");
+          this.authService.login(token);
         });
       },
       error: (error) => {
