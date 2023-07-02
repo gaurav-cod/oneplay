@@ -1,7 +1,5 @@
-
 const config = {
     APP_VERSION: '1.2.0',
-    // BASE_URL: 'https://www.oneream.com',
     BASE_URL: 'http://localhost:4200/dashboard',
     BASE_API: 'https://rendermix.oneream.com/v1',
     COUNTLY_URL: 'https://dev.countly.oneream.com/',
@@ -9,11 +7,6 @@ const config = {
     COUNTLY_APP_KEY: '19eab6488620f4a36d34a08519392028a1acd920',
     COUNTLY_DEBUG_MODE: true,
 };
-// const config = {};
-// const { config } = window;
-
-console.log('countly.js', config)
-// console.log({ environment });
 
 
 //// include script below
