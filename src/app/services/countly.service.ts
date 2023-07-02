@@ -92,7 +92,6 @@ export interface CustomSegments {
 
 export interface StartEvent<T extends keyof CustomSegments> {
   data: Partial<CustomSegments[T]>;
-  key: string;
   cancel: () => void;
   end: (segments: Partial<CustomSegments[T]>) => void;
   update: (segments: Partial<CustomSegments[T]>) => void;
@@ -126,70 +125,52 @@ export class CountlyService {
       data,
     }: { unique?: boolean; data?: Partial<CustomSegments[T]> } = {}
   ): StartEvent<T> {
-    const uniqueKey = unique ? ` - ${v4()}` : "";
-    localStorage.setItem(this.keyOfKey(event + uniqueKey), `${+new Date()}`);
-    if (data && !localStorage.getItem(event + this.data_postfix + uniqueKey))
+    localStorage.setItem(this.keyOfKey(event), `${+new Date()}`);
+    if (data && (!localStorage.getItem(event + this.data_postfix) || unique))
       localStorage.setItem(
-        this.keyOfKey(event + this.data_postfix + uniqueKey),
+        this.keyOfKey(event + this.data_postfix),
         JSON.stringify(data)
       );
     return {
       data,
-      key: uniqueKey,
-      cancel: () => this.cancelEvent(event, uniqueKey),
+      cancel: () => this.cancelEvent(event),
       end: (segments: Partial<CustomSegments[T]>) =>
-        this.endEvent(event, { segments, uniqueKey }),
+        this.endEvent(event, segments),
       update: (segments: Partial<CustomSegments[T]>) =>
-        this.updateEventData(event, { segments, uniqueKey }),
+        this.updateEventData(event, segments),
     };
   }
 
-  cancelEvent<T extends keyof CustomSegments>(event: T, uniqueKey?: string) {
-    localStorage.removeItem(this.keyOfKey(event + uniqueKey ?? ""));
-    localStorage.removeItem(
-      this.keyOfKey(event + this.data_postfix + (uniqueKey ?? ""))
-    );
+  cancelEvent<T extends keyof CustomSegments>(event: T) {
+    localStorage.removeItem(this.keyOfKey(event));
+    localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
   }
 
   updateEventData<T extends keyof CustomSegments>(
     event: T,
-    {
-      segments,
-      uniqueKey,
-    }: { segments?: Partial<CustomSegments[T]>; uniqueKey?: string } = {}
+    segments: Partial<CustomSegments[T]>
   ): void {
     const prevData = JSON.parse(
-      localStorage.getItem(
-        this.keyOfKey(event + this.data_postfix + (uniqueKey ?? ""))
-      ) ?? "{}"
+      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
     );
     localStorage.setItem(
-      this.keyOfKey(event + this.data_postfix + (uniqueKey ?? "")),
+      this.keyOfKey(event + this.data_postfix),
       JSON.stringify({ ...prevData, ...segments })
     );
   }
 
   endEvent<T extends keyof CustomSegments>(
     event: T,
-    {
-      segments,
-      uniqueKey,
-    }: { segments?: Partial<CustomSegments[T]>; uniqueKey?: string } = {}
+    segments: Partial<CustomSegments[T]> = {}
   ) {
     const ts = new Date(
-      parseInt(
-        localStorage.getItem(this.keyOfKey(event + uniqueKey ?? "")) ?? "0"
-      )
+      parseInt(localStorage.getItem(this.keyOfKey(event)) ?? "0")
     );
     const data = JSON.parse(
-      localStorage.getItem(
-        this.keyOfKey(event + this.data_postfix + (uniqueKey ?? ""))
-      ) ?? "{}"
+      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
     );
-    localStorage.removeItem(
-      this.keyOfKey(event + this.data_postfix + (uniqueKey ?? ""))
-    );
-    localStorage.removeItem(this.keyOfKey(event + uniqueKey ?? ""));
+    localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
+    localStorage.removeItem(this.keyOfKey(event));
     segments.channel = "web";
     this.add_event({
       key: event,
