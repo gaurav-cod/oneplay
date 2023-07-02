@@ -1,9 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { CountlyService } from "src/app/services/countly.service";
+import { CountlyService, StartEvent } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -13,15 +23,13 @@ import Swal from "sweetalert2";
   templateUrl: "./register.component.html",
   styleUrls: ["./register.component.scss"],
 })
-export class RegisterComponent implements OnInit {
-
+export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
 
   private _successSwalModalRef: NgbModalRef;
+  private _signupEvent: StartEvent<"signup - Form Submitted">;
 
   referralName = "";
-  privacyPolicyPageViewed = false;
-  TnCPageViewed = false;
 
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
@@ -29,9 +37,7 @@ export class RegisterComponent implements OnInit {
       Validators.pattern(/^[a-zA-Z\s]*$/),
     ]),
     email: new UntypedFormControl("", [Validators.required, Validators.email]),
-    country_code: new UntypedFormControl("+91", [
-      Validators.required,
-    ]),
+    country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[0-9]{10}$/),
@@ -114,12 +120,12 @@ export class RegisterComponent implements OnInit {
     private readonly router: Router,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit() {
-    this.countlyService.startEvent('signup - Form Submitted');
     this.title.setTitle("Signup");
+    this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];
     this.route.queryParams.subscribe((params) => {
       if (!params["ref"]) return;
@@ -139,27 +145,21 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this._signupEvent.cancel();
+  }
+
   register() {
     const [first_name, ...last_name] = this.registerForm.value.name.split(" ");
     this.loading = true;
-    this.countlyService.addEvent('signUPButtonClick', {
+    this.countlyService.addEvent("signUPButtonClick", {
       page: location.pathname + location.hash,
-      trigger: 'CTA',
+      trigger: "click",
     });
-    this.countlyService.endEvent('signup - Form Submitted', { segments: {
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      phoneNumber: this.registerForm.value.country_code + this.registerForm.value.phone,
-      gender: this.registerForm.value.gender,
-      referralID: this.registerForm.value.referred_by_id,
-      signupFromPage: location.pathname + location.hash,
-      privacyPolicyPageViewed: this.privacyPolicyPageViewed ? 'yes' : 'no',
-      TnCPageViewed: this.TnCPageViewed ? 'yes' : 'no',
-    }});
     this.restService
       .signup({
         first_name: first_name,
-        last_name: last_name?.join(' ') ?? "",
+        last_name: last_name?.join(" ") ?? "",
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
         gender: this.registerForm.value.gender,
@@ -171,32 +171,22 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         () => {
           this.loading = false;
-          this._successSwalModalRef = this.ngbModal.open(this.successSwalModal, {
-            centered: true,
-            modalDialogClass: "modal-md",
-            scrollable: true,
-            backdrop: "static",
-            keyboard: false,
-          });
-          // Swal.fire({
-          //   title: "Success",
-          //   text: "Please check your email to confirm your email id",
-          //   icon: "success",
-          //   confirmButtonText: "OK",
-          //   allowOutsideClick: false,
-          //   allowEscapeKey: false,
-          // }).then((result) => {
-          //   if (result.isConfirmed) {
-          //     this.router.navigateByUrl("/login");
-          //   }
-          // });
-          // this.countlyService.add_event({key: 'signup', segmentation: {
-          //   event_category: "user",
-          //   event_label: this.registerForm.value.email,
-          // }})
+          this.endSignupEvent("success");
+          this._successSwalModalRef = this.ngbModal.open(
+            this.successSwalModal,
+            {
+              centered: true,
+              modalDialogClass: "modal-md",
+              scrollable: true,
+              backdrop: "static",
+              keyboard: false,
+            }
+          );
         },
         (error) => {
           this.loading = false;
+          this.endSignupEvent("failure");
+          this.startSignupEvent();
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,
@@ -207,7 +197,7 @@ export class RegisterComponent implements OnInit {
       );
   }
 
-  private resendVerificationLink(error: any, token: string) {
+  resendVerificationLink(error: any, token: string) {
     const password = this.registerForm.value.password;
     const email = this.registerForm.value.email;
     this.restService.resendVerificationLink(email, password).subscribe({
@@ -217,8 +207,16 @@ export class RegisterComponent implements OnInit {
           icon: "success",
           text: "Check your email and verify again",
         }).then(() => this.router.navigateByUrl("/login"));
-      }
+      },
     });
+  }
+
+  onClickPrivacy() {
+    this._signupEvent.update({ privacyPolicyPageViewed: "yes" });
+  }
+
+  onClickTNC() {
+    this._signupEvent.update({ TnCPageViewed: "yes" });
   }
 
   private getName(id: string) {
@@ -230,5 +228,32 @@ export class RegisterComponent implements OnInit {
       (name) => (this.referralName = name),
       (error) => (this.referralName = error.message)
     );
+  }
+
+  private startSignupEvent() {
+    this._signupEvent = this.countlyService.startEvent(
+      "signup - Form Submitted",
+      {
+        unique: false,
+        data: {
+          signupFromPage: location.pathname + location.hash,
+          privacyPolicyPageViewed: "no",
+          TnCPageViewed: "no",
+        },
+      }
+    );
+  }
+
+  private endSignupEvent(result: "success" | "failure") {
+    this._signupEvent.end({
+      result,
+      name: this.registerForm.value.name,
+      email: this.registerForm.value.email,
+      phoneNumber:
+        this.registerForm.value.country_code + this.registerForm.value.phone,
+      gender: this.registerForm.value.gender,
+      referralID: this.registerForm.value.referred_by_id,
+      signupFromPage: location.pathname + location.hash,
+    });
   }
 }

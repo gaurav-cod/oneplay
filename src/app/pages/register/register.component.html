@@ -193,8 +193,8 @@
                 [href]="domain + '/privacy.html'"
                 target="_blank"
                 class="anchor"
-                (click)="privacyPolicyPageViewed = true"
-                (contextmenu)="privacyPolicyPageViewed = true"
+                (click)="onClickPrivacy()"
+                (contextmenu)="onClickPrivacy()"
                 >Privacy Policy</a
               >
               <span class="footerWhiteColor pl-2 pr-2">&</span>
@@ -202,8 +202,8 @@
                 [href]="domain + '/tnc.html'"
                 target="_blank"
                 class="anchor"
-                (click)="TnCPageViewed = true"
-                (contextmenu)="TnCPageViewed = true"
+                (click)="onClickTNC()"
+                (contextmenu)="onClickTNC()"
                 >Terms and Conditions</a
               >
             </p>

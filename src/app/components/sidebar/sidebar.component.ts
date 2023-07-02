@@ -17,6 +17,7 @@ import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { RestService } from "src/app/services/rest.service";
@@ -72,17 +73,24 @@ export class SidebarComponent implements OnInit {
     return this.domain + "/dashboard/register?ref=" + this.user.id;
   }
 
-  get gameLink() {
+  viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return [
+      this.countlyService.addEvent("gameLandingView", {
+        gameID: this.gameStatus.game_id,
+        gameGenre: "",
+        gameTitle: this.gameStatus.game_name,
+        page: "Game Status Icon",
+        trigger: "click",
+      });
+      const path = [
         "view",
         this.gLink.transform({
           title: this.gameStatus.game_name,
           oneplayId: this.gameStatus.game_id,
         } as GameModel),
       ];
+      this.router.navigate(path);
     }
-    return [];
   }
 
   get isGameRunning() {
@@ -112,7 +120,7 @@ export class SidebarComponent implements OnInit {
   }
 
   onUserError(event) {
-    event.target.src = 'assets/img/defaultUser.svg';
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
   constructor(
@@ -123,7 +131,8 @@ export class SidebarComponent implements OnInit {
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
     private readonly gavatar: AvatarPipe,
-    private readonly messagingService: MessagingService
+    private readonly messagingService: MessagingService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit() {
