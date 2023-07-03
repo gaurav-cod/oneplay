@@ -84,8 +84,15 @@ export interface CustomSegments {
     gameID: string;
     gameTitle: string;
     gameGenre: string;
-    feedback: "yes" | "no";
-    clickResume: "yes" | "no";
+    from: "Play now" | "Resume";
+    gamesessionid: string;
+    channel?: "web";
+  };
+  gameFeedback: {
+    gameID: string;
+    gameTitle: string;
+    gameGenre: string;
+    action: "Skip" | "Submit";
     channel?: "web";
   };
 }

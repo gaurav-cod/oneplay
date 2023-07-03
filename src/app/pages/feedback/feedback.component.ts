@@ -77,6 +77,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.gameId = null;
     this.sessionId = null;
     this.reset();
+    this.countlyService.cancelEvent("gameFeedback");
   }
 
   get qna() {
@@ -100,8 +101,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.countlyService.endEvent("gameLaunch", {
-      feedback: "yes",
+    this.countlyService.endEvent("gameFeedback", {
+      action: "Submit",
     });
     if (!this.gameId || !this.sessionId || !this.userId) {
       Swal.fire({
@@ -156,8 +157,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   skip() {
-    this.countlyService.endEvent("gameLaunch", {
-      feedback: "no",
+    this.countlyService.endEvent("gameFeedback", {
+      action: "Skip",
     });
     this.location.back();
   }

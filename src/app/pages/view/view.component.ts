@@ -115,7 +115,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   private reportResponse: any = null;
   private isConnected: boolean = false;
   private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
-  private _gameLaunchEvent: StartEvent<"gameLaunch">;
   private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
   constructor(
@@ -489,21 +488,18 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
     }
 
-    if (this.action === "Resume" && !skipCheckResume) {
-      if (this.isConnected) {
-        const result = await Swal.fire({
-          title: "Hold Up!",
-          text: "Resuming your journey here? It will terminate your session from other device!",
-          icon: "warning",
-          confirmButtonText: "Yes",
-          showCancelButton: true,
-          cancelButtonText: "No",
-        });
-        if (!result.isConfirmed) {
-          return;
-        }
+    if (this.action === "Resume" && !skipCheckResume && this.isConnected) {
+      const result = await Swal.fire({
+        title: "Hold Up!",
+        text: "Resuming your journey here? It will terminate your session from other device!",
+        icon: "warning",
+        confirmButtonText: "Yes",
+        showCancelButton: true,
+        cancelButtonText: "No",
+      });
+      if (!result.isConfirmed) {
+        return;
       }
-      this._gameLaunchEvent?.update({ clickResume: "yes" });
     }
     if (this.user.status !== "active") {
       Swal.fire({
@@ -571,6 +567,15 @@ export class ViewComponent implements OnInit, OnDestroy {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
+          this.countlyService.endEvent('gameLaunch');
+          this.countlyService.startEvent("gameFeedback", {
+            unique: true,
+            data: {
+              gameID: this.game.oneplayId,
+              gameTitle: this.game.title,
+              gameGenre: this.game.genreMappings?.join(","),
+            },
+          });
           this.router.navigate(["/quit"], {
             queryParams: {
               session_id: this.sessionToTerminate,
@@ -817,6 +822,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
     if (!!data.client_token) {
       this._clientToken = data.client_token;
+      const launchedFrom = this.action === "Play" ? "Play now" : "Resume";
       lastValueFrom(this.restService.getGameStatus())
         .then((status) => {
           this.stopLoading();
@@ -830,20 +836,15 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.startGameWithWebRTCToken();
           } else {
             this._initializeEvent?.end({ result: "success" });
-            if (!this._gameLaunchEvent) {
-              this._gameLaunchEvent = this.countlyService.startEvent(
-                "gameLaunch",
-                {
-                  unique: true,
-                  data: {
-                    gameID: this.game.oneplayId,
-                    gameTitle: this.game.title,
-                    gameGenre: this.game.genreMappings?.join(","),
-                    clickResume: "no",
-                  },
-                }
-              );
-            }
+            this.countlyService.startEvent("gameLaunch", {
+              data: {
+                gameID: this.game.oneplayId,
+                gameTitle: this.game.title,
+                gameGenre: this.game.genreMappings?.join(","),
+                from: launchedFrom,
+                gamesessionid: sessionId,
+              },
+            });
             this.launchGame();
             this._launchModalRef = this.ngbModal.open(this.launchModal, {
               centered: true,
