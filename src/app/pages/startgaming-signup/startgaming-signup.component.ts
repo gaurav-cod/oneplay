@@ -5,6 +5,8 @@ import { RestService } from 'src/app/services/rest.service';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/services/auth.service';
+import { lastValueFrom, of } from 'rxjs';
 
 @Component({
   selector: 'app-startgaming-signup',
@@ -54,6 +56,7 @@ export class StartgamingSignupComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
+    private readonly authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -61,8 +64,16 @@ export class StartgamingSignupComponent implements OnInit {
   }
 
   async setUserDetails() {
-    let user = await this.restService.getProfile().toPromise()
-    this.startGameForm.patchValue({ username: user.username ?? '' });
+    let user = await lastValueFrom(this.authService.user);
+    if (!user) {
+      user = await lastValueFrom(this.restService.getProfile());
+      this.authService.user = of(user);
+    }
+    if (user.username && user.age) {
+      this.router.navigate(["/home"], { replaceUrl: true });
+    } else if (user.username) {
+      this.startGameForm.patchValue({ username: user.username });
+    }
   }
 
   startGaming() {
@@ -72,7 +83,10 @@ export class StartgamingSignupComponent implements OnInit {
       username: this.startGameForm.value.username,
       dob: new Date(year, month-1, day).toISOString().split('T')[0],
     }).subscribe({
-      next: () => this.router.navigateByUrl('/'),
+      next: (user) => {
+        this.authService.user = of(user);
+        this.router.navigate(["/home"], { replaceUrl: true });
+      },
       error: (error) => Swal.fire({
         icon: "error",
         title: "Error Code: " + error.code,

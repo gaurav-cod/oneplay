@@ -89,8 +89,11 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
 
-    this.userCanGameSubscription = this.authService.userCanGame.subscribe(u => 
-      u === false ? this.router.navigateByUrl('/start-gaming') : null);
+    this.userCanGameSubscription = this.authService.userCanGame.subscribe(u => {
+      if (u === false) {
+        this.router.navigate(['/start-gaming'], { replaceUrl: true });
+      }
+    });
   }
 
   ngOnDestroy(): void {
