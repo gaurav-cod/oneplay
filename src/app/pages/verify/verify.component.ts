@@ -24,7 +24,6 @@ export class VerifyComponent implements OnInit {
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
-    private readonly loaderService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
@@ -59,12 +58,10 @@ export class VerifyComponent implements OnInit {
   }
 
   verify() {
-    this.loaderService.startLoader("verify");
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
         localStorage.removeItem('otpSent');
-        this.loaderService.stopLoader("verify");
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -83,7 +80,6 @@ export class VerifyComponent implements OnInit {
             icon: "error",
           })
         } else {
-          this.loaderService.stopLoader("verify");
           this.resendVerificationLink(error, token);
         }
         
