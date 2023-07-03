@@ -3,7 +3,9 @@ import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -17,11 +19,11 @@ export class VerifyComponent implements OnInit {
   sendingOTP = false;
 
   constructor(
+    private readonly authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
-    private readonly loaderService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
@@ -56,25 +58,31 @@ export class VerifyComponent implements OnInit {
   }
 
   verify() {
-    this.loaderService.startLoader("verify");
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
-      next: () => {
+      next: (token) => {
         localStorage.removeItem('otpSent');
-        this.loaderService.stopLoader("verify");
         Swal.fire({
           title: "Verification Success",
-          text: "Your account has been verified. You can now login.",
+          text: "Your account has been verified.",
           icon: "success",
           confirmButtonText: "OK",
           allowEscapeKey: false,
         }).then(() => {
-          this.router.navigateByUrl("/login");
+          this.authService.login(token);
         });
       },
       error: (error) => {
-        this.loaderService.stopLoader("verify");
-        this.resendVerificationLink(error, token);
+        if(error.message == "Invalid OTP") {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
+        } else {
+          this.resendVerificationLink(error, token);
+        }
+        
       },
     });
   }
@@ -120,8 +128,12 @@ export class VerifyComponent implements OnInit {
           }
         });
       } else {
-        location.href = "/contact.html";
+        window.location.href = `${this.domain}/contact.html`
       }
     });
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }
