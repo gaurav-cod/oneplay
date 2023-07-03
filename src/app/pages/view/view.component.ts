@@ -233,7 +233,19 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "keywords", content: game.tagsMapping?.join(", ") },
               { name: "description", content: game.description },
             ]);
-            this.selectedStore = game.storesMapping[0];
+             if (game.preferredStore) {
+               const preferredStoreIndex = game.storesMapping.findIndex(
+                 (store) => store.name === game.preferredStore
+               );
+               if (preferredStoreIndex >= 0) {
+                 this.selectedStore =
+                   game.storesMapping.at(preferredStoreIndex);
+               } else {
+                this.selectedStore = game.storesMapping[0] ?? null;  
+               }
+             } else {
+               this.selectedStore = game.storesMapping[0] ?? null;
+             }
             game.developer.forEach((dev) =>
               this.restService
                 .getGamesByDeveloper(dev)
@@ -1032,7 +1044,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   selectStore(store: PurchaseStore) {
-    this.selectedStore = store;
+    if (!this.selectStore || this.selectedStore.name !== store.name) {
+      this.selectedStore = store;
+      lastValueFrom(
+        this.restService.setPreferredStoreForGame(
+          this.game.oneplayId,
+          store.name
+        )
+      );
+    }
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

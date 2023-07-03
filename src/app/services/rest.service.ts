@@ -183,15 +183,16 @@ export class RestService {
   }
 
   verifyUserName(username: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/validate_username", { username })
-    .pipe(
-      map(res => res['success'] ?? false),
-      map(res => res ? "" : "Invalid username."),
-      catchError(({ error }) => {
-        if (error.code === 400) return of(error.message);
-        else throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/validate_username", { username })
+      .pipe(
+        map((res) => res["success"] ?? false),
+        map((res) => (res ? "" : "Invalid username.")),
+        catchError(({ error }) => {
+          if (error.code === 400) return of(error.message);
+          else throw error;
+        })
+      );
   }
 
   getSessions(): Observable<Session[]> {
@@ -228,7 +229,9 @@ export class RestService {
     limit: number
   ): Observable<SubscriptionModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {params: { page, limit },})
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
+        params: { page, limit },
+      })
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
@@ -239,11 +242,14 @@ export class RestService {
   }
 
   getProcessingSubscription(
-      page: number,
-      limit: number
-    ): Observable<SubscriptionPaymentModel[]> {
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing", {params: { page, limit },})
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/processing",
+        { params: { page, limit } }
+      )
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
@@ -252,7 +258,10 @@ export class RestService {
     limit: number
   ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed", {params: { page, limit },})
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/failed",
+        { params: { page, limit } }
+      )
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
@@ -864,6 +873,20 @@ export class RestService {
       )
       .pipe(
         map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  setPreferredStoreForGame(id: string, storeName: string): Observable<boolean> {
+    return this.http
+      .post(this.r_mix_api + "/games/set_preferred_store/", {
+        game_id: id,
+        store: storeName,
+      })
+      .pipe(
+        map((res) => res["success"] ?? false),
         catchError(({ error }) => {
           throw error;
         })
