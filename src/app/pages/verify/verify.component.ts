@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -75,8 +76,17 @@ export class VerifyComponent implements OnInit {
         });
       },
       error: (error) => {
-        this.loaderService.stopLoader("verify");
-        this.resendVerificationLink(error, token);
+        if(error.message == "Invalid OTP") {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
+        } else {
+          this.loaderService.stopLoader("verify");
+          this.resendVerificationLink(error, token);
+        }
+        
       },
     });
   }
@@ -122,8 +132,12 @@ export class VerifyComponent implements OnInit {
           }
         });
       } else {
-        location.href = "/contact.html";
+        window.location.href = `${this.domain}/contact.html`
       }
     });
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }
