@@ -19,7 +19,7 @@
   <app-bottom-nav (toggleFriends)="toggleFriendsCollapsed()"></app-bottom-nav>
 </div>
 
-<app-onboarding-modals></app-onboarding-modals>
+<div *ngIf="showOnboardingPopup"><app-onboarding-modals></app-onboarding-modals></div>
 
 <ng-template #stripeModal let-c="cose">
   <div class="modal-content position-relative modalBG stripeModal">
