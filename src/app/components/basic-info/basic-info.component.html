@@ -91,7 +91,7 @@
           <input
             type="submit"
             (click)="saveChanges()"
-            [disabled]="saveProfileLoder || !isValid"
+            [disabled]="saveProfileLoder || !isValid || !isChanged"
             class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
             value="Save Changes"
           />

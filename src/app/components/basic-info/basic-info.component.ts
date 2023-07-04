@@ -44,6 +44,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe((user) => {
+      this.user  = user;
       this.currentUserState = user;
       this.username.setValue(user.username);
       this.name.setValue(user.name);
@@ -63,6 +64,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   get isValid() {
     return this.name.valid && this.username.valid && this.bio.valid;
+  }
+
+  get isChanged() {
+    return this.name.value !== this.user.name ||
+    this.username.value !== this.user.username ||
+    this.bio.value !== (this.user.bio ?? '');
   }
 
   onUserError(event) {
