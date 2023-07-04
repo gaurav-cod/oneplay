@@ -3,7 +3,9 @@ import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -11,21 +13,18 @@ import Swal from "sweetalert2";
   templateUrl: "./verify.component.html",
   styleUrls: ["./verify.component.scss"],
 })
-export class VerifyComponent implements OnInit, AfterViewInit {
+export class VerifyComponent implements OnInit {
   otp = new UntypedFormControl("", Validators.required);
-  otpSent = false;
+  otpSent = localStorage.getItem('otpSent') === 'true';
+  sendingOTP = false;
 
   constructor(
+    private readonly authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
-    private readonly loaderService: NgxUiLoaderService
   ) {}
-
-  ngAfterViewInit(): void {
-    this.verify();
-  }
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
@@ -33,8 +32,10 @@ export class VerifyComponent implements OnInit, AfterViewInit {
 
   getOTP() {
     const token = this.route.snapshot.paramMap.get("token");
+    this.sendingOTP = true;
     this.restService.sendOTP(token).subscribe(
       () => {
+        this.sendingOTP = false;
         Swal.fire({
           title: "Success",
           text: "OTP sent successfully",
@@ -42,37 +43,46 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        localStorage.setItem('otpSent', 'true');
       },
       (err) => {
+        this.sendingOTP = false;
         Swal.fire({
           title: "Error Code: " + err.code,
           text: err.message,
           icon: "error",
-          confirmButtonText: "Try Again",
+          confirmButtonText: "OK",
         });
       }
     );
   }
 
   verify() {
-    this.loaderService.startLoader("verify");
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
-      next: () => {
-        this.loaderService.stopLoader("verify");
+      next: (token) => {
+        localStorage.removeItem('otpSent');
         Swal.fire({
           title: "Verification Success",
-          text: "Your account has been verified. You can now login.",
+          text: "Your account has been verified.",
           icon: "success",
           confirmButtonText: "OK",
           allowEscapeKey: false,
         }).then(() => {
-          this.router.navigateByUrl("/login");
+          this.authService.login(token);
         });
       },
       error: (error) => {
-        this.loaderService.stopLoader("verify");
-        this.resendVerificationLink(error, token);
+        if(error.message == "Invalid OTP") {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
+        } else {
+          this.resendVerificationLink(error, token);
+        }
+        
       },
     });
   }
@@ -107,6 +117,7 @@ export class VerifyComponent implements OnInit, AfterViewInit {
             Swal.showLoading();
             this.restService.resendVerificationLink(email, password).subscribe({
               next: () => {
+                localStorage.removeItem('otpSent');
                 Swal.fire({
                   icon: "success",
                   title: "Check your email and verify again",
@@ -117,8 +128,12 @@ export class VerifyComponent implements OnInit, AfterViewInit {
           }
         });
       } else {
-        location.href = "/contact.html";
+        window.location.href = `${this.domain}/contact.html`
       }
     });
+  }
+
+  get domain() {
+    return environment.domain;
   }
 }
