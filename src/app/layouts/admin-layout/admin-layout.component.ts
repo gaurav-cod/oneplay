@@ -32,6 +32,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   currentamount: string;
   currency: string;
   planType: 'base'|'topup';
+  showOnboardingPopup = false;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
@@ -90,7 +91,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.userCanGameSubscription = this.authService.userCanGame.subscribe(u => {
-      if (u === false) {
+      if (u) {
+        this.showOnboardingPopup = true;
+      } else if (u === false) {
         this.router.navigate(['/start-gaming'], { replaceUrl: true });
       }
     });
