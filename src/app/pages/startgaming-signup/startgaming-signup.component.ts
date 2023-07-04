@@ -40,12 +40,12 @@ export class StartgamingSignupComponent implements OnInit {
 
   get usernameErrored() {
     const control = this.startGameForm.controls["username"];
-    return control.touched && control.invalid;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   get dateOfBirthErrored() {
     const control = this.startGameForm.controls["dob"];
-    return control.touched && control.invalid;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   get checkvalidationValue() {
