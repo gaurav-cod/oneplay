@@ -1,11 +1,10 @@
 // import { version } from '../../package.json';
 
 export const environment = {
-  // appVersion: version,
-  appVersion: "1.2.0",
+  appVersion: "2.6.4",
   production: false,
   cookie_domain: "localhost",
-  domain: "https://www.oneream.com",
+  domain: "localhost",
   client_api: "https://client-apis.oneream.com/services/v2",
   render_mix_api: "https://rendermix.oneream.com/v1",
   socket_endpoint: "https://chatservices.oneream.com",
@@ -27,7 +26,6 @@ export const environment = {
   countly: {
     key: '19eab6488620f4a36d34a08519392028a1acd920',
     url: 'https://dev.countly.oneream.com/',
-    src: 'https://dev.countly.oneream.com/sdk/web/countly.min.js',
   },
   webrtc_prefix: 'http://localhost:3000/webplay',
 };

@@ -13,7 +13,8 @@ import {
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { CountlyService, StartEvent } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from 'src/app/services/countly';
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";

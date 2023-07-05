@@ -3,7 +3,8 @@ import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
-import { CountlyService, StartEvent } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from 'src/app/services/countly';
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 

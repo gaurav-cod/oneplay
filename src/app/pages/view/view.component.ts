@@ -37,7 +37,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
-import { CountlyService, StartEvent } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from 'src/app/services/countly';
 
 @Component({
   selector: "app-view",

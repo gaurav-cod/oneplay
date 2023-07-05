@@ -1,108 +1,12 @@
 import { Injectable } from "@angular/core";
 import { v4 } from "uuid";
-
-export type CountlyEventType =
-  | "add_event"
-  | "start_event"
-  | "cancel_event"
-  | "end_event";
-export type CountlyEventData = {
-  key: string;
-  sum?: number;
-  dur?: number;
-  count?: number;
-  segmentation?: object;
-};
-export type CountlyEvent = [
-  eventType: CountlyEventType,
-  eventData: CountlyEventData | string
-];
-declare var countlyPushAsync: Function;
-export interface CustomSegments {
-  signUPButtonClick: {
-    page: string;
-    trigger: string;
-    channel?: "web";
-  };
-  signINButtonClick: {
-    page: string;
-    trigger: string;
-    channel?: "web";
-  };
-  "signup - Form Submitted": {
-    result: "success" | "failure";
-    name: string;
-    email: string;
-    phoneNumber: string;
-    gender: "male" | "female" | "other";
-    referralID: string;
-    signupFromPage: string;
-    privacyPolicyPageViewed: "yes" | "no";
-    TnCPageViewed: "yes" | "no";
-    channel?: "web";
-  };
-  "signup - Account Verification": {
-    result: "success" | "failure";
-    failReason: string;
-    channel?: "web";
-  };
-  signin: {
-    result: "success" | "failure";
-    signinFromPage: string;
-    signinFromTrigger: string;
-    rememberMeActivated: "yes" | "no";
-    channel?: "web";
-  };
-  gameLandingView: {
-    gameID: string;
-    gameTitle: string;
-    gameGenre: string;
-    page: string;
-    trigger: string;
-    channel?: "web";
-  };
-  "gamePlay - Start": {
-    gameID: string;
-    gameTitle: string;
-    gameGenre: string;
-    store: string;
-    showSettingEnabled: "yes" | "no";
-    channel?: "web";
-  };
-  "gamePlay - Settings Page View": {
-    advancedSettingsPageViewed: "yes" | "no";
-    resolution: string;
-    bitRate: string;
-    FPS: string;
-    channel?: "web";
-  };
-  "gamePlay - Initilization": {
-    result: "success" | "failure" | "wait";
-    channel?: "web";
-  };
-  gameLaunch: {
-    gameID: string;
-    gameTitle: string;
-    gameGenre: string;
-    from: "Play now" | "Resume";
-    gamesessionid: string;
-    channel?: "web";
-  };
-  gameFeedback: {
-    gameID: string;
-    gameTitle: string;
-    gameGenre: string;
-    action: "Skip" | "Submit";
-    channel?: "web";
-  };
-}
-
-export interface StartEvent<T extends keyof CustomSegments> {
-  data: Partial<CustomSegments[T]>;
-  cancel: () => void;
-  end: (segments: Partial<CustomSegments[T]>) => void;
-  update: (segments: Partial<CustomSegments[T]>) => void;
-}
+import { RestService } from "./rest.service";
+import { CountlyEventData, CustomSegments, StartEvent } from "./countly";
+import Countly from "countly-sdk-web";
+import { environment } from "src/environments/environment";
+import { AuthService } from "./auth.service";
+import Cookies from "js-cookie";
+import * as moment from "moment";
 
 @Injectable({
   providedIn: "root",
@@ -111,11 +15,74 @@ export class CountlyService {
   private countly_prefix_key = "x_countly_event_key";
   private data_postfix = " - data";
 
-  private add_event = (data: CountlyEventData): void =>
-    countlyPushAsync("add_event", data);
+  constructor(private readonly authService: AuthService) {
+    let deviceId = Cookies.get("countly_device_id");
+    const userId = this.authService.userIdAndToken?.userid;
+    let newDeviceId: string | null = null;
 
-  track_pageview = (url: string): void =>
-    countlyPushAsync("track_pageview", url);
+    if (userId && !deviceId) {
+      deviceId = userId;
+      this.setDeviceId(deviceId);
+    } else if (userId && deviceId !== userId) {
+      newDeviceId = userId;
+    } else if (!userId && !deviceId) {
+      deviceId = v4();
+      this.setDeviceId(deviceId);
+    }
+
+    Countly.init({
+      debug: !environment.production,
+      app_key: environment.countly.key,
+      url: environment.countly.url,
+      device_id: deviceId,
+      heatmap_whitelist: [environment.domain],
+      app_version: environment.appVersion,
+    });
+
+    if (newDeviceId) {
+      deviceId = newDeviceId;
+      Countly.change_id(newDeviceId);
+      this.setDeviceId(newDeviceId);
+    }
+
+    Countly.track_sessions();
+    Countly.track_clicks();
+    Countly.track_scrolls();
+    Countly.track_errors();
+    Countly.track_links();
+    Countly.collect_from_forms();
+    Countly.track_forms();
+
+    this.authService.user.subscribe((user) => {
+      if (user) {
+        if (user.id !== deviceId) {
+          deviceId = user.id;
+          Countly.change_id(user.id);
+          this.setDeviceId(user.id);
+        }
+        Countly.user_details({
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          picture: user.photo,
+          gender: user.gender,
+        });
+      }
+    });
+  }
+
+  private setDeviceId(deviceId: string) {
+    Cookies.set("countly_device_id", deviceId, {
+      domain: environment.cookie_domain,
+      path: "/",
+      expires: moment().add(90, "days").toDate(),
+    });
+  }
+
+  private add_event = (data: CountlyEventData): void => Countly.add_event(data);
+
+  track_pageview = (url: string): void => Countly.track_pageview(url);
 
   addEvent<T extends keyof CustomSegments>(
     event: T,
