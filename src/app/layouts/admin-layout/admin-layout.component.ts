@@ -195,22 +195,18 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   async onPay() {
     this.stripeLoad = true;
-    let html = "Your plan is now activated, and you're ready to start your journey!";
-    let title = "Awesome!";
+    let popupId = 0;
 
     if(this.planType == 'base') {
       const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
       const planTypes = subscriptions.map((s) => s.planType)
-      if(planTypes.includes('base')) {
-        html = "Your new plan will kick in right after your current one ends.";
-        title = "Kudos!";
-      }
+      if(planTypes.includes('base')) popupId = 1;
     }
 
     const { error } = await this.stripeIntent.confirmPayment({
       elements: this.stripeElements,
       confirmParams: {
-        return_url: environment.domain + "/dashboard/settings/subscription?swal=" + encodeURIComponent(JSON.stringify({html,title})),
+        return_url: environment.domain + "/dashboard/settings/subscription?swal=" + popupId,
       },
     });
 
