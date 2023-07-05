@@ -17,6 +17,8 @@ export class VerifyComponent implements OnInit {
   otp = new UntypedFormControl("", Validators.required);
   otpSent = localStorage.getItem('otpSent') === 'true';
   sendingOTP = false;
+  display: any;
+  remainingTimer = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -24,10 +26,38 @@ export class VerifyComponent implements OnInit {
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
+    
   ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
+  }
+
+  timer(minute) {
+    // let minute = 1;
+    let seconds: number = minute * 60;
+    let textSec: any = "0";
+    let statSec: number = 60;
+
+    const prefix = minute < 10 ? "0" : "";
+
+    const timer = setInterval(() => {
+      seconds--;
+      if (statSec != 0) statSec--;
+      else statSec = 59;
+
+      if (statSec < 10) {
+        textSec = "0" + statSec;
+      } else textSec = statSec;
+
+      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+      this.remainingTimer = true;
+      if (seconds == 0) {
+        this.remainingTimer = false;
+        clearInterval(timer);
+      }
+    }, 1000);
+    
   }
 
   getOTP() {
@@ -47,12 +77,17 @@ export class VerifyComponent implements OnInit {
       },
       (err) => {
         this.sendingOTP = false;
-        Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        if(err.message == "Wait for 60 seconds before you can request new secret code.") {
+          this.timer(1);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
+        
       }
     );
   }

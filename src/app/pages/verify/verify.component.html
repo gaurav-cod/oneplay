@@ -17,15 +17,23 @@
         type="text"
       />
     </div>
-    <div class="col-auto">
-      <button type="button" class="btn btn-link p-0 gradientInfoText" (click)="getOTP()">
+    <div class="col-auto align-self-center">
+      <button type="button" 
+      class="btn btn-link p-0 " 
+      [ngClass]="remainingTimer ? 'muteText' : 'gradientInfoText' "
+      (click)="getOTP()"
+      [disabled]="remainingTimer"
+      >
         Resend OTP
       </button>
     </div>
-    <div class="col text-right">
+    <div class="col text-right align-self-center" *ngIf="remainingTimer">
+      <p class="float-right offWhiteText font16 font500 mb-0">Time remaining {{display}}<span id="timer"></span></p>
+    </div>
+    <div class="col-12 mt-4">
       <button
         type="button"
-        class="btn linearGradient border-0 borderRadius10 font16 font500 text-white"
+        class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
         (click)="verify()"
         [disabled]="!otp.valid"
       >
