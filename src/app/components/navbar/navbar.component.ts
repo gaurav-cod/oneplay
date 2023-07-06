@@ -27,6 +27,7 @@ import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-navbar",
@@ -78,17 +79,38 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return environment.domain;
   }
 
-  get gameLink() {
+  viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return [
+      this.countlyService.addEvent("gameLandingView", {
+        gameID: this.gameStatus.game_id,
+        gameGenre: "",
+        gameTitle: this.gameStatus.game_name,
+        page: "Game Status Icon",
+        trigger: "click",
+      });
+      const path = [
         "view",
         this.gLink.transform({
           title: this.gameStatus.game_name,
           oneplayId: this.gameStatus.game_id,
         } as GameModel),
       ];
+      this.router.navigate(path);
     }
-    return [];
+  }
+
+  viewGameFromSearch(game: GameModel) {
+    this.isMenuCollapsed = true;
+    this.countlyService.addEvent("gameLandingView", {
+      gameID: game.oneplayId,
+      gameGenre: game.genreMappings?.join(","),
+      gameTitle: game.title,
+      page: "Navbar Search",
+      trigger: "click",
+    });
+    this.router.navigate(["view", this.gLink.transform(game)], {
+      queryParams: this.keywordQuery,
+    });
   }
 
   get isGameRunning() {
@@ -133,7 +155,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly gavatar: AvatarPipe,
     private readonly messagingService: MessagingService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly countlyService: CountlyService
   ) {
     this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
@@ -185,7 +208,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onUsersError(event) {
-    event.target.src = 'assets/img/defaultUser.svg';
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
   getFriendAddIcon(friend: UserModel) {
@@ -193,7 +216,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
-    } else if(this.user.id === friend.id) {
+    } else if (this.user.id === friend.id) {
       return "d-none";
     } else {
       return "fa-user-plus";
@@ -201,8 +224,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
-    if(this.user.id === friend.id) {
-      return
+    if (this.user.id === friend.id) {
+      return;
     }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
@@ -336,7 +359,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  TermsConditions(container: ElementRef<HTMLDivElement >) {
+  TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
