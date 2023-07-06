@@ -53,6 +53,25 @@ export class CountlyService {
     Countly.collect_from_forms();
     Countly.track_forms();
 
+    Countly.track_performance({
+      RT: {},
+      instrument_xhr: true,
+      captureXhrRequestResponse: true,
+      AutoXHR: {
+        alwaysSendXhr: true,
+        monitorFetch: true,
+        captureXhrRequestResponse: true,
+      },
+      Continuity: {
+        enabled: true,
+        monitorLongTasks: true,
+        monitorPageBusy: true,
+        monitorFrameRate: true,
+        monitorInteractions: true,
+        afterOnload: true,
+      },
+    });
+
     this.authService.user.subscribe((user) => {
       if (user) {
         if (user.id !== deviceId) {
