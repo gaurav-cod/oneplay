@@ -1,3 +1,10 @@
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+  Other = 'other',
+  Unknown = 'unknown',
+}
+
 export class UserModel {
   readonly id: string;
   readonly status: "active" | "inactive";
@@ -13,6 +20,7 @@ export class UserModel {
   readonly photo: string | null;
   readonly searchPrivacy: boolean;
   readonly partnerId: string;
+  readonly gender: Gender;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["user_id"];
@@ -29,6 +37,7 @@ export class UserModel {
     this.photo = json["profile_image"];
     this.searchPrivacy = json["search_privacy"];
     this.partnerId = json["partner_id"];
+    this.gender = json["gender"];
   }
 
   copyWith(data: Partial<UserModel>) {
