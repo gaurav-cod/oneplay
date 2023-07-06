@@ -2,11 +2,17 @@ import { Injectable } from "@angular/core";
 import { v4 } from "uuid";
 import { RestService } from "./rest.service";
 import { CountlyEventData, CustomSegments, StartEvent } from "./countly";
-import Countly from "countly-sdk-web";
 import { environment } from "src/environments/environment";
 import { AuthService } from "./auth.service";
 import Cookies from "js-cookie";
 import * as moment from "moment";
+
+declare const Countly: any;
+
+const boomerangScript =
+  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/plugin/boomerang/boomerang.min.js";
+const countlyBoomerangScript =
+  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/plugin/boomerang/countly_boomerang.js";
 
 @Injectable({
   providedIn: "root",
@@ -53,25 +59,6 @@ export class CountlyService {
     Countly.collect_from_forms();
     Countly.track_forms();
 
-    Countly.track_performance({
-      RT: {},
-      instrument_xhr: true,
-      captureXhrRequestResponse: true,
-      AutoXHR: {
-        alwaysSendXhr: true,
-        monitorFetch: true,
-        captureXhrRequestResponse: true,
-      },
-      Continuity: {
-        enabled: true,
-        monitorLongTasks: true,
-        monitorPageBusy: true,
-        monitorFrameRate: true,
-        monitorInteractions: true,
-        afterOnload: true,
-      },
-    });
-
     this.authService.user.subscribe((user) => {
       if (user) {
         if (user.id !== deviceId) {
@@ -89,17 +76,9 @@ export class CountlyService {
         });
       }
     });
-  }
 
-  private setDeviceId(deviceId: string) {
-    Cookies.set("countly_device_id", deviceId, {
-      domain: environment.cookie_domain,
-      path: "/",
-      expires: moment().add(90, "days").toDate(),
-    });
+    this.initPerformanceTracking();
   }
-
-  private add_event = (data: CountlyEventData): void => Countly.add_event(data);
 
   track_pageview = (url: string): void => Countly.track_pageview(url);
 
@@ -108,7 +87,7 @@ export class CountlyService {
     segments: CustomSegments[T]
   ) {
     segments.channel = "web";
-    this.add_event({ key: event, segmentation: segments });
+    this._addEvent({ key: event, segmentation: segments });
   }
 
   startEvent<T extends keyof CustomSegments>(
@@ -165,7 +144,7 @@ export class CountlyService {
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
     localStorage.removeItem(this.keyOfKey(event));
     segments.channel = "web";
-    this.add_event({
+    this._addEvent({
       key: event,
       dur: +new Date() - +ts,
       segmentation: { ...data, ...segments },
@@ -173,4 +152,54 @@ export class CountlyService {
   }
 
   private keyOfKey = (k: string): string => `${this.countly_prefix_key} - ${k}`;
+
+  private setDeviceId(deviceId: string) {
+    Cookies.set("countly_device_id", deviceId, {
+      domain: environment.cookie_domain,
+      path: "/",
+      expires: moment().add(90, "days").toDate(),
+    });
+  }
+
+  private _addEvent = (data: CountlyEventData): void => Countly.add_event(data);
+
+  private async initPerformanceTracking() {
+    await this.loadScript(boomerangScript);
+    await this.loadScript(countlyBoomerangScript);
+
+    Countly.q.push([
+      "track_performance",
+      {
+        //page load timing
+        RT: {},
+        //required for automated networking traces
+        instrument_xhr: true,
+        captureXhrRequestResponse: true,
+        AutoXHR: {
+          alwaysSendXhr: true,
+          monitorFetch: true,
+          captureXhrRequestResponse: true,
+        },
+        //required for screen freeze traces
+        Continuity: {
+          enabled: true,
+          monitorLongTasks: true,
+          monitorPageBusy: true,
+          monitorFrameRate: true,
+          monitorInteractions: true,
+          afterOnload: true,
+        },
+      },
+    ]);
+  }
+
+  private loadScript(src: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      document.getElementsByTagName("head")[0].appendChild(script);
+      script.onload = () => resolve();
+      script.onerror = () => reject("Failed to load " + src);
+    });
+  }
 }

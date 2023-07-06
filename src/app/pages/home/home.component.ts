@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private wishlist: string[] = [];
   private wishlistSubscription: Subscription;
   private feedSubscription: Subscription;
-  private userSubscription: Subscription;
   private gameFilterSubscription: Subscription;
   private paramsSubscription: Subscription;
 
@@ -70,7 +69,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.wishlistSubscription?.unsubscribe();
     this.feedSubscription?.unsubscribe();
-    this.userSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     Swal.close();
@@ -109,18 +107,6 @@ export class HomeComponent implements OnInit, OnDestroy {
           );
 
       },
-    });
-    this.userSubscription = this.authService.user.subscribe((user) => {
-      if (user.status !== "active") {
-        Swal.fire({
-          icon: "warning",
-          title: "Hi, " + user.firstName,
-          html: `Your account is yet to be verified. Please give us 24 hrs to do so.
-          Until then, kindly <a href="${environment.domain}/download.html">download client</a> info from our website
-          Thankyou for your patience!`,
-          confirmButtonText: "OK",
-        });
-      }
     });
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
