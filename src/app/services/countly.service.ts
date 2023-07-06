@@ -9,6 +9,8 @@ import * as moment from "moment";
 
 declare const Countly: any;
 
+const countlyScript =
+  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/lib/countly.min.js";
 const boomerangScript =
   "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/plugin/boomerang/boomerang.min.js";
 const countlyBoomerangScript =
@@ -22,62 +24,7 @@ export class CountlyService {
   private data_postfix = " - data";
 
   constructor(private readonly authService: AuthService) {
-    let deviceId = Cookies.get("countly_device_id");
-    const userId = this.authService.userIdAndToken?.userid;
-    let newDeviceId: string | null = null;
-
-    if (userId && !deviceId) {
-      deviceId = userId;
-      this.setDeviceId(deviceId);
-    } else if (userId && deviceId !== userId) {
-      newDeviceId = userId;
-    } else if (!userId && !deviceId) {
-      deviceId = v4();
-      this.setDeviceId(deviceId);
-    }
-
-    Countly.init({
-      debug: !environment.production,
-      app_key: environment.countly.key,
-      url: environment.countly.url,
-      device_id: deviceId,
-      heatmap_whitelist: [environment.domain],
-      app_version: environment.appVersion,
-    });
-
-    if (newDeviceId) {
-      deviceId = newDeviceId;
-      Countly.change_id(newDeviceId);
-      this.setDeviceId(newDeviceId);
-    }
-
-    Countly.track_sessions();
-    Countly.track_clicks();
-    Countly.track_scrolls();
-    Countly.track_errors();
-    Countly.track_links();
-    Countly.collect_from_forms();
-    Countly.track_forms();
-
-    this.authService.user.subscribe((user) => {
-      if (user) {
-        if (user.id !== deviceId) {
-          deviceId = user.id;
-          Countly.change_id(user.id);
-          this.setDeviceId(user.id);
-        }
-        Countly.user_details({
-          name: user.name,
-          username: user.username,
-          email: user.email,
-          phone: user.phone,
-          picture: user.photo,
-          gender: user.gender,
-        });
-      }
-    });
-
-    this.initPerformanceTracking();
+    this.initCountly();
   }
 
   track_pageview = (url: string): void => Countly.track_pageview(url);
@@ -162,6 +109,67 @@ export class CountlyService {
   }
 
   private _addEvent = (data: CountlyEventData): void => Countly.add_event(data);
+
+  private async initCountly() {
+    await this.loadScript(countlyScript);
+
+    let deviceId = Cookies.get("countly_device_id");
+    const userId = this.authService.userIdAndToken?.userid;
+    let newDeviceId: string | null = null;
+
+    if (userId && !deviceId) {
+      deviceId = userId;
+      this.setDeviceId(deviceId);
+    } else if (userId && deviceId !== userId) {
+      newDeviceId = userId;
+    } else if (!userId && !deviceId) {
+      deviceId = v4();
+      this.setDeviceId(deviceId);
+    }
+
+    Countly.init({
+      debug: !environment.production,
+      app_key: environment.countly.key,
+      url: environment.countly.url,
+      device_id: deviceId,
+      heatmap_whitelist: [environment.domain],
+      app_version: environment.appVersion,
+    });
+
+    if (newDeviceId) {
+      deviceId = newDeviceId;
+      Countly.change_id(newDeviceId);
+      this.setDeviceId(newDeviceId);
+    }
+
+    Countly.track_sessions();
+    Countly.track_clicks();
+    Countly.track_scrolls();
+    Countly.track_errors();
+    Countly.track_links();
+    Countly.collect_from_forms();
+    Countly.track_forms();
+
+    this.authService.user.subscribe((user) => {
+      if (user) {
+        if (user.id !== deviceId) {
+          deviceId = user.id;
+          Countly.change_id(user.id);
+          this.setDeviceId(user.id);
+        }
+        Countly.user_details({
+          name: user.name,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          picture: user.photo,
+          gender: user.gender,
+        });
+      }
+    });
+
+    this.initPerformanceTracking();
+  }
 
   private async initPerformanceTracking() {
     await this.loadScript(boomerangScript);
