@@ -3636,11 +3636,6 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-countly-sdk-web@^23.2.2:
-  version "23.2.2"
-  resolved "https://registry.yarnpkg.com/countly-sdk-web/-/countly-sdk-web-23.2.2.tgz#e7377065f294dc7b48d603b4ab92793955716ade"
-  integrity sha512-Ply1KzgX05GBW8HeT0wDMG6JCmd1JwGxSXi4vFVkQN+VOhzR3Wf/6RFujwIzOitNkbOxEhyrUeT4lx9u2TknVQ==
-
 create-require@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
