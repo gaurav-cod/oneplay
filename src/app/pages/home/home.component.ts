@@ -5,7 +5,9 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -14,6 +16,7 @@ import Swal from "sweetalert2";
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
+  providers: [GLinkPipe],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   firstRow: GameFeedModel;
@@ -60,6 +63,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly router: Router,
+    private readonly gLink: GLinkPipe,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnDestroy(): void {
@@ -124,6 +129,17 @@ export class HomeComponent implements OnInit, OnDestroy {
         .getWishlistGames(ids)
         .subscribe((games) => (this.library = games));
     });
+  }
+
+  viewBannerGame(game: GameModel) {
+    this.countlyService.addEvent('gameLandingView', {
+      gameID: game.oneplayId,
+      gameTitle: game.title,
+      gameGenre: game.genreMappings?.join(','),
+      page: "Feeds - banner",
+      trigger: "click",
+    });
+    this.router.navigate(['view', this.gLink.transform(game)]);
   }
 
   isInWishlist(game: GameModel): boolean {

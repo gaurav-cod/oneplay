@@ -1,9 +1,10 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit, OnDestroy } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgxUiLoaderService } from "ngx-ui-loader";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -13,10 +14,12 @@ import Swal from "sweetalert2";
   templateUrl: "./verify.component.html",
   styleUrls: ["./verify.component.scss"],
 })
-export class VerifyComponent implements OnInit {
+export class VerifyComponent implements OnInit, OnDestroy {
   otp = new UntypedFormControl("", Validators.required);
-  otpSent = localStorage.getItem('otpSent') === 'true';
+  otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
+
+  private _verifyEvent: StartEvent<"signup - Account Verification">;
 
   constructor(
     private readonly authService: AuthService,
@@ -24,10 +27,16 @@ export class VerifyComponent implements OnInit {
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
+    this.startVerifyEvent();
+  }
+
+  ngOnDestroy(): void {
+    this._verifyEvent.cancel();
   }
 
   getOTP() {
@@ -43,7 +52,7 @@ export class VerifyComponent implements OnInit {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
-        localStorage.setItem('otpSent', 'true');
+        localStorage.setItem("otpSent", "true");
       },
       (err) => {
         this.sendingOTP = false;
@@ -60,8 +69,9 @@ export class VerifyComponent implements OnInit {
   verify() {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
-      next: (token) => {
-        localStorage.removeItem('otpSent');
+      next: () => {
+        localStorage.removeItem("otpSent");
+        this._verifyEvent.end({ result: "success" });
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -73,16 +83,20 @@ export class VerifyComponent implements OnInit {
         });
       },
       error: (error) => {
-        if(error.message == "Invalid OTP") {
+        if (error.message == "Invalid OTP") {
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,
             icon: "error",
-          })
+          });
         } else {
+          this._verifyEvent.end({
+            result: "failure",
+            failReason: error.message,
+          });
+          this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
-        
       },
     });
   }
@@ -117,7 +131,7 @@ export class VerifyComponent implements OnInit {
             Swal.showLoading();
             this.restService.resendVerificationLink(email, password).subscribe({
               next: () => {
-                localStorage.removeItem('otpSent');
+                localStorage.removeItem("otpSent");
                 Swal.fire({
                   icon: "success",
                   title: "Check your email and verify again",
@@ -128,12 +142,18 @@ export class VerifyComponent implements OnInit {
           }
         });
       } else {
-        window.location.href = `${this.domain}/contact.html`
+        window.location.href = `${this.domain}/contact.html`;
       }
     });
   }
 
   get domain() {
     return environment.domain;
+  }
+
+  private startVerifyEvent() {
+    this._verifyEvent = this.countlyService.startEvent(
+      "signup - Account Verification"
+    );
   }
 }
