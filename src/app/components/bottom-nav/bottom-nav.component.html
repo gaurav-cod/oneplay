@@ -38,7 +38,7 @@
       <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
-        [routerLink]="gameLink"
+        (click)="viewGame()"
         placement="top"
         ngbTooltip="{{ gamePlayTooltip }}"
         triggers="click:blur"

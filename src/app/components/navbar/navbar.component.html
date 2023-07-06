@@ -93,10 +93,8 @@
               <div
                 *ngFor="let game of results"
                 class="row gameRowHover py-2 mx-1 searchListing"
-                [routerLink]="['/view/' + (game | glink)]"
-                [queryParams]="keywordQuery"
                 style="cursor: pointer"
-                (click)="isMenuCollapsed = true"
+                (click)="viewGameFromSearch(game)"
               >
                 <div class="col-6 align-self-center">
                   <img
@@ -205,7 +203,7 @@
             <a
               href="javascript:void(0)"
               class="nav-link p-0"
-              [routerLink]="gameLink"
+              [routerLink]="viewGame()"
               ngbTooltip="{{ gamePlayTooltip }}"
             >
               <img
@@ -238,44 +236,6 @@
               />
             </a>
           </div>
-          <!-- notifications dropdown -->
-          <!-- <div
-            class="col-auto align-self-center p-1"
-            ngbDropdown
-            placement="bottom-rigth"
-          >
-            <a
-              href="javascript:void(0)"
-              class="nav-link pr-0 mt-2"
-              role="button"
-              ngbDropdownToggle
-            >
-              <button class="btn text-white p-0">
-                <i class="fas fa-bell font20 mr-0"></i>
-                <span
-                  class="badge badge-danger ml-0 notificationBadge text-white pl-2 pr-2"
-                  >9+</span
-                >
-              </button>
-            </a>
-            <div
-              class="dropdown-menu-arrow menudropdown dropdown-menu-right"
-              ngbDropdownMenu
-            >
-              <div class="dropdown-header noti-title">
-                <h6 class="text-overflow m-0 text-white">Notifications</h6>
-              </div>
-              <div class="dropdown-divider borderColor"></div>
-              <a
-                href="javascript:void(0)"
-                *ngFor="let notification of notifications"
-                class="dropdown-item"
-                [routerLink]="['/view/' + (notification.game | glink)]"
-              >
-                <div class="notification-content"></div>
-              </a>
-            </div>
-          </div> -->
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
