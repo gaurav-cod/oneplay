@@ -4,6 +4,14 @@ export type CountlyEventType =
   | "cancel_event"
   | "end_event";
 
+export type CountlyUserData = {
+  name: string;
+  gender?: 'M' | 'F';
+  username?: string;
+  byear?: number;
+  picture?: string;
+}
+
 export type CountlyEventData = {
   key: string;
   sum?: number;

@@ -5,6 +5,7 @@ import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -12,7 +13,6 @@ import Swal from "sweetalert2";
   selector: "app-basic-info",
   templateUrl: "./basic-info.component.html",
   styleUrls: ["./basic-info.component.scss"],
-  providers: [AvatarPipe],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
   username = new UntypedFormControl("", [
@@ -39,7 +39,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly gavatar: AvatarPipe
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -120,7 +120,13 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.saveProfileLoder = true;
 
     this.restService.updateProfile(body).subscribe(
-      () => {
+      (data) => {
+        this.countlyService.updateUser('username', data.username);
+        this.countlyService.updateUser('name', data.name);
+        if (data.photo) {
+          this.countlyService.updateUser('picture', data.photo);
+        }
+        this.countlyService.saveUser();
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,

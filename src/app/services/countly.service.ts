@@ -1,11 +1,17 @@
 import { Injectable } from "@angular/core";
 import { v4 } from "uuid";
 import { RestService } from "./rest.service";
-import { CountlyEventData, CustomSegments, StartEvent } from "./countly";
+import {
+  CountlyEventData,
+  CountlyUserData,
+  CustomSegments,
+  StartEvent,
+} from "./countly";
 import { environment } from "src/environments/environment";
 import { AuthService } from "./auth.service";
 import Cookies from "js-cookie";
 import * as moment from "moment";
+import { Gender } from "../models/user.model";
 
 declare const Countly: any;
 
@@ -91,6 +97,21 @@ export class CountlyService {
     });
   }
 
+  updateUser<T extends keyof CountlyUserData>(
+    key: T,
+    value: CountlyUserData[T],
+    save = false
+  ) {
+    Countly.userData.set(key, value);
+    if (save) {
+      this.saveUser();
+    }
+  }
+
+  saveUser() {
+    Countly.userData.save();
+  }
+
   private keyOfKey = (k: string): string => `${this.countly_prefix_key} - ${k}`;
 
   private setDeviceId(deviceId: string) {
@@ -142,20 +163,35 @@ export class CountlyService {
     Countly.track_forms();
 
     this.authService.user.subscribe((user) => {
-      if (user) {
-        if (user.id !== deviceId) {
-          deviceId = user.id;
-          Countly.change_id(user.id);
-          this.setDeviceId(user.id);
-        }
-        Countly.user_details({
+      if (user && user.id !== deviceId) {
+        const option: CountlyUserData = {
           name: user.name,
-          username: user.username,
-          email: user.email,
-          phone: user.phone,
-          picture: user.photo,
-          gender: user.gender,
-        });
+        };
+
+        switch (user.gender) {
+          case Gender.Male:
+            option.gender = "M";
+            break;
+          case Gender.Female:
+            option.gender = "F";
+        }
+
+        if (user.username) {
+          option.username = user.username;
+        }
+
+        if (user.age) {
+          option.byear = new Date().getFullYear() - user.age;
+        }
+
+        if (user.photo) {
+          option.picture = user.photo;
+        }
+
+        Countly.user_details(option);
+        deviceId = user.id;
+        Countly.change_id(user.id);
+        this.setDeviceId(user.id);
       }
     });
 
