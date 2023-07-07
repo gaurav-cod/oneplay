@@ -9,13 +9,6 @@ import * as moment from "moment";
 
 declare const Countly: any;
 
-const countlyScript =
-  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/lib/countly.min.js";
-const boomerangScript =
-  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/plugin/boomerang/boomerang.min.js";
-const countlyBoomerangScript =
-  "https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/plugin/boomerang/countly_boomerang.js";
-
 @Injectable({
   providedIn: "root",
 })
@@ -111,8 +104,6 @@ export class CountlyService {
   private _addEvent = (data: CountlyEventData): void => Countly.add_event(data);
 
   private async initCountly() {
-    await this.loadScript(countlyScript);
-
     let deviceId = Cookies.get("countly_device_id");
     const userId = this.authService.userIdAndToken?.userid;
     let newDeviceId: string | null = null;
@@ -168,13 +159,6 @@ export class CountlyService {
       }
     });
 
-    this.initPerformanceTracking();
-  }
-
-  private async initPerformanceTracking() {
-    await this.loadScript(boomerangScript);
-    await this.loadScript(countlyBoomerangScript);
-
     Countly.q.push([
       "track_performance",
       {
@@ -199,15 +183,5 @@ export class CountlyService {
         },
       },
     ]);
-  }
-
-  private loadScript(src: string): Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      const script = document.createElement("script");
-      script.src = src;
-      document.getElementsByTagName("head")[0].appendChild(script);
-      script.onload = () => resolve();
-      script.onerror = () => reject("Failed to load " + src);
-    });
   }
 }
