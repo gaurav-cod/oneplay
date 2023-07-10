@@ -1160,3 +1160,7 @@ select {
   background-size: cover;
   background-position: center;
 }
+.alert-dismissible .close {
+  top: 12% !important;
+  right: 1px !important;
+}

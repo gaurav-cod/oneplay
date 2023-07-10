@@ -22,7 +22,7 @@
     <div *ngFor="let game of games" class="col-sm-12 col-md-6 col-lg-3 mb-4">
       <a
         href="javascript:void(0)"
-        [routerLink]="['/view/' + (game | glink)]"
+        (click)="vieGame(game)"
         class="card card-block border-0"
       >
         <img

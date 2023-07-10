@@ -32,7 +32,16 @@
       </div>
       <div class="row">
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText required">Username</label>
+          <label class="font16 font500 offWhiteText required">
+            Username
+            <i
+              class="fas fa-info-circle ml-1"
+              ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
+              placement="bottom"
+              triggers="click:blur"
+            >
+            </i>
+          </label>
           <span
             *ngIf="username.touched && username.invalid"
             class="font16 font500 errorGradientColor float-right"

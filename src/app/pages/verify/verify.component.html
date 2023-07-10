@@ -1,37 +1,36 @@
-<div class="card-header bg-transparent pb-1">
-  <h2 class="text-white mt-2 mb-1">Verify Mobile Number</h2>
-  <div *ngIf="otpSent" class="text-muted">
-    <small> Check your mobile for the verification code </small>
-  </div>
-</div>
-<div *ngIf="!otpSent" class="card-body px-lg-4 py-lg-3">
-  <button
-    class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
-    (click)="getOTP()"
-  >
-    Get OTP
-  </button>
-</div>
-<div *ngIf="otpSent" class="card-body px-lg-4 py-lg-3">
-  <div class="form-group mb-3">
-    <input
-      [formControl]="otp"
-      class="form-control bg-dark"
-      placeholder="Enter OTP"
-      type="text"
-    />
-  </div>
-  <div class="d-flex justify-content-between">
-    <button type="button" class="btn btn-link" (click)="getOTP()">
-      Resend OTP
-    </button>
-    <button
-      type="button"
-      class="btn linearGradient border-0 borderRadius10 font16 font500 text-white"
-      (click)="verify()"
-      [disabled]="!otp.valid"
-    >
-      Verify
-    </button>
+<h2 class="text-white">Verify Mobile Number</h2>
+<button
+  *ngIf="!otpSent"
+  class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white mt-3"
+  (click)="getOTP()"
+>
+  Get OTP
+</button>
+<div *ngIf="otpSent">
+  <p class="mutedTextColor font500 mb-0"> Check your mobile for the verification code </p>
+  <div class="row">
+    <div class="col-12 my-3">
+      <input
+        [formControl]="otp"
+        class="form-control p-0 mutedColor inputFocus formControlCSS"
+        placeholder="Enter OTP"
+        type="text"
+      />
+    </div>
+    <div class="col-auto">
+      <button type="button" class="btn btn-link p-0 gradientInfoText" (click)="getOTP()">
+        Resend OTP
+      </button>
+    </div>
+    <div class="col text-right">
+      <button
+        type="button"
+        class="btn linearGradient border-0 borderRadius10 font16 font500 text-white"
+        (click)="verify()"
+        [disabled]="!otp.valid"
+      >
+        Verify
+      </button>
+    </div>
   </div>
 </div>

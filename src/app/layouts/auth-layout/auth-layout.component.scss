@@ -11,6 +11,8 @@
 .height100vh {
   height: 100vh;
   align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: 0px;
