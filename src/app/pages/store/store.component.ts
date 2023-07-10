@@ -18,7 +18,7 @@ export class StoreComponent implements OnInit {
   pagelimit = 24;
   isLoading = false;
   canLoadMore = true;
-  genreSelected: string = '';
+  genreSelected: string = "";
 
   private queries = {
     // "All Games": {
@@ -50,18 +50,18 @@ export class StoreComponent implements OnInit {
         is_free: "true",
       },
     },
-    Steam: {
-      label: "store",
-      value: {
-        stores: "Steam",
-      },
-    },
-    "Epic Games": {
-      label: "store",
-      value: {
-        stores: "Epic Games",
-      },
-    },
+    // Steam: {
+    //   label: "store",
+    //   value: {
+    //     stores: "Steam",
+    //   },
+    // },
+    // "Epic Games": {
+    //   label: "store",
+    //   value: {
+    //     stores: "Epic Games",
+    //   },
+    // },
   };
 
   get routes() {
@@ -97,24 +97,25 @@ export class StoreComponent implements OnInit {
     private readonly title: Title,
     private readonly loaderService: NgxUiLoaderService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router,
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe({
       next: (params) => {
-      this.heading = params.filter || "All Games";
-      const query = params.filter;
-      if (!query) {
-        this.genreSelected = '';
-      } else {
-        this.genreSelected = query;
-      } 
-      this.title.setTitle("OnePlay | " + (params.filter || "Store"));
-      this.canLoadMore = true;
-      this.currentPage = 0;
-      this.loadGames();
-    }});
+        this.heading = params.filter || "All Games";
+        const query = params.filter;
+        if (!query) {
+          this.genreSelected = "";
+        } else {
+          this.genreSelected = query;
+        }
+        this.title.setTitle("OnePlay | " + (params.filter || "Store"));
+        this.canLoadMore = true;
+        this.currentPage = 0;
+        this.loadGames();
+      },
+    });
 
     this.restService.getTopGenres(3).subscribe((genres) => {
       genres.forEach((genre) => {
@@ -143,6 +144,14 @@ export class StoreComponent implements OnInit {
           value: {
             publisher: publisher,
           },
+        };
+      });
+    });
+    this.restService.getGameStores().subscribe((stores) => {
+      stores.forEach((store) => {
+        this.queries[store.name] = {
+          label: "store",
+          value: { stores: store.name },
         };
       });
     });
@@ -177,8 +186,8 @@ export class StoreComponent implements OnInit {
         },
         (error) => {
           this.stopLoading(0);
-          if(error.timeout) {
-            this.router.navigateByUrl('/server-error')
+          if (error.timeout) {
+            this.router.navigateByUrl("/server-error");
           }
         }
       );
@@ -190,7 +199,11 @@ export class StoreComponent implements OnInit {
     }
     this.startLoading(this.currentPage + 1);
     this.restService
-      .getFilteredGames(this.queries[this.heading]?.value, this.currentPage + 1, this.pagelimit)
+      .getFilteredGames(
+        this.queries[this.heading]?.value,
+        this.currentPage + 1,
+        this.pagelimit
+      )
       .subscribe(
         (games) => {
           this.games = [...this.games, ...games];
