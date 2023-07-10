@@ -27,20 +27,10 @@
           name="password"
           #passwordField
         />
-        <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
-          <img
-            [src]="
-              passwordField.type == 'password'
-                ? 'assets/img/singup-login/Views.svg'
-                : 'assets/img/singup-login/Group.svg'
-            "
-            (click)="
-              passwordField.type =
-                passwordField.type == 'password' ? 'text' : 'password'
-            "
-            class="img-fluid"
-            alt=""
-          />
+        <span
+          class="bgTransparent fixedIcon offWhiteColor font16 font500"
+          >
+          <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
         </span>
       </div>
     </div>
