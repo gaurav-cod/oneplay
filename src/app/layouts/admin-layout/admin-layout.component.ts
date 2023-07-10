@@ -11,13 +11,11 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Appearance, Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription, lastValueFrom, map } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
-import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import { CARD_STYLE } from "src/app/variables/card-style";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -57,7 +55,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gameService: GameService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -197,22 +194,18 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   async onPay() {
     this.stripeLoad = true;
-    let html = "Your plan is now activated, and you're ready to start your journey!";
-    let title = "Awesome!";
+    let popupId = 0;
 
     if(this.planType == 'base') {
       const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
       const planTypes = subscriptions.map((s) => s.planType)
-      if(planTypes.includes('base')) {
-        html = "Your new plan will kick in right after your current one ends.";
-        title = "Kudos!";
-      }
+      if(planTypes.includes('base')) popupId = 1;
     }
 
     const { error } = await this.stripeIntent.confirmPayment({
       elements: this.stripeElements,
       confirmParams: {
-        return_url: environment.domain + "/dashboard/settings/subscription?swal=" + encodeURIComponent(JSON.stringify({html,title})),
+        return_url: environment.domain + "/dashboard/settings/subscription?swal=" + popupId,
       },
     });
 

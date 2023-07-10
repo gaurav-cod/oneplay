@@ -7,8 +7,6 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { ROUTES } from "../sidebar/sidebar.component";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
@@ -33,12 +31,10 @@ import { CountlyService } from "src/app/services/countly.service";
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.scss"],
-  providers: [GLinkPipe, AvatarPipe],
+  providers: [GLinkPipe],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public listTitles: any[];
-  public location: Location;
   public query = new UntypedFormControl("");
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
@@ -147,19 +143,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    location: Location,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
-    private readonly gavatar: AvatarPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService
   ) {
-    this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
     this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
@@ -170,7 +163,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.listTitles = ROUTES.filter((listTitle) => listTitle);
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -265,20 +257,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       title: "Error Code: " + error.code,
       text: error.message,
     });
-  }
-
-  getTitle() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === "#") {
-      titlee = titlee.slice(1);
-    }
-
-    for (var item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
-      }
-    }
-    return "Oneplay";
   }
 
   search(value: string) {
