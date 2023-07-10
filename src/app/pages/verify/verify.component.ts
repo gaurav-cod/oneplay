@@ -42,30 +42,17 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   timer(minute) {
-    // let minute = 1;
-    let seconds: number = minute * 60;
-    let textSec: any = "0";
-    let statSec: number = 60;
-
-    const prefix = minute < 10 ? "0" : "";
-
+    let seconds: any = 60;
     const timer = setInterval(() => {
       seconds--;
-      if (statSec != 0) statSec--;
-      else statSec = 59;
-
-      if (statSec < 10) {
-        textSec = "0" + statSec;
-      } else textSec = statSec;
-
-      this.display = `${prefix}${Math.floor(seconds / 60)}:${textSec}`;
+      const prefix = seconds < 10 ? "0" : "";
+      this.display = `${prefix}${seconds}`;
       this.remainingTimer = true;
       if (seconds == 0) {
         this.remainingTimer = false;
         clearInterval(timer);
       }
     }, 1000);
-    
   }
 
   getOTP() {
@@ -81,21 +68,17 @@ export class VerifyComponent implements OnInit, OnDestroy {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        this.timer(1);
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
         this.sendingOTP = false;
-        if(err.message == "Wait for 60 seconds before you can request new secret code.") {
-          this.timer(1);
-        } else {
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
-        }
-        
+        Swal.fire({
+          title: "Error Code: " + err.code,
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     );
   }
