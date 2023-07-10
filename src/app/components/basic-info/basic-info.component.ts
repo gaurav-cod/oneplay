@@ -44,7 +44,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe((user) => {
-      this.user  = user;
       this.currentUserState = user;
       this.username.setValue(user.username);
       this.name.setValue(user.name);
@@ -67,9 +66,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get isChanged() {
-    return this.name.value !== this.user.name ||
-    this.username.value !== this.user.username ||
-    this.bio.value !== (this.user.bio ?? '');
+    return this.name.value !== this.currentUserState.name ||
+    this.username.value !== this.currentUserState.username ||
+    this.bio.value !== (this.currentUserState.bio ?? '') || 
+    !!this.photoFile;
   }
 
   onUserError(event) {
@@ -113,15 +113,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     }
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
-    }
-
-    if (
-      this.currentUserState.username == (this.username.value ?? null) &&
-      this.currentUserState.name == this.name.value &&
-      this.currentUserState.bio == (this.bio.value ?? null) &&
-      !body.profile_image
-    ) {
-      return;
     }
 
     this.saveProfileLoder = true;
