@@ -2,11 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-
-declare var gtag: Function;
 
 @Component({
   selector: "app-qr-signup",
@@ -24,7 +23,8 @@ export class QrSignupComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly loaderService: NgxUiLoaderService
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnDestroy(): void {
@@ -97,10 +97,10 @@ export class QrSignupComponent implements OnInit {
               setTimeout(() => this.loginWithSession(code, token), 1000);
             }
           } else {
-            gtag("event", "login", {
-              event_category: "user",
-              event_label: "tv",
-            });
+            // this.countlyService.add_event({ key: 'login', segmentation: {
+            //   event_category: "user",
+            //   event_label: "tv",
+            // }});
             this.authService.login(sessionToken);
           }
         },

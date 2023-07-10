@@ -1,4 +1,5 @@
 export const environment = {
+  appVersion: "2.6.4",
   production: true,
   cookie_domain: "oneream.com",
   domain: "https://www.oneream.com",
@@ -19,6 +20,10 @@ export const environment = {
     messagingSenderId: "744840875406",
     appId: "1:744840875406:web:056e488d551ade3e9ba8df",
     measurementId: "G-X80K2YEKBS",
+  },
+  countly: {
+    key: '19eab6488620f4a36d34a08519392028a1acd920',
+    url: 'https://dev.countly.oneream.com/',
   },
   webrtc_prefix: 'https://www.oneream.com/webplay',
 };

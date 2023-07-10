@@ -435,12 +435,12 @@
 </ng-template>
 
 <!-- small modal to select resolution, vsync and fps before launching the game -->
-<ng-template #smallModal let-d="dismiss">
+<ng-template #smallModal>
   <div class="modal-content position-relative modalBg">
     <a
       href="javascript:void(0)"
       class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
-      (click)="d('Cross click')"
+      (click)="dismissSettingsModal()"
     >
       <i class="fas fa-times"></i>
     </a>
@@ -568,7 +568,7 @@
     <div class="modal-footer">
       <button
         class="btn btn-gradient border-0 text-white py-3 font18 font14responsive font500 btn-block"
-        (click)="startGame()"
+        (click)="launchFromSettings()"
       >
         Launch game
       </button>
