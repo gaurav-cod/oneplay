@@ -11,13 +11,11 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Appearance, Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription, lastValueFrom, map } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
-import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import { CARD_STYLE } from "src/app/variables/card-style";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -57,7 +55,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gameService: GameService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
