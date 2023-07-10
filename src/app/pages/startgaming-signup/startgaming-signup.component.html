@@ -16,8 +16,7 @@
         Username*
         <i
           class="fas fa-info-circle ml-1"
-          tooltipClass="customTooltip"
-          ngbTooltip="Minimum 3, Maximum 12 characters. Must start with letter, special characters and spaces not allowed."
+          ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
           placement="bottom"
           triggers="click:blur"
         >
@@ -50,15 +49,15 @@
           placeholder="DD\MM\YY"
           ngbDatepicker
           #d="ngbDatepicker"
-          (focus)="d.toggle()"
+          (click)="d.toggle()"
           (dateSelect)="d.toggle()"
-          [maxDate]="maxDate"
           [minDate]="minDate"
+          [maxDate]="maxDate"
         />
-        <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
+        <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
           <img
             class="img-fluid"
-            src="assets/img/singup-login/Calendar.svg"
+            src="assets/img/singup-login/fontAwesomeCalender.svg"
             alt=""
           />
         </span>

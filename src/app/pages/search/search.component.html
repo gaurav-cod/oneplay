@@ -73,8 +73,7 @@
       >
         <div
           class="row h-100 gameRowHover py-2"
-          [routerLink]="['/view/' + (game | glink)]"
-          [queryParams]="keywordQuery"
+          (click)="viewGame(game)"
           style="cursor: pointer"
         >
           <div class="col-auto">

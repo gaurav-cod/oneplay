@@ -1154,9 +1154,15 @@ select {
   margin-bottom: 10px !important;
 }
 
+
 .pageBg {
   background-image: url('./assets/img/speed-test/image23.svg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+
+.alert-dismissible .close {
+  top: 12% !important;
+  right: 1px !important;
 }

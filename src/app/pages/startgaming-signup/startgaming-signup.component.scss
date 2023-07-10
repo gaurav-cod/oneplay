@@ -92,9 +92,3 @@ input:-webkit-autofill:active  {
         line-height: 26px;
     }
 } 
-
-::ng-deep .customTooltip .tooltip-inner {
-    max-width: 90%;
-    width: 90%; 
-    margin: 1px auto;
-}

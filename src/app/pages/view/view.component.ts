@@ -37,8 +37,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
-
-declare var gtag: Function;
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from 'src/app/services/countly';
 
 @Component({
   selector: "app-view",
@@ -115,6 +115,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
   private isConnected: boolean = false;
+  private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
+  private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
   constructor(
     private readonly location: Location,
@@ -128,7 +130,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly gamepadService: GamepadService,
     private readonly toastService: ToastService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly countlyService: CountlyService
   ) {
     const userAgent = new UAParser();
 
@@ -441,10 +444,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.addToWishlist(this.game.oneplayId);
-      gtag("event", "add_to_wishlist", {
-        event_category: "wishlist",
-        event_label: this.game.title,
-      });
     });
   }
 
@@ -453,10 +452,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
-      gtag("event", "remove_from_wishlist", {
-        event_category: "wishlist",
-        event_label: this.game.title,
-      });
     });
   }
 
@@ -484,7 +479,17 @@ export class ViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.action === "Resume" && this.isConnected && !skipCheckResume) {
+    if (!skipCheckResume) {
+      this.countlyService.addEvent("gamePlay - Start", {
+        gameID: this.game.oneplayId,
+        gameTitle: this.game.title,
+        gameGenre: this.game.genreMappings?.join(","),
+        showSettingEnabled: this.showSettings.value,
+        store: this.selectedStore.name,
+      });
+    }
+
+    if (this.action === "Resume" && !skipCheckResume && this.isConnected) {
       const result = await Swal.fire({
         title: "Hold Up!",
         text: "Resuming your journey here? It will terminate your session from other device!",
@@ -516,7 +521,18 @@ export class ViewComponent implements OnInit, OnDestroy {
           this._settingsModalRef = this.ngbModal.open(container, {
             centered: true,
             modalDialogClass: "modal-md",
+            backdrop: "static",
+            keyboard: false,
           });
+          this._settingsEvent = this.countlyService.startEvent(
+            "gamePlay - Settings Page View",
+            {
+              unique: true,
+              data: {
+                advancedSettingsPageViewed: "no",
+              },
+            }
+          );
         } else {
           this.startGame();
         }
@@ -537,6 +553,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-md",
     });
+    this._settingsEvent.update({
+      advancedSettingsPageViewed: "yes",
+    });
   }
 
   terminateSession(): void {
@@ -549,6 +568,15 @@ export class ViewComponent implements OnInit, OnDestroy {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
+          this.countlyService.endEvent('gameLaunch');
+          this.countlyService.startEvent("gameFeedback", {
+            unique: true,
+            data: {
+              gameID: this.game.oneplayId,
+              gameTitle: this.game.title,
+              gameGenre: this.game.genreMappings?.join(","),
+            },
+          });
           this.router.navigate(["/quit"], {
             queryParams: {
               session_id: this.sessionToTerminate,
@@ -593,10 +621,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._launchModalRef?.close();
   }
 
-  startGame(): void {
-    if (this.startingGame) {
-      return;
-    }
+  launchFromSettings() {
+    this._settingsEvent?.end({
+      resolution: this.resolution.value,
+      FPS: this.fps.value,
+      bitRate: this.bitrate.value,
+    });
 
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
@@ -606,12 +636,24 @@ export class ViewComponent implements OnInit, OnDestroy {
       JSON.stringify(this.advancedOptions.value)
     );
 
-    gtag("event", "start_game", {
-      event_category: "game",
-      event_label: this.game.title,
-    });
-
     this._settingsModalRef?.close();
+    this.startGame();
+  }
+
+  dismissSettingsModal() {
+    this._settingsEvent?.cancel();
+    this._settingsModalRef?.dismiss();
+  }
+
+  startGame(): void {
+    if (this.startingGame) {
+      return;
+    }
+
+    this._initializeEvent = this.countlyService.startEvent(
+      "gamePlay - Initilization"
+    );
+
     this.startLoading();
 
     if (this._gamepads.length > 0) {
@@ -659,6 +701,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else if (data.data.api_action === "call_terminate") {
       this.terminateGame(data.data.session.id);
     } else {
+      this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
       Swal.fire({
         title: "No server available!",
@@ -687,6 +730,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       err.code == 610 ||
       err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
     ) {
+      this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
       Swal.fire({
         title: "Alert !",
@@ -695,6 +739,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         confirmButtonText: "Okay",
       });
     } else {
+      this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
       Swal.fire({
         title: "Error Code: " + err.code,
@@ -715,6 +760,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       message.split(";");
 
     if (!this._waitQueueModalRef) {
+      this._initializeEvent?.end({ result: "wait" });
       this._waitQueueModalRef = this.ngbModal.open(this.waitQueueModal, {
         centered: true,
         modalDialogClass: "modal-sm",
@@ -736,6 +782,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
+      this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
       Swal.fire({
         title: "Oops...",
@@ -776,6 +823,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
     if (!!data.client_token) {
       this._clientToken = data.client_token;
+      const launchedFrom = this.action === "Play" ? "Play now" : "Resume";
       lastValueFrom(this.restService.getGameStatus())
         .then((status) => {
           this.stopLoading();
@@ -788,6 +836,16 @@ export class ViewComponent implements OnInit, OnDestroy {
           if (MediaQueries.isAddedToHomeScreen) {
             this.startGameWithWebRTCToken();
           } else {
+            this._initializeEvent?.end({ result: "success" });
+            this.countlyService.startEvent("gameLaunch", {
+              data: {
+                gameID: this.game.oneplayId,
+                gameTitle: this.game.title,
+                gameGenre: this.game.genreMappings?.join(","),
+                from: launchedFrom,
+                gamesessionid: sessionId,
+              },
+            });
             this.launchGame();
             this._launchModalRef = this.ngbModal.open(this.launchModal, {
               centered: true,
@@ -819,6 +877,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startGameWithClientTokenFailed(err: any) {
+    this._initializeEvent?.end({ result: "failure" });
     this.stopLoading();
     Swal.fire({
       title: "Error Code: " + err.code,
@@ -976,12 +1035,14 @@ export class ViewComponent implements OnInit, OnDestroy {
               if (res.isConfirmed) {
                 this.terminateGame(sessionId);
               } else {
+                this._initializeEvent?.end({ result: "failure" });
                 this.stopLoading();
               }
             });
           }
         );
       } else {
+        this._initializeEvent?.end({ result: "failure" });
         this.stopLoading();
       }
     });

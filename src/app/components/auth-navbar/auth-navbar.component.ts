@@ -18,6 +18,11 @@ export class AuthNavbarComponent implements OnInit {
     });
   }
 
+  logoGuard(e) {
+    if (location.pathname === '/dashboard/start-gaming')
+    e.preventDefault();
+  }
+
   get domain() {
     return environment.domain;
   }

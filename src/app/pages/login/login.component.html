@@ -6,9 +6,7 @@
       </h1>
     </div>
     <div class="col-md-12 mt-3">
-      <label class="font16 font500 customOffWhite"
-        >Email / Phone</label
-      >
+      <label class="font16 font500 customOffWhite">Email / Phone</label>
       <input
         type="email"
         #emailId
@@ -20,9 +18,7 @@
       />
     </div>
     <div class="col-md-12 mt-4">
-      <label class="font16 font500 customOffWhite"
-        >Password</label
-      >
+      <label class="font16 font500 customOffWhite">Password</label>
       <div class="input-group">
         <input
           type="password"
@@ -34,18 +30,22 @@
         <span
           class="bgTransparent fixedIcon offWhiteColor font16 font500"
           >
-          <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Views.svg':'assets/img/singup-login/Group.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
+          <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
         </span>
       </div>
     </div>
     <div class="col-12">
       <div class="row">
-        <div class="col-lg-6 col-md-6 col-auto mt-5 custom align-self-center pr-0">
+        <div
+          class="col-lg-6 col-md-6 col-auto mt-5 custom align-self-center pr-0"
+        >
           <div class="custom-control custom-switch mt-lg-2">
             <input
               type="checkbox"
               class="custom-control-input font16 align-middle"
               id="customCheckLogin"
+              [(ngModel)]="rememberMe"
+              [ngModelOptions]="{ standalone: true }"
               checked
             />
             <label
@@ -85,13 +85,13 @@
       </p>
       <div class="row mb-4 hideInSmallScreen">
         <div class="col-12 mt-3">
-            <a
-              href="javascript:void(0)"
-              [routerLink]="['/qr-login']"
-              class="btn btn-block borderRadius10 border-0 font18 font500 activelinear text-white"
-            >
-              <span className="align-middle">Sign In with QR or Web</span>
-            </a>
+          <a
+            href="javascript:void(0)"
+            [routerLink]="['/qr-login']"
+            class="btn btn-block borderRadius10 border-0 font18 font500 activelinear text-white"
+          >
+            <span className="align-middle">Sign In with QR or Web</span>
+          </a>
         </div>
       </div>
     </div>
@@ -108,17 +108,24 @@
           alt=""
         />
       </div>
-      <h1 class="text-white font20 font600 mb-4 mt-4">
-        Warning
-      </h1>
+      <h1 class="text-white font20 font600 mb-4 mt-4">Warning</h1>
       <p class="font16 font500 muteText">
         Please check your email to confirm your email id
       </p>
       <p class="font16 font500 muteText">
         Didn’t get mail?
-        <a href="javascript:void(0)" class="btn p-0 border-0 font18 borderRadius10 font500 gradientText" (click)="resendVerificationLink()"><u>send again</u></a>
+        <a
+          href="javascript:void(0)"
+          class="btn p-0 border-0 font18 borderRadius10 font500 gradientText"
+          (click)="resendVerificationLink()"
+          ><u>send again</u></a
+        >
       </p>
-      <a class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white" (click)="d('Close')">OK</a>
+      <a
+        class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white"
+        (click)="d('Close')"
+        >OK</a
+      >
     </div>
   </div>
 </ng-template>
