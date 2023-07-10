@@ -54,7 +54,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild("search") searchElement: ElementRef;
 
   isMenuCollapsed = true;
-  searchMenu = false;
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -328,13 +327,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.results = res.results;
       this.keyword = res.keyword;
       this.keywordHash = res.keywordHash;
-      this.searchMenu = true;
     });
   }
 
   onBlur() {
     this.focus.next(false);
-    this.searchMenu = false;
   }
 
   open(container) {

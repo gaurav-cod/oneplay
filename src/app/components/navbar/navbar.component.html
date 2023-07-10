@@ -86,7 +86,7 @@
               </span>
             </div>
             <div
-              *ngIf="searchMenu"
+              *ngIf="focus | async"
               class="position-absolute w-100 bg-dark list-group border-0 searchDropdown"
               style="top: calc(100% + 8px); max-height: calc(99vh - 79px);"
             >
@@ -176,7 +176,7 @@
                 </button>
               </div>
               <div
-                *ngIf="results.length === 0"
+                *ngIf="results.length === 0 && uResults.length === 0"
                 class="font16 font500 offWhitecolor mx-3 py-2"
               >
                 Sorry, No Results Found!
