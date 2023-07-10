@@ -32,6 +32,8 @@ export class OnboardingModalsComponent implements AfterViewInit {
   searchText = "";
   checked: boolean = false;
   games_array = [];
+  
+  private selected_games = [];
 
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
@@ -144,7 +146,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     this._selectgameRef.close()  
     this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
     this.authService.wishlist = of(this.selectedGameIds)
-    localStorage.removeItem('selected_games');
+    this.selected_games = []
   }
 
   public async closeonboardingGame() {
@@ -168,9 +170,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
       this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      let selected_games = JSON.parse(localStorage.getItem('selected_games') || "[]");
-      selected_games.push(game);
-      localStorage.setItem('selected_games', JSON.stringify(selected_games));
+      this.selected_games.push(game);
     } else {
       this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
     }
@@ -178,8 +178,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   }
 
   public orderGames () {
-    let selected_games = JSON.parse(localStorage.getItem('selected_games') || "[]");
-    this.games_array = [...selected_games];
+    this.games_array = [...this.selected_games];
     this.games.forEach(game => {
       if(!this.isChecked(game)) {
         this.games_array.push(game);
