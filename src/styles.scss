@@ -1000,19 +1000,6 @@ html.swal2-shown,body.swal2-shown {
   background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%);
 }
 
-@media (min-width: 991.1px) {
-  .height100vh {
-    overflow-y: scroll !important;
-    -ms-overflow-style: none; /* IE 11 */
-    scrollbar-width: none; 
-  }
-}
-
-.height100vh::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
-
 .dropdown-item:hover, .dropdown-item:focus {
   background-color: transparent !important;
   color: #ffffff !important;
@@ -1165,4 +1152,9 @@ select {
 
 .dateDropdown .ngb-dp-navigation-select {
   margin-bottom: 10px !important;
+}
+
+.alert-dismissible .close {
+  top: 12% !important;
+  right: 1px !important;
 }

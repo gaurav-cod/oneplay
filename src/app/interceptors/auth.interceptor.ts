@@ -31,19 +31,20 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
+    const isRenderMixAPI = req.urlWithParams.startsWith(
+      environment.render_mix_api
+    );
+
     return next
       .handle(req)
-      .pipe(timeout(5000))
+      .pipe(timeout(isRenderMixAPI ? 5000 : 30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
         catchError((error: HttpErrorResponse) => {
-          if (
-            req.urlWithParams.startsWith(environment.render_mix_api) &&
-            error.status === 401
-          ) {
+          if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
-          
+
           const code = Number(error.error?.code) || error.status || 503;
 
           throw new HttpErrorResponse({

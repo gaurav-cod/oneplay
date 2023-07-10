@@ -1,27 +1,55 @@
-// .main-content {
-//     background-image: url('../../../assets/img/Sign\ in\ Background\ Image\ -\ Desktop.png');
-//     background-size: cover;
-//     min-height: 100vh;
-
-//     .backdrop {
-//         width: 100vw;
-//         min-height: 100vh;
-//         background-color: rgba(0, 0, 0, 0.363);
-
-//         @media (max-width: 756px) {
-//             backdrop-filter: blur(100px);
-//             -webkit-backdrop-filter: blur(100px);
-//         }
-//     }
-// }
-
 @media (max-width: 768px) {
-    .desktopView {
-        display: none;
-    }
+  .desktopView {
+    display: none;
+  }
 }
 
 .bodyBg {
-    background-color: #151617;
+  background-color: #151515;
 }
 
+.height100vh {
+  height: 100vh;
+  align-items: center;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
+  @media (max-width: 991.9px) {
+    height: 90vh;
+    overflow-y: scroll !important;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none;
+  }
+}
+
+.width450 {
+  width: 450px !important;
+}
+
+.borderBottom {
+  border-bottom: 1px solid #3e4246;
+}
+
+.offWhiteColor {
+  color: #959595 !important;
+}
+
+.offWhiteColor:hover {
+  color: #959595 !important;
+}
+
+.purpleGradient {
+  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footerWhiteColor {
+  color: #e1e1e1;
+}

@@ -6,17 +6,22 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from 'src/app/services/countly';
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from "ua-parser-js";
-
-declare var gtag: Function;
 
 @Component({
   selector: "app-login",
@@ -24,6 +29,7 @@ declare var gtag: Function;
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
+  rememberMe = true;
   loginForm = new UntypedFormGroup({
     id: new UntypedFormControl("", Validators.required),
     password: new UntypedFormControl("", Validators.required),
@@ -33,6 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
 
   private _verifySwalModalRef: NgbModalRef;
+  private _signinEvent: StartEvent<"signin">;
 
   constructor(
     private readonly restService: RestService,
@@ -40,15 +47,20 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService
   ) {}
+
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
   }
 
   ngOnInit() {
     this.title.setTitle("Login");
+    this.startSignupEvent();
   }
+
   ngOnDestroy() {
+    this._signinEvent.cancel();
     Swal.close();
   }
 
@@ -71,12 +83,17 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "click",
+    });
+    this._signinEvent.update({
+      signinFromTrigger: "click",
+      rememberMeActivated: this.rememberMe ? "yes" : "no",
+    });
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        gtag("event", "login", {
-          event_category: "user",
-          event_label: this.loginForm.value.id,
-        });
+        this._signinEvent.end({ result: "success" });
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();
@@ -84,7 +101,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.login(token);
       },
       (error) => {
-        if(error.message == "Please verify your email and phone number") {
+        this._signinEvent.end({ result: "failure" });
+        this.startSignupEvent();
+        if (error.message == "Please verify your email and phone number") {
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
             centered: true,
             modalDialogClass: "modal-md",
@@ -104,7 +123,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
-  private resendVerificationLink(error: any, token: string) {
+  resendVerificationLink(error: any, token: string) {
     const email = this.loginForm.value.id;
     const password = this.loginForm.value.password;
     this.restService.resendVerificationLink(email, password).subscribe({
@@ -114,11 +133,18 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           icon: "success",
           text: "Check your email and verify again",
         });
-      }
+      },
     });
   }
 
   get domain() {
     return environment.domain;
+  }
+
+  private startSignupEvent() {
+    this._signinEvent = this.countlyService.startEvent("signin", {
+      unique: false,
+      data: { signinFromPage: location.pathname + location.hash },
+    });
   }
 }

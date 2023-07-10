@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { CountlyService } from "src/app/services/countly.service";
 import { environment } from "src/environments/environment";
 import { v4 } from "uuid";
 
@@ -15,7 +16,7 @@ import { v4 } from "uuid";
 export class GameCardComponent implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
-  @Input("hasFixedWidth") hfw:boolean = false;
+  @Input("hasFixedWidth") hfw: boolean = false;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -31,19 +32,27 @@ export class GameCardComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly gLink: GLinkPipe,
-    private readonly loaderService: NgxUiLoaderService
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {}
 
   onGameClick() {
+    this.countlyService.addEvent("gameLandingView", {
+      gameID: this.game.oneplayId,
+      gameGenre: this.game.genreMappings?.join(","),
+      gameTitle: this.game.title,
+      page: location.pathname + location.hash,
+      trigger: "click",
+    });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
     });
   }
 
   onImgError(event) {
-    event.target.src = 'assets/img/default_bg.webp';
+    event.target.src = "assets/img/default_bg.webp";
     this.showTitle = true;
   }
 

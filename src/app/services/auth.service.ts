@@ -3,6 +3,7 @@ import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
 import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: "root",
@@ -55,7 +56,10 @@ export class AuthService {
 
   get userCanGame() {
     return this._$user.asObservable()
-    .pipe<boolean>(map(user => !!user.username && !!user.age));
+    .pipe<boolean | undefined>(map(user => {
+      if(!user) return undefined;
+      return !!user.username && !!user.age;
+    }));
   }
 
   get userIdAndToken() {
@@ -76,6 +80,7 @@ export class AuthService {
     Cookies.set("op_session_token", sessionToken, {
       domain: environment.cookie_domain,
       path: "/",
+      expires: moment().add(90, 'days').toDate(),
     });
     this._$sessionToken.next(sessionToken);
   }
@@ -88,6 +93,10 @@ export class AuthService {
 
   logout() {
     Cookies.remove("op_session_token", {
+      domain: environment.cookie_domain,
+      path: "/",
+    });
+    Cookies.remove("countly_device_id", {
       domain: environment.cookie_domain,
       path: "/",
     });

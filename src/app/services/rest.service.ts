@@ -91,17 +91,19 @@ export class RestService {
     );
   }
 
-  updateProfile(data: UpdateProfileDTO): Observable<void> {
+  updateProfile(data: UpdateProfileDTO): Observable<UserModel> {
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-    return this.http.put(this.r_mix_api + "/accounts/profile", formData).pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .put<object>(this.r_mix_api + "/accounts/profile", formData)
+      .pipe(
+        map((res) => new UserModel(res)),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   updatePassword(password: string): Observable<void> {
@@ -124,11 +126,11 @@ export class RestService {
     );
   }
 
-  verify(data: VerifySignupDTO): Observable<void> {
+  verify(data: VerifySignupDTO): Observable<string> {
     return this.http
-      .post(this.r_mix_api + "/accounts/verify_signup", data)
+      .post<object>(this.r_mix_api + "/accounts/verify_signup", data)
       .pipe(
-        map((res) => {}),
+        map((res) => res["session_token"]),
         catchError(({ error }) => {
           throw error;
         })
@@ -183,15 +185,16 @@ export class RestService {
   }
 
   verifyUserName(username: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/validate_username", { username })
-    .pipe(
-      map(res => res['success'] ?? false),
-      map(res => res ? "" : "Invalid username."),
-      catchError(({ error }) => {
-        if (error.code === 400) return of(error.message);
-        else throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/validate_username", { username })
+      .pipe(
+        map((res) => res["success"] ?? false),
+        map((res) => (res ? "" : "Invalid username.")),
+        catchError(({ error }) => {
+          if (error.code === 400) return of(error.message);
+          else throw error;
+        })
+      );
   }
 
   getSessions(): Observable<Session[]> {
@@ -228,7 +231,9 @@ export class RestService {
     limit: number
   ): Observable<SubscriptionModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {params: { page, limit },})
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
+        params: { page, limit },
+      })
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
@@ -239,11 +244,14 @@ export class RestService {
   }
 
   getProcessingSubscription(
-      page: number,
-      limit: number
-    ): Observable<SubscriptionPaymentModel[]> {
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/processing", {params: { page, limit },})
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/processing",
+        { params: { page, limit } }
+      )
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
@@ -252,7 +260,10 @@ export class RestService {
     limit: number
   ): Observable<SubscriptionPaymentModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/failed", {params: { page, limit },})
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/failed",
+        { params: { page, limit } }
+      )
       .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
   }
 
