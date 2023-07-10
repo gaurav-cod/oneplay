@@ -1,7 +1,10 @@
+// import { version } from '../../package.json';
+
 export const environment = {
+  appVersion: "2.6.4",
   production: false,
   cookie_domain: "localhost",
-  domain: "https://www.oneream.com",
+  domain: "localhost",
   client_api: "https://client-apis.oneream.com/services/v2",
   render_mix_api: "https://rendermix.oneream.com/v1",
   socket_endpoint: "https://chatservices.oneream.com",
@@ -19,6 +22,10 @@ export const environment = {
     messagingSenderId: "744840875406",
     appId: "1:744840875406:web:056e488d551ade3e9ba8df",
     measurementId: "G-X80K2YEKBS",
+  },
+  countly: {
+    key: '19eab6488620f4a36d34a08519392028a1acd920',
+    url: 'https://dev.countly.oneream.com/',
   },
   webrtc_prefix: 'http://localhost:3000/webplay',
 };

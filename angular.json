@@ -35,8 +35,11 @@
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js",
               "node_modules/clipboard/dist/clipboard.min.js",
-              "src/gamepad.js",
-              "src/script.js"
+              "src/assets/scripts/gamepad.js",
+              "src/assets/scripts/script.js",
+              "src/assets/scripts/countly.min.js",
+              "src/assets/scripts/boomerang.min.js",
+              "src/assets/scripts/countly_boomerang.js"
             ],
             "baseHref": "/dashboard/",
             "serviceWorker": true,

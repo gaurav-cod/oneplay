@@ -16,7 +16,6 @@ import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import { CARD_STYLE } from "src/app/variables/card-style";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -32,6 +31,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   currentamount: string;
   currency: string;
   planType: 'base'|'topup';
+  showOnboardingPopup = false;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
@@ -54,7 +54,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly gameService: GameService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -90,7 +90,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     this.userCanGameSubscription = this.authService.userCanGame.subscribe(u => {
-      if (u === false) {
+      if (u) {
+        this.showOnboardingPopup = true;
+      } else if (u === false) {
         this.router.navigate(['/start-gaming'], { replaceUrl: true });
       }
     });

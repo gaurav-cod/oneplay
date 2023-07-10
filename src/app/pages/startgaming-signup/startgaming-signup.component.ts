@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import Swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
 import { lastValueFrom, of } from "rxjs";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-startgaming-signup",
@@ -40,12 +41,12 @@ export class StartgamingSignupComponent implements OnInit {
 
   get usernameErrored() {
     const control = this.startGameForm.controls["username"];
-    return control.touched && control.invalid;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   get dateOfBirthErrored() {
     const control = this.startGameForm.controls["dob"];
-    return control.touched && control.invalid;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   get checkvalidationValue() {
@@ -55,7 +56,8 @@ export class StartgamingSignupComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -82,6 +84,9 @@ export class StartgamingSignupComponent implements OnInit {
       })
       .subscribe({
         next: (user) => {
+          this.countlyService.updateUser('username', this.startGameForm.value.username);
+          this.countlyService.updateUser('byear', year);
+          this.countlyService.saveUser();
           this.authService.user = of(user);
           this.router.navigate(["/home"], { replaceUrl: true });
         },
