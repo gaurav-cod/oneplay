@@ -153,10 +153,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   register() {
     const [first_name, ...last_name] = this.registerForm.value.name.trim().split(" ");
     this.loading = true;
-    this.countlyService.addEvent("signUPButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "click",
-    });
     this.restService
       .signup({
         first_name: first_name,

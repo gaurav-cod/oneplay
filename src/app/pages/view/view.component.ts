@@ -38,7 +38,7 @@ import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from 'src/app/services/countly';
+import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
   selector: "app-view",
@@ -116,6 +116,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private reportResponse: any = null;
   private isConnected: boolean = false;
   private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
+  private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
   private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
   constructor(
@@ -207,6 +208,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._webplayTokenSubscription?.unsubscribe();
+    this._settingsEvent?.cancel();
+    this._advanceSettingsEvent?.cancel();
+    this._initializeEvent?.cancel();
     Swal.close();
   }
 
@@ -485,7 +489,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameTitle: this.game.title,
         gameGenre: this.game.genreMappings?.join(","),
         showSettingEnabled: this.showSettings.value,
-        store: this.selectedStore.name,
+        store: this.selectedStore?.name,
       });
     }
 
@@ -556,6 +560,40 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsEvent.update({
       advancedSettingsPageViewed: "yes",
     });
+    this._advanceSettingsEvent = this.countlyService.startEvent(
+      "gamePlay - AdvanceSettings"
+    );
+    this._advancedModalRef.dismissed.subscribe(() => {
+      const advancedOptions = localStorage.getItem("advancedOptions");
+      if (advancedOptions) {
+        this.advancedOptions.setValue(JSON.parse(advancedOptions));
+      } else {
+        this.advancedOptions.reset();
+      }
+      this._advanceSettingsEvent.end({ settingsChanged: "no" });
+    });
+  }
+
+  saveAdvanceSettings(): void {
+    const options: CustomSegments["gamePlay - AdvanceSettings"] = {
+      settingsChanged: this.advancedOptions.dirty ? "yes" : "no",
+    };
+
+    Object.entries(this.advancedOptions.controls).forEach(([key, ctrl]) => {
+      if (ctrl.dirty) {
+        console.log(key)
+        options[key] = ctrl.value;
+      }
+    });
+
+    this._advanceSettingsEvent.end(options);
+
+    localStorage.setItem(
+      "advancedOptions",
+      JSON.stringify(this.advancedOptions.value)
+    );
+
+    this._advancedModalRef.close();
   }
 
   terminateSession(): void {
@@ -568,7 +606,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          this.countlyService.endEvent('gameLaunch');
+          this.countlyService.endEvent("gameLaunch");
           this.countlyService.startEvent("gameFeedback", {
             unique: true,
             data: {
@@ -631,10 +669,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
     localStorage.setItem("vsync", this.vsync.value);
-    localStorage.setItem(
-      "advancedOptions",
-      JSON.stringify(this.advancedOptions.value)
-    );
 
     this._settingsModalRef?.close();
     this.startGame();

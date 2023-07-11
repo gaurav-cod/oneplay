@@ -159,8 +159,6 @@ export class CountlyService {
     Countly.track_scrolls();
     Countly.track_errors();
     Countly.track_links();
-    Countly.collect_from_forms();
-    Countly.track_forms();
 
     this.authService.user.subscribe((user) => {
       if (user && user.id !== deviceId) {

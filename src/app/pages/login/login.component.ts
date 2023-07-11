@@ -83,10 +83,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "click",
-    });
     this._signinEvent.update({
       signinFromTrigger: "click",
       rememberMeActivated: this.rememberMe ? "yes" : "no",

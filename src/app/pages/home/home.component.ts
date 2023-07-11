@@ -122,8 +122,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       gameID: game.oneplayId,
       gameTitle: game.title,
       gameGenre: game.genreMappings?.join(','),
-      page: "Feeds - banner",
-      trigger: "click",
+      page: location.pathname + location.hash,
+      trigger: "banner",
     });
     this.router.navigate(['view', this.gLink.transform(game)]);
   }
