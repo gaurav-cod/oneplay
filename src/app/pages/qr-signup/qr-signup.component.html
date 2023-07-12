@@ -55,8 +55,7 @@
         <a
           href="javascript:void(0)"
           class="btn btn-md borderRadius10 text-white activelinear"
-          routerLinkActive="active"
-          [routerLink]="['/login']"
+          (click)="goToLogin()"
         >
           <span class="nav-link-inner--text">Sign in with details</span>
         </a>

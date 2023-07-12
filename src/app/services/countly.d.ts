@@ -26,6 +26,16 @@ export type CountlyEvent = [
 ];
 
 export interface CustomSegments {
+  signUPButtonClick: {
+    page: string;
+    trigger: string;
+    channer?: "web";
+  },
+  signINButtonClick: {
+    page: string;
+    trigger: string;
+    channer?: "web";
+  },
   "signup - Form Submitted": {
     result: "success" | "failure";
     name: string;

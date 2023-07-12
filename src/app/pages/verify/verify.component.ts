@@ -135,7 +135,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
                 Swal.fire({
                   icon: "success",
                   title: "Check your email and verify again",
-                }).then(() => this.router.navigateByUrl("/login"));
+                }).then(() => this.goToLogin());
               },
               error: (error) => this.resendVerificationLink(error, token),
             });
@@ -149,6 +149,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   get domain() {
     return environment.domain;
+  }
+
+  private goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
   }
 
   private startVerifyEvent() {

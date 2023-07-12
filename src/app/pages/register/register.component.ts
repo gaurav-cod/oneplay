@@ -199,11 +199,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const email = this.registerForm.value.email;
     this.restService.resendVerificationLink(email, password).subscribe({
       next: () => {
-        this._successSwalModalRef.close();
+        this._successSwalModalRef?.close();
         Swal.fire({
           icon: "success",
           text: "Check your email and verify again",
-        }).then(() => this.router.navigateByUrl("/login"));
+        }).then(() => this.goToLogin());
       },
     });
   }
@@ -214,6 +214,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   onClickTNC() {
     this._signupEvent.update({ TnCPageViewed: "yes" });
+  }
+
+  goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
+  }
+
+  closeSuccess() {
+    this._successSwalModalRef?.close();
+    this.goToLogin();
   }
 
   private getName(id: string) {
