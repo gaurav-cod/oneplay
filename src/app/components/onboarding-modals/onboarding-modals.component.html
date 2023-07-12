@@ -142,7 +142,7 @@
               placeholder="Search Games"
               type="text"
               [formControl]="query"
-              (keydown)="onSearch()"
+              (keyup)="onSearch()"
             />
             <div class="input-group-prepend">
               <a
