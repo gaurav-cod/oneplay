@@ -186,9 +186,9 @@ export class CountlyService {
           option.picture = user.photo;
         }
 
-        Countly.user_details(option);
         deviceId = user.id;
         Countly.change_id(user.id);
+        Countly.user_details(option);
         this.setDeviceId(user.id);
       }
     });
