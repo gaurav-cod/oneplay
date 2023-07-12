@@ -1,110 +1,111 @@
 <div class="container pageBg">
-    <div class="row height100">
-        <div class="col-md-12 mt-5">
-            <h1 class="topHeading text-center d-none d-md-block">Oneplay Speed Test <span class="d-none">Results</span></h1>
-            <h1 class="topHeading text-center d-md-none">Speed Test <span class="">Results</span></h1>
-            <div class="row mt-4 d-md-none">
-                <div class="col text-center">
-                    <img src="assets/img/speed-test/Latency 3.svg" class="img-fluid" alt="" />
-                    <p class="dataHeading text-white mb-0 mt-2">12.09</p>
-                    <span class="muteText font500">ms</span>
-                </div>
-                <div class="col text-center">
-                    <img src="assets/img/speed-test/Jitter 1.svg" class="img-fluid" alt="" />
-                    <p class="dataHeading text-white mb-0 mt-2">0.62</p>
-                    <span class="muteText font500">ms</span>
-                </div>
-                <div class="col text-center">
-                    <img src="assets/img/speed-test/download.svg" class="img-fluid" alt="" />
-                    <p class="dataHeading text-white mb-0 mt-2">93.79</p>
-                    <span class="muteText font500">mbps</span>
-                </div>
-                <div class="col text-center">
-                    <img src="assets/img/speed-test/Upload 1.svg" class="img-fluid" alt="" />
-                    <p class="dataHeading text-white mb-0 mt-2">94.84</p>
-                    <span class="muteText font500">mbps</span>
-                </div>
+  <div class="row height100">
+    <div class="col-md-12 mt-5">
+      <h1 class="topHeading text-center d-none d-md-block">Oneplay Speed Test <span class="d-none">Results</span></h1>
+      <h1 class="topHeading text-center d-md-none">Speed Test <span class="">Results</span></h1>
+      <div class="row mt-4 d-md-none">
+        <div class="col text-center">
+          <img src="assets/img/speed-test/Latency 3.svg" class="img-fluid" alt="" />
+          <p class="dataHeading text-white mb-0 mt-2">12.09</p>
+          <span class="muteText font500">ms</span>
+        </div>
+        <div class="col text-center">
+          <img src="assets/img/speed-test/Jitter 1.svg" class="img-fluid" alt="" />
+          <p class="dataHeading text-white mb-0 mt-2">0.62</p>
+          <span class="muteText font500">ms</span>
+        </div>
+        <div class="col text-center">
+          <img src="assets/img/speed-test/download.svg" class="img-fluid" alt="" />
+          <p class="dataHeading text-white mb-0 mt-2">93.79</p>
+          <span class="muteText font500">mbps</span>
+        </div>
+        <div class="col text-center">
+          <img src="assets/img/speed-test/Upload 1.svg" class="img-fluid" alt="" />
+          <p class="dataHeading text-white mb-0 mt-2">94.84</p>
+          <span class="muteText font500">mbps</span>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-4">
+        <div class="col-auto d-none d-md-block">
+          <div class="row">
+            <div class="col-auto">
+              <img src="assets/img/speed-test/Latency 3.svg" class="img-fluid" alt="" />
             </div>
-            <div class="row justify-content-center mt-4">
-                <div class="col-auto d-none d-md-block">
-                    <div class="row">
-                        <div class="col-auto">
-                            <img src="assets/img/speed-test/Latency 3.svg" class="img-fluid" alt="" />
-                        </div>
-                        <div class="col pl-0">
-                            <span class="font16 font500 offWhiteText">Latency <span class="muteText">ms</span></span>
-                            <p class="dataHeading">12.09</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto d-none d-md-block">
-                    <div class="row">
-                        <div class="col-auto">
-                            <img src="assets/img/speed-test/Jitter 1.svg" class="img-fluid" alt="" />
-                        </div>
-                        <div class="col pl-0">
-                            <span class="font16 font500 offWhiteText">Jitter <span class="muteText">ms</span></span>
-                            <p class="dataHeading">0.62</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-auto col-12">
-                    <div class="row responsiveTextAlign">
-                        <div class="col-md-auto col-12">
-                            <img src="assets/img/speed-test/Download 1.svg" class="img-fluid" alt="" />
-                        </div>
-                        <div class="col pl-md-0">
-                            <span class="font16 font500"><span class="anchorGradientPurple">Download </span><span class="muteText">mbps</span></span>
-                            <p class="dataHeading text-white">93.79</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-auto d-none d-md-block">
-                    <div class="row">
-                        <div class="col-auto">
-                            <img src="assets/img/speed-test/Upload 1.svg" class="img-fluid" alt="" />
-                        </div>
-                        <div class="col pl-0">
-                            <span class="font16 font500 offWhiteText">Upload <span class="muteText">mbps</span></span>
-                            <p class="dataHeading">94.84</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="col pl-0">
+              <span class="font16 font500 offWhiteText">Latency <span class="muteText">ms</span></span>
+              <p class="dataHeading">{{latencyText}}</p>
             </div>
-            <div class="row justify-content-center mt-md-5 mt-4">
-                <div class="col-auto speedTest">
-                    <div class="card text-white br276 dotBorder p-2">
-                        <!-- complete speed test just use completeTest after speedProgress -->
-                        <div class="progress-bar speedProgress">
-                            <progress min="0" max="100" value="50" class="progessBar displayData text-white"></progress>
-                        </div>
-                        
-                        <div class="card-img-overlay">
-                            <div class="h-100 d-flex justify-content-center align-items-center text-center">
-                                <div class="">
-                                    <span class="font20 font500 text-white">Download</span>
-                                    <h1 class="displayData mb-0 invisible">00.00</h1>
-                                    <span class="font16 font500 muteText">mbps</span>
-                                </div>
-                                <!-- <div class="">
+          </div>
+        </div>
+        <div class="col-auto d-none d-md-block">
+          <div class="row">
+            <div class="col-auto">
+              <img src="assets/img/speed-test/Jitter 1.svg" class="img-fluid" alt="" />
+            </div>
+            <div class="col pl-0">
+              <span class="font16 font500 offWhiteText">Jitter <span class="muteText">ms</span></span>
+              <p class="dataHeading">{{jitterText}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-auto col-12">
+          <div class="row responsiveTextAlign">
+            <div class="col-md-auto col-12">
+              <img src="assets/img/speed-test/Download 1.svg" class="img-fluid" alt="" />
+            </div>
+            <div class="col pl-md-0">
+              <span class="font16 font500"><span class="anchorGradientPurple">Download </span><span
+                  class="muteText">mbps</span></span>
+              <p class="dataHeading text-white">{{downloadText}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto d-none d-md-block">
+          <div class="row">
+            <div class="col-auto">
+              <img src="assets/img/speed-test/Upload 1.svg" class="img-fluid" alt="" />
+            </div>
+            <div class="col pl-0">
+              <span class="font16 font500 offWhiteText">Upload <span class="muteText">mbps</span></span>
+              <p class="dataHeading">{{uploadText}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-md-5 mt-4">
+        <div class="col-auto speedTest">
+          <div class="card text-white br276 dotBorder p-2">
+            <!-- complete speed test just use completeTest after speedProgress -->
+            <div class="progress-bar speedProgress">
+              <progress min="0" max="100" value="50" class="progessBar displayData text-white"></progress>
+            </div>
+
+            <div class="card-img-overlay">
+              <div class="h-100 d-flex justify-content-center align-items-center text-center">
+                <div class="">
+                  <span class="font20 font500 text-white">Download</span>
+                  <h1 class="displayData mb-0 invisible">00.00</h1>
+                  <span class="font16 font500 muteText">mbps</span>
+                </div>
+                <!-- <div class="">
                                     <p class="font20 font500 infoText">Test Completed</p>
                                     <img src="assets/img/singup-login/Group 250.svg" width="70px" height="70px" class="img-fluid" alt="" />
                                 </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="col-12 text-center marginTopNegative">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12 text-center marginTopNegative">
                     <button class="btn resetBtn border-0">Retest</button>
                 </div> -->
-            </div>
-            <div class="row">
-                <div class="col-12 text-center mt-5">
-                    <p class="font16 font500 offWhiteText mb-0">IP Address</p>
-                    <h3 class="font28 font600 text-white mb-0">103.77.137.220</h3>
-                    <p class="font20 font500 muteText">Alliance Broadband Services Pvt. Ltd.</p>
-                </div>
-            </div>
+      </div>
+      <div class="row">
+        <div class="col-12 text-center mt-5">
+          <p class="font16 font500 offWhiteText mb-0">IP Address</p>
+          <h3 class="font28 font600 text-white mb-0">103.77.137.220</h3>
+          <p class="font20 font500 muteText">Alliance Broadband Services Pvt. Ltd.</p>
         </div>
+      </div>
     </div>
+  </div>
 </div>
