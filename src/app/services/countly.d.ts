@@ -29,12 +29,12 @@ export interface CustomSegments {
   signUPButtonClick: {
     page: string;
     trigger: string;
-    channer?: "web";
+    channel?: "web";
   },
   signINButtonClick: {
     page: string;
     trigger: string;
-    channer?: "web";
+    channel?: "web";
   },
   "signup - Form Submitted": {
     result: "success" | "failure";
