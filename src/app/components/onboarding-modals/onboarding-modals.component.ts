@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -18,7 +19,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './onboarding-modals.component.html',
   styleUrls: ['./onboarding-modals.component.scss']
 })
-export class OnboardingModalsComponent implements AfterViewInit {
+export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
   @ViewChild("onboardingUserModal") onboardingUserModal: ElementRef<HTMLDivElement>;
@@ -32,6 +33,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   searchText = "";
   checked: boolean = false;
   games_array = [];
+  wishlistSubscription = undefined;
   
   private selected_games = [];
 
@@ -58,6 +60,19 @@ export class OnboardingModalsComponent implements AfterViewInit {
     else if (wishlist.length < 1) {
       this.selectGame(); 
     }
+
+    this.wishlistSubscription = this.authService.wishlist.subscribe((wishlist) => {
+      if (!wishlist.length) this.selectGame();
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
+  }
+  
+  private gameWishlist() {
+    const wishlistobservable = this.restService.getWishlist();
+    return wishlistobservable.toPromise()
   }
 
   onScroll() {
@@ -156,11 +171,6 @@ export class OnboardingModalsComponent implements AfterViewInit {
     if (wishlist.length < 1) {
       this.selectGame();
     }
-  }
-
-  private gameWishlist() {
-    const wishlistobservable = this.restService.getWishlist();
-    return wishlistobservable.toPromise()
   }
 
   public isChecked(game: GameModel) {

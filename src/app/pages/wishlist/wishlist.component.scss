@@ -22,6 +22,11 @@
     flex: 0 0 20%;
     max-width: 20%;
   }
+
+  .colLG {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
 }
 
 @media (min-width: 2000px) {
@@ -40,4 +45,14 @@
 
 ::ng-deep .tooltip-inner {
   width: auto !important;
+}
+
+.customBtnBg {
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%);
+}
+
+@media (max-width: 1200px) {
+  .navbar-search .form-control {
+    width: 186px !important;
+  }
 }
