@@ -228,3 +228,22 @@
 .borderRadius0{
     border-radius: 0px !important;
 }
+
+.privacyIconBg {
+    background-image: url('../../../assets/icons/privacy.svg');
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+}
+
+.menudropdown a:hover .privacy {
+    content: url("../../../assets/icons/privacy-hover.svg");
+}
+
+.menudropdown a:hover .session {
+    content: url("../../../assets/icons/Pie_Chart-hover.svg");
+}
+
+.menudropdown a:hover .logout {
+    content: url("../../../assets/icons/Logout-hover.svg");
+}
