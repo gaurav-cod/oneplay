@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { RestService } from 'src/app/services/rest.service'
 import { throttle_to_latest as throttle } from 'src/app/utils/throttle.util'
 
 @Component({
@@ -65,19 +66,23 @@ export class SpeedTestComponent implements OnInit {
     return "localhost"
   }
 
+  constructor(
+    private readonly restService: RestService,
+  ) {}
+
   ngOnInit(): void {
     this.runSequence()
   }
 
   async runSequence() {
-    await this.runPing()
-    await this.runDL()
-    await this.runUL()
+    const urls = await this.restService.getNearestSpeedTestServer().toPromise()
+    await this.runPing(urls.ping)
+    await this.runDL(urls.download)
+    await this.runUL(urls.upload)
   }
 
-  runPing() {
+  runPing(url: string) {
     return new Promise((resolve) => {
-      const url = "ws://" + this.getUrl() + ":8001/v1/test/ping"
       const ws = new WebSocket(url)
       ws.onerror = () => {
         this.latencyText = "--"
@@ -94,6 +99,9 @@ export class SpeedTestComponent implements OnInit {
         if (typeof e.data === 'string') {
           const data = JSON.parse(e.data)
           this.pingPacketsRecieved[data.id] = +new Date()
+          if (this.pingPacketsRecieved.length === this.pingCount) {
+            ws.close()
+          }
           // this.updatePingUI()
         }
       }
@@ -104,10 +112,9 @@ export class SpeedTestComponent implements OnInit {
     })
   }
 
-  runDL() {
+  runDL(url: string) {
     return new Promise((resolve) => {
       this.dlStartTime = +new Date()
-      const url = "ws://" + this.getUrl() + ":8001/v1/test/download"
       const ws = new WebSocket(url)
       ws.onerror = () => {
         this.downloadText = "--"
@@ -129,10 +136,9 @@ export class SpeedTestComponent implements OnInit {
     })
   }
 
-  runUL() {
+  runUL(url: string) {
     return new Promise((resolve) => {
       this.ulStartTime = +new Date()
-      const url = "ws://" + this.getUrl() + ":8001/v1/test/upload"
       const ws = new WebSocket(url)
       ws.onerror = () => {
         this.uploadText = "--"
@@ -150,9 +156,9 @@ export class SpeedTestComponent implements OnInit {
           const data = JSON.parse(e.data)
           this.ulPacketsRecieved[data.id] = +new Date()
           // this.updateULUI()
-          // if (this.ulPacketsRecieved.length === this.ulPacketsCount) {
-          //   ws.close()
-          // }
+          if (this.ulPacketsRecieved.length === this.ulPacketsCount) {
+            ws.close()
+          }
         }
       }
       ws.onclose = () => {
