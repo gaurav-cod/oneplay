@@ -39,7 +39,7 @@
           >
             <img
               class="img-fluid"
-              [src]="showPassword ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
+              [src]="showPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
               alt=""
             />
           </button>
@@ -73,7 +73,7 @@
           >
             <img
               class="img-fluid"
-              [src]="showConfirmPassword ? 'assets/img/singup-login/Group.svg':'assets/img/singup-login/Views.svg'"
+              [src]="showConfirmPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
               alt=""
             />
           </button>
@@ -93,7 +93,7 @@
       <p class="font20 font500 mt-lg-3 offWhiteColor">
         Remember password?
         <span class="purpleGradient"
-          ><a [routerLink]="['/login']">Log in</a></span
+          ><a href="javascript:void(0)" (click)="goToLogin()">Log in</a></span
         >
       </p>
     </div>

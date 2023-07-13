@@ -101,8 +101,8 @@
               class="img-fluid"
               [src]="
                 showPassword
-                  ? 'assets/img/singup-login/Group.svg'
-                  : 'assets/img/singup-login/Views.svg'
+                  ? 'assets/img/singup-login/Views.svg'
+                  : 'assets/img/singup-login/Group.svg'
               "
               alt=""
             />
@@ -193,10 +193,17 @@
                 [href]="domain + '/privacy.html'"
                 target="_blank"
                 class="anchor"
+                (click)="onClickPrivacy()"
+                (contextmenu)="onClickPrivacy()"
                 >Privacy Policy</a
               >
               <span class="footerWhiteColor pl-2 pr-2">&</span>
-              <a [href]="domain + '/tnc.html'" target="_blank" class="anchor"
+              <a
+                [href]="domain + '/tnc.html'"
+                target="_blank"
+                class="anchor"
+                (click)="onClickTNC()"
+                (contextmenu)="onClickTNC()"
                 >Terms and Conditions</a
               >
             </p>
@@ -217,7 +224,7 @@
       <p class="font20 font500 mt-2 offWhiteColor">
         Already have an account?
         <span class="purpleGradient"
-          ><a href="javascript:void(0)" [routerLink]="['/login']"
+          ><a href="javascript:void(0)" (click)="goToLogin()"
             >Login</a
           ></span
         >
@@ -250,9 +257,9 @@
         >
       </p>
       <a
+        href="javascript:void(0)"
         class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white"
-        [routerLink]="['/login']"
-        (click)="d('Close')"
+        (click)="closeSuccess()"
         >OK</a
       >
     </div>

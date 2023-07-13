@@ -3,6 +3,9 @@ import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
 import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
+import * as moment from 'moment';
+
+declare const Countly: any;
 
 @Injectable({
   providedIn: "root",
@@ -79,6 +82,7 @@ export class AuthService {
     Cookies.set("op_session_token", sessionToken, {
       domain: environment.cookie_domain,
       path: "/",
+      expires: moment().add(90, 'days').toDate(),
     });
     this._$sessionToken.next(sessionToken);
   }
@@ -94,6 +98,7 @@ export class AuthService {
       domain: environment.cookie_domain,
       path: "/",
     });
+    Countly.enable_offline_mode();
     this._$sessionToken.next(null);
     setTimeout(() => {
       this._$user.next(null);

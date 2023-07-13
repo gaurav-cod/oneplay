@@ -1,28 +1,36 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { GameStatusRO } from 'src/app/interface';
-import { GameModel } from 'src/app/models/game.model';
-import { UserModel } from 'src/app/models/user.model';
-import { GLinkPipe } from 'src/app/pipes/glink.pipe';
-import { AuthService } from 'src/app/services/auth.service';
-import { GameService } from 'src/app/services/game.service';
-import { MessagingService } from 'src/app/services/messaging.service';
-import { RestService } from 'src/app/services/rest.service';
-import { environment } from 'src/environments/environment';
-import UAParser from 'ua-parser-js';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Subscription } from "rxjs";
+import { GameStatusRO } from "src/app/interface";
+import { GameModel } from "src/app/models/game.model";
+import { UserModel } from "src/app/models/user.model";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { GameService } from "src/app/services/game.service";
+import { MessagingService } from "src/app/services/messaging.service";
+import { RestService } from "src/app/services/rest.service";
+import { environment } from "src/environments/environment";
+import UAParser from "ua-parser-js";
 
 @Component({
-  selector: 'app-bottom-nav',
-  templateUrl: './bottom-nav.component.html',
-  styleUrls: ['./bottom-nav.component.scss'],
+  selector: "app-bottom-nav",
+  templateUrl: "./bottom-nav.component.html",
+  styleUrls: ["./bottom-nav.component.scss"],
   providers: [GLinkPipe],
 })
-
 export class BottomNavComponent implements OnInit, OnDestroy {
-
   @Output() toggleFriends = new EventEmitter();
-  
+
   public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
   private userSubscription: Subscription;
@@ -35,24 +43,33 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
     private readonly ngbModal: NgbModal,
-  ) { }
-  
+    private readonly router: Router,
+    private readonly countlyService: CountlyService
+  ) {}
+
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.gameStatusSubscription.unsubscribe();
   }
 
-  get gameLink() {
+  viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return [
+      this.countlyService.addEvent("gameLandingView", {
+        gameID: this.gameStatus.game_id,
+        gameGenre: "",
+        gameTitle: this.gameStatus.game_name,
+        source: location.pathname + location.hash,
+        trigger: "bottom-nav - game-status",
+      });
+      const path = [
         "view",
         this.gLink.transform({
           title: this.gameStatus.game_name,
           oneplayId: this.gameStatus.game_id,
         } as GameModel),
       ];
+      this.router.navigate(path);
     }
-    return [];
   }
 
   get isGameRunning() {
@@ -83,14 +100,17 @@ export class BottomNavComponent implements OnInit, OnDestroy {
 
   get isAndroid() {
     const uagent = new UAParser();
-    return uagent.getOS().name === "Android" &&
-    uagent.getDevice().type !== "smarttv"
+    return (
+      uagent.getOS().name === "Android" && uagent.getDevice().type !== "smarttv"
+    );
   }
 
   ngOnInit(): void {
-    this.gameStatusSubscription = this.gameService.gameStatus.subscribe((status) => {
-      this.gameStatus = status;
-    });
+    this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
+      (status) => {
+        this.gameStatus = status;
+      }
+    );
 
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.user = user;
@@ -108,7 +128,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       this.authService.logout();
     });
   }
-  
+
   open(container) {
     this.ngbModal.open(container, {
       centered: true,
@@ -116,12 +136,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
-  TermsConditions(container: ElementRef<HTMLDivElement >) {
+  TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       scrollable: true,
     });
   }
-  
 }
