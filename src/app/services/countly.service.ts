@@ -1,6 +1,4 @@
 import { Injectable } from "@angular/core";
-import { v4 } from "uuid";
-import { RestService } from "./rest.service";
 import {
   CountlyEventData,
   CountlyUserData,
@@ -9,8 +7,6 @@ import {
 } from "./countly";
 import { environment } from "src/environments/environment";
 import { AuthService } from "./auth.service";
-import Cookies from "js-cookie";
-import * as moment from "moment";
 import { Gender } from "../models/user.model";
 
 declare const Countly: any;
@@ -114,85 +110,67 @@ export class CountlyService {
 
   private keyOfKey = (k: string): string => `${this.countly_prefix_key} - ${k}`;
 
-  private setDeviceId(deviceId: string) {
-    Cookies.set("countly_device_id", deviceId, {
-      domain: environment.cookie_domain,
-      path: "/",
-      expires: moment().add(90, "days").toDate(),
-    });
-  }
-
   private _addEvent = (data: CountlyEventData): void => Countly.add_event(data);
 
   private async initCountly() {
-    let deviceId = Cookies.get("countly_device_id");
-    const userId = this.authService.userIdAndToken?.userid;
-    let newDeviceId: string | null = null;
-
-    if (userId && !deviceId) {
-      deviceId = userId;
-      this.setDeviceId(deviceId);
-    } else if (userId && deviceId !== userId) {
-      newDeviceId = userId;
-    } else if (!userId && !deviceId) {
-      deviceId = v4();
-      this.setDeviceId(deviceId);
-    }
-
     Countly.init({
       debug: !environment.production,
       app_key: environment.countly.key,
       url: environment.countly.url,
-      device_id: deviceId,
       heatmap_whitelist: [environment.domain],
       app_version: environment.appVersion,
     });
-
-    if (newDeviceId) {
-      deviceId = newDeviceId;
-      Countly.change_id(newDeviceId);
-      this.setDeviceId(newDeviceId);
-    }
 
     Countly.track_sessions();
     Countly.track_clicks();
     Countly.track_scrolls();
     Countly.track_errors();
     Countly.track_links();
-    Countly.collect_from_forms();
-    Countly.track_forms();
 
     this.authService.user.subscribe((user) => {
-      if (user && user.id !== deviceId) {
-        const option: CountlyUserData = {
-          name: user.name,
-        };
-
-        switch (user.gender) {
-          case Gender.Male:
-            option.gender = "M";
-            break;
-          case Gender.Female:
-            option.gender = "F";
-        }
-
-        if (user.username) {
-          option.username = user.username;
-        }
-
-        if (user.age) {
-          option.byear = new Date().getFullYear() - user.age;
-        }
-
-        if (user.photo) {
-          option.picture = user.photo;
-        }
-
-        Countly.user_details(option);
-        deviceId = user.id;
-        Countly.change_id(user.id);
-        this.setDeviceId(user.id);
+      if (!user || user.id === Countly.get_device_id()) {
+        return;
       }
+
+      const idType = Countly.get_device_id_type();
+
+      switch (idType) {
+        case Countly.DeviceIdType.DEVELOPER_SUPPLIED:
+          Countly.change_id(user.id);
+          break;
+        case Countly.DeviceIdType.SDK_GENERATED:
+          Countly.change_id(user.id, true);
+          break;
+        case Countly.DeviceIdType.TEMPORARY_ID:
+          Countly.disable_offline_mode(user.id);
+          break;
+      }
+
+      const option: CountlyUserData = {
+        name: user.name,
+      };
+
+      switch (user.gender) {
+        case Gender.Male:
+          option.gender = "M";
+          break;
+        case Gender.Female:
+          option.gender = "F";
+      }
+
+      if (user.username) {
+        option.username = user.username;
+      }
+
+      if (user.age) {
+        option.byear = new Date().getFullYear() - user.age;
+      }
+
+      if (user.photo) {
+        option.picture = user.photo;
+      }
+
+      Countly.user_details(option);
     });
 
     Countly.q.push([

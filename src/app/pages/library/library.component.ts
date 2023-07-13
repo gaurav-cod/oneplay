@@ -38,7 +38,7 @@ export class LibraryComponent implements OnInit {
       gameTitle: game.title,
       gameGenre: game.genreMappings?.join(","),
       page: location.pathname + location.hash,
-      trigger: "click",
+      trigger: "card",
     });
 
     this.router.navigate(["view", this.gLink.transform(game)]);
