@@ -50,29 +50,16 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   ) { }
 
   async ngAfterViewInit() {
-
-    const wishlist = await this.gameWishlist();
-    if (localStorage.getItem("#onboardingUser") !== "true") {
-      this.onboardingUser();
-      localStorage.setItem("#closeonboardingGame", "true");
-    }
-
-    else if (wishlist.length < 1) {
-      this.selectGame(); 
-    }
-
     this.wishlistSubscription = this.authService.wishlist.subscribe((wishlist) => {
-      if (!wishlist.length) this.selectGame();
+      if (localStorage.getItem("#onboardingUser") !== "true") {
+        this.onboardingUser();
+        localStorage.setItem("#closeonboardingGame", "true");
+      } else if (!wishlist.length) this.selectGame();
     })
   }
 
   ngOnDestroy(): void {
     this.wishlistSubscription?.unsubscribe();
-  }
-  
-  private gameWishlist() {
-    const wishlistobservable = this.restService.getWishlist();
-    return wishlistobservable.toPromise()
   }
 
   onScroll() {
@@ -166,11 +153,10 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   public async closeonboardingGame() {
     localStorage.setItem("#onboardingUser", "true");
-    const wishlist = await this.gameWishlist();
     this._onboardingUserRef.close()
-    if (wishlist.length < 1) {
-      this.selectGame();
-    }
+    this.wishlistSubscription = this.authService.wishlist.subscribe((wishlist) => {
+      if (!wishlist.length) this.selectGame();
+    })
   }
 
   public isChecked(game: GameModel) {
