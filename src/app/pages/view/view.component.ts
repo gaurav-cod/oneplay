@@ -488,7 +488,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameID: this.game.oneplayId,
         gameTitle: this.game.title,
         gameGenre: this.game.genreMappings?.join(","),
-        showSettingEnabled: this.showSettings.value,
+        showSettingEnabled: this.showSettings.value ? "yes" : "no",
         store: this.selectedStore?.name,
       });
     }
@@ -663,7 +663,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsEvent?.end({
       resolution: this.resolution.value,
       FPS: this.fps.value,
-      bitRate: this.bitrate.value,
+      bitRate: String(Math.floor(Number(this.bitrate.value) / 1000)),
     });
 
     localStorage.setItem("resolution", this.resolution.value);

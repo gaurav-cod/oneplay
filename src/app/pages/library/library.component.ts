@@ -37,7 +37,7 @@ export class LibraryComponent implements OnInit {
       gameID: game.oneplayId,
       gameTitle: game.title,
       gameGenre: game.genreMappings?.join(","),
-      page: location.pathname + location.hash,
+      source: location.pathname + location.hash,
       trigger: "card",
     });
 
