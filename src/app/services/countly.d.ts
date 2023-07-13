@@ -37,7 +37,6 @@ export interface CustomSegments {
     channel?: "web";
   },
   "signup - Form Submitted": {
-    result: "success" | "failure";
     name: string;
     email: string;
     phoneNumber: string;

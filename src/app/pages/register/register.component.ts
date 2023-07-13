@@ -168,7 +168,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.loading = false;
-          this.endSignupEvent("success");
+          this.endSignupEvent();
           this._successSwalModalRef = this.ngbModal.open(
             this.successSwalModal,
             {
@@ -182,7 +182,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          this.endSignupEvent("failure");
+          this.endSignupEvent();
           this.startSignupEvent();
           Swal.fire({
             title: "Error Code: " + error.code,
@@ -254,9 +254,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  private endSignupEvent(result: "success" | "failure") {
+  private endSignupEvent() {
     this._signupEvent.end({
-      result,
       name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       phoneNumber:
