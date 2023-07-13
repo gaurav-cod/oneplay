@@ -58,7 +58,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
         gameID: this.gameStatus.game_id,
         gameGenre: "",
         gameTitle: this.gameStatus.game_name,
-        page: location.pathname + location.hash,
+        source: location.pathname + location.hash,
         trigger: "bottom-nav - game-status",
       });
       const path = [

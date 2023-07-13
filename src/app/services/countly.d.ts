@@ -64,7 +64,7 @@ export interface CustomSegments {
     gameID: string;
     gameTitle: string;
     gameGenre: string;
-    page: string;
+    source: string;
     trigger: string;
     channel?: "web";
   };

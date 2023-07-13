@@ -85,7 +85,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this._signinEvent.update({
-      signinFromTrigger: "click",
+      signinFromTrigger: "CTA",
       rememberMeActivated: this.rememberMe ? "yes" : "no",
     });
     this.restService.login(this.loginForm.value).subscribe(
