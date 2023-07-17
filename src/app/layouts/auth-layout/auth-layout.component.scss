@@ -13,17 +13,12 @@
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     width: 0px;
     height: 0px;
-  }
-
-  @media (max-width: 991.9px) {
-    height: 90vh;
-    overflow-y: scroll !important;
-    -ms-overflow-style: none; /* IE 11 */
-    scrollbar-width: none;
   }
 }
 
