@@ -79,10 +79,10 @@ export class WishlistComponent implements OnInit, OnDestroy {
 
   private loadGames() {
     this.startLoading();
-    this.restService.search(this.searchText, 0, 24,'live').subscribe(
+    this.restService.search(this.searchText, 0, 12,'live').subscribe(
       (response) => {
         this.games = response.results;
-        if (this.games.length < 24) {
+        if (this.games.length < 12) {
           this.canLoadMore = false;
         }
         this.orderGames();
@@ -116,7 +116,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
     for (const element of this.selectedGames) {
       this.games_array = this.games_array.filter(game => game.oneplayId !== element.oneplayId)
     }
-    this.games_array.splice(12);
+    // this.games_array.splice(12);
   }
 
   private startLoading() {
@@ -134,10 +134,10 @@ export class WishlistComponent implements OnInit, OnDestroy {
       return;
     }
     this.startLoading();
-    this.restService.search(this.searchText, this.currentPage + 1, 24,'live').subscribe(
+    this.restService.search(this.searchText, this.currentPage + 1, 12,'live').subscribe(
       (games) => {
         this.games = [...this.games, ...games.results];
-        if (games.results.length < 24) {
+        if (games.results.length < 12) {
           this.canLoadMore = false;
         }
         this.orderGames();
@@ -164,10 +164,12 @@ export class WishlistComponent implements OnInit, OnDestroy {
 
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
-      this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      this.selected_games.push(game);
+      this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId);
+      this.selected_games = this.selected_games.filter((row)=>row.oneplayId!==game.oneplayId);
+      
     } else {
-      this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
+      this.selectedGameIds = [...this.selectedGameIds, game.oneplayId];
+      this.selected_games.push(game);
     }
     console.log('selectedGames',this.selectedGameIds);
   }

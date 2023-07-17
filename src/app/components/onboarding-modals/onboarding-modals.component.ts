@@ -166,11 +166,11 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
       this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      this.selected_games.push(game);
+      this.selected_games = this.selected_games.filter((row)=>row.oneplayId!==game.oneplayId)
     } else {
       this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
+      this.selected_games.push(game);
     }
-    console.log('selectedGames',this.selectedGameIds);
   }
 
   public orderGames () {
