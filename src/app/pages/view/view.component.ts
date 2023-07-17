@@ -61,6 +61,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   showAllLiveVideos = false;
   startingGame = false;
   terminatingGame = false;
+  Initializing = false;
+  
 
   similarGames: GameModel[] = [];
 
