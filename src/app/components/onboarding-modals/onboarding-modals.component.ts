@@ -81,7 +81,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
         if (this.games.length < 12) {
           this.canLoadMore = false;
         }
-        this.orderGames();
+        // this.orderGames();
         this.stopLoading();
       },
       (error) => {
@@ -101,7 +101,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
         if (games.results.length < 12) {
           this.canLoadMore = false;
         }
-        this.orderGames();
+        // this.orderGames();
         this.stopLoading();
         this.currentPage++;
       },
@@ -148,7 +148,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this._selectgameRef.close()  
     this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
     this.authService.wishlist = of(this.selectedGameIds)
-    this.selected_games = []
+    // this.selected_games = []
   }
 
   public async closeonboardingGame() {
@@ -173,14 +173,14 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public orderGames () {
-    this.games_array = [...this.selected_games];
-    this.games.forEach(game => {
-      if(!this.isChecked(game)) {
-        this.games_array.push(game);
-      }
-    });
-  }
+  // public orderGames () {
+  //   this.games_array = [...this.selected_games];
+  //   this.games.forEach(game => {
+  //     if(!this.isChecked(game)) {
+  //       this.games_array.push(game);
+  //     }
+  //   });
+  // }
   get domain() {
     return environment.domain;
   }

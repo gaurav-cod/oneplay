@@ -43,8 +43,8 @@ export class GameCardComponent implements OnInit {
       gameID: this.game.oneplayId,
       gameGenre: this.game.genreMappings?.join(","),
       gameTitle: this.game.title,
-      page: location.pathname + location.hash,
-      trigger: "click",
+      source: location.pathname + location.hash,
+      trigger: "card",
     });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,

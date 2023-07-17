@@ -30,14 +30,13 @@ export interface CustomSegments {
     page: string;
     trigger: string;
     channel?: "web";
-  };
+  },
   signINButtonClick: {
     page: string;
     trigger: string;
     channel?: "web";
-  };
+  },
   "signup - Form Submitted": {
-    result: "success" | "failure";
     name: string;
     email: string;
     phoneNumber: string;
@@ -64,7 +63,7 @@ export interface CustomSegments {
     gameID: string;
     gameTitle: string;
     gameGenre: string;
-    page: string;
+    source: string;
     trigger: string;
     channel?: "web";
   };
@@ -83,6 +82,11 @@ export interface CustomSegments {
     FPS: string;
     channel?: "web";
   };
+  "gamePlay - AdvanceSettings": {
+    settingsChanged: "yes" | "no";
+    [key: string]: any;
+    channel?: "web";
+  },
   "gamePlay - Initilization": {
     result: "success" | "failure" | "wait";
     channel?: "web";

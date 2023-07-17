@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
@@ -24,7 +25,8 @@ export class QrSignupComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly router: Router,
   ) {}
 
   ngOnDestroy(): void {
@@ -32,14 +34,14 @@ export class QrSignupComponent implements OnInit {
     this.generateCodeSubscription?.unsubscribe();
     this.getSessionSubscription?.unsubscribe();
   }
-  
+
   ngOnInit(): void {
     this.mounted = true;
     this.generateCode();
   }
-  
+
   tvURL = environment.domain + "/dashboard/tv";
-  
+
   get qrCodeWidth() {
     if (window.innerWidth > 986) {
       return 200;
@@ -47,7 +49,7 @@ export class QrSignupComponent implements OnInit {
       return 130;
     }
   }
-  
+
   private generateCode() {
     if (!this.mounted) {
       return;
@@ -55,9 +57,9 @@ export class QrSignupComponent implements OnInit {
     this.loaderService.start();
     this.generateCodeSubscription?.unsubscribe();
     this.generateCodeSubscription = this.restService
-    .generateQRCode()
-    .subscribe({
-      next: ({ code, token }) => {
+      .generateQRCode()
+      .subscribe({
+        next: ({ code, token }) => {
           this.loaderService.stop();
           this.signInQrCode = this.tvURL + "?code=" + code;
           this.code = code;
@@ -77,15 +79,15 @@ export class QrSignupComponent implements OnInit {
           });
         },
       });
+  }
+
+  private loginWithSession(code: string, token: string) {
+    if (!this.mounted) {
+      return;
     }
-    
-    private loginWithSession(code: string, token: string) {
-      if (!this.mounted) {
-        return;
-      }
-      const startTime = Date.now();
-      this.getSessionSubscription?.unsubscribe();
-      this.getSessionSubscription = this.restService
+    const startTime = Date.now();
+    this.getSessionSubscription?.unsubscribe();
+    this.getSessionSubscription = this.restService
       .getQRSession(code, token)
       .subscribe({
         next: ({ sessionToken }) => {
@@ -117,5 +119,13 @@ export class QrSignupComponent implements OnInit {
           });
         },
       });
+  }
+
+  goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
   }
 }
