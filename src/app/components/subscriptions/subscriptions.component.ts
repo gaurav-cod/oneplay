@@ -5,6 +5,7 @@ import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
+import { popups } from "src/app/utils/popups";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -55,11 +56,11 @@ export class SubscriptionsComponent implements OnInit {
     if (params.swal) {
       try{
         const swal = decodeURIComponent(params.swal);
-        const obj = JSON.parse(swal);
+        // const obj = JSON.parse(swal);
         Swal.fire({
           icon: "success",
-          title: obj.title,
-          html: obj.html,
+          title: popups[swal].title,
+          text: popups[swal].body,
         }).then(()=>{window.location.href = "/dashboard/settings/subscription"});
       }
       catch {}

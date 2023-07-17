@@ -81,8 +81,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         gameID: this.gameStatus.game_id,
         gameGenre: "",
         gameTitle: this.gameStatus.game_name,
-        page: "Game Status Icon",
-        trigger: "click",
+        source: location.pathname + location.hash,
+        trigger: "navbar - game-status",
       });
       const path = [
         "view",
@@ -101,8 +101,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
       gameID: game.oneplayId,
       gameGenre: game.genreMappings?.join(","),
       gameTitle: game.title,
-      page: "Navbar Search",
-      trigger: "click",
+      source: location.pathname + location.hash,
+      trigger: "navbar - search",
     });
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,

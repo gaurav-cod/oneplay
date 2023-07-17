@@ -12,12 +12,12 @@ import {
   Validators,
 } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { faL } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from 'src/app/services/countly';
+import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
     private readonly countlyService: CountlyService
@@ -83,12 +84,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "click",
-    });
     this._signinEvent.update({
-      signinFromTrigger: "click",
+      signinFromTrigger: "CTA",
       rememberMeActivated: this.rememberMe ? "yes" : "no",
     });
     this.restService.login(this.loginForm.value).subscribe(
@@ -135,6 +132,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
     });
+  }
+
+  goToSignup() {
+    this.countlyService.addEvent("signUPButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/register"]);
   }
 
   get domain() {

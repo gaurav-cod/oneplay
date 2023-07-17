@@ -880,4 +880,15 @@ export class RestService {
         })
       );
   }
+
+  getGameStores(): Observable<PurchaseStore[]> {
+    return this.http
+      .get<PurchaseStore[]>(this.r_mix_api + "/games/stores")
+      .pipe(
+        map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
 }

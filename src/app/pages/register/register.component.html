@@ -224,7 +224,7 @@
       <p class="font20 font500 mt-2 offWhiteColor">
         Already have an account?
         <span class="purpleGradient"
-          ><a href="javascript:void(0)" [routerLink]="['/login']"
+          ><a href="javascript:void(0)" (click)="goToLogin()"
             >Login</a
           ></span
         >
@@ -257,9 +257,9 @@
         >
       </p>
       <a
+        href="javascript:void(0)"
         class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white"
-        [routerLink]="['/login']"
-        (click)="d('Close')"
+        (click)="closeSuccess()"
         >OK</a
       >
     </div>

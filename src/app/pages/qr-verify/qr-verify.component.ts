@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -48,7 +49,8 @@ export class QrVerifyComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnDestroy(): void {
@@ -145,5 +147,13 @@ export class QrVerifyComponent implements OnInit {
         this.rows._results[index - 1].nativeElement.value = "";
       }
     }
+  }
+
+  goToSignup() {
+    this.countlyService.addEvent("signUPButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/register"]);
   }
 }

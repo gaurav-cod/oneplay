@@ -65,6 +65,13 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     return this.name.valid && this.username.valid && this.bio.valid;
   }
 
+  get isChanged() {
+    return this.name.value !== this.currentUserState.name ||
+    this.username.value !== this.currentUserState.username ||
+    this.bio.value !== (this.currentUserState.bio ?? '') || 
+    !!this.photoFile;
+  }
+
   onUserError(event) {
     event.target.src = 'assets/img/defaultUser.svg';
   }
@@ -106,15 +113,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     }
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
-    }
-
-    if (
-      this.currentUserState.username == (this.username.value ?? null) &&
-      this.currentUserState.name == this.name.value &&
-      this.currentUserState.bio == (this.bio.value ?? null) &&
-      !body.profile_image
-    ) {
-      return;
     }
 
     this.saveProfileLoder = true;

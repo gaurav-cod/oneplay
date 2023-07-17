@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
 import * as moment from 'moment';
 
+declare const Countly: any;
+
 @Injectable({
   providedIn: "root",
 })
@@ -96,10 +98,7 @@ export class AuthService {
       domain: environment.cookie_domain,
       path: "/",
     });
-    Cookies.remove("countly_device_id", {
-      domain: environment.cookie_domain,
-      path: "/",
-    });
+    Countly.enable_offline_mode();
     this._$sessionToken.next(null);
     setTimeout(() => {
       this._$user.next(null);
