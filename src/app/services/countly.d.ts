@@ -163,7 +163,28 @@ export interface CustomSegments {
     XCountlySUM: number;
   };
 
+  search: {
+    term: string;
+    actionDone: "yes" | "no";
+    actionType: "NA" | "See more Games" | "See more Users";
+    page: "Home Page" | "Games page";
+    channel: "web";
+  },
 
+  searchResultsViewMoreGames: {
+    term: string;
+    gameCardClicked: "yes" | "no";
+    gameID: number;
+    gameTitle: string;
+    gameType: string;
+    channel: "web";
+  };
+
+  searchResultsViewMoreUsers: {
+    term: string;
+    userID: string;
+    "friend request clicked": "yes" | "no";
+  };
 }
 
 export interface StartEvent<T extends keyof CustomSegments> {
