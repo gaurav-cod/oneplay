@@ -155,6 +155,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.countlyService.addEvent("signINButtonClick", {
       page: location.pathname + location.hash,
       trigger: "CTA",
+      channel: "web",
     });
     this.router.navigate(["/login"]);
   }

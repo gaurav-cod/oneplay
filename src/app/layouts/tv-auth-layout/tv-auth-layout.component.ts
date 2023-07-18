@@ -21,6 +21,7 @@ export class TvAuthLayoutComponent implements OnInit {
     this.countlyService.addEvent("signINButtonClick", {
       page: location.pathname + location.hash,
       trigger: "header",
+      channel: "web",
     });
     this.router.navigate(["/login"]);
   }

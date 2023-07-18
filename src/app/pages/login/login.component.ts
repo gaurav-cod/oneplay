@@ -138,6 +138,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.countlyService.addEvent("signUPButtonClick", {
       page: location.pathname + location.hash,
       trigger: "CTA",
+      channel: "web",
     });
     this.router.navigate(["/register"]);
   }

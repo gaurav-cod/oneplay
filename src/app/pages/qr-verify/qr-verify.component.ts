@@ -153,6 +153,7 @@ export class QrVerifyComponent implements OnInit {
     this.countlyService.addEvent("signUPButtonClick", {
       page: location.pathname + location.hash,
       trigger: "CTA",
+      channel: "web",
     });
     this.router.navigate(["/register"]);
   }

@@ -490,6 +490,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameGenre: this.game.genreMappings?.join(","),
         showSettingEnabled: this.showSettings.value ? "yes" : "no",
         store: this.selectedStore?.name,
+        channel: "web",
       });
     }
 
@@ -577,6 +578,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   saveAdvanceSettings(): void {
     const options: CustomSegments["gamePlay - AdvanceSettings"] = {
       settingsChanged: this.advancedOptions.dirty ? "yes" : "no",
+      channel: "web",
     };
 
     Object.entries(this.advancedOptions.controls).forEach(([key, ctrl]) => {

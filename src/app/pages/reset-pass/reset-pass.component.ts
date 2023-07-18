@@ -39,9 +39,9 @@ export class ResetPassComponent implements OnInit {
     } else {
       return control.touched && false;
     }
-    
+
   }
-  
+
 
   constructor(
     private route: ActivatedRoute,
@@ -83,6 +83,7 @@ export class ResetPassComponent implements OnInit {
     this.countlyService.addEvent("signINButtonClick", {
       page: location.pathname + location.hash,
       trigger: "CTA",
+      channel: "web",
     });
     this.router.navigate(["/login"]);
   }

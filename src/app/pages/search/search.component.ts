@@ -126,6 +126,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       gameGenre: game.genreMappings?.join(","),
       source: location.pathname + location.hash,
       trigger: "card",
+      channel: "web",
     });
 
     this.router.navigate(["view", this.gLink.transform(game)], {

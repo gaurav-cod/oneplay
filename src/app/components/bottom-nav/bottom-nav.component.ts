@@ -60,6 +60,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
         gameTitle: this.gameStatus.game_name,
         source: location.pathname + location.hash,
         trigger: "bottom-nav - game-status",
+        channel: "web",
       });
       const path = [
         "view",

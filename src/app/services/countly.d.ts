@@ -29,12 +29,12 @@ export interface CustomSegments {
   signUPButtonClick: {
     page: string;
     trigger: string;
-    channel?: "web";
+    channel: "web";
   },
   signINButtonClick: {
     page: string;
     trigger: string;
-    channel?: "web";
+    channel: "web";
   },
   "signup - Form Submitted": {
     name: string;
@@ -45,19 +45,19 @@ export interface CustomSegments {
     signupFromPage: string;
     privacyPolicyPageViewed: "yes" | "no";
     TnCPageViewed: "yes" | "no";
-    channel?: "web";
+    channel: "web";
   };
   "signup - Account Verification": {
     result: "success" | "failure";
     failReason: string;
-    channel?: "web";
+    channel: "web";
   };
   signin: {
     result: "success" | "failure";
     signinFromPage: string;
     signinFromTrigger: string;
     rememberMeActivated: "yes" | "no";
-    channel?: "web";
+    channel: "web";
   };
   gameLandingView: {
     gameID: string;
@@ -65,7 +65,7 @@ export interface CustomSegments {
     gameGenre: string;
     source: string;
     trigger: string;
-    channel?: "web";
+    channel: "web";
   };
   "gamePlay - Start": {
     gameID: string;
@@ -73,23 +73,23 @@ export interface CustomSegments {
     gameGenre: string;
     store: string;
     showSettingEnabled: "yes" | "no";
-    channel?: "web";
+    channel: "web";
   };
   "gamePlay - Settings Page View": {
     advancedSettingsPageViewed: "yes" | "no";
     resolution: string;
     bitRate: string;
     FPS: string;
-    channel?: "web";
+    channel: "web";
   };
   "gamePlay - AdvanceSettings": {
     settingsChanged: "yes" | "no";
     [key: string]: any;
-    channel?: "web";
+    channel: "web";
   },
   "gamePlay - Initilization": {
     result: "success" | "failure" | "wait";
-    channel?: "web";
+    channel: "web";
   };
   gameLaunch: {
     gameID: string;
@@ -97,15 +97,73 @@ export interface CustomSegments {
     gameGenre: string;
     from: "Play now" | "Resume";
     gamesessionid: string;
-    channel?: "web";
+    channel: "web";
   };
   gameFeedback: {
     gameID: string;
     gameTitle: string;
     gameGenre: string;
     action: "Skip" | "Submit";
-    channel?: "web";
+    channel: "web";
   };
+
+  menuClick: {
+    "Type": "My Library"
+    | "Subscription"
+    | "Speed Test"
+    | "Downloads"
+    | "Settings"
+    | "Turn off privacy"
+    | "Delete session Data"
+    | "Tv Sign in"
+    | "Log out";
+  };
+
+  settingsView: {
+    ProfileViewed: "yes" | "no";
+    loginsecurit: "yes" | "no";
+    subscriptionViewed: "yes" | "no";
+    deviceHistoryViewed: "yes" | "no";
+    profilepicturechanged: "yes" | "no";
+    usernamechange: "yes" | "no";
+    fullnamechange: "yes" | "no";
+    biochange: "yes" | "no";
+    updateprofileclic: "yes" | "no";
+    updatepasswordchanged: "yes" | "no";
+    logoutfromallclick: "yes" | "no";
+  };
+
+  subscriptionCardClick: {
+    cardType: "hourly" | "monthly";
+    Source: "Website_subscription" | "Settings Page" | string;
+    channel: "web";
+    XCountlySUM: number;
+  };
+
+  "subscription - Confirm Plan": {
+    selection: "yes" | "no";
+  };
+
+  subscriptionViewPayment: {
+    Country: string;
+    State: string;
+    mode: "credit" | "debit" | "UPI";
+  };
+
+  subscriptionConfirmPayment: {
+    paymentConfirmed: "yes" | "no";
+    type: "new purchase" | "renewal";
+    XCountlySUM: number;
+  };
+
+  subscriptionPaymentDone: {
+    result: "success" | "fail";
+    type: "new purchase" | "renewal";
+    failReason: "rejected" | "OTP expired" | "wrong OTP" | string;
+    XCountlySUM: number;
+  };
+
+
 }
 
 export interface StartEvent<T extends keyof CustomSegments> {

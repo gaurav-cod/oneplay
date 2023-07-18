@@ -28,8 +28,12 @@ export class CountlyService {
     event: T,
     segments: CustomSegments[T]
   ) {
-    segments.channel = "web";
-    this._addEvent({ key: event, segmentation: segments });
+    let sum = undefined;
+    if ('XCountlySUM' in segments) {
+      sum = segments.XCountlySUM;
+      delete segments.XCountlySUM;
+    }
+    this._addEvent({ key: event, sum, segmentation: segments });
   }
 
   startEvent<T extends keyof CustomSegments>(
@@ -85,8 +89,13 @@ export class CountlyService {
     );
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
     localStorage.removeItem(this.keyOfKey(event));
-    segments.channel = "web";
+    let sum = undefined;
+    if ('XCountlySUM' in segments) {
+      sum = segments.XCountlySUM;
+      delete segments.XCountlySUM;
+    }
     this._addEvent({
+      sum,
       key: event,
       dur: +new Date() - +ts,
       segmentation: { ...data, ...segments },

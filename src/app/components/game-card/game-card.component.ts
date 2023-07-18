@@ -45,6 +45,7 @@ export class GameCardComponent implements OnInit {
       gameTitle: this.game.title,
       source: location.pathname + location.hash,
       trigger: "card",
+      channel: "web",
     });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,

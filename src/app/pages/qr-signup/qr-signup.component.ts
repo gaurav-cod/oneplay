@@ -125,6 +125,7 @@ export class QrSignupComponent implements OnInit {
     this.countlyService.addEvent("signINButtonClick", {
       page: location.pathname + location.hash,
       trigger: "CTA",
+      channel: "web",
     });
     this.router.navigate(["/login"]);
   }

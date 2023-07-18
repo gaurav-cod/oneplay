@@ -83,6 +83,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         gameTitle: this.gameStatus.game_name,
         source: location.pathname + location.hash,
         trigger: "navbar - game-status",
+        channel: "web",
       });
       const path = [
         "view",
@@ -103,6 +104,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       gameTitle: game.title,
       source: location.pathname + location.hash,
       trigger: "navbar - search",
+      channel: "web",
     });
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
