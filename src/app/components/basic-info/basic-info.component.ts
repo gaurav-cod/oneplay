@@ -28,7 +28,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     // Validators.required,
     Validators.maxLength(300),
   ]);
-  
+
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
   private userSubscription: Subscription;
@@ -68,7 +68,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   get isChanged() {
     return this.name.value !== this.currentUserState.name ||
     this.username.value !== this.currentUserState.username ||
-    this.bio.value !== (this.currentUserState.bio ?? '') || 
+    this.bio.value !== (this.currentUserState.bio ?? '') ||
     !!this.photoFile;
   }
 
@@ -125,6 +125,13 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           this.countlyService.updateUser('picture', data.photo);
         }
         this.countlyService.saveUser();
+        this.countlyService.updateEventData("settingsView", {
+          profilepicturechanged: !!this.photoFile ? "yes" : "no",
+          usernamechange: data.username !== this.currentUserState.username ? "yes" : "no",
+          fullnamechange: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
+          biochange: data.bio !== this.currentUserState.bio ? "yes" : "no",
+          updateprofileclic: "yes",
+        })
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,

@@ -123,6 +123,7 @@ export class CountlyService {
 
   private async initCountly() {
     Countly.init({
+      // debug: false,
       debug: !environment.production,
       app_key: environment.countly.key,
       url: environment.countly.url,

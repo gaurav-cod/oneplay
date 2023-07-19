@@ -121,7 +121,7 @@ export interface CustomSegments {
 
   settingsView: {
     ProfileViewed: "yes" | "no";
-    loginsecurit: "yes" | "no";
+    loginsecurity: "yes" | "no";
     subscriptionViewed: "yes" | "no";
     deviceHistoryViewed: "yes" | "no";
     profilepicturechanged: "yes" | "no";

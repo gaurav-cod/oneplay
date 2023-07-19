@@ -3,6 +3,8 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { CustomSegments } from "src/app/services/countly";
+import { CountlyService } from "src/app/services/countly.service";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -20,7 +22,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly title: Title,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit() {
@@ -32,10 +35,31 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       (user) =>
         (this.isOneplayUser = user.partnerId === environment.oneplay_partner_id)
     );
+    this.countlyService.startEvent("settingsView", {
+      data: {
+        ProfileViewed: 'yes',
+        loginsecurity: "no",
+        subscriptionViewed: "no",
+        deviceHistoryViewed: "no",
+        profilepicturechanged: "no",
+        usernamechange: "no",
+        fullnamechange: "no",
+        biochange: "no",
+        updateprofileclic: "no",
+        updatepasswordchanged: "no",
+        logoutfromallclick: "no",
+      }
+    });
   }
 
   ngOnDestroy() {
+    this.countlyService.endEvent("settingsView");
     this.paramSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
+  }
+
+  logCountly(segment: CustomSegments["settingsView"]) {
+    console.log(segment)
+    this.countlyService.updateEventData("settingsView", segment)
   }
 }
