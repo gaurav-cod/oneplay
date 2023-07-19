@@ -269,11 +269,14 @@
                   routerLinkActive="active"
                   [routerLink]="['wishlist']"
                   class="dropdown-item"
+                  (click)="logCountly('My Library')"
                 >
                   <i class="ni ni-favourite-28 font14 align-middle"></i>
                   <span class="align-middle">My Library</span>
                 </a>
-                <a [href]="domain + '/subscription.html'" class="dropdown-item">
+                <a [href]="domain + '/subscription.html'" class="dropdown-item"
+                  (click)="logCountly('Subscription')"
+                >
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
                 </a>
@@ -285,7 +288,9 @@
                   <i class="fa fa-user-plus font14 align-middle" aria-hidden="true"></i>
                   <span class="align-middle">Refer</span>
                 </a> -->
-                <a [href]="domain + '/speed-test/run'" class="dropdown-item">
+                <a [href]="domain + '/speed-test/run'" class="dropdown-item"
+                  (click)="logCountly('Speed Test')"
+                >
                   <i class="fas fa-tachometer-alt font14 align-middle"></i>
                   <span class="align-middle">Speed Test</span>
                 </a>
@@ -294,6 +299,7 @@
                 <a
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
+                  (click)="logCountly('Downloads')"
                 >
                   <i class="ni ni-cloud-download-95 font14 align-middle"></i>
                   <span class="align-middle">Downloads</span>
@@ -303,6 +309,7 @@
                   routerLinkActive="active"
                   [routerLink]="['settings', 'profile']"
                   class="dropdown-item"
+                  (click)="logCountly('Settings')"
                 >
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
@@ -333,6 +340,7 @@
                   href="javascript:void(0)"
                   class="dropdown-item"
                   [routerLink]="['/tv']"
+                  (click)="logCountly('Tv Sign in')"
                 >
                   <i class="fas fa-tv font14 align-middle"></i>
                   <span> TV Sign in</span>
@@ -351,7 +359,7 @@
                     <rect width="20" height="20.0056" fill="white" transform="translate(0 0.99707)"/>
                     </clipPath>
                     </defs>
-                  </svg>                
+                  </svg>
                   <span>Log out</span>
                 </a>
               </div>

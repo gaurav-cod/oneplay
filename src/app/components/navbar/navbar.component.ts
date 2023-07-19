@@ -26,6 +26,7 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
+import { CustomSegments } from "src/app/services/countly";
 
 @Component({
   selector: "app-navbar",
@@ -277,6 +278,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.logoutRef.close();
+    this.logCountly('Log out');
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.loggedOutByUser = true;
@@ -301,6 +303,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
+        this.logCountly('Delete session Data');
         this.restService.deleteSessionData().subscribe({
           next: () => {
             Swal.fire({
@@ -355,6 +358,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   switchSearchPrivacy() {
     const privacy = !this.isPrivate;
+    this.logCountly('Turn off privacy');
     this.authService.updateProfile({ searchPrivacy: privacy });
     this.restService.setSearchPrivacy(privacy).subscribe({
       next: () => {
@@ -373,5 +377,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       },
     });
+  }
+
+  logCountly(Type: CustomSegments["menuClick"]["Type"]) {
+    console.warn('event:', Type);
+    this.countlyService.addEvent("menuClick", { Type });
   }
 }
