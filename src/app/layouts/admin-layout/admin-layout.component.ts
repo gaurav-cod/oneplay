@@ -11,6 +11,7 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Appearance, Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription, lastValueFrom, map } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
@@ -55,6 +56,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gameService: GameService,
     private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -118,6 +120,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe(async(params) => {
+    this.countlyService.startEvent("subscription - Confirm Plan");
       let swal_text = "you're about to purchase the selected subscription package.";
       if (params.subscribe) {
         if(params.plan == 'base') {
@@ -133,8 +136,10 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           customClass: "swalPadding",
         }).then(async (result) => {
           if (result.isConfirmed) {
+            this.countlyService.endEvent("subscription - Confirm Plan", { selection: "yes" });
             this.handlePay(params.subscribe);
           } else {
+            this.countlyService.endEvent("subscription - Confirm Plan", { selection: "no" });
             this.removeQueryParams();
           }
         });
@@ -172,7 +177,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   closeStripeModal() {
     this.stripeModalRef?.close();
     this.removeQueryParams();
-    
+    // todo!!
+    this.countlyService.endEvent("subscriptionViewPayment")
   }
 
   private removeQueryParams() {
@@ -195,6 +201,8 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   async onPay() {
     this.stripeLoad = true;
     let popupId = 0;
+    // todo!!
+    this.countlyService.endEvent("subscriptionViewPayment")
 
     if(this.planType == 'base') {
       const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
@@ -271,6 +279,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   private handlePay(packageId: string) {
     this.packageID = packageId;
     const stripeAppearance = { theme: 'night' } as Appearance;
+    this.countlyService.startEvent("subscriptionViewPayment");
     this.restService.payForSubscription(packageId).subscribe({
       next: async (data) => {
         this.currentamount = (data.amount/100).toFixed(2);

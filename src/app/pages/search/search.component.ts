@@ -128,6 +128,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       trigger: "card",
       channel: "web",
     });
+    this.countlyService.endEvent("searchResultsViewMoreGames", {
+      gameCardClicked: "yes",
+      gameID: game.oneplayId,
+      gameTitle: game.title,
+      channel: "web",
+    })
 
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
@@ -135,6 +141,15 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
+    this.countlyService.addEvent("search", {
+      term: this.query,
+      actionDone: "yes",
+      actionType: tab === "games" ? "See more Games" : "See more Users",
+      page: location.pathname.replace('/dashboard/',''),
+      channel: "web"
+    })
+    if (tab === "games") this.countlyService.startEvent("searchResultsViewMoreGames")
+    else this.countlyService.startEvent("searchResultsViewMoreUsers")
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query },
     });
@@ -301,6 +316,18 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    this.countlyService.addEvent("search", {
+      term: this.query,
+      actionDone: "yes",
+      actionType: "NA",
+      page: location.pathname.replace('/dashboard/',''),
+      channel: "web"
+    })
+    this.countlyService.endEvent("searchResultsViewMoreUsers", {
+      term: this.query,
+      "friend request clicked": "yes",
+      userID: friend.id,
+    })
     if (this.user.id === friend.id) {
       return;
     }

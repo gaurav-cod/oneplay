@@ -133,7 +133,7 @@ export interface CustomSegments {
     logoutfromallclick: "yes" | "no";
   };
 
-  subscriptionCardClick: {
+  subscriptionCardClick: {// only on home web site
     cardType: "hourly" | "monthly";
     Source: "Website_subscription" | "Settings Page" | string;
     channel: "web";
@@ -144,19 +144,19 @@ export interface CustomSegments {
     selection: "yes" | "no";
   };
 
-  subscriptionViewPayment: {
+  subscriptionViewPayment: {// todo!!
     Country: string;
     State: string;
     mode: "credit" | "debit" | "UPI";
   };
 
-  subscriptionConfirmPayment: {
+  subscriptionConfirmPayment: {// todo
     paymentConfirmed: "yes" | "no";
     type: "new purchase" | "renewal";
     XCountlySUM: number;
   };
 
-  subscriptionPaymentDone: {
+  subscriptionPaymentDone: {// todo
     result: "success" | "fail";
     type: "new purchase" | "renewal";
     failReason: "rejected" | "OTP expired" | "wrong OTP" | string;
@@ -167,16 +167,16 @@ export interface CustomSegments {
     term: string;
     actionDone: "yes" | "no";
     actionType: "NA" | "See more Games" | "See more Users";
-    page: "Home Page" | "Games page";
+    page: string;
     channel: "web";
   },
 
   searchResultsViewMoreGames: {
     term: string;
     gameCardClicked: "yes" | "no";
-    gameID: number;
+    gameID: string;
     gameTitle: string;
-    gameType: string;
+    // gameType: string;
     channel: "web";
   };
 

@@ -59,7 +59,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   logCountly(segment: CustomSegments["settingsView"]) {
-    console.log(segment)
     this.countlyService.updateEventData("settingsView", segment)
   }
 }

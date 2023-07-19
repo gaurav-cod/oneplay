@@ -99,6 +99,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   viewGameFromSearch(game: GameModel) {
     this.isMenuCollapsed = true;
+    this.countlyService.addEvent("search", {
+      term: this.query.value,
+      actionDone: "yes",
+      actionType: "NA",
+      page: location.pathname.replace('/dashboard/',''),
+      channel: "web"
+    })
     this.countlyService.addEvent("gameLandingView", {
       gameID: game.oneplayId,
       gameGenre: game.genreMappings?.join(","),
@@ -107,6 +114,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       trigger: "navbar - search",
       channel: "web",
     });
+    this.countlyService.endEvent("searchResultsViewMoreGames", {
+      gameCardClicked: "yes",
+      gameID: game.oneplayId,
+      gameTitle: game.title,
+      channel: "web",
+    })
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
     });
@@ -219,6 +232,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    this.countlyService.addEvent("search", {
+      term: this.query.value,
+      actionDone: "yes",
+      actionType: "NA",
+      page: location.pathname.replace('/dashboard/',''),
+      channel: "web"
+    })
+    this.countlyService.endEvent("searchResultsViewMoreUsers", {
+      term: this.query.value,
+      "friend request clicked": "yes",
+      userID: friend.id,
+    })
     if (this.user.id === friend.id) {
       return;
     }
@@ -351,6 +376,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
+    this.countlyService.addEvent("search", {
+      term: this.query.value,
+      actionDone: "yes",
+      actionType: tab === "games" ? "See more Games" : "See more Users",
+      page: location.pathname.replace('/dashboard/',''),
+      channel: "web"
+    })
+    if (tab === "games") this.countlyService.startEvent("searchResultsViewMoreGames", {
+      data: {
+        term: this.query.value,
+        channel: "web",
+      }
+    })
+    else this.countlyService.startEvent("searchResultsViewMoreUsers", {
+      data: { term: this.query.value } })
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query.value },
     });
@@ -380,7 +420,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logCountly(Type: CustomSegments["menuClick"]["Type"]) {
-    console.warn('event:', Type);
     this.countlyService.addEvent("menuClick", { Type });
   }
 }
