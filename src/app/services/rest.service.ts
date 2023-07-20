@@ -891,4 +891,18 @@ export class RestService {
         })
       );
   }
+
+  setPreferredStoreForGame(id: string, storeName: string): Observable<boolean> {
+    return this.http
+      .post(this.r_mix_api + "/games/set_preferred_store/", {
+        game_id: id,
+        store: storeName,
+      })
+      .pipe(
+        map((res) => res["success"] ?? false),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
 }
