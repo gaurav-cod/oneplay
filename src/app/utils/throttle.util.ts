@@ -14,10 +14,10 @@ export function throttle_to_latest(func: Function, timeout = 300) {
   return (...args: any[]) => {
     value = args;
     if (timer) return;
-    timer = setTimeout(() => {
+    timer = setTimeout((value) => {
       clearTimeout(timer);
       timer = undefined;
       func.apply(this, value)
-    }, timeout)
+    }, timeout, value)
   }
 }

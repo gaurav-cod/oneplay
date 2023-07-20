@@ -8,14 +8,17 @@ import { throttle_to_latest as throttle } from 'src/app/utils/throttle.util'
   styleUrls: ['./speed-test.component.scss']
 })
 export class SpeedTestComponent implements OnInit {
-  private _latencyText = "--"
-  private _jitterText = "--"
-  private _downloadText = "--"
-  private _uploadText = "--"
-  private _TlatencyText = throttle((v: string) => this._latencyText = v)
-  private _TjitterText = throttle((v: string) => this._jitterText = v)
-  private _TdownloadText = throttle((v: string) => this._downloadText = v)
-  private _TuploadText = throttle((v: string) => this._uploadText = v)
+  latencyText = ""
+  jitterText = ""
+  downloadText = "00.00"
+  uploadText = "00.00"
+  progressValue = "1 1000"
+  throttleTime = 40
+  private _TsetLatencyText = throttle((v: string) => this.latencyText = v, this.throttleTime)
+  private _TsetJitterText = throttle((v: string) => this.jitterText = v, this.throttleTime)
+  private _TsetDownloadText = throttle((v: string) => this.downloadText = v, this.throttleTime)
+  private _TsetUploadText = throttle((v: string) => this.uploadText = v, this.throttleTime)
+  private _TsetProgressValue = throttle((v: string) => { this.progressValue = v }, this.throttleTime)
 
   pingCount = 100
   pingPacketsSent = []
@@ -24,43 +27,12 @@ export class SpeedTestComponent implements OnInit {
   dlDataRecieved = 0
   dlStartTime = 0
   dlEndTime = 0
+  ulEndTime = 0
   ulStartTime = 0
-  ulPacketsSent = []
-  ulPacketsRecieved = []
   ulPacketsSize = 1365
-  ulPacketsCount = 24 * 2
-
-  public get latencyText(): string {
-    return this._latencyText
-  }
-
-  public get jitterText(): string {
-    return this._jitterText
-  }
-
-  public get downloadText(): string {
-    return this._downloadText
-  }
-
-  public get uploadText(): string {
-    return this._uploadText
-  }
-
-  public set latencyText(v: string) {
-    this._TlatencyText(v)
-  }
-
-  public set jitterText(v: string) {
-    this._TjitterText(v);
-  }
-
-  public set downloadText(v: string) {
-    this._TdownloadText(v);
-  }
-
-  public set uploadText(v: string) {
-    this._TuploadText(v);
-  }
+  ulPacketsCount = 1024 * 20
+  ulPacketsConfirmed = 0
+  testCompleted = false
 
   getUrl(): string {
     return "localhost"
@@ -71,25 +43,49 @@ export class SpeedTestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.runSequence()
+    this.runTests()
   }
 
-  async runSequence() {
+  resetVals() {
+    this.latencyText = ""
+    this.jitterText = ""
+    this.downloadText = "00.00"
+    this.uploadText = "00.00"
+    this.progressValue = "1 1000"
+    this.testCompleted = false;
+    this.pingCount = 100
+    this.pingPacketsSent = []
+    this.pingPacketsRecieved = []
+    this.dlPacketsCount = 0
+    this.dlDataRecieved = 0
+    this.dlStartTime = 0
+    this.dlEndTime = 0
+    this.ulEndTime = 0
+    this.ulStartTime = 0
+    this.ulPacketsSize = 1365
+    this.ulPacketsCount = 1024 * 20
+    this.ulPacketsConfirmed = 0
+    this.testCompleted = false
+  }
+
+  async runTests() {
+    this.resetVals();
     const urls = await this.restService.getNearestSpeedTestServer().toPromise()
     await this.runPing(urls.ping)
     await this.runDL(urls.download)
     await this.runUL(urls.upload)
+    this.progressValue = "660 1000"
+    this.testCompleted = true;
   }
 
   runPing(url: string) {
     return new Promise((resolve) => {
       const ws = new WebSocket(url)
       ws.onerror = () => {
-        this.latencyText = "--"
+        this._TsetLatencyText("")
         resolve(false)
       }
       ws.onopen = () => {
-        // todo: take ping every one second for 10 seconds?
         for (let id = 0; id < this.pingCount; id++) {
           this.pingPacketsSent.push(+new Date())
           ws.send(JSON.stringify({ id, action: "ping" }))
@@ -101,8 +97,7 @@ export class SpeedTestComponent implements OnInit {
           this.pingPacketsRecieved[data.id] = +new Date()
           if (this.pingPacketsRecieved.length === this.pingCount) {
             ws.close()
-          }
-          // this.updatePingUI()
+          } else this.updatePingUI();
         }
       }
       ws.onclose = () => {
@@ -117,15 +112,17 @@ export class SpeedTestComponent implements OnInit {
       this.dlStartTime = +new Date()
       const ws = new WebSocket(url)
       ws.onerror = () => {
-        this.downloadText = "--"
+        this._TsetDownloadText("")
         resolve(false)
       }
       ws.onmessage = (e) => {
         if (typeof e.data === 'object') {
-          // this.dlEndTime = +new Date()
+          this.dlEndTime = +new Date()
           this.dlDataRecieved += e.data.size
           this.dlPacketsCount++
-          // this.updateDLUI()
+          if (this.dlPacketsCount === this.ulPacketsCount) {
+            ws.close()
+          } else this.updateDLUI();
         }
       }
       ws.onclose = () => {
@@ -141,27 +138,26 @@ export class SpeedTestComponent implements OnInit {
       this.ulStartTime = +new Date()
       const ws = new WebSocket(url)
       ws.onerror = () => {
-        this.uploadText = "--"
+        this._TsetUploadText("--")
         resolve(false)
       }
       ws.onopen = () => {
-        const blob = new Blob([new ArrayBuffer(this.ulPacketsSize)], { type: "application/octet-stream" })
         for (let id = 0; id < this.ulPacketsCount; id++) {
-          this.ulPacketsSent[id] = +new Date()
-          ws.send(JSON.stringify({ id, blob }))
+          const blob = this.makePacket(id, this.ulPacketsSize);
+          ws.send(blob)
         }
       }
       ws.onmessage = (e) => {
         if (typeof e.data === 'string') {
-          const data = JSON.parse(e.data)
-          this.ulPacketsRecieved[data.id] = +new Date()
-          // this.updateULUI()
-          if (this.ulPacketsRecieved.length === this.ulPacketsCount) {
+          this.ulEndTime = +new Date();
+          this.ulPacketsConfirmed++
+          if (this.ulPacketsConfirmed === this.ulPacketsCount) {
             ws.close()
-          }
+          } else this.updateULUI();
         }
       }
       ws.onclose = () => {
+        this.ulEndTime = +new Date();
         this.updateULUI()
         resolve(true)
       }
@@ -184,39 +180,29 @@ export class SpeedTestComponent implements OnInit {
         lc++
       }
     }
-    // console.warn('sent:', this.pingPacketsSent.length, 'got:', lc, 'lost:', this.pingPacketsSent.length - lc)
-    this.latencyText = (Math.floor(l / lc) || '--').toString()
-    this.jitterText = (Math.floor(j / jc) || '--').toString()
+    lc && this._TsetLatencyText(Math.floor(l / lc))
+    jc && this._TsetJitterText(Math.floor(j / jc))
+    this.updateProgress(this.pingPacketsRecieved.length)
   }
 
   updateDLUI() {
-    let s = (this.dlEndTime - this.dlStartTime) / 1000 //time taken in seconds
-    // todo: if less than 1 MBps switch to KBps?
-    let t = (this.dlDataRecieved / 1024 / 1024 / s).toString().split(".")
-    // console.warn(this.dlDataRecieved / 1024 / 1024 / s, t, '<- dl')
-    if (t.length === 1) this.downloadText = t[0] + ' MB/s'
-    else this.downloadText = t[0] + '.' + t[1].substring(0, 2) + ' MB/s'
-    // console.warn(this.dlPacketsCount, this.dlDataRecieved, s)
+    let s = (this.dlEndTime - this.dlStartTime) / 1000;
+    let t = (this.dlDataRecieved / 1024 / 1024 / s)
+    this._TsetDownloadText(Math.floor(t*100)/100)
+    this.updateProgress(100 + this.dlPacketsCount)
   }
 
   updateULUI() {
-    let t = 0
-    let c = 0
-    // console.warn(this.ulPacketsSent, this.ulPacketsRecieved, this.ulPacketsCount)
-    for (let i = 0; i < this.ulPacketsRecieved.length; i++) {
-      if (typeof this.ulPacketsRecieved[i] === 'number') {
-        let time = this.ulPacketsRecieved[i] - this.ulPacketsSent[i]
-        if (time) {
-          t += time
-          c++
-        }
-      }
-    }
-    //todo: KBps MBps GBps
-    let s = (((c * this.ulPacketsSize) / 1024 / 1024 / t / 1000) || 0).toString().split(".")
-    if (s.length === 1) this.uploadText = s[0] + ' Mbps'
-    else this.uploadText = s[0] + '.' + s[1].substring(0, 2) + ' Mb/s'
-    // console.warn(c, s, t, '<- ul')
+    let s = (this.ulEndTime - this.ulStartTime) / 1000;
+    let t = ((this.ulPacketsConfirmed * this.ulPacketsSize) / 1024 / 1024 / s)
+    this._TsetUploadText(Math.floor(t*100)/100)
+    this.updateProgress(100 + this.dlPacketsCount + this.ulPacketsConfirmed)
+  }
+
+  makePacket(id: number, size: number): Blob {
+    const tag = JSON.stringify({ id })
+    const mimeType = { type: "application/octet-stream" };
+    return new Blob([tag, new ArrayBuffer(size - tag.length)], mimeType);
   }
 
   private printBlob(b: Blob) {
@@ -225,4 +211,9 @@ export class SpeedTestComponent implements OnInit {
     r.readAsText(b);
   }
 
+  updateProgress(count: number) {
+    // 1 1000 to 660 1000
+    const cp = (count / (this.pingCount + (2 * this.ulPacketsCount))) * 100;
+    this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`)
+  }
 }

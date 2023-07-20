@@ -56,7 +56,7 @@
         text-align: center !important;
     }
 }
-  
+
 #success-value {
     // stroke: url(#completegradient);
     stroke: url(#gradient);
@@ -64,13 +64,11 @@
     stroke-linecap: round;
     animation: progress 1s ease-out forwards;
 }
-  
+
 @keyframes progress {
     0% {
       stroke-dasharray: 220, 660;
-    }
-}  
- 
+    }}
 .marginbottomNegative {
     margin-bottom: -10px;
 }
