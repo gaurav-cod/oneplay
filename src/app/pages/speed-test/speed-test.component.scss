@@ -22,11 +22,6 @@
     }
 }
 
-.br276 {
-    border-radius: 276px !important;
-    background-color: transparent !important;
-}
-
 .displayData {
     font-size: 50px;
     font-weight: 800;
@@ -37,89 +32,6 @@
         font-size: 34px;
         line-height: 44px;
     }
-}
-
-.dotBorder {
-    border: 2px dashed #3E4246 !important;
-}
-
-@property --progress-value {
-    syntax: '<integer>';
-    inherits: true;
-    initial-value: 0;
-}
-
-@keyframes speedProgress {
-    to { 
-        --progress-value: 100;
-     }
-}
-
-
-.speedTest {
-    height: 296px;
-    overflow: hidden;
-    @media (max-width: 600px) {
-        height: 225px;
-    }
-}
-
-.progress-bar {
-    width: 330px;
-    height: 330px;
-    border-radius: 50%;
-    transform: rotate(214deg);
-    @media (max-width: 500px) {
-        width: 250px;
-        height: 250px;
-    }
-}
-  
-.progress-bar::before {
-    counter-reset: percentage var(--progress-value);
-    content: counter(percentage) '%';
-    font-size: 50px;
-    font-weight: 800;
-    line-height: 70px;
-    letter-spacing: 1px;
-    transform: rotate(-214deg);
-    color: #ffffff !important;
-    height: 100%;
-    padding-top: 42%;
-    background-image: url('../../../assets/img/speed-test/gradientBg.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    @media (max-width: 600px) {
-        padding-top: 37%;
-    }
-}
-
-.speedProgress {
-    background: 
-        radial-gradient(closest-side, #151617 92%, transparent 93% 100%, #3E4246 0),
-        conic-gradient(#FF0CF5, #0575E6 calc(var(--progress-value) * 0.8%), #3E4246 0);
-    animation: speedProgress 2s 1 forwards;
-}
-
-// Complete Speed Test  CSS
-.speedProgress.completeTest {
-    background: 
-    radial-gradient(closest-side, #151617 92%, transparent 93% 100%, #3E4246 0),
-    conic-gradient(#3AA0FE, #59FEF4 calc(var(--progress-value) * 0.8%), #3E4246 0) !important;
-}
-  
-.speedProgress::before {
-    animation: speedProgress 2s 1 forwards;
-}
-
-.progessBar {
-    visibility: hidden;
-    width: 0;
-    height: 0;
-}
-
-.marginTopNegative {
-    margin-top: -20px;
 }
 
 .resetBtn {
@@ -143,4 +55,35 @@
     .responsiveTextAlign {
         text-align: center !important;
     }
+}
+  
+#success-value {
+    // stroke: url(#completegradient);
+    stroke: url(#gradient);
+    fill: none;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+  
+@keyframes progress {
+    0% {
+      stroke-dasharray: 220, 660;
+    }
+}  
+ 
+.marginbottomNegative {
+    margin-bottom: -10px;
+}
+
+#circle {
+    width: 300px;
+    height: 300px;
+    transform: rotate(180deg);
+}
+
+.dotBorder {
+    border-radius: 50%;
+    border-top: 2px dashed #3e4246;
+    border-right: 2px dashed #3e4246;
+    rotate: 315deg;
 }

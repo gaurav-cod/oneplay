@@ -73,34 +73,49 @@
         </div>
       </div>
       <div class="row justify-content-center mt-md-5 mt-4">
-        <div class="col-auto speedTest">
-          <div class="card text-white br276 dotBorder p-2">
-            <!-- complete speed test just use completeTest after speedProgress -->
-            <div class="progress-bar speedProgress">
-              <progress min="0" max="100" value="50" class="progessBar displayData text-white"></progress>
+        <div class="col-auto p-1">
+          
+          <div class="card text-white border-0 bgTransparent">
+            <div class="text-center dotBorder p-2">
+              <svg id="circle">
+                <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%">
+                  <stop offset="0%" stop-color="#FF0CF5" />
+                  <stop offset="100%" stop-color="#0575E6" />
+                </linearGradient>
+                <linearGradient id="completegradient" x1="0" y1="0" x2="0" y2="100%">
+                  <stop offset="0%" stop-color="#59FEF4" />
+                  <stop offset="100%" stop-color="#3AA0FE" />
+                </linearGradient>
+                
+                <circle class="circleBorder" r="140" cx="50%" cy="50%" stroke="#3E4246" fill="none" stroke-width="15" stroke-linecap="round" stroke-dasharray="660, 660">
+                </circle>
+                <circle id="success-value" r="140" cx="50%" cy="50%" fill="none" stroke-width="15" stroke-linecap="round" stroke-dasharray="220, 660">
+                </circle>
+              </svg>
             </div>
-
-            <div class="card-img-overlay">
-              <div class="h-100 d-flex justify-content-center align-items-center text-center">
-                <div class="">
+            
+            <!-- <input type="text" id="circleValue">% -->
+            <div class="card-img-overlay" style="background-image: url('assets/img/speed-test/gradientBg.svg');">
+              <div class="text-center mt-5">
+                <div class="pt-3">
                   <span class="font20 font500 text-white">Download</span>
-                  <h1 class="displayData mb-0 invisible">00.00</h1>
+                  <h1 class="displayData mb-0">00.00</h1>
                   <span class="font16 font500 muteText">mbps</span>
                 </div>
-                <!-- <div class="">
-                                    <p class="font20 font500 infoText">Test Completed</p>
-                                    <img src="assets/img/singup-login/Group 250.svg" width="70px" height="70px" class="img-fluid" alt="" />
-                                </div> -->
+                <!-- <div class="pt-4">
+                  <p class="font20 font500 infoText">Test Completed</p>
+                  <img src="assets/img/singup-login/Group 250.svg" width="70px" height="70px" class="img-fluid" alt="" />
+                  <div class="text-center marginbottomNegative pt-3">
+                    <button class="btn resetBtn border-0 mt-4">Retest</button>
+                  </div>
+                </div> -->
               </div>
             </div>
           </div>
         </div>
-        <!-- <div class="col-12 text-center marginTopNegative">
-                    <button class="btn resetBtn border-0">Retest</button>
-                </div> -->
       </div>
       <div class="row">
-        <div class="col-12 text-center mt-5">
+        <div class="col-12 text-center pt-4">
           <p class="font16 font500 offWhiteText mb-0">IP Address</p>
           <h3 class="font28 font600 text-white mb-0">103.77.137.220</h3>
           <p class="font20 font500 muteText">Alliance Broadband Services Pvt. Ltd.</p>
