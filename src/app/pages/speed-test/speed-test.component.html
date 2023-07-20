@@ -116,9 +116,9 @@
       </div>
       <div class="row mt-5">
         <div class="col-12 text-center pt-4">
-          <p class="font16 font500 offWhiteText mb-0">IP Address</p>
-          <h3 class="font28 font600 text-white mb-0">103.77.137.220</h3>
-          <p class="font20 font500 muteText">Alliance Broadband Services Pvt. Ltd.</p>
+          <p class="font16 font500 offWhiteText mb-0" *ngIf="!!currentLocation">IP Address</p>
+          <h3 class="font28 font600 text-white mb-0" *ngIf="!!currentLocation">{{currentLocation.ip}}</h3>
+          <p class="font20 font500 muteText" *ngIf="!!currentLocation">{{currentLocation.isp}}</p>
         </div>
       </div>
     </div>

@@ -33,6 +33,7 @@ export class SpeedTestComponent implements OnInit {
   ulPacketsCount = 100
   ulPacketsConfirmed = 0
   testCompleted = false
+  currentLocation = undefined
 
   getUrl(): string {
     return "localhost"
@@ -66,10 +67,12 @@ export class SpeedTestComponent implements OnInit {
     this.ulPacketsCount = 100
     this.ulPacketsConfirmed = 0
     this.testCompleted = false
+    this.currentLocation = undefined
   }
 
   async runTests() {
     this.resetVals();
+    await this.restService.getCurrentLocation().toPromise().then(v => this.currentLocation = v)
     const urls = await this.restService.getNearestSpeedTestServer().toPromise()
     await this.runPing(urls.ping)
     await this.runDL(urls.download)
