@@ -4,3 +4,15 @@
     color: #ffffff !important;
     border-radius: 6px;
 }
+
+.height100vh {
+    height: calc(100vh - 180px);
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
+}
+
+.height100vh::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}

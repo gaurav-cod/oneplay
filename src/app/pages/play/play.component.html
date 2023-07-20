@@ -1,6 +1,6 @@
 <!-- Page content -->
-<div class="container pt-8 pb-2">
-    <div class="row justify-content-center">
+<div class="container">
+    <div class="row justify-content-center height100vh align-items-center">
         <div class="col-lg-6 col-md-10">
             <div class="card modalBG border-0 py-4">
                 <div class="card-header bg-transparent pb-1 text-center">
@@ -18,13 +18,14 @@
                         <div class="col-md-11 col-12 mt-md-4 mt-3">
                             <button
                                 class="btn text-white customLinearGradient font18btn responsiveBr60 font500 p-md-3 p-2 border-left-0 border-right-0 border-top-0 btn-block"
+                                (click)="reloadCurrentPage()"
                             >
                                 <div class="p-1 p-md-0">Launch Gaming Client</div>
                             </button>
                         </div>
                         <div class="col-12 col-md-11 mt-md-4 mt-3">
                             <a
-                                href="#"
+                                href="https://play.google.com/store/apps/details?id=in.oneplay"
                                 class="btn btn-link btn-block activeBG responsiveBr60"
                             >
                                 <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBG">
@@ -37,6 +38,7 @@
                             <a
                                 href="javascript:void(0)"
                                 class="btn btn-link btn-block activeBG responsiveBr60"
+                                (click)="startGameWithWebRTCToken()"
                             >
                                 <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBG">
                                     Start Your Journey on Browser
