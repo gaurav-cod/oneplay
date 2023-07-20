@@ -26,5 +26,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'search',               component: SearchComponent },
     { path: 'search/:tab',          component: SearchComponent },
     { path: 'play',                   component: PlayComponent },
+    { path: 'play',                 component: PlayComponent },
     { path: "quit",                 component: FeedbackComponent },
 ];
