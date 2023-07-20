@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { of } from 'rxjs';
 import { MessageModel } from 'src/app/models/message.model';
 import { PartyModel } from 'src/app/models/party.model';
@@ -25,7 +25,7 @@ export class PartyChatComponent implements OnInit, OnDestroy, AfterViewInit {
   party: PartyModel = {} as PartyModel;
   user: UserModel = {} as UserModel;
   chats: MessageModel[] = [];
-  message = new FormControl("", Validators.required);
+  message = new UntypedFormControl("", Validators.required);
 
   constructor(
     private readonly partyService: PartyService,

@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { filter, Subscription } from "rxjs";
-import { environment } from "src/environments/environment";
 import { GamepadService } from "./services/gamepad.service";
 import { RestService } from "./services/rest.service";
 import { ToastService } from "./services/toast.service";
-declare var gtag: Function;
+import { CountlyService } from "./services/countly.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-root",
@@ -22,16 +22,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly restService: RestService,
     private readonly toastService: ToastService,
-    private readonly gamepadService: GamepadService
+    private readonly gamepadService: GamepadService,
+    private readonly countlyService: CountlyService
   ) {
     const navEvents = this.router.events.pipe(
       filter((event) => event instanceof NavigationEnd)
     );
     navEvents.subscribe((event: NavigationEnd) => {
       window.scrollTo(0, 0);
-      gtag("config", environment.ga_tracking_id, {
-        page_path: event.urlAfterRedirects,
-      });
+      countlyService.track_pageview(event.urlAfterRedirects);
     });
   }
 
@@ -51,12 +50,19 @@ export class AppComponent implements OnInit, OnDestroy {
     );
 
     this.gamepadService.init();
+
+    window.addEventListener("popstate", this.closeSwals.bind(this));
   }
 
   ngOnDestroy(): void {
     this.gamepadService.destroy();
     this.toastService.clear();
     this.gamepadMessageSubscription.unsubscribe();
+    window.removeEventListener("popstate", this.closeSwals.bind(this));
+  }
+
+  private closeSwals() {
+    Swal.close();
   }
 
   private getSeriousNotification() {

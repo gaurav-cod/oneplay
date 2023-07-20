@@ -5,9 +5,16 @@
     <meta charset="utf-8" />
     <meta
       name="viewport"
-      content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no;user-scalable=0;"
+      content="width=device-width, height=device-height, viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no; user-scalable=0;"
     />
     <meta name="description" content="OnePlay Dashboard" />
+    <meta name="theme-color" content="#151515" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="OnePlay" />
+    <link rel="apple-touch-icon" href="assets/img/brand/favicon.png" />
+
     <title>Oneplay Dashboard</title>
     <!-- Favicon -->
     <link href="assets/img/brand/favicon.png" rel="icon" type="image/png" />
@@ -17,18 +24,18 @@
       href="assets/vendor/@fortawesome/fontawesome-free/css/all.min.css"
       rel="stylesheet"
     />
-    <link rel="manifest" href="./manifest.json" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
     <!-- Font Family Poppins -->
     <link
-      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&amp;display=swap"
       rel="stylesheet"
     />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script
-      async
+    <!-- <script
+      async=""
       src="https://www.googletagmanager.com/gtag/js?id=UA-220923953-2"
     ></script>
     <script>
@@ -37,9 +44,12 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-    </script>
+    </script> -->
   </head>
   <body>
     <app-root></app-root>
+    <noscript
+      >Please enable JavaScript to continue using this application.</noscript
+    >
   </body>
 </html>

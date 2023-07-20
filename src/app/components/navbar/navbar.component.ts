@@ -7,12 +7,10 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { ROUTES } from "../sidebar/sidebar.component";
-import { Location } from "@angular/common";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
@@ -27,18 +25,17 @@ import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.scss"],
-  providers: [GLinkPipe, AvatarPipe],
+  providers: [GLinkPipe],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  public listTitles: any[];
-  public location: Location;
-  public query = new FormControl("");
+  public query = new UntypedFormControl("");
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
@@ -78,17 +75,38 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return environment.domain;
   }
 
-  get gameLink() {
+  viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      return [
+      this.countlyService.addEvent("gameLandingView", {
+        gameID: this.gameStatus.game_id,
+        gameGenre: "",
+        gameTitle: this.gameStatus.game_name,
+        source: location.pathname + location.hash,
+        trigger: "navbar - game-status",
+      });
+      const path = [
         "view",
         this.gLink.transform({
           title: this.gameStatus.game_name,
           oneplayId: this.gameStatus.game_id,
         } as GameModel),
       ];
+      this.router.navigate(path);
     }
-    return [];
+  }
+
+  viewGameFromSearch(game: GameModel) {
+    this.isMenuCollapsed = true;
+    this.countlyService.addEvent("gameLandingView", {
+      gameID: game.oneplayId,
+      gameGenre: game.genreMappings?.join(","),
+      gameTitle: game.title,
+      source: location.pathname + location.hash,
+      trigger: "navbar - search",
+    });
+    this.router.navigate(["view", this.gLink.transform(game)], {
+      queryParams: this.keywordQuery,
+    });
   }
 
   get isGameRunning() {
@@ -124,18 +142,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    location: Location,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
     private readonly gameService: GameService,
     private readonly gLink: GLinkPipe,
-    private readonly gavatar: AvatarPipe,
     private readonly messagingService: MessagingService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly countlyService: CountlyService
   ) {
-    this.location = location;
     this.authService.user.subscribe((u) => (this.user = u));
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
     this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
@@ -146,7 +162,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.listTitles = ROUTES.filter((listTitle) => listTitle);
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -177,7 +192,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUserError(event) {
@@ -185,7 +200,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onUsersError(event) {
-    event.target.src = 'assets/img/defaultUser.svg';
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
   getFriendAddIcon(friend: UserModel) {
@@ -193,12 +208,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if (this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
   }
 
   addFriend(friend: UserModel) {
+    if (this.user.id === friend.id) {
+      return;
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id
@@ -238,20 +258,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTitle() {
-    var titlee = this.location.prepareExternalUrl(this.location.path());
-    if (titlee.charAt(0) === "#") {
-      titlee = titlee.slice(1);
-    }
-
-    for (var item = 0; item < this.listTitles.length; item++) {
-      if (this.listTitles[item].path === titlee) {
-        return this.listTitles[item].title;
-      }
-    }
-    return "Oneplay";
-  }
-
   search(value: string) {
     this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
@@ -271,6 +277,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logoutRef.close();
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
       this.authService.logout();
     });
   }
@@ -326,10 +333,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
+      scrollable: true,
     });
   }
 
-  TermsConditions(container: ElementRef<HTMLDivElement >) {
+  TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",

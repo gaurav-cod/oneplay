@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { SidebarComponent } from "./sidebar/sidebar.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { FooterComponent } from "./footer/footer.component";
 import { RouterModule } from "@angular/router";
@@ -28,6 +27,7 @@ import { ToastsComponent } from './toasts/toasts.component';
 import { OnboardingModalsComponent } from './onboarding-modals/onboarding-modals.component';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SelectGameCardComponent } from './select-game-card/select-game-card.component';
+import { ClipboardModule } from "ngx-clipboard";
 
 @NgModule({
   imports: [
@@ -42,12 +42,12 @@ import { SelectGameCardComponent } from './select-game-card/select-game-card.com
     ShareButtonsModule,
     ShareIconsModule,
     InfiniteScrollModule,
+    ClipboardModule,
   ],
   declarations: [
     GameCardComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent,
     ConsoleComponent,
     StreamCardComponent,
     BasicInfoComponent,
@@ -68,7 +68,6 @@ import { SelectGameCardComponent } from './select-game-card/select-game-card.com
     GameCardComponent,
     FooterComponent,
     NavbarComponent,
-    SidebarComponent,
     ConsoleComponent,
     StreamCardComponent,
     BasicInfoComponent,

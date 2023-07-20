@@ -1,7 +1,7 @@
 .navbar {
     background-color: #151617 !important;
-    position: fixed;
-    top: 0;
+    // position: fixed;
+    top: -1px !important;
     left: 0;
     width: 100%;
     z-index: 999;
@@ -202,4 +202,29 @@
 
 .fixedIcon {
     bottom: 7px !important;
+}
+
+.searchDropdown {
+    overflow: auto !important;
+}
+
+.searchDropdown::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.height180 {
+    height: 180px !important;
+}
+
+.removeFocusVisible {
+    outline: none;
+}
+
+.borderTop {
+    border-top: 1px solid #3E4246 !important;
+}
+
+.borderRadius0{
+    border-radius: 0px !important;
 }

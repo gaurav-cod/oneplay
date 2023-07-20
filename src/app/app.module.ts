@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -16,6 +16,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonLayoutComponent } from './layouts/common-layout/common-layout.component';
 import { TvAuthLayoutComponent } from './layouts/tv-auth-layout/tv-auth-layout.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   imports: [
@@ -26,7 +27,13 @@ import { TvAuthLayoutComponent } from './layouts/tv-auth-layout/tv-auth-layout.c
     ComponentsModule,
     NgbModule,
     RouterModule.forRoot([]),
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   declarations: [
     AppComponent,

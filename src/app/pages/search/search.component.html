@@ -1,9 +1,9 @@
-<div class="container-fluid pt-7 searchComponent max-width1500">
-  <div class="container-fluid mt-2 mt-md-4 px-0">
+<div class="container-fluid searchComponent max-width1500">
+  <div class="container-fluid mt-2 px-0">
     <div class="row justify-content-center hideLargeScreen">
       <div class="col-12 col-md-9 col-lg-6 col-xxl-3">
         <form class="navbar-search" (submit)="search()">
-          <div class="form-group mb-0" [ngClass]="{ focused: isFocused === true }">
+          <div class="form-group mb-0 mt-2">
             <div class="input-group border-0">
               <input
                 class="form-control searchPleaceholder border-0"
@@ -12,6 +12,7 @@
                 [formControl]="queryControl"
                 (focus)="isFocused = true"
                 (blur)="isFocused = false"
+                (keyup)="search()"
               />
               <div class="input-group-append">
                 <button
@@ -33,9 +34,9 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between mb-1 mt-3">
-      <h1 class="text-white font20 font500 text-center">
-        <span *ngIf="!!query">You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
+    <div class="d-flex justify-content-between" *ngIf="!!query">
+      <h1 class="text-white font20 font500 text-center mt-2">
+        <span>You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
         <a
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
@@ -52,15 +53,15 @@
     </div>
 
     <p
-      *ngIf="!tab || tab === 'games'"
+      *ngIf="!!query"
       class="mb-1 font16 font500 mutedTextColor mb-md-2"
     >
-      {{ games.length }} games found
+      <span *ngIf="!tab || tab === 'games'">{{ games.length }} games found</span>
     </p>
 
     <div
       *ngIf="games.length !== 0"
-      class="pb-2 row"
+      class="pb-2 row mt-2"
       infinite-scroll
       [infiniteScrollDistance]="5"
       [infiniteScrollThrottle]="200"
@@ -68,12 +69,11 @@
     >
       <div
         *ngFor="let game of games"
-        class="col-12 col-md-12 col-lg-4 mb-1"
+        class="col-12 col-md-6 col-lg-4 mb-1"
       >
         <div
           class="row h-100 gameRowHover py-2"
-          [routerLink]="['/view/' + (game | glink)]"
-          [queryParams]="keywordQuery"
+          (click)="viewGame(game)"
           style="cursor: pointer"
         >
           <div class="col-auto">
@@ -100,12 +100,12 @@
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-6 col-lg-3 col-xxl-3">
+    <div class="row mt-2">
+      <div class="col-12">
         <button
-          *ngIf="games.length === 4 && !tab"
-          class="btn btn-block activelinear text-white border-0 mt-2"
+          class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
           (click)="searchNavigate('games')"
+          *ngIf="games.length === 4 && !tab"
         >
           See more games
         </button>
@@ -119,10 +119,10 @@
     </div>
 
     <p
-      *ngIf="!tab || tab === 'users'"
+      *ngIf="!!query"
       class="font16 font500 mutedTextColor pt-3"
     >
-      {{ users.length }} people found
+      <span *ngIf="!tab || tab === 'users'">{{ users.length }} people found</span>
     </p>
 
     <div
@@ -165,18 +165,14 @@
         </div>
       </div>
 
-      <div class="col-12">
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-6 col-lg-3 col-xxl-3">
-            <button
-              *ngIf="users.length === 4 && !tab"
-              class="btn btn-block activelinear text-white border-0 mt-2"
-              (click)="searchNavigate('users')"
-            >
-              See more users
-            </button>
-          </div>
-        </div>
+      <div class="col-12 mt-2">
+        <button
+          class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
+          (click)="searchNavigate('users')"
+          *ngIf="users.length === 4 && !tab"
+        >
+          See more users
+        </button>
 
         <div
           *ngIf="users.length === 0 && tab === 'users'"

@@ -3,7 +3,7 @@
     <div class="container height91vh">
       <div class="row">
         <div class="col-6 mt-4">
-          <a [href]="domain">
+          <a [href]="domain" (click)="logoGuard($event)">
             <img
               src="assets/img/brandLogo.svg"
               class="img-fluid"

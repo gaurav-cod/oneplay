@@ -5,7 +5,7 @@
       
       <div class="row mt-lg-8 mt-md-7 mt-7 justify-content-center">
         <div class="form-group col-auto p-1 otpInput" *ngFor="let input of formInput;  index as i">
-          <input #formRow type="tel" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keyup)="jumpPrev($event, i)">
+          <input #formRow type="tel" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)">
           <div class="col-auto p-1" *ngIf="input === 'indicator'">
             <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
           </div>
@@ -22,13 +22,12 @@
             Continue
           </button>
         </div>
-        <div class="col-md-12 mt-5 text-center">
+        <div *ngIf="!isLoggedIn" class="col-md-12 mt-5 text-center">
           <p class="font20">
             New to Oneplay?
             <a
               href="javascript:void(0)"
-              routerLinkActive="active"
-              [routerLink]="['/qr-login']"
+              (click)="goToSignup()"
               class="text-white"
               >Sign up now</a
             >

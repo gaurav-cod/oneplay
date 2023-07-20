@@ -31,32 +31,32 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
+    const isRenderMixAPI = req.urlWithParams.startsWith(
+      environment.render_mix_api
+    );
+
     return next
       .handle(req)
-      .pipe(timeout(30000))
+      .pipe(timeout(isRenderMixAPI ? 5000 : 30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
         catchError((error: HttpErrorResponse) => {
-          if (
-            req.urlWithParams.startsWith(environment.render_mix_api) &&
-            error.status === 401
-          ) {
+          if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
-          // if(error instanceof TimeoutError) {
-          //   console.log(error,'server-error');
-          // }
+
+          const code = Number(error.error?.code) || error.status || 503;
 
           throw new HttpErrorResponse({
             status: error.status,
             statusText: error.statusText,
             error: {
-              code: error.status || 503,
+              code,
               message:
                 error.error?.message ||
                 error.error?.msg ||
                 "Server is not responding",
-              timeout: error instanceof TimeoutError || error.status === 408,
+              timeout: error instanceof TimeoutError || code === 408,
             },
           });
         })

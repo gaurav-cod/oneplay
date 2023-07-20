@@ -1,81 +1,99 @@
-<nav class="navbar navbar-vertical navbar-dark d-flex hideInlarge">
-  <div class="container-fluid">
-    <a
-      href="javascript:void(0)"
-      class="navbar-nav"
-      routerLinkActive="active"
-      [routerLink]="['/home']"
-    >
-      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-        <i class="fas fa-home"></i>
-      </span>
-    </a>
-    <a
-      href="javascript:void(0)"
-      class="navbar-nav text-center"
-      [routerLink]="['search']"
-      routerLinkActive="text-primary"
-    >
-      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-        <i class="fas fa-search"></i>
-      </span>
-    </a>
-    <a
-      href="javascript:void(0)"
-      class="navbar-nav text-center"
-      [routerLink]="gameLink"
-      ngbTooltip="{{ gamePlayTooltip }}"
-    >
-      <img
-        *ngIf="isGameRunning && isUserLive"
-        src="assets/img/Dashboard/Speedtest.svg"
-        class="img-fluid"
-        alt=""
-        aria-hidden="true"
-        width="36px"
-        height="36px"
-      />
-      <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span>
-      <img
-        *ngIf="isGameRunning && !isUserLive"
-        src="assets/img/Dashboard/resumeSpeedtest.svg"
-        class="img-fluid"
-        alt=""
-        aria-hidden="true"
-        width="36px"
-        height="36px"
-      />
-      <img
-        *ngIf="!isGameRunning"
-        src="assets/img/Dashboard/inactiveGame.svg"
-        class="img-fluid"
-        alt=""
-        aria-hidden="true"
-        width="36px"
-        height="36px"
-      />
-    </a>
-    <a
-      href="javascript:void(0)"
-      class="navbar-nav text-center"
-      (click)="toggleFriendsList()"
-    >
-      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-        <i class="fas fa-user-friends"></i>
-      </span>
-    </a>
-    <a
-      href="javascript:void(0)"
-      routerLinkActive="active"
-      [routerLink]="['/store']"
-      class="navbar-nav text-center"
-    >
-      <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-        <i class="fas fa-gamepad"></i>
-      </span>
-    </a>
-  </div>
-</nav>
+
+<div class="fixed-bottom">
+  <ngb-alert [dismissible]="true" *ngIf="isAndroid" class="gardientCard mb-0 border-0 p-2">
+    <div class="row my-2" >
+      <div class="col-auto pr-0 align-self-center">
+        <img src="assets/img/downloadApp.svg" width="60px" height="60px" class="img-fluid" alt="" />
+      </div>
+      <div class="col align-self-center px-2">
+        <p class="font14 font500 text-white mb-0">Download our app for a better experience.</p>
+      </div>
+      <div class="col-auto align-self-center p-0">
+        <a href="https://play.google.com/store/apps/details?id=in.oneplay" class="btn font12 btnGradient border-0 text-white mt-2">DOWNLOAD</a>
+      </div>
+    </div>
+  </ngb-alert>
+  <nav class="navbar navbar-vertical navbar-dark d-flex hideInlarge ">
+    <div class="container-fluid">
+      <a
+        href="javascript:void(0)"
+        class="navbar-nav"
+        routerLinkActive="active"
+        [routerLink]="['/home']"
+      >
+        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+          <i class="fas fa-home"></i>
+        </span>
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="navbar-nav text-center"
+        [routerLink]="['search']"
+        routerLinkActive="text-primary"
+      >
+        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+          <i class="fas fa-search"></i>
+        </span>
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="navbar-nav text-center"
+        (click)="viewGame()"
+        placement="top"
+        ngbTooltip="{{ gamePlayTooltip }}"
+        triggers="click:blur"
+      >
+        <img
+          *ngIf="isGameRunning && isUserLive"
+          src="assets/img/Dashboard/Speedtest.svg"
+          class="img-fluid"
+          alt=""
+          aria-hidden="true"
+          width="36px"
+          height="36px"
+        />
+        <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span>
+        <img
+          *ngIf="isGameRunning && !isUserLive"
+          src="assets/img/Dashboard/resumeSpeedtest.svg"
+          class="img-fluid"
+          alt=""
+          aria-hidden="true"
+          width="36px"
+          height="36px"
+        />
+        <img
+          *ngIf="!isGameRunning"
+          src="assets/img/Dashboard/inactiveGame.svg"
+          class="img-fluid"
+          alt=""
+          aria-hidden="true"
+          width="36px"
+          height="36px"
+        />
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="navbar-nav text-center"
+        (click)="toggleFriendsList()"
+      >
+        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+          <i class="fas fa-user-friends"></i>
+        </span>
+      </a>
+      <a
+        href="javascript:void(0)"
+        routerLinkActive="active"
+        [routerLink]="['/store']"
+        class="navbar-nav text-center"
+      >
+        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
+          <i class="fas fa-gamepad"></i>
+        </span>
+      </a>
+    </div>
+  </nav>
+</div>
 
 <ng-template #share let-d="dismiss">
   <div class="modal-content position-relative modalBorderGradient">

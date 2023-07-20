@@ -1,5 +1,5 @@
 <div
-  class="container-fluid mid-screen pb-3 mb-lg-0 pb-lg-0 pt-6"
+  class="container-fluid pb-3 mb-lg-0 pb-lg-0"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
   <ngb-carousel
@@ -12,7 +12,7 @@
     *ngIf="!!firstRow"
   >
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
-      <div class="row mt-4 mt-lg-0">
+      <div class="row mt-2 mt-lg-0">
         <div class="col p-1 overflow-hidden">
           <div class="card bgTransparent border-0 height40vh">
             <div class="row carousel-images">
@@ -57,14 +57,14 @@
             <div class="card-img-overlay">
               <div
                 class="row height30vh align-items-end pl-lg-3"
-                [routerLink]="['/view/' + (game | glink)]"
+                (click)="viewBannerGame(game)"
               >
                 <div class="col-auto pl-4 customWidth borderRadius10"></div>
                 <div class="col-auto pl-lg-4 customWidth1 borderRadius10">
                   <img [src]="game.textLogo" class="text-logo" alt="" />
                   <br />
                   <button
-                    [routerLink]="['/view/' + (game | glink)]"
+                    (click)="viewBannerGame(game)"
                     class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
                   >
                     Play Now

@@ -11,6 +11,7 @@ import {
   GameStatusRO,
   HomeFeeds,
   ILocation,
+  IPayment,
   LoginDTO,
   PurchaseStore,
   SignupDTO,
@@ -34,6 +35,7 @@ import { SubscriptionModel } from "../models/subscription.model";
 import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
+import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 
 @Injectable({
   providedIn: "root",
@@ -89,17 +91,19 @@ export class RestService {
     );
   }
 
-  updateProfile(data: UpdateProfileDTO): Observable<void> {
+  updateProfile(data: UpdateProfileDTO): Observable<UserModel> {
     const formData = new FormData();
     Object.keys(data).forEach((key) => {
       formData.append(key, data[key]);
     });
-    return this.http.put(this.r_mix_api + "/accounts/profile", formData).pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .put<object>(this.r_mix_api + "/accounts/profile", formData)
+      .pipe(
+        map((res) => new UserModel(res)),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   updatePassword(password: string): Observable<void> {
@@ -122,11 +126,11 @@ export class RestService {
     );
   }
 
-  verify(data: VerifySignupDTO): Observable<void> {
+  verify(data: VerifySignupDTO): Observable<string> {
     return this.http
-      .post(this.r_mix_api + "/accounts/verify_signup", data)
+      .post<object>(this.r_mix_api + "/accounts/verify_signup", data)
       .pipe(
-        map((res) => {}),
+        map((res) => res["session_token"]),
         catchError(({ error }) => {
           throw error;
         })
@@ -180,6 +184,19 @@ export class RestService {
       );
   }
 
+  verifyUserName(username: string): Observable<string> {
+    return this.http
+      .post(this.r_mix_api + "/accounts/validate_username", { username })
+      .pipe(
+        map((res) => res["success"] ?? false),
+        map((res) => (res ? "" : "Invalid username.")),
+        catchError(({ error }) => {
+          if (error.code === 400) return of(error.message);
+          else throw error;
+        })
+      );
+  }
+
   getSessions(): Observable<Session[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/sessions")
@@ -195,9 +212,9 @@ export class RestService {
     );
   }
 
-  payForSubscription(packageName: string): Observable<PaymentIntent> {
+  payForSubscription(packageName: string): Observable<IPayment> {
     return this.http
-      .post<PaymentIntent>(
+      .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
         null
       )
@@ -209,9 +226,14 @@ export class RestService {
       );
   }
 
-  getSubscriptions(): Observable<SubscriptionModel[]> {
+  getSubscriptions(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/accounts/subscription/all")
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
+        params: { page, limit },
+      })
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
   }
 
@@ -219,6 +241,36 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/current")
       .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+  }
+
+  getProcessingSubscription(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
+    return this.http
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/processing",
+        { params: { page, limit } }
+      )
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+  }
+
+  getFailedSubscription(
+    page: number,
+    limit: number
+  ): Observable<SubscriptionPaymentModel[]> {
+    return this.http
+      .get<any[]>(
+        this.r_mix_api + "/accounts/subscription/payment-history/failed",
+        { params: { page, limit } }
+      )
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+  }
+
+  hasPreviousPayments(): Observable<boolean> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/all")
+      .pipe(map((res) => res.length > 0));
   }
 
   setOnline(): Observable<void> {
@@ -415,6 +467,9 @@ export class RestService {
   }
 
   getWishlistGames(ids: string[]): Observable<GameModel[]> {
+    if (ids.length === 0) {
+      return of([]);
+    }
     const data = {
       content_ids: ids.join(","),
     };
@@ -818,6 +873,17 @@ export class RestService {
       .get<TokensUsageDTO>(
         this.r_mix_api + "/accounts/subscription/remaining_stream_time"
       )
+      .pipe(
+        map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getGameStores(): Observable<PurchaseStore[]> {
+    return this.http
+      .get<PurchaseStore[]>(this.r_mix_api + "/games/stores")
       .pipe(
         map((data) => data),
         catchError(({ error }) => {

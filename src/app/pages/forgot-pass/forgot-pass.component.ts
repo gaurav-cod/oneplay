@@ -1,6 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -11,12 +13,14 @@ import Swal from "sweetalert2";
   styleUrls: ["./forgot-pass.component.scss"],
 })
 export class ForgotPassComponent implements OnInit {
-  email = new FormControl("", [Validators.required, Validators.email]);
+  email = new UntypedFormControl("", [Validators.required, Validators.email]);
   resetemail = false;
 
   constructor(
     private readonly restService: RestService,
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly router: Router,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +41,14 @@ export class ForgotPassComponent implements OnInit {
           confirmButtonText: "Try Again",
         })
     );
+  }
+
+  goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
   }
 
   get domain() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -8,6 +8,9 @@ import { FriendModel } from "src/app/models/friend.model";
 import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -16,7 +19,7 @@ import Swal from "sweetalert2";
   selector: "app-search",
   templateUrl: "./search.component.html",
   styleUrls: ["./search.component.scss"],
-  providers: [AvatarPipe],
+  providers: [AvatarPipe, GLinkPipe],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   query: string;
@@ -28,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   canLoadMore = true;
   isFocused = false;
 
-  queryControl = new FormControl("");
+  queryControl = new UntypedFormControl("");
 
   private keyword = "";
   private keywordHash = "";
@@ -60,7 +63,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly friendsService: FriendsService,
     private readonly gavatar: AvatarPipe,
-  ) {}
+    private readonly authService: AuthService,
+    private readonly gLink: GLinkPipe,
+    private readonly countlyService: CountlyService
+  ) {
+    this.authService.user.subscribe((u) => (this.user = u));
+  }
 
   ngOnDestroy(): void {
     Swal.close();
@@ -86,10 +94,17 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadUsers();
             break;
           default:
-            this.laodGamesAndUsers();
+            if (this.query == "") {
+              this.loadGames();
+            } else {
+              this.laodGamesAndUsers();
+            }
             break;
         }
       });
+    });
+    this.restService.search("", 0, 12).subscribe((response) => {
+      this.games = response.results;
     });
   }
 
@@ -101,6 +116,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.router.navigate(path, {
       queryParams: { q: this.queryControl.value },
       replaceUrl: true,
+    });
+  }
+
+  viewGame(game: GameModel) {
+    this.countlyService.addEvent("gameLandingView", {
+      gameID: game.oneplayId,
+      gameTitle: game.title,
+      gameGenre: game.genreMappings?.join(","),
+      source: location.pathname + location.hash,
+      trigger: "card",
+    });
+
+    this.router.navigate(["view", this.gLink.transform(game)], {
+      queryParams: this.keywordQuery,
     });
   }
 
@@ -132,17 +161,19 @@ export class SearchComponent implements OnInit, OnDestroy {
       return "fa-user-check";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
       return "fa-user-clock";
+    } else if (this.user.id === friend.id) {
+      return "d-none";
     } else {
       return "fa-user-plus";
     }
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.jpg";
+    event.target.src = "assets/img/default_bg.webp";
   }
 
   onUsersError(event) {
-    event.target.src = 'assets/img/defaultUser.svg';
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
   private laodGamesAndUsers() {
@@ -160,11 +191,11 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.stopLoading(0);
       },
       error: (error) => {
-        if(error.timeout) {
-          this.router.navigateByUrl('/server-error')
+        if (error.timeout) {
+          this.router.navigateByUrl("/server-error");
         }
         this.stopLoading(0);
-      }
+      },
     });
   }
 
@@ -181,8 +212,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.stopLoading(0);
       },
       (error) => {
-        if(error.timeout) {
-          this.router.navigateByUrl('/server-error')
+        if (error.timeout) {
+          this.router.navigateByUrl("/server-error");
         }
         this.stopLoading(0);
       }
@@ -242,8 +273,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.stopLoading(0);
       },
       (error) => {
-        if(error.timeout) {
-          this.router.navigateByUrl('/server-error')
+        if (error.timeout) {
+          this.router.navigateByUrl("/server-error");
         }
         this.stopLoading(0);
       }
@@ -269,6 +300,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    if (this.user.id === friend.id) {
+      return;
+    }
     this.dontClose = true;
     const acceptedFriend = this.acceptedFriends.find(
       (f) => f.user_id === friend.id

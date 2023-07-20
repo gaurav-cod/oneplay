@@ -6,16 +6,22 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { faL } from "@fortawesome/free-solid-svg-icons";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from "ua-parser-js";
-
-declare var gtag: Function;
 
 @Component({
   selector: "app-login",
@@ -23,27 +29,39 @@ declare var gtag: Function;
   styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
-  loginForm = new FormGroup({
-    id: new FormControl("", Validators.required),
-    password: new FormControl("", Validators.required),
+  rememberMe = true;
+  loginForm = new UntypedFormGroup({
+    id: new UntypedFormControl("", Validators.required),
+    password: new UntypedFormControl("", Validators.required),
   });
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
+  @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
+
+  private _verifySwalModalRef: NgbModalRef;
+  private _signinEvent: StartEvent<"signin">;
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
-    private readonly title: Title
+    private readonly router: Router,
+    private readonly title: Title,
+    private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService
   ) {}
+
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
   }
 
   ngOnInit() {
     this.title.setTitle("Login");
+    this.startSignupEvent();
   }
+
   ngOnDestroy() {
+    this._signinEvent.cancel();
     Swal.close();
   }
 
@@ -66,12 +84,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
+    this._signinEvent.update({
+      signinFromTrigger: "CTA",
+      rememberMeActivated: this.rememberMe ? "yes" : "no",
+    });
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        gtag("event", "login", {
-          event_category: "user",
-          event_label: this.loginForm.value.id,
-        });
+        this._signinEvent.end({ result: "success" });
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();
@@ -79,17 +98,58 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.login(token);
       },
       (error) => {
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-        });
+        this._signinEvent.end({ result: "failure" });
+        this.startSignupEvent();
+        if (error.message == "Please verify your email and phone number") {
+          this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            scrollable: true,
+            backdrop: "static",
+            keyboard: false,
+          });
+        } else {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "Try Again",
+          });
+        }
       }
     );
   }
 
+  resendVerificationLink(error: any, token: string) {
+    const email = this.loginForm.value.id;
+    const password = this.loginForm.value.password;
+    this.restService.resendVerificationLink(email, password).subscribe({
+      next: () => {
+        this._verifySwalModalRef.close();
+        Swal.fire({
+          icon: "success",
+          text: "Check your email and verify again",
+        });
+      },
+    });
+  }
+
+  goToSignup() {
+    this.countlyService.addEvent("signUPButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/register"]);
+  }
+
   get domain() {
     return environment.domain;
+  }
+
+  private startSignupEvent() {
+    this._signinEvent = this.countlyService.startEvent("signin", {
+      unique: false,
+      data: { signinFromPage: location.pathname + location.hash },
+    });
   }
 }

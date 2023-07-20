@@ -5,7 +5,9 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
+import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -14,6 +16,7 @@ import Swal from "sweetalert2";
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.scss"],
+  providers: [GLinkPipe],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   firstRow: GameFeedModel;
@@ -26,7 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   private wishlist: string[] = [];
   private wishlistSubscription: Subscription;
   private feedSubscription: Subscription;
-  private userSubscription: Subscription;
   private gameFilterSubscription: Subscription;
   private paramsSubscription: Subscription;
 
@@ -60,12 +62,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly router: Router,
+    private readonly gLink: GLinkPipe,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnDestroy(): void {
     this.wishlistSubscription?.unsubscribe();
     this.feedSubscription?.unsubscribe();
-    this.userSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     Swal.close();
@@ -105,18 +108,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       },
     });
-    this.userSubscription = this.authService.user.subscribe((user) => {
-      if (user.status !== "active") {
-        Swal.fire({
-          icon: "warning",
-          title: "Hi, " + user.firstName,
-          html: `Your account is yet to be verified. Please give us 24 hrs to do so.
-          Until then, kindly <a href="${environment.domain}/download.html">download client</a> info from our website
-          Thankyou for your patience!`,
-          confirmButtonText: "OK",
-        });
-      }
-    });
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
       this.wishlist = ids;
@@ -124,6 +115,17 @@ export class HomeComponent implements OnInit, OnDestroy {
         .getWishlistGames(ids)
         .subscribe((games) => (this.library = games));
     });
+  }
+
+  viewBannerGame(game: GameModel) {
+    this.countlyService.addEvent('gameLandingView', {
+      gameID: game.oneplayId,
+      gameTitle: game.title,
+      gameGenre: game.genreMappings?.join(','),
+      source: location.pathname + location.hash,
+      trigger: "banner",
+    });
+    this.router.navigate(['view', this.gLink.transform(game)]);
   }
 
   isInWishlist(game: GameModel): boolean {
