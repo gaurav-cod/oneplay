@@ -41,10 +41,10 @@
       [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"
     ></ngx-ui-loader>
-    <span *ngIf="game.isFree" class="freeTag px-2" id="free">FREE</span>
-    <!-- <span *ngIf="game.isFree" class="redGradient px-2" id="free">COMING SOON</span> -->
-    <!-- <div class="text-center"><span *ngIf="game.isFree" class="orangeGradient px-2" id="maintenance">MAINTENANCE</span></div> -->
-    <!-- <div class="text-center"><span *ngIf="game.isFree" class="updatingGradient px-2" id="maintenance">UPDATING</span></div> -->
-    <!-- <div class="text-center"><span *ngIf="game.isFree" class="darkredGradient px-2" id="maintenance">NOT OPTIMIZED</span></div> -->
+    <span *ngIf="game.isFree" class="freeTag px-2 free">FREE</span>
+    <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 free">COMING SOON</span>
+    <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradient px-2 maintenance">MAINTENANCE</span></div>
+    <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-2 maintenance">UPDATING</span></div>
+    <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-2 maintenance">NOT OPTIMIZED</span></div>
   </div>
 </a>

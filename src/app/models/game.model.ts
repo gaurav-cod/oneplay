@@ -1,5 +1,12 @@
 import { PurchaseStore } from "../interface";
 
+export enum Status {
+    LIVE = 'live',
+    NOT_OPTIMIZED = 'not_optimized',
+    COMING_SOON = 'coming_soon',
+    MAINTENANCE = 'maintenance',
+    UPDATING = 'updating'
+}
 export class GameModel {
     readonly id: number;
     readonly oneplayId: string;
@@ -22,7 +29,7 @@ export class GameModel {
     readonly rawgId: string;
     readonly cheapsharkId: string;
     readonly isReleased: boolean;
-    readonly status: 'live' | 'unlive';
+    readonly status: Status;
     readonly isCategorized: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
