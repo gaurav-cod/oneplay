@@ -8,7 +8,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from 'ua-parser-js';
-import Cookies from "js-cookie";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-play',
@@ -40,6 +40,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService,
+    private readonly route: ActivatedRoute,
   ) {}
 
    ngOnDestroy(): void {
@@ -48,7 +49,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sessionToTerminate = Cookies.get("op_session_token");
+    this.sessionToTerminate = this.route.snapshot.queryParams["session"];
   }
 
   reloadCurrentPage() {
