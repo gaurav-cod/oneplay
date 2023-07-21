@@ -177,6 +177,13 @@
           [hasProgressBar]="false"
         ></ngx-ui-loader>
       </div>
+      <div
+          *ngIf="games.length === 0"
+          class="col-12 font16 font500 offWhitecolor mx-3 py-2 text-center"
+        >
+          Sorry, No Results Found!
+          <p class="mb-0 font14 font500 mutedTextColor">Please try different keywords.</p>
+        </div>
     </div>
   </div>
   <div class="modal-footer bg-dark">
