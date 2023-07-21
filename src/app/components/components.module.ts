@@ -85,6 +85,7 @@ import { InitializingGameComponent } from './initializing-game/initializing-game
     ToastsComponent,
     OnboardingModalsComponent,
     SelectGameCardComponent,
+    InitializingGameComponent,
   ],
 })
 export class ComponentsModule {}

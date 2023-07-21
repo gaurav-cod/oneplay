@@ -344,6 +344,14 @@ export class RestService {
       );
   }
 
+  getTip() {
+    const formData = new FormData();
+    formData.append("device_type", "web");
+    return this.http
+      .post(this.client_api + "/tip", formData)
+      .pipe();
+  }
+
   searchUsers(
     query: string,
     page: number,

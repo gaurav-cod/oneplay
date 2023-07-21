@@ -1,6 +1,7 @@
 .cardBox {
     background: #00000099;
     border-radius: 40px;
+    backdrop-filter: blur(9px);
   }
   
   .header {
@@ -8,6 +9,10 @@
     line-height: 70px;
     font-weight: 800;
     letter-spacing: 2%;
+    @media (max-width: 710px) {
+      font-size: 30px;
+      line-height: 40px;
+    }
   }
   
   .countTip {
@@ -21,6 +26,12 @@
     line-height: 42px;
     font-weight: 600;
     color: #DCDCDC;
+    @media (max-width: 710px) {
+      height: 28px;
+      width: 28px;
+      font-size: 18px;
+      line-height: 22px;
+    }
   }
   
   .tipText {
@@ -29,6 +40,10 @@
     line-height: 42px;
     letter-spacing: 0.02em;
     color: #DCDCDC;
+    @media (max-width: 710px) {
+      font-size: 20px;
+      line-height: 30px;
+    }
   }
   
   .borderright {
@@ -37,18 +52,15 @@
   
   .outerRange {
     height: 28px;
-    width: 95%;
+    width: 100%;
     background: #3E4246;
-    border-radius: 15px;
-    @media (max-width: 480px) {
-        width: 150px;
-    }
+    border-radius: 15px !important;
   }
   
   .innerRange {
     background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
     border-radius: 15px;
-    width: 169px;
+    // width: 0%;
     height: 28px;
   }
   
@@ -56,4 +68,5 @@
     font-size: 20px;
     line-height: 30px;
     font-weight: 600;
+    // display: flex;
   }
