@@ -18,6 +18,8 @@ export class VerifyComponent implements OnInit, OnDestroy {
   otp = new UntypedFormControl("", Validators.required);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
+  display: any;
+  remainingTimer = false;
 
   private _verifyEvent: StartEvent<"signup - Account Verification">;
 
@@ -39,6 +41,20 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this._verifyEvent.cancel();
   }
 
+  timer(minute) {
+    let seconds: any = 60;
+    const timer = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.display = `${prefix}${seconds}`;
+      this.remainingTimer = true;
+      if (seconds == 0) {
+        this.remainingTimer = false;
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+
   getOTP() {
     const token = this.route.snapshot.paramMap.get("token");
     this.sendingOTP = true;
@@ -52,6 +68,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        this.timer(1);
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
