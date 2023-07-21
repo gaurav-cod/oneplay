@@ -8,7 +8,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from 'ua-parser-js';
-
+import Cookies from "js-cookie";
 
 @Component({
   selector: 'app-play',
@@ -26,7 +26,6 @@ export class PlayComponent implements OnInit, OnDestroy {
   bitrate = new FormControl();
   sessionToTerminate = "";
 
-  private _launchModalCloseTimeout: NodeJS.Timeout;
   private _webplayTokenSubscription: Subscription;
 
   advancedOptions = new FormGroup({
@@ -41,9 +40,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService,
-  ) {
-    const userAgent = new UAParser();
-   }
+  ) {}
 
    ngOnDestroy(): void {
     this._webplayTokenSubscription?.unsubscribe();
@@ -51,28 +48,7 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-  
-    let game_id = "1";
-    let resolution = "1920x1080";
-    if (location.search.includes("game_id")) {
-      game_id = location.search.split("game_id=")[1].split("&")[0];
-    }
-    if (location.search.includes("resolution")) {
-      resolution = location.search.split("resolution=")[1].split("&")[0];
-    }
-    const xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        const data = JSON.parse(this.responseText);
-        // do something with the data
-      }
-    };
-    xhttp.open("POST", `https://svrdev.oneplay.in/application_services/frontend/start/game/${game_id}?resoulution=${resolution}`, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("Proxy", "192.168.60.227:5128");
-    xhttp.setRequestHeader("SSL-Verify-Host", "0");
-    xhttp.setRequestHeader("SSL-Verify-Peer", "0");
-    xhttp.send();
+    this.sessionToTerminate = Cookies.get("op_session_token");
   }
 
   reloadCurrentPage() {
@@ -87,11 +63,6 @@ export class PlayComponent implements OnInit, OnDestroy {
         text: "Play on web is coming soon!",
       });
       return;
-    }
-
-    if (this._launchModalCloseTimeout !== undefined) {
-      clearTimeout(this._launchModalCloseTimeout);
-      this._launchModalCloseTimeout = undefined;
     }
 
     if (millis === 0) {

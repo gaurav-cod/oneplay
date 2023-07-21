@@ -1085,10 +1085,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   private launchGame() {
     const userAgent = new UAParser();
     if (userAgent.getOS().name === "Android") {
-      window.open(
-        `${this.domain}/launch/app?payload=${this._clientToken}`,
-        "_blank"
-      );
+      this.router.navigate(['/play'], {
+        queryParams: {
+          payload: this._clientToken,
+          session: this.sessionToTerminate
+        }
+      })
     } else {
       window.location.href = `oneplay:key?${this._clientToken}`;
     }
