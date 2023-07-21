@@ -21,8 +21,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
   display: any;
   remainingTimer = false;
 
-  private _verifyEvent: StartEvent<"signup - Account Verification">;
-
   constructor(
     private readonly authService: AuthService,
     private route: ActivatedRoute,
@@ -34,11 +32,11 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
-    this.startVerifyEvent();
+    this.countlyService.startEvent("signup - Account Verification");
   }
 
   ngOnDestroy(): void {
-    this._verifyEvent.cancel();
+    this.countlyService.cancelEvent("signup - Account Verification");
   }
 
   timer(minute) {
@@ -72,6 +70,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
+        this.countlyService.endEvent("signup - Account Verification", {
+          result: "failure",
+          failReason: err.message,
+        });
         this.sendingOTP = false;
         Swal.fire({
           title: "Error Code: " + err.code,
@@ -88,7 +90,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
         localStorage.removeItem("otpSent");
-        this._verifyEvent.end({ result: "success" });
+        this.countlyService.endEvent("signup - Account Verification", {
+          result: "success",
+        });
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -107,11 +111,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
             icon: "error",
           });
         } else {
-          this._verifyEvent.end({
+          this.countlyService.endEvent("signup - Account Verification", {
             result: "failure",
             failReason: error.message,
           });
-          this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
       },
@@ -174,11 +177,5 @@ export class VerifyComponent implements OnInit, OnDestroy {
       trigger: "CTA",
     });
     this.router.navigate(["/login"]);
-  }
-
-  private startVerifyEvent() {
-    this._verifyEvent = this.countlyService.startEvent(
-      "signup - Account Verification"
-    );
   }
 }
