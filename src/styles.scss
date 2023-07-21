@@ -100,13 +100,13 @@ body {
   border-radius: 6px;
 }
 
-#maintenance {
+.bottomTag {
   position: relative;
   bottom: 22px;
   font-size: 12px;
   font-weight: 700;
   color: #fff;
-  border-radius: 6px 6px 0px 0px;
+  border-radius: 6px;
 }
 
 .required:after {

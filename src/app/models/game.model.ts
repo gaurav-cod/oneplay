@@ -1,6 +1,6 @@
 import { PurchaseStore } from "../interface";
 
-export enum Status {
+export enum status {
     LIVE = 'live',
     NOT_OPTIMIZED = 'not_optimized',
     COMING_SOON = 'coming_soon',
@@ -29,7 +29,7 @@ export class GameModel {
     readonly rawgId: string;
     readonly cheapsharkId: string;
     readonly isReleased: boolean;
-    readonly status: Status;
+    readonly status: status;
     readonly isCategorized: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
