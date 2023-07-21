@@ -184,6 +184,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.searchElement.nativeElement.focus();
           }
         }, 300);
+      } else {
+        this.restService.search('', 0, 3).subscribe((res) => {
+          this.results = res.results;
+          this.keyword = res.keyword;
+          this.keywordHash = res.keywordHash;
+        });
       }
     });
     this.gameService.gameStatus.subscribe((status) => {
