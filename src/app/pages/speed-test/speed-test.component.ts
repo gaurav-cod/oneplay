@@ -29,8 +29,8 @@ export class SpeedTestComponent implements OnInit {
   dlEndTime = 0
   ulEndTime = 0
   ulStartTime = 0
-  ulPacketsSize = 1365
-  ulPacketsCount = 1024 * 20
+  ulPacketsSize = 5242880
+  ulPacketsCount = 100
   ulPacketsConfirmed = 0
   testCompleted = false
 
@@ -62,8 +62,8 @@ export class SpeedTestComponent implements OnInit {
     this.dlEndTime = 0
     this.ulEndTime = 0
     this.ulStartTime = 0
-    this.ulPacketsSize = 1365
-    this.ulPacketsCount = 1024 * 20
+    this.ulPacketsSize = 4194304
+    this.ulPacketsCount = 100
     this.ulPacketsConfirmed = 0
     this.testCompleted = false
   }
@@ -109,24 +109,24 @@ export class SpeedTestComponent implements OnInit {
 
   runDL(url: string) {
     return new Promise((resolve) => {
-      this.dlStartTime = +new Date()
+      this.dlStartTime = Date.now()
       const ws = new WebSocket(url)
       ws.onerror = () => {
-        this._TsetDownloadText("")
+        this._TsetDownloadText("--")
         resolve(false)
       }
       ws.onmessage = (e) => {
-        if (typeof e.data === 'object') {
-          this.dlEndTime = +new Date()
+        if (e.data instanceof Blob) {
+          this.dlEndTime = Date.now()
           this.dlDataRecieved += e.data.size
           this.dlPacketsCount++
-          if (this.dlPacketsCount === this.ulPacketsCount) {
+          if (this.dlPacketsCount >= this.ulPacketsCount) {
             ws.close()
           } else this.updateDLUI();
         }
       }
       ws.onclose = () => {
-        this.dlEndTime = +new Date()
+        this.dlEndTime = Date.now()
         this.updateDLUI()
         resolve(true)
       }
@@ -151,7 +151,7 @@ export class SpeedTestComponent implements OnInit {
         if (typeof e.data === 'string') {
           this.ulEndTime = +new Date();
           this.ulPacketsConfirmed++
-          if (this.ulPacketsConfirmed === this.ulPacketsCount) {
+          if (this.ulPacketsConfirmed >= this.ulPacketsCount) {
             ws.close()
           } else this.updateULUI();
         }
@@ -187,14 +187,14 @@ export class SpeedTestComponent implements OnInit {
 
   updateDLUI() {
     let s = (this.dlEndTime - this.dlStartTime) / 1000;
-    let t = (this.dlDataRecieved / 1024 / 1024 / s)
+    let t = (this.dlDataRecieved / 1000 / 1000 / s)
     this._TsetDownloadText(Math.floor(t*100)/100)
     this.updateProgress(100 + this.dlPacketsCount)
   }
 
   updateULUI() {
     let s = (this.ulEndTime - this.ulStartTime) / 1000;
-    let t = ((this.ulPacketsConfirmed * this.ulPacketsSize) / 1024 / 1024 / s)
+    let t = ((this.ulPacketsConfirmed * this.ulPacketsSize) / 1000 / 1000 / s)
     this._TsetUploadText(Math.floor(t*100)/100)
     this.updateProgress(100 + this.dlPacketsCount + this.ulPacketsConfirmed)
   }
