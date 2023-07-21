@@ -23,6 +23,7 @@ import { WishlistComponent } from "src/app/pages/wishlist/wishlist.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { PlayComponent } from 'src/app/pages/play/play.component';
 import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 
@@ -52,6 +53,7 @@ import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
     LibraryComponent,
     SearchComponent,
     WishlistComponent,
+    PlayComponent,
     FeedbackComponent,
   ],
   providers: [ViewGuard],
