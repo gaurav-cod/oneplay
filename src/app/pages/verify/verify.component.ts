@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
-  otp = new UntypedFormControl("", Validators.required);
+  otp = new UntypedFormControl("", [Validators.required, Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
   display: any;
@@ -70,17 +70,21 @@ export class VerifyComponent implements OnInit, OnDestroy {
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
-        this.countlyService.endEvent("signup - Account Verification", {
-          result: "failure",
-          failReason: err.message,
-        });
         this.sendingOTP = false;
-        Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+          this.countlyService.endEvent("signup - Account Verification", {
+            result: "failure",
+            failReason: err.message,
+          });
+          this.resendVerificationLink(err, token);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
     );
   }
