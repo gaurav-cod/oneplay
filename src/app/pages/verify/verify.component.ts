@@ -61,9 +61,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
             result: "failure",
             failReason: err.message,
           });
-          this.startVerifyEvent();
-        } else {
           this.resendVerificationLink(err, token);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
         }
       }
     );
