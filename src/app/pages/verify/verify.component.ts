@@ -70,13 +70,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
-        this.countlyService.endEvent("signup - Account Verification", {
-          result: "failure",
-          failReason: err.message,
-        });
         this.sendingOTP = false;
         if(err.message == "Token Expired" || err.message == "Invalid Token") {
-          this._verifyEvent.end({
+          this.countlyService.endEvent("signup - Account Verification", {
             result: "failure",
             failReason: err.message,
           });
