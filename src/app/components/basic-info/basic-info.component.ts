@@ -127,9 +127,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         this.countlyService.saveUser();
         this.countlyService.updateEventData("settingsView", {
           profilepicturechanged: !!this.photoFile ? "yes" : "no",
-          usernamechange: data.username !== this.currentUserState.username ? "yes" : "no",
-          fullnamechange: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
-          biochange: data.bio !== this.currentUserState.bio ? "yes" : "no",
+          usernamechanged: data.username !== this.currentUserState.username ? "yes" : "no",
+          fullnamechanged: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
+          biochanged: data.bio !== this.currentUserState.bio ? "yes" : "no",
           updateprofileclic: "yes",
         })
         this.authService.updateProfile({

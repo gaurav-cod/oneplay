@@ -125,9 +125,9 @@ export interface CustomSegments {
     subscriptionViewed: "yes" | "no";
     deviceHistoryViewed: "yes" | "no";
     profilepicturechanged: "yes" | "no";
-    usernamechange: "yes" | "no";
-    fullnamechange: "yes" | "no";
-    biochange: "yes" | "no";
+    usernamechanged: "yes" | "no";
+    fullnamechanged: "yes" | "no";
+    biochanged: "yes" | "no";
     updateprofileclic: "yes" | "no";
     updatepasswordchanged: "yes" | "no";
     logoutfromallclick: "yes" | "no";
