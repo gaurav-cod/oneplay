@@ -75,12 +75,20 @@ export class VerifyComponent implements OnInit, OnDestroy {
           failReason: err.message,
         });
         this.sendingOTP = false;
-        Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+          this._verifyEvent.end({
+            result: "failure",
+            failReason: err.message,
+          });
+          this.resendVerificationLink(err, token);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
     );
   }
