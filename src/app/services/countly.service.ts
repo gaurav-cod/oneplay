@@ -81,9 +81,9 @@ export class CountlyService {
     event: T,
     segments: Partial<CustomSegments[T]> = {}
   ) {
-    const ts = new Date(
-      parseInt(localStorage.getItem(this.keyOfKey(event)) ?? "0")
-    );
+    const ts = new Date(parseInt(
+      localStorage.getItem(this.keyOfKey(event)) ?? `${+new Date()}`
+    ));
     const data = JSON.parse(
       localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
     );
@@ -97,7 +97,7 @@ export class CountlyService {
     this._addEvent({
       sum,
       key: event,
-      dur: +new Date() - +ts,
+      dur: (+new Date() - +ts) / 1000,
       segmentation: { ...data, ...segments },
     });
   }
