@@ -56,12 +56,15 @@ export class VerifyComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.sendingOTP = false;
-        this._verifyEvent.end({
-          result: "failure",
-          failReason: err.message,
-        });
-        this.startVerifyEvent();
-        this.resendVerificationLink(err, token);
+        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+          this._verifyEvent.end({
+            result: "failure",
+            failReason: err.message,
+          });
+          this.startVerifyEvent();
+        } else {
+          this.resendVerificationLink(err, token);
+        }
       }
     );
   }
@@ -94,7 +97,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
             result: "failure",
             failReason: error.message,
           });
-          this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
       },
