@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
-  otp = new UntypedFormControl("", Validators.required);
+  otp = new UntypedFormControl("", [Validators.required, Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
   display: any;
