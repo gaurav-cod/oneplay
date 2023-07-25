@@ -182,7 +182,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
       setTimeout(() => {
         this.isMenuCollapsed = !focused;
-      }, 100);
+      }, 300);
 
       if (!focused) {
         setTimeout(() => {
