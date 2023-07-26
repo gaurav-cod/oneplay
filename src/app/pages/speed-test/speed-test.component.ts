@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { resolve } from 'path'
 import { RestService } from 'src/app/services/rest.service'
 import { throttle_to_latest as throttle } from 'src/app/utils/throttle.util'
 
@@ -41,7 +42,7 @@ export class SpeedTestComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.runTests()
@@ -72,11 +73,14 @@ export class SpeedTestComponent implements OnInit {
 
   async runTests() {
     this.resetVals();
-    await this.restService.getCurrentLocation().toPromise().then(v => this.currentLocation = v)
+    this.restService.getCurrentLocation().toPromise().then(v => this.currentLocation = v)
     const urls = await this.restService.getNearestSpeedTestServer().toPromise()
     await this.runPing(urls.ping)
     await this.runDL(urls.download)
     await this.runUL(urls.upload)
+    // await this.runPing("ws://localhost:9001/v1/ws/ping")
+    // await this.runDL("http://localhost:9001/v1/api/download")
+    // await this.runUL("http://localhost:9001/v1/api/upload")
     this.progressValue = "660 1000"
     this.testCompleted = true;
   }
@@ -111,6 +115,77 @@ export class SpeedTestComponent implements OnInit {
   }
 
   runDL(url: string) {
+    return new Promise(async (resolve) => {
+      let count = 0
+      let dldata = 0
+      let dlend = Date.now()
+      let dlstart = Date.now()
+      for (let i = 0; i <= 20; i++) {
+        fetch(url, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            size: 1000000 * i,
+            id: 1,
+          })
+        }).then((res) => {
+          if (res.status !== 200) return
+          dldata += 1000000 * i
+        }, (err) => {
+          console.warn(err, i)
+        }).finally(() => {
+          count++
+          dlend = Date.now()
+          let s = (dlend - dlstart) / 1000;
+          let t = dldata / 1000 / 1000 / s;
+          this._TsetDownloadText(Math.floor(t * 100) / 100)
+          this.updateProgress(100 + count)
+          // console.warn(i, dlend - dlstart, dldata, dldata / 1000 / 1000 / (dlend - dlstart), dlstart, dlend)
+          if (count >= 20) {
+            resolve(true)
+          }
+        })
+      }
+    })
+  }
+
+  runUL(url: string) {
+    return new Promise(async (resolve) => {
+      let count = 0
+      let uldata = 0
+      let ulend = Date.now()
+      let ulstart = Date.now()
+      for (let i = 1; i <= 20; i++) {
+        const formData = new FormData()
+        formData.append("id", i.toString())
+        formData.append("file", this.makePacket(i, 1000000 * i))
+        fetch(url, {
+          method: 'POST',
+          body: formData,
+        }).then((res) => {
+          if (res.status !== 200) return
+            uldata += 1000000 * i
+        }, (err) => {
+          console.warn(err, i)
+        }).finally(() => {
+          count++
+          ulend = Date.now()
+          let s = (ulend - ulstart) / 1000;
+          let t = uldata / 1000 / 1000 / s;
+          this._TsetUploadText(Math.floor(t * 100) / 100)
+          this.updateProgress(100 + 20 + count)
+          // console.warn(i, ulend - ulstart, uldata, uldata / 1000 / 1000 / (ulend - ulstart), ulstart, ulend)
+          if (count >= 20) {
+            resolve(true)
+          }
+        })
+      }
+    })
+
+  }
+  runDLo(url: string) {
     return new Promise((resolve) => {
       this.dlStartTime = Date.now()
       const ws = new WebSocket(url)
@@ -136,7 +211,7 @@ export class SpeedTestComponent implements OnInit {
     })
   }
 
-  runUL(url: string) {
+  runULo(url: string) {
     return new Promise((resolve) => {
       this.ulStartTime = +new Date()
       const ws = new WebSocket(url)
@@ -191,14 +266,14 @@ export class SpeedTestComponent implements OnInit {
   updateDLUI() {
     let s = (this.dlEndTime - this.dlStartTime) / 1000;
     let t = (this.dlDataRecieved / 1000 / 1000 / s)
-    this._TsetDownloadText(Math.floor(t*100)/100)
+    this._TsetDownloadText(Math.floor(t * 100) / 100)
     this.updateProgress(100 + this.dlPacketsCount)
   }
 
   updateULUI() {
     let s = (this.ulEndTime - this.ulStartTime) / 1000;
     let t = ((this.ulPacketsConfirmed * this.ulPacketsSize) / 1000 / 1000 / s)
-    this._TsetUploadText(Math.floor(t*100)/100)
+    this._TsetUploadText(Math.floor(t * 100) / 100)
     this.updateProgress(100 + this.dlPacketsCount + this.ulPacketsConfirmed)
   }
 
@@ -216,7 +291,8 @@ export class SpeedTestComponent implements OnInit {
 
   updateProgress(count: number) {
     // 1 1000 to 660 1000
-    const cp = (count / (this.pingCount + (2 * this.ulPacketsCount))) * 100;
+    const cp = (count / (this.pingCount + 40)) * 100;
+    // const cp = (count / (this.pingCount + (2 * this.ulPacketsCount))) * 100;
     this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`)
   }
 }
