@@ -9,7 +9,6 @@ import {
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
-  HomeFeeds,
   ILocation,
   IPayment,
   LoginDTO,
@@ -484,7 +483,7 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<HomeFeeds> {
+  getHomeFeed(): Observable<GameFeedModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
         params: {
@@ -494,14 +493,7 @@ export class RestService {
         },
       })
       .pipe(
-        map((res) => {
-          const games = res.map((d) => new GameFeedModel(d));
-          return {
-            games,
-            categories: [],
-            banners: [],
-          };
-        }),
+        map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
           throw error;
         })
