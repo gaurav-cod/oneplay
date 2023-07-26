@@ -37,12 +37,6 @@ export interface StartPcRO {
   msg: string;
 }
 
-export interface HomeFeeds {
-  games: GameFeedModel[];
-  categories: any[];
-  banners: GameModel[];
-}
-
 export interface Thumbnail {
   url: string;
   width: number;

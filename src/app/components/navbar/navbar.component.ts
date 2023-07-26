@@ -181,8 +181,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
       setTimeout(() => {
+        if (!this.dontClose)
         this.isMenuCollapsed = !focused;
-      }, 100);
+      }, 300);
 
       if (!focused) {
         setTimeout(() => {
@@ -193,7 +194,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.searchElement.nativeElement.focus();
           }
         }, 300);
-      } else {
+      } else if (this.results.length === 0) {
         this.restService.search("", 0, 3).subscribe((res) => {
           this.results = res.results;
           this.keyword = res.keyword;

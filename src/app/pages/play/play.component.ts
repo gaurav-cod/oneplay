@@ -24,7 +24,8 @@ export class PlayComponent implements OnInit, OnDestroy {
   fps = new FormControl();
   vsync = new FormControl();
   bitrate = new FormControl();
-  sessionToTerminate = "";
+  session = "";
+  payload = "";
 
   private _webplayTokenSubscription: Subscription;
 
@@ -49,7 +50,17 @@ export class PlayComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.sessionToTerminate = this.route.snapshot.queryParams["session"];
+    const session = this.route.snapshot.queryParams["session"];
+    const payload = this.route.snapshot.queryParams["payload"];
+    
+    this.session = session;
+    this.payload = payload;
+
+    window.location.href = `oneplay:key?${payload}`;
+  }
+
+  get link() {
+    return `${environment.domain}/dashboard/play?payload=${this.payload}&session=${this.session}`;
   }
 
   reloadCurrentPage() {
@@ -83,7 +94,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this._webplayTokenSubscription?.unsubscribe();
 
     this._webplayTokenSubscription = this.restService
-      .getWebPlayToken(this.sessionToTerminate)
+      .getWebPlayToken(this.session)
       .subscribe({
         next: (res) =>
           this.startGameWithWebRTCTokenSuccess(res, startTime, millis),
