@@ -15,11 +15,11 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
-  otp = new UntypedFormControl("", Validators.required);
+  otp = new UntypedFormControl("", [Validators.required, Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
-
-  private _verifyEvent: StartEvent<"signup - Account Verification">;
+  display: any;
+  remainingTimer = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -32,11 +32,25 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
-    this.startVerifyEvent();
+    this.countlyService.startEvent("signup - Account Verification");
   }
 
   ngOnDestroy(): void {
-    this._verifyEvent.cancel();
+    this.countlyService.cancelEvent("signup - Account Verification");
+  }
+
+  timer(minute) {
+    let seconds: any = 60;
+    const timer = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.display = `${prefix}${seconds}`;
+      this.remainingTimer = true;
+      if (seconds == 0) {
+        this.remainingTimer = false;
+        clearInterval(timer);
+      }
+    }, 1000);
   }
 
   getOTP() {
@@ -52,16 +66,25 @@ export class VerifyComponent implements OnInit, OnDestroy {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        this.timer(1);
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
         this.sendingOTP = false;
-        Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+          this.countlyService.endEvent("signup - Account Verification", {
+            result: "failure",
+            failReason: err.message,
+          });
+          this.resendVerificationLink(err, token);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
     );
   }
@@ -71,7 +94,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
         localStorage.removeItem("otpSent");
-        this._verifyEvent.end({ result: "success" });
+        this.countlyService.endEvent("signup - Account Verification", {
+          result: "success",
+        });
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -90,11 +115,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
             icon: "error",
           });
         } else {
-          this._verifyEvent.end({
+          this.countlyService.endEvent("signup - Account Verification", {
             result: "failure",
             failReason: error.message,
           });
-          this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
       },
@@ -157,11 +181,5 @@ export class VerifyComponent implements OnInit, OnDestroy {
       trigger: "CTA",
     });
     this.router.navigate(["/login"]);
-  }
-
-  private startVerifyEvent() {
-    this._verifyEvent = this.countlyService.startEvent(
-      "signup - Account Verification"
-    );
   }
 }
