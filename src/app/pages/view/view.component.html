@@ -562,7 +562,7 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
-            <input class="range" type="range" [formControl]="bitrate" id="rangeTag" value="0" min="5000" max="80000" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" />
+            <input class="range" type="range" [formControl]="bitrate" min="5000" max="80000" />
           </div>
         </div>
       </div>

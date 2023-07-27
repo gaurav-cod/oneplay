@@ -9,7 +9,6 @@ import {
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
-  HomeFeeds,
   ILocation,
   IPayment,
   LoginDTO,
@@ -492,7 +491,7 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<HomeFeeds> {
+  getHomeFeed(): Observable<GameFeedModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
         params: {
@@ -502,14 +501,7 @@ export class RestService {
         },
       })
       .pipe(
-        map((res) => {
-          const games = res.map((d) => new GameFeedModel(d));
-          return {
-            games,
-            categories: [],
-            banners: [],
-          };
-        }),
+        map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
           throw error;
         })
@@ -894,6 +886,20 @@ export class RestService {
       .get<PurchaseStore[]>(this.r_mix_api + "/games/stores")
       .pipe(
         map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  setPreferredStoreForGame(id: string, storeName: string): Observable<boolean> {
+    return this.http
+      .post(this.r_mix_api + "/games/set_preferred_store/", {
+        game_id: id,
+        store: storeName,
+      })
+      .pipe(
+        map((res) => res["success"] ?? false),
         catchError(({ error }) => {
           throw error;
         })
