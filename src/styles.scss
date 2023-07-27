@@ -90,26 +90,23 @@ body {
   border-radius: 4px;
 }
 
-#free {
+.free {
   position: absolute;
-  top: 1px;
+  top: 3px;
   right: 2px;
-  font-size: 8px;
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 700;
   color: #fff;
-  background-color: #161a6c;
-  padding: 3px 4px 2px 4px;
-  border-radius: 2px;
+  border-radius: 6px;
 }
 
-#beta {
-  font-size: 8px;
-  font-weight: bold;
+.bottomTag {
+  position: relative;
+  bottom: 22px;
+  font-size: 12px;
+  font-weight: 700;
   color: #fff;
-  background-color: #3f00b4;
-  padding: 2px 4px;
-  margin-left: 4px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .required:after {
@@ -1157,4 +1154,20 @@ select {
 .alert-dismissible .close {
   top: 12% !important;
   right: 1px !important;
+}
+
+.yellowGradient {
+  background: linear-gradient(270deg, #FE753A 0%, #F4C47A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.orangeGradient {
+  background: linear-gradient(270deg, #F2EDED 0%, #FF5B5B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
 }

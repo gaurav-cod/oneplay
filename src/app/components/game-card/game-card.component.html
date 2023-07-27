@@ -6,7 +6,7 @@
 >
   <div
     class="mask"
-    style="z-index: 2"
+    style="z-index: 2;"
     (mouseenter)="playVideo(gameLink, image)"
     (mouseleave)="pauseVideo(gameLink, image)"
   >
@@ -41,6 +41,10 @@
       [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"
     ></ngx-ui-loader>
-    <span *ngIf="game.isFree" class="freeTag pl-3 pr-3" id="free">FREE</span>
+    <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free">FREE</span>
+    <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 free">COMING SOON</span>
+    <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-2 bottomTag">MAINTENANCE</span></div>
+    <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-2 bottomTag">UPDATING</span></div>
+    <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-2 bottomTag">NOT OPTIMIZED</span></div>
   </div>
 </a>
