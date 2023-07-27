@@ -37,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next
       .handle(req)
-      .pipe(timeout(isRenderMixAPI ? 5000 : 30000))
+      .pipe(timeout(30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
         catchError((error: HttpErrorResponse) => {

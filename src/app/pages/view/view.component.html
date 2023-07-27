@@ -1,5 +1,7 @@
-<div *ngIf="!!game" class="container-fluid">
-  <div class="container-fluid removePaddingContainer">
+<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="!initializationPage"></app-initializing-game>
+
+<div *ngIf="initializationPage" class="container-fluid">
+  <div class="container-fluid removePaddingContainer" *ngIf="!!game">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card border-0 bgTransparent borderRadius10">
@@ -52,13 +54,23 @@
                   {{ game.isFree ? " - Free" : "" }}
                 </p>
                 <div class="row">
-                  <div
+                  <!-- <div
                     *ngIf="game.status === 'unlive'"
                     class="col-12 text-red mb-2"
                   >
                     **This game is not available at the moment**
+                  </div> -->
+                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'coming_soon' || game.status === 'maintenance' || game.status === 'updating'">
+                    <button
+                      class="btn blackColor borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                      disabled
+                    >
+                      <span *ngIf="game.status === 'coming_soon'">Coming Soon</span>
+                      <span *ngIf="game.status === 'maintenance'">Under Maintenance</span>
+                      <span *ngIf="game.status === 'updating'">Unavailable</span>
+                    </button>
                   </div>
-                  <div class="col-auto align-self-center fullWidthBtn">
+                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -157,6 +169,10 @@
                     >
                   </div>
                 </form>
+                <p class="gradientInfoText font16 font600 mb-2" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
+                <p class="yellowGradient font16 font600 mb-2" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
+                <p class="cancelgradientText font16 font600 mb-2" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
+                <p class="orangeGradient font16 font600 mb-2" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
               </div>
             </div>
           </div>
@@ -545,7 +561,7 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
-            <input class="range" type="range" [formControl]="bitrate" id="rangeTag" value="0" min="5000" max="80000" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)" />
+            <input class="range" type="range" [formControl]="bitrate" min="5000" max="80000" />
           </div>
         </div>
       </div>
@@ -576,7 +592,7 @@
   </div>
 </ng-template>
 
-<ng-template #initializedModal>
+<!-- <ng-template #initializedModal>
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
       <h2 class="offWhiteText font20 font600 mb-2 mt-2">{{ initialized }}</h2>
@@ -586,7 +602,7 @@
       <object type="image/svg+xml" class="w50" data="assets/img/Animated_Loading_Oneplay.svg"></object>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #advanced let-d="dismiss">
   <div class="modal-content position-relative modalBg">

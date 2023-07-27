@@ -9,7 +9,6 @@ import {
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
-  HomeFeeds,
   ILocation,
   IPayment,
   LoginDTO,
@@ -349,6 +348,21 @@ export class RestService {
       );
   }
 
+  getTip(): Observable<string[]> {
+    const formData = new FormData();
+    formData.append("client_type", "web");
+    formData.append("client_version", environment.appVersion)
+    formData.append("type", "tips")
+    return this.http
+    .post(this.client_api + "/get_config", formData)
+    .pipe(
+        map(res => res["data"]?.find(d => d.type === 'tips')?.tips ?? []),
+        catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
   searchUsers(
     query: string,
     page: number,
@@ -489,7 +503,7 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<HomeFeeds> {
+  getHomeFeed(): Observable<GameFeedModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
         params: {
@@ -499,14 +513,7 @@ export class RestService {
         },
       })
       .pipe(
-        map((res) => {
-          const games = res.map((d) => new GameFeedModel(d));
-          return {
-            games,
-            categories: [],
-            banners: [],
-          };
-        }),
+        map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
           throw error;
         })
@@ -891,6 +898,20 @@ export class RestService {
       .get<PurchaseStore[]>(this.r_mix_api + "/games/stores")
       .pipe(
         map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  setPreferredStoreForGame(id: string, storeName: string): Observable<boolean> {
+    return this.http
+      .post(this.r_mix_api + "/games/set_preferred_store/", {
+        game_id: id,
+        store: storeName,
+      })
+      .pipe(
+        map((res) => res["success"] ?? false),
         catchError(({ error }) => {
           throw error;
         })

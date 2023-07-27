@@ -37,12 +37,6 @@ export interface StartPcRO {
   msg: string;
 }
 
-export interface HomeFeeds {
-  games: GameFeedModel[];
-  categories: any[];
-  banners: GameModel[];
-}
-
 export interface Thumbnail {
   url: string;
   width: number;
@@ -116,6 +110,7 @@ export interface ClientTokenRO {
   client_token: string;
   code: number;
   msg: string;
+  progress: number;
 }
 
 export interface WebPlayTokenRO {

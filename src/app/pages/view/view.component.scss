@@ -165,10 +165,7 @@ live {
 
 .height80 {
   height: 470px;
-  @media (max-width: 968px) {
-    height: 450px;
-  }
-  @media (max-width: 480px) {
+  @media (max-width: 575px) {
     height: 350px;
   }
 }
@@ -504,4 +501,8 @@ live {
   .customResponsiveWidth {
     width: 100%;
   }
+}
+
+.blackColor {
+  background-color: #151515 !important;
 }
