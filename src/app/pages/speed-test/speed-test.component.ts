@@ -120,7 +120,7 @@ export class SpeedTestComponent implements OnInit {
       let dldata = 0
       let dlend = Date.now()
       let dlstart = Date.now()
-      for (let i = 0; i <= 20; i++) {
+      for (let i = 1; i <= 20; i++) {
         fetch(url, {
           method: 'POST',
           headers: {
