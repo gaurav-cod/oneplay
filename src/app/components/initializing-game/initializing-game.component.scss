@@ -2,31 +2,38 @@
     background: #00000099;
     border-radius: 40px;
     backdrop-filter: blur(9px);
+    @media (max-width: 1024px) {
+      border-radius: 20px;
+    }
   }
   
   .header {
-    font-size: 50px;
-    line-height: 70px;
+    font-size: 40px;
+    line-height: 50px;
     font-weight: 800;
     letter-spacing: 2%;
-    @media (max-width: 710px) {
-      font-size: 30px;
-      line-height: 40px;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      font-size: 35px;
+      line-height: 45px;
+    }
+    @media (max-width: 767.9px) {
+      font-size: 20px;
+      line-height: 30px;
     }
   }
   
   .countTip {
-    height: 48px;
-    width: 48px;
+    height: 38px;
+    width: 38px;
     border-radius: 50%;
     border: 4px solid #3E4246;
     text-align: center;
     align-items: center;
-    font-size: 28px;
-    line-height: 42px;
+    font-size: 20px;
+    line-height: 30px;
     font-weight: 600;
     color: #DCDCDC;
-    @media (max-width: 710px) {
+    @media (max-width: 767.9px) {
       height: 28px;
       width: 28px;
       font-size: 18px;
@@ -35,14 +42,18 @@
   }
   
   .tipText {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 600;
-    line-height: 42px;
+    line-height: 32px;
     letter-spacing: 0.02em;
     color: #DCDCDC;
-    @media (max-width: 710px) {
-      font-size: 20px;
-      line-height: 30px;
+    @media (min-width: 768px) and (max-width: 1024px) {
+      font-size: 18px;
+      line-height: 27px;
+    }
+    @media (max-width: 767.9px) {
+      font-size: 14px;
+      line-height: 21px;
     }
   }
   
@@ -70,3 +81,7 @@
     font-weight: 600;
     // display: flex;
   }
+
+.fixedHeight {
+  height: 60px;
+}

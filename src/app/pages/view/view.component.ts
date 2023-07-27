@@ -62,9 +62,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   showAllLiveVideos = false;
   startingGame = false;
   terminatingGame = false;
-  Initializing = false;
   initializationPage = false;
-  detailPage = true;
   
 
   similarGames: GameModel[] = [];
@@ -748,7 +746,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       //   keyboard: false,
       // });
       this.initializationPage = true;
-      this.detailPage = false;
       this.sessionToTerminate = data.data.session.id;
       this.startGameWithClientToken(data.data.session.id);
     } else if (data.data.api_action === "call_terminate") {
@@ -1127,7 +1124,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.loaderService.stopLoader("play-loader");
     // this._initializedModalRef?.close();
     this.initializationPage = false;
-    this.detailPage = true;
     this.initialized = "Loading...";
     this.progress = 0;
     this._startGameSubscription?.unsubscribe();

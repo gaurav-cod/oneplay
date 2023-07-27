@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GameModel } from 'src/app/models/game.model';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -7,29 +7,35 @@ import { RestService } from 'src/app/services/rest.service';
   templateUrl: './initializing-game.component.html',
   styleUrls: ['./initializing-game.component.scss']
 })
-export class InitializingGameComponent implements OnInit{
+export class InitializingGameComponent implements OnInit, OnDestroy{
   @Input() initialized: string;
   @Input() game: GameModel;
   @Input() progress: number;
-  tip;
+  tips;
   tip_msg: string;
   tip_count: number = 1;
+  timer: NodeJS.Timer;
 
   constructor(
     private readonly restService: RestService,
   ) {}
 
+  ngOnDestroy(): void {
+    this.tips?.unsubscribe();
+    clearInterval(this.timer)
+  }
+
   ngOnInit(): void {
-    this.restService.getTip().subscribe(
+     this.tips = this.restService.getTip().subscribe(
       (data)=> {
-        this.tip = data;
-        this.tip_msg = this.tip.data[0];
-        setInterval(() => {
-          if(this.tip_count == this.tip.data.length) {
+        this.tip_msg = data[0];
+        this.timer = setInterval(() => {
+          if(this.tip_count == data.length) {
             this.tip_count = 0;
           }
-          if(this.tip.data.length > 0) {
-            this.tip_msg = this.tip.data[this.tip_count];
+          if(data.length > 0) {
+            this.tip_msg = data[this.tip_count];
+            console.log(this.tip_msg)
             this.tip_count++;
           }
         }, 3000);

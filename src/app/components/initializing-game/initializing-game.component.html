@@ -1,4 +1,4 @@
-<div class="container-fluid position-absolute w-100 zIndex99999 top-0" style="padding-left: 0px !important; padding-right: 0px !important;">
+<div class="container-fluid initializing position-absolute w-100 zIndex99999 top-0" style="padding-left: 0px !important; padding-right: 0px !important;">
     <div class="row">
       <div class="col-12 p-0">
         <div class="card border-0">
@@ -15,19 +15,19 @@
           <div
             class="card-img-overlay h-100"
           >
-            <div class="cardBox p-lg-5 p-4 m-lg-5 fixed-bottom">
-              <div class="row">
-                <div class="col-md-9 col-12 borderright pr-md-5">
-                  <p class="header text-white">{{ initialized }}</p>
-                  <div class="row">
-                    <div class="col-auto">
+            <div class="cardBox p-lg-4 p-3 m-lg-5 m-md-3 m-1 fixed-bottom">
+              <div class="row m-lg-1 justify-content-center">
+                <div class="col-md-9 col-sm-9 col-12 borderright pr-md-5">
+                  <p class="header text-white mb-2 mb-lg-3">{{ initialized }}</p>
+                  <div class="row fixedHeight">
+                    <div class="col-auto align-self-center">
                       <p class="countTip mb-0">{{tip_count}}</p>
                     </div>
                     <div class="col pl-0 align-self-center">
-                      <h3 class="tipText">TIP: {{tip_msg}}</h3>
+                      <h3 class="tipText mb-0">TIP: {{tip_msg}}</h3>
                     </div>
                   </div>
-                  <div class="card outerRange border-0 mt-4">
+                  <div class="card outerRange border-0 mt-lg-4 mt-2">
                     <div class="innerRange text-right pr-3" *ngIf="progress != 0" [ngStyle]="{'width.%': progress}"></div>
                     <div class="card-img-overlay text-center p-0">
                       <span class="percenterText text-white">{{progress}}%</span>
@@ -35,10 +35,10 @@
                   </div>
                   
                 </div>
-                <div class="col-md-3 col-12 text-center align-self-center pl-lg-5">
+                <div class="col-md-3 col-sm-3 col-5 text-center align-self-center">
                   <img
                     src="assets/img/brandLogo.svg"
-                    class="img-fluid mt-3 mb-0"
+                    class="img-fluid mt-lg-3 mt-2 mb-0"
                     alt="logo"
                   />
                 </div>
