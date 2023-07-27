@@ -1,5 +1,7 @@
-<div *ngIf="!!game" class="container-fluid">
-  <div class="container-fluid removePaddingContainer">
+<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="!initializationPage"></app-initializing-game>
+
+<div *ngIf="initializationPage" class="container-fluid">
+  <div class="container-fluid removePaddingContainer" *ngIf="!!game">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card border-0 bgTransparent borderRadius10">
@@ -590,7 +592,7 @@
   </div>
 </ng-template>
 
-<ng-template #initializedModal>
+<!-- <ng-template #initializedModal>
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
       <h2 class="offWhiteText font20 font600 mb-2 mt-2">{{ initialized }}</h2>
@@ -600,7 +602,7 @@
       <object type="image/svg+xml" class="w50" data="assets/img/Animated_Loading_Oneplay.svg"></object>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #advanced let-d="dismiss">
   <div class="modal-content position-relative modalBg">

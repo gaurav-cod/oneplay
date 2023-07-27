@@ -343,6 +343,21 @@ export class RestService {
       );
   }
 
+  getTip(): Observable<string[]> {
+    const formData = new FormData();
+    formData.append("client_type", "web");
+    formData.append("client_version", environment.appVersion)
+    formData.append("type", "tips")
+    return this.http
+    .post(this.client_api + "/get_config", formData)
+    .pipe(
+        map(res => res["data"]?.find(d => d.type === 'tips')?.tips ?? []),
+        catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
   searchUsers(
     query: string,
     page: number,
