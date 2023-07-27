@@ -41,7 +41,7 @@
       [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"
     ></ngx-ui-loader>
-    <span [ngClass]="game.status === 'coming_soon' ? 'd-none' : '' "><span *ngIf="game.isFree" class="freeTag px-2 free">FREE</span></span>
+    <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free">FREE</span>
     <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 free">COMING SOON</span>
     <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-2 bottomTag">MAINTENANCE</span></div>
     <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-2 bottomTag">UPDATING</span></div>
