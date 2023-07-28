@@ -85,11 +85,11 @@
               height="80"
               alt=""
             />
-            <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free">FREE</span>
-            <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free">COMING SOON</span>
-            <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-1 bottomTag">MAINTENANCE</span></div>
-            <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-1 bottomTag">UPDATING</span></div>
-            <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-1 bottomTag">NOT OPTIMIZED</span></div>
+            <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
+            <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
+            <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-1 bottomTag tagText">MAINTENANCE</span></div>
+            <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-1 bottomTag tagText">UPDATING</span></div>
+            <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-1 bottomTag tagText">NOT OPTIMIZED</span></div>
           </div>
           <div class="col align-self-center">
             <p class="font16 font500 offWhitecolor mb-0">

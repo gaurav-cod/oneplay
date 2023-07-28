@@ -229,41 +229,8 @@
     border-radius: 0px !important;
 }
 
-.freeTag {
-    background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%) !important;  
-  }
-  
-  .redGradient {
-    background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%) !important;
-  }
-  
-  .orangeGradientBg {
-    background: linear-gradient(270deg, #FE753A 0%, #F4C47A 100%) !important;
-  }
-  
-  .updatingGradient {
-    background: linear-gradient(270deg, #3F0984 -1.64%, #8611BD 100%) !important;
-  }
-  
-  .darkredGradient {
-    background: linear-gradient(270deg, #CE1B1B 0%, #F10E60 100%) !important;
-  }
-  
-  .free {
-    position: absolute;
-    top: 3px;
-    right: 2px;
+.tagText {
     font-size: 10px;
     font-weight: 600;
-    color: #fff;
     border-radius: 3px;
-  }
-  
-  .bottomTag {
-    position: relative;
-    bottom: 22px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 3px;
-  }
+}
