@@ -76,20 +76,22 @@
           (click)="viewGame(game)"
           style="cursor: pointer"
         >
-          <div class="col-auto">
+          <div class="col-auto pr-0">
             <img
               [src]="game.textBgImage"
               (error)="onImgError($event)"
-              [ngStyle]="{
-                filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-              }"
               class="br6"
               width="125"
               height="80"
               alt=""
             />
+            <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
+            <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
+            <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-1 bottomTag tagText">MAINTENANCE</span></div>
+            <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-1 bottomTag tagText">UPDATING</span></div>
+            <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-1 bottomTag tagText">NOT OPTIMIZED</span></div>
           </div>
-          <div class="col align-self-center pl-0">
+          <div class="col align-self-center">
             <p class="font16 font500 offWhitecolor mb-0">
               <span class="truncate-line-clamp">{{ game.title }}</span>
             </p>

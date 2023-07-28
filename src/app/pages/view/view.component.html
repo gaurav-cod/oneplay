@@ -10,9 +10,6 @@
             style="object-fit: cover; object-position: top"
             [src]="game.bgImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
-            [ngStyle]="{
-              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-            }"
             alt="Card image"
           />
           <div
@@ -169,10 +166,10 @@
                     >
                   </div>
                 </form>
-                <p class="cancelgradientText font16 font600 my-3" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
-                <p class="yellowGradient font16 font600 my-3" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
-                <p class="gradientInfoText font16 font600 my-3" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
-                <p class="orangeGradient font16 font600 my-3" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
+                <p class="cancelgradientText font16 font600 mb-2" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
+                <p class="yellowGradient font16 font600 mb-2" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
+                <p class="gradientInfoText font16 font600 mb-2" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
+                <p class="orangeGradient font16 font600 mb-2" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
               </div>
             </div>
           </div>
