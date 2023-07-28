@@ -140,7 +140,7 @@
                     </button>
                   </div>
                 </div>
-                <form class="row pb-3 justify-content-center checkBox pl-3">
+                <form class="row justify-content-center checkBox pl-3" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
                   <div
                     class="col-auto customResponsiveWidth custom-control custom-checkbox mt-4 mb-3 mb-md-0"
                   >
