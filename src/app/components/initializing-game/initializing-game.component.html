@@ -7,9 +7,6 @@
             style="object-fit: cover; object-position: top; height: 100vh"
             [src]="game.bgImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
-            [ngStyle]="{
-              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-            }"
             alt="Card image"
           />
           <div
