@@ -11,7 +11,7 @@
             [src]="game.bgImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             [ngStyle]="{
-              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
+              filter: game.status === 'live' || game.status === 'not_optimized' ? 'none' : 'grayscale(100%)'
             }"
             alt="Card image"
           />

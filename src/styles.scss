@@ -90,25 +90,6 @@ body {
   border-radius: 4px;
 }
 
-.free {
-  position: absolute;
-  top: 3px;
-  right: 2px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  border-radius: 6px;
-}
-
-.bottomTag {
-  position: relative;
-  bottom: 22px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  border-radius: 6px;
-}
-
 .required:after {
   content: " *";
   color: red;

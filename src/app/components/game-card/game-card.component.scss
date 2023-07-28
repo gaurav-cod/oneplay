@@ -90,6 +90,24 @@
   background-color: rgba(0, 0, 0, 0.6) !important;
 }
 
+.free {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.bottomTag {
+  position: relative;
+  bottom: 22px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 6px;
+}
 
 .freeTag {
   background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%) !important;  
