@@ -17,7 +17,6 @@
       [src]="game.textBgImage"
       (error)="onImgError($event)"
       [ngStyle]="{
-        filter: game.status === 'live' || game.status === 'not_optimized' ? 'none' : 'grayscale(100%)',
         'object-fit': hfw ? 'unset' : 'cover'
       }"
       alt=""
