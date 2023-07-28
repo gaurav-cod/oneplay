@@ -1,6 +1,6 @@
-<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="!initializationPage"></app-initializing-game>
+<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="initializationPage"></app-initializing-game>
 
-<div *ngIf="initializationPage" class="container-fluid">
+<div *ngIf="!initializationPage" class="container-fluid">
   <div class="container-fluid removePaddingContainer" *ngIf="!!game">
     <div class="row justify-content-center">
       <div class="col-md-12">
