@@ -1,7 +1,6 @@
 .initializing {
   padding-left: 0px !important;
   padding-right: 0px !important;
-  z-index: 1000;
 }
 
 .cardBox {
@@ -90,4 +89,10 @@
 
 .fixedHeight {
   height: 60px;
+}
+
+.height100vh {
+  height: 100vh;
+  overflow: hidden;
+  z-index: 10000;
 }
