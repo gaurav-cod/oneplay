@@ -1,5 +1,7 @@
-<div *ngIf="!!game" class="container-fluid">
-  <div class="container-fluid removePaddingContainer">
+<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="initializationPage"></app-initializing-game>
+
+<div *ngIf="!initializationPage" class="container-fluid">
+  <div class="container-fluid removePaddingContainer mt-3 mt-lg-0" *ngIf="!!game">
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card border-0 bgTransparent borderRadius10">
@@ -8,14 +10,12 @@
             style="object-fit: cover; object-position: top"
             [src]="game.bgImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
-            [ngStyle]="{
-              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-            }"
             alt="Card image"
           />
           <div
             class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
-          > <div class="d-block d-sm-none customTopButton position-absolute right-2 top-4">
+          > 
+            <div class="hideInLarge position-absolute right-2 top-4">
               <button
                 *ngIf="!isInWishlist"
                 (click)="addToWishlist()"
@@ -52,13 +52,23 @@
                   {{ game.isFree ? " - Free" : "" }}
                 </p>
                 <div class="row">
-                  <div
+                  <!-- <div
                     *ngIf="game.status === 'unlive'"
                     class="col-12 text-red mb-2"
                   >
                     **This game is not available at the moment**
+                  </div> -->
+                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'coming_soon' || game.status === 'maintenance' || game.status === 'updating'">
+                    <button
+                      class="btn blackColor borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                      disabled
+                    >
+                      <span *ngIf="game.status === 'coming_soon'">Coming Soon</span>
+                      <span *ngIf="game.status === 'maintenance'">Under Maintenance</span>
+                      <span *ngIf="game.status === 'updating'">Unavailable</span>
+                    </button>
                   </div>
-                  <div class="col-auto align-self-center fullWidthBtn">
+                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -97,7 +107,7 @@
                     </button>
                   </div>
                   <div
-                    class="col-auto pl-1 d-none d-sm-block mt-3 align-self-center"
+                    class="col-auto pl-1 hideInMobile mt-3 align-self-center"
                   >
                     <button
                       *ngIf="!isInWishlist"
@@ -131,9 +141,9 @@
                     </button>
                   </div>
                 </div>
-                <form class="row pb-3 justify-content-center checkBox pl-3">
+                <form class="row justify-content-center checkBox pl-3" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
                   <div
-                    class="col-auto customResponsiveWidth custom-control custom-checkbox mt-4 mb-3 mb-md-0"
+                    class="col-auto customResponsiveWidth custom-control custom-checkbox mt-3 mb-md-0"
                   >
                     <input
                       type="checkbox"
@@ -142,14 +152,14 @@
                       [formControl]="showSettings"
                     />
                     <label
-                      class="custom-control-label font16 font500 text-white d-none d-sm-block"
+                      class="custom-control-label font16 font500 text-white hideInMobile"
                       for="customCheck1"
                       ><span class="marginLeftNegative"
                         >Show gameplay settings before launch</span
                       ></label
                     >
                     <label
-                      class="custom-control-label font16 font500 muteText d-block d-sm-none"
+                      class="custom-control-label font16 font500 muteText hideInLarge"
                       for="customCheck1"
                       ><span class="marginLeftNegative"
                         >Show settings before launch</span
@@ -157,14 +167,29 @@
                     >
                   </div>
                 </form>
+                <div class="font16 my-3 textCenterInResponsive hideInMobile">
+                  <p class="cancelgradientText font600" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
+                  <p class="yellowGradient font600" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
+                  <p class="gradientInfoText font600" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
+                  <p class="orangeGradient font600" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="col-md-12 px-0 marginTopRes">
+        <div class="font16 textCenterInResponsive px-2">
+          <p class="cancelgradientText font600" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
+          <p class="yellowGradient font600" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
+          <p class="gradientInfoText font600" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
+          <p class="orangeGradient font600" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
+        </div>
+        <hr class="borderColor hideInLarge" />
+      </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 mt-3 mt-md-4">
+          <div class="col-md-6 mt-sm-4">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 font24 text-white">About Game</h1>
@@ -258,7 +283,7 @@
   </div>
 </div>
 
-<hr class="borderColor mb-0 d-block d-sm-none" />
+<hr class="borderColor mb-0 hideInLarge" *ngIf="_videos.length > 0"/>
 
 <div class="overflow-hidden">
   <div *ngIf="!!game">
@@ -576,7 +601,7 @@
   </div>
 </ng-template>
 
-<ng-template #initializedModal>
+<!-- <ng-template #initializedModal>
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
       <h2 class="offWhiteText font20 font600 mb-2 mt-2">{{ initialized }}</h2>
@@ -586,7 +611,7 @@
       <object type="image/svg+xml" class="w50" data="assets/img/Animated_Loading_Oneplay.svg"></object>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #advanced let-d="dismiss">
   <div class="modal-content position-relative modalBg">
