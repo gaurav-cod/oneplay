@@ -155,8 +155,8 @@ live {
   }
 
   .imagesText {
-    height: 305px;
-    align-items: end;
+    height: 350px;
+    align-items: center;
     z-index: 1024;
   }
 
@@ -165,7 +165,7 @@ live {
   }
 
   .marginTopRes {
-    margin-top: 5rem;
+    margin-top: 4rem;
   }
 }
 
@@ -530,6 +530,9 @@ live {
 
 .blackColor {
   background-color: #151515 !important;
+  @media (max-width: 480px) {
+    border: 2px solid #616161 !important;
+  }
 }
 
 @media (max-width: 480.9px) {
@@ -541,4 +544,9 @@ live {
     font-size: 14px !important;
     line-height: 21px;
   }
+}
+
+.height100px {
+  height: 100px;
+  align-items: center;
 }

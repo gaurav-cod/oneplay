@@ -1,7 +1,9 @@
 .initializing {
   padding-left: 0px !important;
   padding-right: 0px !important;
-  z-index: 1000;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1040;
 }
 
 .cardBox {
