@@ -110,6 +110,7 @@ export interface ClientTokenRO {
   client_token: string;
   code: number;
   msg: string;
+  progress: number;
 }
 
 export interface WebPlayTokenRO {
