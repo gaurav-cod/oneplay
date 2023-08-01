@@ -35,6 +35,7 @@ import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
+import { UAParser } from "ua-parser-js";
 
 @Injectable({
   providedIn: "root",
@@ -345,9 +346,31 @@ export class RestService {
 
   getTip(): Observable<string[]> {
     const formData = new FormData();
-    formData.append("client_type", "web");
-    formData.append("client_version", environment.appVersion)
-    formData.append("type", "tips")
+    const ua = new UAParser();
+    let clientType: "web" | "windows" | "mac" | "android_mobile" | "android_tv";
+
+    switch (ua.getOS().name) {
+      case 'Windows':
+        clientType = "windows";
+        break;
+      case 'macOS':
+        clientType = "mac";
+        break;
+      case 'Android':
+        if (ua.getDevice().type === 'smarttv') {
+          clientType = "android_tv";
+        } else {
+          clientType = "android_mobile";
+        }
+        break;
+      default:
+        clientType = "web";
+        break;
+    }
+
+    formData.append("client_type", clientType);
+    formData.append("client_version", environment.appVersion);
+    formData.append("type", "tips");
     return this.http
     .post(this.client_api + "/get_config", formData)
     .pipe(
@@ -771,7 +794,7 @@ export class RestService {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
-      .post<string>(this.client_api + "/get_session", formData)
+      .post(this.client_api + "/get_session", formData)
       .pipe(
         map((res) => res["data"]),
         catchError(({ error }) => {

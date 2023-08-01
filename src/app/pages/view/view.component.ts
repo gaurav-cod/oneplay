@@ -833,13 +833,13 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
       this._initializeEvent?.end({ result: "failure" });
-      this.stopLoading();
       Swal.fire({
         title: "Oops...",
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
       }).then((res) => {
+        this.stopLoading();
         if (res.isConfirmed) {
           this.startGame();
         }
@@ -930,13 +930,13 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientTokenFailed(err: any) {
     this._initializeEvent?.end({ result: "failure" });
-    this.stopLoading();
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
       icon: "error",
       confirmButtonText: "Relaunch the game",
     }).then((res) => {
+      this.stopLoading();
       if (res.isConfirmed) {
         this.startGame();
       }

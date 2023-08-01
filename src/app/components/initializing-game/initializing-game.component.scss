@@ -1,86 +1,92 @@
+.initializing {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  z-index: 1000;
+}
+
 .cardBox {
-    background: #00000099;
-    border-radius: 40px;
-    backdrop-filter: blur(9px);
-    @media (max-width: 1024px) {
-      border-radius: 20px;
-    }
+  background: #00000099;
+  border-radius: 40px;
+  backdrop-filter: blur(9px);
+  @media (max-width: 1024px) {
+    border-radius: 20px;
   }
-  
-  .header {
-    font-size: 40px;
-    line-height: 50px;
-    font-weight: 800;
-    letter-spacing: 2%;
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 35px;
-      line-height: 45px;
-    }
-    @media (max-width: 767.9px) {
-      font-size: 20px;
-      line-height: 30px;
-    }
+}
+
+.header {
+  font-size: 40px;
+  line-height: 50px;
+  font-weight: 800;
+  letter-spacing: 2%;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    font-size: 35px;
+    line-height: 45px;
   }
-  
-  .countTip {
-    height: 38px;
-    width: 38px;
-    border-radius: 50%;
-    border: 4px solid #3E4246;
-    text-align: center;
-    align-items: center;
+  @media (max-width: 767.9px) {
     font-size: 20px;
     line-height: 30px;
-    font-weight: 600;
-    color: #DCDCDC;
-    @media (max-width: 767.9px) {
-      height: 28px;
-      width: 28px;
-      font-size: 18px;
-      line-height: 22px;
-    }
   }
-  
-  .tipText {
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 32px;
-    letter-spacing: 0.02em;
-    color: #DCDCDC;
-    @media (min-width: 768px) and (max-width: 1024px) {
-      font-size: 18px;
-      line-height: 27px;
-    }
-    @media (max-width: 767.9px) {
-      font-size: 14px;
-      line-height: 21px;
-    }
-  }
-  
-  .borderright {
-    border-right: 2px solid #FFFFFF26
-  }
-  
-  .outerRange {
+}
+
+.countTip {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  border: 4px solid #3e4246;
+  text-align: center;
+  align-items: center;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+  color: #dcdcdc;
+  @media (max-width: 767.9px) {
     height: 28px;
-    width: 100%;
-    background: #3E4246;
-    border-radius: 15px !important;
+    width: 28px;
+    font-size: 18px;
+    line-height: 22px;
   }
-  
-  .innerRange {
-    background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
-    border-radius: 15px;
-    // width: 0%;
-    height: 28px;
+}
+
+.tipText {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 32px;
+  letter-spacing: 0.02em;
+  color: #dcdcdc;
+  @media (min-width: 768px) and (max-width: 1024px) {
+    font-size: 18px;
+    line-height: 27px;
   }
-  
-  .percenterText {
-    font-size: 20px;
-    line-height: 30px;
-    font-weight: 600;
-    // display: flex;
+  @media (max-width: 767.9px) {
+    font-size: 14px;
+    line-height: 21px;
   }
+}
+
+.borderright {
+  border-right: 2px solid #ffffff26;
+}
+
+.outerRange {
+  height: 28px;
+  width: 100%;
+  background: #3e4246;
+  border-radius: 15px !important;
+}
+
+.innerRange {
+  background: linear-gradient(270deg, #3aa0fe 0%, #59fef4 100%);
+  border-radius: 15px;
+  // width: 0%;
+  height: 28px;
+}
+
+.percenterText {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 600;
+  // display: flex;
+}
 
 .fixedHeight {
   height: 60px;
