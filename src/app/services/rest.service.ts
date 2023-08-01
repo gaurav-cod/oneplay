@@ -353,7 +353,7 @@ export class RestService {
       case 'Windows':
         clientType = "windows";
         break;
-      case 'macOS':
+      case 'Mac OS':
         clientType = "mac";
         break;
       case 'Android':
