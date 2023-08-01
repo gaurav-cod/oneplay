@@ -63,14 +63,16 @@
                     **This game is not available at the moment**
                   </div> -->
                   <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'coming_soon' || game.status === 'maintenance' || game.status === 'updating'">
-                    <button
-                      class="btn blackColor borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
-                      disabled
-                    >
-                      <span *ngIf="game.status === 'coming_soon'">Coming Soon</span>
-                      <span *ngIf="game.status === 'maintenance'">Under Maintenance</span>
-                      <span *ngIf="game.status === 'updating'">Unavailable</span>
-                    </button>
+                    <div class="borderRadius90 mt-3 blackBbg">
+                      <button
+                        class="btn blackColor borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                        disabled
+                      >
+                        <span *ngIf="game.status === 'coming_soon'">Coming Soon</span>
+                        <span *ngIf="game.status === 'maintenance'">Under Maintenance</span>
+                        <span *ngIf="game.status === 'updating'">Unavailable</span>
+                      </button>
+                    </div>
                   </div>
                   <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
                     <button
