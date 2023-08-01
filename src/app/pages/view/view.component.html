@@ -1,7 +1,16 @@
-<app-initializing-game [game]="game" [initialized]="initialized" [progress]="progress" *ngIf="initializationPage"></app-initializing-game>
+<app-initializing-game
+  [game]="game"
+  [initialized]="initialized"
+  [progress]="progress"
+  [errored]="initializationErrored"
+  *ngIf="initializationPage"
+></app-initializing-game>
 
 <div *ngIf="!initializationPage" class="container-fluid">
-  <div class="container-fluid removePaddingContainer mt-3 mt-lg-0" *ngIf="!!game">
+  <div
+    class="container-fluid removePaddingContainer mt-3 mt-lg-0"
+    *ngIf="!!game"
+  >
     <div class="row justify-content-center">
       <div class="col-md-12">
         <div class="card border-0 bgTransparent borderRadius10">
@@ -14,7 +23,7 @@
           />
           <div
             class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
-          > 
+          >
             <div class="hideInLarge position-absolute right-2 top-4">
               <button
                 *ngIf="!isInWishlist"
@@ -62,19 +71,37 @@
                   >
                     **This game is not available at the moment**
                   </div> -->
-                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'coming_soon' || game.status === 'maintenance' || game.status === 'updating'">
+                  <div
+                    class="col-auto align-self-center fullWidthBtn"
+                    *ngIf="
+                      game.status === 'coming_soon' ||
+                      game.status === 'maintenance' ||
+                      game.status === 'updating'
+                    "
+                  >
                     <div class="borderRadius90 mt-3 blackBbg">
                       <button
                         class="btn blackColor borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
                         disabled
                       >
-                        <span *ngIf="game.status === 'coming_soon'">Coming Soon</span>
-                        <span *ngIf="game.status === 'maintenance'">Under Maintenance</span>
-                        <span *ngIf="game.status === 'updating'">Unavailable</span>
+                        <span *ngIf="game.status === 'coming_soon'"
+                          >Coming Soon</span
+                        >
+                        <span *ngIf="game.status === 'maintenance'"
+                          >Under Maintenance</span
+                        >
+                        <span *ngIf="game.status === 'updating'"
+                          >Unavailable</span
+                        >
                       </button>
                     </div>
                   </div>
-                  <div class="col-auto align-self-center fullWidthBtn" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
+                  <div
+                    class="col-auto align-self-center fullWidthBtn"
+                    *ngIf="
+                      game.status === 'live' || game.status === 'not_optimized'
+                    "
+                  >
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -147,7 +174,12 @@
                     </button>
                   </div>
                 </div>
-                <form class="row justify-content-center checkBox pl-3" *ngIf="game.status === 'live' || game.status === 'not_optimized'">
+                <form
+                  class="row justify-content-center checkBox pl-3"
+                  *ngIf="
+                    game.status === 'live' || game.status === 'not_optimized'
+                  "
+                >
                   <div
                     class="col-auto customResponsiveWidth custom-control custom-checkbox mt-3 mb-md-0"
                   >
@@ -174,10 +206,33 @@
                   </div>
                 </form>
                 <div class="font16 my-3 textCenterInResponsive hideInMobile">
-                  <p class="cancelgradientText font600" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
-                  <p class="yellowGradient font600" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
-                  <p class="gradientInfoText font600" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
-                  <p class="orangeGradient font600" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
+                  <p
+                    class="cancelgradientText font600"
+                    *ngIf="game.status === 'coming_soon'"
+                  >
+                    Stay tuned, Coming soon to OnePlay!
+                  </p>
+                  <p
+                    class="yellowGradient font600"
+                    *ngIf="game.status === 'maintenance'"
+                  >
+                    We are working diligently to ensure a smoother gameplay.
+                    Game will be back soon!
+                  </p>
+                  <p
+                    class="gradientInfoText font600"
+                    *ngIf="game.status === 'updating'"
+                  >
+                    We're implementing important updates, game will be back
+                    shortly!
+                  </p>
+                  <p
+                    class="orangeGradient font600"
+                    *ngIf="game.status === 'not_optimized'"
+                  >
+                    The Quality of the gameplay may vary depending on your
+                    device.
+                  </p>
                 </div>
               </div>
             </div>
@@ -186,10 +241,31 @@
       </div>
       <div class="col-md-12 px-0 marginTopRes">
         <div class="font16 textCenterInResponsive px-2">
-          <p class="cancelgradientText font600" *ngIf="game.status === 'coming_soon'">Stay tuned, Coming soon to OnePlay!</p>
-          <p class="yellowGradient font600" *ngIf="game.status === 'maintenance'">We are working diligently to ensure a smoother gameplay. Game will be back soon!</p>
-          <p class="gradientInfoText font600" *ngIf="game.status === 'updating'">We're implementing important updates, game will be back shortly! </p>
-          <p class="orangeGradient font600" *ngIf="game.status === 'not_optimized'">The Quality of the gameplay may vary depending on your device. </p>
+          <p
+            class="cancelgradientText font600"
+            *ngIf="game.status === 'coming_soon'"
+          >
+            Stay tuned, Coming soon to OnePlay!
+          </p>
+          <p
+            class="yellowGradient font600"
+            *ngIf="game.status === 'maintenance'"
+          >
+            We are working diligently to ensure a smoother gameplay. Game will
+            be back soon!
+          </p>
+          <p
+            class="gradientInfoText font600"
+            *ngIf="game.status === 'updating'"
+          >
+            We're implementing important updates, game will be back shortly!
+          </p>
+          <p
+            class="orangeGradient font600"
+            *ngIf="game.status === 'not_optimized'"
+          >
+            The Quality of the gameplay may vary depending on your device.
+          </p>
         </div>
         <hr class="borderColor hideInLarge" />
       </div>
@@ -203,9 +279,11 @@
                   id="description"
                   class="font17 font500 descriptionText muteText mt-2 mt-lg-4 mb-0"
                 >
-                  {{isReadMore && shortDescLength < game.description.length
-                  ? shortDesc
-                  : longDesc}}
+                  {{
+                    isReadMore && shortDescLength < game.description.length
+                      ? shortDesc
+                      : longDesc
+                  }}
                 </span>
                 <a
                   href="javascript:void(0)"
@@ -255,11 +333,7 @@
                 </a>
               </div>
               <div class="col mt-4" *ngIf="game.developer.length">
-                <p
-                  class="font16 font500 muteText mb-2"
-                >
-                  Developer
-                </p>
+                <p class="font16 font500 muteText mb-2">Developer</p>
                 <div class="row">
                   <div
                     class="col-auto pr-0"
@@ -289,7 +363,7 @@
   </div>
 </div>
 
-<hr class="borderColor mb-0 hideInLarge" *ngIf="_videos.length > 0"/>
+<hr class="borderColor mb-0 hideInLarge" *ngIf="_videos.length > 0" />
 
 <div class="overflow-hidden">
   <div *ngIf="!!game">
@@ -526,10 +600,7 @@
               id="resolution"
               [formControl]="resolution"
             >
-              <option
-                *ngFor="let res of constants.RESOLUTIONS"
-                [value]="res"
-              >
+              <option *ngFor="let res of constants.RESOLUTIONS" [value]="res">
                 {{ res }}
               </option>
             </select>
@@ -576,7 +647,13 @@
             <label class="font18 font500 lightGrayColor"
               >Bitrate ({{ bitrateInMb }} Mbps)</label
             >
-            <input class="range" type="range" [formControl]="bitrate" min="5000" max="80000" />
+            <input
+              class="range"
+              type="range"
+              [formControl]="bitrate"
+              min="5000"
+              max="80000"
+            />
           </div>
         </div>
       </div>
@@ -891,7 +968,9 @@
     <div class="modal-body p-3 p-md-4">
       <div class="row justify-content-center">
         <div class="col-9 col-md-11 mt-2">
-          <h2 class="font16 font500 muteText text-center">Your game is running and ready for action!</h2>
+          <h2 class="font16 font500 muteText text-center">
+            Your game is running and ready for action!
+          </h2>
         </div>
       </div>
       <div class="row text-center mt-md-2 justify-content-center">
@@ -908,10 +987,16 @@
             [href]="clientDownloadLink"
             class="btn btn-link btn-block activeBG responsiveBr60"
           >
-          <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg">
-            Download Gaming Client
-            <img src="assets/img/Vector 67.svg" class="img-fluid align-middle ml-2" alt="" />
-          </div>
+            <div
+              class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
+            >
+              Download Gaming Client
+              <img
+                src="assets/img/Vector 67.svg"
+                class="img-fluid align-middle ml-2"
+                alt=""
+              />
+            </div>
           </a>
         </div>
         <div class="col-12 col-md-11 mt-md-4 mt-3">
@@ -920,16 +1005,27 @@
             class="btn btn-link btn-block activeBG responsiveBr60"
             (click)="startGameWithWebRTCToken()"
           >
-          <div class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg">
-            Start Your Journey on Browser
-            <img src="assets/img/web 1.svg" class="img-fluid align-middle ml-2" alt="" />
-          </div>
+            <div
+              class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
+            >
+              Start Your Journey on Browser
+              <img
+                src="assets/img/web 1.svg"
+                class="img-fluid align-middle ml-2"
+                alt=""
+              />
+            </div>
           </a>
         </div>
       </div>
     </div>
-    <div class="modal-footer d-inline text-center border-top borderColor mt-3" *ngIf="!!exitCommand">
-      <p class="font16 font500 muteText">To Quit Game Press {{ exitCommand }}</p>
+    <div
+      class="modal-footer d-inline text-center border-top borderColor mt-3"
+      *ngIf="!!exitCommand"
+    >
+      <p class="font16 font500 muteText">
+        To Quit Game Press {{ exitCommand }}
+      </p>
     </div>
   </div>
 </ng-template>
@@ -978,11 +1074,23 @@
       <h2 class="text-white w-100 font600 text-center font20">
         Scouting for the Next Open Rig
       </h2>
-      <p class="mb-0"><img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" /></p>
-      <span class="font38 font700 text-white borderBottomTab"><span class="blink">{{ queueSequence }}</span></span>
+      <p class="mb-0">
+        <img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" />
+      </p>
+      <span class="font38 font700 text-white borderBottomTab"
+        ><span class="blink">{{ queueSequence }}</span></span
+      >
       <p class="font16 font500 muteText mt-2" [innerText]="queueMessge1"></p>
-      <p class="font16 font500 muteText my-4 mx-lg-4" [innerText]="queueMessge2"></p>
-      <button class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60" (click)="cancelWaitQueue()">Cancel</button>
+      <p
+        class="font16 font500 muteText my-4 mx-lg-4"
+        [innerText]="queueMessge2"
+      ></p>
+      <button
+        class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60"
+        (click)="cancelWaitQueue()"
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </ng-template>

@@ -63,6 +63,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   startingGame = false;
   terminatingGame = false;
   initializationPage = false;
+  initializationErrored = false;
   
 
   similarGames: GameModel[] = [];
@@ -833,6 +834,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
       this._initializeEvent?.end({ result: "failure" });
+      this.initializationErrored = true;
       Swal.fire({
         title: "Oops...",
         text: "Something went wrong",
@@ -840,6 +842,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         confirmButtonText: "Try Again",
       }).then((res) => {
         this.stopLoading();
+        this.initializationErrored = false;
         if (res.isConfirmed) {
           this.startGame();
         }
@@ -930,6 +933,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientTokenFailed(err: any) {
     this._initializeEvent?.end({ result: "failure" });
+    this.initializationErrored = true;
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
@@ -937,6 +941,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Relaunch the game",
     }).then((res) => {
       this.stopLoading();
+      this.initializationErrored = false;
       if (res.isConfirmed) {
         this.startGame();
       }
