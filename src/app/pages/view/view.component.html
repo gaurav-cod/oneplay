@@ -365,7 +365,7 @@
 
 <hr class="borderColor mb-0 hideInLarge" *ngIf="_videos.length > 0" />
 
-<div class="overflow-hidden">
+<div *ngIf="!initializationPage" class="overflow-hidden">
   <div *ngIf="!!game">
     <div class="row px-3 d-block d-md-none">
       <div class="col-md-6 col-12" *ngIf="_videos.length > 0">
