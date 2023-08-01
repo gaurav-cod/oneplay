@@ -45,7 +45,11 @@
             </div>
             <div class="row imagesText">
               <div class="col-md-12">
-                <img [src]="game.textLogo" class="text-logo" alt="" />
+                <div class="row height100px">
+                  <div class="col">
+                    <img [src]="game.textLogo" class="text-logo" alt="" />
+                  </div>
+                </div>
                 <p class="font16 font500 text-white mt-lg-4">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
