@@ -63,7 +63,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     this.initParties();
     this.setOnline();
     this.initGames();
-    this.initPushNotification();
+    this.initPushNotification();  
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
@@ -95,7 +95,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
       } else if (u === false) {
         this.router.navigate(['/start-gaming'], { replaceUrl: true });
       }
-    });
+    }); 
   }
 
   ngOnDestroy(): void {
@@ -118,6 +118,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit() {
     this.route.queryParams.subscribe(async(params) => {
+    if(localStorage.getItem('#onboardingUser') !== "true") {
+      return;
+    }
       let swal_text = "you're about to purchase the selected subscription package.";
       if (params.subscribe) {
         if(params.plan == 'base') {
