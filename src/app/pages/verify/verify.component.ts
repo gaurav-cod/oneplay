@@ -19,7 +19,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
 
-  private _verifyEvent: StartEvent<"signup - Account Verification">;
+  // private _verifyEvent: StartEvent<"signup - Account Verification">;
 
   constructor(
     private readonly authService: AuthService,
@@ -36,7 +36,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._verifyEvent.cancel();
+    // this._verifyEvent.cancel();
   }
 
   getOTP() {
@@ -71,7 +71,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
         localStorage.removeItem("otpSent");
-        this._verifyEvent.end({ result: "success" });
+        // this._verifyEvent.end({ result: "success" });
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -90,10 +90,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
             icon: "error",
           });
         } else {
-          this._verifyEvent.end({
-            result: "failure",
-            failReason: error.message,
-          });
+          // this._verifyEvent.end({
+          //   result: "failure",
+          //   failReason: error.message,
+          // });
           this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
@@ -152,17 +152,17 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   private goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-      channel: "web",
-    });
+    // this.countlyService.addEvent("signINButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/login"]);
   }
 
   private startVerifyEvent() {
-    this._verifyEvent = this.countlyService.startEvent(
-      "signup - Account Verification"
-    );
+    // this._verifyEvent = this.countlyService.startEvent(
+    //   "signup - Account Verification"
+    // );
   }
 }

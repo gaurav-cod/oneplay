@@ -7,7 +7,7 @@ import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
 import { Subscription } from "rxjs";
-import { CountlyService } from "src/app/services/countly.service";
+// import { CountlyService } from "src/app/services/countly.service";
 
 const qnaData = [
   [
@@ -68,7 +68,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly title: Title,
     private readonly authService: AuthService,
-    private readonly countlyService: CountlyService
+    // private readonly countlyService: CountlyService
   ) {}
 
   ngOnDestroy(): void {
@@ -77,7 +77,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.gameId = null;
     this.sessionId = null;
     this.reset();
-    this.countlyService.cancelEvent("gameFeedback");
+    // this.countlyService.cancelEvent("gameFeedback");
   }
 
   get qna() {
@@ -101,9 +101,9 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.countlyService.endEvent("gameFeedback", {
-      action: "Submit",
-    });
+    // this.countlyService.endEvent("gameFeedback", {
+    //   action: "Submit",
+    // });
     if (!this.gameId || !this.sessionId || !this.userId) {
       Swal.fire({
         title: "Oops...",
@@ -157,9 +157,9 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   skip() {
-    this.countlyService.endEvent("gameFeedback", {
-      action: "Skip",
-    });
+    // this.countlyService.endEvent("gameFeedback", {
+    //   action: "Skip",
+    // });
     this.location.back();
   }
 

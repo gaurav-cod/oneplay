@@ -5,7 +5,7 @@ import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { AuthService } from "src/app/services/auth.service";
-import { CountlyService } from "src/app/services/countly.service";
+// import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 
@@ -39,7 +39,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly countlyService: CountlyService,
+    // private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -119,19 +119,19 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
     this.restService.updateProfile(body).subscribe(
       (data) => {
-        this.countlyService.updateUser('username', data.username);
-        this.countlyService.updateUser('name', data.name);
-        if (data.photo) {
-          this.countlyService.updateUser('picture', data.photo);
-        }
-        this.countlyService.saveUser();
-        this.countlyService.updateEventData("settingsView", {
-          profilepicturechanged: !!this.photoFile ? "yes" : "no",
-          usernamechanged: data.username !== this.currentUserState.username ? "yes" : "no",
-          fullnamechanged: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
-          biochanged: data.bio !== this.currentUserState.bio ? "yes" : "no",
-          updateprofileclic: "yes",
-        })
+        // this.countlyService.updateUser('username', data.username);
+        // this.countlyService.updateUser('name', data.name);
+        // if (data.photo) {
+        //   this.countlyService.updateUser('picture', data.photo);
+        // }
+        // this.countlyService.saveUser();
+        // this.countlyService.updateEventData("settingsView", {
+        //   profilepicturechanged: !!this.photoFile ? "yes" : "no",
+        //   usernamechanged: data.username !== this.currentUserState.username ? "yes" : "no",
+        //   fullnamechanged: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
+        //   biochanged: data.bio !== this.currentUserState.bio ? "yes" : "no",
+        //   updateprofileclic: "yes",
+        // })
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,

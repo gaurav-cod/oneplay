@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
 
   private _successSwalModalRef: NgbModalRef;
-  private _signupEvent: StartEvent<"signup - Form Submitted">;
+  private _signupEvent: StartEvent<"signUpFormSubmitted">;
 
   referralName = "";
 
@@ -209,19 +209,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onClickPrivacy() {
-    this._signupEvent.update({ privacyPolicyPageViewed: "yes" });
+    this._signupEvent.update({ privacyPolicyViewed: "yes" });
   }
 
   onClickTNC() {
-    this._signupEvent.update({ TnCPageViewed: "yes" });
+    this._signupEvent.update({ tncViewed: "yes" });
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-      channel: "web",
-    });
+    // this.countlyService.addEvent("signINButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/login"]);
   }
 
@@ -243,27 +243,27 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private startSignupEvent() {
     this._signupEvent = this.countlyService.startEvent(
-      "signup - Form Submitted",
+      "signUpFormSubmitted",
       {
         unique: false,
         data: {
-          signupFromPage: location.pathname + location.hash,
-          privacyPolicyPageViewed: "no",
-          TnCPageViewed: "no",
+          privacyPolicyViewed: 'no',
+          tncViewed: 'no',
+          signUpFromPage: 'tv', //!
         },
       }
     );
   }
 
   private endSignupEvent() {
-    this._signupEvent.end({
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      phoneNumber:
-        this.registerForm.value.country_code + this.registerForm.value.phone,
-      gender: this.registerForm.value.gender,
-      referralID: this.registerForm.value.referred_by_id,
-      signupFromPage: location.pathname + location.hash,
-    });
+    // this._signupEvent.end({
+    //   name: this.registerForm.value.name,
+    //   email: this.registerForm.value.email,
+    //   phoneNumber:
+    //     this.registerForm.value.country_code + this.registerForm.value.phone,
+    //   gender: this.registerForm.value.gender,
+    //   referralID: this.registerForm.value.referred_by_id,
+    //   signupFromPage: location.pathname + location.hash,
+    // });
   }
 }

@@ -2,7 +2,8 @@ import { Injectable } from "@angular/core";
 import {
   CountlyEventData,
   CountlyUserData,
-  CustomSegments,
+  CustomCountlyEvents,
+  CustomTimedCountlyEvents,
   StartEvent,
 } from "./countly";
 import { environment } from "src/environments/environment";
@@ -24,24 +25,25 @@ export class CountlyService {
 
   track_pageview = (url: string): void => Countly.track_pageview(url);
 
-  addEvent<T extends keyof CustomSegments>(
+  addEvent<T extends keyof CustomCountlyEvents>(
     event: T,
-    segments: CustomSegments[T]
+    segments: CustomCountlyEvents[T]
   ) {
     let sum = undefined;
     if ('XCountlySUM' in segments) {
       sum = segments.XCountlySUM;
       delete segments.XCountlySUM;
     }
+    segments["channel"] = 'web';
     this._addEvent({ key: event, sum, segmentation: segments });
   }
 
-  startEvent<T extends keyof CustomSegments>(
+  startEvent<T extends keyof CustomTimedCountlyEvents>(
     event: T,
     {
       unique,
       data,
-    }: { unique?: boolean; data?: Partial<CustomSegments[T]> } = {}
+    }: { unique?: boolean; data?: Partial<CustomTimedCountlyEvents[T]> } = {}
   ): StartEvent<T> {
     localStorage.setItem(this.keyOfKey(event), `${+new Date()}`);
     if (data && (!localStorage.getItem(event + this.data_postfix) || unique))
@@ -52,21 +54,21 @@ export class CountlyService {
     return {
       data,
       cancel: () => this.cancelEvent(event),
-      end: (segments: Partial<CustomSegments[T]>) =>
+      end: (segments: Partial<CustomTimedCountlyEvents[T]>) =>
         this.endEvent(event, segments),
-      update: (segments: Partial<CustomSegments[T]>) =>
+      update: (segments: Partial<CustomTimedCountlyEvents[T]>) =>
         this.updateEventData(event, segments),
     };
   }
 
-  cancelEvent<T extends keyof CustomSegments>(event: T) {
+  cancelEvent<T extends keyof CustomTimedCountlyEvents>(event: T) {
     localStorage.removeItem(this.keyOfKey(event));
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
   }
 
-  updateEventData<T extends keyof CustomSegments>(
+  updateEventData<T extends keyof CustomTimedCountlyEvents>(
     event: T,
-    segments: Partial<CustomSegments[T]>
+    segments: Partial<CustomTimedCountlyEvents[T]>
   ): void {
     const prevData = JSON.parse(
       localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
@@ -77,9 +79,9 @@ export class CountlyService {
     );
   }
 
-  endEvent<T extends keyof CustomSegments>(
+  endEvent<T extends keyof CustomTimedCountlyEvents>(
     event: T,
-    segments: Partial<CustomSegments[T]> = {}
+    segments: Partial<CustomTimedCountlyEvents[T]> = {}
   ) {
     const ts = new Date(parseInt(
       localStorage.getItem(this.keyOfKey(event)) ?? `${+new Date()}`
@@ -94,6 +96,7 @@ export class CountlyService {
       sum = segments.XCountlySUM;
       delete segments.XCountlySUM;
     }
+    segments["channel"] = 'web';
     this._addEvent({
       sum,
       key: event,

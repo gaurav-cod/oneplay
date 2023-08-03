@@ -118,14 +118,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   viewBannerGame(game: GameModel) {
-    this.countlyService.addEvent('gameLandingView', {
-      gameID: game.oneplayId,
-      gameTitle: game.title,
-      gameGenre: game.genreMappings?.join(','),
-      source: location.pathname + location.hash,
-      trigger: "banner",
-      channel: "web",
-    });
+    // this.countlyService.addEvent('gameLandingView', {
+    //   gameID: game.oneplayId,
+    //   gameTitle: game.title,
+    //   gameGenre: game.genreMappings?.join(','),
+    //   source: location.pathname + location.hash,
+    //   trigger: "banner",
+    //   channel: "web",
+    // });
     this.router.navigate(['view', this.gLink.transform(game)]);
   }
 

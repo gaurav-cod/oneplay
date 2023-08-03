@@ -80,11 +80,11 @@ export class ResetPassComponent implements OnInit {
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-      channel: "web",
-    });
+    // this.countlyService.addEvent("signINButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/login"]);
   }
 

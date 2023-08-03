@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
 
   private _verifySwalModalRef: NgbModalRef;
-  private _signinEvent: StartEvent<"signin">;
+  // private _signinEvent: StartEvent<"signin">;
 
   constructor(
     private readonly restService: RestService,
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this._signinEvent.cancel();
+    // this._signinEvent.cancel();
     Swal.close();
   }
 
@@ -84,13 +84,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this._signinEvent.update({
-      signinFromTrigger: "CTA",
-      rememberMeActivated: this.rememberMe ? "yes" : "no",
-    });
+    // this._signinEvent.update({
+    //   signinFromTrigger: "CTA",
+    //   rememberMeActivated: this.rememberMe ? "yes" : "no",
+    // });
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        this._signinEvent.end({ result: "success" });
+        // this._signinEvent.end({ result: "success" });
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();
@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.login(token);
       },
       (error) => {
-        this._signinEvent.end({ result: "failure" });
+        // this._signinEvent.end({ result: "failure" });
         this.startSignupEvent();
         if (error.message == "Please verify your email and phone number") {
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
@@ -135,11 +135,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToSignup() {
-    this.countlyService.addEvent("signUPButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-      channel: "web",
-    });
+    // this.countlyService.addEvent("signUPButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/register"]);
   }
 
@@ -148,9 +148,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private startSignupEvent() {
-    this._signinEvent = this.countlyService.startEvent("signin", {
-      unique: false,
-      data: { signinFromPage: location.pathname + location.hash },
-    });
+    // this._signinEvent = this.countlyService.startEvent("signin", {
+    //   unique: false,
+    //   data: { signinFromPage: location.pathname + location.hash },
+    // });
   }
 }
