@@ -82,19 +82,16 @@
   }
 }
 
-.freeTag {
-  float: right;
-  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
-  border-radius: 6px !important;
-  color: #ffffff;
-  top: 10px !important;
-  right: 10px !important;
-}
-
 .borderRadius10 {
   border-radius: 10px !important;
 }
 
 .bg-translucent-darker {
   background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
 }

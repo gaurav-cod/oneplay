@@ -1,0 +1,18 @@
+.activeBG {
+    background: linear-gradient(349.3deg, #a83afe 0%, #6e59fe 100%);
+    padding: 1.6px;
+    color: #ffffff !important;
+    border-radius: 6px;
+}
+
+.height100vh {
+    height: calc(100vh - 180px);
+    overflow-y: scroll;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
+}
+
+.height100vh::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}

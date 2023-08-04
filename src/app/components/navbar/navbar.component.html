@@ -22,9 +22,6 @@
       /> -->
     </a>
 
-    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
-    <!-- <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">&#9776;</button> -->
-
     <!-- Step 2: Add the ngbCollapse directive to the element below. -->
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto pl-md-4 pl-lg-0 ml-auto">
@@ -34,7 +31,6 @@
             routerLinkActive="active"
             [routerLink]="['/home']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
-            (click)="isMenuCollapsed = true"
             >Home</a
           >
         </li>
@@ -44,7 +40,6 @@
             routerLinkActive="active"
             [routerLink]="['/store']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
-            (click)="isMenuCollapsed = true"
             >Games</a
           >
         </li>
@@ -54,7 +49,6 @@
             routerLinkActive="active"
             [routerLink]="['/streams']"
             class="nav-link p-0 mt-2 pt-1 mr-3"
-            (click)="isMenuCollapsed = true"
             >Streams</a
           >
         </li>
@@ -74,7 +68,6 @@
                 [formControl]="query"
                 (focus)="onFocus()"
                 (blur)="onBlur()"
-                (click)="isMenuCollapsed = true"
                 (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
               <span
@@ -86,7 +79,7 @@
               </span>
             </div>
             <div
-              *ngIf="results.length || uResults.length"
+              *ngIf="!isMenuCollapsed"
               class="position-absolute w-100 bg-dark list-group border-0 searchDropdown"
               style="top: calc(100% + 8px); max-height: calc(99vh - 79px);"
             >
@@ -96,21 +89,22 @@
                 style="cursor: pointer"
                 (click)="viewGameFromSearch(game)"
               >
-                <div class="col-6 align-self-center">
+                <div class="col-auto align-self-center pr-0">
                   <img
                     [src]="game.textBgImage"
                     (error)="onImgError($event)"
-                    [ngStyle]="{
-                      filter:
-                        game.status === 'live' ? 'none' : 'grayscale(100%)'
-                    }"
                     class="br6"
                     width="125"
                     height="80"
                     alt=""
                   />
+                  <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
+                  <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
+                  <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-1 bottomTag tagText">MAINTENANCE</span></div>
+                  <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-1 bottomTag tagText">UPDATING</span></div>
+                  <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-1 bottomTag tagText">NOT OPTIMIZED</span></div>
                 </div>
-                <div class="col-6 align-self-center p-0">
+                <div class="col align-self-center pr-0">
                   <p class="font16 font500 offWhitecolor mb-0">
                     <span class=" truncate-line-clamp">{{ game.title }}</span>
                   </p>
@@ -122,7 +116,6 @@
               <div
                 *ngIf="results.length === 3"
                 class="text-center bg-dark py-3"
-                (click)="isMenuCollapsed = true"
               >
                 <button
                   class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop mt-2"
@@ -134,7 +127,6 @@
               <div
                 *ngFor="let user of uResults"
                 class="row bg-dark border-0 searchListing mx-1 py-2"
-                (click)="isMenuCollapsed = true"
               >
                 <div class="col-auto align-self-center">
                   <img
@@ -174,6 +166,13 @@
                 >
                   See more users
                 </button>
+              </div>
+              <div
+                *ngIf="results.length === 0 && uResults.length === 0"
+                class="font16 font500 offWhitecolor mx-3 py-2"
+              >
+                Sorry, No Results Found!
+                <p class="mb-0 font14 font500 mutedTextColor">Please try different keywords.</p>
               </div>
             </div>
           </form>
