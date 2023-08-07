@@ -138,7 +138,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
             icon: "success",
             confirmButtonText: "OK",
           }).then(() => {
-            this.skip();
+            this.location.back();
           });
         },
         (err) => {

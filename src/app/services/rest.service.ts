@@ -9,7 +9,6 @@ import {
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
-  HomeFeeds,
   ILocation,
   IPayment,
   LoginDTO,
@@ -36,6 +35,7 @@ import { UserModel } from "../models/user.model";
 import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
+import { UAParser } from "ua-parser-js";
 
 @Injectable({
   providedIn: "root",
@@ -344,6 +344,43 @@ export class RestService {
       );
   }
 
+  getTip(): Observable<string[]> {
+    const formData = new FormData();
+    const ua = new UAParser();
+    let clientType: "web" | "windows" | "mac" | "android_mobile" | "android_tv";
+
+    switch (ua.getOS().name) {
+      case 'Windows':
+        clientType = "windows";
+        break;
+      case 'Mac OS':
+        clientType = "mac";
+        break;
+      case 'Android':
+        if (ua.getDevice().type === 'smarttv') {
+          clientType = "android_tv";
+        } else {
+          clientType = "android_mobile";
+        }
+        break;
+      default:
+        clientType = "web";
+        break;
+    }
+
+    formData.append("client_type", clientType);
+    formData.append("client_version", environment.appVersion);
+    formData.append("type", "tips");
+    return this.http
+    .post(this.client_api + "/get_config", formData)
+    .pipe(
+        map(res => res["data"]?.find(d => d.type === 'tips')?.tips ?? []),
+        catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
   searchUsers(
     query: string,
     page: number,
@@ -484,7 +521,7 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<HomeFeeds> {
+  getHomeFeed(): Observable<GameFeedModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
         params: {
@@ -494,14 +531,7 @@ export class RestService {
         },
       })
       .pipe(
-        map((res) => {
-          const games = res.map((d) => new GameFeedModel(d));
-          return {
-            games,
-            categories: [],
-            banners: [],
-          };
-        }),
+        map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
           throw error;
         })
@@ -764,7 +794,7 @@ export class RestService {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
-      .post<string>(this.client_api + "/get_session", formData)
+      .post(this.client_api + "/get_session", formData)
       .pipe(
         map((res) => res["data"]),
         catchError(({ error }) => {
@@ -886,6 +916,20 @@ export class RestService {
       .get<PurchaseStore[]>(this.r_mix_api + "/games/stores")
       .pipe(
         map((data) => data),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  setPreferredStoreForGame(id: string, storeName: string): Observable<boolean> {
+    return this.http
+      .post(this.r_mix_api + "/games/set_preferred_store/", {
+        game_id: id,
+        store: storeName,
+      })
+      .pipe(
+        map((res) => res["success"] ?? false),
         catchError(({ error }) => {
           throw error;
         })

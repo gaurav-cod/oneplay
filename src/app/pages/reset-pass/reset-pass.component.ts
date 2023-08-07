@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -47,6 +48,7 @@ export class ResetPassComponent implements OnInit {
     private router: Router,
     private restService: RestService,
     private readonly title: Title,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
@@ -65,8 +67,7 @@ export class ResetPassComponent implements OnInit {
           text: "Password reset successfully",
           icon: "success",
           confirmButtonText: "OK",
-        });
-        this.router.navigateByUrl("/login");
+        }).then(() => this.goToLogin());
       },
       (error) =>
         Swal.fire({
@@ -76,6 +77,14 @@ export class ResetPassComponent implements OnInit {
           confirmButtonText: "Try Again",
         })
     );
+  }
+
+  goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
   }
 
   get domain() {

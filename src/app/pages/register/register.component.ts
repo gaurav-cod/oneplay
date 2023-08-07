@@ -153,10 +153,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   register() {
     const [first_name, ...last_name] = this.registerForm.value.name.trim().split(" ");
     this.loading = true;
-    this.countlyService.addEvent("signUPButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "click",
-    });
     this.restService
       .signup({
         first_name: first_name,
@@ -172,7 +168,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.loading = false;
-          this.endSignupEvent("success");
+          this.endSignupEvent();
           this._successSwalModalRef = this.ngbModal.open(
             this.successSwalModal,
             {
@@ -186,7 +182,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          this.endSignupEvent("failure");
+          this.endSignupEvent();
           this.startSignupEvent();
           Swal.fire({
             title: "Error Code: " + error.code,
@@ -203,11 +199,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     const email = this.registerForm.value.email;
     this.restService.resendVerificationLink(email, password).subscribe({
       next: () => {
-        this._successSwalModalRef.close();
+        this._successSwalModalRef?.close();
         Swal.fire({
           icon: "success",
           text: "Check your email and verify again",
-        }).then(() => this.router.navigateByUrl("/login"));
+        }).then(() => this.goToLogin());
       },
     });
   }
@@ -218,6 +214,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   onClickTNC() {
     this._signupEvent.update({ TnCPageViewed: "yes" });
+  }
+
+  goToLogin() {
+    this.countlyService.addEvent("signINButtonClick", {
+      page: location.pathname + location.hash,
+      trigger: "CTA",
+    });
+    this.router.navigate(["/login"]);
+  }
+
+  closeSuccess() {
+    this._successSwalModalRef?.close();
+    this.goToLogin();
   }
 
   private getName(id: string) {
@@ -245,9 +254,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  private endSignupEvent(result: "success" | "failure") {
+  private endSignupEvent() {
     this._signupEvent.end({
-      result,
       name: this.registerForm.value.name,
       email: this.registerForm.value.email,
       phoneNumber:

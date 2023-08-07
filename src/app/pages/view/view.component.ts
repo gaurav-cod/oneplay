@@ -38,7 +38,7 @@ import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from 'src/app/services/countly';
+import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
   selector: "app-view",
@@ -46,13 +46,14 @@ import { StartEvent } from 'src/app/services/countly';
   styleUrls: ["./view.component.scss"],
 })
 export class ViewComponent implements OnInit, OnDestroy {
-  @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
+  // @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
   @ViewChild("launchModal") launchModal: ElementRef<HTMLDivElement>;
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
 
-  initialized: string = "Please Wait......";
+  initialized: string = "Loading...";
+  progress: number = 0;
   isReadMore = true;
 
   game: GameModel;
@@ -61,6 +62,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   showAllLiveVideos = false;
   startingGame = false;
   terminatingGame = false;
+  initializationPage = false;
+  initializationErrored = false;
+  
 
   similarGames: GameModel[] = [];
 
@@ -98,7 +102,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _genreGames: GameModel[] = [];
   private _clientToken: string;
   private wishlist: string[] = [];
-  private _initializedModalRef: NgbModalRef;
+  // private _initializedModalRef: NgbModalRef;
   private _settingsModalRef: NgbModalRef;
   private _launchModalRef: NgbModalRef;
   private _advancedModalRef: NgbModalRef;
@@ -116,6 +120,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private reportResponse: any = null;
   private isConnected: boolean = false;
   private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
+  private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
   private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
   constructor(
@@ -197,7 +202,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       this.stopLoading();
     }
-    this._initializedModalRef?.close();
+    // this._initializedModalRef?.close();
     this._settingsModalRef?.close();
     this._launchModalRef?.close();
     this._advancedModalRef?.close();
@@ -207,6 +212,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._webplayTokenSubscription?.unsubscribe();
+    this._settingsEvent?.cancel();
+    this._advanceSettingsEvent?.cancel();
+    this._initializeEvent?.cancel();
     Swal.close();
   }
 
@@ -236,7 +244,19 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "keywords", content: game.tagsMapping?.join(", ") },
               { name: "description", content: game.description },
             ]);
-            this.selectedStore = game.storesMapping[0];
+             if (game.preferredStore) {
+               const preferredStoreIndex = game.storesMapping.findIndex(
+                 (store) => store.name === game.preferredStore
+               );
+               if (preferredStoreIndex >= 0) {
+                 this.selectedStore =
+                   game.storesMapping.at(preferredStoreIndex);
+               } else {
+                this.selectedStore = game.storesMapping[0] ?? null;  
+               }
+             } else {
+               this.selectedStore = game.storesMapping[0] ?? null;
+             }
             game.developer.forEach((dev) =>
               this.restService
                 .getGamesByDeveloper(dev)
@@ -484,8 +504,8 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameID: this.game.oneplayId,
         gameTitle: this.game.title,
         gameGenre: this.game.genreMappings?.join(","),
-        showSettingEnabled: this.showSettings.value,
-        store: this.selectedStore.name,
+        showSettingEnabled: this.showSettings.value ? "yes" : "no",
+        store: this.selectedStore?.name,
       });
     }
 
@@ -556,6 +576,40 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsEvent.update({
       advancedSettingsPageViewed: "yes",
     });
+    this._advanceSettingsEvent = this.countlyService.startEvent(
+      "gamePlay - AdvanceSettings"
+    );
+    this._advancedModalRef.dismissed.subscribe(() => {
+      const advancedOptions = localStorage.getItem("advancedOptions");
+      if (advancedOptions) {
+        this.advancedOptions.setValue(JSON.parse(advancedOptions));
+      } else {
+        this.advancedOptions.reset();
+      }
+      this._advanceSettingsEvent.end({ settingsChanged: "no" });
+    });
+  }
+
+  saveAdvanceSettings(): void {
+    const options: CustomSegments["gamePlay - AdvanceSettings"] = {
+      settingsChanged: this.advancedOptions.dirty ? "yes" : "no",
+    };
+
+    Object.entries(this.advancedOptions.controls).forEach(([key, ctrl]) => {
+      if (ctrl.dirty) {
+        console.log(key)
+        options[key] = ctrl.value;
+      }
+    });
+
+    this._advanceSettingsEvent.end(options);
+
+    localStorage.setItem(
+      "advancedOptions",
+      JSON.stringify(this.advancedOptions.value)
+    );
+
+    this._advancedModalRef.close();
   }
 
   terminateSession(): void {
@@ -568,7 +622,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          this.countlyService.endEvent('gameLaunch');
+          this.countlyService.endEvent("gameLaunch");
           this.countlyService.startEvent("gameFeedback", {
             unique: true,
             data: {
@@ -625,16 +679,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsEvent?.end({
       resolution: this.resolution.value,
       FPS: this.fps.value,
-      bitRate: this.bitrate.value,
+      bitRate: String(Math.floor(Number(this.bitrate.value) / 1000)),
     });
 
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
     localStorage.setItem("vsync", this.vsync.value);
-    localStorage.setItem(
-      "advancedOptions",
-      JSON.stringify(this.advancedOptions.value)
-    );
 
     this._settingsModalRef?.close();
     this.startGame();
@@ -690,12 +740,13 @@ export class ViewComponent implements OnInit, OnDestroy {
       this._waitQueueModalRef = undefined;
     }
     if (data.data.api_action === "call_session") {
-      this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
-        centered: true,
-        modalDialogClass: "modal-sm",
-        backdrop: "static",
-        keyboard: false,
-      });
+      // this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
+      //   centered: true,
+      //   modalDialogClass: "modal-sm",
+      //   backdrop: "static",
+      //   keyboard: false,
+      // });
+      this.initializationPage = true;
       this.sessionToTerminate = data.data.session.id;
       this.startGameWithClientToken(data.data.session.id);
     } else if (data.data.api_action === "call_terminate") {
@@ -783,13 +834,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
       this._initializeEvent?.end({ result: "failure" });
-      this.stopLoading();
+      this.initializationErrored = true;
       Swal.fire({
         title: "Oops...",
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
       }).then((res) => {
+        this.stopLoading();
+        this.initializationErrored = false;
         if (res.isConfirmed) {
           this.startGame();
         }
@@ -822,6 +875,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     millis: number
   ) {
     if (!!data.client_token) {
+      this.progress = 100;
       this._clientToken = data.client_token;
       const launchedFrom = this.action === "Play" ? "Play now" : "Resume";
       lastValueFrom(this.restService.getGameStatus())
@@ -857,7 +911,8 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.initialized = data.msg || "Please wait...";
+      this.initialized = data.msg || "Loading...";
+      this.progress = data.progress;
 
       const timeTaken = Date.now() - startTime;
       if (timeTaken >= 2000) {
@@ -878,13 +933,15 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientTokenFailed(err: any) {
     this._initializeEvent?.end({ result: "failure" });
-    this.stopLoading();
+    this.initializationErrored = true;
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
       icon: "error",
       confirmButtonText: "Relaunch the game",
     }).then((res) => {
+      this.stopLoading();
+      this.initializationErrored = false;
       if (res.isConfirmed) {
         this.startGame();
       }
@@ -1051,10 +1108,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   private launchGame() {
     const userAgent = new UAParser();
     if (userAgent.getOS().name === "Android") {
-      window.open(
-        `${this.domain}/launch/app?payload=${this._clientToken}`,
-        "_blank"
-      );
+      this.router.navigate(['/play'], {
+        queryParams: {
+          payload: this._clientToken,
+          session: this.sessionToTerminate
+        }
+      })
     } else {
       window.location.href = `oneplay:key?${this._clientToken}`;
     }
@@ -1068,8 +1127,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   private stopLoading(): void {
     this.startingGame = false;
     this.loaderService.stopLoader("play-loader");
-    this._initializedModalRef?.close();
-    this.initialized = "Please wait...";
+    // this._initializedModalRef?.close();
+    this.initializationPage = false;
+    this.initialized = "Loading...";
+    this.progress = 0;
     this._startGameSubscription?.unsubscribe();
     this._clientTokenSubscription?.unsubscribe();
   }
@@ -1093,7 +1154,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   selectStore(store: PurchaseStore) {
-    this.selectedStore = store;
+    if (!this.selectedStore || this.selectedStore.name !== store.name) {
+      this.selectedStore = store;
+      lastValueFrom(
+        this.restService.setPreferredStoreForGame(
+          this.game.oneplayId,
+          store.name
+        )
+      );
+    }
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

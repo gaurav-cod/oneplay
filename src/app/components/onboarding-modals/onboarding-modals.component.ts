@@ -31,7 +31,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
   query = new UntypedFormControl("");
   searchText = "";
   checked: boolean = false;
-  games_array = [];
+  // games_array = [];
   
   private selected_games = [];
 
@@ -79,7 +79,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (this.games.length < 12) {
           this.canLoadMore = false;
         }
-        this.orderGames();
+        // this.orderGames();
         this.stopLoading();
       },
       (error) => {
@@ -99,7 +99,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (games.results.length < 12) {
           this.canLoadMore = false;
         }
-        this.orderGames();
+        // this.orderGames();
         this.stopLoading();
         this.currentPage++;
       },
@@ -146,7 +146,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
     this._selectgameRef.close()  
     this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
     this.authService.wishlist = of(this.selectedGameIds)
-    this.selected_games = []
+    // this.selected_games = []
   }
 
   public async closeonboardingGame() {
@@ -170,21 +170,21 @@ export class OnboardingModalsComponent implements AfterViewInit {
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
       this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      this.selected_games.push(game);
+      // this.selected_games.push(game);
     } else {
       this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
     }
-    console.log('selectedGames',this.selectedGameIds);
+    // console.log('selectedGames',this.selectedGameIds);
   }
 
-  public orderGames () {
-    this.games_array = [...this.selected_games];
-    this.games.forEach(game => {
-      if(!this.isChecked(game)) {
-        this.games_array.push(game);
-      }
-    });
-  }
+  // public orderGames () {
+  //   this.games_array = [...this.selected_games];
+  //   this.games.forEach(game => {
+  //     if(!this.isChecked(game)) {
+  //       this.games_array.push(game);
+  //     }
+  //   });
+  // }
   get domain() {
     return environment.domain;
   }

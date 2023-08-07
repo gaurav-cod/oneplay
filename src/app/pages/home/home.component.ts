@@ -93,9 +93,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.feedSubscription = this.restService
           .getHomeFeed()
           .subscribe((res) => {
-              const games = res.games.filter((g) => g.games.length > 0);
-              this.firstRow = games[0];
-              this.restRows = games.slice(1);
+              const feeds = res.filter((f) => f.games.length > 0);
+              this.firstRow = feeds.filter((f) => f.type === 'header')[0];
+              this.restRows = feeds.filter((f) => f.type === 'rail');
               document.body.click();
               this.loaderService.stop();
             },
@@ -122,8 +122,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       gameID: game.oneplayId,
       gameTitle: game.title,
       gameGenre: game.genreMappings?.join(','),
-      page: "Feeds - banner",
-      trigger: "click",
+      source: location.pathname + location.hash,
+      trigger: "banner",
     });
     this.router.navigate(['view', this.gLink.transform(game)]);
   }

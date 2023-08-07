@@ -14,7 +14,7 @@ import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
@@ -49,6 +49,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private keywordHash = "";
   private logoutRef: NgbModalRef;
 
+  private focusSubscription: Subscription;
+  private gameStatusSubscription: Subscription;
+  private querySubscription: Subscription;
+
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
@@ -81,8 +85,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         gameID: this.gameStatus.game_id,
         gameGenre: "",
         gameTitle: this.gameStatus.game_name,
-        page: "Game Status Icon",
-        trigger: "click",
+        source: location.pathname + location.hash,
+        trigger: "navbar - game-status",
       });
       const path = [
         "view",
@@ -96,13 +100,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   viewGameFromSearch(game: GameModel) {
-    this.isMenuCollapsed = true;
     this.countlyService.addEvent("gameLandingView", {
       gameID: game.oneplayId,
       gameGenre: game.genreMappings?.join(","),
       gameTitle: game.title,
-      page: "Navbar Search",
-      trigger: "click",
+      source: location.pathname + location.hash,
+      trigger: "navbar - search",
     });
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
@@ -158,7 +161,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    Swal.close();
+    this.focusSubscription?.unsubscribe();
+    this.gameStatusSubscription?.unsubscribe();
+    this.querySubscription?.unsubscribe();
   }
 
   ngOnInit() {
@@ -166,7 +171,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       (value) => this.search(value),
       500
     );
-    this.query.valueChanges.subscribe((value) => {
+    this.querySubscription = this.query.valueChanges.subscribe((value) => {
       if (value.trim() !== "") {
         debouncedSearch(value);
       } else {
@@ -174,7 +179,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.uResults = [];
       }
     });
-    this.focus.asObservable().subscribe((focused) => {
+    this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
+      setTimeout(() => {
+        if (!this.dontClose)
+        this.isMenuCollapsed = !focused;
+      }, 300);
+
       if (!focused) {
         setTimeout(() => {
           if (!this.dontClose) {
@@ -184,11 +194,19 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.searchElement.nativeElement.focus();
           }
         }, 300);
+      } else if (this.results.length === 0) {
+        this.restService.search("", 0, 3).subscribe((res) => {
+          this.results = res.results;
+          this.keyword = res.keyword;
+          this.keywordHash = res.keywordHash;
+        });
       }
     });
-    this.gameService.gameStatus.subscribe((status) => {
-      this.gameStatus = status;
-    });
+    this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
+      (status) => {
+        this.gameStatus = status;
+      }
+    );
   }
 
   onImgError(event) {
