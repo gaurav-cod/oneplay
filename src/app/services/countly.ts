@@ -25,6 +25,86 @@ export type CountlyEvent = [
   eventData: CountlyEventData | string
 ];
 
+export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
+  key: () => string,
+  cancel: () => void;
+  data: () => Partial<CustomTimedCountlyEvents[T]>,
+  end: (segments: Partial<CustomTimedCountlyEvents[T]>) => void;
+  update: (segments: Partial<CustomTimedCountlyEvents[T]>) => void;
+}
+
+export const XCountlySUM = 'XCountlySUM';
+
+export interface CustomCountlyEvents {
+  //done
+  websiteFooterView: {
+    homeClicked: "yes" | "no",
+    aboutUsClicked: "yes" | "no",
+    careerClicked: "yes" | "no",
+    plansPricingClicked: "yes" | "no",
+    blogClicked: "yes" | "no",
+    contactUsClicked: "yes" | "no",
+    faqClicked: "yes" | "no",
+    privacyPolicyClicked: "yes" | "no",
+    termsClicked: "yes" | "no",
+    cancellationClicked: "yes" | "no",
+    opensourceClicked: "yes" | "no",
+    joinDiscordClicked: "yes" | "no",
+    facebookClicked: "yes" | "no",
+    instagramClicked: "yes" | "no",
+    twitterClicked: "yes" | "no",
+    mediumClicked: "yes" | "no",
+  },
+
+  menuClick: {
+    homeClicked: "yes" | "no",
+    gamesClicked: "yes" | "no",
+    searchClicked: "yes" | "no",
+    gameStatusClicked: "yes" | "no",
+    speedTestClicked: "yes" | "no",
+    profileClicked: "yes" | "no",
+    settingsClicked: "yes" | "no",
+    turnOffPrivacyEnabled: "yes" | "no",
+    turnOffPrivacyDisabled: "yes" | "no",
+    deleteSessionDataClicked: "yes" | "no",
+    deleteSessionDataConfirmClicked: "yes" | "no",
+    tvSignInClicked: "yes" | "no",
+    logOutClicked: "yes" | "no",
+    logOutConfirmClicked: "yes" | "no",
+  },
+  subscriptionCardClick: {
+    hourlyCardOneClicked: "yes" | "no",
+    hourlyCardTwoClicked: "yes" | "no",
+    hourlyCardThreeClicked: "yes" | "no",
+    hourlyCardFourClicked: "yes" | "no",
+    monthlyCardOneClIcked: "yes" | "no",
+    monthlyCardTwoClicked: "yes" | "no",
+    source: "subscriptionPage" | "settingsPage",
+    cta: "buyNow" | "renew" | "topUp" | "getStartedNow",
+    [XCountlySUM]: number;
+  },
+  SubscriptionConfirmPayment: {
+    paymentConfirmed: "yes" | "no",
+    type: "newPurchase" | "renewal",
+    [XCountlySUM]: number;
+  },
+  search: {
+    keywords: string,
+    actionDone: "yes" | "no",
+    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked",
+  },
+  gameFeedback: {
+    gameSessionId: string,
+    gameId: string,
+    gameTitle: string,
+    gameGenre: string,
+    store: string,
+    action: "skip" | "submit",
+  },
+  // gameLaunch: { channel: "Backend" },
+  // gameTerminate: { channel: "Backend" },
+}
+
 export interface CustomTimedCountlyEvents {
   websiteAboutUsView: {
     getStartedClicked: "yes" | "no",
@@ -68,17 +148,24 @@ export interface CustomTimedCountlyEvents {
     gender: "yes" | "no",
     password: "yes" | "no",
     referralId: "yes" | "no",
-    signUpFromPage: "websiteHeader" | "tv" | "signIn" | "home" | "aboutus",
-    channel: "yes" | "no",
+    signUpFromPage: "websiteHeader" | // todo!:
+    "tv" | // todo!:
+    "signIn" |
+    "home" | // todo!:
+    "aboutus", // todo!:
     tncViewed: "yes" | "no",
     privacyPolicyViewed: "yes" | "no",
   },
+  // done!
   signUpAccountVerification: {
     result: "success" | "failure",
+    // todo:
     failureReason: "emailExpired" | "otpExpired" | "otpTimeOut" | "otpNotReceived",
   },
+  // done!
   signIn: {
     result: "success" | "failure",
+    // todo:
     signInFromPage: "websiteHeader" | "tv" | "signUp" | "home" | "aboutUs",
   },
   gameLandingView: {
@@ -122,7 +209,7 @@ export interface CustomTimedCountlyEvents {
     result: "success" | "failure",
     type: "newPurchase" | "renewal",
     failReason: "rejected" | "otpExpired" | "wrongOtp",
-    XCountlySUM: number;
+    [XCountlySUM]: number;
   },
   searchResultsViewMoreGames: {
     keywords: string,
@@ -171,82 +258,6 @@ export interface CustomTimedCountlyEvents {
     streamCodec: "auto" | "hevc" | "h.264",
     videoDecoderSelection: "auto" | "hardware" | "software",
   },
-}
-
-export interface CustomCountlyEvents {
-  websiteFooterView: {
-    homeClicked: "yes" | "no",
-    aboutUsClicked: "yes" | "no",
-    careerClicked: "yes" | "no",
-    plansPricingClicked: "yes" | "no",
-    blogClicked: "yes" | "no",
-    contactUsClicked: "yes" | "no",
-    faqClicked: "yes" | "no",
-    privacyPolicyClicked: "yes" | "no",
-    termsClicked: "yes" | "no",
-    cancellationClicked: "yes" | "no",
-    opensourceClicked: "yes" | "no",
-    joinDiscordClicked: "yes" | "no",
-    facebookClicked: "yes" | "no",
-    instagramClicked: "yes" | "no",
-    twitterClicked: "yes" | "no",
-    mediumClicked: "yes" | "no",
-  },
-
-  menuClick: {
-    homeClicked: "yes" | "no",
-    gamesClicked: "yes" | "no",
-    searchClicked: "yes" | "no",
-    gameStatusClicked: "yes" | "no",
-    speedTestClicked: "yes" | "no",
-    profileClicked: "yes" | "no",
-    settingsClicked: "yes" | "no",
-    turnOffPrivacyEnabled: "yes" | "no",
-    turnOffPrivacyDisabled: "yes" | "no",
-    deleteSessionDataClicked: "yes" | "no",
-    deleteSessionDataConfirmClicked: "yes" | "no",
-    tvSignInClicked: "yes" | "no",
-    logOutClicked: "yes" | "no",
-    logOutConfirmClicked: "yes" | "no",
-  },
-  subscriptionCardClick: {
-    hourlyCardOneClicked: "yes" | "no",
-    hourlyCardTwoClicked: "yes" | "no",
-    hourlyCardThreeClicked: "yes" | "no",
-    hourlyCardFourClicked: "yes" | "no",
-    monthlyCardOneClIcked: "yes" | "no",
-    monthlyCardTwoClicked: "yes" | "no",
-    source: "subscriptionPage" | "settingsPage",
-    cta: "buyNow" | "renew" | "topUp" | "getStartedNow",
-    XCountlySUM: number;
-  },
-  SubscriptionConfirmPayment: {
-    paymentConfirmed: "yes" | "no",
-    type: "newPurchase" | "renewal",
-    XCountlySUM: number;
-  },
-  search: {
-    keywords: string,
-    actionDone: "yes" | "no",
-    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked",
-  },
-  gameFeedback: {
-    gameSessionId: string,
-    gameId: string,
-    gameTitle: string,
-    gameGenre: string,
-    store: string,
-    action: "skip" | "submit",
-  },
-  // gameLaunch: { channel: "Backend" },
-  // gameTerminate: { channel: "Backend" },
-}
-
-export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
-  data: Partial<CustomTimedCountlyEvents[T]>;
-  cancel: () => void;
-  end: (segments: Partial<CustomTimedCountlyEvents[T]>) => void;
-  update: (segments: Partial<CustomTimedCountlyEvents[T]>) => void;
 }
 
 // export interface __CustomSegments {
@@ -361,7 +372,7 @@ export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
 //     cardType: "hourly" | "monthly";
 //     Source: "Website_subscription" | "Settings Page" | string;
 //     channel: "web";
-//     XCountlySUM: number;
+//     [XCountlySUM]: number;
 //   };
 //
 //   "subscription - Confirm Plan": {
@@ -377,14 +388,14 @@ export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
 //   subscriptionConfirmPayment: {// todo
 //     paymentConfirmed: "yes" | "no";
 //     type: "new purchase" | "renewal";
-//     XCountlySUM: number;
+//     [XCountlySUM]: number;
 //   };
 //
 //   subscriptionPaymentDone: {// todo
 //     result: "success" | "fail";
 //     type: "new purchase" | "renewal";
 //     failReason: "rejected" | "OTP expired" | "wrong OTP" | string;
-//     XCountlySUM: number;
+//     [XCountlySUM]: number;
 //   };
 //
 //   search: {

@@ -4,8 +4,8 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
+import { mapSignUpAccountVerificationFailureReasons } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -19,8 +19,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
 
-  // private _verifyEvent: StartEvent<"signup - Account Verification">;
-
   constructor(
     private readonly authService: AuthService,
     private route: ActivatedRoute,
@@ -28,7 +26,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
     private restService: RestService,
     private readonly title: Title,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
@@ -36,7 +34,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this._verifyEvent.cancel();
+    this.countlyService.cancelEvent("signUpAccountVerification");
   }
 
   getOTP() {
@@ -71,7 +69,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
         localStorage.removeItem("otpSent");
-        // this._verifyEvent.end({ result: "success" });
+        this.countlyService.endEvent("signUpAccountVerification", {
+          result: 'success',
+        });
         Swal.fire({
           title: "Verification Success",
           text: "Your account has been verified.",
@@ -90,10 +90,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
             icon: "error",
           });
         } else {
-          // this._verifyEvent.end({
-          //   result: "failure",
-          //   failReason: error.message,
-          // });
+          this.countlyService.endEvent("signUpAccountVerification", {
+            result: 'failure',
+            failureReason: mapSignUpAccountVerificationFailureReasons(error.message),
+          });
           this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
@@ -152,17 +152,12 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   private goToLogin() {
-    // this.countlyService.addEvent("signINButtonClick", {
-    //   page: location.pathname + location.hash,
-    //   trigger: "CTA",
-    //   channel: "web",
-    // });
     this.router.navigate(["/login"]);
   }
 
   private startVerifyEvent() {
-    // this._verifyEvent = this.countlyService.startEvent(
-    //   "signup - Account Verification"
-    // );
+    this.countlyService.startEvent("signUpAccountVerification", {
+      discardOldData: false,
+    });
   }
 }

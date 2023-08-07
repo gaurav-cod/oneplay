@@ -5,6 +5,7 @@ import {
   CustomCountlyEvents,
   CustomTimedCountlyEvents,
   StartEvent,
+  XCountlySUM,
 } from "./countly";
 import { environment } from "src/environments/environment";
 import { AuthService } from "./auth.service";
@@ -30,9 +31,9 @@ export class CountlyService {
     segments: CustomCountlyEvents[T]
   ) {
     let sum = undefined;
-    if ('XCountlySUM' in segments) {
-      sum = segments.XCountlySUM;
-      delete segments.XCountlySUM;
+    if (XCountlySUM in segments) {
+      sum = segments[XCountlySUM];
+      delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
     this._addEvent({ key: event, sum, segmentation: segments });
@@ -41,29 +42,38 @@ export class CountlyService {
   startEvent<T extends keyof CustomTimedCountlyEvents>(
     event: T,
     {
-      unique,
       data,
-    }: { unique?: boolean; data?: Partial<CustomTimedCountlyEvents[T]> } = {}
+      discardOldData = false,
+    }: { discardOldData?: boolean; data?: Partial<CustomTimedCountlyEvents[T]> } = {}
   ): StartEvent<T> {
     localStorage.setItem(this.keyOfKey(event), `${+new Date()}`);
-    if (data && (!localStorage.getItem(event + this.data_postfix) || unique))
+    if (discardOldData || data && (!localStorage.getItem(event + this.data_postfix)))
       localStorage.setItem(
         this.keyOfKey(event + this.data_postfix),
         JSON.stringify(data)
       );
     return {
-      data,
+      key: () => this.keyOfKey(event),
       cancel: () => this.cancelEvent(event),
       end: (segments: Partial<CustomTimedCountlyEvents[T]>) =>
         this.endEvent(event, segments),
       update: (segments: Partial<CustomTimedCountlyEvents[T]>) =>
         this.updateEventData(event, segments),
+      data: () => this.getEventData(event),
     };
   }
 
   cancelEvent<T extends keyof CustomTimedCountlyEvents>(event: T) {
     localStorage.removeItem(this.keyOfKey(event));
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
+  }
+
+  getEventData<T extends keyof CustomTimedCountlyEvents>(
+    event: T
+  ): Partial<CustomTimedCountlyEvents[T]> {
+    return JSON.parse(
+      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
+    );
   }
 
   updateEventData<T extends keyof CustomTimedCountlyEvents>(
@@ -92,9 +102,9 @@ export class CountlyService {
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
     localStorage.removeItem(this.keyOfKey(event));
     let sum = undefined;
-    if ('XCountlySUM' in segments) {
-      sum = segments.XCountlySUM;
-      delete segments.XCountlySUM;
+    if (XCountlySUM in segments) {
+      sum = segments[XCountlySUM];
+      delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
     this._addEvent({

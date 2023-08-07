@@ -122,7 +122,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.title.setTitle("Signup");
@@ -245,25 +245,30 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this._signupEvent = this.countlyService.startEvent(
       "signUpFormSubmitted",
       {
-        unique: false,
+        discardOldData: false,
         data: {
-          privacyPolicyViewed: 'no',
+          name: 'no',
+          email: 'no',
+          phoneNumber: 'no',
+          gender: 'no',
+          password: 'no',
+          referralId: 'no',
           tncViewed: 'no',
-          signUpFromPage: 'tv', //!
+          privacyPolicyViewed: 'no',
         },
       }
     );
   }
 
   private endSignupEvent() {
-    // this._signupEvent.end({
-    //   name: this.registerForm.value.name,
-    //   email: this.registerForm.value.email,
-    //   phoneNumber:
-    //     this.registerForm.value.country_code + this.registerForm.value.phone,
-    //   gender: this.registerForm.value.gender,
-    //   referralID: this.registerForm.value.referred_by_id,
-    //   signupFromPage: location.pathname + location.hash,
-    // });
+    this._signupEvent.end({
+      name: 'yes',
+      email: 'yes',
+      phoneNumber: 'yes',
+      gender: 'yes',
+      password: "yes",
+      referralId: this.registerForm.value.referred_by_id === "" ? 'no' : 'yes',
+    })
+    this.countlyService.startEvent("signUpAccountVerification", { discardOldData: true });
   }
 }
