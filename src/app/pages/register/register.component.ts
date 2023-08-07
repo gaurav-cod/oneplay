@@ -30,6 +30,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signup - Form Submitted">;
 
+  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+
   referralName = "";
 
   registerForm = new UntypedFormGroup({
@@ -37,7 +39,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.pattern(/^[a-zA-Z\s]*$/),
     ]),
-    email: new UntypedFormControl("", [Validators.required, Validators.email]),
+    email: new UntypedFormControl("", [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
