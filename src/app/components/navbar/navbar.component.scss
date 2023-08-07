@@ -47,6 +47,11 @@
     scrollbar-width: none; 
 }
 
+.menudropdown::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
 .menudropdown a {
     color: #959595 !important;
     font-weight: 500;
@@ -114,7 +119,10 @@
 
 .navbar-nav .dropdown-menu {
     position: absolute;
-    max-height: calc(85vh - 79px);
+    max-height: calc(100vh - 79px);
+    @media (max-width: 1200px) {
+        max-height: calc(85vh - 79px);
+    }
 }
 
 .navbar-search .form-control {
