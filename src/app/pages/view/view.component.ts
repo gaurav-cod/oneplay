@@ -269,7 +269,8 @@ export class ViewComponent implements OnInit, OnDestroy {
              } else {
                this.selectedStore = game.storesMapping[0] ?? null;
              }
-            game.developer.forEach((dev) =>
+            game.developer.forEach((dev) => {
+              this._getGamesByDeveloperSub?.unsubscribe();
               this._getGamesByDeveloperSub = this.restService
                 .getGamesByDeveloper(dev)
                 .subscribe(
@@ -279,8 +280,10 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
+              }
             );
-            game.genreMappings.forEach((genre) =>
+            game.genreMappings.forEach((genre) => {
+              this._getGamesByGenreSub?.unsubscribe();
               this._getGamesByGenreSub = this.restService
                 .getGamesByGenre(genre)
                 .subscribe(
@@ -290,6 +293,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
+              }
             );
             this.loaderService.stop();
           },
@@ -300,12 +304,15 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.loaderService.stop();
           }
         );
+      this._getSimilarGamesSub?.unsubscribe();
       this._getSimilarGamesSub = this.restService
         .getSimilarGames(id)
         .subscribe((games) => (this.similarGames = games));
+      this._getVideosSub?.unsubscribe();
       this._getVideosSub = this.restService
         .getVideos(id)
         .subscribe((videos) => (this.videos = videos));
+      this._getLiveVideosSub?.unsubscribe();
       this._getLiveVideosSub = this.restService
         .getLiveVideos(id)
         .subscribe((videos) => (this.liveVideos = videos));
