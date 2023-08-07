@@ -13,22 +13,23 @@
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     width: 0px;
     height: 0px;
   }
-
-  @media (max-width: 991.9px) {
-    height: 90vh;
-    overflow-y: scroll !important;
-    -ms-overflow-style: none; /* IE 11 */
-    scrollbar-width: none;
-  }
 }
 
 .width450 {
-  width: 450px !important;
+  width: 500px !important;
+  @media (max-width: 1500px) {
+    width: 450px !important;
+  }
+  @media (max-width: 500px) {
+    width: 320px !important;
+  }
 }
 
 .borderBottom {
