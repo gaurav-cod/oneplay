@@ -269,10 +269,9 @@ export class ViewComponent implements OnInit, OnDestroy {
              } else {
                this.selectedStore = game.storesMapping[0] ?? null;
              }
-            game.developer.forEach((dev) => {
               this._getGamesByDeveloperSub?.unsubscribe();
               this._getGamesByDeveloperSub = this.restService
-                .getGamesByDeveloper(dev)
+                .getGamesByDeveloper(game.developer.join(","))
                 .subscribe(
                   (games) =>
                     (this._devGames = this.getShuffledGames([
@@ -280,12 +279,9 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
-              }
-            );
-            game.genreMappings.forEach((genre) => {
               this._getGamesByGenreSub?.unsubscribe();
               this._getGamesByGenreSub = this.restService
-                .getGamesByGenre(genre)
+                .getGamesByGenre(game.genreMappings.join(","))
                 .subscribe(
                   (games) =>
                     (this._genreGames = this.getShuffledGames([
@@ -293,8 +289,6 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
-              }
-            );
             this.loaderService.stop();
           },
           (err) => {
