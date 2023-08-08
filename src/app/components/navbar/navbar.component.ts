@@ -79,6 +79,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return environment.domain;
   }
 
+  get appVersion() {
+    return environment.appVersion;
+  }
+
   viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
       this.countlyService.addEvent("gameLandingView", {
