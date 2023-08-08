@@ -63,7 +63,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   startingGame = false;
   terminatingGame = false;
   initializationPage = false;
-  
+  initializationErrored = false;
 
   similarGames: GameModel[] = [];
 
@@ -111,6 +111,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _webplayTokenSubscription: Subscription;
   private _pageChangeSubscription: Subscription;
   private _gameStatusSubscription: Subscription;
+  private _getGameDetailsSub: Subscription;
+  private _getGamesByDeveloperSub: Subscription;
+  private _getGamesByGenreSub: Subscription;
+  private _getSimilarGamesSub: Subscription;
+  private _getVideosSub: Subscription;
+  private _getLiveVideosSub: Subscription;
   private _reportErrorModalRef: NgbModalRef;
   private _waitQueueModalRef: NgbModalRef;
   private _launchModalCloseTimeout: NodeJS.Timeout;
@@ -209,9 +215,15 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._startGameSubscription?.unsubscribe();
     this._clientTokenSubscription?.unsubscribe();
     this._gameStatusSubscription?.unsubscribe();
+    this._getGameDetailsSub?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._webplayTokenSubscription?.unsubscribe();
+    this._getGamesByDeveloperSub?.unsubscribe();
+    this._getGamesByGenreSub?.unsubscribe();
+    this._getSimilarGamesSub?.unsubscribe();
+    this._getVideosSub?.unsubscribe();
     this._settingsEvent?.cancel();
+    this._getLiveVideosSub?.unsubscribe();
     this._advanceSettingsEvent?.cancel();
     this._initializeEvent?.cancel();
     Swal.close();
@@ -230,7 +242,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       const keywordHash = params[1].hash;
       this.stopLoading();
       this.loaderService.start();
-      this.restService
+      this._getGameDetailsSub?.unsubscribe();
+      this._getGameDetailsSub = this.restService
         .getGameDetails(id, {
           keyword,
           keywordHash,
@@ -251,14 +264,14 @@ export class ViewComponent implements OnInit, OnDestroy {
                  this.selectedStore =
                    game.storesMapping.at(preferredStoreIndex);
                } else {
-                this.selectedStore = game.storesMapping[0] ?? null;  
+                this.selectedStore = game.storesMapping[0] ?? null;
                }
              } else {
                this.selectedStore = game.storesMapping[0] ?? null;
              }
-            game.developer.forEach((dev) =>
-              this.restService
-                .getGamesByDeveloper(dev)
+              this._getGamesByDeveloperSub?.unsubscribe();
+              this._getGamesByDeveloperSub = this.restService
+                .getGamesByDeveloper(game.developer.join(","))
                 .subscribe(
                   (games) =>
                     (this._devGames = this.getShuffledGames([
@@ -266,10 +279,9 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
-            );
-            game.genreMappings.forEach((genre) =>
-              this.restService
-                .getGamesByGenre(genre)
+              this._getGamesByGenreSub?.unsubscribe();
+              this._getGamesByGenreSub = this.restService
+                .getGamesByGenre(game.genreMappings.join(","))
                 .subscribe(
                   (games) =>
                     (this._genreGames = this.getShuffledGames([
@@ -277,7 +289,6 @@ export class ViewComponent implements OnInit, OnDestroy {
                       ...games,
                     ]))
                 )
-            );
             this.loaderService.stop();
           },
           (err) => {
@@ -287,18 +298,20 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.loaderService.stop();
           }
         );
-      this.restService
+      this._getSimilarGamesSub?.unsubscribe();
+      this._getSimilarGamesSub = this.restService
         .getSimilarGames(id)
         .subscribe((games) => (this.similarGames = games));
-      this.restService
+      this._getVideosSub?.unsubscribe();
+      this._getVideosSub = this.restService
         .getVideos(id)
         .subscribe((videos) => (this.videos = videos));
-      this.restService
+      this._getLiveVideosSub?.unsubscribe();
+      this._getLiveVideosSub = this.restService
         .getLiveVideos(id)
         .subscribe((videos) => (this.liveVideos = videos));
 
       this._gameStatusSubscription?.unsubscribe();
-
       this._gameStatusSubscription = this.gameService.gameStatus.subscribe(
         (status) => this.gameStatusSuccess(status)
       );
@@ -833,13 +846,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientToken(sessionId: string, millis = 0): void {
     if (millis > 120000) {
       this._initializeEvent?.end({ result: "failure" });
-      this.stopLoading();
+      this.initializationErrored = true;
       Swal.fire({
         title: "Oops...",
         text: "Something went wrong",
         icon: "error",
         confirmButtonText: "Try Again",
       }).then((res) => {
+        this.stopLoading();
+        this.initializationErrored = false;
         if (res.isConfirmed) {
           this.startGame();
         }
@@ -930,13 +945,15 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientTokenFailed(err: any) {
     this._initializeEvent?.end({ result: "failure" });
-    this.stopLoading();
+    this.initializationErrored = true;
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
       icon: "error",
       confirmButtonText: "Relaunch the game",
     }).then((res) => {
+      this.stopLoading();
+      this.initializationErrored = false;
       if (res.isConfirmed) {
         this.startGame();
       }

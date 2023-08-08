@@ -1,4 +1,4 @@
-<div class="container-fluid initializing position-absolute w-100 zIndex99999 top-0" style="padding-left: 0px !important; padding-right: 0px !important;">
+<div class="container-fluid initializing fixed-top">
     <div class="row">
       <div class="col-12 p-0">
         <div class="card border-0">
@@ -7,9 +7,6 @@
             style="object-fit: cover; object-position: top; height: 100vh"
             [src]="game.bgImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
-            [ngStyle]="{
-              filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-            }"
             alt="Card image"
           />
           <div
