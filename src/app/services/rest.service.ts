@@ -14,6 +14,7 @@ import {
   LoginDTO,
   PurchaseStore,
   SignupDTO,
+  SpeedTestServerRO,
   StartGameRO,
   TokensUsageDTO,
   UpdateProfileDTO,
@@ -331,6 +332,10 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
       .pipe();
+  }
+
+  getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
+    return this.http.get<SpeedTestServerRO>(this.r_mix_api + "/games/speed-test-server")
   }
 
   getGameDetails(id: string, params?: any): Observable<GameModel> {

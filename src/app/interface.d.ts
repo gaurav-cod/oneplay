@@ -133,3 +133,9 @@ export interface ILocation {
   error?: boolean;
   reason?: string;
 }
+
+export interface SpeedTestServerRO {
+  ping: string,
+  download: string,
+  upload: string
+}
