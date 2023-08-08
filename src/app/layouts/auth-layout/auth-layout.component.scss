@@ -5,16 +5,19 @@
 }
 
 .bodyBg {
-  background-color: #151515;
+  background-color: #151617;
+  overflow: hidden;
 }
 
 .height100vh {
   height: 100vh;
   align-items: center;
   overflow-y: scroll;
-  overflow-x: hidden;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none;
+  @media (max-width: 992px) {
+    padding-top: 55px !important;
+  }
 
   &::-webkit-scrollbar {
     width: 0px;
@@ -24,10 +27,13 @@
 
 .width450 {
   width: 500px !important;
-  @media (max-width: 1500px) {
-    width: 450px !important;
+  @media (max-width: 1370px) {
+    width: 400px !important;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 1920px) {
+    width: 420px !important;
+  }
+  @media (max-width: 430px) {
     width: 320px !important;
   }
 }

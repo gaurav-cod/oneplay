@@ -1,68 +1,64 @@
-<div class="main-content fontFamilyPoppins bodyBg">
-  <div class="backdrop">
-    <div class="row justify-content-center height100vh">
-      <div class="col-lg-7 col-md-6 col-sm-6 desktopView d-none d-lg-block">
-        <app-auth-navbar></app-auth-navbar>
+<div class="container-fluid fontFamilyPoppins bodyBg">
+  <div class="row justify-content-center">
+    <div class="col-lg-7 desktopView d-none d-lg-block">
+      <app-auth-navbar></app-auth-navbar>
+    </div>
+    <div class="col-lg-5">
+      <div class="d-block d-lg-none">
+        <div class="text-center fixed-top bodyBg">
+          <a [href]="domain">
+            <img
+              src="assets/img/brandLogo.svg"
+              class="img-fluid mt-3 mb-0"
+              width="130px"
+              alt="logo"
+            />
+          </a>
+        </div>
       </div>
-      <div class="col-lg-5 col-md-6 col-sm-8">
-        <div class="row justify-content-center">
-          <div class="col-12 p-0">
-            <div class="d-block d-lg-none">
-              <div class="text-center">
-                <a [href]="domain">
-                  <img
-                    src="assets/img/brandLogo.svg"
-                    class="img-fluid mt-3 mb-0"
-                    width="130px"
-                    alt="logo"
-                  />
-                </a>
-              </div>
+      <div class="row justify-content-center height100vh py-4">
+        <div class="col-auto width450">
+          <div class="row justify-content-center">
+            <div class="col-auto">
+              <router-outlet></router-outlet>
             </div>
-            <div class="container">
-              <div class="row justify-content-center ">
-                <div class="col-auto width450">
-                  <router-outlet></router-outlet>
-                </div>
-                <div class="col-auto width450 d-block d-lg-none">
-                  <div class="text-center">
-                    <div class="col-12">
-                      <hr class="mt-2 mb-4 borderBottom" />
-                      <span class="offWhiteColor font16 font500"
-                        >Need help?<span class="purpleGradient"
-                          ><a
-                            [href]="domain + '/FAQs.html'"
-                            target="_blank"
-                          >
-                            Browse FAQ</a
-                          ></span
-                        ></span
+            <div class="col-auto d-block d-lg-none">
+              <div class="text-center">
+                <div class="col-12">
+                  <hr class="mt-2 mb-4 borderBottom" />
+                  <span class="offWhiteColor font16 font500"
+                    >Need help?<span class="purpleGradient"
+                      ><a
+                        [href]="domain + '/FAQs.html'"
+                        target="_blank"
                       >
-                    </div>
-                    <div class="col-12 my-2">
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        © 2023 RainBox Media Pvt Ltd.
-                      </p>
-                      <p class="font14 font500 footerWhiteColor mb-0">
-                        All Rights Reserved.
-                      </p>
-                      <p class="font14 font500 purpleGradient">
-                        <a
-                          [href]="domain + '/privacy.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Privacy Policy</a
-                        >
-                        <span class="footerWhiteColor ml-1 mr-1">.</span>
-                        <a
-                          [href]="domain + '/tnc.html'"
-                          target="_blank"
-                          class="anchor"
-                          >Terms & Conditions</a
-                        >
-                      </p>
-                    </div>
-                  </div>
+                        Browse FAQ</a
+                      ></span
+                    ></span
+                  >
+                </div>
+                <div class="col-12 my-2">
+                  <p class="font14 font500 footerWhiteColor mb-0">
+                    © 2023 RainBox Media Pvt Ltd.
+                  </p>
+                  <p class="font14 font500 footerWhiteColor mb-0">
+                    All Rights Reserved.
+                  </p>
+                  <p class="font14 font500 purpleGradient">
+                    <a
+                      [href]="domain + '/privacy.html'"
+                      target="_blank"
+                      class="anchor"
+                      >Privacy Policy</a
+                    >
+                    <span class="footerWhiteColor ml-1 mr-1">.</span>
+                    <a
+                      [href]="domain + '/tnc.html'"
+                      target="_blank"
+                      class="anchor"
+                      >Terms & Conditions</a
+                    >
+                  </p>
                 </div>
               </div>
             </div>
