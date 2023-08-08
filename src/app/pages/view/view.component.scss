@@ -28,7 +28,7 @@
 .text-logo {
   max-width: 300px;
   max-height: 160px;
-  @media (min-width: 1300px) {
+  @media (max-width: 1300px) {
     max-height: 100px;
   }
 
