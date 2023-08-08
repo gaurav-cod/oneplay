@@ -27,33 +27,59 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.warn('xset init')
     this.title.setTitle("OnePlay | Settings");
     this.paramSubscription = this.route.params.subscribe(
-      (params) => (this.activeTab = params.tab)
+      (params) => {
+        if (this.activeTab === "profile") {
+          //todo: questional exit! it's probably the whole settings page.
+          this.countlyService.endEvent("profileView")
+        }
+        this.activeTab = params.tab;
+        if (this.activeTab === "profile") {
+            this.countlyService.startEvent("profileView", {
+            data: {
+              profileViewed: "yes",
+              loginsecurityViewed: "no",
+              profilePictureChanged: "no",
+              userNameChanged: "no",
+              FullNameChanged: "no",
+              bioChanged: "no",
+              updateProfileClicked: "no",
+              passwordChanged: "no",
+            }
+          })
+        } else if (this.activeTab === "security") {
+          this.countlyService.updateEventData("profileView", {
+            loginsecurityViewed: "yes",
+          })
+        }
+      }
     );
     this.userSubscription = this.authService.user.subscribe(
       (user) =>
         (this.isOneplayUser = user.partnerId === environment.oneplay_partner_id)
     );
-    // this.countlyService.startEvent("settingsView", {
-    //   data: {
-    //     ProfileViewed: 'yes',
-    //     loginsecurity: "no",
-    //     subscriptionViewed: "no",
-    //     deviceHistoryViewed: "no",
-    //     profilepicturechanged: "no",
-    //     usernamechanged: "no",
-    //     fullnamechanged: "no",
-    //     biochanged: "no",
-    //     updateprofileclic: "no",
-    //     updatepasswordchanged: "no",
-    //     logoutfromallclick: "no",
-    //   }
-    // });
+    this.countlyService.startEvent("settingsView", {
+      data: {
+        turnOffPrivacyEnabled: "no",
+        turnOffPrivacyDisabled: "no",
+        deleteSessionDataClicked: "no",
+        deleteSessionDataConfirmClicked: "no",
+        tvSignInClicked: "no",
+        logOutClicked: "no",
+        logOutConfirmClicked: "no",
+        subscriptionViewed: "no",
+        deviceHistoryViewed: "no",
+        logoutFromAllClicked: "no",
+      }
+    });
   }
 
   ngOnDestroy() {
-    // this.countlyService.endEvent("settingsView");
+    console.warn('xset dest')
+    // this.countlyService.endEvent("profileView");
+    this.countlyService.endEvent("settingsView");
     this.paramSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
   }

@@ -5,7 +5,7 @@ import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { MessagingService } from "src/app/services/messaging.service";
-// import { CountlyService } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-device-history",
@@ -24,10 +24,13 @@ export class DeviceHistoryComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly messagingService: MessagingService,
     private readonly ngbModal: NgbModal,
-    // private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService,
   ) {}
 
   ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      deviceHistoryViewed: 'yes',
+    })
     this.restService.getSessions().subscribe((res) => (this.sessions = res));
   }
 
@@ -39,6 +42,9 @@ export class DeviceHistoryComponent implements OnInit {
     if (!this.logoutSession) {
       return;
     }
+    this.countlyService.updateEventData("settingsView", {
+      logOutConfirmClicked: 'yes',
+    })
 
     this.loggingOut = true;
     this.logoutRef.close();
@@ -89,15 +95,18 @@ export class DeviceHistoryComponent implements OnInit {
           .finally(() => {
             this.loggingOut = false;
             window.location.href = "/dashboard/login";
-              // this.countlyService.endEvent("settingsView", {
-              //   logoutfromallclick: "yes"
-              // });
+              this.countlyService.updateEventData("settingsView", {
+                logoutFromAllClicked: 'yes'
+              });
           });
       });
     });
   }
 
   logoutAlert(container, session?: Session) {
+    this.countlyService.updateEventData("settingsView", {
+      logOutClicked: 'yes'
+    })
     this.logoutSession = session;
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,

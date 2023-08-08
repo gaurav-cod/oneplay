@@ -10,7 +10,7 @@ import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
-// import { CountlyService } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -65,7 +65,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private readonly gavatar: AvatarPipe,
     private readonly authService: AuthService,
     private readonly gLink: GLinkPipe,
-    // private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService
   ) {
     this.authService.user.subscribe((u) => (this.user = u));
   }
@@ -120,6 +120,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   viewGame(game: GameModel) {
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: 'gameClicked',
+    })
     // this.countlyService.addEvent("gameLandingView", {
     //   gameID: game.oneplayId,
     //   gameTitle: game.title,
@@ -141,6 +146,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
+    })
     // this.countlyService.addEvent("search", {
     //   term: this.query,
     //   actionDone: "yes",
@@ -316,11 +326,16 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: 'addFriend',
+    })
     //   term: this.query,
     // this.countlyService.addEvent("search", {
     //   actionDone: "yes",
-    //   actionType: "NA",
     //   page: location.pathname.replace('/dashboard/',''),
+    //   actionType: "NA",
     //   channel: "web"
     // })
     // this.countlyService.endEvent("searchResultsViewMoreUsers", {

@@ -25,8 +25,9 @@ import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
-// import { CountlyService } from "src/app/services/countly.service";
-import { CustomTimedCountlyEvents } from "src/app/services/countly";
+import { CountlyService } from "src/app/services/countly.service";
+import { CustomCountlyEvents } from "src/app/services/countly";
+import { genDefaultMenuClickSegments, genDefaultSettingsViewSegments } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-navbar",
@@ -166,7 +167,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
-    // private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService
   ) {
     this.authService.user.subscribe((u) => (this.user = u));
     this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
@@ -303,7 +304,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.logoutRef.close();
-    this.logCountly('Log out');
+    this.logCountly('logOutClicked');
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.loggedOutByUser = true;
@@ -319,6 +320,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   deleteSessionData() {
+    this.logCountly('deleteSessionDataClicked');
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to delete all your session data?",
@@ -328,7 +330,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.logCountly('Delete session Data');
+        this.logCountly('deleteSessionDataConfirmClicked');
         this.restService.deleteSessionData().subscribe({
           next: () => {
             Swal.fire({
@@ -398,7 +400,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   switchSearchPrivacy() {
     const privacy = !this.isPrivate;
-    this.logCountly('Turn off privacy');
+    this.logCountly(privacy ? 'turnOffPrivacyDisabled' : 'turnOffPrivacyEnabled')
     this.authService.updateProfile({ searchPrivacy: privacy });
     this.restService.setSearchPrivacy(privacy).subscribe({
       next: () => {
@@ -419,8 +421,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  logCountly(Type: string) {
+  logCountly(
+    item: keyof CustomCountlyEvents['menuClick']
+  ): void {
+    this.countlyService.addEvent("menuClick", {
+      ...genDefaultMenuClickSegments(),
+      [item]: 'yes',
+    })
+  }
+
+  // logCountly(Type: string) {
   // logCountly(Type: CustomSegments["menuClick"]["Type"]) {
     // this.countlyService.addEvent("menuClick", { Type });
-  }
+  // }
 }

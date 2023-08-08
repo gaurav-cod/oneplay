@@ -56,6 +56,7 @@ export interface CustomCountlyEvents {
     mediumClicked: "yes" | "no",
   },
 
+  // mostly done
   menuClick: {
     homeClicked: "yes" | "no",
     gamesClicked: "yes" | "no",
@@ -64,6 +65,9 @@ export interface CustomCountlyEvents {
     speedTestClicked: "yes" | "no",
     profileClicked: "yes" | "no",
     settingsClicked: "yes" | "no",
+    downloadsClicked: "yes" | "no",
+    subscriptionClicked: "yes" | "no",
+    myLibraryClicked: "yes" | "no",
     turnOffPrivacyEnabled: "yes" | "no",
     turnOffPrivacyDisabled: "yes" | "no",
     deleteSessionDataClicked: "yes" | "no",
@@ -72,6 +76,7 @@ export interface CustomCountlyEvents {
     logOutClicked: "yes" | "no",
     logOutConfirmClicked: "yes" | "no",
   },
+  // todo
   subscriptionCardClick: {
     hourlyCardOneClicked: "yes" | "no",
     hourlyCardTwoClicked: "yes" | "no",
@@ -83,23 +88,17 @@ export interface CustomCountlyEvents {
     cta: "buyNow" | "renew" | "topUp" | "getStartedNow",
     [XCountlySUM]: number;
   },
+  //done
   SubscriptionConfirmPayment: {
     paymentConfirmed: "yes" | "no",
     type: "newPurchase" | "renewal",
     [XCountlySUM]: number;
   },
+  //done
   search: {
     keywords: string,
     actionDone: "yes" | "no",
-    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked",
-  },
-  gameFeedback: {
-    gameSessionId: string,
-    gameId: string,
-    gameTitle: string,
-    gameGenre: string,
-    store: string,
-    action: "skip" | "submit",
+    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend",
   },
   // gameLaunch: { channel: "Backend" },
   // gameTerminate: { channel: "Backend" },
@@ -176,11 +175,12 @@ export interface CustomTimedCountlyEvents {
     trigger: "banner" | "card" | "gameStatus",
   },
   settingsView: {
+    //todo: -!
     turnOffPrivacyEnabled: "yes" | "no",
     turnOffPrivacyDisabled: "yes" | "no",
     deleteSessionDataClicked: "yes" | "no",
     deleteSessionDataConfirmClicked: "yes" | "no",
-    tvSignInClicked: "yes" | "no",
+    tvSignInClicked: "yes" | "no", // todo
     logOutClicked: "yes" | "no",
     logOutConfirmClicked: "yes" | "no",
     subscriptionViewed: "yes" | "no",
@@ -257,6 +257,14 @@ export interface CustomTimedCountlyEvents {
     audioType: "stereo" | "5.1",
     streamCodec: "auto" | "hevc" | "h.264",
     videoDecoderSelection: "auto" | "hardware" | "software",
+  },
+  gameFeedback: {
+    gameSessionId: string,
+    gameId: string,
+    gameTitle: string,
+    gameGenre: string,
+    store: string,
+    action: "skip" | "submit",
   },
 }
 

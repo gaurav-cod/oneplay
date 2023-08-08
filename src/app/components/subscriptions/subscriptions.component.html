@@ -33,7 +33,7 @@
           <div class="col-auto pl-0">
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
-              <div class="innerRange" 
+              <div class="innerRange"
                 triggers="hover focus click"
                 ngbTooltip="{{ remainingTokens | tokens }} left"
                 [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
@@ -84,7 +84,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"
-                  >{{ sub.tokensRemaining | tokens }}/{{ sub.tokens | tokens : true }} left . 
+                  >{{ sub.tokensRemaining | tokens }}/{{ sub.tokens | tokens : true }} left .
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
@@ -188,15 +188,15 @@
                   <td class="align-middle text-right py-3 pr-0" *ngIf="sucess">
                     {{ subscription.endsAt | date : "dd.MM.yyyy" }}
                   </td>
-                  <td class="align-middle py-3 pr-0" 
+                  <td class="align-middle py-3 pr-0"
                     *ngIf="failedProcess"
                   >
                     <div
                       class="characterLimit"
                       placement="top-center"
-                      triggers="hover focus click" 
-                      ngbTooltip="{{copy === subscription.transitionId ? 'Copied':'Copy to Clipboard'}}" 
-                      ngxClipboard [cbContent]="subscription.transitionId" 
+                      triggers="hover focus click"
+                      ngbTooltip="{{copy === subscription.transitionId ? 'Copied':'Copy to Clipboard'}}"
+                      ngxClipboard [cbContent]="subscription.transitionId"
                       (cbOnSuccess) = "copy = subscription.transitionId"
                     >
                       {{ subscription.transitionId }}
@@ -212,7 +212,7 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
       <hr class="borderBottomTab mt-0"/>
     </div>
   </div>

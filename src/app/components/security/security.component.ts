@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
-// import { CountlyService } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { phoneValidator } from "src/app/utils/validators.util";
 import Swal from "sweetalert2";
@@ -26,7 +26,7 @@ export class SecurityComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    // private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService,
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -43,7 +43,8 @@ export class SecurityComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   updatePhone(): void {
     if (!this.phone.valid) return;

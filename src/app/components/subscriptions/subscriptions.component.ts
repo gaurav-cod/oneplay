@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
 import { popups } from "src/app/utils/popups";
@@ -39,9 +40,13 @@ export class SubscriptionsComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
+    private readonly countlyService: CountlyService,
     ) {}
 
   ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      subscriptionViewed: 'yes',
+    })
     this.restService.getTokensUsage().subscribe((data) => {
       this.totalTokens = data.total_tokens;
       this.remainingTokens = data.remaining_tokens;
@@ -95,7 +100,7 @@ export class SubscriptionsComponent implements OnInit {
       .getSubscriptions( 0, this.pagelimit)
       .subscribe((s) => (this.subscriptions = s));
   }
-  
+
   loadMore() {
     if (this.isLoading || !this.loadMoreBtn) {
       return;
@@ -157,7 +162,7 @@ export class SubscriptionsComponent implements OnInit {
     },
     );
   }
-  
+
   onRenew() {
     Swal.fire({
       icon: "warning",

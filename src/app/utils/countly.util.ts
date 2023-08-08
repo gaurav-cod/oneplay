@@ -34,3 +34,42 @@ export const genDefaultWebsiteFooterViewSegments = (
     mediumClicked: "no",
   }
 }
+
+export const genDefaultSettingsViewSegments = (
+): CustomTimedCountlyEvents['settingsView'] => {
+  return {
+    turnOffPrivacyEnabled: "no",
+    turnOffPrivacyDisabled: "no",
+    deleteSessionDataClicked: "no",
+    deleteSessionDataConfirmClicked: "no",
+    tvSignInClicked: "no",
+    logOutClicked: "no",
+    logOutConfirmClicked: "no",
+    subscriptionViewed: "no",
+    deviceHistoryViewed: "no",
+    logoutFromAllClicked: "no",
+  }
+}
+
+export const genDefaultMenuClickSegments = (
+): CustomCountlyEvents['menuClick'] => {
+  return {
+    homeClicked: "no",
+    gamesClicked: "no",
+    searchClicked: "no",
+    gameStatusClicked: "no",
+    speedTestClicked: "no",
+    profileClicked: "no",
+    settingsClicked: "no",
+    downloadsClicked: "no",
+    subscriptionClicked: "no",
+    myLibraryClicked: "no",
+    turnOffPrivacyEnabled: "no",
+    turnOffPrivacyDisabled: "no",
+    deleteSessionDataClicked: "no",
+    deleteSessionDataConfirmClicked: "no",
+    tvSignInClicked: "no",
+    logOutClicked: "no",
+    logOutConfirmClicked: "no",
+  }
+}
