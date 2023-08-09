@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "2.6.4",
+  appVersion: "2.7.0",
   production: true,
   cookie_domain: "oneplay.in",
   domain: "https://www.oneplay.in",
@@ -24,5 +24,5 @@ export const environment = {
     key: '19eab6488620f4a36d34a08519392028a1acd920',
     url: 'https://dev.countly.oneream.com/',
   },
-  webrtc_prefix: '',
+  webrtc_prefix: 'https://www.oneplay.in/webplay',
 };
