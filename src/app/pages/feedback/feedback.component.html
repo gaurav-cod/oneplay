@@ -150,11 +150,11 @@
             <span
               *ngIf="comment?.length > 500"
               class="font16 font600 errorGradientColor float-right"
-              >* You have exhausted the Suggestions limit</span
+              >*Character limit exceeded</span
             >
             <textarea
               class="form-control customBodyColor font18 font500 offWhitecolor mt-3 border-0"
-              placeholder="Write a short answer"
+              placeholder="Write up to 500 characters"
               [(ngModel)]="comment"
               type="text"
               [ngClass]="{
