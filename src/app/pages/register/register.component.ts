@@ -29,10 +29,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signup - Form Submitted">;
+  currentLocation: any;
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
   referralName = "";
+
+  nonFunctionalRegion:boolean = true;
 
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
@@ -139,11 +142,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ctrl.valueChanges.subscribe((id) => this.getName(id));
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
+        // console.warn('sjkdfhkjsdfhksd', res)
+        this.currentLocation = res;
+        if(this.currentLocation.country === "India" || this.currentLocation.country === "Malaysia" || this.currentLocation.country === "Singapore" || this.currentLocation.country === "South Korea" || this.currentLocation.country === "UAE" || this.currentLocation.country === "Qatar") {
+          this.nonFunctionalRegion = false;
+        }
         if (this.countryCodes.includes(res.country_calling_code)) {
           this.registerForm.controls["country_code"].setValue(
             res.country_calling_code
           );
         }
+        
       },
     });
   }

@@ -13,7 +13,7 @@ import { ResetPassComponent } from 'src/app/pages/reset-pass/reset-pass.componen
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/startgaming-signup.component';
-
+import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-region/non-functional-region.component';
 
 @NgModule({
   imports: [
@@ -32,6 +32,7 @@ import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/sta
     ForgotPassComponent,
     ResetPassComponent,
     StartgamingSignupComponent,
+    NonFunctionalRegionComponent,
   ]
 })
 export class AuthLayoutModule { }
