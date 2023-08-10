@@ -204,6 +204,18 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new Session(d))));
   }
 
+  // getGameplayHistory(): Observable<string[]> {
+  //   const formData = new FormData();
+  //   return this.http
+  //     .post(this.client_api + "/game_session_history", formData)
+  //     .pipe(
+  //       map(res => res["data"]?.find(d => d.type === 'tips')?.tips ?? []),
+  //       catchError(({ error }) => {
+  //       throw error;
+  //     })
+  //   );
+  // }
+
   deleteSession(key: string): Observable<void> {
     return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
       map(() => {}),

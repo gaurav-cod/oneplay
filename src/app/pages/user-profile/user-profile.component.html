@@ -33,6 +33,13 @@
             [routerLink]="['/settings', 'device-history']"
             >Device History</a
           >
+          <a
+            href="javascript:void(0)"
+            class="nav-item nav-link border-0 py-3 mr-3"
+            routerLinkActive="active"
+            [routerLink]="['/settings', 'gameplay-history']"
+            >Gameplay History</a
+          >
         </div>
         <div class="borderBottomTab"></div>
       </nav>
@@ -48,6 +55,9 @@
         </ng-container>
         <ng-container *ngIf="activeTab === 'device-history'">
           <app-device-history></app-device-history>
+        </ng-container>
+        <ng-container *ngIf="activeTab === 'gameplay-history'">
+          <app-gameplay-history></app-gameplay-history>
         </ng-container>
       </div>
     </div>
