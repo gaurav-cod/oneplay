@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signup - Form Submitted">;
+  currentLocation: any;
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
@@ -139,10 +140,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ctrl.valueChanges.subscribe((id) => this.getName(id));
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
+        this.currentLocation = res;
         if (this.countryCodes.includes(res.country_calling_code)) {
           this.registerForm.controls["country_code"].setValue(
             res.country_calling_code
           );
+        }
+        if(this.currentLocation.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
         }
       },
     });

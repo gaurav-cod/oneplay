@@ -32,6 +32,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   currency: string;
   planType: 'base'|'topup';
   showOnboardingPopup = false;
+  currentLocation: any;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
@@ -96,6 +97,24 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         this.router.navigate(['/start-gaming'], { replaceUrl: true });
       }
     });
+
+    this.detectVPN();
+  }
+
+  private detectVPN() {
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        this.currentLocation = res;
+        if(this.currentLocation.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
+      }
+    })
   }
 
   ngOnDestroy(): void {
