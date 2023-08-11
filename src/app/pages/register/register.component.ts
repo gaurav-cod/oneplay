@@ -145,6 +145,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         // console.warn('sjkdfhkjsdfhksd', res)
         this.currentLocation = res;
         if(this.currentLocation.country === "India" || this.currentLocation.country === "Malaysia" || this.currentLocation.country === "Singapore" || this.currentLocation.country === "South Korea" || this.currentLocation.country === "UAE" || this.currentLocation.country === "Qatar") {
+          this.nonFunctionalRegion = true;
+        } else {
           this.nonFunctionalRegion = false;
         }
         if (this.countryCodes.includes(res.country_calling_code)) {

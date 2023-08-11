@@ -1,10 +1,10 @@
-<app-non-functional-region *ngIf="nonFunctionalRegion"></app-non-functional-region>
+<app-non-functional-region *ngIf="!nonFunctionalRegion"></app-non-functional-region>
 <form
   [formGroup]="registerForm"
   (submit)="register()"
   role="form"
   autocomplete="off"
-  *ngIf="!nonFunctionalRegion"
+  *ngIf="nonFunctionalRegion"
 >
   <div class="row">
     <div class="col-md-12 mt-4">
