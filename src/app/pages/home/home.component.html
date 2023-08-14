@@ -59,9 +59,11 @@
                 class="row height30vh align-items-end pl-lg-3"
                 (click)="viewBannerGame(game)"
               >
-                <div class="col-auto pl-4 customWidth borderRadius10"></div>
+                <div class="col-auto customWidth borderRadius10">
+                  <img [src]="firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1].textLogo" class="img-fluid w-75" alt="" />
+                </div>
                 <div class="col-auto pl-lg-4 customWidth1 borderRadius10">
-                  <img [src]="game.textLogo" class="text-logo" alt="" />
+                  <img [src]="game.textLogo" class="w-75" alt="" />
                   <br />
                   <button
                     (click)="viewBannerGame(game)"
@@ -69,6 +71,9 @@
                   >
                     Play Now
                   </button>
+                </div>
+                <div class="col-auto customWidth borderRadius10 text-center">
+                  <img [src]="firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1].textLogo" class="img-fluid w-75" alt="" />
                 </div>
               </div>
             </div>
