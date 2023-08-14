@@ -15,10 +15,8 @@ export class GameplayHistoryComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
-    // console.warn('sfdjksdhfuhriuvncm',this.gamePlaysessions);
-    // this.restService.getGameplayHistory().subscribe((res) => {
-    //   this.gamePlaysessions = res;
-    //   console.warn('sfdjksdhfuhriuvncm',this.gamePlaysessions);
-    // });
+    this.restService.getGameplayHistory().subscribe((data) => {
+      this.gamePlaysessions = data;
+    });
   }
 }
