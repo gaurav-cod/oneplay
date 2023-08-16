@@ -210,7 +210,7 @@ export class RestService {
     return this.http
       .post<any>(this.client_api + "/game_session_history", formData)
       .pipe(
-        map((res) => res.data.map((d) => new GameplayHistoryModal(d))),
+        map((res) => res.data.result.map((d) => new GameplayHistoryModal(d))),
         catchError(({ error }) => {
           throw error;
         })
