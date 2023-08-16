@@ -15,3 +15,48 @@
 .darkText {
     color: #212123;
 }
+
+.modalHeading {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: 0.02em;   
+}
+
+.cardBG {
+    background: #0E0E0E !important;
+    border-radius: 12px !important;
+}
+
+.cardBG:hover {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%) !important;
+
+}
+
+.subHeading {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0em;
+    color: #959595;
+}
+
+.height60 {
+    height: 60px;
+    @media (max-width: 991.9px) {
+        height: 24px;
+    }
+}
+
+.tagText {
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+}
+
+.recommended {
+    position: absolute;
+    top: -10px;
+    color: #fff;
+    left: 15px;
+}

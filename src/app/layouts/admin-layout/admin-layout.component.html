@@ -49,3 +49,37 @@
   </div>
   
 </ng-template>
+
+<ng-template #paymentModal let-d="dismiss">
+  <div class="modal-content position-relative modalBG stripeModal">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times-circle"></i>
+    </a>
+    <div class="modal-body text-center">
+      <h1 class="modalHeading text-white">Choose your payment method</h1>
+      <div class="row">
+        <div class="col-sm-6 mt-3">
+          <a href="javascript:void(0)">
+            <div class="card border-0 cardBG p-4">
+              <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
+              <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
+            </div>
+          </a>
+          <p class="subHeading my-2">Debit Card, credit card, UPI, Netbanking</p>
+        </div>
+        <div class="col-sm-6 mt-3">
+          <a href="javascript:void(0)" (click)="handlePay()">
+            <div class="card border-0 cardBG p-4">
+              <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
+            </div>
+          </a>
+          <p class="subHeading my-2">Debit Card & credit card</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

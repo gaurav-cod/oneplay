@@ -34,7 +34,9 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   showOnboardingPopup = false;
 
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
+  @ViewChild("paymentModal") paymentModal: ElementRef<HTMLDivElement>;
   stripeModalRef: NgbModalRef;
+  paymentModalRef: NgbModalRef;
 
   private fiveSecondsTimer: NodeJS.Timer;
   private oneMinuteTimer: NodeJS.Timer;
@@ -126,14 +128,22 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         Swal.fire({
           title: "Ready to unlock?",
           html: swal_text,
-          icon: "warning",
+          imageUrl: "assets/img/error/payment.svg",
           showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
+          confirmButtonText: "Confirm",
+          cancelButtonText: "Cancel",
           customClass: "swalPadding",
+          showCloseButton: true,
         }).then(async (result) => {
           if (result.isConfirmed) {
-            this.handlePay(params.subscribe);
+            // this.handlePay(params.subscribe);
+            this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
+              centered: true,
+              modalDialogClass: "modal-lg",
+              scrollable: true,
+              backdrop: "static",
+              keyboard: false,
+            });
           } else {
             this.removeQueryParams();
           }
@@ -145,14 +155,21 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           title: "Ready to unlock?",
           icon: "warning",
           html: swal_text,
-          confirmButtonText: "Yes",
+          confirmButtonText: "Confirm",
           showDenyButton: true,
           denyButtonText: 'Change plan',
           showCloseButton: true,
           customClass: "swalPadding",
         }).then(async (result) => {
           if (result.isConfirmed) {
-            this.handlePay(params.renew);
+            // this.handlePay(params.renew);
+            this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
+              centered: true,
+              modalDialogClass: "modal-lg",
+              scrollable: true,
+              backdrop: "static",
+              keyboard: false,
+            });
           }
           else if (result.isDenied) {
             window.location.href = `${this.domain}/subscription.html#Monthly_Plan`
