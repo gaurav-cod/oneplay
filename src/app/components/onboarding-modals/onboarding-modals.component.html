@@ -165,7 +165,7 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let game of games" class="col-lg-3 col-md-4 col-6 mb-4">
+      <div *ngFor="let game of games" class="col-lg-3 col-md-4 col-sm-4 col-6 my-2 px-2">
         <div class="card bg-dark border-0 text-white">
           <app-select-game-card [game]="game" (selectClick)="checkedValue(game)" [isChecked]="isChecked(game)"></app-select-game-card>
         </div>
