@@ -21,16 +21,6 @@ export class LoginGuard implements CanActivateChild {
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
     const isEdgeCase: boolean = state.url === '/start-gaming';
-    const uagent = new UAParser();
-
-    if (
-      uagent.getOS().name === "iOS" &&
-      /safari/i.test(uagent.getBrowser().name) &&
-      MediaQueries.isInBrowser
-    ) {
-      this.router.navigate(["/install"], { replaceUrl: true });
-      return false;
-    }
 
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u && !isEdgeCase) {
