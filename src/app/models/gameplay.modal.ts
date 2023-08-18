@@ -11,6 +11,7 @@ type Location = {
 type Duration = {
     hrs: number;
     mins: number;
+    secs: number;
 }
 
 export class GameplayHistoryModal {
@@ -19,21 +20,23 @@ export class GameplayHistoryModal {
     readonly game: string
     readonly location?: Location;
     readonly startTime: Date;
-    readonly endTime: Date;
+    readonly endTime: Date | null;
     readonly duration?: Duration;
 
     constructor(json:any) {
         this.browser = json.browser;
         this.device = json.device;
         this.game = json.game;
-        this.startTime = new Date(json.start_time);
-        this.endTime = new Date(json.end_time);
-
-        const { hrs, mins } = json.duration;
-        this.duration = {
-            hrs: !hrs ? 0 : hrs,
-            mins: !mins ? 0 : mins,
-        };
+        this.startTime = new Date(json.start_time * 1000);
+        this.endTime = !!json["end_time"] ? new Date(json["end_time"] * 1000) : null;
+        const { hrs, mins, secs } = json.duration;
+        if(hrs || mins || secs) {
+            this.duration = {
+                hrs: !hrs ? 0 : hrs,
+                mins: !mins ? 0 : mins,
+                secs: !secs ? 0 : secs,
+            };
+        }
 
         const { app, device } = json.device_info;
         if (app || device) {

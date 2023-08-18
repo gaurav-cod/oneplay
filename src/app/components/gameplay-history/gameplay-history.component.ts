@@ -9,14 +9,27 @@ import { RestService } from 'src/app/services/rest.service';
 })
 export class GameplayHistoryComponent implements OnInit{
   gamePlaysessions = [];
+  currentPage = 1;
+  pagelimit = 100;
+  loadMoreBtn = true;
 
   constructor(
     private readonly restService: RestService,
   ) {}
 
   ngOnInit(): void {
-    this.restService.getGameplayHistory().subscribe((data) => {
+    this.restService.getGameplayHistory(1, this.pagelimit).subscribe((data) => {
       this.gamePlaysessions = data;
+    });
+  }
+
+  loadMore() {
+    this.restService.getGameplayHistory(this.currentPage + 1, this.pagelimit).subscribe((data) => {
+      this.gamePlaysessions = data;
+      this.currentPage++;
+      if (data.length < 100) {
+        this.loadMoreBtn = false;
+      }
     });
   }
 }

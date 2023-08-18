@@ -2,7 +2,7 @@
     <div class="col-md-12">
     <p class="font18 font500 text-white mb-0">Gameplay History</p>
       <div class="table-responsive">
-        <table class="customTable table w-100 mt-4">
+        <table class="customTable table w-100 mt-4 borderBottomTab">
           <thead>
             <tr>
               <th scope="col" class="pl-0">Game</th>
@@ -33,16 +33,25 @@
                 </p>
               </td>
               <td class="align-middle py-3">
-                {{gameplay.endTime | date : 'hh:mm a'}}
-                <p class="customTableText mb-0 mt-1">{{gameplay.endTime | date : "dd/MM/yyyy"}}</p>
+                <ng-container *ngIf="gameplay.endTime">
+                  {{gameplay.endTime | date : 'hh:mm a'}}
+                  <p class="customTableText mb-0 mt-1">{{gameplay.endTime | date : "dd/MM/yyyy"}}</p>
+                </ng-container>
+                <div *ngIf="!gameplay.endTime">--</div>
               </td>
               <td class="align-middle py-3 gradientText">
                 <!-- 1h 30m -->
-                {{ gameplay.duration.hrs }}h {{ gameplay.duration.mins }}m
+                <ng-container *ngIf="gameplay.duration">
+                  {{ gameplay.duration.hrs }}h {{ gameplay.duration.mins }}m
+                </ng-container>
+                <div *ngIf="!gameplay.duration">Runing</div>
               </td>
             </tr>
           </tbody>
         </table>
+        <div class="text-center py-3" *ngIf="gamePlaysessions.length > 100 && loadMoreBtn" >
+          <button (click)="loadMore()" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
+        </div>
       </div>
     </div>
 </div>

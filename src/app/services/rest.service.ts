@@ -205,8 +205,13 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new Session(d))));
   }
 
-  getGameplayHistory(): Observable<GameplayHistoryModal[]> {
+  getGameplayHistory(
+    page_number: number,
+    entries_per_page: number
+  ): Observable<GameplayHistoryModal[]> {
     const formData = new FormData();
+    formData.append('page_number',page_number.toString())
+    formData.append('entries_per_page',entries_per_page.toString());
     return this.http
       .post<any>(this.client_api + "/game_session_history", formData)
       .pipe(
