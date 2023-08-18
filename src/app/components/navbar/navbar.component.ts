@@ -293,11 +293,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.logoutRef.close();
-    this.messagingService.removeToken().finally(() => {
+    // this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.loggedOutByUser = true;
       this.authService.logout();
-    });
+    // });
   }
 
   LogoutAlert(container) {
