@@ -11,6 +11,7 @@ export const environment = {
   oneplay_partner_id: "28cceed5-8ab9-11ed-bde5-0ab3c1edb81a",
   stripe_key:
     "pk_live_51MqHiCSIFX9lGIVVjAZU0jnZTHfvUbhLb8hGS9yipxYZroAss0GJRSbKsCXIpQynjsuAhwYZj4tHgFkYp2ETCxcD00CGHkBRf8",
+  billdesk_key: "ONEPLAY2",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",
@@ -21,8 +22,8 @@ export const environment = {
     measurementId: "G-X80K2YEKBS",
   },
   countly: {
-    key: '19eab6488620f4a36d34a08519392028a1acd920',
-    url: 'https://dev.countly.oneream.com/',
+    key: "19eab6488620f4a36d34a08519392028a1acd920",
+    url: "https://dev.countly.oneream.com/",
   },
-  webrtc_prefix: 'https://www.oneplay.in/webplay',
+  webrtc_prefix: "https://www.oneplay.in/webplay",
 };
