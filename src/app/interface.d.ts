@@ -1,6 +1,4 @@
 import { PaymentIntent } from "@stripe/stripe-js";
-import { GameModel } from "./models/game.model";
-import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
 
 export interface LoginDTO {
@@ -138,4 +136,10 @@ export interface SpeedTestServerRO {
   ping: string,
   download: string,
   upload: string
+}
+
+export interface BilldeskPaymentRO {
+  orderId: string;
+  bdOrderId: string;
+  token: string;
 }

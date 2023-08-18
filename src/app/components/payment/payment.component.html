@@ -11,7 +11,7 @@
       <h1 class="modalHeading text-white">Choose your payment method</h1>
       <div class="row">
         <div class="col-sm-6 mt-3">
-          <a href="javascript:void(0)">
+          <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
             <div class="card border-0 cardBG p-4">
               <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
               <img
@@ -26,7 +26,7 @@
           </p>
         </div>
         <div class="col-sm-6 mt-3">
-          <a href="javascript:void(0)" (click)="handlePay()">
+          <a href="javascript:void(0)" (click)="handlePayWithStripe()">
             <div class="card border-0 cardBG p-4">
               <img
                 src="assets/img/payment/Vector.svg"

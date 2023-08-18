@@ -64,6 +64,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           }).then(async (result) => {
             if (result.isConfirmed) {
               this.packageID = params.subscribe || params.renew;
+              this.planType = !!params.renew ? "base" : params.plan;
               this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
                 centered: true,
                 modalDialogClass: "modal-lg",
@@ -88,23 +89,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   async onPay() {
     this.stripeLoad = true;
-    let popupId = 0;
-
-    if (this.planType == "base") {
-      const subscriptions = await lastValueFrom(
-        this.restService.getCurrentSubscription()
-      );
-      const planTypes = subscriptions.map((s) => s.planType);
-      if (planTypes.includes("base")) popupId = 1;
-    }
 
     const { error } = await this.stripeIntent.confirmPayment({
       elements: this.stripeElements,
       confirmParams: {
-        return_url:
-          environment.domain +
-          "/dashboard/settings/subscription?swal=" +
-          popupId,
+        return_url: await this.getReturnURL(),
       },
     });
 
@@ -119,7 +108,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         cancelButtonText: "Cancel",
       }).then((result) => {
         if (result.isConfirmed) {
-          this.handlePay();
+          this.handlePayWithStripe();
         }
       });
     }
@@ -131,14 +120,47 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.removeQueryParams();
   }
 
-  handlePay() {
+  handlePayWithBilldesk() {
+    this.paymentModalRef.close();
+    this.restService
+      .payWithBilldesk(this.packageID)
+      .toPromise()
+      .then(async (data) => {
+        const flowConfig = {
+          merchantId: environment.billdesk_key,
+          bdOrderId: data.bdOrderId,
+          authToken: data.token,
+          childWindow: true,
+          returnUrl: await this.getReturnURL(),
+          retryCount: 3,
+          //prefs: {"payment_categories": ["card", "emi"] }
+        };
+
+        const config = {
+          flowConfig,
+          flowType: "payments",
+        };
+        // @ts-ignore
+        window.loadBillDeskSdk(config);
+      })
+      .catch((error) =>
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+        })
+      );
+  }
+
+  handlePayWithStripe() {
     this.paymentModalRef.close();
     const stripeAppearance = { theme: "night" } as Appearance;
-    this.restService.payForSubscription(this.packageID).subscribe({
-      next: async (data) => {
+    this.restService
+      .payWithStripe(this.packageID)
+      .toPromise()
+      .then(async (data) => {
         this.currentamount = (data.amount / 100).toFixed(2);
         this.currency = data.currency;
-        this.planType = data.metadata.plan_type;
         this.stripeIntent = await loadStripe(environment.stripe_key);
         this.stripeElements = this.stripeIntent.elements({
           clientSecret: data.client_secret,
@@ -152,14 +174,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
           keyboard: false,
         });
         this.stripeElements.create("payment").mount("#stripe-card");
-      },
-      error: (error) =>
+      })
+      .catch((error) =>
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
-        }),
-    });
+        })
+      );
   }
 
   async getSwalTextForBasePlan(params: Params) {
@@ -182,5 +204,21 @@ export class PaymentComponent implements OnInit, OnDestroy {
       replaceUrl: true,
       queryParamsHandling: "merge",
     });
+  }
+
+  private async getReturnURL() {
+    let popupId = 0;
+
+    if (this.planType == "base") {
+      const subscriptions = await lastValueFrom(
+        this.restService.getCurrentSubscription()
+      );
+      const planTypes = subscriptions.map((s) => s.planType);
+      if (planTypes.includes("base")) popupId = 1;
+    }
+
+    return (
+      environment.domain + "/dashboard/settings/subscription?swal=" + popupId
+    );
   }
 }
