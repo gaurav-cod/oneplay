@@ -156,7 +156,6 @@ export class OnboardingModalsComponent implements AfterViewInit {
     if (wishlist.length < 1) {
       this.selectGame();
     }
-    
   }
 
   private gameWishlist() {
