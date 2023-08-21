@@ -6,6 +6,7 @@ import { throwError } from "rxjs/internal/observable/throwError";
 import { switchMap } from "rxjs/internal/operators/switchMap";
 import { environment } from "src/environments/environment";
 import {
+  BilldeskPaymentRO,
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
@@ -213,10 +214,24 @@ export class RestService {
     );
   }
 
-  payForSubscription(packageName: string): Observable<IPayment> {
+  payWithStripe(planID: string): Observable<IPayment> {
     return this.http
       .post<IPayment>(
-        this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
+        this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
+        null
+      )
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  payWithBilldesk(planID: string): Observable<BilldeskPaymentRO> {
+    return this.http
+      .post<BilldeskPaymentRO>(
+        this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
         null
       )
       .pipe(
