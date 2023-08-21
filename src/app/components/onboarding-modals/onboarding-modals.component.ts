@@ -126,6 +126,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
+      windowClass: "modalZIndex1061",
     });
   }
 
