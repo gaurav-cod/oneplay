@@ -72,6 +72,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     Swal.close();
+    this.countlyService.endEvent("searchResultsViewMoreGames");
   }
 
   ngOnInit(): void {
@@ -125,20 +126,16 @@ export class SearchComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: 'gameClicked',
     })
-    // this.countlyService.addEvent("gameLandingView", {
-    //   gameID: game.oneplayId,
-    //   gameTitle: game.title,
-    //   gameGenre: game.genreMappings?.join(","),
-    //   source: location.pathname + location.hash,
-    //   trigger: "card",
-    //   channel: "web",
-    // });
-    // this.countlyService.endEvent("searchResultsViewMoreGames", {
-    //   gameCardClicked: "yes",
-    //   gameID: game.oneplayId,
-    //   gameTitle: game.title,
-    //   channel: "web",
-    // })
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: 'searchPage', trigger: 'card' },
+      discardOldData: true,
+    });
+    this.countlyService.endEvent("searchResultsViewMoreGames", {
+      keywords: this.query,
+      gameCardClicked: "yes",
+      gameId: game.oneplayId,
+      gameTitle: game.title,
+    })
 
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
@@ -158,8 +155,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     //   page: location.pathname.replace('/dashboard/',''),
     //   channel: "web"
     // })
-    // if (tab === "games") this.countlyService.startEvent("searchResultsViewMoreGames")
-    // else this.countlyService.startEvent("searchResultsViewMoreUsers")
+    if (tab === "games") {
+      this.countlyService.startEvent("searchResultsViewMoreGames", {
+        data: { gameCardClicked: "no" }
+      })
+    }
+    else {
+      this.countlyService.startEvent("searchResultsViewMoreUsers", {
+        data: { friendRequestClicked: 'no' }
+      })
+    }
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query },
     });
@@ -338,11 +343,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     //   actionType: "NA",
     //   channel: "web"
     // })
-    // this.countlyService.endEvent("searchResultsViewMoreUsers", {
-    //   term: this.query,
-    //   "friend request clicked": "yes",
-    //   userID: friend.id,
-    // })
+    this.countlyService.endEvent("searchResultsViewMoreUsers", {
+      userID: friend.id,
+      keywords: this.query,
+      friendRequestClicked: "yes",
+    })
     if (this.user.id === friend.id) {
       return;
     }

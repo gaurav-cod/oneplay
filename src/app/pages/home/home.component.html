@@ -114,6 +114,7 @@
       <app-similar-games
         [title]="genreSelected"
         [games]="genreGames"
+        countlySource="homePage"
       ></app-similar-games>
     </div>
     <div>
@@ -121,6 +122,7 @@
         *ngIf="library.length != 0"
         [title]="'My Library'"
         [games]="library"
+        countlySource="homePage"
       ></app-similar-games>
     </div>
     <ng-container *ngIf="!genreSelected">
@@ -128,6 +130,7 @@
         *ngFor="let row of restRows"
         [title]="row.title"
         [games]="row.games"
+        countlySource="homePage"
       ></app-similar-games>
     </ng-container>
   </div>

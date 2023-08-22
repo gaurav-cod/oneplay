@@ -8,8 +8,8 @@ import { GameModel } from "src/app/models/game.model";
 })
 export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
-
   @Input() games: GameModel[];
+  @Input() countlySource: "homePage" | "searchPage" | "gamesPage" | "detailsPage" | "directLink";
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 

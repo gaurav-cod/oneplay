@@ -143,5 +143,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private startSignInEvent() {
     this.countlyService.startEvent("signIn", { discardOldData: false });
+    const segments = this.countlyService.getEventData("signIn");
+    if (!segments.signInFromPage) {
+      this.countlyService.updateEventData("signIn", {
+        signInFromPage: "directLink",
+      })
+    }
   }
 }

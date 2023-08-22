@@ -37,7 +37,8 @@ import Swal, { SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
-// import { CountlyService } from "src/app/services/countly.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -68,6 +69,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   constants = PlayConstants;
 
+  _resolutionSub: Subscription = undefined;
+  _fpsSub: Subscription = undefined;
+  _vsyncSub: Subscription = undefined;
+  _bitrateSub: Subscription = undefined;
   resolution = new UntypedFormControl();
   fps = new UntypedFormControl();
   vsync = new UntypedFormControl();
@@ -132,7 +137,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     private readonly gamepadService: GamepadService,
     private readonly toastService: ToastService,
     private readonly router: Router,
-    // private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService
   ) {
     const userAgent = new UAParser();
 
@@ -148,6 +153,30 @@ export class ViewComponent implements OnInit, OnDestroy {
         );
       });
     }
+    this._resolutionSub = this.resolution.valueChanges.subscribe((val) => {
+      this.countlyService.updateEventData("gamePlaySettingsPageView", {
+        settingsChanged: "yes",
+        resolution: mapResolutionstoGamePlaySettingsPageView(val),
+      })
+    })
+    this._fpsSub = this.fps.valueChanges.subscribe((val) => {
+      this.countlyService.updateEventData("gamePlaySettingsPageView", {
+        settingsChanged: "yes",
+        fps: mapFPStoGamePlaySettingsPageView(val),
+      })
+    })
+    this._vsyncSub = this.vsync.valueChanges.subscribe((val) => {
+      this.countlyService.updateEventData("gamePlaySettingsPageView", {
+        settingsChanged: "yes",
+        vsyncEnabled: val == "true" ? "yes" : "no",
+      })
+    })
+    this._bitrateSub = this.bitrate.valueChanges.subscribe((val) => {
+      this.countlyService.updateEventData("gamePlaySettingsPageView", {
+        settingsChanged: "yes",
+        bitRate: val,
+      })
+    })
 
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = wishlist)
@@ -195,6 +224,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.countlyService.endEvent("gameLandingView")
     if (this.startingGame) {
       this.stopLoading();
     }
@@ -208,6 +238,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._gameStatusSubscription?.unsubscribe();
     this._pageChangeSubscription?.unsubscribe();
     this._webplayTokenSubscription?.unsubscribe();
+    this._resolutionSub?.unsubscribe();
+    this._fpsSub?.unsubscribe();
+    this._vsyncSub?.unsubscribe();
+    this._bitrateSub?.unsubscribe();
     // this._settingsEvent?.cancel();
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
@@ -264,6 +298,17 @@ export class ViewComponent implements OnInit, OnDestroy {
                 )
             );
             this.loaderService.stop();
+            const segments = this.countlyService.getEventData("gameLandingView");
+            this.countlyService.startEvent("gameLandingView", {
+              discardOldData: false,
+              data: {
+                  gameId: game.id.toString(),
+                  gameTitle: game.title,
+                  gameGenre: game.genreMappings.toString(),
+                  source: segments.source ?? "directLink",
+                  trigger: segments.trigger ?? "card",
+              }
+            });
           },
           (err) => {
             if (err.timeout) {
@@ -464,6 +509,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     skipCheckResume = false
   ) {
     const uagent = new UAParser();
+    this.countlyService.endEvent("gameLandingView")
+    this.countlyService.startEvent("gamePlayStart")
 
     if (
       uagent.getOS().name === "iOS" &&
@@ -523,6 +570,20 @@ export class ViewComponent implements OnInit, OnDestroy {
         swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
       } else {
         if (this.showSettings.value) {
+          this.countlyService.startEvent("gamePlaySettingsPageView", {
+            data: {
+              gameTitle: this.game.title,
+              gameId: this.game.oneplayId,
+              gameGenre: this.game.genreMappings.toString(),
+              store: this.selectedStore.name,
+              advanceSettingsViewed: 'no',
+              settingsChanged: 'no',
+              bitRate: this.bitrate.value,
+              vsyncEnabled: this.vsync.value === "true" ? "yes" : "no",
+              resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
+              fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
+            }
+          })
           this._settingsModalRef = this.ngbModal.open(container, {
             centered: true,
             modalDialogClass: "modal-md",
@@ -558,12 +619,18 @@ export class ViewComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-md",
     });
-    // this._settingsEvent.update({
-    //   advancedSettingsPageViewed: "yes",
-    // });
-    // this._advanceSettingsEvent = this.countlyService.startEvent(
-    //   "gamePlay - AdvanceSettings"
-    // );
+    this.countlyService.updateEventData("gamePlaySettingsPageView", {
+      advanceSettingsViewed: 'yes',
+    })
+    this.countlyService.startEvent("gamePlayAdvanceSettingView", {
+      data: {
+        gameTitle: this.game.title,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.toString(),
+        store: this.selectedStore.name,
+        settingsChanged: 'no',
+      }
+    })
     this._advancedModalRef.dismissed.subscribe(() => {
       const advancedOptions = localStorage.getItem("advancedOptions");
       if (advancedOptions) {
@@ -571,15 +638,23 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else {
         this.advancedOptions.reset();
       }
+      this.countlyService.endEvent("gamePlayAdvanceSettingView", {
+        settingsChanged: "no",
+      })
      // this._advanceSettingsEvent.end({ settingsChanged: "no" });
     });
   }
 
   saveAdvanceSettings(): void {
-    // const options: CustomSegments["gamePlay - AdvanceSettings"] = {
-    //   settingsChanged: this.advancedOptions.dirty ? "yes" : "no",
-    //   channel: "web",
-    // };
+    this.countlyService.endEvent("gamePlayAdvanceSettingView", {
+      settingsChanged: this.advancedOptions.dirty ? "yes" : "no",
+      showStatsEnabled: this.advancedOptions.value.show_stats ? "yes" : "no",
+      fullscreenEnabled: this.advancedOptions.value.fullscreen ? "yes" : "no",
+      onscreenControlsEnabled: this.advancedOptions.value.onscreen_controls ? "yes" : "no",
+      audioType: this.advancedOptions.value.audio_type === "stereo" ? "stereo" : "5.1",
+      streamCodec: mapStreamCodecForGamePlayAdvanceSettingView(this.advancedOptions.value.stream_codec),
+      videoDecoderSelection: this.advancedOptions.value.video_decoder_selection,
+    })
 
     // Object.entries(this.advancedOptions.controls).forEach(([key, ctrl]) => {
     //   if (ctrl.dirty) {
@@ -617,6 +692,15 @@ export class ViewComponent implements OnInit, OnDestroy {
           //     gameGenre: this.game.genreMappings?.join(","),
           //   },
           // });
+          this.countlyService.startEvent("gameFeedback", {
+              data: {
+                gameSessionId: this.sessionToTerminate,
+                gameId: this.game.oneplayId,
+                gameTitle: this.game.title,
+                gameGenre: this.game.genreMappings.toString(),
+                store: this.selectedStore.name,
+              }
+            });
           this.router.navigate(["/quit"], {
             queryParams: {
               session_id: this.sessionToTerminate,
@@ -662,11 +746,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   launchFromSettings() {
-    // this._settingsEvent?.end({
-    //   resolution: this.resolution.value,
-    //   FPS: this.fps.value,
-    //   bitRate: String(Math.floor(Number(this.bitrate.value) / 1000)),
-    // });
+    this.countlyService.endEvent("gamePlaySettingsPageView", {
+      bitRate: this.bitrate.value,
+      vsyncEnabled: this.vsync.value === "true" ? "yes" : "no",
+      resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
+      fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
+    })
 
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
@@ -721,13 +806,22 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startSessionSuccess(data: StartGameRO) {
+    this.countlyService.endEvent("gamePlayStart", {
+      gameSessionId: data.data.session.id,
+      gameTitle: this.game.title,
+      store: this.selectedStore.name,
+      gameId: this.game.oneplayId,
+      gameGenre: this.game.genreMappings.toString(),
+      showSettingsEnabled: this.showSettings.value ? "yes" : "no",
+      result: 'success',
+    })
     if (!!this._waitQueueModalRef) {
       this._waitQueueModalRef.close();
       this._waitQueueModalRef = undefined;
     }
     if (data.data.api_action === "call_session") {
       this._initializedModalRef = this.ngbModal.open(this.initializedModal, {
-        centered: true,
+        centered: !true,
         modalDialogClass: "modal-sm",
         backdrop: "static",
         keyboard: false,
@@ -761,11 +855,27 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     if (err.code == 801) {
+      this.countlyService.endEvent("gamePlayStart", {
+        gameTitle: this.game.title,
+        store: this.selectedStore.name,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.toString(),
+        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
+        result: 'wait',
+      })
       this.waitQueue(err.message);
     } else if (
       err.code == 610 ||
       err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
     ) {
+      this.countlyService.endEvent("gamePlayStart", {
+        gameTitle: this.game.title,
+        store: this.selectedStore.name,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.toString(),
+        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
+        result: 'failure',
+      })
       // this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
       Swal.fire({
@@ -776,6 +886,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
     } else {
       // this._initializeEvent?.end({ result: "failure" });
+      this.countlyService.endEvent("gamePlayStart", {
+        gameTitle: this.game.title,
+        store: this.selectedStore.name,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.toString(),
+        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
+        result: 'failure',
+      })
       this.stopLoading();
       Swal.fire({
         title: "Error Code: " + err.code,

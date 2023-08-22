@@ -36,6 +36,7 @@ export class CountlyService {
       delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
+    segments["partner"] = 'partnerId';
     this._addEvent({ key: event, sum, segmentation: segments });
   }
 
@@ -46,8 +47,9 @@ export class CountlyService {
       discardOldData = false,
     }: { discardOldData?: boolean; data?: Partial<CustomTimedCountlyEvents[T]> } = {}
   ): StartEvent<T> {
+    // todo: handle merge old data?
     localStorage.setItem(this.keyOfKey(event), `${+new Date()}`);
-    if (discardOldData || data && (!localStorage.getItem(event + this.data_postfix)))
+    if (discardOldData || data && (!localStorage.getItem(this.keyOfKey(event + this.data_postfix))))
       localStorage.setItem(
         this.keyOfKey(event + this.data_postfix),
         JSON.stringify(data)
@@ -93,20 +95,21 @@ export class CountlyService {
     event: T,
     segments: Partial<CustomTimedCountlyEvents[T]> = {}
   ) {
-    const ts = new Date(parseInt(
-      localStorage.getItem(this.keyOfKey(event)) ?? `${+new Date()}`
-    ));
+    const keyTS = localStorage.getItem(this.keyOfKey(event));
+    const ts = new Date(parseInt(keyTS) ?? `${+new Date()}`);
     const data = JSON.parse(
       localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
     );
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
     localStorage.removeItem(this.keyOfKey(event));
+    if (!keyTS) return;
     let sum = undefined;
     if (XCountlySUM in segments) {
       sum = segments[XCountlySUM];
       delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
+    segments["partner"] = 'partnerId';
     this._addEvent({
       sum,
       key: event,

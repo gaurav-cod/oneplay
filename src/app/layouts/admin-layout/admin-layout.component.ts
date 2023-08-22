@@ -11,12 +11,14 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Appearance, Stripe, StripeElements, loadStripe } from "@stripe/stripe-js";
 import { Subscription, lastValueFrom, map } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { XCountlySUM } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
+import { mapStripeErrorsToSubscriptionPaymentDone } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -136,7 +138,7 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           customClass: "swalPadding",
         }).then(async (result) => {
           if (result.isConfirmed) {
-              this.countlyService.endEvent("subscriptionConfirmPlan", { selection: "yes" });
+            this.countlyService.endEvent("subscriptionConfirmPlan", { selection: "yes" });
             this.handlePay(params.subscribe);
           } else {
               this.countlyService.endEvent("subscriptionConfirmPlan", { selection: "no" });
@@ -175,9 +177,15 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   closeStripeModal() {
-    console.warn('closeStripeModal');
     this.stripeModalRef?.close();
     this.removeQueryParams();
+    this.route.queryParams.toPromise().then((params) => {
+      this.countlyService.addEvent("SubscriptionConfirmPayment", {
+        type: params.renew !== null ? "renewal" : "newPurchase",
+        [XCountlySUM]: parseInt(this.currentamount),
+        paymentConfirmed: "no",
+      })
+    })
     // todo!!
     // this.countlyService.endEvent("subscriptionViewPayment")
   }
@@ -202,6 +210,14 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
   async onPay() {
     this.stripeLoad = true;
     let popupId = 0;
+    this.countlyService.endEvent("subscriptionPaymentView");
+    this.route.queryParams.toPromise().then((params) => {
+      this.countlyService.addEvent("SubscriptionConfirmPayment", {
+        type: params.renew !== null ? "renewal" : "newPurchase",
+        [XCountlySUM]: parseInt(this.currentamount),
+        paymentConfirmed: "yes",
+      })
+    })
 
     if(this.planType == 'base') {
       const subscriptions = await lastValueFrom(this.restService.getCurrentSubscription());
@@ -217,11 +233,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
     });
 
     if (error) {
-      this.countlyService.endEvent("subscriptionPaymentDone", {
-        result: 'failure',
-        failReason: 'rejected',
-        type: 'renewal', //todo!
-      })
       this.closeStripeModal();
       Swal.fire({
         icon: "error",
@@ -235,10 +246,19 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           this.handlePay(this.packageID);
         }
       });
+      this.route.queryParams.toPromise().then((params) => {
+        this.countlyService.endEvent("subscriptionPaymentDone", {
+          result: 'failure',
+          type: params.renew ? 'renewal' : 'newPurchase',
+          failReason: mapStripeErrorsToSubscriptionPaymentDone(error.type),
+        })
+      })
     } else {
-      this.countlyService.endEvent("subscriptionPaymentDone", {
-        result: 'success',
-        type: 'renewal', //todo!
+      this.route.queryParams.toPromise().then((params) => {
+        this.countlyService.endEvent("subscriptionPaymentDone", {
+          result: 'success',
+          type: params.renew ? 'renewal' : 'newPurchase',
+        })
       })
     }
     this.stripeLoad = false;
@@ -298,7 +318,6 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         this.stripeElements = this.stripeIntent.elements({
           clientSecret: data.client_secret, appearance: stripeAppearance
         });
-        console.warn({data})
         this.stripeModalRef = this.ngbModal.open(this.stripeModal, {
           centered: true,
           modalDialogClass: "modal-md",
@@ -307,6 +326,13 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
           keyboard: false,
         });
         this.stripeElements.create("payment").mount("#stripe-card");
+        this.countlyService.startEvent("subscriptionPaymentView", {
+          // data: {
+          //   country: '',
+          //   state: '',
+          //   mode: 'upi',
+          // }
+        })
       },
       error: (error) =>
         Swal.fire({

@@ -36,7 +36,6 @@ export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
 export const XCountlySUM = 'XCountlySUM';
 
 export interface CustomCountlyEvents {
-  //done
   websiteFooterView: {
     homeClicked: "yes" | "no",
     aboutUsClicked: "yes" | "no",
@@ -55,11 +54,10 @@ export interface CustomCountlyEvents {
     twitterClicked: "yes" | "no",
     mediumClicked: "yes" | "no",
   },
-
-  // mostly done
   menuClick: {
     homeClicked: "yes" | "no",
     gamesClicked: "yes" | "no",
+    streamsClicked: "yes" | "no",
     searchClicked: "yes" | "no",
     gameStatusClicked: "yes" | "no",
     speedTestClicked: "yes" | "no",
@@ -76,7 +74,6 @@ export interface CustomCountlyEvents {
     logOutClicked: "yes" | "no",
     logOutConfirmClicked: "yes" | "no",
   },
-  // todo
   subscriptionCardClick: {
     hourlyCardOneClicked: "yes" | "no",
     hourlyCardTwoClicked: "yes" | "no",
@@ -88,13 +85,11 @@ export interface CustomCountlyEvents {
     cta: "buyNow" | "renew" | "topUp" | "getStartedNow",
     [XCountlySUM]: number;
   },
-  //done
   SubscriptionConfirmPayment: {
     paymentConfirmed: "yes" | "no",
     type: "newPurchase" | "renewal",
     [XCountlySUM]: number;
   },
-  //done
   search: {
     keywords: string,
     actionDone: "yes" | "no",
@@ -147,59 +142,54 @@ export interface CustomTimedCountlyEvents {
     gender: "yes" | "no",
     password: "yes" | "no",
     referralId: "yes" | "no",
-    signUpFromPage: "websiteHeader" | // todo!:
-    "tv" | // todo!:
+    signUpFromPage: "websiteHeader" |
+    "directLink" |
     "signIn" |
-    "home" | // todo!:
-    "aboutus", // todo!:
+    "home" |
+    "aboutus",
     tncViewed: "yes" | "no",
     privacyPolicyViewed: "yes" | "no",
   },
-  // done!
   signUpAccountVerification: {
     result: "success" | "failure",
-    // todo:
-    failureReason: "emailExpired" | "otpExpired" | "otpTimeOut" | "otpNotReceived",
+    failureReason: "invalidOtp" | "invalidToken" | "tokenExpired",
   },
-  // done!
   signIn: {
     result: "success" | "failure",
-    // todo:
-    signInFromPage: "websiteHeader" | "tv" | "signUp" | "home" | "aboutUs",
+    signInFromPage: "websiteHeader" | "directLink" | "signUp" | "home" | "aboutUs",
   },
   gameLandingView: {
     gameId: string,
     gameTitle: string,
     gameGenre: string,
-    source: "homePage" | "searchPage" | "gamesPage" | "detailsPage",
-    trigger: "banner" | "card" | "gameStatus",
+    source: "homePage" | "searchPage" | "gamesPage" | "detailsPage" | "directLink",
+    trigger: "banner" | "card" | "gameStatus",//todo
   },
   settingsView: {
-    //todo: -!
+    subscriptionViewed: "yes" | "no",
+    deviceHistoryViewed: "yes" | "no",
     turnOffPrivacyEnabled: "yes" | "no",
     turnOffPrivacyDisabled: "yes" | "no",
     deleteSessionDataClicked: "yes" | "no",
     deleteSessionDataConfirmClicked: "yes" | "no",
-    tvSignInClicked: "yes" | "no", // todo
     logOutClicked: "yes" | "no",
     logOutConfirmClicked: "yes" | "no",
-    subscriptionViewed: "yes" | "no",
-    deviceHistoryViewed: "yes" | "no",
     logoutFromAllClicked: "yes" | "no",
   },
-  profileView: {
-    profileViewed: "yes" | "no",
-    loginsecurityViewed: "yes" | "no",
-    profilePictureChanged: "yes" | "no",
-    userNameChanged: "yes" | "no",
-    FullNameChanged: "yes" | "no",
-    bioChanged: "yes" | "no",
-    updateProfileClicked: "yes" | "no",
-    passwordChanged: "yes" | "no",
-  },
+  // profileView: { mobile only
+  //   profileViewed: "yes" | "no",
+  //   loginsecurityViewed: "yes" | "no",
+  //   profilePictureChanged: "yes" | "no",
+  //   userNameChanged: "yes" | "no",
+  //   FullNameChanged: "yes" | "no",
+  //   bioChanged: "yes" | "no",
+  //   updateProfileClicked: "yes" | "no",
+  //   passwordChanged: "yes" | "no",
+  // },
   subscriptionConfirmPlan: {
     selection: "yes" | "no",
   },
+  // todo: payment details
   subscriptionPaymentView: {
     country: string,
     state: string,
@@ -208,7 +198,7 @@ export interface CustomTimedCountlyEvents {
   subscriptionPaymentDone: {
     result: "success" | "failure",
     type: "newPurchase" | "renewal",
-    failReason: "rejected" | "otpExpired" | "wrongOtp",
+    failReason: "card" | "quota" | "validation" | "connection" | "authentication" | "other",
     [XCountlySUM]: number;
   },
   searchResultsViewMoreGames: {
@@ -232,20 +222,18 @@ export interface CustomTimedCountlyEvents {
     result: "success" | "failure" | "wait",
   },
   gamePlaySettingsPageView: {
-    gameSessionId: string,
     gameId: string,
     gameTitle: string,
     gameGenre: string,
     store: string,
     advanceSettingsViewed: "yes" | "no",
     settingsChanged: "yes" | "no",
-    resolution: "3840x2160" | "2560x1440" | "1920x1080",
+    resolution: "1280x720" | "1920x1080" | "2560x1440" | "3840x2160",
     vsyncEnabled: "yes" | "no",
     fps: "120fps" | "90fps" | "60fps" | "30fps",
     bitRate: string,
   },
   gamePlayAdvanceSettingView: {
-    gameSessionId: string,
     gameId: string,
     gameTitle: string,
     gameGenre: string,
@@ -268,164 +256,3 @@ export interface CustomTimedCountlyEvents {
   },
 }
 
-// export interface __CustomSegments {
-//   signUPButtonClick: {
-//     page: string;
-//     trigger: string;
-//     channel: "web";
-//   },
-//   signINButtonClick: {
-//     page: string;
-//     trigger: string;
-//     channel: "web";
-//   },
-//   "signup - Form Submitted": {
-//     name: string;
-//     email: string;
-//     phoneNumber: string;
-//     gender: "male" | "female" | "other";
-//     referralID: string;
-//     signupFromPage: string;
-//     privacyPolicyPageViewed: "yes" | "no";
-//     TnCPageViewed: "yes" | "no";
-//     channel: "web";
-//   };
-//   "signup - Account Verification": {
-//     result: "success" | "failure";
-//     failReason: string;
-//     channel: "web";
-//   };
-//   signin: {
-//     result: "success" | "failure";
-//     signinFromPage: string;
-//     signinFromTrigger: string;
-//     rememberMeActivated: "yes" | "no";
-//     channel: "web";
-//   };
-//   gameLandingView: {
-//     gameID: string;
-//     gameTitle: string;
-//     gameGenre: string;
-//     source: string;
-//     trigger: string;
-//     channel: "web";
-//   };
-//   "gamePlay - Start": {
-//     gameID: string;
-//     gameTitle: string;
-//     gameGenre: string;
-//     store: string;
-//     showSettingEnabled: "yes" | "no";
-//     channel: "web";
-//   };
-//   "gamePlay - Settings Page View": {
-//     advancedSettingsPageViewed: "yes" | "no";
-//     resolution: string;
-//     bitRate: string;
-//     FPS: string;
-//     channel: "web";
-//   };
-//   "gamePlay - AdvanceSettings": {
-//     settingsChanged: "yes" | "no";
-//     [key: string]: any;
-//     channel: "web";
-//   },
-//   "gamePlay - Initilization": {
-//     result: "success" | "failure" | "wait";
-//     channel: "web";
-//   };
-//   gameLaunch: {
-//     gameID: string;
-//     gameTitle: string;
-//     gameGenre: string;
-//     from: "Play now" | "Resume";
-//     gamesessionid: string;
-//     channel: "web";
-//   };
-//   gameFeedback: {
-//     gameID: string;
-//     gameTitle: string;
-//     gameGenre: string;
-//     action: "Skip" | "Submit";
-//     channel: "web";
-//   };
-//
-//   menuClick: {
-//     "Type": "My Library"
-//     | "Subscription"
-//     | "Speed Test"
-//     | "Downloads"
-//     | "Settings"
-//     | "Turn off privacy"
-//     | "Delete session Data"
-//     | "Tv Sign in"
-//     | "Log out";
-//   };
-//
-//   settingsView: {
-//     ProfileViewed: "yes" | "no";
-//     loginsecurity: "yes" | "no";
-//     subscriptionViewed: "yes" | "no";
-//     deviceHistoryViewed: "yes" | "no";
-//     profilepicturechanged: "yes" | "no";
-//     usernamechanged: "yes" | "no";
-//     fullnamechanged: "yes" | "no";
-//     biochanged: "yes" | "no";
-//     updateprofileclic: "yes" | "no";
-//     updatepasswordchanged: "yes" | "no";
-//     logoutfromallclick: "yes" | "no";
-//   };
-//
-//   subscriptionCardClick: {// only on home web site
-//     cardType: "hourly" | "monthly";
-//     Source: "Website_subscription" | "Settings Page" | string;
-//     channel: "web";
-//     [XCountlySUM]: number;
-//   };
-//
-//   "subscription - Confirm Plan": {
-//     selection: "yes" | "no";
-//   };
-//
-//   subscriptionViewPayment: {// todo!!
-//     Country: string;
-//     State: string;
-//     mode: "credit" | "debit" | "UPI";
-//   };
-//
-//   subscriptionConfirmPayment: {// todo
-//     paymentConfirmed: "yes" | "no";
-//     type: "new purchase" | "renewal";
-//     [XCountlySUM]: number;
-//   };
-//
-//   subscriptionPaymentDone: {// todo
-//     result: "success" | "fail";
-//     type: "new purchase" | "renewal";
-//     failReason: "rejected" | "OTP expired" | "wrong OTP" | string;
-//     [XCountlySUM]: number;
-//   };
-//
-//   search: {
-//     term: string;
-//     actionDone: "yes" | "no";
-//     actionType: "NA" | "See more Games" | "See more Users";
-//     page: string;
-//     channel: "web";
-//   },
-//
-//   searchResultsViewMoreGames: {
-//     term: string;
-//     gameCardClicked: "yes" | "no";
-//     gameID: string;
-//     gameTitle: string;
-//     // gameType: string;
-//     channel: "web";
-//   };
-//
-//   searchResultsViewMoreUsers: {
-//     term: string;
-//     userID: string;
-//     "friend request clicked": "yes" | "no";
-//   };
-// }

@@ -34,7 +34,7 @@
             routerLinkActive="active"
             [routerLink]="['/home']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
-            (click)="isMenuCollapsed = true"
+            (click)="headerNavOnClick('homeClicked')"
             >Home</a
           >
         </li>
@@ -44,7 +44,7 @@
             routerLinkActive="active"
             [routerLink]="['/store']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
-            (click)="isMenuCollapsed = true"
+            (click)="headerNavOnClick('gamesClicked')"
             >Games</a
           >
         </li>
@@ -54,7 +54,7 @@
             routerLinkActive="active"
             [routerLink]="['/streams']"
             class="nav-link p-0 mt-2 pt-1 mr-3"
-            (click)="isMenuCollapsed = true"
+            (click)="headerNavOnClick('searchClicked')"
             >Streams</a
           >
         </li>
@@ -74,7 +74,7 @@
                 [formControl]="query"
                 (focus)="onFocus()"
                 (blur)="onBlur()"
-                (click)="isMenuCollapsed = true"
+                (click)="headerNavOnClick('searchClicked')"
                 (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
               <span

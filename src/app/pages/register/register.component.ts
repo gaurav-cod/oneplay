@@ -217,11 +217,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   goToLogin() {
-    // this.countlyService.addEvent("signINButtonClick", {
-    //   page: location.pathname + location.hash,
-    //   trigger: "CTA",
-    //   channel: "web",
-    // });
+    this.countlyService.startEvent("signIn", {
+      data: { signInFromPage: "signUp" },
+      discardOldData: true,
+    })
     this.router.navigate(["/login"]);
   }
 
@@ -258,6 +257,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
       }
     );
+    const segments = this._signupEvent.data();
+    if (!segments.signUpFromPage) {
+      this._signupEvent.update({
+        signUpFromPage: "directLink",
+      })
+    }
   }
 
   private endSignupEvent() {

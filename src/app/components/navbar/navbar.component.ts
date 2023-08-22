@@ -78,6 +78,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   viewGame() {
+    this.logCountly("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
       // this.countlyService.addEvent("gameLandingView", {
       //   gameID: this.gameStatus.game_id,
@@ -115,12 +116,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     //   trigger: "navbar - search",
     //   channel: "web",
     // });
-    // this.countlyService.endEvent("searchResultsViewMoreGames", {
-    //   gameCardClicked: "yes",
-    //   gameID: game.oneplayId,
-    //   gameTitle: game.title,
-    //   channel: "web",
-    // })
+    this.countlyService.endEvent("searchResultsViewMoreGames", {
+      gameCardClicked: "yes",
+      gameId: game.oneplayId,
+      gameTitle: game.title,
+    })
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
     });
@@ -300,11 +300,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleFriendsList() {
     this.toggleFriends.emit();
+    this.logCountly("profileClicked")
   }
 
   logout() {
     this.logoutRef.close();
-    this.logCountly('logOutClicked');
+    this.logCountly('logOutConfirmClicked');
     this.messagingService.removeToken().finally(() => {
       this.restService.deleteSession(this.authService.sessionKey).subscribe();
       this.authService.loggedOutByUser = true;
@@ -313,6 +314,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   LogoutAlert(container) {
+    this.logCountly('logOutClicked');
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -385,14 +387,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     //   page: location.pathname.replace('/dashboard/',''),
     //   channel: "web"
     // })
-    // if (tab === "games") this.countlyService.startEvent("searchResultsViewMoreGames", {
-    //   data: {
-    //     term: this.query.value,
-    //     channel: "web",
-    //   }
-    // })
-    // else this.countlyService.startEvent("searchResultsViewMoreUsers", {
-    //   data: { term: this.query.value } })
+    if (tab === 'games') {
+      this.countlyService.startEvent("searchResultsViewMoreGames", {
+        data: {
+          keywords: this.query.value,
+          gameCardClicked: "no",
+        }
+      });
+    } else if (tab === 'users') {
+      this.countlyService.startEvent("searchResultsViewMoreUsers", {
+        data: {
+          keywords: this.query.value,
+        }
+      });
+    }
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query.value },
     });
@@ -419,6 +427,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       },
     });
+  }
+
+  headerNavOnClick(
+    item: keyof CustomCountlyEvents['menuClick']
+  ): void {
+    this.isMenuCollapsed = true;
+    this.logCountly(item);
   }
 
   logCountly(

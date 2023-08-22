@@ -387,6 +387,7 @@
       <app-similar-games
         [title]="'Similar games'"
         [games]="similarGames"
+        countlySource="detailsPage"
       ></app-similar-games>
     </div>
 
@@ -395,6 +396,7 @@
         [title]="'Top Live Streams'"
         [gameId]="game.id"
         [videos]="liveVideos"
+        countlySource="detailsPage"
       ></app-stream-card>
     </div>
 
@@ -402,6 +404,7 @@
       <app-similar-games
         [title]="'From Genre'"
         [games]="genreGames"
+        countlySource="detailsPage"
       ></app-similar-games>
     </div>
 
@@ -409,6 +412,7 @@
       <app-similar-games
         [title]="'From Developer'"
         [games]="devGames"
+        countlySource="detailsPage"
       ></app-similar-games>
     </div>
   </div>

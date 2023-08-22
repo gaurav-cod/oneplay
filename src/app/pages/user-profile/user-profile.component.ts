@@ -27,33 +27,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.warn('xset init')
     this.title.setTitle("OnePlay | Settings");
     this.paramSubscription = this.route.params.subscribe(
       (params) => {
-        if (this.activeTab === "profile") {
-          //todo: questional exit! it's probably the whole settings page.
-          this.countlyService.endEvent("profileView")
-        }
         this.activeTab = params.tab;
-        if (this.activeTab === "profile") {
-            this.countlyService.startEvent("profileView", {
-            data: {
-              profileViewed: "yes",
-              loginsecurityViewed: "no",
-              profilePictureChanged: "no",
-              userNameChanged: "no",
-              FullNameChanged: "no",
-              bioChanged: "no",
-              updateProfileClicked: "no",
-              passwordChanged: "no",
-            }
-          })
-        } else if (this.activeTab === "security") {
-          this.countlyService.updateEventData("profileView", {
-            loginsecurityViewed: "yes",
-          })
-        }
       }
     );
     this.userSubscription = this.authService.user.subscribe(
@@ -66,7 +43,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         turnOffPrivacyDisabled: "no",
         deleteSessionDataClicked: "no",
         deleteSessionDataConfirmClicked: "no",
-        tvSignInClicked: "no",
         logOutClicked: "no",
         logOutConfirmClicked: "no",
         subscriptionViewed: "no",
@@ -77,14 +53,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.warn('xset dest')
-    // this.countlyService.endEvent("profileView");
     this.countlyService.endEvent("settingsView");
     this.paramSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
   }
 
   logCountly(segment: CustomTimedCountlyEvents["settingsView"]) {
-    // this.countlyService.updateEventData("settingsView", segment)
+    this.countlyService.updateEventData("settingsView", segment)
   }
 }

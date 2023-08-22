@@ -66,12 +66,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get isChanged() {
-    this.countlyService.updateEventData("profileView", {
-      profilePictureChanged: !!this.photoFile ? "yes" : "no",
-      userNameChanged: this.username.value !== this.currentUserState.username ? "yes" : "no",
-      FullNameChanged: this.name.value !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
-      bioChanged: this.bio.value !== this.currentUserState.bio ? "yes" : "no",
-    })
     return this.name.value !== this.currentUserState.name ||
     this.username.value !== this.currentUserState.username ||
     this.bio.value !== (this.currentUserState.bio ?? '') ||
@@ -98,9 +92,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   saveChanges(): void {
-    this.countlyService.updateEventData("profileView", {
-      updateProfileClicked: "yes",
-    })
     const body: UpdateProfileDTO = {};
     if (!!this.username.value) {
       body.username = this.username.value;
@@ -128,25 +119,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
     this.restService.updateProfile(body).subscribe(
       (data) => {
-        // this.countlyService.updateEventData("profileView", {
-        //   profilePictureChanged: !!this.photoFile ? "yes" : "no",
-        //   userNameChanged: data.username !== this.currentUserState.username ? "yes" : "no",
-        //   FullNameChanged: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
-        //   bioChanged: data.bio !== this.currentUserState.bio ? "yes" : "no",
-        // })
-        // this.countlyService.updateUser('username', data.username);
-        // this.countlyService.updateUser('name', data.name);
-        // if (data.photo) {
-        //   this.countlyService.updateUser('picture', data.photo);
-        // }
-        // this.countlyService.saveUser();
-        // this.countlyService.updateEventData("settingsView", {
-        //   profilepicturechanged: !!this.photoFile ? "yes" : "no",
-        //   usernamechanged: data.username !== this.currentUserState.username ? "yes" : "no",
-        //   fullnamechanged: data.firstName + data.lastName !== this.currentUserState.firstName + this.currentUserState.lastName ? "yes" : "no",
-        //   biochanged: data.bio !== this.currentUserState.bio ? "yes" : "no",
-        //   updateprofileclic: "yes",
-        // })
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
