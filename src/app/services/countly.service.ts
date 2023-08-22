@@ -36,7 +36,7 @@ export class CountlyService {
       delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
-    segments["partner"] = 'partnerId';
+    segments["partner"] = environment.oneplay_partner_id;
     this._addEvent({ key: event, sum, segmentation: segments });
   }
 
@@ -109,7 +109,7 @@ export class CountlyService {
       delete segments[XCountlySUM];
     }
     segments["channel"] = 'web';
-    segments["partner"] = 'partnerId';
+    segments["partner"] = environment.oneplay_partner_id;
     this._addEvent({
       sum,
       key: event,
