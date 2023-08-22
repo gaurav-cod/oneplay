@@ -1,25 +1,22 @@
 <a
   href="javascript:void(0)"
-  class="card card-block border-0 shadow-1 position-relative"
+  class="card card-block bg-dark border-0 shadow-1 position-relative"
 >
-  <img
-    class="card-img"
-    [src]="game.textBgImage"
-    (error)="onImgError($event)"
-    [ngStyle]="{
-      filter: game.status === 'live' ? 'none' : 'grayscale(100%)'
-    }"
-    alt=""
-  />
-  <h4 *ngIf="showTitle" class="game-title">{{ game.title }}</h4>
-  <div class="card-img-overlay pr-1 pt-1" (click)="onclick()">
+  <div>
+    <img
+      class="card-img"
+      [src]="game.textBgImage"
+      (error)="onImgError($event)"
+      alt=""
+    />
+    <h4 *ngIf="showTitle" class="game-title">{{ game.title }}</h4>
+  </div>
+  <div class="card-img-overlay p-1" (click)="onclick()">
     <div class="row">
-      <div class="col-auto">
-        <span *ngIf="game.isFree" id="free">FREE</span>
+      <div class="col-auto p-0">
+        <span *ngIf="game.isFree" class="freeTag px-2 free tagText top--1 position-relative">FREE</span>
       </div>
-    </div>
-    <div class="row justify-content-end">
-      <div class="col-auto increateZIndex">
+      <div class="col text-right increateZIndex">
         <label class="checkbox-control">
           <input
             type="checkbox"

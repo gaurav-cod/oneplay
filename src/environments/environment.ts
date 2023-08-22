@@ -1,10 +1,10 @@
 // import { version } from '../../package.json';
 
 export const environment = {
-  appVersion: "2.6.4",
+  appVersion: "2.7.0",
   production: false,
   cookie_domain: "localhost",
-  domain: "localhost",
+  domain: "http://localhost:4200",
   client_api: "https://client-apis.oneream.com/services/v2",
   render_mix_api: "https://rendermix.oneream.com/v1",
   socket_endpoint: "https://chatservices.oneream.com",
@@ -14,6 +14,7 @@ export const environment = {
   oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
   stripe_key:
     "pk_test_51MqHiCSIFX9lGIVVPlfmun4lNf8r5p19kxLAhVsdtXHtLzbvGsVeOov7tIskv6UfMlxwZvhQzKcxGZCeEIlDKS9u00t2KiVeVV",
+  billdesk_key: "ONEPLA2UAT",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",
@@ -24,8 +25,8 @@ export const environment = {
     measurementId: "G-X80K2YEKBS",
   },
   countly: {
-    key: '19eab6488620f4a36d34a08519392028a1acd920',
-    url: 'https://dev.countly.oneream.com/',
+    key: "19eab6488620f4a36d34a08519392028a1acd920",
+    url: "https://dev.countly.oneream.com/",
   },
-  webrtc_prefix: 'http://localhost:3000/webplay',
+  webrtc_prefix: "http://localhost:3000/webplay",
 };

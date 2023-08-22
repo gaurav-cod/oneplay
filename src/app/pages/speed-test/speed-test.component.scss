@@ -1,0 +1,87 @@
+.topHeading {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 50px;
+    letter-spacing: 0.76px;
+    color: #fff;
+    @media (max-width: 767.9px) {
+        font-size: 24px;
+        line-height: 34px;
+    }
+}
+
+.dataHeading {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 42px;
+    letter-spacing: 0.56px;
+    color: #959595;
+    @media (max-width: 600px) {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+.displayData {
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 70px;
+    letter-spacing: 1px;
+    color: #fff;
+    @media (max-width: 600px) {
+        font-size: 34px;
+        line-height: 44px;
+    }
+}
+
+.resetBtn {
+    border-radius: 60px !important;
+    width: 135px;
+    background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500 !important;
+    @media (max-width: 600px) {
+        width: 120px;
+        font-size: 16px;
+    }
+}
+
+.infoText {
+    color: #59FEF4;
+}
+
+@media (max-width: 767.9px) {
+    .responsiveTextAlign {
+        text-align: center !important;
+    }
+}
+
+#success-value {
+    // stroke: url(#completegradient);
+    stroke: url(#gradient);
+    fill: none;
+    stroke-linecap: round;
+    animation: progress 1s ease-out forwards;
+}
+
+@keyframes progress {
+    0% {
+      stroke-dasharray: 220, 660;
+    }}
+.marginbottomNegative {
+    margin-bottom: -10px;
+}
+
+#circle {
+    width: 300px;
+    height: 300px;
+    transform: rotate(180deg);
+}
+
+.dotBorder {
+    border-radius: 50%;
+    border-top: 2px dashed #3e4246;
+    border-right: 2px dashed #3e4246;
+    rotate: 315deg;
+}

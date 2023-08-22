@@ -1,6 +1,4 @@
 import { PaymentIntent } from "@stripe/stripe-js";
-import { GameModel } from "./models/game.model";
-import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
 
 export interface LoginDTO {
@@ -35,12 +33,6 @@ export interface VerifySignupDTO {
 export interface StartPcRO {
   success: boolean;
   msg: string;
-}
-
-export interface HomeFeeds {
-  games: GameFeedModel[];
-  categories: any[];
-  banners: GameModel[];
 }
 
 export interface Thumbnail {
@@ -116,6 +108,7 @@ export interface ClientTokenRO {
   client_token: string;
   code: number;
   msg: string;
+  progress: number;
 }
 
 export interface WebPlayTokenRO {
@@ -137,4 +130,16 @@ export interface ILocation {
   region: string;
   error?: boolean;
   reason?: string;
+}
+
+export interface SpeedTestServerRO {
+  ping: string,
+  download: string,
+  upload: string
+}
+
+export interface BilldeskPaymentRO {
+  orderId: string;
+  bdOrderId: string;
+  token: string;
 }

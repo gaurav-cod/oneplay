@@ -28,6 +28,8 @@ import { OnboardingModalsComponent } from './onboarding-modals/onboarding-modals
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SelectGameCardComponent } from './select-game-card/select-game-card.component';
 import { ClipboardModule } from "ngx-clipboard";
+import { InitializingGameComponent } from './initializing-game/initializing-game.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   imports: [
@@ -63,6 +65,8 @@ import { ClipboardModule } from "ngx-clipboard";
     ToastsComponent,
     OnboardingModalsComponent,
     SelectGameCardComponent,
+    InitializingGameComponent,
+    PaymentComponent,
   ],
   exports: [
     GameCardComponent,
@@ -83,6 +87,8 @@ import { ClipboardModule } from "ngx-clipboard";
     ToastsComponent,
     OnboardingModalsComponent,
     SelectGameCardComponent,
+    InitializingGameComponent,
+    PaymentComponent,
   ],
 })
 export class ComponentsModule {}

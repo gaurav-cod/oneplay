@@ -90,28 +90,6 @@ body {
   border-radius: 4px;
 }
 
-#free {
-  position: absolute;
-  top: 1px;
-  right: 2px;
-  font-size: 8px;
-  font-weight: 900;
-  color: #fff;
-  background-color: #161a6c;
-  padding: 3px 4px 2px 4px;
-  border-radius: 2px;
-}
-
-#beta {
-  font-size: 8px;
-  font-weight: bold;
-  color: #fff;
-  background-color: #3f00b4;
-  padding: 2px 4px;
-  margin-left: 4px;
-  border-radius: 4px;
-}
-
 .required:after {
   content: " *";
   color: red;
@@ -771,11 +749,16 @@ input[type="checkbox"] {
 
 .swal2-popup {
   width: 28rem !important;
-  border-radius: 6px !important;
+  border-radius: 16px !important;
 }
 
 .swal2-close {
-  font-size: 2em !important;
+  font-size: 1rem !important;
+  background-image: url('./assets/img/error/Cross.svg') !important;
+  background-repeat: no-repeat !important;
+  color: #212123 !important;
+  padding: 20px !important;
+  margin-top: 20px !important;
 }
 
 .swal2-close:focus {
@@ -789,6 +772,11 @@ input[type="checkbox"] {
 .swal2-styled.swal2-confirm {
   width: 100% !important;
   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
+}
+
+.swalPadding .swal2-styled.swal2-confirm {
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
+  padding: 13px !important;
 }
 
 .swal2-cancel.swal2-styled {
@@ -886,7 +874,7 @@ select option {
 }
 
 .swal2-image {
-  margin: 4em auto 1em !important;
+  margin: 1em auto 1em !important;
 }
 
 @media (max-width: 1200px) {
@@ -1153,8 +1141,62 @@ select {
 .dateDropdown .ngb-dp-navigation-select {
   margin-bottom: 10px !important;
 }
-
+.pageBg {
+  background-image: url('./assets/img/speed-test/image23.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
 .alert-dismissible .close {
   top: 12% !important;
   right: 1px !important;
+}
+
+.yellowGradient {
+  background: linear-gradient(270deg, #FE753A 0%, #F4C47A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.orangeGradient {
+  background: linear-gradient(270deg, #F2EDED 0%, #FF5B5B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.freeTag {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%) !important;  
+}
+
+.redGradient {
+  background: linear-gradient(270deg, #8A54D0 -1.64%, #D71F7B 100%) !important;
+}
+
+.orangeGradientBg {
+  background: linear-gradient(270deg, #FE753A 0%, #F4C47A 100%) !important;
+}
+
+.updatingGradient {
+  background: linear-gradient(270deg, #3F0984 -1.64%, #8611BD 100%) !important;
+}
+
+.darkredGradient {
+  background: linear-gradient(270deg, #CE1B1B 0%, #F10E60 100%) !important;
+}
+
+.free {
+  position: absolute;
+  top: 3px;
+  right: 2px;
+  color: #fff;
+}
+
+.bottomTag {
+  position: relative;
+  bottom: 22px;
+  color: #fff;
 }

@@ -15,9 +15,11 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
-  otp = new UntypedFormControl("", Validators.required);
+  otp = new UntypedFormControl("", [Validators.required, Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
+  display: any;
+  remainingTimer = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -30,11 +32,24 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
-    this.startVerifyEvent();
   }
 
   ngOnDestroy(): void {
     this.countlyService.cancelEvent("signUpAccountVerification");
+  }
+
+  timer(minute) {
+    let seconds: any = 60;
+    const timer = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.display = `${prefix}${seconds}`;
+      this.remainingTimer = true;
+      if (seconds == 0) {
+        this.remainingTimer = false;
+        clearInterval(timer);
+      }
+    }, 1000);
   }
 
   getOTP() {
@@ -50,16 +65,21 @@ export class VerifyComponent implements OnInit, OnDestroy {
           confirmButtonText: "OK",
         });
         this.otpSent = true;
+        this.timer(1);
         localStorage.setItem("otpSent", "true");
       },
       (err) => {
         this.sendingOTP = false;
-        Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
-          confirmButtonText: "OK",
-        });
+        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+          this.resendVerificationLink(err, token);
+        } else {
+          Swal.fire({
+            title: "Error Code: " + err.code,
+            text: err.message,
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+        }
       }
     );
   }
@@ -94,7 +114,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
             result: 'failure',
             failureReason: mapSignUpAccountVerificationFailureReasons(error.message),
           });
-          this.startVerifyEvent();
           this.resendVerificationLink(error, token);
         }
       },
