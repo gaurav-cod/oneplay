@@ -194,7 +194,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.searchElement.nativeElement.focus();
           }
         }, 300);
-      } else if (this.results.length === 0) {
+      } else if (this.query.value == "") {
         this.restService.search("", 0, 3).subscribe((res) => {
           this.results = res.results;
           this.keyword = res.keyword;
