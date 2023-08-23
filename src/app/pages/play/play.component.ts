@@ -82,9 +82,10 @@ export class PlayComponent implements OnInit, OnDestroy {
     } else if (millis > 60000) {
       this.loaderService.stop();
       Swal.fire({
-        title: "Oops...",
-        text: "Something went wrong",
-        icon: "error",
+        title: "Oops! Something went wrong",
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Okay",
       });
       return;
     }
