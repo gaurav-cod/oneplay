@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { resolve } from "path";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 
@@ -11,12 +10,30 @@ type State = "Ping" | "Download" | "Upload";
   styleUrls: ["./speed-test.component.scss"],
 })
 export class SpeedTestComponent implements OnInit {
-  latencyText = "";
-  jitterText = "";
+  latencyText = "0";
+  jitterText = "0";
   downloadText = "00.00";
   uploadText = "00.00";
   progressValue = "1 1000";
   throttleTime = 40;
+  messages = {
+    default: {
+      class: '',
+      text: '',
+    },
+    optimal: {
+      class: 'primaryGradientColor',
+      text: 'Your network is optimal for streaming',
+    },
+    not_optimal: {
+      class: 'errorGradientColor',
+      text: 'Network conditions are not optimal for streaming',
+    },
+    stutter: {
+      class: 'yellowGradient',
+      text: 'You may experience stutter of high latency',
+    },
+  }
   private _TsetLatencyText = throttle(
     (v: string) => (this.latencyText = v),
     this.throttleTime
@@ -52,6 +69,16 @@ export class SpeedTestComponent implements OnInit {
   testCompleted = false;
   currentLocation = undefined;
   state: State;
+  currentLatency: number;
+  currentJitter: number;
+  currentDownload: number;
+  currentUpload: number;
+  recommendation: string = "";
+  recommendations: {
+    type: State,
+    text: string,
+  }[] = [];
+  finalMessage: typeof this.messages[keyof typeof this.messages] = this.messages.default;
 
   constructor(private readonly restService: RestService) {}
 
@@ -60,8 +87,8 @@ export class SpeedTestComponent implements OnInit {
   }
 
   resetVals() {
-    this.latencyText = "";
-    this.jitterText = "";
+    this.latencyText = "0";
+    this.jitterText = "0";
     this.downloadText = "00.00";
     this.uploadText = "00.00";
     this.progressValue = "1 1000";
@@ -80,6 +107,8 @@ export class SpeedTestComponent implements OnInit {
     this.ulPacketsConfirmed = 0;
     this.testCompleted = false;
     this.currentLocation = undefined;
+    this.recommendations = [];
+    this.finalMessage = this.messages.default;
   }
 
   getStateColor(state: State) {
@@ -91,7 +120,11 @@ export class SpeedTestComponent implements OnInit {
 
   getValueColor(state: State) {
     return {
-      "text-white": state === this.state && !this.testCompleted,
+      'text-white': state === this.state && !this.testCompleted,
+      'yellowGradient': this.recommendations.length === 1 && this.recommendations[0].type === state,
+      'text-red': this.recommendations.length > 1,
+      // 'yellowGradient': true,
+      // 'text-red': true,
     };
   }
 
@@ -116,19 +149,81 @@ export class SpeedTestComponent implements OnInit {
     }.svg`;
   }
 
+  updateRecommendations() {
+    // RECOMMENDED : Latency of 15 ms, Jitter of 0.2 ms, Download Speed of 15 mbps, Upload Speed of 10 mbps
+    if (this.recommendations.length) {
+      if (this.recommendations.length === 1) {
+        this.recommendation = 'Recommended ' + this.recommendations[0].text;
+      } else {
+        this.recommendation = 'RECOMMENDED: ' + this.recommendations.map(v => v.text).join(", ");
+      }
+    } else {
+      this.recommendation = "";
+      this.recommendations = [];
+      this.finalMessage = this.messages.default;
+    }
+  }
+  async wait(ms = 3000) {
+     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   async runTests() {
     this.resetVals();
+    // this.finalMessage = this.messages.stutter;
+    // this.finalMessage = this.messages.not_optimal;
+    // this.finalMessage = this.messages.optimal;
+    // return;
     this.restService
       .getCurrentLocation()
       .toPromise()
       .then((v) => (this.currentLocation = v));
-    const urls = await this.restService.getNearestSpeedTestServer().toPromise();
+    const res = await this.restService.getNearestSpeedTestServer().toPromise();
+    // res.recommended_latency = 10;
+    // res.recommended_download = 1.2;
+    // res.recommended_upload = 1.1;
+    // this.currentLatency = 11;
+    // this.currentDownload = 1.1;
+    // this.currentUpload = 1.1;
+    // console.warn({ res, cl: this.currentLatency, cj: this.currentJitter, cd: this.currentDownload, cu: this.currentUpload, })
     this.state = "Ping";
-    await this.runPing(urls.ping);
+    // await this.wait(8000)
+    await this.runPing(res.ping);
+    if (this.currentLatency > res.recommended_latency) {
+      this.recommendations.push({
+        type: 'Ping',
+        text: `Latency of ${res.recommended_latency} ms`,
+      })
+      this.updateRecommendations();
+    }
     this.state = "Download";
-    await this.runDL(urls.download);
+    // await this.wait()
+    await this.runDL(res.download);
+    if (this.currentDownload < res.recommended_download) {
+      this.recommendations.push({
+        type: 'Download',
+        text: `Download Speed of ${res.recommended_download} mbps`,
+      })
+      this.updateRecommendations();
+    }
     this.state = "Upload";
-    await this.runUL(urls.upload);
+    // await this.wait()
+    await this.runUL(res.upload);
+    if (this.currentUpload < res.recommended_upload) {
+      this.recommendations.push({
+        type: 'Upload',
+        text: `Upload Speed of ${res.recommended_latency} mbps`,
+      })
+      this.updateRecommendations();
+    }
+    if (this.recommendations.length) {
+      if (this.recommendations.length === 1 && this.currentLatency > res.recommended_latency) {
+        this.finalMessage = this.messages.stutter;
+      } else {
+        this.finalMessage = this.messages.not_optimal;
+      }
+    } else {
+      this.finalMessage = this.messages.optimal;
+    }
     // await this.runPing("ws://localhost:9001/v1/ws/ping")
     // await this.runDL("http://localhost:9001/v1/api/download")
     // await this.runUL("http://localhost:9001/v1/api/upload")
@@ -196,7 +291,8 @@ export class SpeedTestComponent implements OnInit {
             dlend = Date.now();
             let s = (dlend - dlstart) / 1000;
             let t = dldata / 1000 / 1000 / s;
-            this._TsetDownloadText(Math.floor(t * 100) / 100);
+            this.currentDownload = Math.floor(t * 100) / 100;
+            this._TsetDownloadText(this.currentDownload);
             this.updateProgress(100 + count);
             // console.warn(i, dlend - dlstart, dldata, dldata / 1000 / 1000 / (dlend - dlstart), dlstart, dlend)
             if (count >= 20) {
@@ -235,7 +331,8 @@ export class SpeedTestComponent implements OnInit {
             ulend = Date.now();
             let s = (ulend - ulstart) / 1000;
             let t = uldata / 1000 / 1000 / s;
-            this._TsetUploadText(Math.floor(t * 100) / 100);
+            this.currentUpload = Math.floor(t * 100) / 100;
+            this._TsetUploadText(this.currentUpload);
             this.updateProgress(100 + 20 + count);
             // console.warn(i, ulend - ulstart, uldata, uldata / 1000 / 1000 / (ulend - ulstart), ulstart, ulend)
             if (count >= 20) {
@@ -319,8 +416,16 @@ export class SpeedTestComponent implements OnInit {
         lc++;
       }
     }
-    lc && this._TsetLatencyText(Math.floor(l / lc));
-    jc && this._TsetJitterText(Math.floor(j / jc));
+    // lc && this._TsetLatencyText(Math.floor(l / lc));
+    // jc && this._TsetJitterText(Math.floor(j / jc));
+    if (lc) {
+      this.currentLatency = Math.floor(l / lc);
+      this._TsetLatencyText(this.currentLatency);
+    }
+    if (jc) {
+      this.currentJitter = Math.floor(j / jc);
+      this._TsetJitterText(this.currentJitter);
+    }
     this.updateProgress(this.pingPacketsRecieved.length);
   }
 
@@ -351,7 +456,7 @@ export class SpeedTestComponent implements OnInit {
   }
 
   updateProgress(count: number) {
-    // 1 1000 to 660 1000
+    // "1 1000" to "660 1000"
     const cp = (count / (this.pingCount + 40)) * 100;
     // const cp = (count / (this.pingCount + (2 * this.ulPacketsCount))) * 100;
     this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`);
