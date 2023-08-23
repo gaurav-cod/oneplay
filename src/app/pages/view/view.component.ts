@@ -950,40 +950,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientTokenFailed(err: any, sessionId:string) {
     this._initializeEvent?.end({ result: "failure" });
     this.initializationErrored = true;
-    if(err.message == "Looks like the game is no longer running. Do you wish to quit the stream?") {
-      Swal.fire({
-        title: "Alert!",
-        text: err.message,
-        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Relaunch",
-        showDenyButton: true,
-        denyButtonText: "Quit",
-      }).then((res) => {
-        this.stopLoading();
-        this.initializationErrored = false;
-        if (res.isConfirmed) {
-          this.startGame();
-        } 
-        else if (res.isDenied) {
-          //Quit: Closes the stream.
-          this.terminateGame(sessionId)
-        }
-      });
-    } else {
-      Swal.fire({
-        title: err.message + " Error Code: " + err.code,
-        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Try Again",
-        showCancelButton: true,
-        cancelButtonText: "Report",
-      }).then((res) => {
-        this.stopLoading();
-        this.initializationErrored = false;
-        this.reportErrorOrTryAgain(res, err);
-      });
-    } 
+    Swal.fire({
+      title: err.message + " Error Code: " + err.code,
+      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+      customClass: "swalPaddingTop",
+      confirmButtonText: "Try Again",
+      showCancelButton: true,
+      cancelButtonText: "Report",
+    }).then((res) => {
+      this.stopLoading();
+      this.initializationErrored = false;
+      this.reportErrorOrTryAgain(res, err);
+    });
   }
 
   startGameWithWebRTCToken(millis = 0): void {
