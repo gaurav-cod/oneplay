@@ -38,6 +38,13 @@ body {
   font-family: "Poppins";
 }
 
+html, body {
+  overscroll-behavior: none !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: none !important;
+  overscroll-behavior-block: none !important;
+}
+
 #home-header {
   .carousel-indicators {
     // left: auto;

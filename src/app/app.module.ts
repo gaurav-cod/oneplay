@@ -32,7 +32,7 @@ import { UserAgentUtil } from "./utils/uagent.util";
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled:
         !isDevMode() &&
-        UserAgentUtil.parse(navigator.userAgent).app !== "Oneplay App",
+        UserAgentUtil.parse().app !== "Oneplay App",
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: "registerWhenStable:30000",
