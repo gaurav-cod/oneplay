@@ -27,7 +27,7 @@ import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { CustomCountlyEvents } from "src/app/services/countly";
-import { genDefaultMenuClickSegments, genDefaultSettingsViewSegments } from "src/app/utils/countly.util";
+import { genDefaultMenuClickSegments, getGameLandingViewSource } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-navbar",
@@ -84,14 +84,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   viewGame() {
     this.logCountly("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
-      // this.countlyService.addEvent("gameLandingView", {
-      //   gameID: this.gameStatus.game_id,
-      //   gameGenre: "",
-      //   gameTitle: this.gameStatus.game_name,
-      //   source: location.pathname + location.hash,
-      //   trigger: "navbar - game-status",
-      //   channel: "web",
-      // });
+      this.countlyService.endEvent("gameLandingView");
+      this.countlyService.startEvent("gameLandingView", {
+        data: { source: getGameLandingViewSource(), trigger: 'gameStatus' },
+      });
       const path = [
         "view",
         this.gLink.transform({
@@ -109,6 +105,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       gameCardClicked: "yes",
       gameId: game.oneplayId,
       gameTitle: game.title,
+    })
+    this.countlyService.endEvent("gameLandingView");
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: getGameLandingViewSource(), trigger: 'card' }
     })
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,

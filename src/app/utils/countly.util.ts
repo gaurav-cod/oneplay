@@ -1,6 +1,24 @@
 import { StripeErrorType } from "@stripe/stripe-js";
 import { CustomCountlyEvents, CustomTimedCountlyEvents } from "../services/countly";
 
+export const getGameLandingViewSource = (
+): CustomTimedCountlyEvents['gameLandingView']['source'] => {
+  const path = window.location.pathname;
+  if (path.startsWith("/dashboard/store")) {
+    return 'gamesPage';
+  } else if (path.startsWith("/dashboard/view")) {
+    return 'detailsPage';
+  } else if (path.startsWith("/dashboard/home")) {
+    return 'homePage';
+  } else if (path.startsWith("/dashboard/search")) {
+    return 'searchPage';
+  } else if (path.startsWith("/dashboard/wishlist")) {
+    return 'myLibrary';
+  } else {
+    return 'directLink';
+  }
+}
+
 export const mapStripeErrorsToSubscriptionPaymentDone = (
   error: StripeErrorType
 ): CustomTimedCountlyEvents['subscriptionPaymentDone']['failReason'] => {

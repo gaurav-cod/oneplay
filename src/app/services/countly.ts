@@ -162,8 +162,8 @@ export interface CustomTimedCountlyEvents {
     gameId: string,
     gameTitle: string,
     gameGenre: string,
-    source: "homePage" | "searchPage" | "gamesPage" | "detailsPage" | "directLink",
-    trigger: "banner" | "card" | "gameStatus",//todo
+    source: "myLibrary" | "homePage" | "searchPage" | "gamesPage" | "detailsPage" | "directLink",
+    trigger: "banner" | "card" | "gameStatus",
   },
   settingsView: {
     subscriptionViewed: "yes" | "no",

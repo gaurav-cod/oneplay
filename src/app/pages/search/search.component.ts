@@ -126,10 +126,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: 'gameClicked',
     })
-    this.countlyService.startEvent("gameLandingView", {
-      data: { source: 'searchPage', trigger: 'card' },
-      discardOldData: true,
-    });
+    // this.countlyService.startEvent("gameLandingView", {
+    //   data: { source: 'searchPage', trigger: 'card' },
+    //   discardOldData: true,
+    // });
     this.countlyService.endEvent("searchResultsViewMoreGames", {
       keywords: this.query,
       gameCardClicked: "yes",

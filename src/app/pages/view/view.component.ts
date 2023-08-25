@@ -325,16 +325,24 @@ export class ViewComponent implements OnInit, OnDestroy {
                 )
             this.loaderService.stop();
             const segments = this.countlyService.getEventData("gameLandingView");
-            this.countlyService.startEvent("gameLandingView", {
-              discardOldData: false,
-              data: {
-                  gameId: game.id.toString(),
-                  gameTitle: game.title,
-                  gameGenre: game.genreMappings.toString(),
-                  source: segments.source ?? "directLink",
-                  trigger: segments.trigger ?? "card",
-              }
-            });
+            if (segments) {
+              this.countlyService.updateEventData("gameLandingView", {
+                gameId: game.oneplayId,
+                gameTitle: game.title,
+                gameGenre: game.genreMappings.join(', '),
+              });
+            } else {
+              this.countlyService.startEvent("gameLandingView", {
+                discardOldData: false,
+                data: {
+                    gameId: game.oneplayId,
+                    gameTitle: game.title,
+                    gameGenre: game.genreMappings.join(', '),
+                    source: "directLink",
+                    trigger: "card",
+                }
+              });
+            }
           },
           (err) => {
             if (err.timeout) {
@@ -602,7 +610,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             data: {
               gameTitle: this.game.title,
               gameId: this.game.oneplayId,
-              gameGenre: this.game.genreMappings.toString(),
+              gameGenre: this.game.genreMappings.join(', '),
               store: this.selectedStore.name,
               advanceSettingsViewed: 'no',
               settingsChanged: 'no',
@@ -654,7 +662,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       data: {
         gameTitle: this.game.title,
         gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.toString(),
+        gameGenre: this.game.genreMappings.join(', '),
         store: this.selectedStore.name,
         settingsChanged: 'no',
       }
@@ -725,7 +733,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                 gameSessionId: this.sessionToTerminate,
                 gameId: this.game.oneplayId,
                 gameTitle: this.game.title,
-                gameGenre: this.game.genreMappings.toString(),
+                gameGenre: this.game.genreMappings.join(', '),
                 store: this.selectedStore.name,
               }
             });
@@ -839,7 +847,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       gameTitle: this.game.title,
       store: this.selectedStore.name,
       gameId: this.game.oneplayId,
-      gameGenre: this.game.genreMappings.toString(),
+      gameGenre: this.game.genreMappings.join(', '),
       showSettingsEnabled: this.showSettings.value ? "yes" : "no",
       result: 'success',
     })
@@ -888,7 +896,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameTitle: this.game.title,
         store: this.selectedStore.name,
         gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.toString(),
+        gameGenre: this.game.genreMappings.join(', '),
         showSettingsEnabled: this.showSettings.value ? "yes" : "no",
         result: 'wait',
       })
@@ -901,7 +909,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameTitle: this.game.title,
         store: this.selectedStore.name,
         gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.toString(),
+        gameGenre: this.game.genreMappings.join(', '),
         showSettingsEnabled: this.showSettings.value ? "yes" : "no",
         result: 'failure',
       })
@@ -919,7 +927,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameTitle: this.game.title,
         store: this.selectedStore.name,
         gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.toString(),
+        gameGenre: this.game.genreMappings.join(', '),
         showSettingsEnabled: this.showSettings.value ? "yes" : "no",
         result: 'failure',
       })

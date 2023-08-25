@@ -15,10 +15,12 @@ import { GameModel } from "src/app/models/game.model";
 import { UserModel } from "src/app/models/user.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 // import { CountlyService } from "src/app/services/countly.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { RestService } from "src/app/services/rest.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import UAParser from "ua-parser-js";
 
@@ -45,7 +47,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly ngbModal: NgbModal,
     private readonly router: Router,
-    // private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnDestroy(): void {
@@ -55,14 +57,10 @@ export class BottomNavComponent implements OnInit, OnDestroy {
 
   viewGame() {
     if (this.gameStatus && this.gameStatus.is_running) {
-      // this.countlyService.addEvent("gameLandingView", {
-      //   gameID: this.gameStatus.game_id,
-      //   gameGenre: "",
-      //   gameTitle: this.gameStatus.game_name,
-      //   source: location.pathname + location.hash,
-      //   trigger: "bottom-nav - game-status",
-      //   channel: "web",
-      // });
+      this.countlyService.endEvent("gameLandingView")
+      this.countlyService.startEvent("gameLandingView", {
+        data: {source: getGameLandingViewSource(), trigger: 'gameStatus' },
+      })
       const path = [
         "view",
         this.gLink.transform({

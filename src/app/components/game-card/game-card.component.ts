@@ -4,6 +4,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { CountlyService } from "src/app/services/countly.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import { v4 } from "uuid";
 
@@ -17,7 +18,6 @@ export class GameCardComponent implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
-  @Input() countlySource: "homePage" | "searchPage" | "gamesPage" | "detailsPage" | "directLink";
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -40,9 +40,9 @@ export class GameCardComponent implements OnInit {
   ngOnInit(): void { }
 
   onGameClick() {
+    this.countlyService.endEvent("gameLandingView")
     this.countlyService.startEvent("gameLandingView", {
-      data: { source: this.countlySource, trigger: 'card' },
-      discardOldData: true,
+      data: { source: getGameLandingViewSource(), trigger: 'card' },
     });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
