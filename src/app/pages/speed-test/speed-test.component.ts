@@ -233,7 +233,7 @@ export class SpeedTestComponent implements OnInit {
           this.pingPacketsRecieved[data.id] = +new Date();
           if (this.pingPacketsRecieved.length === this.pingCount) {
             ws.close();
-          } else this.updatePingUI();
+          }
         }
       };
       ws.onclose = () => {
@@ -380,6 +380,8 @@ export class SpeedTestComponent implements OnInit {
   //   });
   // }
 
+  private list = [];
+
   updatePingUI() {
     let l = 0;
     let j = 0;
@@ -398,7 +400,9 @@ export class SpeedTestComponent implements OnInit {
       }
     }
     if (lc) {
+      this.list.push(Math.floor(l / lc))
       this.currentLatency = Math.floor(l / lc);
+      // console.log(this.currentLatency)
       this._TsetLatencyText(this.currentLatency);
     }
     if (jc) {
