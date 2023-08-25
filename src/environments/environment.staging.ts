@@ -10,6 +10,7 @@ export const environment = {
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
   ga_tracking_id: "UA-220923953-2",
   oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
+  partner_name: 'yadav brand',
   stripe_key:
     "pk_test_51MqHiCSIFX9lGIVVPlfmun4lNf8r5p19kxLAhVsdtXHtLzbvGsVeOov7tIskv6UfMlxwZvhQzKcxGZCeEIlDKS9u00t2KiVeVV",
   billdesk_key: "ONEPLA2UAT",
