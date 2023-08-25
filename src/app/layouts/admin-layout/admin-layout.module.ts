@@ -26,6 +26,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { PlayComponent } from 'src/app/pages/play/play.component';
 import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
+import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.component';
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
     WishlistComponent,
     PlayComponent,
     FeedbackComponent,
+    SpeedTestComponent,
   ],
   providers: [ViewGuard],
 })

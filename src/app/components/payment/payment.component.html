@@ -1,0 +1,79 @@
+<ng-template #paymentModal let-d="dismiss">
+  <div class="modal-content position-relative modalBG stripeModal">
+    <a
+      href="javascript:void(0)"
+      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
+      (click)="d('Cross click')"
+    >
+      <i class="fas fa-times-circle"></i>
+    </a>
+    <div class="modal-body text-center">
+      <h1 class="modalHeading text-white">Choose your payment method</h1>
+      <div class="row">
+        <div class="col-sm-6 mt-3">
+          <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
+            <div class="card border-0 cardBG p-4">
+              <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
+              <img
+                src="assets/img/payment/Group 5.svg"
+                class="height60"
+                alt=""
+              />
+            </div>
+          </a>
+          <p class="subHeading my-2">
+            Debit Card, credit card, UPI, Netbanking
+          </p>
+        </div>
+        <div class="col-sm-6 mt-3">
+          <a href="javascript:void(0)" (click)="handlePayWithStripe()">
+            <div class="card border-0 cardBG p-4">
+              <img
+                src="assets/img/payment/Vector.svg"
+                class="height60"
+                alt=""
+              />
+            </div>
+          </a>
+          <p class="subHeading my-2">Debit Card & credit card</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #stripeModal let-c="cose">
+  <div class="modal-content position-relative modalBG stripeModal">
+    <form (submit)="onPay()">
+      <div class="modal-body borderBottomTab">
+        <div class="row borderBottomTab pb-3 mb-3">
+          <div class="col align-self-center">
+            <p class="font500 offWhiteText mb-0">Total Amount</p>
+          </div>
+          <div class="col-auto">
+            <h2 class="font800 text-white mb-0 text-right">
+              {{ currentamount | currency : (currency | uppercase) }}
+            </h2>
+          </div>
+        </div>
+        <div id="stripe-card"></div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="submit"
+          class="btn linearGradient text-white border-0"
+          [disabled]="stripeLoad"
+        >
+          {{ stripeLoad ? "Proccessing..." : "Confirm Payment" }}
+        </button>
+        <button
+          type="button"
+          (click)="closeStripeModal()"
+          class="btn mutedBg text-white border-0"
+        >
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

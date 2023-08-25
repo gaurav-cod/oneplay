@@ -1,6 +1,4 @@
 import { PaymentIntent } from "@stripe/stripe-js";
-import { GameModel } from "./models/game.model";
-import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
 
 export interface LoginDTO {
@@ -132,4 +130,19 @@ export interface ILocation {
   region: string;
   error?: boolean;
   reason?: string;
+}
+
+export interface SpeedTestServerRO {
+  ping: string,
+  download: string,
+  upload: string,
+  recommended_latency: number,
+  recommended_download: number,
+  recommended_upload: number,
+}
+
+export interface BilldeskPaymentRO {
+  orderId: string;
+  bdOrderId: string;
+  token: string;
 }
