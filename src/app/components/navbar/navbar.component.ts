@@ -26,6 +26,7 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 
 @Component({
   selector: "app-navbar",
@@ -144,6 +145,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.user?.searchPrivacy;
   }
 
+  get showDownload() {
+    return UserAgentUtil.parse().app !== 'Oneplay App';
+  }
+
   constructor(
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
@@ -207,6 +212,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.gameStatus = status;
       }
     );
+  }
+
+  openSetting() {
+    if (UserAgentUtil.parse().app === 'Oneplay App') {
+      window.location.href = this.domain + '/dashboard/settings/profile'
+    } else {
+      this.router.navigate(['settings', 'profile']);
+    }
   }
 
   onImgError(event) {
