@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      Validators.pattern(/^[0-9]{10}$/),
+      Validators.pattern(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/)
     ]),
     password: new UntypedFormControl("", [
       Validators.required,
