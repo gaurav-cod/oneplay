@@ -40,7 +40,7 @@ const qnaData = [
   ],
   [
     { q: "Will you refer Oneplay to your friends?", a: ["Yes", "No"] },
-    { q: "What you loved the most?", a: ["Quality", "Value of money"] },
+    { q: "What you loved the most?", a: ["Quality", "Value for money"] },
   ],
 ];
 
