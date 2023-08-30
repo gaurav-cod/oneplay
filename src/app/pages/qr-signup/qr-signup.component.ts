@@ -67,6 +67,7 @@ export class QrSignupComponent implements OnInit {
         },
         error: (err) => {
           this.loaderService.stop();
+          if (err.error.isOnline)
           Swal.fire({
             title: "Error Code: " + err.error.code,
             text: err.error.message,
@@ -107,6 +108,7 @@ export class QrSignupComponent implements OnInit {
           }
         },
         error: (err) => {
+          if (err.isOnline)
           Swal.fire({
             title: "Error Code: " + err.code,
             text: "Timeout!",

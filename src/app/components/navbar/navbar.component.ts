@@ -269,6 +269,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private showError(error) {
+    if (error.isOnline)
     Swal.fire({
       icon: "error",
       title: "Error Code: " + error.code,
@@ -327,6 +328,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
+            if (err.isOnline)
             Swal.fire({
               title: "Error Code: " + err.code,
               text: err.message,
@@ -382,6 +384,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.authService.updateProfile({ searchPrivacy: !privacy });
+        if (err.isOnline)
         Swal.fire({
           icon: "error",
           title: "Error Code: " + err.code,

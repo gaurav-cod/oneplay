@@ -13,7 +13,7 @@ import {
   fromEvent,
   lastValueFrom,
 } from "rxjs";
-import { catchError, filter, timeout } from "rxjs/operators";
+import { catchError, filter, map, timeout } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
 import Swal from "sweetalert2";
@@ -21,7 +21,7 @@ import networkImage from "./network-image";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private isOnline: boolean = true;
+  private isInternetPopupOpen = false;
 
   constructor(private readonly authService: AuthService) {}
 
@@ -52,58 +52,71 @@ export class AuthInterceptor implements HttpInterceptor {
       .pipe(timeout(30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
-        catchError((error: HttpErrorResponse, res) => {
+        map((res) => {
+          if (this.isInternetPopupOpen) {
+            Swal.close();
+            this.isInternetPopupOpen = false;
+          }
+          return res;
+        }),
+        catchError(async (error: HttpErrorResponse) => {
+          let isOnline = true;
+
+          if (error.statusText !== "OK") {
+            isOnline = await this.checkNetwork();
+            if (!isOnline && !this.isInternetPopupOpen) {
+              this.isInternetPopupOpen = true;
+              Swal.fire({
+                html: networkImage,
+                confirmButtonText: "Refresh",
+                showCloseButton: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+                this.isInternetPopupOpen = false;
+              });
+            }
+          }
+
           if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
 
           const code = Number(error.error?.code) || error.status || 503;
 
-          if (this.isOnline) {
-            throw new HttpErrorResponse({
-              status: error.status,
-              statusText: error.statusText,
-              error: {
-                code,
-                message:
-                  error.error?.message ||
-                  error.error?.msg ||
-                  "Server is not responding",
-                timeout: error instanceof TimeoutError || code === 408,
-              },
-            });
-          } else {
-            return res;
-          }
+          throw new HttpErrorResponse({
+            status: error.status,
+            statusText: error.statusText,
+            error: {
+              code,
+              message:
+                error.error?.message ||
+                error.error?.msg ||
+                "Server is not responding",
+              timeout: error instanceof TimeoutError || code === 408,
+              isOnline,
+            },
+          });
         })
       );
   }
 
   private checkNetwork() {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      if (!this.isOnline) {
-        this.isOnline = true;
-        Swal.close();
-      }
-    };
-    xhr.onerror = () => {
-      if (this.isOnline) {
-        this.isOnline = false;
-        Swal.fire({
-          html: networkImage,
-          confirmButtonText: "Refresh",
-          showCloseButton: true,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          } else {
-            this.isOnline = true;
-          }
-        });
-      }
-    };
-    xhr.open("GET", "https://ifconfig.me", true);
-    xhr.send();
+    return new Promise<boolean>((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        resolve(true);
+      };
+      xhr.onerror = () => {
+        resolve(false);
+      };
+      xhr.open(
+        "GET",
+        "https://networkconnectivity.googleapis.com/$discovery/rest?version=v1",
+        true
+      );
+      xhr.send();
+    });
   }
 }

@@ -50,6 +50,7 @@ export class PartySettingsComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
+        if (error.isOnline)
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,

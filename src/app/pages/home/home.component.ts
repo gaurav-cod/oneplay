@@ -100,6 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.loaderService.stop();
             },
             (error) => {
+              this.loaderService.stop();
               if(error.timeout) {
                 this.router.navigateByUrl('/server-error')
               }

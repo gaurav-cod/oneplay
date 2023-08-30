@@ -134,6 +134,7 @@ export class PlayComponent implements OnInit, OnDestroy {
 
   private startGameWithWebRTCTokenFailed(err: any) {
     this.loaderService.stop();
+    if (err.isOnline)
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,

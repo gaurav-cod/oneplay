@@ -289,12 +289,14 @@ export class AdminLayoutComponent implements AfterViewInit, OnInit, OnDestroy {
         });
         this.stripeElements.create("payment").mount("#stripe-card");
       },
-      error: (error) =>
+      error: (error) => {
+        if (error.isOnline)
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
-        }),
+        })
+      },
     });
   }
 }

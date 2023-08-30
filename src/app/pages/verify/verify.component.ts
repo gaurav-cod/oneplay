@@ -78,6 +78,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
           });
           this.resendVerificationLink(err, token);
         } else {
+          if (err.isOnline)
           Swal.fire({
             title: "Error Code: " + err.code,
             text: err.message,
@@ -109,6 +110,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         if (error.message == "Invalid OTP") {
+          if (error.isOnline)
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,
@@ -126,6 +128,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   private resendVerificationLink(error: any, token: string) {
+    if (error.isOnline)
     Swal.fire({
       title: "Error Code: " + error.code,
       text: error.message,
