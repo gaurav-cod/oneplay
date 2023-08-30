@@ -28,8 +28,6 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     let req = request;
 
-    this.checkNetwork();
-
     if (req.urlWithParams.startsWith(environment.client_api)) {
       const formData: FormData = req.body || new FormData();
       const { userid, token } = this.authService.userIdAndToken;
@@ -105,8 +103,12 @@ export class AuthInterceptor implements HttpInterceptor {
   private checkNetwork() {
     return new Promise<boolean>((resolve, reject) => {
       var xhr = new XMLHttpRequest();
-      xhr.onload = () => {
-        resolve(true);
+      xhr.onload = (res) => {
+        if (xhr.status === 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
       };
       xhr.onerror = () => {
         resolve(false);
