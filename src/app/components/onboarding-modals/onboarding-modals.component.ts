@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -18,7 +19,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './onboarding-modals.component.html',
   styleUrls: ['./onboarding-modals.component.scss']
 })
-export class OnboardingModalsComponent implements AfterViewInit {
+export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
   @ViewChild("onboardingUserModal") onboardingUserModal: ElementRef<HTMLDivElement>;
@@ -31,7 +32,9 @@ export class OnboardingModalsComponent implements AfterViewInit {
   query = new UntypedFormControl("");
   searchText = "";
   checked: boolean = false;
-  // games_array = [];
+  games_array = [];
+  wishlistSubscription = undefined;
+  selectedGames: GameModel[] = [];
   
   private selected_games = [];
 
@@ -48,16 +51,16 @@ export class OnboardingModalsComponent implements AfterViewInit {
   ) { }
 
   async ngAfterViewInit() {
+    this.wishlistSubscription = this.authService.wishlist.subscribe((wishlist) => {
+      if (localStorage.getItem("#onboardingUser") !== "true") {
+        this.onboardingUser();
+        localStorage.setItem("#closeonboardingGame", "true");
+      } else if (!wishlist.length) this.selectGame();
+    })
+  }
 
-    const wishlist = await this.gameWishlist();
-    if (localStorage.getItem("#onboardingUser") !== "true") {
-      this.onboardingUser();
-      localStorage.setItem("#closeonboardingGame", "true");
-    }
-
-    else if (wishlist.length < 1) {
-      this.selectGame(); 
-    }
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
   }
 
   onScroll() {
@@ -71,6 +74,19 @@ export class OnboardingModalsComponent implements AfterViewInit {
     this.loadGames();
   }
 
+  private selectGame() {
+    this.canLoadMore = true;
+    this.currentPage = 0;
+    this.loadGames();
+    this._selectgameRef = this.ngbModal.open(this.selectGameModal, {
+      centered: true,
+      modalDialogClass: "modal-lg",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    })
+  }
+
   private loadGames() {
     this.startLoading();
     this.restService.search(this.searchText, 0, 12,'live').subscribe(
@@ -79,13 +95,38 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (this.games.length < 12) {
           this.canLoadMore = false;
         }
-        // this.orderGames();
+        this.orderGames();
         this.stopLoading();
       },
       (error) => {
         this.stopLoading();
       }
     );
+  }
+
+  isGameInSelectedgames(game: GameModel) {
+    let t = false
+    console.warn(this.selectedGames.length)
+    for (const element of this.selectedGames) {
+      console.warn(element.oneplayId === game.oneplayId, element.oneplayId, game.oneplayId)
+      if (element.oneplayId === game.oneplayId) {
+        t = true;
+      }
+    }
+    return t
+  }
+
+  public orderGames () {
+    this.games_array = [...this.selected_games];
+    this.games.forEach(game => {
+      if(!this.isChecked(game)) {
+        this.games_array.push(game);
+      }
+    });
+    for (const element of this.selectedGames) {
+      this.games_array = this.games_array.filter(game => game.oneplayId !== element.oneplayId)
+    }
+    // this.games_array.splice(12);
   }
 
   private loadMore() {
@@ -99,7 +140,7 @@ export class OnboardingModalsComponent implements AfterViewInit {
         if (games.results.length < 12) {
           this.canLoadMore = false;
         }
-        // this.orderGames();
+        this.orderGames();
         this.stopLoading();
         this.currentPage++;
       },
@@ -129,38 +170,21 @@ export class OnboardingModalsComponent implements AfterViewInit {
     });
   }
 
-  private selectGame() {
-    this.canLoadMore = true;
-    this.currentPage = 0;
-    this.loadGames();
-    this._selectgameRef = this.ngbModal.open(this.selectGameModal, {
-      centered: true,
-      modalDialogClass: "modal-lg",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    })
-  }
+  
 
   public closeSelectGame() {
     this._selectgameRef.close()  
     this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
     this.authService.wishlist = of(this.selectedGameIds)
-    // this.selected_games = []
+    this.selected_games = []
   }
 
   public async closeonboardingGame() {
     localStorage.setItem("#onboardingUser", "true");
-    const wishlist = await this.gameWishlist();
     this._onboardingUserRef.close()
-    if (wishlist.length < 1) {
-      this.selectGame();
-    }
-  }
-
-  private gameWishlist() {
-    const wishlistobservable = this.restService.getWishlist();
-    return wishlistobservable.toPromise()
+    this.wishlistSubscription = this.authService.wishlist.subscribe((wishlist) => {
+      if (!wishlist.length) this.selectGame();
+    })
   }
 
   public isChecked(game: GameModel) {
@@ -170,21 +194,13 @@ export class OnboardingModalsComponent implements AfterViewInit {
   public checkedValue(game: GameModel) {
     if(this.isChecked(game)){
       this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      // this.selected_games.push(game);
+      this.selected_games = this.selected_games.filter((row)=>row.oneplayId!==game.oneplayId)
     } else {
       this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
+      this.selected_games.push(game);
     }
-    // console.log('selectedGames',this.selectedGameIds);
   }
 
-  // public orderGames () {
-  //   this.games_array = [...this.selected_games];
-  //   this.games.forEach(game => {
-  //     if(!this.isChecked(game)) {
-  //       this.games_array.push(game);
-  //     }
-  //   });
-  // }
   get domain() {
     return environment.domain;
   }
