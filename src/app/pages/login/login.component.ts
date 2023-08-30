@@ -104,6 +104,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         } else {
+          if (error.isOnline)
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,

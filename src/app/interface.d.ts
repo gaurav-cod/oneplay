@@ -135,7 +135,10 @@ export interface ILocation {
 export interface SpeedTestServerRO {
   ping: string,
   download: string,
-  upload: string
+  upload: string,
+  recommended_latency: number,
+  recommended_download: number,
+  recommended_upload: number,
 }
 
 export interface BilldeskPaymentRO {

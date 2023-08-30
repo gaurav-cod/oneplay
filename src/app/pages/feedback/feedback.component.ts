@@ -142,6 +142,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
           });
         },
         (err) => {
+          if (err.isOnline)
           Swal.fire({
             title: "Error Code: " + err.code,
             text: err.message,

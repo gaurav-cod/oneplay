@@ -307,7 +307,7 @@
                 <a
                   href="javascript:void(0)"
                   routerLinkActive="active"
-                  [routerLink]="['settings', 'profile']"
+                  (click)="openSetting()"
                   class="dropdown-item"
                   (click)="logCountly('settingsClicked')"
                 >

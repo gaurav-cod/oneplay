@@ -28,6 +28,7 @@ import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { CustomCountlyEvents } from "src/app/services/countly";
 import { genDefaultMenuClickSegments, getGameLandingViewSource } from "src/app/utils/countly.util";
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 
 @Component({
   selector: "app-navbar",
@@ -147,6 +148,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.user?.searchPrivacy;
   }
 
+  get showDownload() {
+    return UserAgentUtil.parse().app !== 'Oneplay App';
+  }
+
   constructor(
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
@@ -210,6 +215,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.gameStatus = status;
       }
     );
+  }
+
+  openSetting() {
+    if (UserAgentUtil.parse().app === 'Oneplay App') {
+      window.location.href = this.domain + '/dashboard/settings/profile'
+    } else {
+      this.router.navigate(['settings', 'profile']);
+    }
   }
 
   onImgError(event) {
@@ -284,6 +297,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private showError(error) {
+    if (error.isOnline)
     Swal.fire({
       icon: "error",
       title: "Error Code: " + error.code,
@@ -347,6 +361,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
+            if (err.isOnline)
             Swal.fire({
               title: "Error Code: " + err.code,
               text: err.message,
@@ -424,6 +439,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.authService.updateProfile({ searchPrivacy: !privacy });
+        if (err.isOnline)
         Swal.fire({
           icon: "error",
           title: "Error Code: " + err.code,
