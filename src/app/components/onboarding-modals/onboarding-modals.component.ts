@@ -1,29 +1,29 @@
-import { 
+import {
   AfterViewInit,
   Component,
   ElementRef,
+  OnDestroy,
   ViewChild,
-} from '@angular/core';
+} from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { of } from 'rxjs';
-import { AuthService } from 'src/app/services/auth.service';
+import { Subscription, combineLatest, of, zip } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
-import { UntypedFormControl } from '@angular/forms';
-import { environment } from 'src/environments/environment';
+import { UntypedFormControl } from "@angular/forms";
+import { environment } from "src/environments/environment";
 
 @Component({
-  selector: 'app-onboarding-modals',
-  templateUrl: './onboarding-modals.component.html',
-  styleUrls: ['./onboarding-modals.component.scss']
+  selector: "app-onboarding-modals",
+  templateUrl: "./onboarding-modals.component.html",
+  styleUrls: ["./onboarding-modals.component.scss"],
 })
-export class OnboardingModalsComponent implements AfterViewInit {
-
+export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
-  @ViewChild("onboardingUserModal") onboardingUserModal: ElementRef<HTMLDivElement>;
+  @ViewChild("onboardingUserModal")
+  onboardingUserModal: ElementRef<HTMLDivElement>;
 
-  selectedGameIds: string[] = [];
   games: GameModel[] = [];
   currentPage = 0;
   isLoading = false;
@@ -31,33 +31,43 @@ export class OnboardingModalsComponent implements AfterViewInit {
   query = new UntypedFormControl("");
   searchText = "";
   checked: boolean = false;
-  // games_array = [];
-  
-  private selected_games = [];
+
+  selectedGames: GameModel[] = [];
+  wishlist: string[] = [];
 
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
-  
+  private wishlistSubscription: Subscription;
 
   constructor(
     private readonly authService: AuthService,
     private readonly ngbModal: NgbModal,
 
     private readonly restService: RestService,
-    private readonly loaderService: NgxUiLoaderService,
-  ) { }
+    private readonly loaderService: NgxUiLoaderService
+  ) {}
 
   async ngAfterViewInit() {
-
-    const wishlist = await this.gameWishlist();
     if (localStorage.getItem("#onboardingUser") !== "true") {
       this.onboardingUser();
       localStorage.setItem("#closeonboardingGame", "true");
     }
 
-    else if (wishlist.length < 1) {
-      this.selectGame(); 
-    }
+    this.wishlistSubscription = combineLatest([
+      this.authService.wishlist,
+      this.authService.triggerWishlist,
+    ]).subscribe(([wishlist, triggered]) => {
+      if (wishlist) {
+        if (!wishlist.length || triggered) {
+          this.wishlist = wishlist;
+          this.selectGame();
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.wishlistSubscription?.unsubscribe();
   }
 
   onScroll() {
@@ -71,15 +81,29 @@ export class OnboardingModalsComponent implements AfterViewInit {
     this.loadGames();
   }
 
+  private selectGame() {
+    this.canLoadMore = true;
+    this.currentPage = 0;
+    this.loadGames();
+    this._selectgameRef = this.ngbModal.open(this.selectGameModal, {
+      centered: true,
+      modalDialogClass: "modal-lg",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   private loadGames() {
     this.startLoading();
-    this.restService.search(this.searchText, 0, 12,'live').subscribe(
+    this.restService.search(this.searchText, 0, 12, "live").subscribe(
       (response) => {
-        this.games = response.results;
-        if (this.games.length < 12) {
+        this.games = response.results.filter(
+          (g) => !this.wishlist.includes(g.oneplayId)
+        );
+        if (response.results.length < 12) {
           this.canLoadMore = false;
         }
-        // this.orderGames();
         this.stopLoading();
       },
       (error) => {
@@ -88,25 +112,38 @@ export class OnboardingModalsComponent implements AfterViewInit {
     );
   }
 
+  get orderedGames() {
+    return [
+      ...this.selectedGames,
+      ...this.games.filter((g) => !this.selectedGameIds.includes(g.oneplayId)),
+    ];
+  }
+
   private loadMore() {
     if (this.isLoading || !this.canLoadMore) {
       return;
     }
     this.startLoading();
-    this.restService.search(this.searchText, this.currentPage + 1, 12,'live').subscribe(
-      (games) => {
-        this.games = [...this.games, ...games.results];
-        if (games.results.length < 12) {
-          this.canLoadMore = false;
+    this.restService
+      .search(this.searchText, this.currentPage + 1, 12, "live")
+      .subscribe(
+        (games) => {
+          this.games = [
+            ...this.games,
+            ...games.results.filter(
+              (g) => !this.wishlist.includes(g.oneplayId)
+            ),
+          ];
+          if (games.results.length < 12) {
+            this.canLoadMore = false;
+          }
+          this.stopLoading();
+          this.currentPage++;
+        },
+        (error) => {
+          this.stopLoading();
         }
-        // this.orderGames();
-        this.stopLoading();
-        this.currentPage++;
-      },
-      (error) => {
-        this.stopLoading();
-      }
-    );
+      );
   }
 
   private startLoading() {
@@ -129,38 +166,24 @@ export class OnboardingModalsComponent implements AfterViewInit {
     });
   }
 
-  private selectGame() {
-    this.canLoadMore = true;
-    this.currentPage = 0;
-    this.loadGames();
-    this._selectgameRef = this.ngbModal.open(this.selectGameModal, {
-      centered: true,
-      modalDialogClass: "modal-lg",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    })
-  }
-
   public closeSelectGame() {
-    this._selectgameRef.close()  
-    this.selectedGameIds.forEach((id)=>this.restService.addWishlist(id).subscribe())
-    this.authService.wishlist = of(this.selectedGameIds)
-    // this.selected_games = []
+    this._selectgameRef.close();
+    this.selectedGameIds.forEach((id) =>
+      this.restService.addWishlist(id).subscribe()
+    );
+    if (this.wishlist.length) {
+      this.authService.closeWishlist();
+      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
+    } else {
+      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
+      this.authService.closeWishlist();
+    }
+    this.selectedGames = [];
   }
 
   public async closeonboardingGame() {
     localStorage.setItem("#onboardingUser", "true");
-    const wishlist = await this.gameWishlist();
-    this._onboardingUserRef.close()
-    if (wishlist.length < 1) {
-      this.selectGame();
-    }
-  }
-
-  private gameWishlist() {
-    const wishlistobservable = this.restService.getWishlist();
-    return wishlistobservable.toPromise()
+    this._onboardingUserRef.close();
   }
 
   public isChecked(game: GameModel) {
@@ -168,24 +191,20 @@ export class OnboardingModalsComponent implements AfterViewInit {
   }
 
   public checkedValue(game: GameModel) {
-    if(this.isChecked(game)){
-      this.selectedGameIds = this.selectedGameIds.filter((id)=>id!==game.oneplayId)
-      // this.selected_games.push(game);
+    if (this.isChecked(game)) {
+      this.selectedGames = this.selectedGames.filter(
+        (row) => row.oneplayId !== game.oneplayId
+      );
     } else {
-      this.selectedGameIds = [...this.selectedGameIds, game.oneplayId]
+      this.selectedGames.push(game);
     }
-    // console.log('selectedGames',this.selectedGameIds);
   }
 
-  // public orderGames () {
-  //   this.games_array = [...this.selected_games];
-  //   this.games.forEach(game => {
-  //     if(!this.isChecked(game)) {
-  //       this.games_array.push(game);
-  //     }
-  //   });
-  // }
   get domain() {
     return environment.domain;
+  }
+
+  private get selectedGameIds() {
+    return this.selectedGames.map((s) => s.oneplayId);
   }
 }

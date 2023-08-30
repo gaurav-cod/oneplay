@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { GameModel } from "src/app/models/game.model";
 import { AuthService } from "src/app/services/auth.service";
@@ -11,13 +11,16 @@ import { Subscription } from "rxjs";
   styleUrls: ["./wishlist.component.scss"],
 })
 export class WishlistComponent implements OnInit, OnDestroy {
+  @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
+
   games: GameModel[] = [];
   private wishlistSubscription: Subscription;
+  selectedGames: GameModel[] = [];
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly title: Title
+    private readonly title: Title,
   ) {}
 
   ngOnDestroy(): void {
@@ -27,9 +30,15 @@ export class WishlistComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle("OnePlay | Wishlist");
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
-      this.restService
-        .getWishlistGames(ids)
-        .subscribe((games) => (this.games = games));
+      if (ids) {
+        this.restService
+          .getWishlistGames(ids)
+          .subscribe((games) => (this.selectedGames = games));
+      }
     });
+  } 
+
+  selectGame() {
+    this.authService.openWishlist();
   }
 }
