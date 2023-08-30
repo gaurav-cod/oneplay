@@ -335,6 +335,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   private showError(error) {
+    if (error.isOnline)
     Swal.fire({
       icon: "error",
       title: "Error Code: " + error.code,

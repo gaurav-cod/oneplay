@@ -57,6 +57,7 @@ export class SecurityComponent implements OnInit {
         });
       },
       (error) => {
+        if (error.isOnline)
         Swal.fire({
           icon: "error",
           title: "Error Code: " + error.code,
@@ -80,6 +81,7 @@ export class SecurityComponent implements OnInit {
         this.authService.logout();
       },
       (error) => {
+        if (error.isOnline)
         Swal.fire({
           icon: "error",
           title: "Error Code: " + error.code,
@@ -100,6 +102,7 @@ export class SecurityComponent implements OnInit {
         this.password.reset();
       },
       (error) => {
+        if (error.isOnline)
         Swal.fire({
           icon: "error",
           title: "Error Code: " + error.code,

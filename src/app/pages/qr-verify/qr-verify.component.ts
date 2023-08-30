@@ -107,6 +107,7 @@ export class QrVerifyComponent implements OnInit {
         },
         error: (err) => {
           this.loading = false;
+          if (err.error.isOnline)
           Swal.fire({
             title: "Error Code: " + err.error.code,
             text: err.error.message,
