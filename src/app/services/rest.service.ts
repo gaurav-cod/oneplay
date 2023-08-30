@@ -137,8 +137,8 @@ export class RestService {
     );
   }
 
-  resendEmailUpdate(email: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/resend_update_email_request_secret", { email }).pipe(
+  resendEmailRequestUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_request_secret").pipe(
       map((res) => res["msg"]),
       catchError(({ error }) => {
         throw error;
@@ -146,13 +146,21 @@ export class RestService {
     );
   }
 
-  verifyEmailUpdate(code: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe(
+  verifyEmailUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe();
+  }
+
+  resendEmailUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_secret").pipe(
       map((res) => res["msg"]),
       catchError(({ error }) => {
         throw error;
       })
     );
+  }
+
+  confirmEmailUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_secret", { code }).pipe();
   }
 
   verify(data: VerifySignupDTO): Observable<string> {

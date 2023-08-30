@@ -10,8 +10,8 @@
             </div>
         </div>
     </div>
-    <p class="font16 font500 cancelgradientText mt-3 pb-3">Maximum resend code limit reached. Please try again later.</p>
+    <!-- <p class="font16 font500 cancelgradientText mt-3 pb-3">Maximum resend code limit reached. Please try again later.</p> -->
     <!-- <p class="font16 font500 mt-3 pb-3"><span class="cancelgradientText">Incorrect Security Code</span>, <span class="muteText">Please check carefully or </span><a href="#" class="text-white">Resend Code</a></p> -->
     <!-- <p class="font16 font500 muteText mt-3 pb-3">Didn’t Receive code? <span class="text-white">Resend in 00:59</span></p> -->
-    <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" (click)="verfiyEmailUpdate()">Continue</button>
+    <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" [disabled]="codeForm.invalid" (click)="verfiyEmail()">{{buttonText}}</button>
 </form>

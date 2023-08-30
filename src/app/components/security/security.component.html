@@ -141,7 +141,7 @@
       </p>
       <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email" [formControl]="email" />
       <span *ngIf="email.touched && email.invalid" class="font16 font500 errorGradientColor float-right">*invalid email id</span>
-      <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updateEmail()" [disabled]="email.invalid">Confirm</button>
+      <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updateEmail()" [disabled]="email.invalid">{{buttonText}}</button>
     </div>
   </div>
 </ng-template>
@@ -157,7 +157,7 @@
       >
         <i class="fas fa-times-circle font20"></i>
       </a>
-      <app-otp-screen [otpHeading]="otpHeading" [otpSubHeading]="otpSubHeading"></app-otp-screen>
+      <app-otp-screen [otpHeading]="otpHeading" [otpSubHeading]="otpSubHeading" [codeForm]="codeForm" [verfiyEmail]="verfiyEmail" [buttonText]="buttonText"></app-otp-screen>
     </div>
   </div>
 </ng-template>

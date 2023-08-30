@@ -1,5 +1,6 @@
 import { Component, Input, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { RestService } from 'src/app/services/rest.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -10,6 +11,8 @@ import Swal from 'sweetalert2';
 export class OtpScreenComponent {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
+  @Input() verfiyEmail: Function;
+  @Input() buttonText: string;
   form: UntypedFormGroup;
   formInput = [
     "one",
@@ -19,8 +22,6 @@ export class OtpScreenComponent {
     "four",
     "five",
     "six",
-    // "seven",
-    // "eight",
   ];
   @ViewChildren("formRow") rows: any;
   public codeForm = new UntypedFormGroup({
@@ -30,10 +31,11 @@ export class OtpScreenComponent {
     four: new UntypedFormControl("", [Validators.required]),
     five: new UntypedFormControl("", [Validators.required]),
     six: new UntypedFormControl("", [Validators.required]),
-    // seven: new UntypedFormControl("", [Validators.required]),
-    // eight: new UntypedFormControl("", [Validators.required]),
   });
-  restService: any;
+
+  constructor(
+    private readonly restService: RestService,
+  ){}
 
   jump(event: any, index: number) {
     const input = event.target as HTMLInputElement;
@@ -45,7 +47,6 @@ export class OtpScreenComponent {
         input.value.length === input.maxLength &&
         index < this.formInput.length - 2
       ) {
-        console.warn(this.rows, index)
         this.rows._results[index + 1].nativeElement.focus();
       }
     } else {
@@ -64,29 +65,5 @@ export class OtpScreenComponent {
         this.rows._results[index - 1].nativeElement.value = "";
       }
     }
-  }
-
-  verfiyEmailUpdate() {
-    // if (this.codeForm.invalid) return;
-    const c = Object.values(
-      this.codeForm.value as { [key: string]: string }
-    ).map((el) => `${el}`);
-    const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
-    this.restService.verifyEmailUpdate(code).subscribe(
-      () => {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Password updated successfully",
-        });
-      },
-      (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
-      }
-    );
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { UserModel } from "src/app/models/user.model";
@@ -18,8 +18,11 @@ export class SecurityComponent implements OnInit {
   @ViewChild("changePasswordModal") changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
+  @Input() codeForm;
+
   otpHeading: string = '';
   otpSubHeading: string = '';
+  buttonText: string = 'Continue';
   
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
@@ -45,30 +48,12 @@ export class SecurityComponent implements OnInit {
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
-
       this.phone.setValue(user.phone);
       this.email.setValue(user.email);
-
-      // if (!!user.phone) {
-      //   this.phone.disable();
-      // }
-      // if (!!user.email) {
-      //   this.email.disable();
-      // }
     });
   }
 
   ngOnInit(): void {}
-
-  openEmailModal() {
-    this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    });
-  }
 
   openPhoneModal() {
     this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
@@ -136,6 +121,26 @@ export class SecurityComponent implements OnInit {
   //   );
   // }
 
+  private openOTPScreen() {
+    this._otpScreenRef = this.ngbModal.open(this.otpScreen, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
+  openEmailModal() {
+    this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   updateEmail(): void {
     if (this.email.invalid) return;
     if (this.user.email === this.email.value.trim()) return;
@@ -143,24 +148,44 @@ export class SecurityComponent implements OnInit {
       () => {
         this.otpHeading = "Enter Security Code";
         this.otpSubHeading = "A security code has been sent to your mobile number and previous email address.";
-        this._otpScreenRef = this.ngbModal.open(this.otpScreen, {
-          centered: true,
-          modalDialogClass: "modal-sm",
-          scrollable: true,
-          backdrop: "static",
-          keyboard: false,
+        this.openOTPScreen();
+      }
+    );
+  }
+
+  verfiyEmail() {
+    const c = Object.values(
+      this.codeForm.value as { [key: string]: string }
+    ).map((el) => `${el}`);
+    const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
+    this.restService.verifyEmailUpdate(code).subscribe(
+      () => {
+        this._otpScreenRef?.close();
+        this.otpHeading = "Verify New Email Address";
+        this.otpSubHeading = "Please enter the code sent to your new email address.";
+        this.buttonText = "Confirm";
+        this.openOTPScreen();
+      }
+    );
+  }
+
+  confirmEmail() {
+    const c = Object.values(
+      this.codeForm.value as { [key: string]: string }
+    ).map((el) => `${el}`);
+    const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
+    this.restService.confirmEmailUpdate(code).subscribe(
+      () => {
+        Swal.fire({
+          icon: "success",
+          text: "You have successfully changed your email.",
         });
-        // Swal.fire({
-        //   icon: "success",
-        //   title: "Success",
-        //   text: msg,
-        // });
-        // this.authService.logout();
+        this.authService.logout();
       },
       (error) => {
         Swal.fire({
           icon: "error",
-          title: "Error Code: " + error.code,
+          title: " Error Code: " + error.code,
           text: error.message,
         });
       }
