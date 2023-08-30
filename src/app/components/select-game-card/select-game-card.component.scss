@@ -17,7 +17,8 @@
   cursor: pointer;
 
   .card-img {
-    height: 100%;
+    height: 120px;
+    object-fit: cover;
   }
 
   video {
@@ -41,17 +42,29 @@
   .card {
     height: 100px;
   }
+
+  .card-img {
+    height: 100% !important;
+  }
 }
 
 @media (max-width: 480px) {
   .card {
     height: 100px;
   }
+
+  .card-img {
+    height: 100% !important;
+  }
 }
 
 @media (max-width: 400px) {
   .card {
     height: 80px;
+  }
+
+  .card-img {
+    height: 100% !important;
   }
 }
 
@@ -102,4 +115,10 @@
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
 }

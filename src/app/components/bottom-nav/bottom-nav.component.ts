@@ -35,6 +35,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   private user: UserModel;
   private userSubscription: Subscription;
   private gameStatusSubscription: Subscription;
+  downloadAlert: boolean = true;
 
   constructor(
     private readonly messagingService: MessagingService,
@@ -103,6 +104,10 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     return (
       uagent.getOS().name === "Android" && uagent.getDevice().type !== "smarttv"
     );
+  }
+
+  closeAlert() {
+    this.downloadAlert = false;
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 <div *ngIf="!!video" class="row m-0 stream">
-  <div class="col-md-9 col-sm-12 d-flex flex-column px-0">
+  <div class="col-lg-9 col-md-7 col-sm-12 px-0">
     <iframe
       class="youtube-player"
       [src]="playing | safe"
@@ -48,17 +48,17 @@
     </div>
   </div>
   <div
-    class="col-md-3 col-sm-12 d-flex flex-column"
+    class="col-lg-3 col-md-5 col-sm-12"
     style="background: #171717"
   >
-    <div class="flex-grow-1">
+    <div class="">
       <div class="row bg-dark py-3">
         <div class="col text-white">Chats</div>
         <div class="col flex-grow-0 text-white-50">
           <i class="fa fa-users" aria-hidden="true"></i>
         </div>
       </div>
-      <ul #chatBox class="py-4 overflow-auto pl-0" style="max-height: 580px">
+      <ul #chatBox class="py-4 overflow-auto pl-0 chatBoxHeight">
         <li
           *ngFor="let msg of chats"
           class="d-flex align-items-center mb-3"
@@ -74,7 +74,7 @@
         </li>
       </ul>
     </div>
-    <form class="d-flex mb-4" (submit)="sendMessage()">
+    <form class="d-flex mb-4 mb-lg-0" (submit)="sendMessage()">
       <input
         type="text"
         class="form-control bg-transparent mr-2"
@@ -87,7 +87,7 @@
 </div>
 <div>
   <div *ngIf="!!game" class="row mt-4">
-    <div class="col-md-9 col-sm-12">
+    <div class="col-md-12 col-lg-9 col-sm-12">
       <div class="card bg-dark">
         <div class="card-body row">
           <div class="col-md-8 col-sm-12 d-flex">

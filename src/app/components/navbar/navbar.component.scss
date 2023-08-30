@@ -47,6 +47,11 @@
     scrollbar-width: none; 
 }
 
+.menudropdown::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
 .menudropdown a {
     color: #959595 !important;
     font-weight: 500;
@@ -114,7 +119,10 @@
 
 .navbar-nav .dropdown-menu {
     position: absolute;
-    max-height: calc(85vh - 79px);
+    max-height: calc(100vh - 79px);
+    @media (max-width: 1200px) {
+        max-height: calc(85vh - 79px);
+    }
 }
 
 .navbar-search .form-control {
@@ -178,7 +186,7 @@
 }
 
 ::ng-deep .tooltip-inner {
-    width: 180px;
+    width: 180px !important;
 }
 
 .w120 {
@@ -227,6 +235,25 @@
 
 .borderRadius0{
     border-radius: 0px !important;
+}
+
+.privacyIconBg {
+    background-image: url('../../../assets/icons/privacy.svg');
+    background-repeat: no-repeat;
+    height: 16px;
+    width: 16px;
+}
+
+.menudropdown a:hover .privacy {
+    content: url("../../../assets/icons/privacy-hover.svg");
+}
+
+.menudropdown a:hover .session {
+    content: url("../../../assets/icons/Pie_Chart-hover.svg");
+}
+
+.menudropdown a:hover .logout {
+    content: url("../../../assets/icons/Logout-hover.svg");
 }
 
 .tagText {

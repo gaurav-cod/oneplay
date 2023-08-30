@@ -129,7 +129,7 @@
 </ng-template>
 
 <ng-template #selectGameModal let-d="dismiss">
-  <div class="modal-header bg-dark d-inline">
+  <div class="modal-header d-inline py-2">
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-12 align-self-center">
         <h2 class="text-white mb-0">Select The Games</h2>
@@ -157,7 +157,7 @@
       </div>
     </div>
   </div>
-  <div class="modal-body bg-dark pt-0">
+  <div class="modal-body py-0 height50vh">
     <div
       class="row"
       infinite-scroll
@@ -165,25 +165,33 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let game of games" class="col-lg-3 col-md-4 col-6 mb-4">
-        <div class="card bg-dark text-white">
+      <div *ngFor="let game of orderedGames" class="col-lg-3 col-md-4 col-sm-4 col-6 my-2 px-2">
+        <div class="card bg-dark border-0 text-white">
           <app-select-game-card [game]="game" (selectClick)="checkedValue(game)" [isChecked]="isChecked(game)"></app-select-game-card>
         </div>
+      </div>
+      <div
+        *ngIf="games.length === 0"
+        class="col-12 font16 font500 offWhitecolor mx-3 py-2 text-center"
+      >
+        Sorry, No Results Found!
+        <p class="mb-0 font14 font500 mutedTextColor">Please try different keywords.</p>
       </div>
       <div class="position-relative col-12">
         <ngx-ui-loader
           [fgsColor]="'#c32ead'"
           [loaderId]="'scroll'"
           [hasProgressBar]="false"
+          logoSize = 120
         ></ngx-ui-loader>
       </div>
     </div>
   </div>
-  <div class="modal-footer bg-dark">
+  <div class="modal-footer py-2">
     <button
       type="submit"
       class="btn customBtnBg border-left-0 border-right-0 border-top-0 text-white"
-      [disabled]="selectedGameIds.length < 1"
+      [disabled]="selectedGames.length < 1 && wishlist.length < 1"
       (click)="closeSelectGame()"
     >
       Done
