@@ -159,7 +159,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     this.authService.wishlist.subscribe(
-      (wishlist) => (this.wishlist = wishlist)
+      (wishlist) => (this.wishlist = (wishlist ?? []))
     );
     this.gamepadService.gamepads.subscribe((gamepads) => {
       this._gamepads = gamepads;

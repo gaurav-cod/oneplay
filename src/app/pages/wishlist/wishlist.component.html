@@ -3,13 +3,21 @@
     <div class="col-12">
       <h3 class="font700 font28 text-white">My Library</h3>
     </div>
-    <div *ngFor="let gamecard of selectedGames" class="col-6 col-sm-4 col-md-4 col-lg-3 mb-3 px-2">
+    <div
+      *ngFor="let gamecard of selectedGames"
+      class="col-6 col-sm-4 col-md-4 col-lg-3 mb-3 px-2"
+    >
       <div class="zoom">
         <app-game-card [game]="gamecard"></app-game-card>
       </div>
     </div>
     <div class="col-6 col-sm-4 col-md-4 col-lg-3 mb-3 px-4 align-self-center">
-      <button class="btn p-0 mx-2 customToopTip" placement="bottom" ngbTooltip="Add to Library" (click)="selectGame()">
+      <button
+        class="btn p-0 mx-2 customToopTip"
+        placement="bottom"
+        ngbTooltip="Add to Library"
+        (click)="selectGame()"
+      >
         <img
           src="assets/icons/Speedtest (2).svg"
           class="img-fluid"
@@ -21,66 +29,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #selectGameModal let-d="dismiss">
-  <div class="modal-header bg-dark d-inline">
-    <div class="row justify-content-center">
-      <div class="col-lg-6 col-md-5 col-sm-5 col-12 align-self-center pr-0">
-        <h2 class="text-white mb-0">Select The Games</h2>
-      </div>
-      <div class="col-lg-6 col-md-7 col-sm-7 col-12 mt-2 mt-lg-0 navbar-search">
-        <div class="form-group mb-0">
-          <div class="input-group input-group-alternative border-0 bg-darker">
-            <input
-              class="form-control"
-              placeholder="Search Games"
-              type="text"
-              [formControl]="query"
-              (keyup)="onSearch()"
-            />
-            <div class="input-group-prepend">
-              <a
-                href="javascript:void(0)"
-                class="input-group-text"
-                (click)="onSearch()"
-                ><i class="fas fa-search"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="modal-body bg-dark py-0">
-    <div
-      class="row"
-      infinite-scroll
-      [infiniteScrollDistance]="5"
-      [infiniteScrollThrottle]="200"
-      (scrolled)="onScroll()"
-    >
-      <div *ngFor="let game of games_array" class="col-md-4 col-6 mb-3 colLG px-2">
-        <div class="card bg-dark text-white">
-          <app-select-game-card [game]="game" (selectClick)="checkedValue(game)" [isChecked]="isChecked(game)"></app-select-game-card>
-        </div>
-      </div>
-      <div class="position-relative col-12">
-        <ngx-ui-loader
-          [fgsColor]="'#c32ead'"
-          [loaderId]="'scroll'"
-          [hasProgressBar]="false"
-        ></ngx-ui-loader>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer bg-dark py-2">
-    <button
-      type="submit"
-      class="btn customBtnBg border-left-0 border-right-0 border-top-0 text-white"
-      [disabled]="selectedGameIds.length < 1"
-      (click)="closeSelectGame()"
-    >
-      Done
-    </button>
-  </div>
-</ng-template>
