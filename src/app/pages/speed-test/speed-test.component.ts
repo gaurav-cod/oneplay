@@ -233,7 +233,7 @@ export class SpeedTestComponent implements OnInit {
           this.pingPacketsRecieved[data.id] = +new Date();
           if (this.pingPacketsRecieved.length === this.pingCount) {
             ws.close();
-          } else this.updatePingUI();
+          }
         }
       };
       ws.onclose = () => {
