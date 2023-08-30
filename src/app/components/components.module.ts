@@ -30,6 +30,7 @@ import { SelectGameCardComponent } from './select-game-card/select-game-card.com
 import { ClipboardModule } from "ngx-clipboard";
 import { InitializingGameComponent } from './initializing-game/initializing-game.component';
 import { PaymentComponent } from './payment/payment.component';
+import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 
 @NgModule({
   imports: [
@@ -67,6 +68,7 @@ import { PaymentComponent } from './payment/payment.component';
     SelectGameCardComponent,
     InitializingGameComponent,
     PaymentComponent,
+    OtpScreenComponent,
   ],
   exports: [
     GameCardComponent,

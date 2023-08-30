@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
@@ -12,19 +13,35 @@ import Swal from "sweetalert2";
   styleUrls: ["./security.component.scss"],
 })
 export class SecurityComponent implements OnInit {
+  @ViewChild("changeEmailModal") changeEmailModal: ElementRef<HTMLDivElement>;
+  @ViewChild("changePhoneModal") changePhoneModal: ElementRef<HTMLDivElement>;
+  @ViewChild("changePasswordModal") changePasswordModal: ElementRef<HTMLDivElement>;
+  @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
+
+  otpHeading: string = '';
+  otpSubHeading: string = '';
+  
+  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+  email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
+
   password = new UntypedFormControl("", [
     Validators.required,
     Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
   ]);
   phone = new UntypedFormControl("", [Validators.required, phoneValidator()]);
-  email = new UntypedFormControl("", [Validators.required, Validators.email]);
+  
   showPass = false;
 
   private user: UserModel;
+  private _changeEmailModalRef: NgbModalRef;
+  private _changePhoneModalRef: NgbModalRef;
+  private _changePasswordModalRef: NgbModalRef;
+  private _otpScreenRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly ngbModal: NgbModal,
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -32,16 +49,46 @@ export class SecurityComponent implements OnInit {
       this.phone.setValue(user.phone);
       this.email.setValue(user.email);
 
-      if (!!user.phone) {
-        this.phone.disable();
-      }
-      if (!!user.email) {
-        this.email.disable();
-      }
+      // if (!!user.phone) {
+      //   this.phone.disable();
+      // }
+      // if (!!user.email) {
+      //   this.email.disable();
+      // }
     });
   }
 
   ngOnInit(): void {}
+
+  openEmailModal() {
+    this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
+  openPhoneModal() {
+    this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
+  openPasswordModal() {
+    this._changePasswordModalRef = this.ngbModal.open(this.changePasswordModal, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
 
   updatePhone(): void {
     if (!this.phone.valid) return;
@@ -66,18 +113,49 @@ export class SecurityComponent implements OnInit {
     );
   }
 
+  // updateEmail(): void {
+  //   if (this.email.invalid) return;
+  //   this.email.disable();
+  //   if (this.user.email === this.email.value.trim()) return;
+  //   this.restService.updateEmail(this.email.value).subscribe(
+  //     (msg) => {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success",
+  //         text: msg,
+  //       });
+  //       this.authService.logout();
+  //     },
+  //     (error) => {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error Code: " + error.code,
+  //         text: error.message,
+  //       });
+  //     }
+  //   );
+  // }
+
   updateEmail(): void {
     if (this.email.invalid) return;
-    this.email.disable();
     if (this.user.email === this.email.value.trim()) return;
     this.restService.updateEmail(this.email.value).subscribe(
-      (msg) => {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: msg,
+      () => {
+        this.otpHeading = "Enter Security Code";
+        this.otpSubHeading = "A security code has been sent to your mobile number and previous email address.";
+        this._otpScreenRef = this.ngbModal.open(this.otpScreen, {
+          centered: true,
+          modalDialogClass: "modal-sm",
+          scrollable: true,
+          backdrop: "static",
+          keyboard: false,
         });
-        this.authService.logout();
+        // Swal.fire({
+        //   icon: "success",
+        //   title: "Success",
+        //   text: msg,
+        // });
+        // this.authService.logout();
       },
       (error) => {
         Swal.fire({

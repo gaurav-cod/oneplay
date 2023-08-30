@@ -569,7 +569,7 @@ input:-webkit-autofill:active {
 }
 
 .height52 {
-  height: 52px;
+  height: 52px !important;
 }
 
 .mutedBg {
@@ -1206,4 +1206,11 @@ select {
   position: relative;
   bottom: 22px;
   color: #fff;
+}
+
+.borderRadiusCustom {
+  border-radius: 6px !important;
+  @media (max-width: 992px) {
+    border-radius: 60px !important;
+  }
 }

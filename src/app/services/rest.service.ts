@@ -119,8 +119,35 @@ export class RestService {
       );
   }
 
+  // updateEmail(email: string): Observable<string> {
+  //   return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
+  //     map((res) => res["msg"]),
+  //     catchError(({ error }) => {
+  //       throw error;
+  //     })
+  //   );
+  // }
+
   updateEmail(email: string): Observable<string> {
-    return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
+    return this.http.post(this.r_mix_api + "/accounts/update_email_request", { email }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendEmailUpdate(email: string): Observable<string> {
+    return this.http.post(this.r_mix_api + "/accounts/resend_update_email_request_secret", { email }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  verifyEmailUpdate(code: string): Observable<string> {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe(
       map((res) => res["msg"]),
       catchError(({ error }) => {
         throw error;

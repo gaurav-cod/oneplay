@@ -1,3 +1,16 @@
 .fixedIcon {
-    bottom: 8px !important;
+    bottom: 13px !important;
+}
+
+.customBorder0 {
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-top: 0px !important;
+}
+
+.inputBorder {
+    border: 2px solid #3e4246 !important;
+    border-radius: 10px !important;
+    background-color: transparent !important;
+    height: 52px !important;
 }

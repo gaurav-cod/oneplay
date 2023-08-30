@@ -1,0 +1,17 @@
+
+<h3 class="text-white font24 font700 my-3">{{otpHeading}}</h3>
+<p class="muteText font14 font500 mb-5">{{otpSubHeading}}</p>
+<form [formGroup]="codeForm">
+    <div class="row justify-content-center">
+        <div class="col-auto p-1 otpInput" *ngFor="let input of formInput;  index as i">
+            <input #formRow type="text" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)">
+            <div class="col-auto p-1" *ngIf="input === 'indicator'">
+                <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
+            </div>
+        </div>
+    </div>
+    <p class="font16 font500 cancelgradientText mt-3 pb-3">Maximum resend code limit reached. Please try again later.</p>
+    <!-- <p class="font16 font500 mt-3 pb-3"><span class="cancelgradientText">Incorrect Security Code</span>, <span class="muteText">Please check carefully or </span><a href="#" class="text-white">Resend Code</a></p> -->
+    <!-- <p class="font16 font500 muteText mt-3 pb-3">Didn’t Receive code? <span class="text-white">Resend in 00:59</span></p> -->
+    <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" (click)="verfiyEmailUpdate()">Continue</button>
+</form>
