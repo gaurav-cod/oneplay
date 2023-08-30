@@ -69,13 +69,15 @@ export class ResetPassComponent implements OnInit {
           confirmButtonText: "OK",
         }).then(() => this.goToLogin());
       },
-      (error) =>
+      (error) => {
+        if (error.isOnline)
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
           confirmButtonText: "Try Again",
         })
+      }
     );
   }
 

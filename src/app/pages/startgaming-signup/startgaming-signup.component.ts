@@ -90,12 +90,14 @@ export class StartgamingSignupComponent implements OnInit {
           this.authService.user = of(user);
           this.router.navigate(["/home"], { replaceUrl: true });
         },
-        error: (error) =>
+        error: (error) => {
+          if (error.isOnline)
           Swal.fire({
             icon: "error",
             title: "Error Code: " + error.code,
             text: error.message,
-          }),
+          })
+        },
       });
   }
 

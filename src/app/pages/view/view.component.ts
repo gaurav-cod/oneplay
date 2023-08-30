@@ -654,6 +654,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.stopTerminating();
       },
       (err) => {
+        if (err.isOnline)
         Swal.fire({
           title: "Error Code: " + err.code,
           text: err.message,
@@ -804,6 +805,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else {
       this._initializeEvent?.end({ result: "failure" });
       this.stopLoading();
+      if (err.isOnline)
       Swal.fire({
         title: "Error Code: " + err.code,
         text: err.message,
@@ -946,6 +948,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private startGameWithClientTokenFailed(err: any) {
     this._initializeEvent?.end({ result: "failure" });
     this.initializationErrored = true;
+    if (err.isOnline)
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
@@ -1040,6 +1043,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithWebRTCTokenFailed(err: any) {
     this.loaderService.stop();
+    if (err.isOnline)
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
@@ -1065,6 +1069,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           });
         },
         error: (err) => {
+          if (err.isOnline)
           Swal.fire({
             title: "Error Code: " + err.code,
             text: err.message,
@@ -1095,6 +1100,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             }, 2000);
           },
           (err) => {
+            if (err.isOnline)
             Swal.fire({
               title: "Error Code: " + err.code,
               text: err.message,

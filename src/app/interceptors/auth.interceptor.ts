@@ -6,17 +6,29 @@ import {
   HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { TimeoutError } from "rxjs";
-import { catchError, filter, timeout } from "rxjs/operators";
+import {
+  TimeoutError,
+  firstValueFrom,
+  from,
+  fromEvent,
+  lastValueFrom,
+} from "rxjs";
+import { catchError, filter, map, timeout } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
+import Swal from "sweetalert2";
+import networkImage from "./network-image";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isInternetPopupOpen = false;
+
   constructor(private readonly authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     let req = request;
+
+    this.checkNetwork();
 
     if (req.urlWithParams.startsWith(environment.client_api)) {
       const formData: FormData = req.body || new FormData();
@@ -40,7 +52,33 @@ export class AuthInterceptor implements HttpInterceptor {
       .pipe(timeout(30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
-        catchError((error: HttpErrorResponse) => {
+        map((res) => {
+          if (this.isInternetPopupOpen) {
+            Swal.close();
+            this.isInternetPopupOpen = false;
+          }
+          return res;
+        }),
+        catchError(async (error: HttpErrorResponse) => {
+          let isOnline = true;
+
+          if (error.statusText !== "OK") {
+            isOnline = await this.checkNetwork();
+            if (!isOnline && !this.isInternetPopupOpen) {
+              this.isInternetPopupOpen = true;
+              Swal.fire({
+                html: networkImage,
+                confirmButtonText: "Refresh",
+                showCloseButton: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.reload();
+                }
+                this.isInternetPopupOpen = false;
+              });
+            }
+          }
+
           if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
@@ -57,9 +95,28 @@ export class AuthInterceptor implements HttpInterceptor {
                 error.error?.msg ||
                 "Server is not responding",
               timeout: error instanceof TimeoutError || code === 408,
+              isOnline,
             },
           });
         })
       );
+  }
+
+  private checkNetwork() {
+    return new Promise<boolean>((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = () => {
+        resolve(true);
+      };
+      xhr.onerror = () => {
+        resolve(false);
+      };
+      xhr.open(
+        "GET",
+        "https://networkconnectivity.googleapis.com/$discovery/rest?version=v1",
+        true
+      );
+      xhr.send();
+    });
   }
 }
