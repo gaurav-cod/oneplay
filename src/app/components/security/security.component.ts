@@ -26,7 +26,7 @@ export class SecurityComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -44,6 +44,9 @@ export class SecurityComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      logInSecurityViewed: "yes",
+    });
   }
 
   updatePhone(): void {
@@ -61,11 +64,11 @@ export class SecurityComponent implements OnInit {
       },
       (error) => {
         if (error.isOnline)
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }
@@ -85,16 +88,19 @@ export class SecurityComponent implements OnInit {
       },
       (error) => {
         if (error.isOnline)
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }
 
   updatePassword(): void {
+    this.countlyService.updateEventData("settingsView", {
+      passwordChanged: "yes",
+    });
     this.restService.updatePassword(this.password.value).subscribe(
       () => {
         Swal.fire({
@@ -103,17 +109,14 @@ export class SecurityComponent implements OnInit {
           text: "Password updated successfully",
         });
         this.password.reset();
-        // this.countlyService.updateEventData("settingsView", {
-        //   updatepasswordchanged: "yes",
-        // })
       },
       (error) => {
         if (error.isOnline)
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }

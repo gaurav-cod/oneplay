@@ -241,6 +241,7 @@
               href="javascript:void(0)"
               class="nav-link p-0 br50"
               role="button"
+              (click)="headerNavOnClick('profileClicked')"
               ngbDropdownToggle
             >
               <img
@@ -265,13 +266,13 @@
                   routerLinkActive="active"
                   [routerLink]="['wishlist']"
                   class="dropdown-item"
-                  (click)="logCountly('myLibraryClicked')"
+                  (click)="logDropdownEvent('myLibraryClicked')"
                 >
                   <i class="ni ni-favourite-28 font14 align-middle"></i>
                   <span class="align-middle">My Library</span>
                 </a>
                 <a [href]="domain + '/subscription.html'" class="dropdown-item"
-                  (click)="logCountly('subscriptionClicked')"
+                  (click)="logDropdownEvent('subscriptionClicked')"
                 >
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
@@ -285,7 +286,7 @@
                   <span class="align-middle">Refer</span>
                 </a> -->
                 <a
-                  (click)="logCountly('speedTestClicked')"
+                  (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
                   [routerLink]="['speed-test']"
@@ -299,7 +300,7 @@
                 <a
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
-                  (click)="logCountly('downloadsClicked')"
+                  (click)="logDropdownEvent('downloadsClicked')"
                 >
                   <i class="ni ni-cloud-download-95 font14 align-middle"></i>
                   <span class="align-middle">Downloads</span>
@@ -309,7 +310,7 @@
                   routerLinkActive="active"
                   (click)="openSetting()"
                   class="dropdown-item"
-                  (click)="logCountly('settingsClicked')"
+                  (click)="logDropdownEvent('settingsClicked')"
                 >
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
@@ -335,7 +336,7 @@
                   href="javascript:void(0)"
                   class="dropdown-item"
                   [routerLink]="['/tv']"
-                  (click)="logCountly('tvSignInClicked')"
+                  (click)="logDropdownEvent('tvSignInClicked')"
                 >
                   <i class="fas fa-tv font14 align-middle"></i>
                   <span>TV Sign in</span>

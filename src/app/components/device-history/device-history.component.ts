@@ -24,7 +24,7 @@ export class DeviceHistoryComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly messagingService: MessagingService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
@@ -42,9 +42,6 @@ export class DeviceHistoryComponent implements OnInit {
     if (!this.logoutSession) {
       return;
     }
-    this.countlyService.updateEventData("settingsView", {
-      logOutConfirmClicked: 'yes',
-    })
 
     this.loggingOut = true;
     this.logoutRef.close();
@@ -68,11 +65,11 @@ export class DeviceHistoryComponent implements OnInit {
         (error) => {
           this.loggingOut = false;
           if (error.isOnline)
-          Swal.fire({
-            icon: "error",
-            title: "Error Code: " + error.code,
-            text: error.message,
-          });
+            Swal.fire({
+              icon: "error",
+              title: "Error Code: " + error.code,
+              text: error.message,
+            });
         }
       );
     }
@@ -80,6 +77,10 @@ export class DeviceHistoryComponent implements OnInit {
 
   logoutAll() {
     this.loggingOut = true;
+
+    this.countlyService.updateEventData("settingsView", {
+      logoutFromAllClicked: "yes",
+    });
 
     Promise.all(
       this.sessions.map(async (session) => {
@@ -96,18 +97,12 @@ export class DeviceHistoryComponent implements OnInit {
           .finally(() => {
             this.loggingOut = false;
             window.location.href = "/dashboard/login";
-              this.countlyService.updateEventData("settingsView", {
-                logoutFromAllClicked: 'yes'
-              });
           });
       });
     });
   }
 
   logoutAlert(container, session?: Session) {
-    this.countlyService.updateEventData("settingsView", {
-      logOutClicked: 'yes'
-    })
     this.logoutSession = session;
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,

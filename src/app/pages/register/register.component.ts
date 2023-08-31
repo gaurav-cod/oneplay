@@ -184,8 +184,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          this.endSignupEvent();
-          this.startSignupEvent();
           if (error.isOnline)
           Swal.fire({
             title: "Error Code: " + error.code,
@@ -277,6 +275,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: "yes",
       referralId: this.registerForm.value.referred_by_id === "" ? 'no' : 'yes',
     })
-    this.countlyService.startEvent("signUpAccountVerification", { discardOldData: true });
   }
 }

@@ -9,7 +9,6 @@
             class="nav-item nav-link border-0 py-3 pl-0 mr-3"
             routerLinkActive="active"
             [routerLink]="['/settings', 'profile']"
-            (click)="logCountly({ProfileViewed: 'yes'})"
             >Profile</a
           >
           <a
@@ -17,7 +16,6 @@
             class="nav-item nav-link border-0 py-3 mr-3"
             routerLinkActive="active"
             [routerLink]="['/settings', 'security']"
-            (click)="logCountly({loginsecurity: 'yes'})"
             >Login & Security</a
           >
           <a
@@ -26,7 +24,6 @@
             class="nav-item nav-link border-0 py-3 mr-3"
             routerLinkActive="active"
             [routerLink]="['/settings', 'subscription']"
-            (click)="logCountly({subscriptionViewed: 'yes'})"
             >Subscription</a
           >
           <a
@@ -34,7 +31,6 @@
             class="nav-item nav-link border-0 py-3 mr-3"
             routerLinkActive="active"
             [routerLink]="['/settings', 'device-history']"
-            (click)="logCountly({deviceHistoryViewed: 'yes'})"
             >Device History</a
           >
         </div>

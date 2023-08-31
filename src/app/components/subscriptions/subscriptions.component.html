@@ -76,6 +76,7 @@
                   [routerLink]="['/settings', 'subscription']"
                   [queryParams]="{ renew: sub.planId }"
                   replaceUrl
+                  (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Renew

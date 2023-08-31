@@ -15,7 +15,11 @@ import Swal from "sweetalert2";
   styleUrls: ["./verify.component.scss"],
 })
 export class VerifyComponent implements OnInit, OnDestroy {
-  otp = new UntypedFormControl("", [Validators.required, Validators.maxLength(6), Validators.pattern('^[0-9]*$')]);
+  otp = new UntypedFormControl("", [
+    Validators.required,
+    Validators.maxLength(6),
+    Validators.pattern("^[0-9]*$"),
+  ]);
   otpSent = localStorage.getItem("otpSent") === "true";
   sendingOTP = false;
   display: any;
@@ -28,10 +32,13 @@ export class VerifyComponent implements OnInit, OnDestroy {
     private restService: RestService,
     private readonly title: Title,
     private readonly countlyService: CountlyService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
+    this.countlyService.startEvent("signUpAccountVerification", {
+      discardOldData: true,
+    });
   }
 
   ngOnDestroy(): void {
@@ -70,16 +77,22 @@ export class VerifyComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.sendingOTP = false;
-        if(err.message == "Token Expired" || err.message == "Invalid Token") {
+        this.countlyService.endEvent("signUpAccountVerification", {
+          result: "failure",
+          failureReason: mapSignUpAccountVerificationFailureReasons(
+            err.message
+          ),
+        });
+        if (err.message == "Token Expired" || err.message == "Invalid Token") {
           this.resendVerificationLink(err, token);
         } else {
           if (err.isOnline)
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
-            confirmButtonText: "OK",
-          });
+            Swal.fire({
+              title: "Error Code: " + err.code,
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "OK",
+            });
         }
       }
     );
@@ -91,7 +104,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
       next: (token) => {
         localStorage.removeItem("otpSent");
         this.countlyService.endEvent("signUpAccountVerification", {
-          result: 'success',
+          result: "success",
         });
         Swal.fire({
           title: "Verification Success",
@@ -106,15 +119,17 @@ export class VerifyComponent implements OnInit, OnDestroy {
       error: (error) => {
         if (error.message == "Invalid OTP") {
           if (error.isOnline)
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-          });
+            Swal.fire({
+              title: "Error Code: " + error.code,
+              text: error.message,
+              icon: "error",
+            });
         } else {
           this.countlyService.endEvent("signUpAccountVerification", {
-            result: 'failure',
-            failureReason: mapSignUpAccountVerificationFailureReasons(error.message),
+            result: "failure",
+            failureReason: mapSignUpAccountVerificationFailureReasons(
+              error.message
+            ),
           });
           this.resendVerificationLink(error, token);
         }
@@ -124,49 +139,51 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   private resendVerificationLink(error: any, token: string) {
     if (error.isOnline)
-    Swal.fire({
-      title: "Error Code: " + error.code,
-      text: error.message,
-      icon: "error",
-      confirmButtonText: "Resend Verification Link",
-      cancelButtonText: "Report Issue",
-      showCancelButton: true,
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-    }).then((res) => {
-      if (res.isConfirmed) {
-        Swal.fire({
-          title: "Enter your password",
-          input: "password",
-          inputAttributes: {
-            autocapitalize: "off",
-          },
-          confirmButtonText: "Proceed",
-          showLoaderOnConfirm: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            const password = result.value;
-            const [encodedEmail] = atob(token).split(":");
-            const email = atob(encodedEmail);
-            Swal.showLoading();
-            this.restService.resendVerificationLink(email, password).subscribe({
-              next: () => {
-                localStorage.removeItem("otpSent");
-                Swal.fire({
-                  icon: "success",
-                  title: "Check your email and verify again",
-                }).then(() => this.goToLogin());
-              },
-              error: (error) => this.resendVerificationLink(error, token),
-            });
-          }
-        });
-      } else {
-        window.location.href = `${this.domain}/contact.html`;
-      }
-    });
+      Swal.fire({
+        title: "Error Code: " + error.code,
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Resend Verification Link",
+        cancelButtonText: "Report Issue",
+        showCancelButton: true,
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then((res) => {
+        if (res.isConfirmed) {
+          Swal.fire({
+            title: "Enter your password",
+            input: "password",
+            inputAttributes: {
+              autocapitalize: "off",
+            },
+            confirmButtonText: "Proceed",
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const password = result.value;
+              const [encodedEmail] = atob(token).split(":");
+              const email = atob(encodedEmail);
+              Swal.showLoading();
+              this.restService
+                .resendVerificationLink(email, password)
+                .subscribe({
+                  next: () => {
+                    localStorage.removeItem("otpSent");
+                    Swal.fire({
+                      icon: "success",
+                      title: "Check your email and verify again",
+                    }).then(() => this.goToLogin());
+                  },
+                  error: (error) => this.resendVerificationLink(error, token),
+                });
+            }
+          });
+        } else {
+          window.location.href = `${this.domain}/contact.html`;
+        }
+      });
   }
 
   get domain() {
@@ -175,11 +192,5 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   private goToLogin() {
     this.router.navigate(["/login"]);
-  }
-
-  private startVerifyEvent() {
-    this.countlyService.startEvent("signUpAccountVerification", {
-      discardOldData: false,
-    });
   }
 }

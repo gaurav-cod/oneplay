@@ -27,7 +27,11 @@ import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { CustomCountlyEvents } from "src/app/services/countly";
-import { genDefaultMenuClickSegments, getGameLandingViewSource } from "src/app/utils/countly.util";
+import {
+  genDefaultMenuClickSegments,
+  genDefaultMenuDropdownClickSegments,
+  getGameLandingViewSource,
+} from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 
 @Component({
@@ -83,11 +87,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   viewGame() {
-    this.logCountly("gameStatusClicked");
+    this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
       this.countlyService.endEvent("gameLandingView");
       this.countlyService.startEvent("gameLandingView", {
-        data: { source: getGameLandingViewSource(), trigger: 'gameStatus' },
+        data: { source: getGameLandingViewSource(), trigger: "gameStatus" },
       });
       const path = [
         "view",
@@ -106,11 +110,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       gameCardClicked: "yes",
       gameId: game.oneplayId,
       gameTitle: game.title,
-    })
+    });
     this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
-      data: { source: getGameLandingViewSource(), trigger: 'card' }
-    })
+      data: { source: getGameLandingViewSource(), trigger: "card" },
+    });
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
     });
@@ -149,7 +153,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   get showDownload() {
-    return UserAgentUtil.parse().app !== 'Oneplay App';
+    return UserAgentUtil.parse().app !== "Oneplay App";
   }
 
   constructor(
@@ -189,8 +193,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
       setTimeout(() => {
-        if (!this.dontClose)
-        this.isMenuCollapsed = !focused;
+        if (!this.dontClose) this.isMenuCollapsed = !focused;
       }, 300);
 
       if (!focused) {
@@ -218,10 +221,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   openSetting() {
-    if (UserAgentUtil.parse().app === 'Oneplay App') {
-      window.location.href = this.domain + '/dashboard/settings/profile'
+    if (UserAgentUtil.parse().app === "Oneplay App") {
+      window.location.href = this.domain + "/dashboard/settings/profile";
     } else {
-      this.router.navigate(['settings', 'profile']);
+      this.router.navigate(["settings", "profile"]);
     }
   }
 
@@ -298,11 +301,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private showError(error) {
     if (error.isOnline)
-    Swal.fire({
-      icon: "error",
-      title: "Error Code: " + error.code,
-      text: error.message,
-    });
+      Swal.fire({
+        icon: "error",
+        title: "Error Code: " + error.code,
+        text: error.message,
+      });
   }
 
   search(value: string) {
@@ -318,21 +321,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleFriendsList() {
     this.toggleFriends.emit();
-    this.logCountly("profileClicked")
   }
 
   logout() {
     this.logoutRef.close();
-    this.logCountly('logOutConfirmClicked');
+    this.logDropdownEvent("logOutConfirmClicked");
     // this.messagingService.removeToken().finally(() => {
-      this.restService.deleteSession(this.authService.sessionKey).subscribe();
-      this.authService.loggedOutByUser = true;
-      this.authService.logout();
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
+    this.authService.loggedOutByUser = true;
+    this.authService.logout();
     // });
   }
 
   LogoutAlert(container) {
-    this.logCountly('logOutClicked');
+    this.logDropdownEvent("logOutClicked");
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -340,7 +342,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   deleteSessionData() {
-    this.logCountly('deleteSessionDataClicked');
+    this.logDropdownEvent("deleteSessionDataClicked");
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to delete all your session data?",
@@ -350,7 +352,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.logCountly('deleteSessionDataConfirmClicked');
+        this.logDropdownEvent("deleteSessionDataConfirmClicked");
         this.restService.deleteSessionData().subscribe({
           next: () => {
             Swal.fire({
@@ -362,12 +364,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
           },
           error: (err) => {
             if (err.isOnline)
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "Try Again",
-            });
+              Swal.fire({
+                title: "Error Code: " + err.code,
+                text: err.message,
+                icon: "error",
+                confirmButtonText: "Try Again",
+              });
           },
         });
       }
@@ -406,18 +408,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     //   page: location.pathname.replace('/dashboard/',''),
     //   channel: "web"
     // })
-    if (tab === 'games') {
+    if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
         data: {
           keywords: this.query.value,
           gameCardClicked: "no",
-        }
+        },
       });
-    } else if (tab === 'users') {
+    } else if (tab === "users") {
       this.countlyService.startEvent("searchResultsViewMoreUsers", {
         data: {
           keywords: this.query.value,
-        }
+        },
       });
     }
     this.router.navigate(["/search", tab], {
@@ -427,7 +429,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   switchSearchPrivacy() {
     const privacy = !this.isPrivate;
-    this.logCountly(privacy ? 'turnOffPrivacyDisabled' : 'turnOffPrivacyEnabled')
+    this.logDropdownEvent(
+      privacy ? "turnOffPrivacyDisabled" : "turnOffPrivacyEnabled"
+    );
     this.authService.updateProfile({ searchPrivacy: privacy });
     this.restService.setSearchPrivacy(privacy).subscribe({
       next: () => {
@@ -440,33 +444,32 @@ export class NavbarComponent implements OnInit, OnDestroy {
       error: (err) => {
         this.authService.updateProfile({ searchPrivacy: !privacy });
         if (err.isOnline)
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + err.code,
-          text: err.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + err.code,
+            text: err.message,
+          });
       },
     });
   }
 
-  headerNavOnClick(
-    item: keyof CustomCountlyEvents['menuClick']
-  ): void {
+  headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     this.isMenuCollapsed = true;
-    this.logCountly(item);
-  }
-
-  logCountly(
-    item: keyof CustomCountlyEvents['menuClick']
-  ): void {
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
-      [item]: 'yes',
-    })
+      [item]: "yes",
+    });
+  }
+
+  logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
+    this.countlyService.addEvent("menuDropdownClick", {
+      ...genDefaultMenuDropdownClickSegments(),
+      [item]: "yes",
+    });
   }
 
   // logCountly(Type: string) {
   // logCountly(Type: CustomSegments["menuClick"]["Type"]) {
-    // this.countlyService.addEvent("menuClick", { Type });
+  // this.countlyService.addEvent("menuClick", { Type });
   // }
 }
