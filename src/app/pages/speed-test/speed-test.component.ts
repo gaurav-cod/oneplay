@@ -122,7 +122,7 @@ export class SpeedTestComponent implements OnInit {
     return {
       'text-white': state === this.state && !this.testCompleted,
       'yellowGradient': this.recommendations.length === 1 && this.recommendations[0].type === state,
-      'text-red': this.recommendations.length > 1,
+      'text-red': this.recommendations.length > 1 && this.recommendations.find((v) => v.type === state) !== undefined,
     };
   }
 
@@ -170,8 +170,8 @@ export class SpeedTestComponent implements OnInit {
       .then((v) => (this.currentLocation = v));
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
     // res.recommended_latency = 10;
-    // res.recommended_download = 100 * 1000 * 1000;
-    // res.recommended_upload = 40 * 1000 * 1000;
+    // res.recommended_download = 10 * 1000 * 1000;
+    // res.recommended_upload = 80 * 1000 * 1000;
     this.state = "Ping";
     await this.runPing(res.ping);
     if (this.currentLatency > res.recommended_latency) {
