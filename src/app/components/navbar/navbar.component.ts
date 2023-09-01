@@ -86,6 +86,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return environment.domain;
   }
 
+  get appVersion() {
+    return environment.appVersion;
+  }
+
   viewGame() {
     this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
