@@ -12,22 +12,22 @@
           <div class="row mt-4 d-md-none">
             <div class="col text-center">
               <img [src]="latencyIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2">{{ latencyText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Ping')">{{ latencyText }}</p>
               <span class="muteText font500">ms</span>
             </div>
             <div class="col text-center">
               <img [src]="jitterIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2">{{ jitterText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Ping')">{{ jitterText }}</p>
               <span class="muteText font500">ms</span>
             </div>
             <div class="col text-center">
               <img [src]="downloadIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2">{{ downloadText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Download')">{{ downloadText }}</p>
               <span class="muteText font500">mbps</span>
             </div>
             <div class="col text-center">
               <img [src]="uploadIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2">{{ uploadText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Upload')">{{ uploadText }}</p>
               <span class="muteText font500">mbps</span>
             </div>
           </div>
