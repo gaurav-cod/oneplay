@@ -91,7 +91,6 @@ export class StartgamingSignupComponent implements OnInit {
           this.router.navigate(["/home"], { replaceUrl: true });
         },
         error: (error) => {
-          if (error.isOnline)
           Swal.fire({
             icon: "error",
             title: "Error Code: " + error.code,

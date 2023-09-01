@@ -64,7 +64,6 @@ export class DeviceHistoryComponent implements OnInit {
         },
         (error) => {
           this.loggingOut = false;
-          if (error.isOnline)
             Swal.fire({
               icon: "error",
               title: "Error Code: " + error.code,

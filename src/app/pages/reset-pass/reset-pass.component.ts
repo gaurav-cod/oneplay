@@ -70,7 +70,6 @@ export class ResetPassComponent implements OnInit {
         }).then(() => this.goToLogin());
       },
       (error) => {
-        if (error.isOnline)
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,

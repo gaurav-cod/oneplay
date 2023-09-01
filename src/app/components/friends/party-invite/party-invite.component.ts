@@ -56,7 +56,6 @@ export class PartyInviteComponent implements OnInit, OnDestroy {
         this.invites = [...this.invites, invite];
       },
       (error) => {
-        if (error.isOnline)
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,

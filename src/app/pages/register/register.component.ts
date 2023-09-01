@@ -184,7 +184,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          if (error.isOnline)
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,

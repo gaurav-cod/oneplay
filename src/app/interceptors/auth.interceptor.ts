@@ -58,22 +58,18 @@ export class AuthInterceptor implements HttpInterceptor {
           return res;
         }),
         catchError(async (error: HttpErrorResponse) => {
-          let isOnline = true;
-
           if (error.statusText !== "OK") {
-            isOnline = await this.checkNetwork();
+            const isOnline = await this.checkNetwork();
             if (!isOnline && !this.isInternetPopupOpen) {
               this.isInternetPopupOpen = true;
-              Swal.fire({
+              await Swal.fire({
                 html: networkImage,
                 confirmButtonText: "Refresh",
-                showCloseButton: true,
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.reload();
-                }
-                this.isInternetPopupOpen = false;
+                allowOutsideClick: false,
+                allowEscapeKey: false,
               });
+              window.location.reload();
+              return this.intercept(req, next);
             }
           }
 
@@ -93,7 +89,6 @@ export class AuthInterceptor implements HttpInterceptor {
                 error.error?.msg ||
                 "Server is not responding",
               timeout: error instanceof TimeoutError || code === 408,
-              isOnline,
             },
           });
         })

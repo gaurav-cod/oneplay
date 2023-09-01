@@ -108,7 +108,6 @@ export class QrSignupComponent implements OnInit {
           }
         },
         error: (err) => {
-          if (err.isOnline)
           Swal.fire({
             title: "Error Code: " + err.code,
             text: "Timeout!",
