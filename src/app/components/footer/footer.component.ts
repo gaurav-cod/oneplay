@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CustomCountlyEvents } from 'src/app/services/countly';
+import { CountlyService } from 'src/app/services/countly.service';
+import { genDefaultWebsiteFooterViewSegments } from 'src/app/utils/countly.util';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,9 +12,20 @@ import { environment } from 'src/environments/environment';
 export class FooterComponent implements OnInit {
   test: Date = new Date();
 
-  constructor() { }
+  constructor(
+    private readonly countlyService: CountlyService
+  ) { }
 
   ngOnInit() {
+  }
+
+  logCountlyEvent(
+    item: keyof CustomCountlyEvents['websiteFooterView']
+  ): void {
+    this.countlyService.addEvent("websiteFooterView", {
+      ...genDefaultWebsiteFooterViewSegments(),
+      [item]: 'yes',
+    })
   }
 
   get domain() {
