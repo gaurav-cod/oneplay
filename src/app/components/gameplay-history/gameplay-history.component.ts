@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Session } from 'protractor';
+import { GameplayHistoryModel } from 'src/app/models/gameplay.model';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -8,9 +9,9 @@ import { RestService } from 'src/app/services/rest.service';
   styleUrls: ['./gameplay-history.component.scss']
 })
 export class GameplayHistoryComponent implements OnInit{
-  gamePlaysessions = [];
+  gamePlaysessions: GameplayHistoryModel[] = [];
   currentPage = 1;
-  pagelimit = 100;
+  readonly pagelimit = 20;
   loadMoreBtn = true;
 
   constructor(
@@ -20,14 +21,15 @@ export class GameplayHistoryComponent implements OnInit{
   ngOnInit(): void {
     this.restService.getGameplayHistory(1, this.pagelimit).subscribe((data) => {
       this.gamePlaysessions = data;
+      this.currentPage++;
     });
   }
 
   loadMore() {
-    this.restService.getGameplayHistory(this.currentPage + 1, this.pagelimit).subscribe((data) => {
-      this.gamePlaysessions = data;
+    this.restService.getGameplayHistory(this.currentPage, this.pagelimit).subscribe((data) => {
+      this.gamePlaysessions = [...this.gamePlaysessions, ...data];
       this.currentPage++;
-      if (data.length < 100) {
+      if (data.length < this.pagelimit) {
         this.loadMoreBtn = false;
       }
     });

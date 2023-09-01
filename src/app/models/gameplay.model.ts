@@ -14,7 +14,7 @@ type Duration = {
     secs: number;
 }
 
-export class GameplayHistoryModal {
+export class GameplayHistoryModel {
     readonly browser: string
     readonly device: DeviceInfo;
     readonly game: string

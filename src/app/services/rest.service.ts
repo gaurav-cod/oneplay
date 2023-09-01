@@ -37,7 +37,7 @@ import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
-import { GameplayHistoryModal } from "../models/gameplay.modal";
+import { GameplayHistoryModel } from "../models/gameplay.model";
 
 @Injectable({
   providedIn: "root",
@@ -208,14 +208,14 @@ export class RestService {
   getGameplayHistory(
     page_number: number,
     entries_per_page: number
-  ): Observable<GameplayHistoryModal[]> {
+  ): Observable<GameplayHistoryModel[]> {
     const formData = new FormData();
     formData.append('page_number',page_number.toString())
     formData.append('entries_per_page',entries_per_page.toString());
     return this.http
       .post<any>(this.client_api + "/game_session_history", formData)
       .pipe(
-        map((res) => res.data.result.map((d) => new GameplayHistoryModal(d))),
+        map((res) => res.data.result.map((d) => new GameplayHistoryModel(d))),
         catchError(({ error }) => {
           throw error;
         })
