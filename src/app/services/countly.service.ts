@@ -73,18 +73,21 @@ export class CountlyService {
   getEventData<T extends keyof CustomTimedCountlyEvents>(
     event: T
   ): Partial<CustomTimedCountlyEvents[T]> {
-    return JSON.parse(
-      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
-    );
+    try {
+      const data = JSON.parse(
+        localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
+      );
+      return data;
+    } catch {
+      return {};
+    }
   }
 
   updateEventData<T extends keyof CustomTimedCountlyEvents>(
     event: T,
     segments: Partial<CustomTimedCountlyEvents[T]>
   ): void {
-    const prevData = JSON.parse(
-      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
-    );
+    const prevData = this.getEventData(event);
     localStorage.setItem(
       this.keyOfKey(event + this.data_postfix),
       JSON.stringify({ ...prevData, ...segments })
@@ -97,9 +100,7 @@ export class CountlyService {
   ) {
     const keyTS = localStorage.getItem(this.keyOfKey(event));
     const ts = new Date(parseInt(keyTS) ?? `${+new Date()}`);
-    const data = JSON.parse(
-      localStorage.getItem(this.keyOfKey(event + this.data_postfix)) ?? "{}"
-    );
+    const data = this.getEventData(event);
     localStorage.removeItem(this.keyOfKey(event + this.data_postfix));
     localStorage.removeItem(this.keyOfKey(event));
     if (!keyTS) return;
