@@ -158,9 +158,6 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   skip() {
-    // this.countlyService.endEvent("gameFeedback", {
-    //   action: "Skip",
-    // });
     this.countlyService.endEvent("gameFeedback", {
       action: 'skip',
     });

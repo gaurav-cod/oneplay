@@ -546,7 +546,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
     const uagent = new UAParser();
     this.countlyService.endEvent("gameLandingView")
-    this.countlyService.startEvent("gamePlayStart")
+    this.countlyService.startEvent("gamePlayStart", {
+      discardOldData: true,
+    });
 
     if (
       uagent.getOS().name === "iOS" &&
@@ -565,17 +567,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       }
       return;
     }
-
-    // if (!skipCheckResume) {
-      // this.countlyService.addEvent("gamePlay - Start", {
-      //   gameID: this.game.oneplayId,
-      //   gameTitle: this.game.title,
-      //   gameGenre: this.game.genreMappings?.join(","),
-      //   showSettingEnabled: this.showSettings.value ? "yes" : "no",
-      //   store: this.selectedStore?.name,
-      //   channel: "web",
-      // });
-    // }
 
     if (this.action === "Resume" && !skipCheckResume && this.isConnected) {
       const result = await Swal.fire({
@@ -607,6 +598,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else {
         if (this.showSettings.value) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
+            discardOldData: true,
             data: {
               gameTitle: this.game.title,
               gameId: this.game.oneplayId,
@@ -626,15 +618,6 @@ export class ViewComponent implements OnInit, OnDestroy {
             backdrop: "static",
             keyboard: false,
           });
-          // this._settingsEvent = this.countlyService.startEvent(
-          //   "gamePlay - Settings Page View",
-          //   {
-          //     unique: true,
-          //     data: {
-          //       advancedSettingsPageViewed: "no",
-          //     },
-          //   }
-          // );
         } else {
           this.startGame();
         }
@@ -676,8 +659,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       }
       this.countlyService.endEvent("gamePlayAdvanceSettingView", {
         settingsChanged: "no",
-      })
-     // this._advanceSettingsEvent.end({ settingsChanged: "no" });
+      });
     });
   }
 
@@ -690,16 +672,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       audioType: this.advancedOptions.value.audio_type === "stereo" ? "stereo" : "5.1",
       streamCodec: mapStreamCodecForGamePlayAdvanceSettingView(this.advancedOptions.value.stream_codec),
       videoDecoderSelection: this.advancedOptions.value.video_decoder_selection,
-    })
-
-    // Object.entries(this.advancedOptions.controls).forEach(([key, ctrl]) => {
-    //   if (ctrl.dirty) {
-    //     console.log(key)
-    //     options[key] = ctrl.value;
-    //   }
-    // });
-
-    // this._advanceSettingsEvent.end(options);
+    });
 
     localStorage.setItem(
       "advancedOptions",
@@ -719,15 +692,6 @@ export class ViewComponent implements OnInit, OnDestroy {
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
-          // this.countlyService.endEvent("gameLaunch");
-          // this.countlyService.startEvent("gameFeedback", {
-          //   unique: true,
-          //   data: {
-          //     gameID: this.game.oneplayId,
-          //     gameTitle: this.game.title,
-          //     gameGenre: this.game.genreMappings?.join(","),
-          //   },
-          // });
           this.countlyService.startEvent("gameFeedback", {
               data: {
                 gameSessionId: this.sessionToTerminate,
@@ -783,12 +747,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   launchFromSettings() {
-    this.countlyService.endEvent("gamePlaySettingsPageView", {
-      bitRate: this.bitrate.value,
-      vsyncEnabled: this.vsync.value === "true" ? "yes" : "no",
-      resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
-      fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
-    })
+    this.countlyService.endEvent("gamePlaySettingsPageView");
 
     localStorage.setItem("resolution", this.resolution.value);
     localStorage.setItem("fps", this.fps.value);
@@ -799,7 +758,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   dismissSettingsModal() {
-    // this._settingsEvent?.cancel();
+    this.countlyService.cancelEvent("gamePlaySettingsPageView");
     this._settingsModalRef?.dismiss();
   }
 
@@ -807,10 +766,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       return;
     }
-
-    // this._initializeEvent = this.countlyService.startEvent(
-    //   "gamePlay - Initilization"
-    // );
 
     this.startLoading();
 
