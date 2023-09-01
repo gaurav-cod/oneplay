@@ -106,6 +106,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   viewGameFromSearch(game: GameModel) {
     this.isMenuCollapsed = true;
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: 'gameClicked',
+    });
     this.countlyService.endEvent("searchResultsViewMoreGames", {
       gameCardClicked: "yes",
       gameId: game.oneplayId,
@@ -253,18 +258,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
-    // this.countlyService.addEvent("search", {
-    //   term: this.query.value,
-    //   actionDone: "yes",
-    //   actionType: "NA",
-    //   page: location.pathname.replace('/dashboard/',''),
-    //   channel: "web"
-    // })
-    // this.countlyService.endEvent("searchResultsViewMoreUsers", {
-    //   term: this.query.value,
-    //   "friend request clicked": "yes",
-    //   userID: friend.id,
-    // })
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: 'addFriend',
+    })
     if (this.user.id === friend.id) {
       return;
     }
@@ -401,13 +399,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
-    // this.countlyService.addEvent("search", {
-    //   term: this.query.value,
-    //   actionDone: "yes",
-    //   actionType: tab === "games" ? "See more Games" : "See more Users",
-    //   page: location.pathname.replace('/dashboard/',''),
-    //   channel: "web"
-    // })
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
+    })
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
         data: {
@@ -467,9 +463,4 @@ export class NavbarComponent implements OnInit, OnDestroy {
       [item]: "yes",
     });
   }
-
-  // logCountly(Type: string) {
-  // logCountly(Type: CustomSegments["menuClick"]["Type"]) {
-  // this.countlyService.addEvent("menuClick", { Type });
-  // }
 }

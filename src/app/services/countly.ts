@@ -92,8 +92,6 @@ export interface CustomCountlyEvents {
     actionDone: "yes" | "no";
     actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend";
   };
-  // gameLaunch: { channel: "Backend" },
-  // gameTerminate: { channel: "Backend" },
 }
 
 export interface CustomTimedCountlyEvents {

@@ -126,10 +126,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: 'gameClicked',
     })
-    // this.countlyService.startEvent("gameLandingView", {
-    //   data: { source: 'searchPage', trigger: 'card' },
-    //   discardOldData: true,
-    // });
     this.countlyService.endEvent("searchResultsViewMoreGames", {
       keywords: this.query,
       gameCardClicked: "yes",
@@ -148,13 +144,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
     })
-    // this.countlyService.addEvent("search", {
-    //   term: this.query,
-    //   actionDone: "yes",
-    //   actionType: tab === "games" ? "See more Games" : "See more Users",
-    //   page: location.pathname.replace('/dashboard/',''),
-    //   channel: "web"
-    // })
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
         data: { gameCardClicked: "no" }
@@ -336,13 +325,6 @@ export class SearchComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: 'addFriend',
     })
-    //   term: this.query,
-    // this.countlyService.addEvent("search", {
-    //   actionDone: "yes",
-    //   page: location.pathname.replace('/dashboard/',''),
-    //   actionType: "NA",
-    //   channel: "web"
-    // })
     this.countlyService.endEvent("searchResultsViewMoreUsers", {
       userID: friend.id,
       keywords: this.query,
