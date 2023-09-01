@@ -4,6 +4,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { CountlyService } from "src/app/services/countly.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import { v4 } from "uuid";
 
@@ -36,15 +37,12 @@ export class GameCardComponent implements OnInit {
     private readonly countlyService: CountlyService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onGameClick() {
-    this.countlyService.addEvent("gameLandingView", {
-      gameID: this.game.oneplayId,
-      gameGenre: this.game.genreMappings?.join(","),
-      gameTitle: this.game.title,
-      source: location.pathname + location.hash,
-      trigger: "card",
+    this.countlyService.endEvent("gameLandingView")
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: getGameLandingViewSource(), trigger: 'card' },
     });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,

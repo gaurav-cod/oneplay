@@ -8,7 +8,6 @@ import { GameModel } from "src/app/models/game.model";
 })
 export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
-
   @Input() games: GameModel[];
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;

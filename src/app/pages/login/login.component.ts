@@ -17,7 +17,6 @@ import { faL } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -39,7 +38,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
 
   private _verifySwalModalRef: NgbModalRef;
-  private _signinEvent: StartEvent<"signin">;
 
   constructor(
     private readonly restService: RestService,
@@ -49,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     this.emailId.nativeElement.focus();
@@ -57,11 +55,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.title.setTitle("Login");
-    this.startSignupEvent();
+    this.startSignInEvent();
   }
 
   ngOnDestroy() {
-    this._signinEvent.cancel();
+    this.countlyService.cancelEvent("signIn");
     Swal.close();
   }
 
@@ -84,13 +82,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    this._signinEvent.update({
-      signinFromTrigger: "CTA",
-      rememberMeActivated: this.rememberMe ? "yes" : "no",
-    });
     this.restService.login(this.loginForm.value).subscribe(
       (token) => {
-        this._signinEvent.end({ result: "success" });
+        this.countlyService.endEvent("signIn", { result: 'success'});
+        this.startSignInEvent();
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, token).subscribe();
@@ -98,8 +93,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.login(token);
       },
       (error) => {
-        this._signinEvent.end({ result: "failure" });
-        this.startSignupEvent();
+        this.countlyService.endEvent("signIn", { result: 'failure' });
+        this.startSignInEvent();
         if (error.message == "Please verify your email and phone number") {
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
             centered: true,
@@ -136,9 +131,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToSignup() {
-    this.countlyService.addEvent("signUPButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
+    this.countlyService.startEvent("signUpFormSubmitted", {
+      discardOldData: true,
+      data: { signUpFromPage: 'signIn' }
     });
     this.router.navigate(["/register"]);
   }
@@ -147,10 +142,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     return environment.domain;
   }
 
-  private startSignupEvent() {
-    this._signinEvent = this.countlyService.startEvent("signin", {
-      unique: false,
-      data: { signinFromPage: location.pathname + location.hash },
-    });
+  private startSignInEvent() {
+    this.countlyService.startEvent("signIn", { discardOldData: false });
+    const segments = this.countlyService.getEventData("signIn");
+    if (!segments.signInFromPage) {
+      this.countlyService.updateEventData("signIn", {
+        signInFromPage: "directLink",
+      })
+    }
   }
 }
