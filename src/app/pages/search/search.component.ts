@@ -73,6 +73,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     Swal.close();
     this.countlyService.endEvent("searchResultsViewMoreGames");
+    this.countlyService.endEvent("searchResultsViewMoreUsers");
   }
 
   ngOnInit(): void {
@@ -146,13 +147,21 @@ export class SearchComponent implements OnInit, OnDestroy {
     })
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
-        data: { gameCardClicked: "no" }
-      })
+        discardOldData: true,
+        data: {
+          keywords: this.query,
+          gameCardClicked: "no",
+        },
+      });
     }
     else {
       this.countlyService.startEvent("searchResultsViewMoreUsers", {
-        data: { friendRequestClicked: 'no' }
-      })
+        discardOldData: true,
+        data: {
+          keywords: this.query,
+          friendRequestClicked: "no",
+        },
+      });
     }
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query },

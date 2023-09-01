@@ -111,11 +111,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       actionDone: 'yes',
       actionType: 'gameClicked',
     });
-    this.countlyService.endEvent("searchResultsViewMoreGames", {
-      gameCardClicked: "yes",
-      gameId: game.oneplayId,
-      gameTitle: game.title,
-    });
     this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
       data: { source: getGameLandingViewSource(), trigger: "card" },
@@ -406,6 +401,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     })
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
+        discardOldData: true,
         data: {
           keywords: this.query.value,
           gameCardClicked: "no",
@@ -413,8 +409,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       });
     } else if (tab === "users") {
       this.countlyService.startEvent("searchResultsViewMoreUsers", {
+        discardOldData: true,
         data: {
           keywords: this.query.value,
+          friendRequestClicked: "no",
         },
       });
     }
