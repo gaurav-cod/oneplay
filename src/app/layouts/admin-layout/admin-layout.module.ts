@@ -27,6 +27,7 @@ import { PlayComponent } from 'src/app/pages/play/play.component';
 import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.component';
+import { WishlistGuard } from "src/app/guards/wishlist.guard";
 
 @NgModule({
   imports: [
@@ -58,6 +59,6 @@ import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.componen
     FeedbackComponent,
     SpeedTestComponent,
   ],
-  providers: [ViewGuard],
+  providers: [ViewGuard, WishlistGuard],
 })
 export class AdminLayoutModule {}

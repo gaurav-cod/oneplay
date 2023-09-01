@@ -96,12 +96,12 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   private loadGames() {
     this.startLoading();
-    this.restService.search(this.searchText, 0, 12, "live").subscribe(
+    this.restService.search(this.searchText, 0, 16, "live").subscribe(
       (response) => {
         this.games = response.results.filter(
           (g) => !this.wishlist.includes(g.oneplayId)
         );
-        if (response.results.length < 12) {
+        if (response.results.length < 16) {
           this.canLoadMore = false;
         }
         this.stopLoading();
@@ -125,7 +125,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     }
     this.startLoading();
     this.restService
-      .search(this.searchText, this.currentPage + 1, 12, "live")
+      .search(this.searchText, this.currentPage + 1, 16, "live")
       .subscribe(
         (games) => {
           this.games = [
@@ -134,7 +134,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
               (g) => !this.wishlist.includes(g.oneplayId)
             ),
           ];
-          if (games.results.length < 12) {
+          if (games.results.length < 16) {
             this.canLoadMore = false;
           }
           this.stopLoading();
@@ -179,6 +179,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       this.authService.closeWishlist();
     }
     this.selectedGames = [];
+    this.query.reset();
+    this.searchText = "";
   }
 
   public async closeonboardingGame() {
