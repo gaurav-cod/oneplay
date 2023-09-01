@@ -6,13 +6,23 @@ import {
   HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { TimeoutError } from "rxjs";
-import { catchError, filter, timeout } from "rxjs/operators";
+import {
+  TimeoutError,
+  firstValueFrom,
+  from,
+  fromEvent,
+  lastValueFrom,
+} from "rxjs";
+import { catchError, filter, map, timeout } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
+import Swal from "sweetalert2";
+import networkImage from "./network-image";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private isInternetPopupOpen = false;
+
   constructor(private readonly authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
@@ -40,7 +50,29 @@ export class AuthInterceptor implements HttpInterceptor {
       .pipe(timeout(30000))
       .pipe(
         filter((res) => res instanceof HttpResponse),
-        catchError((error: HttpErrorResponse) => {
+        map((res) => {
+          if (this.isInternetPopupOpen) {
+            Swal.close();
+            this.isInternetPopupOpen = false;
+          }
+          return res;
+        }),
+        catchError(async (error: HttpErrorResponse) => {
+          if (error.statusText !== "OK") {
+            const isOnline = await this.checkNetwork();
+            if (!isOnline && !this.isInternetPopupOpen) {
+              this.isInternetPopupOpen = true;
+              await Swal.fire({
+                html: networkImage,
+                confirmButtonText: "Refresh",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+              });
+              window.location.reload();
+              return this.intercept(req, next);
+            }
+          }
+
           if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
@@ -61,5 +93,27 @@ export class AuthInterceptor implements HttpInterceptor {
           });
         })
       );
+  }
+
+  private checkNetwork() {
+    return new Promise<boolean>((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = (res) => {
+        if (xhr.status === 200) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      };
+      xhr.onerror = () => {
+        resolve(false);
+      };
+      xhr.open(
+        "GET",
+        "https://networkconnectivity.googleapis.com/$discovery/rest?version=v1",
+        true
+      );
+      xhr.send();
+    });
   }
 }

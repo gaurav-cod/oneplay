@@ -38,6 +38,13 @@ body {
   font-family: "Poppins";
 }
 
+html, body {
+  overscroll-behavior: none !important;
+  overscroll-behavior-x: none !important;
+  overscroll-behavior-y: none !important;
+  overscroll-behavior-block: none !important;
+}
+
 #home-header {
   .carousel-indicators {
     // left: auto;
@@ -749,11 +756,16 @@ input[type="checkbox"] {
 
 .swal2-popup {
   width: 28rem !important;
-  border-radius: 6px !important;
+  border-radius: 16px !important;
 }
 
 .swal2-close {
-  font-size: 2em !important;
+  font-size: 1rem !important;
+  background-image: url('./assets/img/error/Cross.svg') !important;
+  background-repeat: no-repeat !important;
+  color: #212123 !important;
+  padding: 20px !important;
+  margin-top: 20px !important;
 }
 
 .swal2-close:focus {
@@ -767,6 +779,11 @@ input[type="checkbox"] {
 .swal2-styled.swal2-confirm {
   width: 100% !important;
   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
+}
+
+.swalPadding .swal2-styled.swal2-confirm {
+  background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
+  padding: 13px !important;
 }
 
 .swal2-cancel.swal2-styled {
@@ -864,7 +881,7 @@ select option {
 }
 
 .swal2-image {
-  margin: 4em auto 1em !important;
+  margin: 1em auto 1em !important;
 }
 
 @media (max-width: 1200px) {

@@ -23,12 +23,14 @@
     <div class="col-xl-6">
       <ul class="nav nav-footer justify-content-center justify-content-xl-end">
         <li class="nav-item">
-          <a [href]="domain + '/contact.html'" class="nav-link"
+          <a [href]="domain + '/contact.html'" class="nav-link" target="_blank"
+            (click)="logCountlyEvent('contactUsClicked')"
             >Contact Us</a
           >
         </li>
         <li class="nav-item">
-          <a [href]="domain + '/about.html'" class="nav-link"
+          <a [href]="domain + '/about.html'" class="nav-link" target="_blank"
+            (click)="logCountlyEvent('aboutUsClicked')"
             >About Us</a
           >
         </li>
@@ -36,16 +38,20 @@
           <a
             href="https://medium.com/@oneplay_gaming"
             class="nav-link"
+            target="_blank"
+            (click)="logCountlyEvent('blogClicked')"
             >Blogs</a
           >
         </li>
         <li class="nav-item">
-          <a [href]="domain + '/tnc.html'" class="nav-link"
+          <a [href]="domain + '/tnc.html'" class="nav-link" target="_blank"
+            (click)="logCountlyEvent('termsClicked')"
             >Terms & Conditions</a
           >
         </li>
         <li class="nav-item">
-          <a [href]="domain + '/privacy.html'" class="nav-link"
+          <a [href]="domain + '/privacy.html'" class="nav-link" target="_blank"
+            (click)="logCountlyEvent('privacyPolicyClicked')"
             >Privacy Policy</a
           >
         </li>

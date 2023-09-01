@@ -39,9 +39,9 @@ export class ResetPassComponent implements OnInit {
     } else {
       return control.touched && false;
     }
-    
+
   }
-  
+
 
   constructor(
     private route: ActivatedRoute,
@@ -69,21 +69,23 @@ export class ResetPassComponent implements OnInit {
           confirmButtonText: "OK",
         }).then(() => this.goToLogin());
       },
-      (error) =>
+      (error) => {
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
           confirmButtonText: "Try Again",
         })
+      }
     );
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-    });
+    // this.countlyService.addEvent("signINButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/login"]);
   }
 

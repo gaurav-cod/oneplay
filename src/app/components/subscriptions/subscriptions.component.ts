@@ -3,6 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
+import { XCountlySUM } from "src/app/services/countly";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
 import { popups } from "src/app/utils/popups";
@@ -39,7 +41,8 @@ export class SubscriptionsComponent implements OnInit {
   constructor(
     private readonly restService: RestService,
     private readonly route: ActivatedRoute,
-    ) {}
+    private readonly countlyService: CountlyService
+  ) {}
 
   ngOnInit(): void {
     this.restService.getTokensUsage().subscribe((data) => {
@@ -47,41 +50,43 @@ export class SubscriptionsComponent implements OnInit {
       this.remainingTokens = data.remaining_tokens;
     });
     this.successFilter();
-    this.restService
-      .getCurrentSubscription()
-      .subscribe((s) => {this.currentSubscriptions = s; this.isCurrentLoading = false; });
+    this.restService.getCurrentSubscription().subscribe((s) => {
+      this.currentSubscriptions = s;
+      this.isCurrentLoading = false;
+    });
 
-    const params = this.route.snapshot.queryParams
+    const params = this.route.snapshot.queryParams;
 
     if (params.swal) {
-      try{
+      try {
         const swal = decodeURIComponent(params.swal);
         // const obj = JSON.parse(swal);
         Swal.fire({
           icon: "success",
           title: popups[swal].title,
           text: popups[swal].body,
-        }).then(()=>{window.location.href = "/dashboard/settings/subscription"});
-      }
-      catch {}
+        }).then(() => {
+          window.location.href = "/dashboard/settings/subscription";
+        });
+      } catch {}
     }
   }
 
-  private resetData(tab: 'success' | 'processing' | 'failed') {
+  private resetData(tab: "success" | "processing" | "failed") {
     this.loadMoreBtn = true;
     this.currentPage = 0;
     this.subscriptions = [];
     // Button hide and Show
-    this.sucessLoad = tab == 'success';
-    this.failedLoad = tab == 'failed';
-    this.processLoad = tab == 'processing'
+    this.sucessLoad = tab == "success";
+    this.failedLoad = tab == "failed";
+    this.processLoad = tab == "processing";
     // start Data & End Date and Transition ID hide and show
-    this.sucess = tab == 'success';
-    this.failedProcess = tab != 'success';
+    this.sucess = tab == "success";
+    this.failedProcess = tab != "success";
     // Filter Active InActive CSS Changes
-    this.filterFailed = tab == 'failed';
-    this.filterProcess = tab == 'processing';
-    this.filterSuccess = tab == 'success';
+    this.filterFailed = tab == "failed";
+    this.filterProcess = tab == "processing";
+    this.filterSuccess = tab == "success";
   }
 
   @memoize()
@@ -92,24 +97,23 @@ export class SubscriptionsComponent implements OnInit {
   successFilter() {
     this.resetData("success");
     this.restService
-      .getSubscriptions( 0, this.pagelimit)
+      .getSubscriptions(0, this.pagelimit)
       .subscribe((s) => (this.subscriptions = s));
   }
-  
+
   loadMore() {
     if (this.isLoading || !this.loadMoreBtn) {
       return;
     }
     this.restService
-    .getSubscriptions( this.currentPage + 1, this.pagelimit)
-    .subscribe((s) => {
-      this.subscriptions = this.subscriptions.concat(s)
-      this.currentPage++;
-      if (s.length < 5) {
-        this.loadMoreBtn = false;
-      }
-    },
-    );
+      .getSubscriptions(this.currentPage + 1, this.pagelimit)
+      .subscribe((s) => {
+        this.subscriptions = this.subscriptions.concat(s);
+        this.currentPage++;
+        if (s.length < 5) {
+          this.loadMoreBtn = false;
+        }
+      });
   }
 
   processingFilter() {
@@ -124,22 +128,21 @@ export class SubscriptionsComponent implements OnInit {
       return;
     }
     this.restService
-    .getProcessingSubscription( this.currentPage + 1, this.pagelimit)
-    .subscribe((s) => {
-      this.subscriptions = this.subscriptions.concat(s)
-      this.currentPage++;
-      if (s.length < 5) {
-        this.loadMoreBtn = false;
-      }
-    },
-    );
+      .getProcessingSubscription(this.currentPage + 1, this.pagelimit)
+      .subscribe((s) => {
+        this.subscriptions = this.subscriptions.concat(s);
+        this.currentPage++;
+        if (s.length < 5) {
+          this.loadMoreBtn = false;
+        }
+      });
   }
 
   failedFilter() {
     this.resetData("failed");
     this.restService
-    .getFailedSubscription( 0, this.pagelimit)
-    .subscribe((s) => (this.subscriptions = s));
+      .getFailedSubscription(0, this.pagelimit)
+      .subscribe((s) => (this.subscriptions = s));
   }
 
   failedLoadMore() {
@@ -147,27 +150,27 @@ export class SubscriptionsComponent implements OnInit {
       return;
     }
     this.restService
-    .getFailedSubscription( this.currentPage + 1, this.pagelimit)
-    .subscribe((s) => {
-      this.subscriptions = this.subscriptions.concat(s)
-      this.currentPage++;
-      if (s.length < 5) {
-        this.loadMoreBtn = false;
-      }
-    },
-    );
+      .getFailedSubscription(this.currentPage + 1, this.pagelimit)
+      .subscribe((s) => {
+        this.subscriptions = this.subscriptions.concat(s);
+        this.currentPage++;
+        if (s.length < 5) {
+          this.loadMoreBtn = false;
+        }
+      });
   }
-  
-  onRenew() {
-    Swal.fire({
-      icon: "warning",
-      title: "Not available at the moment",
-      text: "",
+
+  onRenew(sub: SubscriptionModel) {
+    this.countlyService.addEvent("subscriptionCardClick", {
+      [`${sub.planName.replace(/\s/g, "")}${sub.amount}Clicked`]: "yes",
+      cta: "renew",
+      source: "settingsPage",
+      [XCountlySUM]: sub.amount,
     });
   }
 
-  calculatePercentage(remaining= 0, total=0) {
-    return Math.round( remaining/total*100)+'%'
+  calculatePercentage(remaining = 0, total = 0) {
+    return Math.round((remaining / total) * 100) + "%";
   }
 
   get domain() {

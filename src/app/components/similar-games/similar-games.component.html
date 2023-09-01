@@ -9,7 +9,7 @@
       <div class="col-md-12">
         <div #container class="row scrollGame" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard w290 pr-0">
-            <app-game-card [game]="game" [hasFixedWidth]="true"></app-game-card>
+            <app-game-card [game]="game" [hasFixedWidth]="true" ></app-game-card>
           </div>
         </div>
       </div>

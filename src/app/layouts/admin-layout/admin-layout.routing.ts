@@ -12,6 +12,7 @@ import { PlayComponent } from 'src/app//pages/play/play.component';
 import { ViewGuard } from 'src/app/guards/view.guard';
 import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 import { SpeedTestComponent } from 'src/app/pages/speed-test/speed-test.component';
+import { WishlistGuard } from 'src/app/guards/wishlist.guard';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -23,7 +24,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'streams',              component: StreamsComponent },
     { path: 'streams/:id',          component: StreamComponent },
     { path: 'library',              component: LibraryComponent },
-    { path: 'wishlist',             component: WishlistComponent },
+    { path: 'wishlist',             component: WishlistComponent, canDeactivate: [WishlistGuard] },
     { path: 'search',               component: SearchComponent },
     { path: 'search/:tab',          component: SearchComponent },
     { path: 'play',                   component: PlayComponent },

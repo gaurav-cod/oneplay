@@ -28,7 +28,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
 
   private _successSwalModalRef: NgbModalRef;
-  private _signupEvent: StartEvent<"signup - Form Submitted">;
+  private _signupEvent: StartEvent<"signUpFormSubmitted">;
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
@@ -124,7 +124,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.title.setTitle("Signup");
@@ -184,8 +184,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          this.endSignupEvent();
-          this.startSignupEvent();
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,
@@ -211,18 +209,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onClickPrivacy() {
-    this._signupEvent.update({ privacyPolicyPageViewed: "yes" });
+    this._signupEvent.update({ privacyPolicyViewed: "yes" });
   }
 
   onClickTNC() {
-    this._signupEvent.update({ TnCPageViewed: "yes" });
+    this._signupEvent.update({ tncViewed: "yes" });
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-    });
+    this.countlyService.startEvent("signIn", {
+      data: { signInFromPage: "signUp" },
+      discardOldData: true,
+    })
     this.router.navigate(["/login"]);
   }
 
@@ -244,27 +242,37 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private startSignupEvent() {
     this._signupEvent = this.countlyService.startEvent(
-      "signup - Form Submitted",
+      "signUpFormSubmitted",
       {
-        unique: false,
+        discardOldData: false,
         data: {
-          signupFromPage: location.pathname + location.hash,
-          privacyPolicyPageViewed: "no",
-          TnCPageViewed: "no",
+          name: 'no',
+          email: 'no',
+          phoneNumber: 'no',
+          gender: 'no',
+          password: 'no',
+          referralId: 'no',
+          tncViewed: 'no',
+          privacyPolicyViewed: 'no',
         },
       }
     );
+    const segments = this._signupEvent.data();
+    if (!segments.signUpFromPage) {
+      this._signupEvent.update({
+        signUpFromPage: "directLink",
+      })
+    }
   }
 
   private endSignupEvent() {
     this._signupEvent.end({
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      phoneNumber:
-        this.registerForm.value.country_code + this.registerForm.value.phone,
-      gender: this.registerForm.value.gender,
-      referralID: this.registerForm.value.referred_by_id,
-      signupFromPage: location.pathname + location.hash,
-    });
+      name: 'yes',
+      email: 'yes',
+      phoneNumber: 'yes',
+      gender: 'yes',
+      password: "yes",
+      referralId: this.registerForm.value.referred_by_id === "" ? 'no' : 'yes',
+    })
   }
 }

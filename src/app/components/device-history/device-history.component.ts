@@ -5,6 +5,7 @@ import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { MessagingService } from "src/app/services/messaging.service";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-device-history",
@@ -22,10 +23,14 @@ export class DeviceHistoryComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly messagingService: MessagingService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      deviceHistoryViewed: 'yes',
+    })
     this.restService.getSessions().subscribe((res) => (this.sessions = res));
   }
 
@@ -59,11 +64,11 @@ export class DeviceHistoryComponent implements OnInit {
         },
         (error) => {
           this.loggingOut = false;
-          Swal.fire({
-            icon: "error",
-            title: "Error Code: " + error.code,
-            text: error.message,
-          });
+            Swal.fire({
+              icon: "error",
+              title: "Error Code: " + error.code,
+              text: error.message,
+            });
         }
       );
     }
@@ -71,6 +76,10 @@ export class DeviceHistoryComponent implements OnInit {
 
   logoutAll() {
     this.loggingOut = true;
+
+    this.countlyService.updateEventData("settingsView", {
+      logoutFromAllClicked: "yes",
+    });
 
     Promise.all(
       this.sessions.map(async (session) => {
