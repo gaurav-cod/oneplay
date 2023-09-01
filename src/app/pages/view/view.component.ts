@@ -842,16 +842,23 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  private startSessionSuccess(data: StartGameRO) {
+  private endGamePlayStartEvent(
+    result: "success" | "failure" | "wait",
+    gameSessionId?: string
+  ) {
     this.countlyService.endEvent("gamePlayStart", {
-      gameSessionId: data.data.session.id,
+      gameSessionId,
       gameTitle: this.game.title,
       store: this.selectedStore.name,
       gameId: this.game.oneplayId,
       gameGenre: this.game.genreMappings.join(', '),
       showSettingsEnabled: this.showSettings.value ? "yes" : "no",
-      result: 'success',
+      result,
     })
+  }
+
+  private startSessionSuccess(data: StartGameRO) {
+    this.endGamePlayStartEvent("success", data.data.session?.id);
     if (!!this._waitQueueModalRef) {
       this._waitQueueModalRef.close();
       this._waitQueueModalRef = undefined;
@@ -893,28 +900,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     if (err.code == 801) {
-      this.countlyService.endEvent("gamePlayStart", {
-        gameTitle: this.game.title,
-        store: this.selectedStore.name,
-        gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.join(', '),
-        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
-        result: 'wait',
-      })
+      this.endGamePlayStartEvent("wait");
       this.waitQueue(err.message);
     } else if (
       err.code == 610 ||
       err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
     ) {
-      this.countlyService.endEvent("gamePlayStart", {
-        gameTitle: this.game.title,
-        store: this.selectedStore.name,
-        gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.join(', '),
-        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
-        result: 'failure',
-      })
-      // this._initializeEvent?.end({ result: "failure" });
+      this.endGamePlayStartEvent("failure");
       this.stopLoading();
       Swal.fire({
         title: "Alert !",
@@ -923,15 +915,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         confirmButtonText: "Okay",
       });
     } else {
-      // this._initializeEvent?.end({ result: "failure" });
-      this.countlyService.endEvent("gamePlayStart", {
-        gameTitle: this.game.title,
-        store: this.selectedStore.name,
-        gameId: this.game.oneplayId,
-        gameGenre: this.game.genreMappings.join(', '),
-        showSettingsEnabled: this.showSettings.value ? "yes" : "no",
-        result: 'failure',
-      })
+      this.endGamePlayStartEvent("failure");
       this.stopLoading();
       if (err.isOnline)
       Swal.fire({
