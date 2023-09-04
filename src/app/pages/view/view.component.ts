@@ -1023,13 +1023,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  testGame() {
-    this._launchModalRef = this.ngbModal.open(this.launchModal, {
-      centered: true,
-      modalDialogClass: "modal-md",
-    });
-  }
-
   private startGameWithClientTokenFailed(err: any) {
     // this._initializeEvent?.end({ result: "failure" });
     this.stopLoading();
