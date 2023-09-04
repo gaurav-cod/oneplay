@@ -982,24 +982,23 @@
             <div class="p-1 p-md-0">Launch Gaming Client</div>
           </button>
         </div>
-        <div *ngIf="!macDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
-          <div *ngIf="!!clientDownloadLink">
-            <a
-              [href]="clientDownloadLink"
-              class="btn btn-link btn-block activeBG responsiveBr60"
+        <div *ngIf="!!clientDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
+          <a
+            [href]="macDownloadLink ? 'javascript:void(0)' : clientDownloadLink"
+            class="btn btn-link btn-block activeBG responsiveBr60"
+            (click)="macDownloadLink ? macDownload(macDownloadModal) : undefined"
+          >
+            <div
+              class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
             >
-              <div
-                class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
-              >
-                Download Gaming Client
-                <img
-                  src="assets/img/Vector 67.svg"
-                  class="img-fluid align-middle ml-2"
-                  alt=""
-                />
-              </div>
-            </a>
-          </div>
+              Download Gaming Client
+              <img
+                src="assets/img/Vector 67.svg"
+                class="img-fluid align-middle ml-2"
+                alt=""
+              />
+            </div>
+          </a>
         </div>
         <div *ngIf="macDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
           <a

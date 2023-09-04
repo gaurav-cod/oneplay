@@ -263,6 +263,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._settingsEvent?.cancel();
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
+    this._macDownloadModalRef?.close();
     Swal.close();
   }
 
