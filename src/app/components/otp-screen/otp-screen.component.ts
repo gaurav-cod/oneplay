@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { RestService } from 'src/app/services/rest.service';
 import Swal from 'sweetalert2';
@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 export class OtpScreenComponent {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
-  @Input() verfiyEmail: Function;
+  @Output() verfiyEmail = new EventEmitter();
   @Input() buttonText: string;
   form: UntypedFormGroup;
   formInput = [
@@ -36,6 +36,10 @@ export class OtpScreenComponent {
   constructor(
     private readonly restService: RestService,
   ){}
+
+  onConfirm() {
+    this.verfiyEmail.emit();
+  }
 
   jump(event: any, index: number) {
     const input = event.target as HTMLInputElement;

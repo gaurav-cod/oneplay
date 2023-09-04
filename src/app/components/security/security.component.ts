@@ -19,10 +19,8 @@ export class SecurityComponent implements OnInit {
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
   @Input() codeForm;
-
-  otpHeading: string = '';
-  otpSubHeading: string = '';
   buttonText: string = 'Continue';
+  isVerify: boolean = true;
   
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
@@ -146,24 +144,20 @@ export class SecurityComponent implements OnInit {
     if (this.user.email === this.email.value.trim()) return;
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
-        this.otpHeading = "Enter Security Code";
-        this.otpSubHeading = "A security code has been sent to your mobile number and previous email address.";
         this.openOTPScreen();
       }
     );
   }
 
-  verfiyEmail() {
+  verfiyEmail(event) {
     const c = Object.values(
       this.codeForm.value as { [key: string]: string }
     ).map((el) => `${el}`);
     const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
     this.restService.verifyEmailUpdate(code).subscribe(
       () => {
-        this._otpScreenRef?.close();
-        this.otpHeading = "Verify New Email Address";
-        this.otpSubHeading = "Please enter the code sent to your new email address.";
-        this.buttonText = "Confirm";
+        this.isVerify = false;
+        this.buttonText = 'Confirm';
         this.openOTPScreen();
       }
     );
@@ -192,23 +186,23 @@ export class SecurityComponent implements OnInit {
     );
   }
 
-  updatePassword(): void {
-    this.restService.updatePassword(this.password.value).subscribe(
-      () => {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Password updated successfully",
-        });
-        this.password.reset();
-      },
-      (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
-      }
-    );
-  }
+  // updatePassword(): void {
+  //   this.restService.updatePassword(this.password.value, this.oldPassword.value).subscribe(
+  //     () => {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success",
+  //         text: "Password updated successfully",
+  //       });
+  //       this.password.reset();
+  //     },
+  //     (error) => {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error Code: " + error.code,
+  //         text: error.message,
+  //       });
+  //     }
+  //   );
+  // }
 }

@@ -108,9 +108,9 @@ export class RestService {
       );
   }
 
-  updatePassword(password: string): Observable<void> {
+  updatePassword(password: string, old_password: string): Observable<void> {
     return this.http
-      .put(this.r_mix_api + "/accounts/password", { password })
+      .put(this.r_mix_api + "/accounts/password", { password, old_password })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
