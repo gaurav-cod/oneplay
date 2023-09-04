@@ -984,8 +984,27 @@
         </div>
         <div *ngIf="!!clientDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
           <a
-            [href]="clientDownloadLink"
+            [href]="macDownloadLink ? 'javascript:void(0)' : clientDownloadLink"
             class="btn btn-link btn-block activeBG responsiveBr60"
+            (click)="macDownloadLink ? macDownload(macDownloadModal) : undefined"
+          >
+            <div
+              class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
+            >
+              Download Gaming Client
+              <img
+                src="assets/img/Vector 67.svg"
+                class="img-fluid align-middle ml-2"
+                alt=""
+              />
+            </div>
+          </a>
+        </div>
+        <div *ngIf="macDownloadLink" class="col-12 col-md-11 mt-md-4 mt-3">
+          <a
+            href="javascript:void(0)"
+            class="btn btn-link btn-block activeBG responsiveBr60"
+            (click)="macDownload(macDownloadModal)"
           >
             <div
               class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
@@ -1091,6 +1110,44 @@
       >
         Cancel
       </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #macDownloadModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <a
+        href="javascript:void(0)"
+        class="position-absolute btn p-0 text-white rounded-circle top-2 right-1"
+        (click)="d('Cross click')"
+      >
+        <i class="fas fa-times-circle"></i>
+      </a>
+      <h5 class="modal-title font20 font600 text-white text-center mt-3">Select the version of OnePlay application that’s right for your Mac</h5>
+      <div class="row">
+          <div class="col-lg-6 text-center mt-4">
+              <a href="https://cdn.edge-net.co/clients/latest/mac_client_intel.dmg">
+                  <div class="card blackDarkBg border-0 py-lg-3 py-2">
+                      <p class="mb-0 font28 font700 text-white">
+                          Mac with Intel
+                          <img src="assets/img/downloadIntel.svg" width="28px" class="img-fluid ml-2 h42" alt="" />
+                      </p>
+                  </div>
+              </a>
+          </div>
+          <div class="col-lg-6 text-center mt-4 ps-lg-0">
+            <a href="https://cdn.edge-net.co/clients/latest/mac_client_apple.dmg">
+              <div class="card blackDarkBg border-0 py-lg-3 py-2">
+                <p class="mb-0 font28 font700 text-white">
+                  Mac with M1 & above
+                  <img src="assets/img/downloadMac.svg" width="42px" class="img-fluid" alt="" />
+                </p>
+              </div>
+            </a>
+            <p class="font16 offWhiteColor mb-0 mt-1">Nov 2020 & Later</p>
+          </div>
+      </div>
     </div>
   </div>
 </ng-template>

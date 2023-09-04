@@ -52,6 +52,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("reportErrorModal") reportErrorModal: ElementRef<HTMLDivElement>;
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
+  @ViewChild("macDownloadModal") macDownloadModal: ElementRef<HTMLDivElement>;
 
   initialized: string = "Loading...";
   progress: number = 0;
@@ -65,6 +66,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
+  macDownloadLink:boolean = false;
 
   similarGames: GameModel[] = [];
 
@@ -110,6 +112,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _settingsModalRef: NgbModalRef;
   private _launchModalRef: NgbModalRef;
   private _advancedModalRef: NgbModalRef;
+  private _macDownloadModalRef: NgbModalRef;
   private _gamepads: Gamepad[] = [];
   private _startGameSubscription: Subscription;
   private _clientTokenSubscription: Subscription;
@@ -260,6 +263,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._settingsEvent?.cancel();
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
+    this._macDownloadModalRef?.close();
     Swal.close();
   }
 
@@ -454,12 +458,21 @@ export class ViewComponent implements OnInit, OnDestroy {
       case "Windows":
         return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
       case "Mac OS":
-        return "https://cdn.edge-net.co/clients/latest/mac_client.dmg";
+        return this.macDownloadLink = true;
       case "Android":
         return "";
       default:
         return "";
     }
+  }
+
+  macDownload(container) {
+    this._macDownloadModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-lg",
+      backdrop: "static",
+      keyboard: false,
+    });
   }
 
   get exitCommand() {
