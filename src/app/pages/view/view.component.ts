@@ -65,6 +65,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
+  macDownloadLink:boolean = false;
 
   similarGames: GameModel[] = [];
 
@@ -452,9 +453,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     const userAgent = new UAParser();
     switch (userAgent.getOS().name) {
       case "Windows":
-        return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
+        // return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
+        return this.macDownloadLink = true;
       case "Mac OS":
-        return "https://cdn.edge-net.co/clients/latest/mac_client.dmg";
+        return this.macDownloadLink = true;
       case "Android":
         return "";
       default:
