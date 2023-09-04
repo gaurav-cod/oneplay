@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
+import { v4 } from "uuid";
 
 type State = "Ping" | "Download" | "Upload";
 
@@ -15,7 +16,7 @@ export class SpeedTestComponent implements OnInit {
   downloadText = "00.00";
   uploadText = "00.00";
   progressValue = "1 1000";
-  throttleTime = 40;
+  throttleTime = 10;
   messages = {
     default: {
       class: '',
@@ -250,20 +251,20 @@ export class SpeedTestComponent implements OnInit {
       let dlend = Date.now();
       let dlstart = Date.now();
       for (let i = 1; i <= 20; i++) {
-        fetch(url, {
+        fetch(url + `?nocache=${v4()}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            size: 1000000 * i,
+            size: 4000000,
             id: 1,
           }),
         })
           .then(
             (res) => {
               if (res.status !== 200) return;
-              dldata += 1000000 * i;
+              dldata += 4000000;
             },
             (err) => {
               console.warn(err, i);
@@ -273,7 +274,7 @@ export class SpeedTestComponent implements OnInit {
             count++;
             dlend = Date.now();
             let s = (dlend - dlstart) / 1000;
-            let t = dldata / 1000 / 1000 / s;
+            let t = dldata / 1024 / 1024 / s;
             this.currentDownload = (Math.floor(t * 100) / 100) * 8;
             this._TsetDownloadText(this.currentDownload);
             this.updateProgress(100 + count);
@@ -294,15 +295,15 @@ export class SpeedTestComponent implements OnInit {
       for (let i = 1; i <= 20; i++) {
         const formData = new FormData();
         formData.append("id", i.toString());
-        formData.append("file", this.makePacket(i, 1000000 * i));
-        fetch(url, {
+        formData.append("file", this.makePacket(i, 1050000));
+        fetch(url + `?nocache=${v4()}`, {
           method: "POST",
           body: formData,
         })
           .then(
             (res) => {
               if (res.status !== 200) return;
-              uldata += 1000000 * i;
+              uldata += 1050000;
             },
             (err) => {
               console.warn(err, i);
@@ -312,7 +313,7 @@ export class SpeedTestComponent implements OnInit {
             count++;
             ulend = Date.now();
             let s = (ulend - ulstart) / 1000;
-            let t = uldata / 1000 / 1000 / s;
+            let t = uldata / 1024 / 1024 / s;
             this.currentUpload = (Math.floor(t * 100) / 100) * 8;
             this._TsetUploadText(this.currentUpload);
             this.updateProgress(100 + 20 + count);
