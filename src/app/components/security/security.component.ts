@@ -1,10 +1,9 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
-import { phoneValidator } from "src/app/utils/validators.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -18,18 +17,51 @@ export class SecurityComponent implements OnInit {
   @ViewChild("changePasswordModal") changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
-  @Input() codeForm;
   buttonText: string = 'Continue';
   isVerify: boolean = true;
+  isPhone: boolean = true;
+  emailOTP: boolean = true;
+  remainingTimer = false;
+  display: any;
+
+  errorMessage: string;
   
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
-
-  password = new UntypedFormControl("", [
+  country_code = new UntypedFormControl("+91", [Validators.required]);
+  phone = new UntypedFormControl("", [
     Validators.required,
-    Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
+    Validators.pattern(/^[0-9]{10}$/),
   ]);
-  phone = new UntypedFormControl("", [Validators.required, phoneValidator()]);
+
+  // password = new UntypedFormControl("", [
+  //   Validators.required,
+  //   Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
+  // ]);
+
+  resetPassword = new UntypedFormGroup({
+    oldPassword: new UntypedFormControl("",  [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
+    password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
+    confirmPassword: new UntypedFormControl("",  [Validators.required]),
+  });
+
+  // oldPassword = new UntypedFormControl("", [
+  //   Validators.required,
+  // ]);
+  // confirmPassword = new UntypedFormControl("",  [Validators.required]);
+  // phone = new UntypedFormControl("", [Validators.required, phoneValidator()]);
+
+  readonly countryCodes = [
+    "+91",
+    "+850",
+    "+82",
+    "+84",
+    "+7",
+    "+1",
+    "+60",
+    "+98",
+    "+971",
+  ];
   
   showPass = false;
 
@@ -51,73 +83,60 @@ export class SecurityComponent implements OnInit {
     });
   }
 
+  get checkvalidationValue() {
+    if(this.resetPassword.value.oldPassword && this.resetPassword.value.password.length && this.resetPassword.value.password === this.resetPassword.value.confirmPassword) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  get oldPasswordErrored() {
+    const control = this.resetPassword.controls["oldPassword"];
+    return control.touched && control.invalid;
+  }
+
+  get passwordErrored() {
+    const control = this.resetPassword.controls["password"];
+    return control.touched && control.invalid;
+  }
+
+  get passwordSameErrored() {
+    const control = this.resetPassword.controls["password"];
+    if(!control.invalid) {
+      if(this.resetPassword.value.oldPassword === this.resetPassword.value.password) {
+        return control.touched && true;
+      } else {
+        return control.touched && false;
+      }
+    }
+    
+  }
+
+  get confirmPasswordErrored() {
+    const control = this.resetPassword.controls["confirmPassword"];
+    if(this.resetPassword.value.password !== this.resetPassword.value.confirmPassword) {
+      return control.touched && true;
+    } else {
+      return control.touched && false;
+    }
+  }
+
   ngOnInit(): void {}
 
-  openPhoneModal() {
-    this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    });
-  }
-
-  openPasswordModal() {
-    this._changePasswordModalRef = this.ngbModal.open(this.changePasswordModal, {
-      centered: true,
-      modalDialogClass: "modal-md",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    });
-  }
-
-  updatePhone(): void {
-    if (!this.phone.valid) return;
-    this.phone.disable();
-    if (this.user.phone === this.phone.value.trim()) return;
-    this.restService.updateProfile({ phone: this.phone.value }).subscribe(
-      () => {
-        this.authService.updateProfile({ phone: this.phone.value });
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Successfully updated phone number.",
-        });
-      },
-      (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+  timer(minute) {
+    let seconds: any = 60;
+    const timer = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.display = `${prefix}${seconds}`;
+      this.remainingTimer = true;
+      if (seconds == 0) {
+        this.remainingTimer = false;
+        clearInterval(timer);
       }
-    );
+    }, 1000);
   }
-
-  // updateEmail(): void {
-  //   if (this.email.invalid) return;
-  //   this.email.disable();
-  //   if (this.user.email === this.email.value.trim()) return;
-  //   this.restService.updateEmail(this.email.value).subscribe(
-  //     (msg) => {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success",
-  //         text: msg,
-  //       });
-  //       this.authService.logout();
-  //     },
-  //     (error) => {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Error Code: " + error.code,
-  //         text: error.message,
-  //       });
-  //     }
-  //   );
-  // }
 
   private openOTPScreen() {
     this._otpScreenRef = this.ngbModal.open(this.otpScreen, {
@@ -144,32 +163,68 @@ export class SecurityComponent implements OnInit {
     if (this.user.email === this.email.value.trim()) return;
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
+        this._changeEmailModalRef.close();
+        this.timer(1)
         this.openOTPScreen();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
       }
     );
   }
 
-  verfiyEmail(event) {
-    const c = Object.values(
-      this.codeForm.value as { [key: string]: string }
-    ).map((el) => `${el}`);
-    const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
-    this.restService.verifyEmailUpdate(code).subscribe(
+  resendEmailUpdate() {
+    this.restService.resendEmailRequestUpdate().subscribe(
+      ()=>{
+        this.timer(1)
+      },
+      (error) => {
+        if(error.code === 429) {
+          this.errorMessage = error.message
+        }
+      }
+    );
+  }
+  
+  resendUpdateEmail() {
+    this.restService.resendUpdateEmail().subscribe(
+      ()=>{
+        this.timer(1)
+      },
+      (error) => {
+        if(error.code === 429) {
+          this.errorMessage = error.message
+        }
+      }
+    );
+  }
+
+  verfiyEmail(data: string) {
+    this.restService.verifyEmailUpdate(data).subscribe(
       () => {
+        this._otpScreenRef.close();
         this.isVerify = false;
         this.buttonText = 'Confirm';
         this.openOTPScreen();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
       }
     );
   }
 
-  confirmEmail() {
-    const c = Object.values(
-      this.codeForm.value as { [key: string]: string }
-    ).map((el) => `${el}`);
-    const code = c[0] + c[1] + c[2] + "-" + c[3] + c[4] + c[5];
-    this.restService.confirmEmailUpdate(code).subscribe(
+  confirmEmail(data: string) {
+    this.restService.confirmEmailUpdate(data).subscribe(
       () => {
+        this._otpScreenRef.close();
         Swal.fire({
           icon: "success",
           text: "You have successfully changed your email.",
@@ -186,15 +241,121 @@ export class SecurityComponent implements OnInit {
     );
   }
 
-  // updatePassword(): void {
-  //   this.restService.updatePassword(this.password.value, this.oldPassword.value).subscribe(
+  openPhoneModal() {
+    this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
+  updatePhone(): void {
+    if (this.phone.invalid) return;
+    if (this.user.phone === this.phone.value.trim()) return;
+    this.restService.updatePhone(this.country_code.value + this.phone.value).subscribe(
+      () => {
+        this._changePhoneModalRef.close();
+        this.emailOTP = false;
+        this.openOTPScreen();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
+      }
+    );
+  }
+
+  resendPhoneUpdate() {
+    this.restService.resendPhoneRequestUpdate().subscribe(
+      ()=>{
+        this.timer(1)
+      },
+      (error) => {
+        if(error.code === 429) {
+          this.errorMessage = error.message
+        }
+      }
+    );
+  }
+  
+  resendUpdatePhone() {
+    this.restService.resendPhoneUpdate().subscribe(
+      ()=>{
+        this.timer(1)
+      },
+      (error) => {
+        if(error.code === 429) {
+          this.errorMessage = error.message
+        }
+      }
+    );
+  }
+
+  verfiyPhone(data: string) {
+    this.restService.verifyPhoneUpdate(data).subscribe(
+      () => {
+        this._otpScreenRef.close();
+        this.isPhone = false;
+        this.buttonText = 'Confirm';
+        this.openOTPScreen();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
+      }
+    );
+  }
+
+  confirmPhone(data: string) {
+    this.restService.confirmPhoneUpdate(data).subscribe(
+      () => {
+        this._otpScreenRef.close();
+        Swal.fire({
+          icon: "success",
+          text: "You have successfully changed your phone number.",
+        });
+        this.authService.logout();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
+      }
+    );
+  }
+
+  openPasswordModal() {
+    this._changePasswordModalRef = this.ngbModal.open(this.changePasswordModal, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
+  // updatePhone(): void {
+  //   if (!this.phone.valid) return;
+  //   this.phone.disable();
+  //   if (this.user.phone === this.phone.value.trim()) return;
+  //   this.restService.updateProfile({ phone: this.phone.value }).subscribe(
   //     () => {
+  //       this.authService.updateProfile({ phone: this.phone.value });
   //       Swal.fire({
   //         icon: "success",
   //         title: "Success",
-  //         text: "Password updated successfully",
+  //         text: "Successfully updated phone number.",
   //       });
-  //       this.password.reset();
   //     },
   //     (error) => {
   //       Swal.fire({
@@ -205,4 +366,47 @@ export class SecurityComponent implements OnInit {
   //     }
   //   );
   // }
+
+  // updateEmail(): void {
+  //   if (this.email.invalid) return;
+  //   this.email.disable();
+  //   if (this.user.email === this.email.value.trim()) return;
+  //   this.restService.updateEmail(this.email.value).subscribe(
+  //     (msg) => {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success",
+  //         text: msg,
+  //       });
+  //       this.authService.logout();
+  //     },
+  //     (error) => {
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error Code: " + error.code,
+  //         text: error.message,
+  //       });
+  //     }
+  //   );
+  // }
+
+  updatePassword(): void {
+    this.restService.updatePassword(this.resetPassword.value, this.resetPassword.value.oldPassword).subscribe(
+      () => {
+        Swal.fire({
+          icon: "success",
+          title: "Password Changed!",
+          text: "You have successfully changed your password.",
+        });
+        this.resetPassword.value.password.reset();
+      },
+      (error) => {
+        Swal.fire({
+          icon: "error",
+          title: " Error Code: " + error.code,
+          text: error.message,
+        });
+      }
+    );
+  }
 }

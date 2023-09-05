@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { RestService } from 'src/app/services/rest.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-otp-screen',
@@ -11,8 +9,15 @@ import Swal from 'sweetalert2';
 export class OtpScreenComponent {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
-  @Output() verfiyEmail = new EventEmitter();
   @Input() buttonText: string;
+  @Input() inputValue: string;
+  @Input() remainingTimer: boolean;
+  @Input() display: any;
+  @Input() errorMessage: string;
+
+  @Output() verfiyEmail = new EventEmitter<string>();
+  @Output() resendUpdateEmail = new EventEmitter();
+
   form: UntypedFormGroup;
   formInput = [
     "one",
@@ -34,11 +39,18 @@ export class OtpScreenComponent {
   });
 
   constructor(
-    private readonly restService: RestService,
   ){}
 
+  onResend() {
+    this.resendUpdateEmail.emit();
+  }
+
   onConfirm() {
-    this.verfiyEmail.emit();
+    const c = Object.values(
+      this.codeForm.value as { [key: string]: string }
+    ).map((el) => `${el}`);
+    const code = c[0] + c[1] + c[2] + c[3] + c[4] + c[5];
+    this.verfiyEmail.emit(code);
   }
 
   jump(event: any, index: number) {
