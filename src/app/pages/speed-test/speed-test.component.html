@@ -89,9 +89,9 @@
               </div>
             </div>
           </div>
-          <div class="row mb-4 {{recommendations.length === 0 ? 'd-none' : ''}}">
+          <div class="row mb-4 {{ hideRecommendation }}">
             <div class="col-auto">
-              <div class="recommendation {{recommendations.length !== 1 ? 'recommendation-red' : ''}}">
+              <div [ngClass]="recommendationColor">
                 {{ recommendation }}
               </div>
             </div>
@@ -128,7 +128,7 @@
               <div class="text-center mt-5">
                 <div class="pt-3" *ngIf="!testCompleted">
                   <span class="font20 font500 text-white">{{ state }}</span>
-                  <h1 class="displayData mb-0">{{ downloadText }}</h1>
+                  <h1 class="displayData mb-0">{{ getCurrentTestValue(state) }}</h1>
                   <span class="font16 font500 muteText">mbps</span>
                 </div>
                 <div class="pt-4" *ngIf="testCompleted">

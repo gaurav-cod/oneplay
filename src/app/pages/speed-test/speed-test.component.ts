@@ -58,15 +58,17 @@ export class SpeedTestComponent implements OnInit {
   pingCount = 100;
   pingPacketsSent = [];
   pingPacketsRecieved = [];
-  dlPacketsCount = 0;
-  dlDataRecieved = 0;
-  dlStartTime = 0;
-  dlEndTime = 0;
-  ulEndTime = 0;
-  ulStartTime = 0;
-  ulPacketsSize = 5242880;
-  ulPacketsCount = 100;
-  ulPacketsConfirmed = 0;
+  dlPacketsSize = 4000000;
+  ulPacketsSize = 1050000;
+  // dlPacketsCount = 0;
+  // dlDataRecieved = 0;
+  // dlStartTime = 0;
+  // dlEndTime = 0;
+  // ulEndTime = 0;
+  // ulStartTime = 0;
+  // ulPacketsSize = 5242880;
+  // ulPacketsCount = 100;
+  // ulPacketsConfirmed = 0;
   testCompleted = false;
   currentLocation = undefined;
   state: State;
@@ -74,11 +76,15 @@ export class SpeedTestComponent implements OnInit {
   currentJitter: number;
   currentDownload: number;
   currentUpload: number;
+  hideRecommendation = 'd-none';
+  recommendationColor = '';
   recommendation: string = "";
   recommendations: {
-    type: State,
-    text: string,
-  }[] = [];
+    [k in State]: {
+      text: string,
+      enabled: boolean,
+    }
+  };
   finalMessage: typeof this.messages[keyof typeof this.messages] = this.messages.default;
 
   constructor(private readonly restService: RestService) {}
@@ -97,18 +103,12 @@ export class SpeedTestComponent implements OnInit {
     this.pingCount = 100;
     this.pingPacketsSent = [];
     this.pingPacketsRecieved = [];
-    this.dlPacketsCount = 0;
-    this.dlDataRecieved = 0;
-    this.dlStartTime = 0;
-    this.dlEndTime = 0;
-    this.ulEndTime = 0;
-    this.ulStartTime = 0;
-    this.ulPacketsSize = 4194304;
-    this.ulPacketsCount = 100;
-    this.ulPacketsConfirmed = 0;
-    this.testCompleted = false;
     this.currentLocation = undefined;
-    this.recommendations = [];
+    this.recommendations = {
+      'Ping': { text: '', enabled: false, },
+      'Download': { text: '', enabled: false, },
+      'Upload': { text: '', enabled: false, },
+    }
     this.finalMessage = this.messages.default;
   }
 
@@ -120,11 +120,25 @@ export class SpeedTestComponent implements OnInit {
   }
 
   getValueColor(state: State) {
+    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
     return {
       'text-white': state === this.state && !this.testCompleted,
-      'yellowGradient': this.recommendations.length === 1 && this.recommendations[0].type === state,
-      'text-red': this.recommendations.length > 1 && this.recommendations.find((v) => v.type === state) !== undefined,
+      'yellowGradient': recs.length === 1 && this.recommendations[state].enabled,
+      'text-red': recs.length > 1,
     };
+  }
+
+  getCurrentTestValue(state: State) {
+    switch (state) {
+      case 'Ping':
+        return this.latencyText;
+      case 'Download':
+        return this.downloadText;
+      case 'Upload':
+        return this.uploadText;
+      default:
+        return '';
+    }
   }
 
   get latencyIcon() {
@@ -150,17 +164,24 @@ export class SpeedTestComponent implements OnInit {
 
   updateRecommendations() {
     // RECOMMENDED : Latency of 15 ms, Jitter of 0.2 ms, Download Speed of 15 mbps, Upload Speed of 10 mbps
-    if (this.recommendations.length) {
-      if (this.recommendations.length === 1) {
-        this.recommendation = 'Recommended ' + this.recommendations[0].text;
-      } else {
-        this.recommendation = 'RECOMMENDED: ' + this.recommendations.map(v => v.text).join(", ");
-      }
+    // this.recommendations.Ping.enabled = true;
+    // this.recommendations.Download.enabled = true;
+    // this.recommendations.Upload.enabled = true;
+    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
+    if (recs.length === 1) {
+      this.recommendation = 'Recommended ' + recs[0][1].text;
+    } else if (recs.length) {
+      this.recommendation = 'RECOMMENDED: ' + Object.entries(this.recommendations).map((entry) => entry[1].text).join(", ");
     } else {
       this.recommendation = "";
-      this.recommendations = [];
-      this.finalMessage = this.messages.default;
+      this.recommendations = {
+        'Ping': { text: '', enabled: false, },
+        'Download': { text: '', enabled: false, },
+        'Upload': { text: '', enabled: false, },
+      }
     }
+    this.hideRecommendation = recs.length === 0 ? 'd-none' : '';
+    this.recommendationColor = 'recommendation ' + (recs.length !== 1 ? 'recommendation-red' : '');
   }
 
   async runTests() {
@@ -169,41 +190,38 @@ export class SpeedTestComponent implements OnInit {
       .getCurrentLocation()
       .toPromise()
       .then((v) => (this.currentLocation = v));
+    // game servers use bitrate and hence bits
+    // speed-test server user bytes.
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    // res.recommended_latency = 10;
-    // res.recommended_download = 10 * 1000 * 1000;
+    // res.recommended_latency = 80;
+    // res.recommended_download = 80 * 1000 * 1000;
     // res.recommended_upload = 80 * 1000 * 1000;
+    const recommended_download_in_mbps = res.recommended_download / 1024 / 1024;
+    const recommended_upload_in_mbps = res.recommended_upload / 1024 / 1024;
+    this.recommendations.Ping.text = `Latency of ${res.recommended_latency} ms`;
+    this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
+    this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
     this.state = "Ping";
     await this.runPing(res.ping);
     if (this.currentLatency > res.recommended_latency) {
-      this.recommendations.push({
-        type: 'Ping',
-        text: `Latency of ${res.recommended_latency} ms`,
-      })
+      this.recommendations.Ping.enabled = true;
       this.updateRecommendations();
     }
     this.state = "Download";
     await this.runDL(res.download);
-    const recommended_download_in_mbps = res.recommended_download / 1000 / 1000;
     if (this.currentDownload < recommended_download_in_mbps) {
-      this.recommendations.push({
-        type: 'Download',
-        text: `Download Speed of ${recommended_download_in_mbps} mbps`,
-      })
+      this.recommendations.Download.enabled = true;
       this.updateRecommendations();
     }
     this.state = "Upload";
     await this.runUL(res.upload);
-    const recommended_upload_in_mbps = res.recommended_upload / 1000 / 1000;
     if (this.currentUpload < recommended_upload_in_mbps) {
-      this.recommendations.push({
-        type: 'Upload',
-        text: `Upload Speed of ${recommended_upload_in_mbps} mbps`,
-      })
+      this.recommendations.Upload.enabled = true;
       this.updateRecommendations();
     }
-    if (this.recommendations.length) {
-      if (this.recommendations.length === 1 && this.currentLatency > res.recommended_latency) {
+    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
+    if (recs.length) {
+      if (recs.length === 1 && this.recommendations.Ping.enabled) {
         this.finalMessage = this.messages.stutter;
       } else {
         this.finalMessage = this.messages.not_optimal;
@@ -246,9 +264,8 @@ export class SpeedTestComponent implements OnInit {
 
   runDL(url: string) {
     return new Promise(async (resolve) => {
-      let count = 0;
-      let dldata = 0;
-      let dlend = Date.now();
+      let pcount = 0;
+      let scount = 0;
       let dlstart = Date.now();
       for (let i = 1; i <= 20; i++) {
         fetch(url + `?nocache=${v4()}`, {
@@ -257,28 +274,27 @@ export class SpeedTestComponent implements OnInit {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            size: 4000000,
+            size: this.dlPacketsSize,
             id: 1,
           }),
         })
           .then(
             (res) => {
               if (res.status !== 200) return;
-              dldata += 4000000;
+              scount++;
             },
             (err) => {
               console.warn(err, i);
             }
           )
           .finally(() => {
-            count++;
-            dlend = Date.now();
-            let s = (dlend - dlstart) / 1000;
-            let t = dldata / 1024 / 1024 / s;
+            pcount++;
+            let s = (Date.now() - dlstart) / 1000;
+            let t = (scount * this.dlPacketsSize) / 1024 / 1024 / s;
             this.currentDownload = (Math.floor(t * 100) / 100) * 8;
             this._TsetDownloadText(this.currentDownload);
-            this.updateProgress(100 + count);
-            if (count >= 20) {
+            this.updateProgress(100 + pcount);
+            if (pcount >= 20) {
               resolve(true);
             }
           });
@@ -288,14 +304,13 @@ export class SpeedTestComponent implements OnInit {
 
   runUL(url: string) {
     return new Promise(async (resolve) => {
-      let count = 0;
-      let uldata = 0;
-      let ulend = Date.now();
+      let pcount = 0;
+      let scount = 0;
       let ulstart = Date.now();
       for (let i = 1; i <= 20; i++) {
         const formData = new FormData();
         formData.append("id", i.toString());
-        formData.append("file", this.makePacket(i, 1050000));
+        formData.append("file", this.makePacket(i, this.ulPacketsSize));
         fetch(url + `?nocache=${v4()}`, {
           method: "POST",
           body: formData,
@@ -303,21 +318,20 @@ export class SpeedTestComponent implements OnInit {
           .then(
             (res) => {
               if (res.status !== 200) return;
-              uldata += 1050000;
+              scount++;
             },
             (err) => {
               console.warn(err, i);
             }
           )
           .finally(() => {
-            count++;
-            ulend = Date.now();
-            let s = (ulend - ulstart) / 1000;
-            let t = uldata / 1024 / 1024 / s;
+            pcount++;
+            let s = (Date.now() - ulstart) / 1000;
+            let t = (scount * this.ulPacketsSize) / 1024 / 1024 / s;
             this.currentUpload = (Math.floor(t * 100) / 100) * 8;
             this._TsetUploadText(this.currentUpload);
-            this.updateProgress(100 + 20 + count);
-            if (count >= 20) {
+            this.updateProgress(100 + 20 + pcount);
+            if (pcount >= 20) {
               resolve(true);
             }
           });
