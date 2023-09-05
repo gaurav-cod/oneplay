@@ -16,7 +16,7 @@
           <tbody>
             <tr *ngFor="let gameplay of gamePlaysessions">
               <td class="align-middle py-3 pl-0">
-                {{gameplay.game}}
+                <span class="truncate-line-clamp">{{gameplay.game}}</span>
               </td>
               <td class="align-middle py-3">
                 {{gameplay.device.app}}
