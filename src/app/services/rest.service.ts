@@ -138,7 +138,12 @@ export class RestService {
   }
 
   verifyEmailUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe();
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   resendUpdateEmail() {
@@ -160,7 +165,12 @@ export class RestService {
   }
 
   confirmEmailUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_secret", { code }).pipe();
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_secret", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   updatePhone(phone: string): Observable<string> {
@@ -182,7 +192,12 @@ export class RestService {
   }
 
   verifyPhoneUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone_request", { code }).pipe();
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone_request", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   resendPhoneUpdate() {
@@ -195,7 +210,12 @@ export class RestService {
   }
 
   confirmPhoneUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone", { code }).pipe();
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   verify(data: VerifySignupDTO): Observable<string> {

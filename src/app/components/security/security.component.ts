@@ -23,23 +23,28 @@ export class SecurityComponent implements OnInit {
   emailOTP: boolean = true;
   remainingTimer = false;
   display: any;
+  sameEmail: boolean = false;
+  existingAccount: string;
+
+  isDisabled: boolean = true;
 
   errorMessage: string;
+  incorrectCode: string;
   
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-  email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
-  country_code = new UntypedFormControl("+91", [Validators.required]);
-  phone = new UntypedFormControl("", [
-    Validators.required,
-    Validators.pattern(/^[0-9]{10}$/),
-  ]);
+  // email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
+  // country_code = new UntypedFormControl("+91", [Validators.required]);
+  
 
   // password = new UntypedFormControl("", [
   //   Validators.required,
   //   Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
   // ]);
 
-  resetPassword = new UntypedFormGroup({
+  updateSecurity = new UntypedFormGroup({
+    email: new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]),
+    country_code: new UntypedFormControl("+91", [Validators.required]),
+    phone: new UntypedFormControl("", [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
     oldPassword: new UntypedFormControl("",  [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
     password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
     confirmPassword: new UntypedFormControl("",  [Validators.required]),
@@ -65,7 +70,7 @@ export class SecurityComponent implements OnInit {
   
   showPass = false;
 
-  private user: UserModel;
+  user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
   private _changePhoneModalRef: NgbModalRef;
   private _changePasswordModalRef: NgbModalRef;
@@ -78,13 +83,13 @@ export class SecurityComponent implements OnInit {
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
-      this.phone.setValue(user.phone);
-      this.email.setValue(user.email);
+      // this.phone.setValue(user.phone);
+      // this.email.setValue(user.email);
     });
   }
 
   get checkvalidationValue() {
-    if(this.resetPassword.value.oldPassword && this.resetPassword.value.password.length && this.resetPassword.value.password === this.resetPassword.value.confirmPassword) {
+    if(this.updateSecurity.value.oldPassword && this.updateSecurity.value.password.length && this.updateSecurity.value.password === this.updateSecurity.value.confirmPassword) {
       return false;
     } else {
       return true;
@@ -92,19 +97,29 @@ export class SecurityComponent implements OnInit {
   }
 
   get oldPasswordErrored() {
-    const control = this.resetPassword.controls["oldPassword"];
+    const control = this.updateSecurity.controls["oldPassword"];
+    return control.touched && control.invalid;
+  }
+
+  get phoneErrored() {
+    const control = this.updateSecurity.controls["phone"];
+    return control.touched && control.invalid;
+  }
+
+  get emailErrored() {
+    const control = this.updateSecurity.controls["email"];
     return control.touched && control.invalid;
   }
 
   get passwordErrored() {
-    const control = this.resetPassword.controls["password"];
+    const control = this.updateSecurity.controls["password"];
     return control.touched && control.invalid;
   }
 
   get passwordSameErrored() {
-    const control = this.resetPassword.controls["password"];
+    const control = this.updateSecurity.controls["password"];
     if(!control.invalid) {
-      if(this.resetPassword.value.oldPassword === this.resetPassword.value.password) {
+      if(this.updateSecurity.value.oldPassword === this.updateSecurity.value.password) {
         return control.touched && true;
       } else {
         return control.touched && false;
@@ -114,8 +129,8 @@ export class SecurityComponent implements OnInit {
   }
 
   get confirmPasswordErrored() {
-    const control = this.resetPassword.controls["confirmPassword"];
-    if(this.resetPassword.value.password !== this.resetPassword.value.confirmPassword) {
+    const control = this.updateSecurity.controls["confirmPassword"];
+    if(this.updateSecurity.value.password !== this.updateSecurity.value.confirmPassword) {
       return control.touched && true;
     } else {
       return control.touched && false;
@@ -123,6 +138,10 @@ export class SecurityComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  closePopUp() {
+    this._otpScreenRef.close();
+  }
 
   timer(minute) {
     let seconds: any = 60;
@@ -159,20 +178,16 @@ export class SecurityComponent implements OnInit {
   }
 
   updateEmail(): void {
-    if (this.email.invalid) return;
-    if (this.user.email === this.email.value.trim()) return;
-    this.restService.updateEmail(this.email.value).subscribe(
+    if (this.emailErrored) return;
+    if (this.user?.email === this.updateSecurity.value?.email.trim()) return;
+    this.restService.updateEmail(this.updateSecurity.value.email.value).subscribe(
       () => {
         this._changeEmailModalRef.close();
         this.timer(1)
         this.openOTPScreen();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.existingAccount = error.message
       }
     );
   }
@@ -184,7 +199,7 @@ export class SecurityComponent implements OnInit {
       },
       (error) => {
         if(error.code === 429) {
-          this.errorMessage = error.message
+          this.errorMessage = error.message;
         }
       }
     );
@@ -198,6 +213,8 @@ export class SecurityComponent implements OnInit {
       (error) => {
         if(error.code === 429) {
           this.errorMessage = error.message
+        } else {
+          this.incorrectCode = error.message;
         }
       }
     );
@@ -212,11 +229,7 @@ export class SecurityComponent implements OnInit {
         this.openOTPScreen();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.incorrectCode = error.message;
       }
     );
   }
@@ -232,11 +245,7 @@ export class SecurityComponent implements OnInit {
         this.authService.logout();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.incorrectCode = error.message;
       }
     );
   }
@@ -249,23 +258,29 @@ export class SecurityComponent implements OnInit {
       backdrop: "static",
       keyboard: false,
     });
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (this.countryCodes.includes(res.country_calling_code)) {
+          this.updateSecurity.controls["country_code"].setValue(
+            res.country_calling_code
+          );
+        }
+      },
+    });
   }
 
   updatePhone(): void {
-    if (this.phone.invalid) return;
-    if (this.user.phone === this.phone.value.trim()) return;
-    this.restService.updatePhone(this.country_code.value + this.phone.value).subscribe(
+    if (this.phoneErrored) return;
+    if (this.user.phone === this.updateSecurity.value.phone.trim()) return ;
+    this.restService.updatePhone(this.updateSecurity.value.country_code + this.updateSecurity.value.phone).subscribe(
       () => {
         this._changePhoneModalRef.close();
         this.emailOTP = false;
+        this.timer(1);
         this.openOTPScreen();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.existingAccount = error.message
       }
     );
   }
@@ -305,11 +320,7 @@ export class SecurityComponent implements OnInit {
         this.openOTPScreen();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.incorrectCode = error.message;
       }
     );
   }
@@ -325,11 +336,7 @@ export class SecurityComponent implements OnInit {
         this.authService.logout();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        this.incorrectCode = error.message;
       }
     );
   }
@@ -391,14 +398,15 @@ export class SecurityComponent implements OnInit {
   // }
 
   updatePassword(): void {
-    this.restService.updatePassword(this.resetPassword.value, this.resetPassword.value.oldPassword).subscribe(
+    if(this.checkvalidationValue) return;
+    this.restService.updatePassword(this.updateSecurity.value, this.updateSecurity.value.oldPassword).subscribe(
       () => {
         Swal.fire({
           icon: "success",
           title: "Password Changed!",
           text: "You have successfully changed your password.",
         });
-        this.resetPassword.value.password.reset();
+        this.updateSecurity.value.password.reset();
       },
       (error) => {
         Swal.fire({

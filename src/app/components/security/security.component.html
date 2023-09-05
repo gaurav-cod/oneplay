@@ -4,84 +4,74 @@
     <form autocomplete="on">
       <div class="row">
         <div class="col-md-12 mt-2">
-          <label class="font16 font500 offWhiteText mb-0">Email</label
-          >
-            <input
-              type="email"
-              class="form-control height52 font18 font500 text-white border-0 lightBg"
-              placeholder="email@example.com"
-              [formControl]="email"
-              disabled
-            />
-            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
-              <!-- <img
-                *ngIf="email.enabled"
-                (click)="updateEmail()"
-                src="assets\img\setting\Verified.svg"
-                class="img-fluid"
-                alt=""
-              /> -->
+          <label class="font16 font500 offWhiteText mx-1">Email</label>
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
+            <div class="col">
+              <p class="mb-0 font18 font500 text-white">{{ user?.email }}</p>
+            </div>
+            <div class="col-auto">
               <img
                 (click)="openEmailModal()"
                 src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid"
+                class="img-fluid cursorPointer"
                 alt=""
               />
-            </span>
+            </div>
+          </div>
         </div>
-
-        <!-- Valid phone number UI -->
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText mb-0">Phone number</label
-          ><span
-            *ngIf="phone.touched && phone.invalid"
-            class="font16 font500 errorGradientColor float-right"
-            >*invalid phone number</span
-          >
-          <div
-            class="borderRadius6"
-            [ngClass]="{ errorBorder: phone.touched && phone.invalid }"
-          >
-            <input
-              type="text"
-              [formControl]="phone"
-              class="form-control height52 font18 font500 text-white border-0 lightBg"
-              placeholder="+19999999999"
-              inputmode="tel"
-            />
-            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3">
-              <!-- <img
-                *ngIf="phone.enabled"
-                (click)="updatePhone()"
-                src="assets\img\setting\Verified.svg"
-                class="img-fluid"
-                alt=""
-              /> -->
+          <label class="font16 font500 offWhiteText mx-1">Phone number</label>
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
+            <div class="col">
+              <p class="mb-0 font18 font500 text-white">{{ user?.phone }}</p>
+            </div>
+            <div class="col-auto">
               <img
                 (click)="openPhoneModal()"
                 src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid"
+                class="img-fluid cursorPointer"
                 alt=""
               />
-            </span>
+            </div>
           </div>
         </div>
         <div class="col-md-12 mt-4">
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText">Update Password
+          <label class="font16 font500 offWhiteText mx-1">
+            Update Password
             <i class="fas fa-info-circle ml-1"
               ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
               placement="bottom"
               triggers="click:blur">
             </i>
           </label>
-          <!-- <span
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
+            <div class="col">
+              <p class="mb-0 font18 font500 text-white">*********</p>
+            </div>
+            <div class="col-auto">
+              <img
+                (click)="openPasswordModal()"
+                src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid cursorPointer"
+                alt=""
+              />
+            </div>
+          </div>
+          <!-- <label class="font16 font500 offWhiteText">Update Password
+            <i class="fas fa-info-circle ml-1"
+              ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
+              placement="bottom"
+              triggers="click:blur">
+            </i>
+          </label>
+          <span
             *ngIf="password.touched && password.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid password</span
-          > -->
+          >
           <div
             class="borderRadius6"
           >
@@ -93,9 +83,9 @@
             <span
               class="bgTransparent fixedIcon offWhiteColor font16 font500 pr-3"
             >
-              <!-- <button class="btn btn-sm text-white border-0 text"(click)="showPass = !showPass">
+              <button class="btn btn-sm text-white border-0 text"(click)="showPass = !showPass">
                 <img [src]="showPass ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'" class="img-fluid" alt="" />
-              </button> -->
+              </button>
               <img
                 (click)="openPasswordModal()"
                 src="assets/img/singup-login/Group (1).svg"
@@ -103,7 +93,7 @@
                 alt=""
               />
             </span>
-          </div>
+          </div> -->
         </div>
         <!-- <div class="col-md-12 mt-3">
           <label class="font16 font500 offWhiteText">Re-type Password</label>
@@ -123,27 +113,6 @@
   </div>
 </div>
 
-<ng-template #changeEmailModal let-d="dismiss">
-  <div class="modal-content modalBg">
-    <div class="modal-body text-center">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-        (click)="d('Cross click')"
-      >
-        <i class="fas fa-times-circle font20"></i>
-      </a>
-      <h3 class="text-white font24 font700 mb-4 mt-3">Change Email Address</h3>
-      <p class="muteText font14 font500 mb-5 px-2">
-        A Security code verification is required to make this change.
-      </p>
-      <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email" [formControl]="email" />
-      <span *ngIf="email.touched && email.invalid" class="font16 font500 errorGradientColor">*invalid email id</span>
-      <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updateEmail()" [disabled]="email.invalid">{{buttonText}}</button>
-    </div>
-  </div>
-</ng-template>
-
 <!-- Enter Security Code -->
 <ng-template #otpScreen let-d="dismiss">
   <div class="modal-content modalBg">
@@ -156,21 +125,20 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <div *ngIf="emailOTP">
-        <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="'A security code has been sent to your mobile number and previous email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendEmailUpdate()" [display]="display" [errorMessage]="errorMessage"></app-otp-screen>
-        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="'Please enter the code sent to your new email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display" [errorMessage]="errorMessage"></app-otp-screen>
+        <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="'A security code has been sent to your mobile number and previous email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendEmailUpdate()" [display]="display" [errorMessage]="errorMessage" [incorrectCode]="incorrectCode" (closePopUp)="closePopUp()"></app-otp-screen>
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="'Please enter the code sent to your new email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display" [errorMessage]="errorMessage" [incorrectCode]="incorrectCode" (closePopUp)="closePopUp()"></app-otp-screen>
       </div>
       <div *ngIf="!emailOTP">
-        <app-otp-screen *ngIf="isPhone" [otpHeading]="'Enter Security Code'" [otpSubHeading]="'A security code has been sent to your mobile number and previous email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display" [errorMessage]="errorMessage"></app-otp-screen>
-        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Phone Number'" [otpSubHeading]="'Please enter the code sent to your new mobile number.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display" [errorMessage]="errorMessage"></app-otp-screen>
+        <app-otp-screen *ngIf="isPhone" [otpHeading]="'Enter Security Code'" [otpSubHeading]="'A security code has been sent to your mobile number and previous email address.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display" [errorMessage]="errorMessage" [incorrectCode]="incorrectCode" (closePopUp)="closePopUp()"></app-otp-screen>
+        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Phone Number'" [otpSubHeading]="'Please enter the code sent to your new mobile number.'" [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)" [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display" [errorMessage]="errorMessage" [incorrectCode]="incorrectCode" (closePopUp)="closePopUp()"></app-otp-screen>
       </div>
     </div>
   </div>
 </ng-template>
 
-<!-- Enter New Phone Number -->
-<ng-template #changePhoneModal let-d="dismiss">
+<ng-template #changeEmailModal let-d="dismiss">
   <div class="modal-content modalBg">
-    <div class="modal-body text-center">
+    <div class="modal-body">
       <a
         href="javascript:void(0)"
         class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
@@ -178,26 +146,54 @@
       >
         <i class="fas fa-times-circle font20"></i>
       </a>
-      <h3 class="text-white font24 font700 mb-4 mt-3">Change Mobile Number</h3>
-      <p class="muteText font14 font500 mb-5 px-2">
+      <h3 class="text-white font24 font700 mb-4 mt-3 text-center">Change Email Address</h3>
+      <p class="muteText font14 font500 mb-5 px-2 text-center">
         A Security code verification is required to make this change.
       </p>
-      <div class="input-group inputBorder">
-        <div class="input-group-append bgTransparent">
-          <select
-            class="select-form bgTransparent height52 inputFocus border-0 font18 font500 text-white"
-            formControlName="country_code"
-          >
-            <option *ngFor="let code of countryCodes" [value]="code" class="text-white">
-              {{ code }}
-            </option>
-          </select>
+      <form role="form" [formGroup]="updateSecurity">
+        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email" formControlName="email" />
+        <span *ngIf="emailErrored" class="font16 font500 errorGradientColor">*invalid email id</span>
+        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">{{existingAccount}}</p>
+        <!-- <span *ngIf="sameEmail" class="font16 font500 errorGradientColor">*This email address is already in use.</span> -->
+        <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updateEmail()" [disabled]="">{{buttonText}}</button>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Enter New Phone Number -->
+<ng-template #changePhoneModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body">
+      <a
+        href="javascript:void(0)"
+        class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="d('Cross click')"
+      >
+        <i class="fas fa-times-circle font20"></i>
+      </a>
+      <h3 class="text-white font24 font700 mb-4 mt-3 text-center">Change Mobile Number</h3>
+      <p class="muteText font14 font500 mb-5 px-2 text-center">
+        A Security code verification is required to make this change.
+      </p>
+      <form role="form" [formGroup]="updateSecurity">
+        <div class="input-group inputBorder">
+          <div class="input-group-append bgTransparent">
+            <select
+              class="select-form bgTransparent height52 inputFocus border-0 font18 font500 text-white"
+              formControlName="country_code"
+            >
+              <option *ngFor="let code of countryCodes" [value]="code" class="text-white">
+                {{ code }}
+              </option>
+            </select>
+          </div>
+          <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0" placeholder="New Mobile Number" formControlName="phone" />
         </div>
-        <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0" placeholder="New Mobile Number" [formControl]="phone" />
-      </div>
-      
-      <span *ngIf="phone.touched && phone.invalid" class="font16 font500 errorGradientColor">*invalid mobile number</span>
-      <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updatePhone()">Confirm</button>
+        <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor">*invalid mobile number</span>
+        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">{{existingAccount}}</p>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updatePhone()">Confirm</button>
+      </form>
     </div>
   </div>
 </ng-template>
@@ -214,7 +210,7 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 my-3 text-center">Change Password</h3>
-      <form role="form" [formGroup]="resetPassword">
+      <form role="form" [formGroup]="updateSecurity">
         <div class="row pb-2">
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">Old Password</label>

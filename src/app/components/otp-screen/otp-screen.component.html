@@ -1,7 +1,7 @@
 
 <h3 class="text-white font24 font700 my-3">{{otpHeading}}</h3>
 <p class="muteText font14 font500 mb-5">{{otpSubHeading}}</p>
-<form [formGroup]="codeForm">
+<form [formGroup]="codeForm" *ngIf="validInput">
     <div class="row justify-content-center">
         <div class="col-auto p-1 otpInput" *ngFor="let input of formInput;  index as i">
             <input #formRow type="text" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)">
@@ -11,7 +11,11 @@
         </div>
     </div>
     <p *ngIf="errorMessage" class="font16 font500 cancelgradientText mt-3 pb-3">{{errorMessage}}</p>
-    <!-- <p class="font16 font500 mt-3 pb-3"><span class="cancelgradientText">Incorrect Security Code</span>, <span class="muteText">Please check carefully or </span><a href="#" class="text-white">Resend Code</a></p> -->
-    <p class="font16 font500 muteText mt-3 pb-5"><span class="float-left">Didn’t Receive code?</span> <span class="float-right"><button class="btn text-white p-0" *ngIf="!remainingTimer" (click)="onResend()">Resend Code</button><span class="text-white" *ngIf="remainingTimer">Resend in 00:{{display}}</span></span></p>
-    <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" [disabled]="codeForm.invalid" (click)="onConfirm()">{{buttonText}}</button>
+    <p *ngIf="!errorMessage" class="font16 font500 muteText mt-3 pb-5 mb-0">
+        <span *ngIf="incorrectCode"><span class="cancelgradientText">{{incorrectCode}}</span>, <span class="muteText">Please check carefully or </span></span>
+        <span class="float-left" *ngIf="!incorrectCode">Didn’t Receive code?</span> 
+        <button class="btn text-white p-0" *ngIf="!remainingTimer" (click)="onResend()">Resend Code</button>
+        <span class="text-white" *ngIf="remainingTimer">Resend in 00:{{display}}</span>
+    </p>
+    <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" [ngClass]="{mutedBg: codeForm.invalid}" [disabled]="errorMessage ? false : codeForm.invalid" (click)="errorMessage ? onclosePopUp() : onConfirm()">{{buttonText}}</button>
 </form>

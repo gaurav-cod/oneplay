@@ -14,9 +14,11 @@ export class OtpScreenComponent {
   @Input() remainingTimer: boolean;
   @Input() display: any;
   @Input() errorMessage: string;
+  @Input() incorrectCode: string;
 
   @Output() verfiyEmail = new EventEmitter<string>();
   @Output() resendUpdateEmail = new EventEmitter();
+  @Output() closePopUp = new EventEmitter();
 
   form: UntypedFormGroup;
   formInput = [
@@ -40,6 +42,17 @@ export class OtpScreenComponent {
 
   constructor(
   ){}
+
+  get validInput() {
+    if(this.errorMessage) {
+      this.codeForm.disable();
+    }
+    return;
+  }
+
+  onclosePopUp() {
+    this.closePopUp.emit();
+  }
 
   onResend() {
     this.resendUpdateEmail.emit();
