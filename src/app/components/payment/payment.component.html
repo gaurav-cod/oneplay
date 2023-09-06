@@ -10,7 +10,7 @@
     <div class="modal-body text-center">
       <h1 class="modalHeading text-white">Choose your payment method</h1>
       <div class="row">
-        <div class="col-sm-6 mt-3">
+        <div class="col-sm-6 col-md-6 col-lg-4 mt-3 ">
           <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
             <div class="card border-0 cardBG p-4">
               <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
@@ -25,7 +25,7 @@
             Debit Card, credit card, UPI, Netbanking
           </p>
         </div>
-        <div class="col-sm-6 mt-3">
+        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
           <a href="javascript:void(0)" (click)="handlePayWithStripe()">
             <div class="card border-0 cardBG p-4">
               <img
@@ -36,6 +36,51 @@
             </div>
           </a>
           <p class="subHeading my-2">Debit Card & credit card</p>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
+          <a href="javascript:void(0)" (click)="handlePayWithUPI()">
+            <div class="card border-0 cardBG p-4">
+              <span class="skyBgGradient px-2  recommended tagText">BETA</span>
+              <img
+                src="assets/img/payment/UPI-Logo.svg"
+                class="height60"
+                alt=""
+              />
+            </div>
+          </a>
+          <p class="subHeading my-2">
+            Pay through any UPI app
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #upiPaymentModal let-d="dismiss">
+  <div class="modal-content position-relative modalBG stripeModal">
+    <div class="borderBottomTab p-3 text-center">
+      <h1 class="modalHeading text-white mb-0">Scan to Pay!</h1>
+      <a
+        href="javascript:void(0)"
+        class="position-absolute btn p-0 rounded-circle top-2 right-1"
+        (click)="d('Cross click')"
+      >
+        <i class="fas fa-times-circle text-white"></i>
+      </a>
+    </div>
+    <div class="modal-body text-center">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="font16 font500 text-white br6 redBtn p-2 blink_bg">
+            To begin your subscription, send your payment screenshot and oneplay username to <a href="mailto:support@oneplay.in" class="text-white text-underline">support@oneplay.in</a> or share them in our <a href="https://discord.com/invite/Cg4ZskStE2" class="text-white text-underline">Discord channel</a>.
+          </div>
+          <div class="row mt-4 justify-content-center">
+            <div class="col-lg-4 col-md-5 col-sm-9 col-10 bg-white borderRadius50 p-3">
+              <img src="assets/img/payment/scanner.jpg" class="img-fluid" alt="" />
+            </div>
+          </div>
+          <button class="btn linearGradient border-top-0 border-left-0 border-right-0 text-white px-5 mt-4" (click)="d('Cross click')">OK</button>
         </div>
       </div>
     </div>
