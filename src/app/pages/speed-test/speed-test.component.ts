@@ -193,30 +193,28 @@ export class SpeedTestComponent implements OnInit {
       .getCurrentLocation()
       .toPromise()
       .then((v) => (this.currentLocation = v));
-    // game servers use bitrate and hence bits
-    // speed-test server user bytes.
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    // res.recommended_latency = 80;
-    // res.recommended_download = 80 * 1000 * 1000;
-    // res.recommended_upload = 80 * 1000 * 1000;
     const recommended_download_in_mbps = res.recommended_download / 1024 / 1024;
     const recommended_upload_in_mbps = res.recommended_upload / 1024 / 1024;
     this.recommendations.Ping.text = `Latency of ${res.recommended_latency} ms`;
     this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
     this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
     this.state = "Ping";
+    await new Promise<void>((res) => setTimeout(() => res(), 2000));
     await this.runPing(res.ping);
     if (this.currentLatency > res.recommended_latency) {
       this.recommendations.Ping.enabled = true;
       this.updateRecommendations();
     }
     this.state = "Download";
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
     await this.runDL(res.download);
     if (this.currentDownload < recommended_download_in_mbps) {
       this.recommendations.Download.enabled = true;
       this.updateRecommendations();
     }
     this.state = "Upload";
+    await new Promise<void>((res) => setTimeout(() => res(), 1000));
     await this.runUL(res.upload);
     if (this.currentUpload < recommended_upload_in_mbps) {
       this.recommendations.Upload.enabled = true;
