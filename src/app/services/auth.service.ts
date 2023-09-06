@@ -23,6 +23,7 @@ export class AuthService {
     new BehaviorSubject(false);
 
   loggedOutByUser: boolean = false;
+  trigger_speed_test: boolean = false;
 
   constructor() {
     const sessionToken = Cookies.get("op_session_token");
@@ -108,6 +109,7 @@ export class AuthService {
   }
 
   logout() {
+    this.trigger_speed_test = false;
     Cookies.remove("op_session_token", {
       domain: environment.cookie_domain,
       path: "/",
