@@ -26,6 +26,7 @@ import Swal from "sweetalert2";
 export class PaymentComponent implements OnInit, OnDestroy {
   @ViewChild("paymentModal") paymentModal: ElementRef<HTMLDivElement>;
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
+  @ViewChild("upiPaymentModal") upiPaymentModal: ElementRef<HTMLDivElement>;
 
   stripeLoad = false;
   currentamount: string;
@@ -34,6 +35,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   private querySubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
   private paymentModalRef: NgbModalRef;
+  private upiPaymentModalRef: NgbModalRef;
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
   private planType: "base" | "topup";
@@ -67,7 +69,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
               this.planType = !!params.renew ? "base" : params.plan;
               this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
                 centered: true,
-                modalDialogClass: "modal-lg",
+                modalDialogClass: "modal-xl",
                 scrollable: true,
                 backdrop: "static",
                 keyboard: false,
@@ -197,6 +199,17 @@ export class PaymentComponent implements OnInit, OnDestroy {
           icon: "error",
         })
       );
+  }
+
+  handlePayWithUPI() {
+    this.paymentModalRef.close();
+    this.upiPaymentModalRef = this.ngbModal.open(this.upiPaymentModal, {
+      centered: true,
+      modalDialogClass: "modal-xl",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
   }
 
   async getSwalTextForBasePlan(params: Params) {
