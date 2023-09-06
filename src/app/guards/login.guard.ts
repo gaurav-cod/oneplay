@@ -24,11 +24,20 @@ export class LoginGuard implements CanActivateChild {
 
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u && !isEdgeCase) {
-        const { redirectUrl } = childRoute.queryParams;
+        let { redirectUrl } = childRoute.queryParams;
         if (redirectUrl?.startsWith("http")) {
           window.location.href = redirectUrl;
         } else {
-          this.router.navigateByUrl(redirectUrl ?? "/");
+          redirectUrl ??= "/"
+          if (redirectUrl === "/" || redirectUrl === "/home") {
+            if (this.authService.trigger_speed_test) {
+              this.router.navigateByUrl("/speed-test")
+            } else {
+              this.router.navigateByUrl("/");
+            }
+          } else {
+            this.router.navigateByUrl(redirectUrl);
+          }
         }
       } else if (isEdgeCase && !u) this.router.navigate(["/login"], {
         queryParams: { redirectUrl: state.url },

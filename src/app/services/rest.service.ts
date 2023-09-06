@@ -49,11 +49,17 @@ export class RestService {
 
   constructor(private readonly http: HttpClient) {}
 
-  login(data: LoginDTO): Observable<string> {
+  login(data: LoginDTO): Observable<{
+    session_token: string,
+    trigger_speed_test: boolean,
+  }> {
     return this.http
       .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
       .pipe(
-        map((res) => res["session_token"]),
+        map((res) => ({
+          session_token: res["session_token"],
+          trigger_speed_test: res["trigger_speed_test"],
+        })),
         catchError(({ error }) => {
           throw error;
         })
