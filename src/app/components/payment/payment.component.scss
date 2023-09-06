@@ -42,3 +42,27 @@
   color: #fff;
   left: 15px;
 }
+
+.skyBgGradient {
+  background: linear-gradient(259.59deg, #3AA0FE 0%, #0575E6 100%);
+}
+
+.blink_bg {
+  -webkit-animation: backgroundColor 1s infinite;  /* Safari 4+ */
+  -moz-animation: backgroundColor 1s infinite;  /* Fx 5+ */
+  -o-animation: backgroundColor 1s infinite;  /* Opera 12+ */
+  animation: backgroundColor 1s infinite;  /* IE 10+, Fx 29+ */
+}
+
+@keyframes backgroundColor {
+  0%, 49% {
+    background-color: #e31c34;
+  }
+  50%, 100% {
+    background-color: transparent;
+  }
+}
+
+.borderRadius50 {
+  border-radius: 50px;
+}
