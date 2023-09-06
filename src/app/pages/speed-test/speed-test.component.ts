@@ -58,6 +58,8 @@ export class SpeedTestComponent implements OnInit {
   pingCount = 100;
   pingPacketsSent = [];
   pingPacketsRecieved = [];
+  dlReqCount = 40;
+  ulReqCount = 80;
   dlPacketsSize = 4000000;
   ulPacketsSize = 1050000;
   // dlPacketsCount = 0;
@@ -100,7 +102,6 @@ export class SpeedTestComponent implements OnInit {
     this.uploadText = "00.00";
     this.progressValue = "1 1000";
     this.testCompleted = false;
-    this.pingCount = 100;
     this.pingPacketsSent = [];
     this.pingPacketsRecieved = [];
     this.currentLocation = undefined;
@@ -110,6 +111,8 @@ export class SpeedTestComponent implements OnInit {
       'Upload': { text: '', enabled: false, },
     }
     this.finalMessage = this.messages.default;
+    this.hideRecommendation = 'd-none';
+    this.recommendationColor = 'recommendation';
   }
 
   getStateColor(state: State) {
@@ -267,7 +270,7 @@ export class SpeedTestComponent implements OnInit {
       let pcount = 0;
       let scount = 0;
       let dlstart = Date.now();
-      for (let i = 1; i <= 20; i++) {
+      for (let i = 1; i <= this.dlReqCount; i++) {
         fetch(url + `?nocache=${v4()}`, {
           method: "POST",
           headers: {
@@ -293,8 +296,8 @@ export class SpeedTestComponent implements OnInit {
             let t = (scount * this.dlPacketsSize) / 1024 / 1024 / s;
             this.currentDownload = (Math.floor(t * 100) / 100) * 8;
             this._TsetDownloadText(this.currentDownload);
-            this.updateProgress(100 + pcount);
-            if (pcount >= 20) {
+            this.updateProgress(this.pingCount + pcount);
+            if (pcount >= this.dlReqCount) {
               resolve(true);
             }
           });
@@ -307,7 +310,7 @@ export class SpeedTestComponent implements OnInit {
       let pcount = 0;
       let scount = 0;
       let ulstart = Date.now();
-      for (let i = 1; i <= 20; i++) {
+      for (let i = 1; i <= this.ulReqCount; i++) {
         const formData = new FormData();
         formData.append("id", i.toString());
         formData.append("file", this.makePacket(i, this.ulPacketsSize));
@@ -330,8 +333,8 @@ export class SpeedTestComponent implements OnInit {
             let t = (scount * this.ulPacketsSize) / 1024 / 1024 / s;
             this.currentUpload = (Math.floor(t * 100) / 100) * 8;
             this._TsetUploadText(this.currentUpload);
-            this.updateProgress(100 + 20 + pcount);
-            if (pcount >= 20) {
+            this.updateProgress(this.pingCount + this.dlReqCount + pcount);
+            if (pcount >= this.ulReqCount) {
               resolve(true);
             }
           });
@@ -451,7 +454,7 @@ export class SpeedTestComponent implements OnInit {
 
   updateProgress(count: number) {
     // "1 1000" to "660 1000"
-    const cp = (count / (this.pingCount + 40)) * 100;
+    const cp = (count / (this.pingCount + this.dlReqCount + this.ulReqCount)) * 100;
     this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`);
   }
 }
