@@ -31,7 +31,8 @@ export class LoginGuard implements CanActivateChild {
           redirectUrl ??= "/"
           if (redirectUrl === "/" || redirectUrl === "/home") {
             if (this.authService.trigger_speed_test) {
-              this.router.navigateByUrl("/speed-test")
+              // this.router.navigateByUrl("/speed-test")
+              this.router.navigateByUrl("/");
             } else {
               this.router.navigateByUrl("/");
             }
