@@ -1,14 +1,14 @@
 export const environment = {
   appVersion: "3.0.0",
   production: true,
-  cookie_domain: "oneplay.in",
-  domain: "https://www.oneplay.in",
+  cookie_domain: "play.shaksgame.com",
+  domain: "https://play.shaksgame.com",
   client_api: "https://client-apis.oneplay.in/services/v2",
   render_mix_api: "https://rendermix.oneplay.in/v1",
   socket_endpoint: "https://chatservices.oneplay.in",
   game_assets: "https://cdn.edge-net.co/game_assets/",
-  partner_id: "28cceed5-8ab9-11ed-bde5-0ab3c1edb81a",
-  partner_name: 'onePlay',
+  partner_id: "6d363898-1e6d-11ee-bde5-0ab3c1edb81a",
+  partner_name: "shaks",
   stripe_key:
     "pk_live_51MqHiCSIFX9lGIVVjAZU0jnZTHfvUbhLb8hGS9yipxYZroAss0GJRSbKsCXIpQynjsuAhwYZj4tHgFkYp2ETCxcD00CGHkBRf8",
   billdesk_key: "ONEPLAY2",
@@ -25,5 +25,5 @@ export const environment = {
     key: "292851cc7abdfc6770504910155cd0de1307024e",
     url: "https://analytics-api.oneplay.in/",
   },
-  webrtc_prefix: "https://www.oneplay.in/webplay",
+  webrtc_prefix: "https://play.shaksgame.com/webplay",
 };

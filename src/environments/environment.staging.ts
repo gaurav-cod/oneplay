@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "2.7.0",
+  appVersion: "3.0.0",
   production: true,
   cookie_domain: "qa.oneream.com",
   domain: "https://qa.oneream.com",
@@ -8,8 +8,7 @@ export const environment = {
   socket_endpoint: "https://chatservices.qa.oneream.com",
   game_assets:
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
-  ga_tracking_id: "UA-220923953-2",
-  oneplay_partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
+  partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
   partner_name: 'onePlay',
   stripe_key:
     "pk_test_51MqHiCSIFX9lGIVVPlfmun4lNf8r5p19kxLAhVsdtXHtLzbvGsVeOov7tIskv6UfMlxwZvhQzKcxGZCeEIlDKS9u00t2KiVeVV",

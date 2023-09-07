@@ -152,7 +152,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
         const config = {
           merchantLogo:
-            environment.domain + "/dashboard/assets/img/brandLogo.svg",
+            environment.domain + "/dashboard/assets/img/brand/brandLogo.svg",
           flowConfig,
           themeConfig,
           flowType: "payments",

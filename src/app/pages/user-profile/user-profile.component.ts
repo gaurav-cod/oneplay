@@ -33,7 +33,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     });
     this.userSubscription = this.authService.user.subscribe(
       (user) =>
-        (this.isOneplayUser = user.partnerId === environment.oneplay_partner_id)
+        (this.isOneplayUser = user.partnerId === environment.partner_id)
     );
     this.countlyService.startEvent("settingsView", {
       data: genDefaultSettingsViewSegments(),

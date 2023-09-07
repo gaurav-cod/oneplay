@@ -70,7 +70,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/signup", {
         ...data,
-        partnerId: environment.oneplay_partner_id,
+        partnerId: environment.partner_id,
       })
       .pipe(
         map(() => {}),
