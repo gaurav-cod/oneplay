@@ -219,7 +219,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
       );
       const planTypes = subscriptions.map((s) => s.planType);
       if (planTypes.includes("base")) {
-        return "This Pack will starts after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
+        return "This Pack will start after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
       }
     }
     return "you're about to purchase the selected subscription package.";
