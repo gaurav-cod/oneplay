@@ -54,6 +54,9 @@ export class SubscriptionsComponent implements OnInit {
       this.currentSubscriptions = s;
       this.isCurrentLoading = false;
     });
+    this.countlyService.updateEventData("settingsView", {
+      subscriptionViewed: "yes",
+    });
 
     const params = this.route.snapshot.queryParams;
 
