@@ -153,7 +153,7 @@
       <form role="form" [formGroup]="updateSecurity">
         <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email" formControlName="email" />
         <span *ngIf="emailErrored" class="font16 font500 errorGradientColor">*invalid email id</span>
-        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">{{existingAccount}}</p>
+        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">*{{existingAccount}}</p>
         <!-- <span *ngIf="sameEmail" class="font16 font500 errorGradientColor">*This email address is already in use.</span> -->
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updateEmail()" [disabled]="">{{buttonText}}</button>
       </form>
@@ -191,7 +191,7 @@
           <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0" placeholder="New Mobile Number" formControlName="phone" />
         </div>
         <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor">*invalid mobile number</span>
-        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">{{existingAccount}}</p>
+        <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">*{{existingAccount}}</p>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom" (click)="updatePhone()">Confirm</button>
       </form>
     </div>
@@ -216,13 +216,14 @@
             <label class="font16 font500 offWhiteText">Old Password</label>
             <input type="password" class="form-control inputBorder font18 font500 text-white" placeholder="Enter your Old Password" formControlName="oldPassword" />
             <span *ngIf="oldPasswordErrored" class="font16 font500 errorGradientColor">*invalid password</span>
+            <p *ngIf="notMatchPassword" class="font16 font500 errorGradientColor mb-0">*{{notMatchPassword}}</p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">New Password</label>
             <input type="password" class="form-control inputBorder font18 font500 text-white" placeholder="Enter your New Password" formControlName="password" />
             <p class="font16 font500 muteText mb-0">Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number.</p>
             <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor">*invalid password</span>
-            <p *ngIf="passwordSameErrored" class="font16 font500 errorGradientColor mb-0">*Use a different password; this one is already in use.</p>
+            <p *ngIf="existingAccount" class="font16 font500 errorGradientColor mb-0">*{{existingAccount}}</p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">Confirm New Password</label>

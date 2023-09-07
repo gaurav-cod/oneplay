@@ -25,6 +25,7 @@ export class SecurityComponent implements OnInit {
   display: any;
   sameEmail: boolean = false;
   existingAccount: string;
+  notMatchPassword: string;
 
   isDisabled: boolean = true;
 
@@ -114,18 +115,6 @@ export class SecurityComponent implements OnInit {
   get passwordErrored() {
     const control = this.updateSecurity.controls["password"];
     return control.touched && control.invalid;
-  }
-
-  get passwordSameErrored() {
-    const control = this.updateSecurity.controls["password"];
-    if(!control.invalid) {
-      if(this.updateSecurity.value.oldPassword === this.updateSecurity.value.password) {
-        return control.touched && true;
-      } else {
-        return control.touched && false;
-      }
-    }
-    
   }
 
   get confirmPasswordErrored() {
@@ -399,8 +388,9 @@ export class SecurityComponent implements OnInit {
 
   updatePassword(): void {
     if(this.checkvalidationValue) return;
-    this.restService.updatePassword(this.updateSecurity.value, this.updateSecurity.value.oldPassword).subscribe(
+    this.restService.updatePassword(this.updateSecurity.value.oldPassword, this.updateSecurity.value.password).subscribe(
       () => {
+        this._changePasswordModalRef.close();
         Swal.fire({
           icon: "success",
           title: "Password Changed!",
@@ -409,11 +399,11 @@ export class SecurityComponent implements OnInit {
         this.updateSecurity.value.password.reset();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: " Error Code: " + error.code,
-          text: error.message,
-        });
+        if(error.code === 422) {
+          this.notMatchPassword = error.message
+        } else {
+          this.existingAccount = error.message
+        }
       }
     );
   }

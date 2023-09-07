@@ -10,9 +10,9 @@
             </div>
         </div>
     </div>
-    <p *ngIf="errorMessage" class="font16 font500 cancelgradientText mt-3 pb-3">{{errorMessage}}</p>
+    <p *ngIf="errorMessage" class="font16 font500 cancelgradientText mt-3 pb-3">*{{errorMessage}}</p>
     <p *ngIf="!errorMessage" class="font16 font500 muteText mt-3 pb-5 mb-0">
-        <span *ngIf="incorrectCode"><span class="cancelgradientText">{{incorrectCode}}</span>, <span class="muteText">Please check carefully or </span></span>
+        <span *ngIf="incorrectCode"><span class="cancelgradientText">*{{incorrectCode}}</span>, <span class="muteText">Please check carefully or </span></span>
         <span class="float-left" *ngIf="!incorrectCode">Didn’t Receive code?</span> 
         <button class="btn text-white p-0" *ngIf="!remainingTimer" (click)="onResend()">Resend Code</button>
         <span class="text-white" *ngIf="remainingTimer">Resend in 00:{{display}}</span>
