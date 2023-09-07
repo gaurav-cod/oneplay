@@ -69,7 +69,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
               this.planType = !!params.renew ? "base" : params.plan;
               this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
                 centered: true,
-                modalDialogClass: "modal-xl",
+                modalDialogClass: "modal-lg",
                 scrollable: true,
                 backdrop: "static",
                 keyboard: false,
