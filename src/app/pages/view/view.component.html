@@ -105,7 +105,7 @@
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
-                      [disabled]="startingGame || game.status === 'unlive'"
+                      [disabled]="startingGame || game.status === 'unlive' || !selectedStore"
                       [ngClass]="{ 'hide-text': startingGame }"
                       (click)="playGame(smallModal)"
                     >
