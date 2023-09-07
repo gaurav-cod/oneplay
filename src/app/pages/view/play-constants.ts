@@ -54,6 +54,7 @@ export class PlayConstants {
     //   }
     // }
 
-    return bitrate * (fps / 60);
+    const res = bitrate * (fps / 60);
+    return res > 50000 ? 50000 : res;
   }
 }
