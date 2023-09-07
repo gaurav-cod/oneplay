@@ -5,7 +5,11 @@
         <table class="customTable table w-100 mt-4 borderBottomTab">
           <thead>
             <tr>
-              <th scope="col" class="pl-0">Game</th>
+              <th scope="col" class="pl-0">
+                <div class="width120">
+                  Game
+                </div>
+               </th>
               <th scope="col">Device</th>
               <th scope="col">Location</th>
               <th scope="col">Start Time</th>
@@ -16,7 +20,9 @@
           <tbody>
             <tr *ngFor="let gameplay of gamePlaysessions">
               <td class="align-middle py-3 pl-0">
-                <span class="truncate-line-clamp">{{gameplay.game}}</span>
+                <div class="width120">
+                  <span class="truncate-line-clamp">{{gameplay.game}}</span>
+                </div>
               </td>
               <td class="align-middle py-3">
                 {{gameplay.device.app}}
