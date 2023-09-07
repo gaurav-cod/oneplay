@@ -66,7 +66,7 @@ export const mapResolutionstoGamePlaySettingsPageView = (
 export const mapFPStoGamePlaySettingsPageView = (
   fps: string
 ): CustomTimedCountlyEvents["gamePlaySettingsPageView"]["fps"] => {
-  switch (fps) {
+  switch (fps.toString()) {
     case "30":
       return "30fps";
     case "60":
@@ -84,9 +84,9 @@ export const mapStreamCodecForGamePlayAdvanceSettingView = (
 ): CustomTimedCountlyEvents["gamePlayAdvanceSettingView"]["streamCodec"] => {
   switch (codec) {
     case "neverh265":
-      return "hevc";
-    case "forceh265":
       return "h.264";
+    case "forceh265":
+      return "hevc";
     case "auto":
       return "auto";
     default:
@@ -126,6 +126,8 @@ export const genDefaultWebsiteFooterViewSegments =
       instagramClicked: "no",
       twitterClicked: "no",
       mediumClicked: "no",
+      contentCreatorsClicked: "no",
+      businessesClicked: "no",
     };
   };
 
@@ -134,6 +136,7 @@ export const genDefaultSettingsViewSegments =
     return {
       profileViewed: "no",
       logInSecurityViewed: "no",
+      subscriptionViewed: "no",
       profilePictureChanged: "no",
       userNameChanged: "no",
       fullNameChanged: "no",

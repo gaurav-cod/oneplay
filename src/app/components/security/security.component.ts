@@ -98,9 +98,6 @@ export class SecurityComponent implements OnInit {
   }
 
   updatePassword(): void {
-    this.countlyService.updateEventData("settingsView", {
-      passwordChanged: "yes",
-    });
     this.restService.updatePassword(this.password.value).subscribe(
       () => {
         Swal.fire({
@@ -109,6 +106,9 @@ export class SecurityComponent implements OnInit {
           text: "Password updated successfully",
         });
         this.password.reset();
+        this.countlyService.updateEventData("settingsView", {
+          passwordChanged: "yes",
+        });
       },
       (error) => {
         if (error.isOnline)

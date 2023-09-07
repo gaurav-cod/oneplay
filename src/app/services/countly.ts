@@ -53,6 +53,8 @@ export interface CustomCountlyEvents {
     instagramClicked: "yes" | "no";
     twitterClicked: "yes" | "no";
     mediumClicked: "yes" | "no";
+    contentCreatorsClicked: "yes" | "no",
+    businessesClicked: "yes" | "no",
   };
   menuClick: {
     homeClicked: "yes" | "no";
@@ -175,13 +177,14 @@ export interface CustomTimedCountlyEvents {
   settingsView: {
     profileViewed: "yes" | "no";
     logInSecurityViewed: "yes" | "no";
+    subscriptionViewed: "yes" | "no";
+    deviceHistoryViewed: "yes" | "no";
     profilePictureChanged: "yes" | "no";
     userNameChanged: "yes" | "no";
     fullNameChanged: "yes" | "no";
     bioChanged: "yes" | "no";
     updateProfileClicked: "yes" | "no";
     passwordChanged: "yes" | "no";
-    deviceHistoryViewed: "yes" | "no";
     logoutFromAllClicked: "yes" | "no";
   };
   subscriptionConfirmPlan: {

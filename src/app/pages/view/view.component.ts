@@ -177,7 +177,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._vsyncSub = this.vsync.valueChanges.subscribe((val) => {
       this.countlyService.updateEventData("gamePlaySettingsPageView", {
         settingsChanged: "yes",
-        vsyncEnabled: val == "true" ? "yes" : "no",
+        vsyncEnabled: val ? "yes" : "no",
       })
     })
     this._bitrateSub = this.bitrate.valueChanges.subscribe((val) => {
@@ -589,6 +589,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
       return;
     }
+
     this.restService.getTokensUsage().subscribe((data) => {
       let swal_html = null;
       if (data.total_tokens === 0) {
@@ -603,11 +604,11 @@ export class ViewComponent implements OnInit, OnDestroy {
               gameTitle: this.game.title,
               gameId: this.game.oneplayId,
               gameGenre: this.game.genreMappings.join(', '),
-              store: this.selectedStore.name,
+              store: this.selectedStore?.name,
               advanceSettingsViewed: 'no',
               settingsChanged: 'no',
               bitRate: this.bitrate.value,
-              vsyncEnabled: this.vsync.value === "true" ? "yes" : "no",
+              vsyncEnabled: this.vsync.value ? "yes" : "no",
               resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
               fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
             }
@@ -646,7 +647,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         gameTitle: this.game.title,
         gameId: this.game.oneplayId,
         gameGenre: this.game.genreMappings.join(', '),
-        store: this.selectedStore.name,
+        store: this.selectedStore?.name,
         settingsChanged: 'no',
       }
     })
@@ -659,6 +660,16 @@ export class ViewComponent implements OnInit, OnDestroy {
       }
       this.countlyService.endEvent("gamePlayAdvanceSettingView", {
         settingsChanged: "no",
+        gameTitle: this.game.title,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.join(', '),
+        store: this.selectedStore?.name,
+        showStatsEnabled: this.advancedOptions.value.show_stats ? "yes" : "no",
+        fullscreenEnabled: this.advancedOptions.value.fullscreen ? "yes" : "no",
+        onscreenControlsEnabled: this.advancedOptions.value.onscreen_controls ? "yes" : "no",
+        audioType: this.advancedOptions.value.audio_type === "stereo" ? "stereo" : "5.1",
+        streamCodec: mapStreamCodecForGamePlayAdvanceSettingView(this.advancedOptions.value.stream_codec),
+        videoDecoderSelection: this.advancedOptions.value.video_decoder_selection,
       });
     });
   }
