@@ -23,7 +23,7 @@ export const environment = {
     measurementId: "G-X80K2YEKBS",
   },
   countly: {
-    key: "19eab6488620f4a36d34a08519392028a1acd920",
+    key: "50eb782719bc94bb8ec32c59aac647d0a2bbf24f",
     url: "https://dev.countly.oneream.com/",
   },
   webrtc_prefix: "",
