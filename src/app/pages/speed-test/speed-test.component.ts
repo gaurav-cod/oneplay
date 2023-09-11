@@ -194,8 +194,8 @@ export class SpeedTestComponent implements OnInit {
       .toPromise()
       .then((v) => (this.currentLocation = v));
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    const recommended_download_in_mbps = res.recommended_download / 1024 / 1024;
-    const recommended_upload_in_mbps = res.recommended_upload / 1024 / 1024;
+    const recommended_download_in_mbps = res.recommended_download / 1000;
+    const recommended_upload_in_mbps = res.recommended_upload / 1000;
     this.recommendations.Ping.text = `Latency of ${res.recommended_latency} ms`;
     this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
     this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
