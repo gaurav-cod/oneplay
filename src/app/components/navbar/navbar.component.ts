@@ -316,9 +316,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.toggleFriends.emit();
   }
 
-  logout() {
+  async logout() {
     this.logoutRef.close();
     this.logDropdownEvent("logOutConfirmClicked");
+    // wait for countly to send the req before deleting the session
+    await new Promise(r => setTimeout(r, 500));
     // this.messagingService.removeToken().finally(() => {
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.loggedOutByUser = true;
@@ -374,6 +376,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onBlur() {
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: "no",
+      // todo: change actionType
+      // actionType: 'gameClicked',
+    })
     this.focus.next(false);
   }
 

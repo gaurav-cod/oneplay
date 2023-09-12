@@ -62,7 +62,6 @@ export interface CustomCountlyEvents {
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
     gameStatusClicked: "yes" | "no";
-    speedTestClicked: "yes" | "no";
     profileClicked: "yes" | "no";
   };
   menuDropdownClick: {

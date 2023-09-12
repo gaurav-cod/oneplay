@@ -13,6 +13,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -133,6 +134,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       gameId: game.oneplayId,
       gameTitle: game.title,
     })
+    this.countlyService.startEvent("gameLandingView", {
+      discardOldData: true,
+      data: { source: getGameLandingViewSource(), trigger: 'card' },
+    });
 
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,

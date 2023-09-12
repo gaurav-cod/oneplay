@@ -36,9 +36,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.title.setTitle("Verify Account");
-    this.countlyService.startEvent("signUpAccountVerification", {
-      discardOldData: true,
-    });
+    this.countlyService.startEvent("signUpAccountVerification");
   }
 
   ngOnDestroy(): void {
@@ -116,7 +114,15 @@ export class VerifyComponent implements OnInit, OnDestroy {
           this.authService.login(token);
         });
       },
-      error: (error) => {
+      error: async (error) => {
+        this.countlyService.endEvent("signUpAccountVerification", {
+          result: "failure",
+          failureReason: mapSignUpAccountVerificationFailureReasons(
+            error.message
+          ),
+        });
+        // wait for countly to send network request.
+        await new Promise(r => setTimeout(() => r, 500));
         if (error.message == "Invalid OTP") {
           if (error.isOnline)
             Swal.fire({
@@ -125,12 +131,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
               icon: "error",
             });
         } else {
-          this.countlyService.endEvent("signUpAccountVerification", {
-            result: "failure",
-            failureReason: mapSignUpAccountVerificationFailureReasons(
-              error.message
-            ),
-          });
           this.resendVerificationLink(error, token);
         }
       },
