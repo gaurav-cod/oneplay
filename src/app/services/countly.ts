@@ -91,7 +91,7 @@ export interface CustomCountlyEvents {
   search: {
     keywords: string;
     actionDone: "yes" | "no";
-    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend";
+    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend" | "cancelled";
   };
 }
 

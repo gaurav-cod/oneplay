@@ -28,7 +28,7 @@ export class CountlyService {
 
   addEvent<T extends keyof CustomCountlyEvents>(
     event: T,
-    segments: Partial<CustomCountlyEvents[T]>
+    segments: CustomCountlyEvents[T]
   ) {
     let sum = undefined;
     if (XCountlySUM in segments) {

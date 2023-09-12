@@ -379,8 +379,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
       actionDone: "no",
-      // todo: change actionType
-      // actionType: 'gameClicked',
+      actionType: 'cancelled',
     })
     this.focus.next(false);
   }
