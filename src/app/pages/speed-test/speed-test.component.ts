@@ -4,7 +4,7 @@ import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 import { v4 } from "uuid";
 
-type State = "Ping" | "Download" | "Upload";
+type State = "Latency" | "Download" | "Upload";
 
 @Component({
   selector: "app-speed-test",
@@ -112,7 +112,7 @@ export class SpeedTestComponent implements OnInit {
     this.pingPacketsRecieved = [];
     this.currentLocation = undefined;
     this.recommendations = {
-      Ping: { text: "", enabled: false },
+      Latency: { text: "", enabled: false },
       Download: { text: "", enabled: false },
       Upload: { text: "", enabled: false },
     };
@@ -141,7 +141,7 @@ export class SpeedTestComponent implements OnInit {
 
   getCurrentTestValue(state: State) {
     switch (state) {
-      case "Ping":
+      case "Latency":
         return this.latencyText;
       case "Download":
         return this.downloadText;
@@ -154,12 +154,12 @@ export class SpeedTestComponent implements OnInit {
 
   get latencyIcon() {
     return `assets/img/speed-test/latency${
-      this.state === "Ping" && !this.testCompleted ? "-active" : ""
+      this.state === "Latency" && !this.testCompleted ? "-active" : ""
     }.svg`;
   }
   get jitterIcon() {
     return `assets/img/speed-test/jitter${
-      this.state === "Ping" && !this.testCompleted ? "-active" : ""
+      this.state === "Latency" && !this.testCompleted ? "-active" : ""
     }.svg`;
   }
   get downloadIcon() {
@@ -189,7 +189,7 @@ export class SpeedTestComponent implements OnInit {
     } else {
       this.recommendation = "";
       this.recommendations = {
-        Ping: { text: "", enabled: false },
+        Latency: { text: "", enabled: false },
         Download: { text: "", enabled: false },
         Upload: { text: "", enabled: false },
       };
@@ -208,14 +208,14 @@ export class SpeedTestComponent implements OnInit {
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
     const recommended_download_in_mbps = res.recommended_download / 1000;
     const recommended_upload_in_mbps = res.recommended_upload / 1000;
-    this.recommendations.Ping.text = `Latency of ${res.recommended_latency} ms`;
+    this.recommendations.Latency.text = `Latency of ${res.recommended_latency} ms`;
     this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
     this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
-    this.state = "Ping";
+    this.state = "Latency";
     await new Promise<void>((res) => setTimeout(() => res(), 2000));
     await this.runPing(res.ping);
     if (this.currentLatency > res.recommended_latency) {
-      this.recommendations.Ping.enabled = true;
+      this.recommendations.Latency.enabled = true;
       this.updateRecommendations();
     }
     this.state = "Download";
@@ -236,7 +236,7 @@ export class SpeedTestComponent implements OnInit {
       (entry) => entry[1].enabled
     );
     if (recs.length) {
-      if (recs.length === 1 && this.recommendations.Ping.enabled) {
+      if (recs.length === 1 && this.recommendations.Latency.enabled) {
         this.finalMessage = this.messages.stutter;
       } else {
         this.finalMessage = this.messages.not_optimal;
