@@ -56,7 +56,7 @@ export class SpeedTestComponent implements OnInit {
     this.progressValue = v;
   }, this.throttleTime);
 
-  pingCount = 100;
+  pingCount = 150;
   pingPacketsSent = [];
   pingPacketsRecieved = [];
   dlReqCount = 40;
@@ -97,7 +97,7 @@ export class SpeedTestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.title.setTitle("Speed Test")
+    this.title.setTitle("Speed Test");
     this.runTests();
   }
 
@@ -259,17 +259,21 @@ export class SpeedTestComponent implements OnInit {
         resolve(false);
       };
       ws.onopen = () => {
-        for (let id = 0; id < this.pingCount; id++) {
-          this.pingPacketsSent.push(+new Date());
-          ws.send(JSON.stringify({ id, action: "ping" }));
-        }
+        this.pingPacketsSent.push(+new Date());
+        ws.send(JSON.stringify({ id: 0, action: "ping" }));
       };
       ws.onmessage = (e) => {
         if (typeof e.data === "string") {
           const data = JSON.parse(e.data);
-          this.pingPacketsRecieved[data.id] = +new Date();
+          this.pingPacketsRecieved[+data.id] = +new Date();
           if (this.pingPacketsRecieved.length === this.pingCount) {
             ws.close();
+          } else {
+            this.updatePingUI();
+            setTimeout(() => {
+              this.pingPacketsSent.push(+new Date());
+              ws.send(JSON.stringify({ id: +data.id + 1, action: "ping" }));
+            }, 20);
           }
         }
       };
@@ -414,28 +418,27 @@ export class SpeedTestComponent implements OnInit {
   // }
 
   updatePingUI() {
-    let l = 0;
-    let j = 0;
-    let lc = 0;
-    let jc = 0;
+    const latencies: number[] = [];
     for (let id = 0; id < this.pingPacketsRecieved.length; id++) {
-      if (typeof this.pingPacketsRecieved[id] === "number") {
-        l += this.pingPacketsRecieved[id] - this.pingPacketsSent[id];
-        let jt =
-          this.pingPacketsRecieved[id] - this.pingPacketsRecieved[id - 1] || 0;
-        if (jt) {
-          j += jt;
-          jc++;
-        }
-        lc++;
-      }
+      latencies.push(this.pingPacketsRecieved[id] - this.pingPacketsSent[id]);
     }
-    if (lc) {
-      this.currentLatency = Math.floor(l / lc);
+    this.currentLatency = +(
+      latencies.reduce((total, latency) => total + latency, 0) /
+      latencies.length
+    ).toFixed(2);
+    this.currentJitter = +latencies
+      .reduce(
+        (jitter, latency, index, latencies) =>
+          index === 0
+            ? 0
+            : jitter + (Math.abs(latencies[index - 1] - latency) - jitter) / 16,
+        0
+      )
+      .toFixed(2);
+    if (this.currentLatency) {
       this._TsetLatencyText(this.currentLatency);
     }
-    if (jc) {
-      this.currentJitter = Math.floor(j / jc);
+    if (this.currentJitter) {
       this._TsetJitterText(this.currentJitter);
     }
     this.updateProgress(this.pingPacketsRecieved.length);
