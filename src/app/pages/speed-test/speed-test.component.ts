@@ -185,10 +185,7 @@ export class SpeedTestComponent implements OnInit {
       this.recommendation = "Recommended " + recs[0][1].text;
     } else if (recs.length) {
       this.recommendation =
-        "RECOMMENDED: " +
-        Object.entries(this.recommendations)
-          .map((entry) => entry[1].text)
-          .join(", ");
+        "RECOMMENDED: " + recs.map((entry) => entry[1].text).join(", ");
     } else {
       this.recommendation = "";
       this.recommendations = {
