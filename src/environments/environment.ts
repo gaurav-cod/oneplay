@@ -1,7 +1,7 @@
 // import { version } from '../../package.json';
 
 export const environment = {
-  appVersion: "3.0.0",
+  appVersion: "3.1.0",
   production: false,
   cookie_domain: "localhost",
   domain: "http://localhost:4200",
@@ -15,6 +15,7 @@ export const environment = {
   stripe_key:
     "pk_test_51MqHiCSIFX9lGIVVPlfmun4lNf8r5p19kxLAhVsdtXHtLzbvGsVeOov7tIskv6UfMlxwZvhQzKcxGZCeEIlDKS9u00t2KiVeVV",
   billdesk_key: "ONEPLA2UAT",
+  billdesk_sdk_prefix: "https://uat.billdesk.com/jssdk/v1/dist",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",

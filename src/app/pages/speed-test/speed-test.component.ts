@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 import { v4 } from "uuid";
@@ -19,22 +20,22 @@ export class SpeedTestComponent implements OnInit {
   throttleTime = 10;
   messages = {
     default: {
-      class: '',
-      text: '',
+      class: "",
+      text: "",
     },
     optimal: {
-      class: 'primaryGradientColor',
-      text: 'Your network is optimal for streaming',
+      class: "primaryGradientColor",
+      text: "Your network is optimal for streaming",
     },
     not_optimal: {
-      class: 'errorGradientColor',
-      text: 'Network conditions are not optimal for streaming',
+      class: "errorGradientColor",
+      text: "Network conditions are not optimal for streaming",
     },
     stutter: {
-      class: 'yellowGradient',
-      text: 'You may experience stutter of high latency',
+      class: "yellowGradient",
+      text: "You may experience stutter of high latency",
     },
-  }
+  };
   private _TsetLatencyText = throttle(
     (v: string) => (this.latencyText = v),
     this.throttleTime
@@ -55,7 +56,7 @@ export class SpeedTestComponent implements OnInit {
     this.progressValue = v;
   }, this.throttleTime);
 
-  pingCount = 100;
+  pingCount = 150;
   pingPacketsSent = [];
   pingPacketsRecieved = [];
   dlReqCount = 40;
@@ -78,20 +79,25 @@ export class SpeedTestComponent implements OnInit {
   currentJitter: number;
   currentDownload: number;
   currentUpload: number;
-  hideRecommendation = 'd-none';
-  recommendationColor = '';
+  hideRecommendation = "d-none";
+  recommendationColor = "";
   recommendation: string = "";
   recommendations: {
     [k in State]: {
-      text: string,
-      enabled: boolean,
-    }
+      text: string;
+      enabled: boolean;
+    };
   };
-  finalMessage: typeof this.messages[keyof typeof this.messages] = this.messages.default;
+  finalMessage: (typeof this.messages)[keyof typeof this.messages] =
+    this.messages.default;
 
-  constructor(private readonly restService: RestService) {}
+  constructor(
+    private readonly restService: RestService,
+    private readonly title: Title
+  ) {}
 
   ngOnInit(): void {
+    this.title.setTitle("Speed Test");
     this.runTests();
   }
 
@@ -106,13 +112,13 @@ export class SpeedTestComponent implements OnInit {
     this.pingPacketsRecieved = [];
     this.currentLocation = undefined;
     this.recommendations = {
-      'Ping': { text: '', enabled: false, },
-      'Download': { text: '', enabled: false, },
-      'Upload': { text: '', enabled: false, },
-    }
+      Ping: { text: "", enabled: false },
+      Download: { text: "", enabled: false },
+      Upload: { text: "", enabled: false },
+    };
     this.finalMessage = this.messages.default;
-    this.hideRecommendation = 'd-none';
-    this.recommendationColor = 'recommendation';
+    this.hideRecommendation = "d-none";
+    this.recommendationColor = "recommendation";
   }
 
   getStateColor(state: State) {
@@ -123,24 +129,26 @@ export class SpeedTestComponent implements OnInit {
   }
 
   getValueColor(state: State) {
-    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
+    const recs = Object.entries(this.recommendations).filter(
+      (entry) => entry[1].enabled
+    );
     return {
-      'text-white': state === this.state && !this.testCompleted,
-      'yellowGradient': recs.length === 1 && this.recommendations[state].enabled,
-      'text-red': recs.length > 1,
+      "text-white": state === this.state && !this.testCompleted,
+      yellowGradient: recs.length === 1 && this.recommendations[state].enabled,
+      "text-red": recs.length > 1,
     };
   }
 
   getCurrentTestValue(state: State) {
     switch (state) {
-      case 'Ping':
+      case "Ping":
         return this.latencyText;
-      case 'Download':
+      case "Download":
         return this.downloadText;
-      case 'Upload':
+      case "Upload":
         return this.uploadText;
       default:
-        return '';
+        return "";
     }
   }
 
@@ -170,21 +178,25 @@ export class SpeedTestComponent implements OnInit {
     // this.recommendations.Ping.enabled = true;
     // this.recommendations.Download.enabled = true;
     // this.recommendations.Upload.enabled = true;
-    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
+    const recs = Object.entries(this.recommendations).filter(
+      (entry) => entry[1].enabled
+    );
     if (recs.length === 1) {
-      this.recommendation = 'Recommended ' + recs[0][1].text;
+      this.recommendation = "Recommended " + recs[0][1].text;
     } else if (recs.length) {
-      this.recommendation = 'RECOMMENDED: ' + Object.entries(this.recommendations).map((entry) => entry[1].text).join(", ");
+      this.recommendation =
+        "RECOMMENDED: " + recs.map((entry) => entry[1].text).join(", ");
     } else {
       this.recommendation = "";
       this.recommendations = {
-        'Ping': { text: '', enabled: false, },
-        'Download': { text: '', enabled: false, },
-        'Upload': { text: '', enabled: false, },
-      }
+        Ping: { text: "", enabled: false },
+        Download: { text: "", enabled: false },
+        Upload: { text: "", enabled: false },
+      };
     }
-    this.hideRecommendation = recs.length === 0 ? 'd-none' : '';
-    this.recommendationColor = 'recommendation ' + (recs.length !== 1 ? 'recommendation-red' : '');
+    this.hideRecommendation = recs.length === 0 ? "d-none" : "";
+    this.recommendationColor =
+      "recommendation " + (recs.length !== 1 ? "recommendation-red" : "");
   }
 
   async runTests() {
@@ -194,8 +206,8 @@ export class SpeedTestComponent implements OnInit {
       .toPromise()
       .then((v) => (this.currentLocation = v));
     const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    const recommended_download_in_mbps = res.recommended_download / 1024 / 1024;
-    const recommended_upload_in_mbps = res.recommended_upload / 1024 / 1024;
+    const recommended_download_in_mbps = res.recommended_download / 1000;
+    const recommended_upload_in_mbps = res.recommended_upload / 1000;
     this.recommendations.Ping.text = `Latency of ${res.recommended_latency} ms`;
     this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
     this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
@@ -220,7 +232,9 @@ export class SpeedTestComponent implements OnInit {
       this.recommendations.Upload.enabled = true;
       this.updateRecommendations();
     }
-    const recs = Object.entries(this.recommendations).filter((entry) => entry[1].enabled);
+    const recs = Object.entries(this.recommendations).filter(
+      (entry) => entry[1].enabled
+    );
     if (recs.length) {
       if (recs.length === 1 && this.recommendations.Ping.enabled) {
         this.finalMessage = this.messages.stutter;
@@ -242,17 +256,21 @@ export class SpeedTestComponent implements OnInit {
         resolve(false);
       };
       ws.onopen = () => {
-        for (let id = 0; id < this.pingCount; id++) {
-          this.pingPacketsSent.push(+new Date());
-          ws.send(JSON.stringify({ id, action: "ping" }));
-        }
+        this.pingPacketsSent.push(+new Date());
+        ws.send(JSON.stringify({ id: 0, action: "ping" }));
       };
       ws.onmessage = (e) => {
         if (typeof e.data === "string") {
           const data = JSON.parse(e.data);
-          this.pingPacketsRecieved[data.id] = +new Date();
+          this.pingPacketsRecieved[+data.id] = +new Date();
           if (this.pingPacketsRecieved.length === this.pingCount) {
             ws.close();
+          } else {
+            this.updatePingUI();
+            setTimeout(() => {
+              this.pingPacketsSent.push(+new Date());
+              ws.send(JSON.stringify({ id: +data.id + 1, action: "ping" }));
+            }, 20);
           }
         }
       };
@@ -397,28 +415,27 @@ export class SpeedTestComponent implements OnInit {
   // }
 
   updatePingUI() {
-    let l = 0;
-    let j = 0;
-    let lc = 0;
-    let jc = 0;
+    const latencies: number[] = [];
     for (let id = 0; id < this.pingPacketsRecieved.length; id++) {
-      if (typeof this.pingPacketsRecieved[id] === "number") {
-        l += this.pingPacketsRecieved[id] - this.pingPacketsSent[id];
-        let jt =
-          this.pingPacketsRecieved[id] - this.pingPacketsRecieved[id - 1] || 0;
-        if (jt) {
-          j += jt;
-          jc++;
-        }
-        lc++;
-      }
+      latencies.push(this.pingPacketsRecieved[id] - this.pingPacketsSent[id]);
     }
-    if (lc) {
-      this.currentLatency = Math.floor(l / lc);
+    this.currentLatency = +(
+      latencies.reduce((total, latency) => total + latency, 0) /
+      latencies.length
+    ).toFixed(2);
+    this.currentJitter = +latencies
+      .reduce(
+        (jitter, latency, index, latencies) =>
+          index === 0
+            ? 0
+            : jitter + (Math.abs(latencies[index - 1] - latency) - jitter) / 16,
+        0
+      )
+      .toFixed(2);
+    if (this.currentLatency) {
       this._TsetLatencyText(this.currentLatency);
     }
-    if (jc) {
-      this.currentJitter = Math.floor(j / jc);
+    if (this.currentJitter) {
       this._TsetJitterText(this.currentJitter);
     }
     this.updateProgress(this.pingPacketsRecieved.length);
@@ -452,7 +469,8 @@ export class SpeedTestComponent implements OnInit {
 
   updateProgress(count: number) {
     // "1 1000" to "660 1000"
-    const cp = (count / (this.pingCount + this.dlReqCount + this.ulReqCount)) * 100;
+    const cp =
+      (count / (this.pingCount + this.dlReqCount + this.ulReqCount)) * 100;
     this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`);
   }
 }

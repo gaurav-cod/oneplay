@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "3.0.0",
+  appVersion: "3.1.0",
   production: true,
   cookie_domain: "oneplay.in",
   domain: "https://www.oneplay.in",
@@ -12,6 +12,7 @@ export const environment = {
   stripe_key:
     "pk_live_51MqHiCSIFX9lGIVVjAZU0jnZTHfvUbhLb8hGS9yipxYZroAss0GJRSbKsCXIpQynjsuAhwYZj4tHgFkYp2ETCxcD00CGHkBRf8",
   billdesk_key: "ONEPLAY2",
+  billdesk_sdk_prefix: "https://pay.billdesk.com/jssdk/v1/dist",
   firebase: {
     apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
     authDomain: "oneplay-ba044.firebaseapp.com",

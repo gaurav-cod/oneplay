@@ -44,7 +44,7 @@
             routerLinkActive="active"
             [routerLink]="['/streams']"
             class="nav-link p-0 mt-2 pt-1 mr-3"
-            (click)="headerNavOnClick('searchClicked')"
+            (click)="headerNavOnClick('streamsClicked')"
             >Streams</a
           >
         </li>
@@ -286,20 +286,11 @@
                   <span class="align-middle">Refer</span>
                 </a> -->
 
-                <!-- <a
+                <a
                   (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
                   [routerLink]="['speed-test']"
-                  class="dropdown-item"
-                >
-                  <i class="fas fa-tachometer-alt font14 align-middle"></i>
-                  <span class="align-middle">Speed Test</span>
-                </a> -->
-
-                <a
-                  (click)="logDropdownEvent('speedTestClicked')"
-                  [href]="domain + '/speed-test/run'"
                   class="dropdown-item"
                 >
                   <i class="fas fa-tachometer-alt font14 align-middle"></i>
@@ -356,7 +347,7 @@
                   class="dropdown-item"
                   (click)="LogoutAlert(LogoutModal)"
                 >
-                  <img src="assets/icons/Logout.svg" class="img-fluid mr-3 logout" alt=""/>               
+                  <img src="assets/icons/Logout.svg" class="img-fluid mr-3 logout" alt=""/>
                   <span>Log out</span>
                 </a>
                 <a

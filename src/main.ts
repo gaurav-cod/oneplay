@@ -25,6 +25,21 @@ if (environment.production) {
   enableProdMode();
 }
 
+const css = document.createElement('link');
+css.href = environment.billdesk_sdk_prefix + "/billdesksdk/billdesksdk.css";
+css.rel = "stylesheet";
+document.head.appendChild(css);
+
+const script = document.createElement('script');
+script.src = environment.billdesk_sdk_prefix + "/billdesksdk/billdesksdk.esm.js";
+script.type = "module";
+document.body.appendChild(script);
+
+const script2 = document.createElement('script');
+script2.src = environment.billdesk_sdk_prefix + "/billdesksdk.js";
+script2.noModule = true;
+document.body.appendChild(script2);
+
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => console.error(err));
