@@ -121,8 +121,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
             error.message
           ),
         });
-        // wait for countly to send network request.
-        await new Promise(r => setTimeout(() => r, 500));
+
         if (error.message == "Invalid OTP") {
           if (error.isOnline)
             Swal.fire({
