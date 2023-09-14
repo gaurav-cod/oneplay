@@ -28,8 +28,7 @@
 .text-logo {
   max-width: 300px;
   max-height: 160px;
-  margin-bottom: 24px;
-  @media (min-width: 1300px) {
+  @media (max-width: 1300px) {
     max-height: 100px;
   }
 
@@ -546,9 +545,14 @@ live {
   }
 }
 
+
 .height100px {
-  height: 100px;
+  height: 160px;
   align-items: center;
+  @media (max-width: 480px) {
+    height: 100px;
+    align-items: center;
+  }
 }
 
 .blackBbg {
