@@ -185,4 +185,8 @@ export class SubscriptionsComponent implements OnInit {
     sub_date.setDate(sub_date.getDate() - 2); //Two day less;
     return sub_date < new Date();
   }
+
+  test () {
+    console.warn()
+  }
 }
