@@ -57,12 +57,12 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       this.authService.wishlist,
       this.authService.triggerWishlist,
     ]).subscribe(([wishlist, triggered]) => {
-      if (wishlist) {
-        if (!wishlist.length || triggered) {
+      
+        if (triggered) {
           this.wishlist = wishlist;
           this.selectGame();
         }
-      }
+      
     });
   }
 
@@ -171,13 +171,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.selectedGameIds.forEach((id) =>
       this.restService.addWishlist(id).subscribe()
     );
-    if (this.wishlist.length) {
-      this.authService.closeWishlist();
-      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
-    } else {
-      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
-      this.authService.closeWishlist();
-    }
+    this.authService.setWishlist([...this.wishlist, ...this.selectedGameIds]);
     this.selectedGames = [];
     this.query.reset();
     this.searchText = "";
