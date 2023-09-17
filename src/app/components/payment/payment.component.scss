@@ -1,0 +1,68 @@
+.modalHeading {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 34px;
+  letter-spacing: 0.02em;
+}
+
+.cardBG {
+  background: #0e0e0e !important;
+  border-radius: 12px !important;
+}
+
+.cardBG:hover {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
+}
+
+.subHeading {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0em;
+  color: #959595;
+}
+
+.height60 {
+  height: 60px;
+  @media (max-width: 991.9px) {
+    height: 24px;
+  }
+}
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+}
+
+.recommended {
+  position: absolute;
+  top: -10px;
+  color: #fff;
+  left: 15px;
+}
+
+.skyBgGradient {
+  background: linear-gradient(259.59deg, #3AA0FE 0%, #0575E6 100%);
+}
+
+.blink_bg {
+  -webkit-animation: backgroundColor 1s infinite;  /* Safari 4+ */
+  -moz-animation: backgroundColor 1s infinite;  /* Fx 5+ */
+  -o-animation: backgroundColor 1s infinite;  /* Opera 12+ */
+  animation: backgroundColor 1s infinite;  /* IE 10+, Fx 29+ */
+}
+
+@keyframes backgroundColor {
+  0%, 49% {
+    background-color: #e31c34;
+  }
+  50%, 100% {
+    background-color: transparent;
+  }
+}
+
+.borderRadius50 {
+  border-radius: 50px;
+}

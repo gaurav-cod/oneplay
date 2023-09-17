@@ -24,7 +24,7 @@
           </a>
         </div>
       </div>
-      
+
       <h3 class="tabHeading">Stores</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of storeRoutes">
@@ -38,7 +38,7 @@
           </a>
         </div>
       </div>
-      
+
       <h3 class="tabHeading">Top Genres</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of genreRoutes">
@@ -52,7 +52,7 @@
           </a>
         </div>
       </div>
-      
+
       <h3 class="tabHeading">Top Developers</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of developerRoutes">
@@ -66,7 +66,7 @@
           </a>
         </div>
       </div>
-      
+
       <h3 class="tabHeading">Top Publishers</h3>
       <div class="row">
         <div class="col-auto pr-0" *ngFor="let route of publisherRoutes">
@@ -80,7 +80,7 @@
           </a>
         </div>
       </div>
-      
+
     </div>
 
     <div class="col-12 d-lg-none pt-4 pt-md-2">
@@ -100,7 +100,7 @@
             href="javascript:void(0)"
             class="card bgColor mb-3 mutedColor"
             routerLinkActive="activeBG"
-            
+
             [routerLink]="['/store/' + route]"
             style="white-space: nowrap"
             >
@@ -122,7 +122,7 @@
       >
         <div *ngFor="let game of games" class="col-6 col-sm-4 col-md-4 col-lg-4 mb-3 px-2">
           <div class="zoom">
-            <app-game-card [game]="game"></app-game-card>
+            <app-game-card [game]="game" ></app-game-card>
           </div>
         </div>
       </div>

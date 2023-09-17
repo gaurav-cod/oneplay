@@ -29,6 +29,8 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { SelectGameCardComponent } from './select-game-card/select-game-card.component';
 import { ClipboardModule } from "ngx-clipboard";
 import { InitializingGameComponent } from './initializing-game/initializing-game.component';
+import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.component';
+import { PaymentComponent } from './payment/payment.component';
 
 @NgModule({
   imports: [
@@ -65,6 +67,8 @@ import { InitializingGameComponent } from './initializing-game/initializing-game
     OnboardingModalsComponent,
     SelectGameCardComponent,
     InitializingGameComponent,
+    GameplayHistoryComponent,
+    PaymentComponent,
   ],
   exports: [
     GameCardComponent,
@@ -86,6 +90,8 @@ import { InitializingGameComponent } from './initializing-game/initializing-game
     OnboardingModalsComponent,
     SelectGameCardComponent,
     InitializingGameComponent,
+    GameplayHistoryComponent,
+    PaymentComponent,
   ],
 })
 export class ComponentsModule {}

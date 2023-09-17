@@ -100,6 +100,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.loaderService.stop();
             },
             (error) => {
+              this.loaderService.stop();
               if(error.timeout) {
                 this.router.navigateByUrl('/server-error')
               }
@@ -110,20 +111,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
-      this.wishlist = ids;
-      this.restService
-        .getWishlistGames(ids)
-        .subscribe((games) => (this.library = games));
+      if (ids) {
+        this.wishlist = ids;
+        this.restService
+          .getWishlistGames(ids)
+          .subscribe((games) => (this.library = games));
+      } 
     });
   }
 
   viewBannerGame(game: GameModel) {
-    this.countlyService.addEvent('gameLandingView', {
-      gameID: game.oneplayId,
-      gameTitle: game.title,
-      gameGenre: game.genreMappings?.join(','),
-      source: location.pathname + location.hash,
-      trigger: "banner",
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: 'homePage', trigger: 'banner' },
+      discardOldData: true,
     });
     this.router.navigate(['view', this.gLink.transform(game)]);
   }

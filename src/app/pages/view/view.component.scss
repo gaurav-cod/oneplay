@@ -28,8 +28,7 @@
 .text-logo {
   max-width: 300px;
   max-height: 160px;
-  margin-bottom: 24px;
-  @media (min-width: 1300px) {
+  @media (max-width: 1300px) {
     max-height: 100px;
   }
 
@@ -357,7 +356,7 @@ live {
 }
 
 ::ng-deep .tooltip-inner {
-  width: 180px;
+  width: 180px !important;
 }
 
 .marginLeftNegative {
@@ -546,11 +545,29 @@ live {
   }
 }
 
+
 .height100px {
-  height: 100px;
+  height: 160px;
   align-items: center;
+  @media (max-width: 480px) {
+    height: 100px;
+    align-items: center;
+  }
 }
 
 .blackBbg {
   background-color: #151515;
+}
+
+.blackDarkBg {
+  background-color: #0E0E0E !important;
+  border-radius: 12px !important;
+}
+
+.blackDarkBg:hover {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%)!important;
+}
+
+.h42 {
+  height: 42px !important;
 }

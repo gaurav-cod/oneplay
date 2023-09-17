@@ -1,0 +1,12 @@
+.customTable td {
+    white-space: normal !important;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+}
+
+.width120 {
+    width: 120px;
+}

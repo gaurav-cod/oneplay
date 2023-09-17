@@ -4,6 +4,7 @@ import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-library",
@@ -33,12 +34,9 @@ export class LibraryComponent implements OnInit {
   }
 
   viewGame(game: GameModel) {
-    this.countlyService.addEvent("gameLandingView", {
-      gameID: game.oneplayId,
-      gameTitle: game.title,
-      gameGenre: game.genreMappings?.join(","),
-      source: location.pathname + location.hash,
-      trigger: "card",
+    this.countlyService.startEvent("gameLandingView", {
+      discardOldData: true,
+      data: { source: getGameLandingViewSource(), trigger: 'card' }
     });
 
     this.router.navigate(["view", this.gLink.transform(game)]);

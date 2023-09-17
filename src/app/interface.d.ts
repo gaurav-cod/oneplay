@@ -1,6 +1,4 @@
 import { PaymentIntent } from "@stripe/stripe-js";
-import { GameModel } from "./models/game.model";
-import { GameFeedModel } from "./models/gameFeed.model";
 import { VideoModel } from "./models/video.model";
 
 export interface LoginDTO {
@@ -24,8 +22,8 @@ export interface IPayment extends PaymentIntent {
     userId: string;
     orderId: string;
     action: string;
-    plan_type: 'base'|'topup';
-  }
+    plan_type: "base" | "topup";
+  };
 }
 export interface VerifySignupDTO {
   token: string;
@@ -124,18 +122,40 @@ export interface WebPlayTokenRO {
 }
 
 export interface ILocation {
-  ip: string;
+  as: string;
+  asname: string;
   city: string;
-  country_name: string;
-  country_code: string;
-  country_calling_code: string;
-  region: string;
-  error?: boolean;
-  reason?: string;
+  continent: string;
+  country: string;
+  currency: string;
+  district: string;
+  hosting: boolean;
+  isp: string;
+  lat: number;
+  lon: number;
+  mobile: boolean;
+  org: string;
+  proxy: boolean;
+  regionName: true;
+  reverse: string;
+  status: string;
+  timezone: string;
+  zip: string;
+  created_at: number;
+  ip: string;
 }
 
 export interface SpeedTestServerRO {
-  ping: string,
-  download: string,
-  upload: string
+  ping: string;
+  download: string;
+  upload: string;
+  recommended_latency: number;
+  recommended_download: number;
+  recommended_upload: number;
+}
+
+export interface BilldeskPaymentRO {
+  orderId: string;
+  bdOrderId: string;
+  token: string;
 }

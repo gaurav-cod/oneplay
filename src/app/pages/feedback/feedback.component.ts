@@ -102,7 +102,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.countlyService.endEvent("gameFeedback", {
-      action: "Submit",
+      action: 'submit',
     });
     if (!this.gameId || !this.sessionId || !this.userId) {
       Swal.fire({
@@ -158,7 +158,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   skip() {
     this.countlyService.endEvent("gameFeedback", {
-      action: "Skip",
+      action: 'skip',
     });
     this.location.back();
   }

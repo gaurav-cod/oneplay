@@ -67,6 +67,7 @@ export class QrSignupComponent implements OnInit {
         },
         error: (err) => {
           this.loaderService.stop();
+          if (err.error.isOnline)
           Swal.fire({
             title: "Error Code: " + err.error.code,
             text: err.error.message,
@@ -122,10 +123,11 @@ export class QrSignupComponent implements OnInit {
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-    });
+    // this.countlyService.addEvent("signINButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/login"]);
   }
 }

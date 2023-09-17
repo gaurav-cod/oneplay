@@ -6,6 +6,7 @@ import { throwError } from "rxjs/internal/observable/throwError";
 import { switchMap } from "rxjs/internal/operators/switchMap";
 import { environment } from "src/environments/environment";
 import {
+  BilldeskPaymentRO,
   ClientTokenRO,
   GameSessionRO,
   GameStatusRO,
@@ -37,6 +38,7 @@ import { VideoModel } from "../models/video.model";
 import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
+import { GameplayHistoryModel } from "../models/gameplay.model";
 
 @Injectable({
   providedIn: "root",
@@ -47,11 +49,17 @@ export class RestService {
 
   constructor(private readonly http: HttpClient) {}
 
-  login(data: LoginDTO): Observable<string> {
+  login(data: LoginDTO): Observable<{
+    session_token: string,
+    trigger_speed_test: boolean,
+  }> {
     return this.http
       .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
       .pipe(
-        map((res) => res["session_token"]),
+        map((res) => ({
+          session_token: res["session_token"],
+          trigger_speed_test: res["trigger_speed_test"],
+        })),
         catchError(({ error }) => {
           throw error;
         })
@@ -62,7 +70,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/signup", {
         ...data,
-        partnerId: environment.oneplay_partner_id,
+        partnerId: environment.partner_id,
       })
       .pipe(
         map(() => {}),
@@ -204,6 +212,23 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new Session(d))));
   }
 
+  getGameplayHistory(
+    page_number: number,
+    entries_per_page: number
+  ): Observable<GameplayHistoryModel[]> {
+    const formData = new FormData();
+    formData.append('page_number',page_number.toString())
+    formData.append('entries_per_page',entries_per_page.toString());
+    return this.http
+      .post<any>(this.client_api + "/game_session_history", formData)
+      .pipe(
+        map((res) => res.data.result.map((d) => new GameplayHistoryModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
   deleteSession(key: string): Observable<void> {
     return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
       map(() => {}),
@@ -213,10 +238,24 @@ export class RestService {
     );
   }
 
-  payForSubscription(packageName: string): Observable<IPayment> {
+  payWithStripe(planID: string): Observable<IPayment> {
     return this.http
       .post<IPayment>(
-        this.r_mix_api + "/accounts/subscription/" + packageName + "/pay",
+        this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
+        null
+      )
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  payWithBilldesk(planID: string): Observable<BilldeskPaymentRO> {
+    return this.http
+      .post<BilldeskPaymentRO>(
+        this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
         null
       )
       .pipe(

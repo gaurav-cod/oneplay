@@ -19,33 +19,4 @@
 
 <app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>
 
-<ng-template #stripeModal let-c="cose">
-  <div class="modal-content position-relative modalBG stripeModal">
-    <form (submit)="onPay()">
-      <div class="modal-body borderBottomTab">
-        <div class="row borderBottomTab pb-3 mb-3">
-          <div class="col align-self-center">
-            <p class="font500 offWhiteText mb-0">Total Amount</p>
-          </div>
-          <div class="col-auto">
-            <h2 class="font800 text-white mb-0 text-right">{{ currentamount | currency : (currency | uppercase) }}</h2>
-          </div>
-        </div>
-        <div id="stripe-card"></div>
-      </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn linearGradient text-white border-0" [disabled]="stripeLoad">
-          {{ stripeLoad ? "Proccessing..." : "Confirm Payment" }}
-        </button>
-        <button
-          type="button"
-          (click)="closeStripeModal()"
-          class="btn mutedBg text-white border-0"
-        >
-          Close
-        </button>
-      </div>
-    </form>
-  </div>
-  
-</ng-template>
+<app-payment></app-payment>

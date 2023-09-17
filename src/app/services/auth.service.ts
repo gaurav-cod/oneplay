@@ -3,7 +3,7 @@ import { BehaviorSubject, map, Observable } from "rxjs";
 import { UserModel } from "../models/user.model";
 import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
-import * as moment from 'moment';
+import * as moment from "moment";
 
 declare const Countly: any;
 
@@ -14,14 +14,16 @@ export class AuthService {
   private readonly _$user: BehaviorSubject<UserModel | null> =
     new BehaviorSubject(null);
 
-  private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject(
-    []
-  );
+  private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject(null);
 
   private readonly _$sessionToken: BehaviorSubject<string | null> =
     new BehaviorSubject(null);
 
+  private readonly _$triggerWishlist: BehaviorSubject<boolean> =
+    new BehaviorSubject(false);
+
   loggedOutByUser: boolean = false;
+  trigger_speed_test: boolean = false;
 
   constructor() {
     const sessionToken = Cookies.get("op_session_token");
@@ -57,11 +59,12 @@ export class AuthService {
   }
 
   get userCanGame() {
-    return this._$user.asObservable()
-    .pipe<boolean | undefined>(map(user => {
-      if(!user) return undefined;
-      return !!user.username && !!user.age;
-    }));
+    return this._$user.asObservable().pipe<boolean | undefined>(
+      map((user) => {
+        if (!user) return undefined;
+        return !!user.username && !!user.age;
+      })
+    );
   }
 
   get userIdAndToken() {
@@ -78,11 +81,23 @@ export class AuthService {
     return `user:${userid}:session:${token}`;
   }
 
+  get triggerWishlist() {
+    return this._$triggerWishlist.asObservable();
+  }
+
+  openWishlist() {
+    this._$triggerWishlist.next(true);
+  }
+
+  closeWishlist() {
+    this._$triggerWishlist.next(false);
+  }
+
   login(sessionToken: string) {
     Cookies.set("op_session_token", sessionToken, {
       domain: environment.cookie_domain,
       path: "/",
-      expires: moment().add(90, 'days').toDate(),
+      expires: moment().add(90, "days").toDate(),
     });
     this._$sessionToken.next(sessionToken);
   }
@@ -94,6 +109,7 @@ export class AuthService {
   }
 
   logout() {
+    this.trigger_speed_test = false;
     Cookies.remove("op_session_token", {
       domain: environment.cookie_domain,
       path: "/",

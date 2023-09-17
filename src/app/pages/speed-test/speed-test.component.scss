@@ -85,3 +85,26 @@
     border-right: 2px dashed #3e4246;
     rotate: 315deg;
 }
+
+.recommendation {
+  background: #FE753A;
+  padding: 6px 12px 6px 12px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+}
+
+.recommendation-red {
+  background: #E31C34;
+}
+
+.text-red {
+  color: #E31C34;
+}
+
+.primaryGradientColor {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

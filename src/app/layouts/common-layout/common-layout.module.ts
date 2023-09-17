@@ -13,6 +13,7 @@ import { PipesModule } from "src/app/pipes/pipes.module";
 import { ServerErrorComponent } from "src/app/pages/server-error/server-error.component";
 import { InstallGuard } from "src/app/guards/install.guard";
 import { InstallComponent } from "src/app/pages/install/install.component";
+import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.component";
 
 @NgModule({
   imports: [
@@ -27,7 +28,12 @@ import { InstallComponent } from "src/app/pages/install/install.component";
     PipesModule,
     NgxUiLoaderModule,
   ],
-  declarations: [ErrorComponent, ServerErrorComponent, InstallComponent],
+  declarations: [
+    ErrorComponent,
+    ServerErrorComponent,
+    InstallComponent,
+    SpeedTestComponent,
+  ],
   providers: [InstallGuard],
 })
 export class CommonLayoutModule {}

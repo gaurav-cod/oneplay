@@ -26,6 +26,13 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
+import { CustomCountlyEvents } from "src/app/services/countly";
+import {
+  genDefaultMenuClickSegments,
+  genDefaultMenuDropdownClickSegments,
+  getGameLandingViewSource,
+} from "src/app/utils/countly.util";
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 
 @Component({
   selector: "app-navbar",
@@ -79,14 +86,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return environment.domain;
   }
 
+  get appVersion() {
+    return environment.appVersion;
+  }
+
   viewGame() {
+    this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
-      this.countlyService.addEvent("gameLandingView", {
-        gameID: this.gameStatus.game_id,
-        gameGenre: "",
-        gameTitle: this.gameStatus.game_name,
-        source: location.pathname + location.hash,
-        trigger: "navbar - game-status",
+      this.countlyService.endEvent("gameLandingView");
+      this.countlyService.startEvent("gameLandingView", {
+        data: { source: getGameLandingViewSource(), trigger: "gameStatus" },
       });
       const path = [
         "view",
@@ -100,12 +109,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   viewGameFromSearch(game: GameModel) {
-    this.countlyService.addEvent("gameLandingView", {
-      gameID: game.oneplayId,
-      gameGenre: game.genreMappings?.join(","),
-      gameTitle: game.title,
-      source: location.pathname + location.hash,
-      trigger: "navbar - search",
+    this.isMenuCollapsed = true;
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: 'gameClicked',
+    });
+    this.countlyService.endEvent("gameLandingView");
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: getGameLandingViewSource(), trigger: "card" },
     });
     this.router.navigate(["view", this.gLink.transform(game)], {
       queryParams: this.keywordQuery,
@@ -142,6 +154,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   get isPrivate() {
     return this.user?.searchPrivacy;
+  }
+
+  get showDownload() {
+    return UserAgentUtil.parse().app !== "Oneplay App";
   }
 
   constructor(
@@ -181,8 +197,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
       setTimeout(() => {
-        if (!this.dontClose)
-        this.isMenuCollapsed = !focused;
+        if (!this.dontClose) this.isMenuCollapsed = !focused;
       }, 300);
 
       if (!focused) {
@@ -207,6 +222,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.gameStatus = status;
       }
     );
+  }
+
+  openSetting() {
+    if (UserAgentUtil.parse().app === "Oneplay App") {
+      window.location.href = this.domain + "/dashboard/settings/profile";
+    } else {
+      this.router.navigate(["settings", "profile"]);
+    }
   }
 
   onImgError(event) {
@@ -234,6 +257,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: 'addFriend',
+    })
     if (this.user.id === friend.id) {
       return;
     }
@@ -269,11 +297,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private showError(error) {
-    Swal.fire({
-      icon: "error",
-      title: "Error Code: " + error.code,
-      text: error.message,
-    });
+      Swal.fire({
+        icon: "error",
+        title: "Error Code: " + error.code,
+        text: error.message,
+      });
   }
 
   search(value: string) {
@@ -293,14 +321,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.logoutRef.close();
+    this.logDropdownEvent("logOutConfirmClicked");
     // this.messagingService.removeToken().finally(() => {
-      this.restService.deleteSession(this.authService.sessionKey).subscribe();
-      this.authService.loggedOutByUser = true;
-      this.authService.logout();
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
+    this.authService.loggedOutByUser = true;
+    this.authService.logout();
     // });
   }
 
   LogoutAlert(container) {
+    this.logDropdownEvent("logOutClicked");
     this.logoutRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -308,6 +338,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   deleteSessionData() {
+    this.logDropdownEvent("deleteSessionDataClicked");
     Swal.fire({
       title: "Are you sure?",
       text: "Do you want to delete all your session data?",
@@ -317,6 +348,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
+        this.logDropdownEvent("deleteSessionDataConfirmClicked");
         this.restService.deleteSessionData().subscribe({
           next: () => {
             Swal.fire({
@@ -327,12 +359,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "Try Again",
-            });
+              Swal.fire({
+                title: "Error Code: " + err.code,
+                text: err.message,
+                icon: "error",
+                confirmButtonText: "Try Again",
+              });
           },
         });
       }
@@ -364,6 +396,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: 'yes',
+      actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
+    })
+    if (tab === "games") {
+      this.countlyService.startEvent("searchResultsViewMoreGames", {
+        discardOldData: true,
+        data: {
+          keywords: this.query.value,
+          gameCardClicked: "no",
+        },
+      });
+    } else if (tab === "users") {
+      this.countlyService.startEvent("searchResultsViewMoreUsers", {
+        discardOldData: true,
+        data: {
+          keywords: this.query.value,
+          friendRequestClicked: "no",
+        },
+      });
+    }
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query.value },
     });
@@ -371,6 +425,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   switchSearchPrivacy() {
     const privacy = !this.isPrivate;
+    this.logDropdownEvent(
+      privacy ? "turnOffPrivacyDisabled" : "turnOffPrivacyEnabled"
+    );
     this.authService.updateProfile({ searchPrivacy: privacy });
     this.restService.setSearchPrivacy(privacy).subscribe({
       next: () => {
@@ -382,12 +439,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.authService.updateProfile({ searchPrivacy: !privacy });
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + err.code,
-          text: err.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + err.code,
+            text: err.message,
+          });
       },
+    });
+  }
+
+  headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
+    this.isMenuCollapsed = true;
+    this.countlyService.addEvent("menuClick", {
+      ...genDefaultMenuClickSegments(),
+      [item]: "yes",
+    });
+  }
+
+  logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
+    this.countlyService.addEvent("menuDropdownClick", {
+      ...genDefaultMenuDropdownClickSegments(),
+      [item]: "yes",
     });
   }
 }
