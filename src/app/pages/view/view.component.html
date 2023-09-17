@@ -22,7 +22,7 @@
             alt="Card image"
           />
           <div
-            class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
+            class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
           >
             <div class="hideInLarge position-absolute right-2 top-4">
               <button
@@ -59,41 +59,187 @@
                     <img [src]="game.textLogo" class="img-fluid text-logo" alt="" />
                   </div>
                 </div>
-                <p class="font16 font500 text-white mt-lg-4">
-                  {{ game.releaseDate | date : "MMM, yyyy" }} -
-                  {{ game.ageRating }}
-                  {{ game.isFree ? " - Free" : "" }}
-                </p>
-                <div class="row">
-                  <!-- <div
-                    *ngIf="game.status === 'unlive'"
-                    class="col-12 text-red mb-2"
-                  >
-                    **This game is not available at the moment**
-                  </div> -->
-                  <div
-                    class="col-auto align-self-center fullWidthBtn"
-                    *ngIf="
-                      game.status === 'coming_soon' ||
-                      game.status === 'maintenance' ||
-                      game.status === 'updating'
-                    "
-                  >
-                    <div class="borderRadius90 mt-3 blackBbg">
-                      <button
-                        class="btn blackColor borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
-                        disabled
+                <div class="row imagesText">
+                  <div class="col-md-12">
+                    <div class="row height100px">
+                      <div class="col">
+                        <img [src]="game.textLogo" class="text-logo" alt="" />
+                      </div>
+                    </div>
+                    <p class="font16 font500 text-white mt-2">
+                      {{ game.releaseDate | date : "MMM, yyyy" }} -
+                      {{ game.ageRating }}
+                      {{ game.isFree ? " - Free" : "" }}
+                    </p>
+                    <div class="row">
+                      <!-- <div
+                        *ngIf="game.status === 'unlive'"
+                        class="col-12 text-red mb-2"
                       >
-                        <span *ngIf="game.status === 'coming_soon'"
-                          >Coming Soon</span
+                        **This game is not available at the moment**
+                      </div> -->
+                      <div
+                        class="col-auto align-self-center fullWidthBtn"
+                        *ngIf="
+                          game.status === 'coming_soon' ||
+                          game.status === 'maintenance' ||
+                          game.status === 'updating'
+                        "
+                      >
+                        <div class="borderRadius90 mt-3 blackBbg">
+                          <button
+                            class="btn blackColor borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                            disabled
+                          >
+                            <span *ngIf="game.status === 'coming_soon'"
+                              >Coming Soon</span
+                            >
+                            <span *ngIf="game.status === 'maintenance'"
+                              >Under Maintenance</span
+                            >
+                            <span *ngIf="game.status === 'updating'"
+                              >Unavailable</span
+                            >
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        class="col-auto align-self-center fullWidthBtn"
+                        *ngIf="
+                          game.status === 'live' || game.status === 'not_optimized'
+                        "
+                      >
+                        <button
+                          *ngIf="!terminatingGame"
+                          class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                          [disabled]="startingGame || game.status === 'unlive'"
+                          [ngClass]="{ 'hide-text': startingGame }"
+                          (click)="playGame(smallModal)"
                         >
-                        <span *ngIf="game.status === 'maintenance'"
-                          >Under Maintenance</span
+                          <ngx-ui-loader
+                            [fgsColor]="'#c32ead'"
+                            [hasProgressBar]="false"
+                            [fgsSize]="20"
+                            [fgsPosition]="'center-left'"
+                            [text]="'Initializing...'"
+                            [overlayBorderRadius]="'90px'"
+                            [loaderId]="'play-loader'"
+                          ></ngx-ui-loader>
+                          {{ !startingGame ? action + " Now" : "Initializing..." }}
+                        </button>
+                        <button
+                          *ngIf="action !== 'Play' && !startingGame"
+                          class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
+                          [disabled]="terminatingGame"
+                          [ngClass]="{ 'hide-text': terminatingGame }"
+                          (click)="terminateButton()"
                         >
-                        <span *ngIf="game.status === 'updating'"
-                          >Unavailable</span
+                          <ngx-ui-loader
+                            [fgsColor]="'#c32ead'"
+                            [hasProgressBar]="false"
+                            [fgsSize]="20"
+                            [fgsPosition]="'center-left'"
+                            [text]="'Terminating...'"
+                            [overlayBorderRadius]="'90px'"
+                            [loaderId]="'terminate-loader'"
+                          ></ngx-ui-loader>
+                          {{ !terminatingGame ? "Terminate" : "Terminating..." }}
+                        </button>
+                      </div>
+                      <div
+                        class="col-auto pl-1 hideInMobile mt-3 align-self-center"
+                      >
+                        <button
+                          *ngIf="!isInWishlist"
+                          (click)="addToWishlist()"
+                          [disabled]="loadingWishlist"
+                          class="btn p-0"
+                          ngbTooltip="Add to Library"
                         >
-                      </button>
+                          <img
+                            src="assets/icons/Speedtest (2).svg"
+                            class="img-fluid"
+                            alt=""
+                            width="41px"
+                            height="41px"
+                          />
+                        </button>
+                        <button
+                          *ngIf="isInWishlist"
+                          (click)="removeFromWishlist()"
+                          [disabled]="loadingWishlist"
+                          class="btn p-0"
+                          ngbTooltip="Remove from Library"
+                        >
+                          <img
+                            src="assets/icons/Speedtest.svg"
+                            class="img-fluid"
+                            alt=""
+                            width="41px"
+                            height="41px"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                    <form
+                      class="row justify-content-center checkBox pl-3"
+                      *ngIf="
+                        game.status === 'live' || game.status === 'not_optimized'
+                      "
+                    >
+                      <div
+                        class="col-auto customResponsiveWidth custom-control custom-checkbox mt-3 mb-md-0"
+                      >
+                        <input
+                          type="checkbox"
+                          class="custom-control-input my-error"
+                          id="customCheck1"
+                          [formControl]="showSettings"
+                        />
+                        <label
+                          class="custom-control-label font16 font500 text-white hideInMobile"
+                          for="customCheck1"
+                          ><span class="marginLeftNegative"
+                            >Show gameplay settings before launch</span
+                          ></label
+                        >
+                        <label
+                          class="custom-control-label font16 font500 muteText hideInLarge"
+                          for="customCheck1"
+                          ><span class="marginLeftNegative"
+                            >Show settings before launch</span
+                          ></label
+                        >
+                      </div>
+                    </form>
+                    <div class="font16 my-3 textCenterInResponsive hideInMobile">
+                      <p
+                        class="cancelgradientText font600"
+                        *ngIf="game.status === 'coming_soon'"
+                      >
+                        Stay tuned, Coming soon to OnePlay!
+                      </p>
+                      <p
+                        class="yellowGradient font600"
+                        *ngIf="game.status === 'maintenance'"
+                      >
+                        We are working diligently to ensure a smoother gameplay.
+                        Game will be back soon!
+                      </p>
+                      <p
+                        class="gradientInfoText font600"
+                        *ngIf="game.status === 'updating'"
+                      >
+                        We're implementing important updates, game will be back
+                        shortly!
+                      </p>
+                      <p
+                        class="orangeGradient font600"
+                        *ngIf="game.status === 'not_optimized'"
+                      >
+                        The Quality of the gameplay may vary depending on your
+                        device.
+                      </p>
                     </div>
                   </div>
                   <div
