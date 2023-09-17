@@ -33,6 +33,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
 
+  nonFunctionalRegion: boolean = null;
+
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
       Validators.required,
@@ -82,14 +84,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   readonly contryCodeCurrencyMapping = {
     INR: "+91",
-    KPW: "+850",
-    KRW: "+82",
-    VND: "+84",
-    RUB: "+7",
-    USD: "+1",
     MYR: "+60",
-    IRR: "+98",
+    SGD: "+65",
+    KRW: "+82",
     AED: "+971",
+    QAR: "+974",
   };
 
   get countryCodes() {
@@ -150,6 +149,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.registerForm.controls["country_code"].setValue(
             this.contryCodeCurrencyMapping[res.currency]
           );
+          this.nonFunctionalRegion = false;
+        } else {
+          this.nonFunctionalRegion = true;
         }
         if (res.hosting) {
           Swal.fire({
