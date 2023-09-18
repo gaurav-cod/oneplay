@@ -156,7 +156,6 @@ export const genDefaultMenuClickSegments =
       streamsClicked: "no",
       searchClicked: "no",
       gameStatusClicked: "no",
-      speedTestClicked: "no",
       profileClicked: "no",
     };
   };

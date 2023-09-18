@@ -14,7 +14,7 @@ export class AuthService {
   private readonly _$user: BehaviorSubject<UserModel | null> =
     new BehaviorSubject(null);
 
-  private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject(null);
+  private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   private readonly _$sessionToken: BehaviorSubject<string | null> =
     new BehaviorSubject(null);
@@ -44,8 +44,9 @@ export class AuthService {
     return this._$wishlist.asObservable();
   }
 
-  set wishlist(list: Observable<string[]>) {
-    list.subscribe((res) => this._$wishlist.next(res));
+  setWishlist(list: string[]) {
+    this._$wishlist.next(list);
+    this._$triggerWishlist.next(list.length < 1);
   }
 
   get sessionTokenExists() {
@@ -86,11 +87,8 @@ export class AuthService {
   }
 
   openWishlist() {
+    this._$wishlist.next([...this._$wishlist.value]);
     this._$triggerWishlist.next(true);
-  }
-
-  closeWishlist() {
-    this._$triggerWishlist.next(false);
   }
 
   login(sessionToken: string) {
@@ -136,6 +134,7 @@ export class AuthService {
     if (index > -1) {
       wishlist.splice(index, 1);
       this._$wishlist.next(wishlist);
+      this._$triggerWishlist.next(wishlist.length < 1);
     }
   }
 }
