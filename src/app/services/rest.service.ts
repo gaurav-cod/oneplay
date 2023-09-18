@@ -758,7 +758,7 @@ export class RestService {
       map(res => res),
       catchError(({ error }) => {
         throw error;
-      }) 
+      })
     );
   }
 

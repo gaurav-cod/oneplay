@@ -7,8 +7,6 @@ import {
 } from "@angular/router";
 import { map, Observable } from "rxjs";
 import { AuthService } from "../services/auth.service";
-import UAParser from "ua-parser-js";
-import { MediaQueries } from "../utils/media-queries";
 
 @Injectable({
   providedIn: "root",
@@ -28,16 +26,7 @@ export class LoginGuard implements CanActivateChild {
         if (redirectUrl?.startsWith("http")) {
           window.location.href = redirectUrl;
         } else {
-          redirectUrl ??= "/"
-          if (redirectUrl === "/" || redirectUrl === "/home") {
-            if (this.authService.trigger_speed_test) {
-              this.router.navigateByUrl("/speed-test");
-            } else {
-              this.router.navigateByUrl("/");
-            }
-          } else {
-            this.router.navigateByUrl(redirectUrl);
-          }
+          this.router.navigateByUrl(redirectUrl ?? "/");
         }
       } else if (isEdgeCase && !u) this.router.navigate(["/login"], {
         queryParams: { redirectUrl: state.url },
