@@ -30,7 +30,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this.authService.sessionTokenExists.subscribe((exists) => {
       this.isAuthenticated = exists;
       if (exists) {
-        this.authService.wishlist = this.restService.getWishlist();
         this.authService.user = this.restService.getProfile();
         this.gameService.gameStatus = this.restService.getGameStatus();
 

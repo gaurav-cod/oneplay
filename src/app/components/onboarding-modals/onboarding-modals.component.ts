@@ -53,21 +53,21 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       localStorage.setItem("#closeonboardingGame", "true");
     }
 
-    this.wishlistSubscription = combineLatest([
+    this.wishlistSubscription = zip([
       this.authService.wishlist,
       this.authService.triggerWishlist,
     ]).subscribe(([wishlist, triggered]) => {
-      if (wishlist) {
-        if (!wishlist.length || triggered) {
-          this.wishlist = wishlist;
-          this.selectGame();
-        }
+      if (triggered) {
+        this.wishlist = wishlist;
+        this.selectGame();
       }
     });
   }
 
   ngOnDestroy(): void {
     this.wishlistSubscription?.unsubscribe();
+    this._selectgameRef?.close();
+    this._selectgameRef = null;
   }
 
   onScroll() {
@@ -85,6 +85,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.canLoadMore = true;
     this.currentPage = 0;
     this.loadGames();
+    if (!!this._selectgameRef) return;
     this._selectgameRef = this.ngbModal.open(this.selectGameModal, {
       centered: true,
       modalDialogClass: "modal-lg",
@@ -163,21 +164,17 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
+      windowClass: "modalZIndex1061",
     });
   }
 
   public closeSelectGame() {
     this._selectgameRef.close();
+    this._selectgameRef = null;
     this.selectedGameIds.forEach((id) =>
       this.restService.addWishlist(id).subscribe()
     );
-    if (this.wishlist.length) {
-      this.authService.closeWishlist();
-      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
-    } else {
-      this.authService.wishlist = of([...this.wishlist, ...this.selectedGameIds]);
-      this.authService.closeWishlist();
-    }
+    this.authService.setWishlist([...this.wishlist, ...this.selectedGameIds]);
     this.selectedGames = [];
     this.query.reset();
     this.searchText = "";
