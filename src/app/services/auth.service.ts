@@ -45,8 +45,8 @@ export class AuthService {
   }
 
   setWishlist(list: string[]) {
-    this._$triggerWishlist.next(list.length < 1);
     this._$wishlist.next(list);
+    this._$triggerWishlist.next(list.length < 1);
   }
 
   get sessionTokenExists() {
@@ -87,6 +87,7 @@ export class AuthService {
   }
 
   openWishlist() {
+    this._$wishlist.next([...this._$wishlist.value]);
     this._$triggerWishlist.next(true);
   }
 
