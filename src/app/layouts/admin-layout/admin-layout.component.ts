@@ -113,7 +113,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initAuth() {
-    this.authService.wishlist = this.restService.getWishlist();
+    this.restService
+      .getWishlist()
+      .toPromise()
+      .then((list) => this.authService.setWishlist(list));
     this.authService.user = this.restService.getProfile();
   }
 
