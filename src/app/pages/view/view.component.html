@@ -22,7 +22,7 @@
             alt="Card image"
           />
           <div
-            class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
+            class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
           >
             <div class="hideInLarge position-absolute right-2 top-4">
               <button
@@ -52,14 +52,14 @@
                 />
               </button>
             </div>
-            <div class="row imagesText">
-              <div class="col-md-12">
+            <div class="row imagesText height80 align-items-end">
+              <div class="col-md-12 pb-5">
                 <div class="row height100px">
                   <div class="col">
-                    <img [src]="game.textLogo" class="img-fluid text-logo" alt="" />
+                    <img [src]="game.textLogo" class="text-logo" alt="" />
                   </div>
                 </div>
-                <p class="font16 font500 text-white mt-lg-4">
+                <p class="font16 font500 text-white mt-2">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
                   {{ game.isFree ? " - Free" : "" }}
