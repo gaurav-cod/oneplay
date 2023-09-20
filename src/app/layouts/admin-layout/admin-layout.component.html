@@ -20,3 +20,23 @@
 <app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>
 
 <app-payment></app-payment>
+
+<ng-template #VPNAlert>
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <p class="mb-0">
+        <img src="assets/img/error/vpn_icon.svg" class="img-fluid py-4" alt="" />
+      </p>
+      <h2 class="text-white w-100 font600 text-center font20">
+        Alert!
+      </h2>
+      <p class="font16 font500 muteText mt-2">We've detected you're using a VPN! <br/> This may cause performance issues.</p>
+      <button
+        class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60"
+        (click)="cancelVPNAlert()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>

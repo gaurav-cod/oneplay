@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -15,6 +16,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./admin-layout.component.scss"],
 })
 export class AdminLayoutComponent implements OnInit, OnDestroy {
+  @ViewChild("VPNAlert") VPNAlert: ElementRef<HTMLDivElement>;
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
   showOnboardingPopup = false;
@@ -24,6 +26,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
+  private _VPNAlertRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
@@ -33,7 +36,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService
+    private readonly gameService: GameService,
+    private readonly ngbModal: NgbModal,
   ) {}
 
   ngOnInit(): void {
@@ -85,15 +89,21 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (res.hosting) {
-          Swal.fire({
-            title: "Alert!",
-            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
-            imageUrl: "assets/img/error/vpn_icon.svg",
-            confirmButtonText: "Okay",
+          this._VPNAlertRef = this.ngbModal.open(this.VPNAlert, {
+            centered: true,
+            modalDialogClass: "modal-sm",
+            scrollable: true,
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "modalZIndex1061",
           });
         }
       },
     });
+  }
+
+  cancelVPNAlert() {
+    this._VPNAlertRef.close();
   }
 
   ngOnDestroy(): void {
