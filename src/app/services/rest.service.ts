@@ -755,15 +755,10 @@ export class RestService {
 
   getLocation(ip: string): Observable<ILocation> {
     return this.http.get<ILocation>(this.r_mix_api + "/location/" + ip).pipe(
-      switchMap((res) => {
-        if (res.error) {
-          return throwError(res.reason);
-        }
-        return of(res);
-      }),
-      catchError(() => {
-        throw new Error("unknown");
-      })
+      map(res => res),
+      catchError(({ error }) => {
+        throw error;
+      }) 
     );
   }
 

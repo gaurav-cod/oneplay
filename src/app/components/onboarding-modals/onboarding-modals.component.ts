@@ -20,6 +20,7 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./onboarding-modals.component.scss"],
 })
 export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
+  @ViewChild("VPNAlert") VPNAlert: ElementRef<HTMLDivElement>;
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
   @ViewChild("onboardingUserModal")
   onboardingUserModal: ElementRef<HTMLDivElement>;
@@ -38,6 +39,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
+  private _VPNAlertRef: NgbModalRef;
 
   constructor(
     private readonly authService: AuthService,
@@ -62,6 +64,26 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
         this.selectGame();
       }
     });
+
+    this.detectVPN();
+  }
+
+  private detectVPN() {
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (res.hosting) {
+          this._VPNAlertRef = this.ngbModal.open(this.VPNAlert, {
+            centered: true,
+            modalDialogClass: "modal-sm",
+            scrollable: true,
+          });
+        }
+      },
+    });
+  }
+
+  cancelVPNAlert() {
+    this._VPNAlertRef.close();
   }
 
   ngOnDestroy(): void {
@@ -92,6 +114,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
+      windowClass: "modalZIndex1061",
     });
   }
 
@@ -164,7 +187,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
-      windowClass: "modalZIndex1061",
+      windowClass: "modalZIndex1062",
     });
   }
 

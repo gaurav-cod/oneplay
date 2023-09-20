@@ -24,7 +24,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
-
+  
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
