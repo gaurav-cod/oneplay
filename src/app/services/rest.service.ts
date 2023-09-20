@@ -913,9 +913,9 @@ export class RestService {
       );
   }
 
-  postAReport(message: string, response: any): Observable<void> {
+  postAReport(message: string, response: any, error_code: number): Observable<void> {
     return this.http
-      .post<void>(this.r_mix_api + "/logging/report", { message, response })
+      .post<void>(this.r_mix_api + "/logging/report", { message, response, error_code })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {

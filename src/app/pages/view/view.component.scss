@@ -549,7 +549,7 @@ live {
 }
 
 .blackBbg {
-  background-color: #151515;
+  background-color: #151515 !important;
 }
 
 .blackDarkBg {
@@ -563,4 +563,26 @@ live {
 
 .h42 {
   height: 42px !important;
+}
+
+.textBox {
+  color: #DCDCDC;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  border-radius: 10px !important;
+  background: #FFFFFF26;
+}
+
+.inputFocus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #959595 !important;
+  opacity: 0.5; /* Firefox */
+}
+
+.inputFocus:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #959595 !important;
+}
+
+.inputFocus::-ms-input-placeholder { /* Microsoft Edge */
+  color: #959595 !important;
 }
