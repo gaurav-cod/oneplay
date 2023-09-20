@@ -98,7 +98,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new UntypedFormControl("", { validators: Validators.required });
+  reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)]});
 
   queueSequence = "";
   queueMessge1 = "";
@@ -599,6 +599,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         title: "Oops...",
         text: "Your account needs to be subjected to availability by Oneplay to play games",
         icon: "error",
+        confirmButtonText: "Okay",
       });
       return;
     }
@@ -607,8 +608,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       let swal_html = null;
       if (data.total_tokens === 0) {
         swal_html = `Level up and purchase a new subscription to continue Gaming. <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
-      } else if (data.total_tokens > 0 && data.remaining_tokens < 1) {
-        swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+      } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
+        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!<p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
       } else {
         if (this.showSettings.value) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
@@ -638,6 +639,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       }
       if (swal_html != null) {
         Swal.fire({
+          imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+          customClass: "swalPaddingTop",
           title: "Wait!",
           html: swal_html,
           showCloseButton: true,
@@ -714,7 +717,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           title: "Session terminated",
           text: "Your session has been terminated",
           icon: "success",
-          confirmButtonText: "OK",
+          confirmButtonText: "Okay",
         }).then(() => {
           this.countlyService.startEvent("gameFeedback", {
               data: {
@@ -737,9 +740,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       },
       (err) => {
         Swal.fire({
-          title: "Error Code: " + err.code,
-          text: err.message,
-          icon: "error",
+          title: err.message + " Error Code: " + err.code,
+          imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+          customClass: "swalPaddingTop",
+          confirmButtonText: "Okay",
         });
         this.stopTerminating();
       }
@@ -859,7 +863,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       Swal.fire({
         title: "No server available!",
         text: "Please try again in sometime, thank you for your patience!",
-        imageUrl: "assets/img/error/Group.svg",
+        imageUrl: "assets/img/swal-icon/Gaming-issue.svg",
+        customClass: "swalPaddingTop",
         showCancelButton: true,
         confirmButtonText: "Try Again",
         cancelButtonText: "Close",
@@ -887,23 +892,21 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.endGamePlayStartEvent("failure");
       this.stopLoading();
       Swal.fire({
-        title: "Alert !",
-        text: "You have consumed your daily gameplay quota of 4 hrs. See you again tomorrow!",
+        title: "Alert!",
+        text: "You have reached your daily gameplay quota of 4 hrs. See you again tomorrow!",
         imageUrl: "assets/img/error/time_limit 1.svg",
+        customClass: "swalPaddingTop",
         confirmButtonText: "Okay",
       });
     } else {
       this.endGamePlayStartEvent("failure");
       this.stopLoading();
       Swal.fire({
-        title: "Error Code: " + err.code,
-        text: err.message,
-        icon: "error",
-        showCloseButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Try Again",
-        cancelButtonText: "Send Error Report",
-      }).then((_) => this.reportErrorOrTryAgain(_, err));
+        title: err.message + " Error Code: " + err.code,
+        imageUrl: "assets/img/swal-icon/Gaming-issue.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Okay",
+      });
     }
   }
 
@@ -940,10 +943,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.stopLoading();
       this.initializationErrored = true;
       Swal.fire({
-        title: "Oops...",
-        text: "Something went wrong",
-        icon: "error",
-        confirmButtonText: "Try Again",
+        title: "Oops! Something went wrong",
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Okay",
       }).then((res) => {
         this.stopLoading();
         this.initializationErrored = false;
@@ -1040,16 +1043,16 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.stopLoading();
     this.initializationErrored = true;
     Swal.fire({
-      title: "Error Code: " + err.code,
-      text: err.message,
-      icon: "error",
-      confirmButtonText: "Relaunch the game",
+      title: err.message + " Error Code: " + err.code,
+      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+      customClass: "swalPaddingTop",
+      confirmButtonText: "Try Again",
+      showCancelButton: true,
+      cancelButtonText: "Report",
     }).then((res) => {
       this.stopLoading();
       this.initializationErrored = false;
-      if (res.isConfirmed) {
-        this.startGame();
-      }
+      this.reportErrorOrTryAgain(res, err);
     });
   }
 
@@ -1059,6 +1062,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         icon: "error",
         title: "Web-Play",
         text: "Play on web is coming soon!",
+        confirmButtonText: "Okay",
       });
       return;
     }
@@ -1073,9 +1077,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else if (millis > 60000) {
       this.loaderService.stop();
       Swal.fire({
-        title: "Oops...",
-        text: "Something went wrong",
-        icon: "error",
+        title: "Oops! Something went wrong",
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Okay",
       });
       return;
     }
@@ -1136,7 +1141,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     Swal.fire({
       title: "Error Code: " + err.code,
       text: err.message,
-      icon: "error",
+      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+      customClass: "swalPaddingTop",
       confirmButtonText: "Try Again",
       showCancelButton: true,
     }).then((res) => {
@@ -1148,7 +1154,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   reportError() {
     this.restService
-      .postAReport(this.reportText.value, this.reportResponse)
+      .postAReport(this.reportText.value, this.reportResponse, this.reportResponse.code)
       .subscribe({
         next: () => {
           Swal.fire({
@@ -1159,9 +1165,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         },
         error: (err) => {
           Swal.fire({
-            title: "Error Code: " + err.code,
-            text: err.message,
-            icon: "error",
+            title: err.message + " Error Code: " + err.code,
+            imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+            customClass: "swalPaddingTop",
+            confirmButtonText: "Okay",
           });
         },
       });
@@ -1189,10 +1196,12 @@ export class ViewComponent implements OnInit, OnDestroy {
           },
           (err) => {
             Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
+              title: err.message + " Error Code: " + err.code,
+              imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+              customClass: "swalPaddingTop",
               confirmButtonText: "Try Again",
+              showCancelButton: true,
+              cancelButtonText: "Okay"
             }).then((res) => {
               if (res.isConfirmed) {
                 this.terminateGame(sessionId);
@@ -1275,10 +1284,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.reportResponse = response;
       this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
         centered: true,
+        windowClass: "blurBG",
         modalDialogClass: "modal-sm",
-        // scrollable: true,
-        // backdrop: "static",
-        // keyboard: false,
       });
     } else if (result.isConfirmed) {
       this.startGame();
