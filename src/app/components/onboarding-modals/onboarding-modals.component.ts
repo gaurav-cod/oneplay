@@ -76,7 +76,6 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
             centered: true,
             modalDialogClass: "modal-sm",
             scrollable: true,
-            windowClass: "modalZIndex1061",
           });
         }
       },
