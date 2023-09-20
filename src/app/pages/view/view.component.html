@@ -1067,7 +1067,7 @@
             placeholder="Type your concerns here."
           ></textarea>
           <span
-            *ngIf="reportText.touched && reportText.invalid"
+            *ngIf="reportText.touched && reportText.invalid && reportText.length > 0"
             class="font16 font500 errorGradientColor"
             >*Character limit exceeded</span
           >
@@ -1082,6 +1082,9 @@
           <button
             class="btn customLinearGradient text-white border-0 br60"
             [disabled]="reportText.invalid"
+            [ngClass]="{
+              mutedBg: reportText.touched && reportText.invalid
+            }"
             (click)="reportError()"
           >
             Confirm

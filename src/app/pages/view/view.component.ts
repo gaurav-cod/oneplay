@@ -98,7 +98,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new UntypedFormControl("", { validators: [Validators.maxLength(300)]});
+  reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)]});
 
   queueSequence = "";
   queueMessge1 = "";
@@ -131,7 +131,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
-  private errorCode: number;
   private isConnected: boolean = false;
   // private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
   // private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
@@ -609,8 +608,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       let swal_html = null;
       if (data.total_tokens === 0) {
         swal_html = `Level up and purchase a new subscription to continue Gaming. <p class="mt-4 "><a href="${this.domain}/subscription.html#Monthly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
-      } else if (data.total_tokens > 0 && data.remaining_tokens < 1) {
-        swal_html = `Your game time has run out. Time to recharge and get back into the action. <p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+      } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
+        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!<p class="mt-4 "><a href="${this.domain}/subscription.html#Hourly_Plan" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
       } else {
         if (this.showSettings.value) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
@@ -1155,7 +1154,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   reportError() {
     this.restService
-      .postAReport(this.reportText.value, this.reportResponse, this.errorCode)
+      .postAReport(this.reportText.value, this.reportResponse, this.reportResponse.error_code)
       .subscribe({
         next: () => {
           Swal.fire({
