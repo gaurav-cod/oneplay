@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -26,7 +25,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
   
-
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
