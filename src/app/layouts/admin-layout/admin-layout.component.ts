@@ -24,7 +24,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
-
+  
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -77,23 +77,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         }
       }
     );
-
-    this.detectVPN();
-  }
-
-  private detectVPN() {
-    this.restService.getCurrentLocation().subscribe({
-      next: (res) => {
-        if (res.hosting) {
-          Swal.fire({
-            title: "Alert!",
-            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
-            imageUrl: "assets/img/error/vpn_icon.svg",
-            confirmButtonText: "Okay",
-          });
-        }
-      },
-    });
   }
 
   ngOnDestroy(): void {
