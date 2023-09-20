@@ -35,7 +35,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService,
+    private readonly gameService: GameService
   ) {}
 
   ngOnInit(): void {

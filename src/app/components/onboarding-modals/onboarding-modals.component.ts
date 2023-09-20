@@ -64,9 +64,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
         this.selectGame();
       }
     });
-  }
 
-  ngOnInit(): void {
     this.detectVPN();
   }
 
