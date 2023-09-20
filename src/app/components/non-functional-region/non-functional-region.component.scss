@@ -9,7 +9,14 @@
 
 .height100 {
     height: 100vh;
+    overflow-y: scroll;
 }
+
+.height100::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
 
 .mainheading {
     font-size: 50px;
