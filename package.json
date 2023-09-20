@@ -40,7 +40,7 @@
     "core-js": "3.15.2",
     "firebase": "^9.7.0",
     "js-cookie": "^3.0.5",
-    "libphonenumber-js": "^1.10.21",
+    "libphonenumber-js": "^1.10.44",
     "memoizee": "^0.4.15",
     "moment": "^2.29.4",
     "ngx-clipboard": "14.0.1",
