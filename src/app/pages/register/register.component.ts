@@ -14,7 +14,7 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { CountlyService } from "src/app/services/countly.service";
-import { StartEvent } from 'src/app/services/countly';
+import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -28,18 +28,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
 
   private _successSwalModalRef: NgbModalRef;
-  private _signupEvent: StartEvent<"signup - Form Submitted">;
+  private _signupEvent: StartEvent<"signUpFormSubmitted">;
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-
   referralName = "";
+
+  nonFunctionalRegion: boolean = null;
 
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
       Validators.required,
       Validators.pattern(/^[a-zA-Z\s]*$/),
     ]),
-    email: new UntypedFormControl("", [Validators.required, Validators.email, Validators.pattern(this.emailPattern)]),
+    email: new UntypedFormControl("", [
+      Validators.required,
+      Validators.email,
+      Validators.pattern(this.emailPattern),
+    ]),
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
@@ -77,17 +82,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  readonly countryCodes = [
-    "+91",
-    "+850",
-    "+82",
-    "+84",
-    "+7",
-    "+1",
-    "+60",
-    "+98",
-    "+971",
-  ];
+  readonly contryCodeCurrencyMapping = {
+    INR: "+91",
+    MYR: "+60",
+    SGD: "+65",
+    KRW: "+82",
+    AED: "+971",
+    QAR: "+974",
+  };
+
+  get countryCodes() {
+    return Object.values(this.contryCodeCurrencyMapping);
+  }
 
   get checkvalidationValue() {
     return this.registerForm.invalid || this.loading;
@@ -139,11 +145,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ctrl.valueChanges.subscribe((id) => this.getName(id));
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (this.countryCodes.includes(res.country_calling_code)) {
+        if (this.contryCodeCurrencyMapping[res.currency]) {
           this.registerForm.controls["country_code"].setValue(
-            res.country_calling_code
+            this.contryCodeCurrencyMapping[res.currency]
           );
+          this.nonFunctionalRegion = false;
+        } else {
+          this.nonFunctionalRegion = true;
         }
+        if (res.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
+        
       },
     });
   }
@@ -153,7 +171,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   register() {
-    const [first_name, ...last_name] = this.registerForm.value.name.trim().split(" ");
+    const [first_name, ...last_name] = this.registerForm.value.name
+      .trim()
+      .split(" ");
     this.loading = true;
     this.restService
       .signup({
@@ -184,8 +204,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          this.endSignupEvent();
-          this.startSignupEvent();
           Swal.fire({
             title: "Error Code: " + error.code,
             text: error.message,
@@ -211,17 +229,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onClickPrivacy() {
-    this._signupEvent.update({ privacyPolicyPageViewed: "yes" });
+    this._signupEvent.update({ privacyPolicyViewed: "yes" });
   }
 
   onClickTNC() {
-    this._signupEvent.update({ TnCPageViewed: "yes" });
+    this._signupEvent.update({ tncViewed: "yes" });
   }
 
   goToLogin() {
-    this.countlyService.addEvent("signINButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
+    this.countlyService.startEvent("signIn", {
+      data: { signInFromPage: "signUp" },
+      discardOldData: true,
     });
     this.router.navigate(["/login"]);
   }
@@ -243,28 +261,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   private startSignupEvent() {
-    this._signupEvent = this.countlyService.startEvent(
-      "signup - Form Submitted",
-      {
-        unique: false,
-        data: {
-          signupFromPage: location.pathname + location.hash,
-          privacyPolicyPageViewed: "no",
-          TnCPageViewed: "no",
-        },
-      }
-    );
+    this._signupEvent = this.countlyService.startEvent("signUpFormSubmitted", {
+      discardOldData: false,
+      data: {
+        name: "no",
+        email: "no",
+        phoneNumber: "no",
+        gender: "no",
+        password: "no",
+        referralId: "no",
+        tncViewed: "no",
+        privacyPolicyViewed: "no",
+      },
+    });
+    const segments = this._signupEvent.data();
+    if (!segments.signUpFromPage) {
+      this._signupEvent.update({
+        signUpFromPage: "directLink",
+      });
+    }
   }
 
   private endSignupEvent() {
     this._signupEvent.end({
-      name: this.registerForm.value.name,
-      email: this.registerForm.value.email,
-      phoneNumber:
-        this.registerForm.value.country_code + this.registerForm.value.phone,
-      gender: this.registerForm.value.gender,
-      referralID: this.registerForm.value.referred_by_id,
-      signupFromPage: location.pathname + location.hash,
+      name: "yes",
+      email: "yes",
+      phoneNumber: "yes",
+      gender: "yes",
+      password: "yes",
+      referralId: this.registerForm.value.referred_by_id === "" ? "no" : "yes",
     });
   }
 }

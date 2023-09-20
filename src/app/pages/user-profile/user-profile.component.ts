@@ -3,6 +3,8 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { genDefaultSettingsViewSegments } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 
 @Component({
@@ -20,21 +22,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly title: Title,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit() {
     this.title.setTitle("OnePlay | Settings");
-    this.paramSubscription = this.route.params.subscribe(
-      (params) => (this.activeTab = params.tab)
-    );
+    this.paramSubscription = this.route.params.subscribe((params) => {
+      this.activeTab = params.tab;
+    });
     this.userSubscription = this.authService.user.subscribe(
       (user) =>
-        (this.isOneplayUser = user.partnerId === environment.oneplay_partner_id)
+        (this.isOneplayUser = user.partnerId === environment.partner_id)
     );
+    this.countlyService.startEvent("settingsView", {
+      data: genDefaultSettingsViewSegments(),
+    });
   }
 
   ngOnDestroy() {
+    this.countlyService.endEvent("settingsView");
     this.paramSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
   }

@@ -35,7 +35,7 @@ export class PlayConstants {
       "1280x720": 10000,
       "1920x1080": 20000,
       "2560x1440": 40000,
-      "3840x2160": 80000,
+      "3840x2160": 50000,
     };
 
     let bitrate: number = b[resolution];
@@ -54,6 +54,7 @@ export class PlayConstants {
     //   }
     // }
 
-    return bitrate * (fps / 60);
+    const res = bitrate * (fps / 60);
+    return res > 50000 ? 50000 : res;
   }
 }

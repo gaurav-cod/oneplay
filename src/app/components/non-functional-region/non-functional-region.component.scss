@@ -1,0 +1,35 @@
+.increaseZIndex {
+    z-index: 1030;
+}
+
+.backgroundImg {
+    height: 100vh;
+    object-fit: cover;
+}
+
+.height100 {
+    height: 100vh;
+}
+
+.mainheading {
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 70px;
+    letter-spacing: 1px;
+    @media (max-width: 1200px) {
+        font-size: 40px;
+        line-height: 60px;
+    }
+    @media (max-width: 991px) {
+        font-size: 30px;
+        line-height: 50px;
+    }
+}
+
+.subHeading {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 34px;
+    letter-spacing: 0.4px;
+    color: #959595;
+}

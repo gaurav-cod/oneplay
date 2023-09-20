@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { phoneValidator } from "src/app/utils/validators.util";
 import Swal from "sweetalert2";
@@ -24,7 +25,8 @@ export class SecurityComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly countlyService: CountlyService
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -41,7 +43,11 @@ export class SecurityComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      logInSecurityViewed: "yes",
+    });
+  }
 
   updatePhone(): void {
     if (!this.phone.valid) return;
@@ -57,11 +63,11 @@ export class SecurityComponent implements OnInit {
         });
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }
@@ -80,11 +86,11 @@ export class SecurityComponent implements OnInit {
         this.authService.logout();
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }
@@ -98,13 +104,16 @@ export class SecurityComponent implements OnInit {
           text: "Password updated successfully",
         });
         this.password.reset();
+        this.countlyService.updateEventData("settingsView", {
+          passwordChanged: "yes",
+        });
       },
       (error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }

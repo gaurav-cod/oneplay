@@ -107,6 +107,7 @@ export class QrVerifyComponent implements OnInit {
         },
         error: (err) => {
           this.loading = false;
+          if (err.error.isOnline)
           Swal.fire({
             title: "Error Code: " + err.error.code,
             text: err.error.message,
@@ -150,10 +151,11 @@ export class QrVerifyComponent implements OnInit {
   }
 
   goToSignup() {
-    this.countlyService.addEvent("signUPButtonClick", {
-      page: location.pathname + location.hash,
-      trigger: "CTA",
-    });
+    // this.countlyService.addEvent("signUPButtonClick", {
+    //   page: location.pathname + location.hash,
+    //   trigger: "CTA",
+    //   channel: "web",
+    // });
     this.router.navigate(["/register"]);
   }
 }

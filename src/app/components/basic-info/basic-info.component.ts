@@ -5,6 +5,7 @@ import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
 import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import Swal from "sweetalert2";
@@ -15,9 +16,7 @@ import Swal from "sweetalert2";
   styleUrls: ["./basic-info.component.scss"],
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
-  username = new UntypedFormControl("", [
-    Validators.required,
-  ]);
+  username = new UntypedFormControl("", [Validators.required]);
 
   name = new UntypedFormControl("", [
     Validators.required,
@@ -28,7 +27,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     // Validators.required,
     Validators.maxLength(300),
   ]);
-  
+
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
   private userSubscription: Subscription;
@@ -39,10 +38,13 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
-    private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
+    this.countlyService.updateEventData("settingsView", {
+      profileViewed: "yes",
+    });
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.currentUserState = user;
       this.username.setValue(user.username);
@@ -66,14 +68,25 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get isChanged() {
-    return this.name.value !== this.currentUserState.name ||
-    this.username.value !== this.currentUserState.username ||
-    this.bio.value !== (this.currentUserState.bio ?? '') || 
-    !!this.photoFile;
+    return (
+      this.name.value !== this.currentUserState.name ||
+      this.username.value !== this.currentUserState.username ||
+      this.bio.value !== (this.currentUserState.bio ?? "") ||
+      !!this.photoFile
+    );
+  }
+
+  onUpdateInput(key: keyof CustomTimedCountlyEvents["settingsView"]) {
+    const isChanged =
+      this.countlyService.getEventData("settingsView")[key] === "yes";
+
+    if (!isChanged) {
+      this.countlyService.updateEventData("settingsView", { [key]: "yes" });
+    }
   }
 
   onUserError(event) {
-    event.target.src = 'assets/img/defaultUser.svg';
+    event.target.src = "assets/img/defaultUser.svg";
   }
 
   onFileChanged(input) {
@@ -81,6 +94,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       input.target.files[0] &&
       input.target.value.match(/\.(jpg|png|webp|jpeg)$/)
     ) {
+      this.countlyService.updateEventData("settingsView", {
+        profilePictureChanged: "yes",
+      });
       const reader = new FileReader();
       this.photoFile = input.target.files[0] as File;
       reader.onload = (e) => {
@@ -92,13 +108,16 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   saveChanges(): void {
+    this.countlyService.updateEventData("settingsView", {
+      updateProfileClicked: "yes",
+    });
     const body: UpdateProfileDTO = {};
     if (!!this.username.value) {
       body.username = this.username.value;
     }
     if (!!this.name.value) {
       const [first_name, ...rest] = this.name.value.trim().split(" ");
-      const last_name = rest.join(" ") || '';
+      const last_name = rest.join(" ") || "";
       body.first_name = first_name;
       if (!!last_name) {
         body.last_name = last_name;
@@ -119,12 +138,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
     this.restService.updateProfile(body).subscribe(
       (data) => {
-        this.countlyService.updateUser('username', data.username);
-        this.countlyService.updateUser('name', data.name);
-        if (data.photo) {
-          this.countlyService.updateUser('picture', data.photo);
-        }
-        this.countlyService.saveUser();
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
@@ -142,11 +155,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.saveProfileLoder = false;
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + error.code,
-          text: error.message,
-        });
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
       }
     );
   }

@@ -2,7 +2,7 @@
   href="javascript:void(0)"
   class="card card-block bg-dark border-0 shadow-1 position-relative"
 >
-  <div>
+  <div class="h-100">
     <img
       class="card-img"
       [src]="game.textBgImage"
@@ -13,8 +13,8 @@
   </div>
   <div class="card-img-overlay p-1" (click)="onclick()">
     <div class="row">
-      <div class="col-auto p-0">
-        <span *ngIf="game.isFree" class="freeTag px-2 free tagText top--1 position-relative">FREE</span>
+      <div class="col-auto">
+        <span *ngIf="game.isFree" class="freeTag px-2 ml-1 free tagText top--1 position-relative">FREE</span>
       </div>
       <div class="col text-right increateZIndex">
         <label class="checkbox-control">

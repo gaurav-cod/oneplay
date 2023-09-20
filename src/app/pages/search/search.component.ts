@@ -13,6 +13,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
+import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -72,6 +73,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     Swal.close();
+    this.countlyService.endEvent("searchResultsViewMoreGames");
+    this.countlyService.endEvent("searchResultsViewMoreUsers");
   }
 
   ngOnInit(): void {
@@ -120,12 +123,20 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   viewGame(game: GameModel) {
-    this.countlyService.addEvent("gameLandingView", {
-      gameID: game.oneplayId,
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: 'gameClicked',
+    })
+    this.countlyService.endEvent("searchResultsViewMoreGames", {
+      keywords: this.query,
+      gameCardClicked: "yes",
+      gameId: game.oneplayId,
       gameTitle: game.title,
-      gameGenre: game.genreMappings?.join(","),
-      source: location.pathname + location.hash,
-      trigger: "card",
+    })
+    this.countlyService.startEvent("gameLandingView", {
+      discardOldData: true,
+      data: { source: getGameLandingViewSource(), trigger: 'card' },
     });
 
     this.router.navigate(["view", this.gLink.transform(game)], {
@@ -134,6 +145,29 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchNavigate(tab: "games" | "users") {
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
+    })
+    if (tab === "games") {
+      this.countlyService.startEvent("searchResultsViewMoreGames", {
+        discardOldData: true,
+        data: {
+          keywords: this.query,
+          gameCardClicked: "no",
+        },
+      });
+    }
+    else {
+      this.countlyService.startEvent("searchResultsViewMoreUsers", {
+        discardOldData: true,
+        data: {
+          keywords: this.query,
+          friendRequestClicked: "no",
+        },
+      });
+    }
     this.router.navigate(["/search", tab], {
       queryParams: { q: this.query },
     });
@@ -300,6 +334,16 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addFriend(friend: UserModel) {
+    this.countlyService.addEvent("search", {
+      keywords: this.query,
+      actionDone: 'yes',
+      actionType: 'addFriend',
+    })
+    this.countlyService.endEvent("searchResultsViewMoreUsers", {
+      userID: friend.id,
+      keywords: this.query,
+      friendRequestClicked: "yes",
+    })
     if (this.user.id === friend.id) {
       return;
     }

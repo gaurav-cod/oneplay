@@ -26,6 +26,7 @@ import Swal from "sweetalert2";
 export class PaymentComponent implements OnInit, OnDestroy {
   @ViewChild("paymentModal") paymentModal: ElementRef<HTMLDivElement>;
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
+  @ViewChild("upiPaymentModal") upiPaymentModal: ElementRef<HTMLDivElement>;
 
   stripeLoad = false;
   currentamount: string;
@@ -34,6 +35,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   private querySubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
   private paymentModalRef: NgbModalRef;
+  private upiPaymentModalRef: NgbModalRef;
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
   private planType: "base" | "topup";
@@ -93,7 +95,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
     const { error } = await this.stripeIntent.confirmPayment({
       elements: this.stripeElements,
       confirmParams: {
-        return_url: await this.getReturnURL(),
+        return_url: await this.getReturnURL(
+          environment.domain + "/dashboard/settings/subscription"
+        ),
       },
     });
 
@@ -131,13 +135,26 @@ export class PaymentComponent implements OnInit, OnDestroy {
           bdOrderId: data.bdOrderId,
           authToken: data.token,
           childWindow: true,
-          returnUrl: await this.getReturnURL(),
+          returnUrl: await this.getReturnURL(
+            environment.render_mix_api +
+              "/accounts/subscription/billdesk_frontend_redirect"
+          ),
           retryCount: 3,
+          crossButtonHandling: "Y",
           //prefs: {"payment_categories": ["card", "emi"] }
         };
 
+        const themeConfig = {
+          sdkPrimaryColor: "#a83afe",
+          sdkAccentColor: "#ff0cf5",
+          sdkBannerColor: "#151515",
+        };
+
         const config = {
+          merchantLogo:
+            environment.domain + "/dashboard/assets/img/brand/brandLogo.svg",
           flowConfig,
+          themeConfig,
           flowType: "payments",
         };
         // @ts-ignore
@@ -184,6 +201,17 @@ export class PaymentComponent implements OnInit, OnDestroy {
       );
   }
 
+  handlePayWithUPI() {
+    this.paymentModalRef.close();
+    this.upiPaymentModalRef = this.ngbModal.open(this.upiPaymentModal, {
+      centered: true,
+      modalDialogClass: "modal-xl",
+      scrollable: true,
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   async getSwalTextForBasePlan(params: Params) {
     if (params.plan == "base" || params.renew) {
       const subscriptions = await lastValueFrom(
@@ -191,7 +219,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
       );
       const planTypes = subscriptions.map((s) => s.planType);
       if (planTypes.includes("base")) {
-        return "This Pack will starts after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
+        return "This Pack will start after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
       }
     }
     return "you're about to purchase the selected subscription package.";
@@ -206,7 +234,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async getReturnURL() {
+  private async getReturnURL(path: string) {
     let popupId = 0;
 
     if (this.planType == "base") {
@@ -217,8 +245,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
       if (planTypes.includes("base")) popupId = 1;
     }
 
-    return (
-      environment.domain + "/dashboard/settings/subscription?swal=" + popupId
-    );
+    return path + "?swal=" + popupId;
   }
 }

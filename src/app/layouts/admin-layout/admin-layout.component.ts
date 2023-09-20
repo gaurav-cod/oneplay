@@ -77,6 +77,23 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.detectVPN();
+  }
+
+  private detectVPN() {
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (res.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
+      },
+    });
   }
 
   ngOnDestroy(): void {
@@ -96,7 +113,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initAuth() {
-    this.authService.wishlist = this.restService.getWishlist();
+    this.restService
+      .getWishlist()
+      .toPromise()
+      .then((list) => this.authService.setWishlist(list));
     this.authService.user = this.restService.getProfile();
   }
 
