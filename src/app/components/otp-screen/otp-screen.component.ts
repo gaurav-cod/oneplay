@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
   templateUrl: './otp-screen.component.html',
   styleUrls: ['./otp-screen.component.scss']
 })
-export class OtpScreenComponent {
+export class OtpScreenComponent implements OnInit {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
   @Input() buttonText: string;
@@ -19,6 +19,12 @@ export class OtpScreenComponent {
   @Output() verfiyEmail = new EventEmitter<string>();
   @Output() resendUpdateEmail = new EventEmitter();
   @Output() closePopUp = new EventEmitter();
+
+  emailCodeTimer;
+  newEmailCodeTimer;
+  newPhoneCodeTimer;
+  securityCodeTimer;
+  expritedToken: boolean = false;
 
   form: UntypedFormGroup;
   formInput = [
@@ -49,6 +55,13 @@ export class OtpScreenComponent {
   //   }
   //   return;
   // }
+
+  ngOnInit(): void {
+    this.stopAllTimers();
+    this.emailCodeTimer = setTimeout(()=>{
+      this.expritedToken = true;
+    }, 300000) // 5 minutes (5 * 60,000 milliseconds)
+  }
 
   onclosePopUp() {
     this.closePopUp.emit();
@@ -94,5 +107,12 @@ export class OtpScreenComponent {
         this.rows._results[index - 1].nativeElement.value = "";
       }
     }
+  }
+
+  stopAllTimers() {
+    if (this.emailCodeTimer) clearInterval(this.emailCodeTimer)
+    if (this.newEmailCodeTimer) clearInterval(this.newEmailCodeTimer)
+    if (this.newPhoneCodeTimer) clearInterval(this.newPhoneCodeTimer)
+    if (this.securityCodeTimer) clearInterval(this.securityCodeTimer)
   }
 }

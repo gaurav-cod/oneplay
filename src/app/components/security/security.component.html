@@ -11,7 +11,7 @@
             </div>
             <div class="col-auto">
               <img
-                *ngIf="hideEmailIcon"
+                *ngIf="allowEmailEdit"
                 (click)="openEmailModal()"
                 src="assets/img/singup-login/Group (1).svg"
                 class="img-fluid cursorPointer"
@@ -28,7 +28,7 @@
             </div>
             <div class="col-auto">
               <img
-                *ngIf="hidePhoneIcon"
+                *ngIf="allowPhoneEdit"
                 (click)="openPhoneModal()"
                 src="assets/img/singup-login/Group (1).svg"
                 class="img-fluid cursorPointer"
@@ -55,7 +55,7 @@
             </div>
             <div class="col-auto">
               <img
-                *ngIf="hidePasswordIcon"
+                *ngIf="allowPasswordEdit"
                 (click)="openPasswordModal()"
                 src="assets/img/singup-login/Group (1).svg"
                 class="img-fluid cursorPointer"

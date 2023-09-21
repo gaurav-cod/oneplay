@@ -28,9 +28,13 @@ export class SecurityComponent implements OnInit {
   existingPhone: string;
   existingPassword: string;
   notMatchPassword: string;
-  hideEmailIcon: boolean = true;
-  hidePhoneIcon: boolean = true;
-  hidePasswordIcon: boolean = true;
+  allowEmailEdit: boolean = true;
+  allowPhoneEdit: boolean = true;
+  allowPasswordEdit: boolean = true;
+  emailCodeTimer;
+  newEmailCodeTimer;
+  newPhoneCodeTimer;
+  securityCodeTimer;
   private iconHidetimer: any;
 
   isDisabled: boolean = true;
@@ -145,6 +149,7 @@ export class SecurityComponent implements OnInit {
       backdrop: "static",
       keyboard: false,
     });
+    
   }
 
   openEmailModal() {
@@ -357,35 +362,20 @@ export class SecurityComponent implements OnInit {
   closeEmailModal() {
     this._changeEmailModalRef.close();
     this._otpScreenRef.close();
-    this.startEmailTimer();
-  }
-  
-  private startEmailTimer() {
-    clearTimeout(this.iconHidetimer); // Reset the timer if it's already running
-    this.iconHidetimer = setTimeout(this.hideEditIcon, 120000); // 2 minutes (2 * 60,000 milliseconds)
-  }
-
-  private hideEditIcon() {
-    this.hideEmailIcon = false
+    this.allowEmailEdit = false
+    this.iconHidetimer = setTimeout(() => {this.allowEmailEdit = true}, 120000); // 2 minutes (2 * 60,000 milliseconds)
   }
 
   closePhoneModal() {
     this._changePhoneModalRef.close();
     this._otpScreenRef.close();
-    this.startPhoneTimer();
-  }
-
-  private startPhoneTimer() {
-    clearTimeout(this.iconHidetimer); // Reset the timer if it's already running
-    this.iconHidetimer = setTimeout(this.hidePhoneEditIcon, 120000); // 2 minutes (2 * 60,000 milliseconds)
-  }
-
-  private hidePhoneEditIcon() {
-    this.hidePhoneIcon = false;
+    this.allowPhoneEdit = false;
+    this.iconHidetimer = setTimeout(() => {this.allowPhoneEdit = true;}, 120000);
   }
 
   closePasswordModal() {
     this._changePasswordModalRef.close();
-    this.iconHidetimer = setTimeout(() => {this.hidePasswordIcon = false;}, 120000); // 2 minutes (2 * 60,000 milliseconds)
+    this.allowPasswordEdit = false;
+    this.iconHidetimer = setTimeout(() => {this.allowPasswordEdit = true;}, 120000);
   }
 }
