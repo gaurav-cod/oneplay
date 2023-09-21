@@ -205,7 +205,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.paymentModalRef.close();
     this.upiPaymentModalRef = this.ngbModal.open(this.upiPaymentModal, {
       centered: true,
-      modalDialogClass: "modal-xl",
+      modalDialogClass: "modal-lg",
       scrollable: true,
       backdrop: "static",
       keyboard: false,
