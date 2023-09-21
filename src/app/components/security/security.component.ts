@@ -25,7 +25,13 @@ export class SecurityComponent implements OnInit {
   display: any;
   sameEmail: boolean = false;
   existingAccount: string;
+  existingPhone: string;
+  existingPassword: string;
   notMatchPassword: string;
+  hideEmailIcon: boolean = true;
+  hidePhoneIcon: boolean = true;
+  hidePasswordIcon: boolean = true;
+  private iconHidetimer: any;
 
   isDisabled: boolean = true;
 
@@ -33,15 +39,6 @@ export class SecurityComponent implements OnInit {
   incorrectCode: string;
   
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-  // email = new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]);
-  // country_code = new UntypedFormControl("+91", [Validators.required]);
-  
-
-  // password = new UntypedFormControl("", [
-  //   Validators.required,
-  //   Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
-  // ]);
-
   updateSecurity = new UntypedFormGroup({
     email: new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]),
     country_code: new UntypedFormControl("+91", [Validators.required]),
@@ -50,12 +47,6 @@ export class SecurityComponent implements OnInit {
     password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
     confirmPassword: new UntypedFormControl("",  [Validators.required]),
   });
-
-  // oldPassword = new UntypedFormControl("", [
-  //   Validators.required,
-  // ]);
-  // confirmPassword = new UntypedFormControl("",  [Validators.required]);
-  // phone = new UntypedFormControl("", [Validators.required, phoneValidator()]);
 
   readonly countryCodes = [
     "+91",
@@ -169,7 +160,7 @@ export class SecurityComponent implements OnInit {
   updateEmail(): void {
     if (this.emailErrored) return;
     if (this.user?.email === this.updateSecurity.value?.email.trim()) return;
-    this.restService.updateEmail(this.updateSecurity.value.email.value).subscribe(
+    this.restService.updateEmail(this.updateSecurity.value.email).subscribe(
       () => {
         this._changeEmailModalRef.close();
         this.timer(1)
@@ -216,6 +207,7 @@ export class SecurityComponent implements OnInit {
         this.isVerify = false;
         this.buttonText = 'Confirm';
         this.openOTPScreen();
+        this.timer(1)
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -269,7 +261,7 @@ export class SecurityComponent implements OnInit {
         this.openOTPScreen();
       },
       (error) => {
-        this.existingAccount = error.message
+        this.existingPhone = error.message
       }
     );
   }
@@ -307,6 +299,7 @@ export class SecurityComponent implements OnInit {
         this.isPhone = false;
         this.buttonText = 'Confirm';
         this.openOTPScreen();
+        this.timer(1)
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -322,7 +315,6 @@ export class SecurityComponent implements OnInit {
           icon: "success",
           text: "You have successfully changed your phone number.",
         });
-        this.authService.logout();
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -340,52 +332,6 @@ export class SecurityComponent implements OnInit {
     });
   }
 
-  // updatePhone(): void {
-  //   if (!this.phone.valid) return;
-  //   this.phone.disable();
-  //   if (this.user.phone === this.phone.value.trim()) return;
-  //   this.restService.updateProfile({ phone: this.phone.value }).subscribe(
-  //     () => {
-  //       this.authService.updateProfile({ phone: this.phone.value });
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success",
-  //         text: "Successfully updated phone number.",
-  //       });
-  //     },
-  //     (error) => {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Error Code: " + error.code,
-  //         text: error.message,
-  //       });
-  //     }
-  //   );
-  // }
-
-  // updateEmail(): void {
-  //   if (this.email.invalid) return;
-  //   this.email.disable();
-  //   if (this.user.email === this.email.value.trim()) return;
-  //   this.restService.updateEmail(this.email.value).subscribe(
-  //     (msg) => {
-  //       Swal.fire({
-  //         icon: "success",
-  //         title: "Success",
-  //         text: msg,
-  //       });
-  //       this.authService.logout();
-  //     },
-  //     (error) => {
-  //       Swal.fire({
-  //         icon: "error",
-  //         title: "Error Code: " + error.code,
-  //         text: error.message,
-  //       });
-  //     }
-  //   );
-  // }
-
   updatePassword(): void {
     if(this.checkvalidationValue) return;
     this.restService.updatePassword(this.updateSecurity.value.oldPassword, this.updateSecurity.value.password).subscribe(
@@ -402,9 +348,44 @@ export class SecurityComponent implements OnInit {
         if(error.code === 422) {
           this.notMatchPassword = error.message
         } else {
-          this.existingAccount = error.message
+          this.existingPassword = error.message
         }
       }
     );
+  }
+
+  closeEmailModal() {
+    this._changeEmailModalRef.close();
+    this._otpScreenRef.close();
+    this.startEmailTimer();
+  }
+  
+  private startEmailTimer() {
+    clearTimeout(this.iconHidetimer); // Reset the timer if it's already running
+    this.iconHidetimer = setTimeout(this.hideEditIcon, 120000); // 2 minutes (2 * 60,000 milliseconds)
+  }
+
+  private hideEditIcon() {
+    this.hideEmailIcon = false
+  }
+
+  closePhoneModal() {
+    this._changePhoneModalRef.close();
+    this._otpScreenRef.close();
+    this.startPhoneTimer();
+  }
+
+  private startPhoneTimer() {
+    clearTimeout(this.iconHidetimer); // Reset the timer if it's already running
+    this.iconHidetimer = setTimeout(this.hidePhoneEditIcon, 120000); // 2 minutes (2 * 60,000 milliseconds)
+  }
+
+  private hidePhoneEditIcon() {
+    this.hidePhoneIcon = false;
+  }
+
+  closePasswordModal() {
+    this._changePasswordModalRef.close();
+    this.iconHidetimer = setTimeout(() => {this.hidePasswordIcon = false;}, 120000); // 2 minutes (2 * 60,000 milliseconds)
   }
 }

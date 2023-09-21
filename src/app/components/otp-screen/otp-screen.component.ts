@@ -43,12 +43,12 @@ export class OtpScreenComponent {
   constructor(
   ){}
 
-  get validInput() {
-    if(this.errorMessage) {
-      this.codeForm.disable();
-    }
-    return;
-  }
+  // get validInput() {
+  //   if(this.errorMessage) {
+  //     this.codeForm.disable();
+  //   }
+  //   return;
+  // }
 
   onclosePopUp() {
     this.closePopUp.emit();
