@@ -885,25 +885,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (err.code == 801) {
       this.endGamePlayStartEvent("wait");
       this.waitQueue(err.message);
-    } else if (
-      err.code == 610 ||
-      err.message == "Your 4 hours per day max Gaming Quota has been exhausted."
-    ) {
-      this.endGamePlayStartEvent("failure");
-      this.stopLoading();
-      Swal.fire({
-        title: "Alert!",
-        text: "You have reached your daily gameplay quota of 4 hrs. See you again tomorrow!",
-        imageUrl: "assets/img/error/time_limit 1.svg",
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Okay",
-      });
     } else {
       this.endGamePlayStartEvent("failure");
       this.stopLoading();
       Swal.fire({
-        title: err.message + " Error Code: " + err.code,
-        imageUrl: "assets/img/swal-icon/Gaming-issue.svg",
+        title: "Alert!",
+        text: err.message,
+        imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
         customClass: "swalPaddingTop",
         confirmButtonText: "Okay",
       });
