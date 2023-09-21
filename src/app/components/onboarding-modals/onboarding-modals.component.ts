@@ -13,6 +13,7 @@ import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { UntypedFormControl } from "@angular/forms";
 import { environment } from "src/environments/environment";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-onboarding-modals",
@@ -40,10 +41,13 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
   private _VPNAlertRef: NgbModalRef;
+  private _showSelectGames: boolean = false;
+  private _showTnC: boolean = false;
 
   constructor(
     private readonly authService: AuthService,
     private readonly ngbModal: NgbModal,
+    private readonly router: Router,
 
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService
@@ -104,6 +108,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   }
 
   private selectGame() {
+    this._showSelectGames = true;
     this.canLoadMore = true;
     this.currentPage = 0;
     this.loadGames();
@@ -181,6 +186,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   }
 
   private onboardingUser() {
+    this._showTnC = true;
     this._onboardingUserRef = this.ngbModal.open(this.onboardingUserModal, {
       centered: true,
       modalDialogClass: "modal-xl",
@@ -192,6 +198,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   }
 
   public closeSelectGame() {
+    this._showSelectGames = false;
     this._selectgameRef.close();
     this._selectgameRef = null;
     this.selectedGameIds.forEach((id) =>
@@ -201,11 +208,14 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.selectedGames = [];
     this.query.reset();
     this.searchText = "";
+    this.triggerSpeedTest();
   }
 
   public async closeonboardingGame() {
+    this._showTnC = false;
     localStorage.setItem("#onboardingUser", "true");
     this._onboardingUserRef.close();
+    this.triggerSpeedTest();
   }
 
   public isChecked(game: GameModel) {
@@ -228,5 +238,13 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   private get selectedGameIds() {
     return this.selectedGames.map((s) => s.oneplayId);
+  }
+
+  private triggerSpeedTest() {
+    if (!this.authService.trigger_speed_test) return;
+    if (!this._showTnC && !this._showSelectGames) {
+      this.authService.trigger_speed_test = false;
+      this.router.navigateByUrl("/speed-test");
+    }
   }
 }
