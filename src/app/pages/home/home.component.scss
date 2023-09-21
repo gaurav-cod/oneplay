@@ -9,12 +9,12 @@
 }
 
 .text-logo {
-  max-width: 300px;
-  max-height: 160px;
-  margin-bottom: 24px;
-
+  max-height: 150px;
+  @media (max-width: 1300px) {
+    width: 140px;
+  }
   @media (max-width: 480px) {
-    width: 100%;
+    width: 100px;
   }
 }
 

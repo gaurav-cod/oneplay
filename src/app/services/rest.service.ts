@@ -565,15 +565,9 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<GameFeedModel[]> {
+  getHomeFeed( params?: any): Observable<GameFeedModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
-        params: {
-          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
-          textLogo: "400x320",
-          poster: "528x704",
-        },
-      })
+      .get<any[]>(this.r_mix_api + "/games/feed/personalized", {params})
       .pipe(
         map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
