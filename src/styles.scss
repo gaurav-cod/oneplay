@@ -778,10 +778,6 @@ input[type="checkbox"] {
 
 .swal2-styled.swal2-confirm {
   width: 100% !important;
-  background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
-}
-
-.swalPadding .swal2-styled.swal2-confirm {
   background: linear-gradient(300.3deg, #0575E6 9.6%, #FF0CF5 92.85%) !important;
   padding: 13px !important;
 }
@@ -794,6 +790,10 @@ input[type="checkbox"] {
 .swal2-styled.swal2-deny {
   width: 100% !important;
   background: linear-gradient(270deg, #8a54d0 0%, #d71f7b 100%) !important;
+}
+
+.swalPaddingTop .swal2-styled.swal2-deny {
+  background: transparent !important;
 }
 
 .loadingBg {
@@ -1214,4 +1214,22 @@ select {
 
 .modalZIndex1062 {
   z-index: 1062 !important;
+}
+
+.swalPaddingTop {
+  padding-top: 40px !important;
+}
+
+.blurBG .modal-content {
+  background-color: transparent !important;
+}
+
+.blurBG .modal-content .modal-body {
+  background-color: rgba(0, 0, 0, 0.60) !important;
+  backdrop-filter: blur(9px);
+  border-radius: 10px;
+}
+
+.blurBG {
+  backdrop-filter: blur(9px);
 }

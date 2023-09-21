@@ -87,19 +87,26 @@
                 (click)="viewGameFromSearch(game)"
               >
                 <div class="col-auto align-self-center pr-0">
-                  <img
-                    [src]="game.textBgImage"
-                    (error)="onImgError($event)"
-                    class="br6"
-                    width="125"
-                    height="80"
-                    alt=""
-                  />
-                  <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
-                  <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
-                  <div *ngIf="game.status === 'maintenance'" class="text-center"><span class="orangeGradientBg px-1 bottomTag tagText">MAINTENANCE</span></div>
-                  <div *ngIf="game.status === 'updating'" class="text-center"><span class="updatingGradient px-1 bottomTag tagText">UPDATING</span></div>
-                  <div *ngIf="game.status === 'not_optimized'" class="text-center"><span class="darkredGradient px-1 bottomTag tagText">NOT OPTIMIZED</span></div>
+                  <div class="card border-0 bg-dark">
+                    <img
+                      [src]="game.textBgImage"
+                      (error)="onImgError($event)"
+                      class="br6"
+                      width="125"
+                      height="80"
+                      alt=""
+                    />
+                    <div class="card-img-overlay p-0">
+                      <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
+                      <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
+                      <div class="row h-100 align-items-end justify-content-center">
+                        <div *ngIf="game.status === 'maintenance'" class="col-auto"><span class="orangeGradientBg text-white px-1 tagText">MAINTENANCE</span></div>
+                        <div *ngIf="game.status === 'updating'" class="col-auto"><span class="updatingGradient text-white px-1 tagText">UPDATING</span></div>
+                        <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient text-white px-1 tagText">NOT OPTIMIZED</span></div>
+                      </div>
+                      
+                    </div>
+                  </div>
                 </div>
                 <div class="col align-self-center pr-0">
                   <p class="font16 font500 offWhitecolor mb-0">
@@ -115,7 +122,7 @@
                 class="text-center bg-dark py-3"
               >
                 <button
-                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop mt-2"
+                  class="btn btn-block muteText font500 font16 border-0 borderRadius0 borderTop"
                   (click)="searchNavigate('games')"
                 >
                   See more games
