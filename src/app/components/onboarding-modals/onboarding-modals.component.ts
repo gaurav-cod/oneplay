@@ -114,6 +114,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
+      windowClass: "modalZIndex1061",
     });
   }
 
@@ -186,7 +187,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       scrollable: true,
       backdrop: "static",
       keyboard: false,
-      windowClass: "modalZIndex1061",
+      windowClass: "modalZIndex1062",
     });
   }
 
