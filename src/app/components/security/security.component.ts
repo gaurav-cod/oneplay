@@ -361,21 +361,24 @@ export class SecurityComponent implements OnInit {
 
   closeEmailModal() {
     this._changeEmailModalRef.close();
-    this._otpScreenRef.close();
-    this.allowEmailEdit = false
+    this._otpScreenRef?.close();
+    this.allowEmailEdit = false;
+    clearTimeout(this.iconHidetimer);
     this.iconHidetimer = setTimeout(() => {this.allowEmailEdit = true}, 120000); // 2 minutes (2 * 60,000 milliseconds)
   }
 
   closePhoneModal() {
     this._changePhoneModalRef.close();
-    this._otpScreenRef.close();
+    this._otpScreenRef?.close();
     this.allowPhoneEdit = false;
+    clearTimeout(this.iconHidetimer);
     this.iconHidetimer = setTimeout(() => {this.allowPhoneEdit = true;}, 120000);
   }
 
   closePasswordModal() {
     this._changePasswordModalRef.close();
     this.allowPasswordEdit = false;
+    clearTimeout(this.iconHidetimer);
     this.iconHidetimer = setTimeout(() => {this.allowPasswordEdit = true;}, 120000);
   }
 }
