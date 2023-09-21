@@ -17,6 +17,7 @@ import {
   SignupDTO,
   SpeedTestServerRO,
   StartGameRO,
+  TerminateStreamRO,
   TokensUsageDTO,
   UpdateProfileDTO,
   VerifySignupDTO,
@@ -855,13 +856,13 @@ export class RestService {
       );
   }
 
-  terminateGame(sessionId: string): Observable<void> {
+  terminateGame(sessionId: string): Observable<TerminateStreamRO> {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
-      .post<void>(this.client_api + "/terminate_stream", formData)
+      .post<TerminateStreamRO>(this.client_api + "/terminate_stream", formData)
       .pipe(
-        map(() => {}),
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })

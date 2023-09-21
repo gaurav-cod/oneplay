@@ -709,7 +709,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminateSession(): void {
     this.startTerminating();
     this.restService.terminateGame(this.sessionToTerminate).subscribe(
-      () => {
+      (res) => {
+        this.countlyService.addEvent("gameTerminate", {
+            gameSessionId: this.sessionToTerminate,
+            gameId: this.game.oneplayId,
+            gameTitle: this.game.title,
+            gameGenre: this.game.genreMappings.join(', '),
+            store: this.selectedStore.name,
+            terminationType: "userInitiated",
+            sessionDuration: res.data.session_duration,
+            playDuration: res.data.play_duration,
+            idleDuration: res.data.idle_duration,
+          });
         Swal.fire({
           title: "Session terminated",
           text: "Your session has been terminated",
