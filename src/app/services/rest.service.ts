@@ -789,7 +789,7 @@ export class RestService {
   }
 
   getSeriousNotification(): Observable<string | null> {
-    return this.http.get(this.r_mix_api + "/notification/serious").pipe(
+    return this.http.get(this.r_mix_api + "/notification/serious", { params: { partnerId: environment.partner_id } }).pipe(
       map((res) => res["text"]),
       catchError(({ error }) => {
         throw error;
