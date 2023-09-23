@@ -24,7 +24,7 @@
           <div
             class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
           >
-            <div class="hideInLarge position-absolute right-2 top-4">
+            <div class="hideInLarge position-absolute right-2 top-2">
               <button
                 *ngIf="!isInWishlist"
                 (click)="addToWishlist()"
@@ -59,7 +59,7 @@
                     <img [src]="game.textLogo" class="text-logo" alt="" />
                   </div>
                 </div>
-                <p class="font16 font500 text-white mt-2">
+                <p class="font16 font500 text-white mt-4">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
                   {{ game.isFree ? " - Free" : "" }}
