@@ -9,12 +9,12 @@
 }
 
 .text-logo {
-  max-width: 300px;
-  max-height: 160px;
-  margin-bottom: 24px;
-
+  max-height: 150px;
+  @media (max-width: 1300px) {
+    width: 140px;
+  }
   @media (max-width: 480px) {
-    width: 100%;
+    width: 100px;
   }
 }
 
@@ -102,12 +102,18 @@
 
 .height30vh {
   height: 46vh;
+  overflow-y: scroll;
   @media (min-width: 481px) and (max-width: 1280.9px) {
     height: 270px;
   }
   @media (max-width: 480px) {
     height: 160px;
   }
+}
+
+.height30vh::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
 }
 
 .carousel-images {

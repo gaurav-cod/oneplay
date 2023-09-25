@@ -1,5 +1,5 @@
 <div class="container pageBg">
-  <div class="row height100">
+  <div class="row pb-6 pb-lg-4">
     <div class="col-md-12 mt-5">
       <h1 class="topHeading text-center d-none d-md-block">
         Oneplay Speed Test <span class="d-none">Results</span>
@@ -12,12 +12,12 @@
           <div class="row mt-4 d-md-none">
             <div class="col text-center">
               <img [src]="latencyIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Ping')">{{ latencyText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ latencyText }}</p>
               <span class="muteText font500">ms</span>
             </div>
             <div class="col text-center">
               <img [src]="jitterIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Ping')">{{ jitterText }}</p>
+              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ jitterText }}</p>
               <span class="muteText font500">ms</span>
             </div>
             <div class="col text-center">
@@ -38,9 +38,9 @@
                   <img [src]="latencyIcon" class="img-fluid" alt="" />
                 </div>
                 <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Ping')">Latency </span><span
+                  <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Latency </span><span
                       class="muteText">ms</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Ping')">
+                  <p class="dataHeading" [ngClass]="getValueColor('Latency')">
                     {{ latencyText }}
                   </p>
                 </div>
@@ -52,9 +52,9 @@
                   <img [src]="jitterIcon" class="img-fluid" alt="" />
                 </div>
                 <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Ping')">Jitter </span><span
+                  <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Jitter </span><span
                       class="muteText">ms</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Ping')">
+                  <p class="dataHeading" [ngClass]="getValueColor('Latency')">
                     {{ jitterText }}
                   </p>
                 </div>
@@ -146,8 +146,8 @@
           </div>
         </div>
       </div>
-      <div class="row mt-5">
-        <div class="col-12 text-center pt-4">
+      <div class="row">
+        <div class="col-12 text-center">
           <p class="font16 font500 offWhiteText mb-0" *ngIf="!!currentLocation">
             IP Address
           </p>

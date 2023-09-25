@@ -62,7 +62,6 @@ export interface CustomCountlyEvents {
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
     gameStatusClicked: "yes" | "no";
-    speedTestClicked: "yes" | "no";
     profileClicked: "yes" | "no";
   };
   menuDropdownClick: {
@@ -92,8 +91,19 @@ export interface CustomCountlyEvents {
   search: {
     keywords: string;
     actionDone: "yes" | "no";
-    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend";
+    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend" | "cancelled";
   };
+  gameTerminate: {
+    gameSessionId: string;
+    gameId: string;
+    gameTitle: string;
+    gameGenre: string;
+    store: string;
+    terminationType: "userInitiated";
+    sessionDuration: number;
+    playDuration: number;
+    idleDuration: number;
+  },
 }
 
 export interface CustomTimedCountlyEvents {
