@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "3.0.0",
+  appVersion: "3.2.3",
   production: true,
   cookie_domain: "oneplay.in",
   domain: "https://www.oneplay.in",

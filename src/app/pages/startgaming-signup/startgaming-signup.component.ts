@@ -1,18 +1,39 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Injectable, OnInit } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
 import Swal from "sweetalert2";
 import { AuthService } from "src/app/services/auth.service";
 import { lastValueFrom, of } from "rxjs";
 import { CountlyService } from "src/app/services/countly.service";
 
+@Injectable()
+export class CustomDateParserFormatter extends NgbDateParserFormatter {
+  readonly DELIMITER = '\\';
+
+  parse(value: string): NgbDateStruct | null {
+    if (!value) return null;
+    const date = value.split(this.DELIMITER);
+    const year = parseInt(date[2], 10);
+    return {
+      day: parseInt(date[0], 10),
+      month: parseInt(date[1], 10),
+      year: year < ((new Date()).getFullYear() % 100) ? year + 2000 : year + 1900,
+    };
+  }
+
+	format(date: NgbDateStruct | null): string {
+		return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + (date.year % 100) : '';
+	}
+}
+
 @Component({
   selector: "app-startgaming-signup",
   templateUrl: "./startgaming-signup.component.html",
   styleUrls: ["./startgaming-signup.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }],
 })
 export class StartgamingSignupComponent implements OnInit {
   private usernameRegex = /^[^\W\d_]{1}[^\W_]{2,11}$/;

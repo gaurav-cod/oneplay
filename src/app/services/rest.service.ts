@@ -17,6 +17,7 @@ import {
   SignupDTO,
   SpeedTestServerRO,
   StartGameRO,
+  TerminateStreamRO,
   TokensUsageDTO,
   UpdateProfileDTO,
   VerifySignupDTO,
@@ -565,15 +566,9 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(): Observable<GameFeedModel[]> {
+  getHomeFeed( params?: any): Observable<GameFeedModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/feed/personalized", {
-        params: {
-          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
-          textLogo: "400x320",
-          poster: "528x704",
-        },
-      })
+      .get<any[]>(this.r_mix_api + "/games/feed/personalized", {params})
       .pipe(
         map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
@@ -755,14 +750,9 @@ export class RestService {
 
   getLocation(ip: string): Observable<ILocation> {
     return this.http.get<ILocation>(this.r_mix_api + "/location/" + ip).pipe(
-      switchMap((res) => {
-        if (res.error) {
-          return throwError(res.reason);
-        }
-        return of(res);
-      }),
-      catchError(() => {
-        throw new Error("unknown");
+      map(res => res),
+      catchError(({ error }) => {
+        throw error;
       })
     );
   }
@@ -794,7 +784,7 @@ export class RestService {
   }
 
   getSeriousNotification(): Observable<string | null> {
-    return this.http.get(this.r_mix_api + "/notification/serious").pipe(
+    return this.http.get(this.r_mix_api + "/notification/serious", { params: { partnerId: environment.partner_id } }).pipe(
       map((res) => res["text"]),
       catchError(({ error }) => {
         throw error;
@@ -860,13 +850,13 @@ export class RestService {
       );
   }
 
-  terminateGame(sessionId: string): Observable<void> {
+  terminateGame(sessionId: string): Observable<TerminateStreamRO> {
     const formData = new FormData();
     formData.append("session_id", sessionId);
     return this.http
-      .post<void>(this.client_api + "/terminate_stream", formData)
+      .post<TerminateStreamRO>(this.client_api + "/terminate_stream", formData)
       .pipe(
-        map(() => {}),
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
@@ -918,9 +908,9 @@ export class RestService {
       );
   }
 
-  postAReport(message: string, response: any): Observable<void> {
+  postAReport(message: string, response: any, error_code: number): Observable<void> {
     return this.http
-      .post<void>(this.r_mix_api + "/logging/report", { message, response })
+      .post<void>(this.r_mix_api + "/logging/report", { message, response, error_code })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {

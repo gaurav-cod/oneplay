@@ -209,7 +209,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             this.searchElement.nativeElement.focus();
           }
         }, 300);
-      } else if (this.results.length === 0) {
+      } else if (this.query.value == "") {
         this.restService.search("", 0, 3).subscribe((res) => {
           this.results = res.results;
           this.keyword = res.keyword;
@@ -319,9 +319,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.toggleFriends.emit();
   }
 
-  logout() {
+  async logout() {
     this.logoutRef.close();
     this.logDropdownEvent("logOutConfirmClicked");
+    // wait for countly to send the req before deleting the session
+    await new Promise(r => setTimeout(r, 500));
     // this.messagingService.removeToken().finally(() => {
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.loggedOutByUser = true;
@@ -376,6 +378,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onBlur() {
+    this.countlyService.addEvent("search", {
+      keywords: this.query.value,
+      actionDone: "no",
+      actionType: 'cancelled',
+    })
     this.focus.next(false);
   }
 
@@ -449,7 +456,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
-    this.isMenuCollapsed = true;
+    // this.isMenuCollapsed = true;
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",

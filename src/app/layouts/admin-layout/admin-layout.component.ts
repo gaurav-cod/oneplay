@@ -24,7 +24,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
-
+  
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -33,7 +33,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService,
+    private readonly gameService: GameService
   ) {}
 
   ngOnInit(): void {
@@ -96,7 +96,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initAuth() {
-    this.authService.wishlist = this.restService.getWishlist();
+    this.restService
+      .getWishlist()
+      .toPromise()
+      .then((list) => this.authService.setWishlist(list));
     this.authService.user = this.restService.getProfile();
   }
 

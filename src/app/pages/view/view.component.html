@@ -22,9 +22,9 @@
             alt="Card image"
           />
           <div
-            class="card-img-overlay customOverlay p-lg-4 pl-lg-5 borderRadius10"
+            class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
           >
-            <div class="hideInLarge position-absolute right-2 top-4">
+            <div class="hideInLarge position-absolute right-2 top-2">
               <button
                 *ngIf="!isInWishlist"
                 (click)="addToWishlist()"
@@ -52,14 +52,14 @@
                 />
               </button>
             </div>
-            <div class="row imagesText">
-              <div class="col-md-12">
+            <div class="row imagesText height330 align-items-end mt-md-4">
+              <div class="col-md-12 pb-5">
                 <div class="row height100px">
                   <div class="col">
-                    <img [src]="game.textLogo" class="img-fluid text-logo" alt="" />
+                    <img [src]="game.textLogo" class="text-logo" alt="" />
                   </div>
                 </div>
-                <p class="font16 font500 text-white mt-lg-4">
+                <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
                   {{ game.isFree ? " - Free" : "" }}
@@ -1050,36 +1050,44 @@
 </ng-template>
 
 <ng-template #reportErrorModal let-d="dismiss">
-  <div class="modal-content modalBg">
-    <a
-      href="javascript:void(0)"
-      class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
-      (click)="d('Cross click')"
-    >
-      <i class="fas fa-times"></i>
-    </a>
-    <div class="modal-body p-0">
-      <h2
-        class="text-white font600 text-center font18responsive border-bottom borderColor py-3"
-      >
-        Report Error
+  <div class="modal-content modalBgBlur">
+    <div class="modal-body">
+      <h2 class="text-white w-100 font600 font18responsive">
+        Report an issue
       </h2>
-      <div class="row p-4">
-        <div class="col-12">
+      <p class="font16 font500 muteText">
+        What kind of problems are you facing?
+      </p>
+      <div class="row">
+        <div class="col-12 mb-2">
           <textarea
             [formControl]="reportText"
-            class="form-control customFormControl font18 inputBorder font500 offWhiteText h-100"
+            class="form-control textBox h-100 p-3 border-0 mb-1"
             rows="3"
-            placeholder="write here..."
+            placeholder="Type your concerns here."
           ></textarea>
+          <span
+            *ngIf="reportText.touched && reportText.invalid && reportText.value.length > 0"
+            class="font16 font500 errorGradientColor"
+            >*Character limit exceeded</span
+          >
         </div>
-        <div class="col-12 mt-4">
+        <div class="col-12 mt-4 text-right">
           <button
-            class="btn btn-block customLinearGradient text-white border-0"
+            class="btn muteText bgTransparent border-0 br60 mr-3"
+            (click)="d('Cross click')"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn customLinearGradient text-white border-0 br60"
             [disabled]="reportText.invalid"
+            [ngClass]="{
+              mutedBg: reportText.touched && reportText.invalid
+            }"
             (click)="reportError()"
           >
-            Send
+            Confirm
           </button>
         </div>
       </div>
