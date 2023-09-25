@@ -79,7 +79,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
                 keyboard: false,
               });
             } else if (result.isDenied) {
-              window.location.href = `${environment.domain}/subscription.html?${params.minutes}`;
+              window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
             } else {
               this.removeQueryParams();
             }
