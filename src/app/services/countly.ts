@@ -93,6 +93,17 @@ export interface CustomCountlyEvents {
     actionDone: "yes" | "no";
     actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend" | "cancelled";
   };
+  gameTerminate: {
+    gameSessionId: string;
+    gameId: string;
+    gameTitle: string;
+    gameGenre: string;
+    store: string;
+    terminationType: "userInitiated";
+    sessionDuration: number;
+    playDuration: number;
+    idleDuration: number;
+  },
 }
 
 export interface CustomTimedCountlyEvents {
