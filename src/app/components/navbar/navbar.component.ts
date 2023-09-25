@@ -456,7 +456,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
-    this.isMenuCollapsed = true;
+    // this.isMenuCollapsed = true;
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
