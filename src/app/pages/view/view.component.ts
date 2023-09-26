@@ -1142,7 +1142,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   reportError() {
     this.restService
-      .postAReport(this.reportText.value, this.reportResponse, this.reportResponse.code)
+      .postAReport(this.reportText.value, this.reportResponse, String(this.reportResponse.code))
       .subscribe({
         next: () => {
           Swal.fire({
