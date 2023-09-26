@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
+import { Subscription } from "rxjs";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 import { v4 } from "uuid";
@@ -55,6 +56,7 @@ export class SpeedTestComponent implements OnInit {
   private _TsetProgressValue = throttle((v: string) => {
     this.progressValue = v;
   }, this.throttleTime);
+  private subs: Subscription[] = [];
 
   pingCount = 150;
   pingPacketsSent = [];
@@ -63,15 +65,6 @@ export class SpeedTestComponent implements OnInit {
   ulReqCount = 80;
   dlPacketsSize = 4000000;
   ulPacketsSize = 1050000;
-  // dlPacketsCount = 0;
-  // dlDataRecieved = 0;
-  // dlStartTime = 0;
-  // dlEndTime = 0;
-  // ulEndTime = 0;
-  // ulStartTime = 0;
-  // ulPacketsSize = 5242880;
-  // ulPacketsCount = 100;
-  // ulPacketsConfirmed = 0;
   testCompleted = false;
   currentLocation = undefined;
   state: State;
@@ -101,6 +94,10 @@ export class SpeedTestComponent implements OnInit {
     this.runTests();
   }
 
+  ngOnDestroy() {
+    this.subs.forEach((sub) => sub.unsubscribe());
+  }
+
   resetVals() {
     this.latencyText = "0";
     this.jitterText = "0";
@@ -119,6 +116,8 @@ export class SpeedTestComponent implements OnInit {
     this.finalMessage = this.messages.default;
     this.hideRecommendation = "d-none";
     this.recommendationColor = "recommendation";
+    this.subs.forEach((sub) => sub.unsubscribe());
+    this.subs = [];
   }
 
   getStateColor(state: State) {
@@ -287,26 +286,11 @@ export class SpeedTestComponent implements OnInit {
       let scount = 0;
       let dlstart = Date.now();
       for (let i = 1; i <= this.dlReqCount; i++) {
-        fetch(url + `?nocache=${v4()}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            size: this.dlPacketsSize,
-            id: 1,
-          }),
-        })
-          .then(
-            (res) => {
-              if (res.status !== 200) return;
-              scount++;
-            },
-            (err) => {
-              console.warn(err, i);
-            }
-          )
-          .finally(() => {
+        this.subs.push(this.restService.sendSpeedTestDLPacket(
+          url + `?nocache=${v4()}`,
+          this.dlPacketsSize,
+        ).subscribe({
+          error: () => {
             pcount++;
             let s = (Date.now() - dlstart) / 1000;
             let t = (scount * this.dlPacketsSize) / 1024 / 1024 / s;
@@ -316,7 +300,20 @@ export class SpeedTestComponent implements OnInit {
             if (pcount >= this.dlReqCount) {
               resolve(true);
             }
-          });
+          },
+          next: () => {
+            scount++;
+            pcount++;
+            let s = (Date.now() - dlstart) / 1000;
+            let t = (scount * this.dlPacketsSize) / 1024 / 1024 / s;
+            this.currentDownload = (Math.floor(t * 100) / 100) * 8;
+            this._TsetDownloadText(this.currentDownload);
+            this.updateProgress(this.pingCount + pcount);
+            if (pcount >= this.dlReqCount) {
+              resolve(true);
+            }
+          },
+        }));
       }
     });
   }
@@ -327,23 +324,11 @@ export class SpeedTestComponent implements OnInit {
       let scount = 0;
       let ulstart = Date.now();
       for (let i = 1; i <= this.ulReqCount; i++) {
-        const formData = new FormData();
-        formData.append("id", i.toString());
-        formData.append("file", this.makePacket(i, this.ulPacketsSize));
-        fetch(url + `?nocache=${v4()}`, {
-          method: "POST",
-          body: formData,
-        })
-          .then(
-            (res) => {
-              if (res.status !== 200) return;
-              scount++;
-            },
-            (err) => {
-              console.warn(err, i);
-            }
-          )
-          .finally(() => {
+        this.subs.push(this.restService.sendSpeedTestULPacket(
+          url + `?nocache=${v4()}`, i.toString(),
+          this.makePacket(i, this.ulPacketsSize),
+        ).subscribe({
+          error: () => {
             pcount++;
             let s = (Date.now() - ulstart) / 1000;
             let t = (scount * this.ulPacketsSize) / 1024 / 1024 / s;
@@ -353,66 +338,23 @@ export class SpeedTestComponent implements OnInit {
             if (pcount >= this.ulReqCount) {
               resolve(true);
             }
-          });
+          },
+          next: () => {
+            scount++;
+            pcount++;
+            let s = (Date.now() - ulstart) / 1000;
+            let t = (scount * this.ulPacketsSize) / 1024 / 1024 / s;
+            this.currentUpload = (Math.floor(t * 100) / 100) * 8;
+            this._TsetUploadText(this.currentUpload);
+            this.updateProgress(this.pingCount + this.dlReqCount + pcount);
+            if (pcount >= this.ulReqCount) {
+              resolve(true);
+            }
+          },
+        }));
       }
     });
   }
-  // runDLo(url: string) {
-  //   return new Promise((resolve) => {
-  //     this.dlStartTime = Date.now();
-  //     const ws = new WebSocket(url);
-  //     ws.onerror = () => {
-  //       this._TsetDownloadText("--");
-  //       resolve(false);
-  //     };
-  //     ws.onmessage = (e) => {
-  //       if (e.data instanceof Blob) {
-  //         this.dlEndTime = Date.now();
-  //         this.dlDataRecieved += e.data.size;
-  //         this.dlPacketsCount++;
-  //         if (this.dlPacketsCount >= this.ulPacketsCount) {
-  //           ws.close();
-  //         } else this.updateDLUI();
-  //       }
-  //     };
-  //     ws.onclose = () => {
-  //       this.dlEndTime = Date.now();
-  //       this.updateDLUI();
-  //       resolve(true);
-  //     };
-  //   });
-  // }
-
-  // runULo(url: string) {
-  //   return new Promise((resolve) => {
-  //     this.ulStartTime = +new Date();
-  //     const ws = new WebSocket(url);
-  //     ws.onerror = () => {
-  //       this._TsetUploadText("--");
-  //       resolve(false);
-  //     };
-  //     ws.onopen = () => {
-  //       for (let id = 0; id < this.ulPacketsCount; id++) {
-  //         const blob = this.makePacket(id, this.ulPacketsSize);
-  //         ws.send(blob);
-  //       }
-  //     };
-  //     ws.onmessage = (e) => {
-  //       if (typeof e.data === "string") {
-  //         this.ulEndTime = +new Date();
-  //         this.ulPacketsConfirmed++;
-  //         if (this.ulPacketsConfirmed >= this.ulPacketsCount) {
-  //           ws.close();
-  //         } else this.updateULUI();
-  //       }
-  //     };
-  //     ws.onclose = () => {
-  //       this.ulEndTime = +new Date();
-  //       this.updateULUI();
-  //       resolve(true);
-  //     };
-  //   });
-  // }
 
   updatePingUI() {
     const latencies: number[] = [];
@@ -441,30 +383,10 @@ export class SpeedTestComponent implements OnInit {
     this.updateProgress(this.pingPacketsRecieved.length);
   }
 
-  // updateDLUI() {
-  //   let s = (this.dlEndTime - this.dlStartTime) / 1000;
-  //   let t = this.dlDataRecieved / 1000 / 1000 / s;
-  //   this._TsetDownloadText(Math.floor(t * 100) / 100);
-  //   this.updateProgress(100 + this.dlPacketsCount);
-  // }
-
-  // updateULUI() {
-  //   let s = (this.ulEndTime - this.ulStartTime) / 1000;
-  //   let t = (this.ulPacketsConfirmed * this.ulPacketsSize) / 1000 / 1000 / s;
-  //   this._TsetUploadText(Math.floor(t * 100) / 100);
-  //   this.updateProgress(100 + this.dlPacketsCount + this.ulPacketsConfirmed);
-  // }
-
   makePacket(id: number, size: number): Blob {
     const tag = JSON.stringify({ id });
     const mimeType = { type: "application/octet-stream" };
     return new Blob([tag, new ArrayBuffer(size - tag.length)], mimeType);
-  }
-
-  private printBlob(b: Blob) {
-    let r = new FileReader();
-    r.onload = () => console.warn(JSON.stringify(r.result));
-    r.readAsText(b);
   }
 
   updateProgress(count: number) {

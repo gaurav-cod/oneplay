@@ -378,6 +378,17 @@ export class RestService {
     return this.http.get<SpeedTestServerRO>(this.r_mix_api + "/games/speed-test-server")
   }
 
+  sendSpeedTestDLPacket(url: string, packetSize: number) {
+    return this.http.post(url, { size: packetSize, id: 1 }, { responseType: 'arraybuffer' });
+  }
+
+  sendSpeedTestULPacket(url: string, index: string, file: Blob) {
+    const formData = new FormData();
+    formData.append("id", index);
+    formData.append("file", file);
+    return this.http.post(url, formData);
+  }
+
   getGameDetails(id: string, params?: any): Observable<GameModel> {
     return this.http
       .get(this.r_mix_api + "/games/" + id + "/info", { params })
