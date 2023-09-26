@@ -19,7 +19,8 @@ import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-import parsePhoneNumber from 'libphonenumber-js'
+import { phoneValidator } from "src/app/utils/validators.util";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-register",
@@ -34,6 +35,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
+  countryCodeSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
 
@@ -50,12 +52,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      (control: AbstractControl): { [key: string]: any } | null => {
-        if (!control?.value) return { emptyPhone: true };
-        const phoneNumber = parsePhoneNumber(control?.parent?.controls['country_code']?.value + control.value)
-        return phoneNumber?.isValid() ? null : { invalidPhone: true };
-      },
-      // Validators.pattern(/^(?:(?:\+|0{0,2})91(\s*[\-]\s*)?|[0]?)?[789]\d{9}$/)
+      phoneValidator(null, "country_code"),
     ]),
     password: new UntypedFormControl("", [
       Validators.required,
@@ -150,7 +147,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.getName(ctrl.value);
     });
     ctrl.valueChanges.subscribe((id) => this.getName(id));
-    const phoneValidation = this.registerForm.controls['country_code'].valueChanges.subscribe(() => this.registerForm.controls['phone'].updateValueAndValidity())
+    this.countryCodeSub = this.registerForm.controls['country_code'].valueChanges.subscribe(() => this.registerForm.controls['phone'].updateValueAndValidity())
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (this.contryCodeCurrencyMapping[res.currency]) {
@@ -169,13 +166,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmButtonText: "Okay",
           });
         }
-        
       },
     });
   }
 
   ngOnDestroy(): void {
     this._signupEvent.cancel();
+    this.countryCodeSub?.unsubscribe();
   }
 
   register() {
