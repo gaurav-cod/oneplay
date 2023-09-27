@@ -497,19 +497,21 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   get shortDescLength() {
     if (screen.width >= 2438) {
-      return 276;
+      return 200;
     } else if (screen.width >= 1440) {
-      return 145;
+      return 105;
     } else if (screen.width >= 1024) {
-      return 100;
+      return 70;
     } else if (screen.width >= 768) {
-      return 84;
-    } else if (screen.width >= 425) {
-      return 145;
+      return 60;
+    } else if (screen.width >= 576) {
+      return 100;
+    }else if (screen.width >= 425) {
+      return 75;
     } else if (screen.width >= 375) {
-      return 125;
+      return 55;
     } else {
-      return 92;
+      return 52;
     }
   }
 
