@@ -607,9 +607,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.getTokensUsage().subscribe((data) => {
       let swal_html = null;
       if (data.total_tokens === 0) {
-        swal_html = `Level up and purchase a new subscription to continue Gaming. <p class="mt-4 "><a href="${this.domain}/subscription.html" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+        swal_html = `Level up and purchase a new subscription to continue Gaming.`;
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
-        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!<p class="mt-4 "><a href="${this.domain}/subscription.html" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
         if (this.showSettings.value) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
@@ -643,8 +643,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           customClass: "swalPaddingTop",
           title: "Wait!",
           html: swal_html,
-          showCloseButton: true,
-          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Buy Now",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
         });
       }
     });
