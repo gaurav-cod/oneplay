@@ -69,7 +69,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
             customClass: "swalPadding",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              if(params.isLiveForPurchase === 'true') {
+              if(params.isLiveForPurchase === 'false') {
                 window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
               } else {
                 this.packageID = params.subscribe || params.renew;
