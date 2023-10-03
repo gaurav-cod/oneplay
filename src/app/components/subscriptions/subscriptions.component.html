@@ -29,35 +29,20 @@
         </p>
       </div>
       <div class="col-6 pl-0">
-        <div class="row justify-content-end" *ngIf="!isUnlimited">
+        <div class="row justify-content-end">
           <div class="col-auto pl-0" *ngIf="totalTokens !== undefined">
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
               <div class="innerRange"
-                triggers="hover focus click"
-                ngbTooltip="{{ remainingTokens | tokens }} left"
-                [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
-              </div>
-            </div>
-            <div>
-              <span class="font16 font500 muteText">0</span>
-              <span class="font16 font500 muteText float-right">{{ totalTokens | tokens:true }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row justify-content-end" *ngIf="isUnlimited">
-          <div class="col-auto pl-0">
-            <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
-            <div class="outerRange">
-              <div class="innerRange w-100"
-                triggers="hover focus click"
-                ngbTooltip="Unlimited">
+                triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
+                ngbTooltip="{{ isUnlimited ? 'Unlimited' : remainingTokens | tokens }} left"
+                [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
               </div>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>
               <span class="font16 font500 muteText float-right">
-                Unlimited
+                {{ isUnlimited ? 'Unlimited' : totalTokens | tokens:true }}
               </span>
             </div>
           </div>
