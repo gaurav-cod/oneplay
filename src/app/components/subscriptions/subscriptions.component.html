@@ -29,19 +29,21 @@
         </p>
       </div>
       <div class="col-6 pl-0">
-        <div class="row justify-content-end" *ngIf="totalTokens !== undefined">
-          <div class="col-auto pl-0">
+        <div class="row justify-content-end">
+          <div class="col-auto pl-0" *ngIf="totalTokens !== undefined">
             <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
             <div class="outerRange">
               <div class="innerRange"
-                triggers="hover focus click"
+                triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
                 ngbTooltip="{{ remainingTokens | tokens }} left"
-                [ngStyle]="{width: calculatePercentage(remainingTokens, totalTokens)}">
+                [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
               </div>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>
-              <span class="font16 font500 muteText float-right">{{ totalTokens | tokens:true }}</span>
+              <span class="font16 font500 muteText float-right">
+                {{ isUnlimited ? 'Unlimited' : totalTokens | tokens:true }}
+              </span>
             </div>
           </div>
         </div>
@@ -74,7 +76,7 @@
                 <a
                   *ngIf="isAboutToExpire(sub.endsAt)"
                   [routerLink]="['/settings', 'subscription']"
-                  [queryParams]="{ renew: sub.planId, minutes: sub.tokens }"
+                  [queryParams]="{ renew: sub.planId, minutes: sub.tokens, isLiveForPurchase: sub.isLiveForPurchase }"
                   replaceUrl
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
@@ -84,8 +86,9 @@
               </div>
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
-                <span class="font18 font500 offWhiteText align-middle"
-                  >{{ sub.tokensRemaining | tokens }}/{{ sub.tokens | tokens : true }} left .
+                <span class="font18 font500 offWhiteText align-middle"> 
+                  <span *ngIf="!sub.isUnlimited">{{ sub.tokensRemaining | tokens }}/{{ sub.tokens | tokens : true }} left </span>
+                  <span *ngIf="sub.isUnlimited">Unlimited </span> .
                 </span>
                 <!-- <span
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"

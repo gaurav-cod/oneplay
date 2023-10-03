@@ -69,6 +69,19 @@ export class PaymentComponent implements OnInit, OnDestroy {
             customClass: "swalPadding",
           }).then(async (result) => {
             if (result.isConfirmed) {
+              if(params.isLiveForPurchase === 'true') {
+                window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
+              } else {
+                this.packageID = params.subscribe || params.renew;
+                this.planType = !!params.renew ? "base" : params.plan;
+                this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
+                  centered: true,
+                  modalDialogClass: "modal-lg",
+                  scrollable: true,
+                  backdrop: "static",
+                  keyboard: false,
+                });
+              }
               this.packageID = params.subscribe || params.renew;
               this.planType = !!params.renew ? "base" : params.plan;
               this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
@@ -79,7 +92,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
                 keyboard: false,
               });
             } else if (result.isDenied) {
-              window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
+              window.location.href = `${environment.domain}/subscription.html`;
             } else {
               this.removeQueryParams();
             }
@@ -235,7 +248,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null, renew: null, plan: null, minutes: null },
+      queryParams: { subscribe: null, renew: null, plan: null, minutes: null, isLiveForPurchase: null },
       replaceUrl: true,
       queryParamsHandling: "merge",
     });
