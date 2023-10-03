@@ -35,7 +35,7 @@
             <div class="outerRange">
               <div class="innerRange"
                 triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
-                ngbTooltip="{{ isUnlimited ? 'Unlimited' : remainingTokens | tokens }} left"
+                ngbTooltip="{{ remainingTokens | tokens }} left"
                 [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
               </div>
             </div>
