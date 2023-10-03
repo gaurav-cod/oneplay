@@ -82,15 +82,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
                   keyboard: false,
                 });
               }
-              this.packageID = params.subscribe || params.renew;
-              this.planType = !!params.renew ? "base" : params.plan;
-              this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
-                centered: true,
-                modalDialogClass: "modal-lg",
-                scrollable: true,
-                backdrop: "static",
-                keyboard: false,
-              });
             } else if (result.isDenied) {
               window.location.href = `${environment.domain}/subscription.html`;
             } else {
