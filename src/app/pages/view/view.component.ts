@@ -1159,7 +1159,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           Swal.fire({
             icon: "success",
             title: "Reported!",
-            text: "We have recieve your report. We will look into it.",
+            text: "Thank you for your report, our team will investigate the issue promptly. ",
           });
         },
         error: (err) => {
