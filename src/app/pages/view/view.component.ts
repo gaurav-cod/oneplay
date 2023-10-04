@@ -1053,6 +1053,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Try Again",
       showCancelButton: true,
       cancelButtonText: "Report",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
     }).then((res) => {
       this.stopLoading();
       this.initializationErrored = false;
