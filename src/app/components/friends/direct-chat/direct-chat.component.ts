@@ -45,7 +45,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.authService.user.subscribe((user) => (this.user = user));
     this.chatService.messages$.subscribe(
-      (messages) => (this.messages = messages)
+      (messages) => {this.messages = messages; console.warn('message', this.messages)}
     );
   }
 

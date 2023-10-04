@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { FriendModel } from "src/app/models/friend.model";
 import { FriendsService } from "src/app/services/friends.service";
 
@@ -12,15 +13,21 @@ export class FriendsMainComponent implements OnInit {
   @Output("goToParties") goToParties = new EventEmitter();
   @Output("goToMail") goToMail = new EventEmitter();
   @Output("goToChat") goToChat = new EventEmitter();
+  @ViewChild("UnfriendModal") UnfriendModal: ElementRef<HTMLDivElement>;
 
   friends: FriendModel[] = [];
   requests = 0;
+
+  private UnfriendModalRef: NgbModalRef;
 
   get onlineCount() {
     return this.friends.filter((friend) => friend.isOnline).length;
   }
 
-  constructor(private readonly friendsService: FriendsService) {
+  constructor(
+    private readonly friendsService: FriendsService,
+    private readonly ngbModal: NgbModal,
+  ) {
     this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
     });
@@ -33,5 +40,12 @@ export class FriendsMainComponent implements OnInit {
 
   onChat(friend: FriendModel) {
     this.goToChat.emit(friend.id);
+  }
+
+  openUnfriendModal() {
+    this.UnfriendModalRef = this.ngbModal.open(this.UnfriendModal, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+    });
   }
 }

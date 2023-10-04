@@ -192,13 +192,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getFriendAddIcon(friend: UserModel) {
     if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
-      return "fa-user-check";
+      return "friend";
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
-      return "fa-user-clock";
+      return "wait-request";
     } else if (this.user.id === friend.id) {
       return "d-none";
     } else {
-      return "fa-user-plus";
+      return "add-friend";
     }
   }
 
