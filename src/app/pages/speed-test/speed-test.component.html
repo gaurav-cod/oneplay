@@ -1,5 +1,5 @@
 <div class="container pageBg">
-  <div class="row pb-6 pb-lg-4">
+  <div class="row pb-6">
     <div class="col-md-12 mt-5">
       <h1 class="topHeading text-center d-none d-md-block">
         Oneplay Speed Test <span class="d-none">Results</span>
@@ -7,138 +7,160 @@
       <h1 class="topHeading text-center d-md-none">
         Speed Test <span class="">Results</span>
       </h1>
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-12 col-lg-9">
-          <div class="row mt-4 d-md-none">
-            <div class="col text-center">
-              <img [src]="latencyIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ latencyText }}</p>
-              <span class="muteText font500">ms</span>
-            </div>
-            <div class="col text-center">
-              <img [src]="jitterIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ jitterText }}</p>
-              <span class="muteText font500">ms</span>
-            </div>
-            <div class="col text-center">
-              <img [src]="downloadIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Download')">{{ downloadText }}</p>
-              <span class="muteText font500">mbps</span>
-            </div>
-            <div class="col text-center">
-              <img [src]="uploadIcon" class="img-fluid" alt="" />
-              <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Upload')">{{ uploadText }}</p>
-              <span class="muteText font500">mbps</span>
-            </div>
-          </div>
-          <div class="row justify-content-center mt-4">
-            <div class="col d-none d-md-block">
-              <div class="row">
-                <div class="col-auto">
+      <div class="row mt-md-5">
+        <div class="col-lg-12 col-md-6 col-12 order-md-2 order-lg-1">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-12 col-lg-9">
+              <div class="row mt-4 d-md-none">
+                <div class="col col-md-6 col-lg text-center">
                   <img [src]="latencyIcon" class="img-fluid" alt="" />
+                  <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ latencyText }}</p>
+                  <span class="muteText font500">ms</span>
                 </div>
-                <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Latency </span><span
-                      class="muteText">ms</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Latency')">
-                    {{ latencyText }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col d-none d-md-block">
-              <div class="row">
-                <div class="col-auto">
+                <div class="col col-md-6 col-lg text-center">
                   <img [src]="jitterIcon" class="img-fluid" alt="" />
+                  <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Latency')">{{ jitterText }}</p>
+                  <span class="muteText font500">ms</span>
                 </div>
-                <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Jitter </span><span
-                      class="muteText">ms</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Latency')">
-                    {{ jitterText }}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col d-none d-md-block">
-              <div class="row">
-                <div class="col-auto">
+                <div class="col col-md-6 col-lg text-center">
                   <img [src]="downloadIcon" class="img-fluid" alt="" />
+                  <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Download')">{{ downloadText }}</p>
+                  <span class="muteText font500">mbps</span>
                 </div>
-                <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Download')">Download </span><span
-                      class="muteText">mbps</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Download')">
-                    {{ downloadText}}
-                  </p>
+                <div class="col col-md-6 col-lg text-center">
+                  <img [src]="uploadIcon" class="img-fluid" alt="" />
+                  <p class="dataHeading text-white mb-0 mt-2" [ngClass]="getValueColor('Upload')">{{ uploadText }}</p>
+                  <span class="muteText font500">mbps</span>
+                </div>
+              </div>
+              <div class="row justify-content-center mt-4">
+                <div class="col col-md-6 col-lg d-none d-md-block">
+                  <div class="row">
+                    <div class="col-auto">
+                      <img [src]="latencyIcon" class="img-fluid" alt="" />
+                    </div>
+                    <div class="col pl-0">
+                      <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Latency </span><span
+                          class="muteText">ms</span></span>
+                      <p class="dataHeading" [ngClass]="getValueColor('Latency')">
+                        {{ latencyText }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-6 col-lg d-none d-md-block">
+                  <div class="row">
+                    <div class="col-auto">
+                      <img [src]="jitterIcon" class="img-fluid" alt="" />
+                    </div>
+                    <div class="col pl-0">
+                      <span class="font16 font500"><span [ngClass]="getStateColor('Latency')">Jitter </span><span
+                          class="muteText">ms</span></span>
+                      <p class="dataHeading" [ngClass]="getValueColor('Latency')">
+                        {{ jitterText }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-6 col-lg d-none d-md-block">
+                  <div class="row">
+                    <div class="col-auto">
+                      <img [src]="downloadIcon" class="img-fluid" alt="" />
+                    </div>
+                    <div class="col pl-0">
+                      <span class="font16 font500"><span [ngClass]="getStateColor('Download')">Download </span><span
+                          class="muteText">mbps</span></span>
+                      <p class="dataHeading" [ngClass]="getValueColor('Download')">
+                        {{ downloadText}}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-6 col-lg d-none d-md-block">
+                  <div class="row">
+                    <div class="col-auto">
+                      <img [src]="uploadIcon" class="img-fluid" alt="" />
+                    </div>
+                    <div class="col pl-0">
+                      <span class="font16 font500"><span [ngClass]="getStateColor('Upload')">Upload </span><span
+                          class="muteText">mbps</span></span>
+                      <p class="dataHeading" [ngClass]="getValueColor('Upload')">
+                        {{ uploadText }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col d-none d-md-block">
-              <div class="row">
-                <div class="col-auto">
-                  <img [src]="uploadIcon" class="img-fluid" alt="" />
-                </div>
-                <div class="col pl-0">
-                  <span class="font16 font500"><span [ngClass]="getStateColor('Upload')">Upload </span><span
-                      class="muteText">mbps</span></span>
-                  <p class="dataHeading" [ngClass]="getValueColor('Upload')">
-                    {{ uploadText }}
-                  </p>
+            <div class="col-12 col-md-12 col-lg-9">
+              <div class="row {{ hideRecommendation }}">
+                <div class="col-auto mb-4 mb-md-0">
+                  <div [ngClass]="recommendationColor">
+                    {{ recommendation }}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="row mb-4 {{ hideRecommendation }}">
-            <div class="col-auto">
-              <div [ngClass]="recommendationColor">
-                {{ recommendation }}
-              </div>
+          
+          <div class="row mt-md-5 d-md-block d-none d-lg-none">
+            <div class="col-12 text-center">
+              <p class="font16 font500 offWhiteText mb-0" *ngIf="!!currentLocation">
+                IP Address
+              </p>
+              <h3 class="font28 font600 text-white mb-0" *ngIf="!!currentLocation">
+                {{ currentLocation.ip }}
+              </h3>
+              <p class="font20 font500 muteText" *ngIf="!!currentLocation">
+                {{ currentLocation.isp }}
+              </p>
             </div>
           </div>
         </div>
-      </div>
-
-      <h3 class="text-center {{ finalMessage.class }}">{{ finalMessage.text }}</h3>
-      <div class="row justify-content-center mt-2">
-        <div class="col-auto p-1">
-          <div class="card text-white border-0 bgTransparent">
-            <div class="text-center dotBorder p-2">
-              <svg id="circle">
-                <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%" *ngIf="!testCompleted">
-                  <stop offset="0%" stop-color="#FF0CF5" />
-                  <stop offset="100%" stop-color="#0575E6" />
-                </linearGradient>
-                <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%" *ngIf="testCompleted">
-                  <stop offset="0%" stop-color="#59FEF4" />
-                  <stop offset="100%" stop-color="#3AA0FE" />
-                </linearGradient>
-
-                <circle class="circleBorder" r="140" cx="50%" cy="50%" stroke="#3E4246" fill="none" stroke-width="15"
-                  stroke-linecap="round" stroke-dasharray="660, 660"></circle>
-                <circle id="success-value" r="140" cx="50%" cy="50%" fill="none" stroke-width="15"
-                  stroke-linecap="round" [attr.stroke-dasharray]="progressValue"></circle>
-              </svg>
-            </div>
-
-            <div class="d-none"><input type="text" id="circleValue" />%</div>
-            <div class="card-img-overlay" style="
-                background-image: url('assets/img/speed-test/gradientBg.svg');
-              ">
-              <div class="text-center mt-5">
-                <div class="pt-3" *ngIf="!testCompleted">
-                  <span class="font20 font500 text-white">{{ state }}</span>
-                  <h1 class="displayData mb-0">{{ getCurrentTestValue(state) }}</h1>
-                  <span class="font16 font500 muteText">mbps</span>
+        
+        <div class="col-lg-12 col-md-6 col-12 order-md-1 order-lg-2 pt-md-4">
+          <h3 class="text-center {{ finalMessage.class }}">{{ finalMessage.text }}</h3>
+          <div class="row justify-content-center mt-2">
+            <div class="col-auto p-1">
+              <div class="card text-white border-0 bgTransparent">
+                <div class="text-center dotBorder p-2">
+                  <svg id="circle">
+                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%" *ngIf="!testCompleted">
+                      <stop offset="0%" stop-color="#FF0CF5" />
+                      <stop offset="100%" stop-color="#0575E6" />
+                    </linearGradient>
+                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="100%" *ngIf="testCompleted">
+                      <stop offset="0%" stop-color="#59FEF4" />
+                      <stop offset="100%" stop-color="#3AA0FE" />
+                    </linearGradient>
+    
+                    <circle class="circleBorder" r="140" cx="50%" cy="50%" stroke="#3E4246" fill="none" stroke-width="15"
+                      stroke-linecap="round" stroke-dasharray="660, 660"></circle>
+                    <circle id="success-value" r="140" cx="50%" cy="50%" fill="none" stroke-width="15"
+                      stroke-linecap="round" [attr.stroke-dasharray]="progressValue"></circle>
+                  </svg>
                 </div>
-                <div class="pt-4" *ngIf="testCompleted">
-                  <p class="font20 font500 infoText">Test Completed</p>
-                  <img src="assets/img/singup-login/Group 250.svg" width="70px" height="70px" class="img-fluid"
-                    alt="" />
-                  <div class="text-center pt-3">
-                    <button class="btn resetBtn border-0 mt-4" (click)="runTests()">
-                      Retest
-                    </button>
+    
+                <div class="d-none"><input type="text" id="circleValue" />%</div>
+                <div class="card-img-overlay" style="
+                    background-image: url('assets/img/speed-test/gradientBg.svg');
+                  ">
+                  <div class="text-center mt-5">
+                    <div class="pt-3" *ngIf="!testCompleted">
+                      <span class="font20 font500 text-white">{{ state }}</span>
+                      <h1 class="displayData mb-0">{{ getCurrentTestValue(state) }}</h1>
+                      <span class="font16 font500 muteText">mbps</span>
+                    </div>
+                    <div class="pt-4" *ngIf="testCompleted">
+                      <p class="font20 font500 infoText">Test Completed</p>
+                      <img src="assets/img/singup-login/Group 250.svg" width="70px" height="70px" class="img-fluid"
+                        alt="" />
+                      <div class="text-center pt-3">
+                        <button class="btn resetBtn border-0 mt-4" (click)="runTests()">
+                          Retest
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,7 +168,10 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      
+
+      
+      <div class="row d-md-none d-block d-lg-block">
         <div class="col-12 text-center">
           <p class="font16 font500 offWhiteText mb-0" *ngIf="!!currentLocation">
             IP Address
