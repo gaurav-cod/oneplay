@@ -1292,6 +1292,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         centered: true,
         windowClass: "blurBG",
         modalDialogClass: "modal-sm",
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
       });
     } else if (result.isConfirmed) {
       this.startGame();
