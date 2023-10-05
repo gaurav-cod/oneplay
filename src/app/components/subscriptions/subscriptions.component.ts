@@ -37,6 +37,7 @@ export class SubscriptionsComponent implements OnInit {
   filterProcess = false;
   filterFailed = false;
   isCurrentLoading = true;
+  isUnlimited: boolean = false;
 
   constructor(
     private readonly restService: RestService,
@@ -53,6 +54,13 @@ export class SubscriptionsComponent implements OnInit {
     this.restService.getCurrentSubscription().subscribe((s) => {
       this.currentSubscriptions = s;
       this.isCurrentLoading = false;
+      for (let sub = 0; sub < this.currentSubscriptions.length; sub++) {
+        const element = this.currentSubscriptions[sub];
+        if(element.isUnlimited) {
+          this.isUnlimited = true;
+          break;
+        }
+      }
     });
     this.countlyService.updateEventData("settingsView", {
       subscriptionViewed: "yes",
