@@ -230,9 +230,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
         return "Once the current one expires, this subscription pack will start.";
       }
     }
-    if(params.renew) {
-      return "You are about to renew your subscription <br/> plan.";
-    }
     return "You are about to pay for the chosen subscription plan.";
   }
 
