@@ -14,4 +14,9 @@
 .virtualScrollWH {
     height: 70vh;
     width: 100%;
+
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
 }
