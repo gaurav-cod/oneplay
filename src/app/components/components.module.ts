@@ -32,6 +32,7 @@ import { InitializingGameComponent } from './initializing-game/initializing-game
 import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.component';
 import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
     InitializingGameComponent,
     GameplayHistoryComponent,
     PaymentComponent,
+    OtpScreenComponent,
   ],
   exports: [
     GameCardComponent,
