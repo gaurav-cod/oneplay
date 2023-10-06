@@ -569,11 +569,11 @@ input:-webkit-autofill:active {
 }
 
 .height52 {
-  height: 52px;
+  height: 52px !important;
 }
 
 .mutedBg {
-  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
 
 .borderRadius10 {
@@ -1202,12 +1202,6 @@ select {
   color: #fff;
 }
 
-.bottomTag {
-  position: relative;
-  bottom: 22px;
-  color: #fff;
-}
-
 .modalZIndex1061 {
   z-index: 1061 !important;
 }
@@ -1232,4 +1226,11 @@ select {
 
 .blurBG {
   backdrop-filter: blur(9px);
+}
+
+.borderRadiusCustom {
+  border-radius: 6px !important;
+  @media (max-width: 992px) {
+    border-radius: 60px !important;
+  }
 }

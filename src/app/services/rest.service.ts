@@ -116,9 +116,9 @@ export class RestService {
       );
   }
 
-  updatePassword(password: string): Observable<void> {
+  updatePassword(old_password: string, password: string): Observable<void> {
     return this.http
-      .put(this.r_mix_api + "/accounts/password", { password })
+      .put(this.r_mix_api + "/accounts/password", { old_password , password })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {
@@ -128,7 +128,97 @@ export class RestService {
   }
 
   updateEmail(email: string): Observable<string> {
-    return this.http.put(this.r_mix_api + "/accounts/email", { email }).pipe(
+    return this.http.post(this.r_mix_api + "/accounts/update_email_request", { email }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendEmailRequestUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_request_secret").pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  verifyEmailUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendUpdateEmail() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_secret").pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendEmailUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_secret").pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  confirmEmailUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_secret", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  updatePhone(phone: string): Observable<string> {
+    return this.http.post(this.r_mix_api + "/accounts/update_phone_request", { phone }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendPhoneRequestUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_phone_request_otp").pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  verifyPhoneUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone_request", { code }).pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  resendPhoneUpdate() {
+    return this.http.get(this.r_mix_api + "/accounts/resend_update_phone_otp").pipe(
+      map((res) => res["msg"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
+  confirmPhoneUpdate(code: string) {
+    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone", { code }).pipe(
       map((res) => res["msg"]),
       catchError(({ error }) => {
         throw error;
