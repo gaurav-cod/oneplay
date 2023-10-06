@@ -33,22 +33,21 @@ export class SecurityComponent implements OnInit {
   allowEmailEdit: boolean = true;
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
-  emailCodeTimer;
-  newEmailCodeTimer;
-  newPhoneCodeTimer;
-  securityCodeTimer;
-  private iconHidetimer: any;
+  private emailIconHideTimer: NodeJS.Timeout; 
+  private phoneIconHideTimer: NodeJS.Timeout;
+  private passwordIconHideTimer: NodeJS.Timeout;
 
   isDisabled: boolean = true;
 
   errorMessage: string;
   incorrectCode: string;
   
-  emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
-  updateSecurity = new UntypedFormGroup({
-    email: new UntypedFormControl("", [Validators.required, Validators.pattern(this.emailPattern)]),
+  email = new UntypedFormControl("", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]);
+  phoneForm = new UntypedFormGroup({
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
+  });
+  updateSecurity = new UntypedFormGroup({
     oldPassword: new UntypedFormControl("",  [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
     password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
     confirmPassword: new UntypedFormControl("",  [Validators.required]),
@@ -99,13 +98,12 @@ export class SecurityComponent implements OnInit {
   }
 
   get phoneErrored() {
-    const control = this.updateSecurity.controls["phone"];
+    const control = this.phoneForm.controls["phone"];
     return control.touched && control.invalid;
   }
 
   get emailErrored() {
-    const control = this.updateSecurity.controls["email"];
-    return control.touched && control.invalid;
+    return this.email.touched && this.email.invalid;
   }
 
   get passwordErrored() {
@@ -163,8 +161,8 @@ export class SecurityComponent implements OnInit {
 
   updateEmail(): void {
     if (this.emailErrored) return;
-    if (this.user?.email === this.updateSecurity.value?.email.trim()) return;
-    this.restService.updateEmail(this.updateSecurity.value.email).subscribe(
+    if (this.user?.email === this.email.value?.trim()) return;
+    this.restService.updateEmail(this.email.value).subscribe(
       () => {
         this._changeEmailModalRef.close();
         this.timer(1)
@@ -227,6 +225,8 @@ export class SecurityComponent implements OnInit {
           icon: "success",
           text: "You have successfully changed your email.",
         });
+        this.authService.updateProfile({ email: this.email.value });
+        this.email.reset();
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -245,7 +245,7 @@ export class SecurityComponent implements OnInit {
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
-          this.updateSecurity.controls["country_code"].setValue(
+          this.phoneForm.controls["country_code"].setValue(
             contryCodeCurrencyMapping[res.currency]
           );
         }
@@ -255,8 +255,8 @@ export class SecurityComponent implements OnInit {
 
   updatePhone(): void {
     if (this.phoneErrored) return;
-    if (this.user.phone === this.updateSecurity.value.phone.trim()) return ;
-    this.restService.updatePhone(this.updateSecurity.value.country_code + this.updateSecurity.value.phone).subscribe(
+    if (this.user.phone === this.phoneForm.value.phone.trim()) return ;
+    this.restService.updatePhone(this.phoneForm.value.country_code + this.phoneForm.value.phone).subscribe(
       () => {
         this._changePhoneModalRef.close();
         this.emailOTP = false;
@@ -318,6 +318,8 @@ export class SecurityComponent implements OnInit {
           icon: "success",
           text: "You have successfully changed your phone number.",
         });
+        this.authService.updateProfile({ phone: Object.values(this.phoneForm.value).join('') });
+        this.phoneForm.controls['phone'].reset();
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -364,22 +366,22 @@ export class SecurityComponent implements OnInit {
     this._changeEmailModalRef.close();
     this._otpScreenRef?.close();
     this.allowEmailEdit = false;
-    clearTimeout(this.iconHidetimer);
-    this.iconHidetimer = setTimeout(() => {this.allowEmailEdit = true}, 120000); // 2 minutes (2 * 60,000 milliseconds)
+    clearTimeout(this.emailIconHideTimer);
+    this.emailIconHideTimer = setTimeout(() => {this.allowEmailEdit = true}, 120000); // 2 minutes (2 * 60,000 milliseconds)
   }
 
   closePhoneModal() {
     this._changePhoneModalRef.close();
     this._otpScreenRef?.close();
     this.allowPhoneEdit = false;
-    clearTimeout(this.iconHidetimer);
-    this.iconHidetimer = setTimeout(() => {this.allowPhoneEdit = true;}, 120000);
+    clearTimeout(this.phoneIconHideTimer);
+    this.phoneIconHideTimer = setTimeout(() => {this.allowPhoneEdit = true;}, 120000);
   }
 
   closePasswordModal() {
     this._changePasswordModalRef.close();
     this.allowPasswordEdit = false;
-    clearTimeout(this.iconHidetimer);
-    this.iconHidetimer = setTimeout(() => {this.allowPasswordEdit = true;}, 120000);
+    clearTimeout(this.passwordIconHideTimer);
+    this.passwordIconHideTimer = setTimeout(() => {this.allowPasswordEdit = true;}, 120000);
   }
 }
