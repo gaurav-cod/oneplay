@@ -1,6 +1,6 @@
 <div class="row mt-4">
   <div class="col-md-10 col-lg-10">
-    <div class="row">
+    <div class="row pb-4">
       <div class="col-md-4 col-4 align-self-center pr-0">
         <p class="font18 font500 text-white mb-0">Device History</p>
       </div>
@@ -15,8 +15,9 @@
         </span>
       </div>
     </div>
+    <cdk-virtual-scroll-viewport itemSize="82" class="virtualScrollWH">
     <div class="table-responsive">
-      <table class="customTable table w-100 mt-4">
+      <table class="customTable table w-100">
         <thead>
           <tr>
             <th scope="col" class="pl-0">Device</th>
@@ -26,7 +27,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let session of sessions">
+          <tr *cdkVirtualFor="let session of sessions">
             <td class="align-middle py-3 pl-0" scope="row">
               <ng-container *ngIf="session.device">
                 {{ session.device.app }}
@@ -63,6 +64,7 @@
         </tbody>
       </table>
     </div>
+  </cdk-virtual-scroll-viewport>
   </div>
 </div>
 

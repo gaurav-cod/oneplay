@@ -31,6 +31,7 @@ import { ClipboardModule } from "ngx-clipboard";
 import { InitializingGameComponent } from './initializing-game/initializing-game.component';
 import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.component';
 import { PaymentComponent } from './payment/payment.component';
+import { ScrollingModule } from "@angular/cdk/scrolling";
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { PaymentComponent } from './payment/payment.component';
     ShareIconsModule,
     InfiniteScrollModule,
     ClipboardModule,
+    ScrollingModule,
   ],
   declarations: [
     GameCardComponent,
