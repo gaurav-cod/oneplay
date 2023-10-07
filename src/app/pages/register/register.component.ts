@@ -36,7 +36,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
-  countryCodeSub: Subscription;
+  private countryCodeSub: Subscription;
+  private referralSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
 
@@ -138,8 +139,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ctrl.disable();
       this.getName(ctrl.value);
     });
-    ctrl.valueChanges.subscribe((id) => this.getName(id));
-    this.countryCodeSub = this.registerForm.controls['country_code'].valueChanges.subscribe(() => this.registerForm.controls['phone'].updateValueAndValidity())
+    this.referralSub = ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.countryCodeSub = this.registerForm.controls[
+      "country_code"
+    ].valueChanges.subscribe(() =>
+      this.registerForm.controls["phone"].updateValueAndValidity()
+    );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
@@ -165,6 +170,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._signupEvent.cancel();
     this.countryCodeSub?.unsubscribe();
+    this.referralSub?.unsubscribe();
   }
 
   register() {
