@@ -10,6 +10,8 @@ export class SubscriptionPackageModel {
   plan_duration_in_days: number;
   tokens: number;
   type: 'base' | 'topup';
+  isLiveForPurchase: boolean;
+  isUnlimited: boolean;
 
   constructor(json: any) {
     this.id = json.id;
@@ -23,5 +25,7 @@ export class SubscriptionPackageModel {
     this.plan_duration_in_days = json.plan_duration_in_days;
     this.tokens = json.total_offered_tokens;
     this.type = json.package_type;
+    this.isLiveForPurchase = json.is_live_for_purchase === "true";
+    this.isUnlimited = json.plan_config.is_unlimited;
   }
 }

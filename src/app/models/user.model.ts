@@ -14,7 +14,7 @@ export class UserModel {
   readonly bio: string;
   readonly age: number;
   readonly email: string;
-  readonly phone: number;
+  readonly phone: string;
   readonly type: string;
   readonly isVerified: boolean;
   readonly photo: string | null;

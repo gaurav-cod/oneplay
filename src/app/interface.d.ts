@@ -98,6 +98,17 @@ export interface GameStatusRO {
   session_id: string;
 }
 
+export interface TerminateStreamRO {
+  code: number;
+  data: {
+    session_duration?: number,
+    play_duration?: number,
+    idle_duration?: number,
+  };
+  msg: string;
+  status: "success" | "fail";
+}
+
 export interface GameSessionRO {
   game_id: string;
   user_id: string;

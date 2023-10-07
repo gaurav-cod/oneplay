@@ -12,8 +12,8 @@
       </p>
     </div>
     <div class="col-md-12 mt-3">
-      <label class="font16 font500 customOffWhite">
-        Username*
+      <label class="font16 font500 customOffWhite required">
+        Username
         <i
           class="fas fa-info-circle ml-1"
           ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="col-md-12 mt-3">
-      <label class="font16 font500 customOffWhite">Date Of Birth*</label
+      <label class="font16 font500 customOffWhite required">Date Of Birth</label
       ><span
         class="font16 font500 errorGradientColor float-right"
         *ngIf="dateOfBirthErrored"
@@ -46,7 +46,7 @@
         <input
           class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
           formControlName="dob"
-          placeholder="DD\MM\YY"
+          placeholder="DD\MM\YYYY"
           ngbDatepicker
           #d="ngbDatepicker"
           (click)="d.toggle()"
