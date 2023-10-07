@@ -285,23 +285,13 @@ export class SpeedTestComponent implements OnInit {
       let pcount = 0;
       let scount = 0;
       let dlstart = Date.now();
+      this.currentDownload = 0;
       for (let i = 1; i <= this.dlReqCount; i++) {
         this.subs.push(this.restService.sendSpeedTestDLPacket(
           url + `?nocache=${v4()}`,
           this.dlPacketsSize,
         ).subscribe({
-          error: () => {
-            pcount++;
-            let s = (Date.now() - dlstart) / 1000;
-            let t = (scount * this.dlPacketsSize) / 1024 / 1024 / s;
-            this.currentDownload = (Math.floor(t * 100) / 100) * 8;
-            this._TsetDownloadText(this.currentDownload);
-            this.updateProgress(this.pingCount + pcount);
-            if (pcount >= this.dlReqCount) {
-              resolve(true);
-            }
-          },
-          next: () => {
+          complete: () => {
             scount++;
             pcount++;
             let s = (Date.now() - dlstart) / 1000;
@@ -315,6 +305,12 @@ export class SpeedTestComponent implements OnInit {
           },
         }));
       }
+      setTimeout(() => {
+        if (pcount < this.dlReqCount) {
+          this.updateProgress(this.pingCount + this.dlReqCount);
+          resolve(true);
+        }
+      }, 30000);
     });
   }
 
@@ -323,23 +319,13 @@ export class SpeedTestComponent implements OnInit {
       let pcount = 0;
       let scount = 0;
       let ulstart = Date.now();
+      this.currentUpload = 0;
       for (let i = 1; i <= this.ulReqCount; i++) {
         this.subs.push(this.restService.sendSpeedTestULPacket(
           url + `?nocache=${v4()}`, i.toString(),
           this.makePacket(i, this.ulPacketsSize),
         ).subscribe({
-          error: () => {
-            pcount++;
-            let s = (Date.now() - ulstart) / 1000;
-            let t = (scount * this.ulPacketsSize) / 1024 / 1024 / s;
-            this.currentUpload = (Math.floor(t * 100) / 100) * 8;
-            this._TsetUploadText(this.currentUpload);
-            this.updateProgress(this.pingCount + this.dlReqCount + pcount);
-            if (pcount >= this.ulReqCount) {
-              resolve(true);
-            }
-          },
-          next: () => {
+          complete: () => {
             scount++;
             pcount++;
             let s = (Date.now() - ulstart) / 1000;
@@ -353,6 +339,13 @@ export class SpeedTestComponent implements OnInit {
           },
         }));
       }
+
+      setTimeout(() => {
+        if (pcount < this.ulReqCount) {
+          this.updateProgress(this.pingCount + this.dlReqCount + this.ulReqCount);
+          resolve(true);
+        }
+      }, 30000);
     });
   }
 
