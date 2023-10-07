@@ -1,10 +1,11 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 import { CountryCode, parsePhoneNumber } from "libphonenumber-js";
 
-export function phoneValidator(region?: CountryCode): ValidatorFn {
+export function phoneValidator(region?: CountryCode, codeField?: string): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     try {
-      const phoneNumber = parsePhoneNumber(control.value, region);
+      const fullPhone = (control.parent?.controls[codeField]?.value ?? "") + control.value;
+      const phoneNumber = parsePhoneNumber(codeField ? fullPhone : control.value, region);
 
       if (region && phoneNumber.country !== region) {
         return { inValidCountry: { value: control.value } };
