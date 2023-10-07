@@ -25,18 +25,19 @@ export class StoreComponent implements OnInit {
     //   label: "common",
     //   value: {},
     // },
-    "Best of 2021": {
-      label: "common",
-      value: {
-        release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
-      },
-    },
     "Best of 2022": {
       label: "common",
       value: {
         release_date: "2021-12-31T18:30:00.000Z#2022-12-31T18:30:00.000Z",
       },
     },
+    "Best of 2021": {
+      label: "common",
+      value: {
+        release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
+      },
+    },
+    
     // "Top 20": {
     //   label: "common",
     //   value: {

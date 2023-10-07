@@ -12,7 +12,7 @@ export class GameplayHistoryComponent implements OnInit{
   gamePlaysessions: GameplayHistoryModel[] = [];
   currentPage = 1;
   readonly pagelimit = 20;
-  loadMoreBtn = true;
+  loadMoreBtn: boolean = false;
 
   constructor(
     private readonly restService: RestService,
@@ -30,7 +30,7 @@ export class GameplayHistoryComponent implements OnInit{
       this.gamePlaysessions = [...this.gamePlaysessions, ...data];
       this.currentPage++;
       if (data.length < this.pagelimit) {
-        this.loadMoreBtn = false;
+        this.loadMoreBtn = true;
       }
     });
   }

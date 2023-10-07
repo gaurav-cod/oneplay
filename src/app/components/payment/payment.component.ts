@@ -51,7 +51,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.querySubscriptions = this.route.queryParams.subscribe(
       async (params) => {
-        if (params.subscribe || params.renew) {
+        if (params.subscribe || params.renew || params.minutes) {
+          let confirmText = 'Yes';
+          if(params.renew) {
+            confirmText = 'Renew';
+          }
           Swal.fire({
             title: "Ready to unlock?",
             html: await this.getSwalTextForBasePlan(params),
@@ -59,23 +63,27 @@ export class PaymentComponent implements OnInit, OnDestroy {
             showCancelButton: !!params.subscribe && !params.renew,
             showDenyButton: !!params.renew && !params.subscribe,
             showCloseButton: true,
-            confirmButtonText: "Confirm",
-            cancelButtonText: "Cancel",
+            confirmButtonText: confirmText,
+            cancelButtonText: "No",
             denyButtonText: "Change plan",
             customClass: "swalPadding",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              this.packageID = params.subscribe || params.renew;
-              this.planType = !!params.renew ? "base" : params.plan;
-              this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
-                centered: true,
-                modalDialogClass: "modal-lg",
-                scrollable: true,
-                backdrop: "static",
-                keyboard: false,
-              });
+              if(params.isLiveForPurchase === 'false') {
+                window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
+              } else {
+                this.packageID = params.subscribe || params.renew;
+                this.planType = !!params.renew ? "base" : params.plan;
+                this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
+                  centered: true,
+                  modalDialogClass: "modal-lg",
+                  scrollable: true,
+                  backdrop: "static",
+                  keyboard: false,
+                });
+              }
             } else if (result.isDenied) {
-              window.location.href = `${environment.domain}/subscription.html#Monthly_Plan`;
+              window.location.href = `${environment.domain}/subscription.html`;
             } else {
               this.removeQueryParams();
             }
@@ -205,7 +213,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.paymentModalRef.close();
     this.upiPaymentModalRef = this.ngbModal.open(this.upiPaymentModal, {
       centered: true,
-      modalDialogClass: "modal-xl",
+      modalDialogClass: "modal-lg",
       scrollable: true,
       backdrop: "static",
       keyboard: false,
@@ -219,16 +227,16 @@ export class PaymentComponent implements OnInit, OnDestroy {
       );
       const planTypes = subscriptions.map((s) => s.planType);
       if (planTypes.includes("base")) {
-        return "This Pack will start after the current one ends.<br/> <em>You can always level up by hourly packs!</em>";
+        return "Once the current one expires, this subscription pack will start.";
       }
     }
-    return "you're about to purchase the selected subscription package.";
+    return "You are about to pay for the chosen subscription plan.";
   }
 
   private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null, renew: null, plan: null },
+      queryParams: { subscribe: null, renew: null, plan: null, minutes: null, isLiveForPurchase: null },
       replaceUrl: true,
       queryParamsHandling: "merge",
     });

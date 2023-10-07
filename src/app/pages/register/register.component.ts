@@ -18,6 +18,7 @@ import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 
 @Component({
   selector: "app-register",
@@ -82,17 +83,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  readonly contryCodeCurrencyMapping = {
-    INR: "+91",
-    MYR: "+60",
-    SGD: "+65",
-    KRW: "+82",
-    AED: "+971",
-    QAR: "+974",
-  };
-
   get countryCodes() {
-    return Object.values(this.contryCodeCurrencyMapping);
+    return Object.values(contryCodeCurrencyMapping);
   }
 
   get checkvalidationValue() {
@@ -145,9 +137,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ctrl.valueChanges.subscribe((id) => this.getName(id));
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (this.contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.currency]) {
           this.registerForm.controls["country_code"].setValue(
-            this.contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.currency]
           );
           this.nonFunctionalRegion = false;
         } else {
