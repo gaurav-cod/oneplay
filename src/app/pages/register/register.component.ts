@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
+  AbstractControl,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
@@ -18,6 +19,8 @@ import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { phoneValidator } from "src/app/utils/validators.util";
+import { Subscription } from "rxjs";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 
 @Component({
@@ -33,6 +36,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
+  private countryCodeSub: Subscription;
+  private referralSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
 
@@ -49,7 +54,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      Validators.pattern(/^[0-9]{10}$/),
+      phoneValidator(null, "country_code"),
     ]),
     password: new UntypedFormControl("", [
       Validators.required,
@@ -134,7 +139,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ctrl.disable();
       this.getName(ctrl.value);
     });
-    ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.referralSub = ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.countryCodeSub = this.registerForm.controls[
+      "country_code"
+    ].valueChanges.subscribe(() =>
+      this.registerForm.controls["phone"].updateValueAndValidity()
+    );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
@@ -153,13 +163,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmButtonText: "Okay",
           });
         }
-        
       },
     });
   }
 
   ngOnDestroy(): void {
     this._signupEvent.cancel();
+    this.countryCodeSub?.unsubscribe();
+    this.referralSub?.unsubscribe();
   }
 
   register() {

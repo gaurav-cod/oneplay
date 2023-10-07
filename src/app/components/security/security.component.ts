@@ -1,10 +1,16 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { Subscription } from "rxjs";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { phoneValidator } from "src/app/utils/validators.util";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 import Swal from "sweetalert2";
 
@@ -13,13 +19,14 @@ import Swal from "sweetalert2";
   templateUrl: "./security.component.html",
   styleUrls: ["./security.component.scss"],
 })
-export class SecurityComponent implements OnInit {
+export class SecurityComponent implements OnInit, OnDestroy {
   @ViewChild("changeEmailModal") changeEmailModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePhoneModal") changePhoneModal: ElementRef<HTMLDivElement>;
-  @ViewChild("changePasswordModal") changePasswordModal: ElementRef<HTMLDivElement>;
+  @ViewChild("changePasswordModal")
+  changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
-  buttonText: string = 'Continue';
+  buttonText: string = "Continue";
   isVerify: boolean = true;
   isPhone: boolean = true;
   emailOTP: boolean = true;
@@ -33,7 +40,7 @@ export class SecurityComponent implements OnInit {
   allowEmailEdit: boolean = true;
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
-  private emailIconHideTimer: NodeJS.Timeout; 
+  private emailIconHideTimer: NodeJS.Timeout;
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
 
@@ -41,22 +48,34 @@ export class SecurityComponent implements OnInit {
 
   errorMessage: string;
   incorrectCode: string;
-  
-  email = new UntypedFormControl("", [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]);
+
+  email = new UntypedFormControl("", [
+    Validators.required,
+    Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"),
+  ]);
   phoneForm = new UntypedFormGroup({
     country_code: new UntypedFormControl("+91", [Validators.required]),
-    phone: new UntypedFormControl("", [Validators.required, Validators.pattern(/^[0-9]{10}$/)]),
+    phone: new UntypedFormControl("", [
+      Validators.required,
+      phoneValidator(null, "country_code"),
+    ]),
   });
   updateSecurity = new UntypedFormGroup({
-    oldPassword: new UntypedFormControl("",  [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
-    password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
-    confirmPassword: new UntypedFormControl("",  [Validators.required]),
+    oldPassword: new UntypedFormControl("", [
+      Validators.required,
+      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
+    ]),
+    password: new UntypedFormControl("", [
+      Validators.required,
+      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/),
+    ]),
+    confirmPassword: new UntypedFormControl("", [Validators.required]),
   });
 
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
   }
-  
+
   showPass = false;
 
   user: UserModel;
@@ -65,11 +84,13 @@ export class SecurityComponent implements OnInit {
   private _changePasswordModalRef: NgbModalRef;
   private _otpScreenRef: NgbModalRef;
 
+  private _countryCodeSub: Subscription;
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
-    private readonly ngbModal: NgbModal,
+    private readonly ngbModal: NgbModal
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -78,14 +99,28 @@ export class SecurityComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this._countryCodeSub?.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.countlyService.updateEventData("settingsView", {
       logInSecurityViewed: "yes",
     });
+    this._countryCodeSub = this.phoneForm.controls[
+      "country_code"
+    ].valueChanges.subscribe(() =>
+      this.phoneForm.controls["phone"].updateValueAndValidity()
+    );
   }
 
   get checkvalidationValue() {
-    if(this.updateSecurity.value.oldPassword && this.updateSecurity.value.password.length && this.updateSecurity.value.password === this.updateSecurity.value.confirmPassword) {
+    if (
+      this.updateSecurity.value.oldPassword &&
+      this.updateSecurity.value.password.length &&
+      this.updateSecurity.value.password ===
+        this.updateSecurity.value.confirmPassword
+    ) {
       return false;
     } else {
       return true;
@@ -113,7 +148,10 @@ export class SecurityComponent implements OnInit {
 
   get confirmPasswordErrored() {
     const control = this.updateSecurity.controls["confirmPassword"];
-    if(this.updateSecurity.value.password !== this.updateSecurity.value.confirmPassword) {
+    if (
+      this.updateSecurity.value.password !==
+      this.updateSecurity.value.confirmPassword
+    ) {
       return control.touched && true;
     } else {
       return control.touched && false;
@@ -146,7 +184,6 @@ export class SecurityComponent implements OnInit {
       backdrop: "static",
       keyboard: false,
     });
-    
   }
 
   openEmailModal() {
@@ -165,36 +202,36 @@ export class SecurityComponent implements OnInit {
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
         this._changeEmailModalRef.close();
-        this.timer(1)
+        this.timer(1);
         this.openOTPScreen();
       },
       (error) => {
-        this.existingAccount = error.message
+        this.existingAccount = error.message;
       }
     );
   }
 
   resendEmailUpdate() {
     this.restService.resendEmailRequestUpdate().subscribe(
-      ()=>{
-        this.timer(1)
+      () => {
+        this.timer(1);
       },
       (error) => {
-        if(error.code === 429) {
+        if (error.code === 429) {
           this.errorMessage = error.message;
         }
       }
     );
   }
-  
+
   resendUpdateEmail() {
     this.restService.resendUpdateEmail().subscribe(
-      ()=>{
-        this.timer(1)
+      () => {
+        this.timer(1);
       },
       (error) => {
-        if(error.code === 429) {
-          this.errorMessage = error.message
+        if (error.code === 429) {
+          this.errorMessage = error.message;
         } else {
           this.incorrectCode = error.message;
         }
@@ -207,9 +244,9 @@ export class SecurityComponent implements OnInit {
       () => {
         this._otpScreenRef.close();
         this.isVerify = false;
-        this.buttonText = 'Confirm';
+        this.buttonText = "Confirm";
         this.openOTPScreen();
-        this.timer(1)
+        this.timer(1);
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -255,41 +292,45 @@ export class SecurityComponent implements OnInit {
 
   updatePhone(): void {
     if (this.phoneErrored) return;
-    if (this.user.phone === this.phoneForm.value.phone.trim()) return ;
-    this.restService.updatePhone(this.phoneForm.value.country_code + this.phoneForm.value.phone).subscribe(
-      () => {
-        this._changePhoneModalRef.close();
-        this.emailOTP = false;
-        this.timer(1);
-        this.openOTPScreen();
-      },
-      (error) => {
-        this.existingPhone = error.message
-      }
-    );
+    if (this.user.phone === this.phoneForm.value.phone.trim()) return;
+    this.restService
+      .updatePhone(
+        this.phoneForm.value.country_code + this.phoneForm.value.phone
+      )
+      .subscribe(
+        () => {
+          this._changePhoneModalRef.close();
+          this.emailOTP = false;
+          this.timer(1);
+          this.openOTPScreen();
+        },
+        (error) => {
+          this.existingPhone = error.message;
+        }
+      );
   }
 
   resendPhoneUpdate() {
     this.restService.resendPhoneRequestUpdate().subscribe(
-      ()=>{
-        this.timer(1)
+      () => {
+        this.timer(1);
       },
       (error) => {
-        if(error.code === 429) {
-          this.errorMessage = error.message
+        if (error.code === 429) {
+          this.errorMessage = error.message;
         }
       }
     );
   }
-  
+
   resendUpdatePhone() {
     this.restService.resendPhoneUpdate().subscribe(
-      ()=>{
-        this.timer(1)
+      () => {
+        this.timer(1);
       },
       (error) => {
-        if(error.code === 429) {
-          this.errorMessage = error.message
+        if (error.code === 429) {
+          this.errorMessage = error.message;
         }
       }
     );
@@ -300,9 +341,9 @@ export class SecurityComponent implements OnInit {
       () => {
         this._otpScreenRef.close();
         this.isPhone = false;
-        this.buttonText = 'Confirm';
+        this.buttonText = "Confirm";
         this.openOTPScreen();
-        this.timer(1)
+        this.timer(1);
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -318,8 +359,10 @@ export class SecurityComponent implements OnInit {
           icon: "success",
           text: "You have successfully changed your phone number.",
         });
-        this.authService.updateProfile({ phone: Object.values(this.phoneForm.value).join('') });
-        this.phoneForm.controls['phone'].reset();
+        this.authService.updateProfile({
+          phone: Object.values(this.phoneForm.value).join(""),
+        });
+        this.phoneForm.controls["phone"].reset();
       },
       (error) => {
         this.incorrectCode = error.message;
@@ -328,38 +371,46 @@ export class SecurityComponent implements OnInit {
   }
 
   openPasswordModal() {
-    this._changePasswordModalRef = this.ngbModal.open(this.changePasswordModal, {
-      centered: true,
-      modalDialogClass: "modal-md",
-      scrollable: true,
-      backdrop: "static",
-      keyboard: false,
-    });
+    this._changePasswordModalRef = this.ngbModal.open(
+      this.changePasswordModal,
+      {
+        centered: true,
+        modalDialogClass: "modal-md",
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
   }
 
   updatePassword(): void {
-    if(this.checkvalidationValue) return;
-    this.restService.updatePassword(this.updateSecurity.value.oldPassword, this.updateSecurity.value.password).subscribe(
-      () => {
-        this._changePasswordModalRef.close();
-        Swal.fire({
-          icon: "success",
-          title: "Password Changed!",
-          text: "You have successfully changed your password.",
-        });
-        this.updateSecurity.value.password.reset();
-        this.countlyService.updateEventData("settingsView", {
-          passwordChanged: "yes",
-        });
-      },
-      (error) => {
-        if(error.code === 422) {
-          this.notMatchPassword = error.message
-        } else {
-          this.existingPassword = error.message
+    if (this.checkvalidationValue) return;
+    this.restService
+      .updatePassword(
+        this.updateSecurity.value.oldPassword,
+        this.updateSecurity.value.password
+      )
+      .subscribe(
+        () => {
+          this._changePasswordModalRef.close();
+          Swal.fire({
+            icon: "success",
+            title: "Password Changed!",
+            text: "You have successfully changed your password.",
+          });
+          this.updateSecurity.value.password.reset();
+          this.countlyService.updateEventData("settingsView", {
+            passwordChanged: "yes",
+          });
+        },
+        (error) => {
+          if (error.code === 422) {
+            this.notMatchPassword = error.message;
+          } else {
+            this.existingPassword = error.message;
+          }
         }
-      }
-    );
+      );
   }
 
   closeEmailModal() {
@@ -367,7 +418,9 @@ export class SecurityComponent implements OnInit {
     this._otpScreenRef?.close();
     this.allowEmailEdit = false;
     clearTimeout(this.emailIconHideTimer);
-    this.emailIconHideTimer = setTimeout(() => {this.allowEmailEdit = true}, 120000); // 2 minutes (2 * 60,000 milliseconds)
+    this.emailIconHideTimer = setTimeout(() => {
+      this.allowEmailEdit = true;
+    }, 120000); // 2 minutes (2 * 60,000 milliseconds)
   }
 
   closePhoneModal() {
@@ -375,13 +428,17 @@ export class SecurityComponent implements OnInit {
     this._otpScreenRef?.close();
     this.allowPhoneEdit = false;
     clearTimeout(this.phoneIconHideTimer);
-    this.phoneIconHideTimer = setTimeout(() => {this.allowPhoneEdit = true;}, 120000);
+    this.phoneIconHideTimer = setTimeout(() => {
+      this.allowPhoneEdit = true;
+    }, 120000);
   }
 
   closePasswordModal() {
     this._changePasswordModalRef.close();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);
-    this.passwordIconHideTimer = setTimeout(() => {this.allowPasswordEdit = true;}, 120000);
+    this.passwordIconHideTimer = setTimeout(() => {
+      this.allowPasswordEdit = true;
+    }, 120000);
   }
 }

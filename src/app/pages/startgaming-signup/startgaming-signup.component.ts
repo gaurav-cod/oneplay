@@ -16,16 +16,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   parse(value: string): NgbDateStruct | null {
     if (!value) return null;
     const date = value.split(this.DELIMITER);
-    const year = parseInt(date[2], 10);
     return {
       day: parseInt(date[0], 10),
       month: parseInt(date[1], 10),
-      year: year < ((new Date()).getFullYear() % 100) ? year + 2000 : year + 1900,
+      year: parseInt(date[2], 10),
     };
   }
 
 	format(date: NgbDateStruct | null): string {
-		return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + (date.year % 100) : '';
+		return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
 	}
 }
 
