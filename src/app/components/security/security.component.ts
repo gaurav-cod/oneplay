@@ -57,7 +57,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      phoneValidator(null, "country_code"),
+      phoneValidator("country_code"),
     ]),
   });
   updateSecurity = new UntypedFormGroup({

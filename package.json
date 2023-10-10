@@ -40,7 +40,6 @@
     "core-js": "3.15.2",
     "firebase": "^9.7.0",
     "js-cookie": "^3.0.5",
-    "libphonenumber-js": "^1.10.44",
     "memoizee": "^0.4.15",
     "moment": "^2.29.4",
     "ngx-clipboard": "14.0.1",
@@ -53,6 +52,7 @@
     "sweetalert2": "^11.4.8",
     "ua-parser-js": "^1.0.2",
     "uuid": "^8.3.2",
+    "validator": "^13.11.0",
     "zone.js": "0.11.4"
   },
   "devDependencies": {
@@ -67,6 +67,7 @@
     "@types/node": "^20.2.5",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^8.3.4",
+    "@types/validator": "^13.11.2",
     "codelyzer": "6.0.2",
     "jasmine-core": "3.8.0",
     "jasmine-spec-reporter": "7.0.0",
