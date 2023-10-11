@@ -95,8 +95,8 @@
           (resendUpdateEmail)="resendEmailUpdate()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closeEmailModal()"
         ></app-otp-screen>
         <app-otp-screen
           *ngIf="!isVerify"
@@ -111,8 +111,8 @@
           (resendUpdateEmail)="resendUpdateEmail()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closeEmailModal()"
         ></app-otp-screen>
       </div>
       <div *ngIf="!emailOTP">
@@ -136,8 +136,8 @@
           (resendUpdateEmail)="resendPhoneUpdate()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closePhoneModal()"
         ></app-otp-screen>
         <app-otp-screen
           *ngIf="!isPhone"
@@ -152,8 +152,8 @@
           (resendUpdateEmail)="resendUpdatePhone()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closePhoneModal()"
         ></app-otp-screen>
       </div>
     </div>
@@ -186,16 +186,13 @@
         <span *ngIf="emailErrored" class="font16 font500 errorGradientColor"
           >*invalid email id</span
         >
-        <p
-          *ngIf="existingAccount"
-          class="font16 font500 errorGradientColor mb-0"
-        >
-          *{{ existingAccount }}
+        <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+          *{{ errorMessage }}
         </p>
-        <!-- <span *ngIf="sameEmail" class="font16 font500 errorGradientColor">*This email address is already in use.</span> -->
         <button
           class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          (click)="updateEmail()"
+          [ngClass]="{ mutedBg: endJourney }"
+          (click)="endJourney ? closeEmailModal() : updateEmail()"
         >
           {{ buttonText }}
         </button>
@@ -247,12 +244,13 @@
         <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor"
           >*invalid mobile number</span
         >
-        <p *ngIf="existingPhone" class="font16 font500 errorGradientColor mb-0">
-          *{{ existingPhone }}
+        <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+          *{{ errorMessage }}
         </p>
         <button
           class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          (click)="updatePhone()"
+          [ngClass]="{ mutedBg: endJourney }"
+          (click)="endJourney ? closePhoneModal() : updatePhone()"
         >
           Confirm
         </button>

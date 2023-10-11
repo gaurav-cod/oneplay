@@ -1,12 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChildren } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChildren,
+} from "@angular/core";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 
 @Component({
-  selector: 'app-otp-screen',
-  templateUrl: './otp-screen.component.html',
-  styleUrls: ['./otp-screen.component.scss']
+  selector: "app-otp-screen",
+  templateUrl: "./otp-screen.component.html",
+  styleUrls: ["./otp-screen.component.scss"],
 })
-export class OtpScreenComponent implements OnInit {
+export class OtpScreenComponent implements OnInit, OnDestroy {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
   @Input() buttonText: string;
@@ -14,28 +26,17 @@ export class OtpScreenComponent implements OnInit {
   @Input() remainingTimer: boolean;
   @Input() display: any;
   @Input() errorMessage: string;
-  @Input() incorrectCode: string;
+  @Input() errorCode: number;
 
   @Output() verfiyEmail = new EventEmitter<string>();
   @Output() resendUpdateEmail = new EventEmitter();
   @Output() closePopUp = new EventEmitter();
 
-  emailCodeTimer;
-  newEmailCodeTimer;
-  newPhoneCodeTimer;
-  securityCodeTimer;
+  private emailCodeTimer: NodeJS.Timeout;
   expritedToken: boolean = false;
 
   form: UntypedFormGroup;
-  formInput = [
-    "one",
-    "two",
-    "three",
-    "indicator",
-    "four",
-    "five",
-    "six",
-  ];
+  formInput = ["one", "two", "three", "indicator", "four", "five", "six"];
   @ViewChildren("formRow") rows: any;
   public codeForm = new UntypedFormGroup({
     one: new UntypedFormControl("", [Validators.required]),
@@ -46,8 +47,7 @@ export class OtpScreenComponent implements OnInit {
     six: new UntypedFormControl("", [Validators.required]),
   });
 
-  constructor(
-  ){}
+  constructor() {}
 
   // get validInput() {
   //   if(this.errorMessage) {
@@ -56,11 +56,21 @@ export class OtpScreenComponent implements OnInit {
   //   return;
   // }
 
+  get endJourney() {
+    return this.errorCode == 429;
+  }
+
   ngOnInit(): void {
-    this.stopAllTimers();
-    this.emailCodeTimer = setTimeout(()=>{
+    this.emailCodeTimer = setTimeout(() => {
       this.expritedToken = true;
-    }, 300000) // 5 minutes (5 * 60,000 milliseconds)
+    }, 300000); // 5 minutes (5 * 60,000 milliseconds)
+  }
+
+  ngOnDestroy(): void {
+    if (this.emailCodeTimer) {
+      clearTimeout(this.emailCodeTimer);
+      this.emailCodeTimer = null;
+    }
   }
 
   onclosePopUp() {
@@ -107,12 +117,5 @@ export class OtpScreenComponent implements OnInit {
         this.rows._results[index - 1].nativeElement.value = "";
       }
     }
-  }
-
-  stopAllTimers() {
-    if (this.emailCodeTimer) clearInterval(this.emailCodeTimer)
-    if (this.newEmailCodeTimer) clearInterval(this.newEmailCodeTimer)
-    if (this.newPhoneCodeTimer) clearInterval(this.newPhoneCodeTimer)
-    if (this.securityCodeTimer) clearInterval(this.securityCodeTimer)
   }
 }

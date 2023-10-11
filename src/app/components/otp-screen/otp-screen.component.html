@@ -1,25 +1,59 @@
-
-<h3 class="text-white font24 font700 my-3">{{otpHeading}}</h3>
-<p class="muteText font14 font500 mb-5">{{otpSubHeading}}</p>
+<h3 class="text-white font24 font700 my-3">{{ otpHeading }}</h3>
+<p class="muteText font14 font500 mb-5">{{ otpSubHeading }}</p>
 <form [formGroup]="codeForm">
-    <div class="row justify-content-center">
-        <div class="col-auto p-1 otpInput" *ngFor="let input of formInput;  index as i">
-            <input #formRow type="text" *ngIf="input !== 'indicator'" formControlName="{{input}}" class="form-control w70h61 p-1" maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)">
-            <div class="col-auto p-1" *ngIf="input === 'indicator'">
-                <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
-            </div>
-        </div>
+  <div class="row justify-content-center">
+    <div
+      class="col-auto p-1 otpInput"
+      *ngFor="let input of formInput; index as i"
+    >
+      <input
+        #formRow
+        type="text"
+        *ngIf="input !== 'indicator'"
+        formControlName="{{ input }}"
+        class="form-control w70h61 p-1"
+        maxlength="1"
+        (input)="jump($event, i)"
+        (keydown)="jumpPrev($event, i)"
+      />
+      <div class="col-auto p-1" *ngIf="input === 'indicator'">
+        <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
+      </div>
     </div>
-    <div *ngIf="!expritedToken">
-        <p *ngIf="errorMessage" class="font16 font500 cancelgradientText mt-3 pb-3">*{{errorMessage}}</p>
-        <p *ngIf="!errorMessage" class="font16 font500 muteText mt-3 pb-5 mb-0">
-            <span *ngIf="incorrectCode"><span class="cancelgradientText">*{{incorrectCode}}</span>, <span class="muteText">Please check carefully or </span></span>
-            <span class="float-left" *ngIf="!incorrectCode">Didn’t Receive code?</span> 
-            <button class="btn text-white p-0" *ngIf="!remainingTimer" (click)="onResend()">Resend Code</button>
-            <span class="text-white" *ngIf="remainingTimer">Resend in 00:{{display}}</span>
-        </p>
-    </div>
-    <p *ngIf="expritedToken" class="cancelgradientText">Session has expired. Please give it another shot later.</p>
-    <button *ngIf="!expritedToken"  class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" [ngClass]="{mutedBg: codeForm.invalid}" [disabled]="errorMessage ? false : codeForm.invalid" (click)="errorMessage ? onclosePopUp() : onConfirm()">{{buttonText}}</button>
-    <button *ngIf="expritedToken" class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom" (click)="onclosePopUp()">{{buttonText}}</button>
+  </div>
+  <div *ngIf="!expritedToken">
+    <p *ngIf="endJourney" class="font16 font500 cancelgradientText mt-3 pb-3">
+      *{{ errorMessage }}
+    </p>
+    <p *ngIf="!endJourney" class="font16 font500 muteText mt-3 pb-5 mb-0">
+      <span *ngIf="errorMessage"
+        ><span class="cancelgradientText">*{{ errorMessage }}</span
+        >, <span class="muteText">Please check carefully or </span></span
+      >
+      <span class="float-left" *ngIf="!errorMessage"
+        >Didn’t Receive code?</span
+      >
+      <button
+        class="btn text-white p-0"
+        *ngIf="!remainingTimer"
+        (click)="onResend()"
+      >
+        Resend Code
+      </button>
+      <span class="text-white" *ngIf="remainingTimer"
+        >Resend in 00:{{ display }}</span
+      >
+    </p>
+  </div>
+  <p *ngIf="expritedToken" class="cancelgradientText">
+    Session has expired. Please give it another shot later.
+  </p>
+  <button
+    class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom"
+    [ngClass]="{ mutedBg: codeForm.invalid || endJourney || expritedToken }"
+    [disabled]="endJourney || expritedToken ? false : codeForm.invalid"
+    (click)="endJourney || expritedToken ? onclosePopUp() : onConfirm()"
+  >
+    {{ buttonText }}
+  </button>
 </form>
