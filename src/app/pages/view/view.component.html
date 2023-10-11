@@ -317,10 +317,10 @@
                   (click)="selectStore(store)"
                 >
                   <img
-                    [src]="store.name | store"
+                    [src]="store.store_image | store"
                     height="32"
                     class="mr-2"
-                    [alt]="store.name"
+                    [alt]="store.store_image"
                     onerror="this.style.display = 'none'"
                   />
                   <input
