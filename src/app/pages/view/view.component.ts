@@ -496,22 +496,22 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get shortDescLength() {
-    if (screen.width >= 2438) {
+    if (window.innerWidth >= 2438) {
       return 200;
-    } else if (screen.width >= 1440) {
+    } else if (window.innerWidth >= 1440) {
       return 105;
-    } else if (screen.width >= 1024) {
+    } else if (window.innerWidth >= 1024) {
       return 70;
-    } else if (screen.width >= 768) {
-      return 60;
-    } else if (screen.width >= 576) {
+    } else if (window.innerWidth >= 768) {
+      return 57;
+    } else if (window.innerWidth >= 576) {
       return 100;
-    }else if (screen.width >= 425) {
+    }else if (window.innerWidth >= 425) {
       return 75;
-    } else if (screen.width >= 375) {
+    } else if (window.innerWidth >= 360) {
       return 55;
     } else {
-      return 52;
+      return 40;
     }
   }
 
