@@ -294,14 +294,8 @@
             <span
               *ngIf="oldPasswordErrored"
               class="font16 font500 errorGradientColor"
-              >*invalid password</span
+              >*Invalid password</span
             >
-            <p
-              *ngIf="notMatchPassword"
-              class="font16 font500 errorGradientColor mb-0"
-            >
-              *{{ notMatchPassword }}
-            </p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">New Password</label>
@@ -320,12 +314,6 @@
               class="font16 font500 errorGradientColor"
               >*invalid password</span
             >
-            <p
-              *ngIf="existingPassword"
-              class="font16 font500 errorGradientColor mb-0"
-            >
-              *{{ existingPassword }}
-            </p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText"

@@ -1,4 +1,11 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -35,8 +42,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
   sameEmail: boolean = false;
   existingAccount: string;
   existingPhone: string;
-  existingPassword: string;
-  notMatchPassword: string;
   allowEmailEdit: boolean = true;
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
@@ -390,32 +395,34 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.updateSecurity.value.oldPassword,
         this.updateSecurity.value.password
       )
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this._changePasswordModalRef.close();
           Swal.fire({
             icon: "success",
             title: "Password Changed!",
             text: "You have successfully changed your password.",
           });
-          this.updateSecurity.value.password.reset();
+          this.updateSecurity.reset();
           this.countlyService.updateEventData("settingsView", {
             passwordChanged: "yes",
           });
         },
-        (error) => {
-          if (error.code === 422) {
-            this.notMatchPassword = error.message;
-          } else {
-            this.existingPassword = error.message;
-          }
-        }
-      );
+        error: (error) => {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        },
+      });
   }
 
   closeEmailModal() {
     this._changeEmailModalRef.close();
     this._otpScreenRef?.close();
+    this.email.reset();
     this.allowEmailEdit = false;
     clearTimeout(this.emailIconHideTimer);
     this.emailIconHideTimer = setTimeout(() => {
@@ -426,6 +433,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   closePhoneModal() {
     this._changePhoneModalRef.close();
     this._otpScreenRef?.close();
+    this.phoneForm.reset();
     this.allowPhoneEdit = false;
     clearTimeout(this.phoneIconHideTimer);
     this.phoneIconHideTimer = setTimeout(() => {
@@ -435,6 +443,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   closePasswordModal() {
     this._changePasswordModalRef.close();
+    this.updateSecurity.reset();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);
     this.passwordIconHideTimer = setTimeout(() => {
