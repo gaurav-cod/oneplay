@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -18,7 +19,7 @@ import {
   templateUrl: "./otp-screen.component.html",
   styleUrls: ["./otp-screen.component.scss"],
 })
-export class OtpScreenComponent implements OnInit, OnDestroy {
+export class OtpScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() otpHeading: string;
   @Input() otpSubHeading: string;
   @Input() buttonText: string;
@@ -60,6 +61,12 @@ export class OtpScreenComponent implements OnInit, OnDestroy {
     return this.errorCode == 429;
   }
 
+  ngAfterViewInit(): void {
+    this.rows._results[0].nativeElement.addEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
+
   ngOnInit(): void {
     this.emailCodeTimer = setTimeout(() => {
       this.expritedToken = true;
@@ -71,6 +78,9 @@ export class OtpScreenComponent implements OnInit, OnDestroy {
       clearTimeout(this.emailCodeTimer);
       this.emailCodeTimer = null;
     }
+    this.rows._results[0].nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
   }
 
   onclosePopUp() {
@@ -116,6 +126,20 @@ export class OtpScreenComponent implements OnInit, OnDestroy {
         this.rows._results[index - 1].nativeElement.focus();
         this.rows._results[index - 1].nativeElement.value = "";
       }
+    }
+  }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{6}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.codeForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[5].nativeElement.focus();
     }
   }
 }
