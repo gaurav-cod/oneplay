@@ -317,7 +317,7 @@
                   (click)="selectStore(store)"
                 >
                   <img
-                    [src]="store.store_image | store"
+                    [src]="store.store_image || 'assets/img/store/store.svg'"
                     height="32"
                     class="mr-2"
                     [alt]="store.store_image"
