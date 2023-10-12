@@ -4,7 +4,7 @@ export const environment = {
   cookie_domain: "play.shaksgame.com",
   domain: "https://play.shaksgame.com",
   client_api: "https://client-apis.oneplay.in/services/v2",
-  render_mix_api: "https://rendermix.oneplay.in/v1",
+  render_mix_api: "https://rendermix.oneplay.in",
   socket_endpoint: "https://chatservices.oneplay.in",
   game_assets: "https://cdn.edge-net.co/game_assets/",
   partner_id: "6d363898-1e6d-11ee-bde5-0ab3c1edb81a",

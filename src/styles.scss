@@ -1152,7 +1152,10 @@ select {
   background-image: url('./assets/img/speed-test/image23.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center;  
+  @media (max-width: 991.98px) {
+    background-position: -182px -5px;
+  }
 }
 .alert-dismissible .close {
   top: 12% !important;

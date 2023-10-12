@@ -47,13 +47,6 @@
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText mx-1">
             Update Password
-            <i
-              class="fas fa-info-circle ml-1"
-              ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
-              placement="bottom"
-              triggers="click:blur"
-            >
-            </i>
           </label>
           <div
             class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1"
@@ -102,12 +95,12 @@
           (resendUpdateEmail)="resendEmailUpdate()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closeEmailModal()"
         ></app-otp-screen>
         <app-otp-screen
           *ngIf="!isVerify"
-          [otpHeading]="'Verify New Email Address'"
+          [otpHeading]="'Verify Your New Email Address'"
           [otpSubHeading]="
             'Please enter the code sent to your new email address.'
           "
@@ -118,8 +111,8 @@
           (resendUpdateEmail)="resendUpdateEmail()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closeEmailModal()"
         ></app-otp-screen>
       </div>
       <div *ngIf="!emailOTP">
@@ -134,7 +127,7 @@
           *ngIf="isPhone"
           [otpHeading]="'Enter Security Code'"
           [otpSubHeading]="
-            'A security code has been sent to your mobile number and previous email address.'
+            'A security code has been sent to your previous mobile number and email address.'
           "
           [buttonText]="buttonText"
           [codeForm]="codeForm"
@@ -143,12 +136,12 @@
           (resendUpdateEmail)="resendPhoneUpdate()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closePhoneModal()"
         ></app-otp-screen>
         <app-otp-screen
           *ngIf="!isPhone"
-          [otpHeading]="'Verify New Phone Number'"
+          [otpHeading]="'Verify Your New Phone Number'"
           [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
           "
@@ -159,8 +152,8 @@
           (resendUpdateEmail)="resendUpdatePhone()"
           [display]="display"
           [errorMessage]="errorMessage"
-          [incorrectCode]="incorrectCode"
-          (closePopUp)="closePopUp()"
+          [errorCode]="errorCode"
+          (closePopUp)="closePhoneModal()"
         ></app-otp-screen>
       </div>
     </div>
@@ -193,16 +186,13 @@
         <span *ngIf="emailErrored" class="font16 font500 errorGradientColor"
           >*invalid email id</span
         >
-        <p
-          *ngIf="existingAccount"
-          class="font16 font500 errorGradientColor mb-0"
-        >
-          *{{ existingAccount }}
+        <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+          *{{ errorMessage }}
         </p>
-        <!-- <span *ngIf="sameEmail" class="font16 font500 errorGradientColor">*This email address is already in use.</span> -->
         <button
           class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          (click)="updateEmail()"
+          [ngClass]="{ mutedBg: endJourney }"
+          (click)="endJourney ? closeEmailModal() : updateEmail()"
         >
           {{ buttonText }}
         </button>
@@ -254,12 +244,13 @@
         <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor"
           >*invalid mobile number</span
         >
-        <p *ngIf="existingPhone" class="font16 font500 errorGradientColor mb-0">
-          *{{ existingPhone }}
+        <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+          *{{ errorMessage }}
         </p>
         <button
           class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          (click)="updatePhone()"
+          [ngClass]="{ mutedBg: endJourney }"
+          (click)="endJourney ? closePhoneModal() : updatePhone()"
         >
           Confirm
         </button>
@@ -284,24 +275,18 @@
       <form role="form" [formGroup]="updateSecurity">
         <div class="row pb-2">
           <div class="col-12 mt-4">
-            <label class="font16 font500 offWhiteText">Old Password</label>
+            <label class="font16 font500 offWhiteText">Current Password</label>
             <input
               type="password"
               class="form-control inputBorder font18 font500 text-white"
-              placeholder="Enter your Old Password"
+              placeholder="Enter your current Password"
               formControlName="oldPassword"
             />
             <span
               *ngIf="oldPasswordErrored"
               class="font16 font500 errorGradientColor"
-              >*invalid password</span
+              >*Invalid password</span
             >
-            <p
-              *ngIf="notMatchPassword"
-              class="font16 font500 errorGradientColor mb-0"
-            >
-              *{{ notMatchPassword }}
-            </p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">New Password</label>
@@ -320,12 +305,6 @@
               class="font16 font500 errorGradientColor"
               >*invalid password</span
             >
-            <p
-              *ngIf="existingPassword"
-              class="font16 font500 errorGradientColor mb-0"
-            >
-              *{{ existingPassword }}
-            </p>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText"

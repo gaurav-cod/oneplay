@@ -145,7 +145,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           childWindow: true,
           returnUrl: await this.getReturnURL(
             environment.render_mix_api +
-              "/accounts/subscription/billdesk_frontend_redirect"
+              "/v1/accounts/subscription/billdesk_frontend_redirect"
           ),
           retryCount: 3,
           crossButtonHandling: "Y",
