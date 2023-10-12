@@ -9,7 +9,7 @@ export class StorePipe implements PipeTransform {
     {
       return store_image;
     }
-    return `assets/img/store/store.png`;
+    return `assets/img/store/store.svg`;
 
   }
 
