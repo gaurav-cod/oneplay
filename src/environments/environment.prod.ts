@@ -26,5 +26,5 @@ export const environment = {
     key: "292851cc7abdfc6770504910155cd0de1307024e",
     url: "https://analytics-api.oneplay.in/",
   },
-  webrtc_prefix: "https://www.oneplay.in/webplay",
+  webrtc_prefix: "",
 };
