@@ -1,5 +1,9 @@
-import { Component, OnInit, ViewChildren } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { AfterViewInit, Component, OnInit, ViewChildren } from "@angular/core";
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import Cookies from "js-cookie";
 import { Subscription } from "rxjs";
@@ -13,7 +17,7 @@ import Swal from "sweetalert2";
   templateUrl: "./qr-verify.component.html",
   styleUrls: ["./qr-verify.component.scss"],
 })
-export class QrVerifyComponent implements OnInit {
+export class QrVerifyComponent implements OnInit, AfterViewInit {
   form: UntypedFormGroup;
   formInput = [
     "one",
@@ -50,12 +54,21 @@ export class QrVerifyComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly countlyService: CountlyService,
+    private readonly countlyService: CountlyService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.rows._results[0].nativeElement.addEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
 
   ngOnDestroy(): void {
     this.routeSubscription?.unsubscribe();
     this.loginSubscription?.unsubscribe();
+    this.rows._results[0].nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
   }
 
   ngOnInit(): void {
@@ -108,11 +121,11 @@ export class QrVerifyComponent implements OnInit {
         error: (err) => {
           this.loading = false;
           if (err.error.isOnline)
-          Swal.fire({
-            title: "Error Code: " + err.error.code,
-            text: err.error.message,
-            icon: "error",
-          });
+            Swal.fire({
+              title: "Error Code: " + err.error.code,
+              text: err.error.message,
+              icon: "error",
+            });
         },
       });
     } else {
@@ -157,5 +170,19 @@ export class QrVerifyComponent implements OnInit {
     //   channel: "web",
     // });
     this.router.navigate(["/register"]);
+  }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{8}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.codeForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[7].nativeElement.focus();
+    }
   }
 }

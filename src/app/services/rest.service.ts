@@ -46,7 +46,8 @@ import { GameplayHistoryModel } from "../models/gameplay.model";
 })
 export class RestService {
   private readonly client_api = environment.client_api;
-  private readonly r_mix_api = environment.render_mix_api;
+  private readonly r_mix_api = environment.render_mix_api + "/v1";
+  private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
 
   constructor(private readonly http: HttpClient) {}
 
@@ -118,7 +119,7 @@ export class RestService {
 
   updatePassword(old_password: string, password: string): Observable<void> {
     return this.http
-      .put(this.r_mix_api + "/accounts/password", { old_password , password })
+      .put(this.r_mix_api_2 + "/accounts/password", { old_password , password })
       .pipe(
         map(() => {}),
         catchError(({ error }) => {

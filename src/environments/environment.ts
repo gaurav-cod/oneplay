@@ -6,7 +6,7 @@ export const environment = {
   cookie_domain: "localhost",
   domain: "http://localhost:4200",
   client_api: "https://client-apis.oneream.com/services/v2",
-  render_mix_api: "https://rendermix.oneream.com/v1",
+  render_mix_api: "https://rendermix.oneream.com",
   socket_endpoint: "https://chatservices.oneream.com",
   game_assets:
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",

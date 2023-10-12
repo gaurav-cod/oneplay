@@ -1,4 +1,10 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -32,11 +38,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
   emailOTP: boolean = true;
   remainingTimer = false;
   display: any;
-  sameEmail: boolean = false;
-  existingAccount: string;
-  existingPhone: string;
-  existingPassword: string;
-  notMatchPassword: string;
   allowEmailEdit: boolean = true;
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
@@ -44,10 +45,12 @@ export class SecurityComponent implements OnInit, OnDestroy {
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
 
-  isDisabled: boolean = true;
-
   errorMessage: string;
-  incorrectCode: string;
+  errorCode: number;
+
+  get endJourney() {
+    return this.errorCode == 429;
+  }
 
   email = new UntypedFormControl("", [
     Validators.required,
@@ -57,7 +60,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      phoneValidator(null, "country_code"),
+      phoneValidator("country_code"),
     ]),
   });
   updateSecurity = new UntypedFormGroup({
@@ -158,10 +161,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
     }
   }
 
-  closePopUp() {
-    this._otpScreenRef.close();
-  }
-
   timer(minute) {
     let seconds: any = 60;
     const timer = setInterval(() => {
@@ -187,6 +186,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   openEmailModal() {
+    this.emailOTP = true;
     this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -197,16 +197,22 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   updateEmail(): void {
+    this.errorMessage = null;
     if (this.emailErrored) return;
-    if (this.user?.email === this.email.value?.trim()) return;
+    if (this.user?.email === this.email.value?.trim()) {
+      this.errorMessage = "This email address is already in use.";
+      return;
+    }
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
+        this.clearErrors();
         this._changeEmailModalRef.close();
         this.timer(1);
         this.openOTPScreen();
       },
       (error) => {
-        this.existingAccount = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -217,9 +223,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        if (error.code === 429) {
-          this.errorMessage = error.message;
-        }
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -230,11 +235,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        if (error.code === 429) {
-          this.errorMessage = error.message;
-        } else {
-          this.incorrectCode = error.message;
-        }
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -242,6 +244,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   verfiyEmail(data: string) {
     this.restService.verifyEmailUpdate(data).subscribe(
       () => {
+        this.clearErrors();
         this._otpScreenRef.close();
         this.isVerify = false;
         this.buttonText = "Confirm";
@@ -249,7 +252,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        this.incorrectCode = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -257,6 +261,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   confirmEmail(data: string) {
     this.restService.confirmEmailUpdate(data).subscribe(
       () => {
+        this.clearErrors();
         this._otpScreenRef.close();
         Swal.fire({
           icon: "success",
@@ -266,12 +271,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.email.reset();
       },
       (error) => {
-        this.incorrectCode = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
 
   openPhoneModal() {
+    this.emailOTP = false;
     this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -291,21 +298,25 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   updatePhone(): void {
+    this.errorMessage = null;
     if (this.phoneErrored) return;
-    if (this.user.phone === this.phoneForm.value.phone.trim()) return;
+    const phoneNumber = (this.phoneForm.value.country_code + this.phoneForm.value.phone).trim();
+    if (this.user.phone === phoneNumber) {
+      this.errorMessage = "This phone number is already in use.";
+      return;
+    }
     this.restService
-      .updatePhone(
-        this.phoneForm.value.country_code + this.phoneForm.value.phone
-      )
+      .updatePhone(phoneNumber)
       .subscribe(
         () => {
+          this.clearErrors();
           this._changePhoneModalRef.close();
-          this.emailOTP = false;
           this.timer(1);
           this.openOTPScreen();
         },
         (error) => {
-          this.existingPhone = error.message;
+          this.errorCode = error.code;
+          this.errorMessage = error.message;
         }
       );
   }
@@ -316,9 +327,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        if (error.code === 429) {
-          this.errorMessage = error.message;
-        }
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -329,9 +339,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        if (error.code === 429) {
-          this.errorMessage = error.message;
-        }
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -339,6 +348,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   verfiyPhone(data: string) {
     this.restService.verifyPhoneUpdate(data).subscribe(
       () => {
+        this.clearErrors();
         this._otpScreenRef.close();
         this.isPhone = false;
         this.buttonText = "Confirm";
@@ -346,7 +356,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        this.incorrectCode = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -354,6 +365,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   confirmPhone(data: string) {
     this.restService.confirmPhoneUpdate(data).subscribe(
       () => {
+        this.clearErrors();
         this._otpScreenRef.close();
         Swal.fire({
           icon: "success",
@@ -365,7 +377,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.phoneForm.controls["phone"].reset();
       },
       (error) => {
-        this.incorrectCode = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       }
     );
   }
@@ -390,33 +403,36 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.updateSecurity.value.oldPassword,
         this.updateSecurity.value.password
       )
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this._changePasswordModalRef.close();
           Swal.fire({
             icon: "success",
             title: "Password Changed!",
             text: "You have successfully changed your password.",
           });
-          this.updateSecurity.value.password.reset();
+          this.updateSecurity.reset();
           this.countlyService.updateEventData("settingsView", {
             passwordChanged: "yes",
           });
         },
-        (error) => {
-          if (error.code === 422) {
-            this.notMatchPassword = error.message;
-          } else {
-            this.existingPassword = error.message;
-          }
-        }
-      );
+        error: (error) => {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        },
+      });
   }
 
   closeEmailModal() {
-    this._changeEmailModalRef.close();
+    this._changeEmailModalRef?.close();
     this._otpScreenRef?.close();
+    this.email.reset();
     this.allowEmailEdit = false;
+    this.clearErrors();
     clearTimeout(this.emailIconHideTimer);
     this.emailIconHideTimer = setTimeout(() => {
       this.allowEmailEdit = true;
@@ -424,9 +440,11 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   closePhoneModal() {
-    this._changePhoneModalRef.close();
+    this._changePhoneModalRef?.close();
     this._otpScreenRef?.close();
+    this.phoneForm.reset();
     this.allowPhoneEdit = false;
+    this.clearErrors();
     clearTimeout(this.phoneIconHideTimer);
     this.phoneIconHideTimer = setTimeout(() => {
       this.allowPhoneEdit = true;
@@ -434,11 +452,17 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   closePasswordModal() {
-    this._changePasswordModalRef.close();
+    this._changePasswordModalRef?.close();
+    this.updateSecurity.reset();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);
     this.passwordIconHideTimer = setTimeout(() => {
       this.allowPasswordEdit = true;
     }, 120000);
+  }
+
+  private clearErrors() {
+    this.errorMessage = null;
+    this.errorCode = null;
   }
 }
