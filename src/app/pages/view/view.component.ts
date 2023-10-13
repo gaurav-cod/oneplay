@@ -66,7 +66,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
-  macDownloadLink:boolean = false;
 
   similarGames: GameModel[] = [];
 
@@ -300,7 +299,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                );
                if (preferredStoreIndex >= 0) {
                  this.selectedStore =
-                   game.storesMapping.at(preferredStoreIndex);
+                   game.storesMapping[preferredStoreIndex];
                } else {
                 this.selectedStore = game.storesMapping[0] ?? null;
                }
@@ -458,12 +457,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       case "Windows":
         return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
       case "Mac OS":
-        return this.macDownloadLink = true;
-      case "Android":
-        return "";
+        return "macos";
       default:
         return "";
     }
+  }
+
+  get macDownloadLink() {
+    return this.clientDownloadLink === "macos";
   }
 
   macDownload(container) {
