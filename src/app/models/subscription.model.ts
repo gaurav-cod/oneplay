@@ -16,6 +16,8 @@ export class SubscriptionModel {
   tokens: number;
   tokensRemaining: number;
   planType: 'base' | 'topup';
+  isLiveForPurchase: boolean;
+  isUnlimited: boolean;
 
   constructor(json: any) {
     const plan = new SubscriptionPackageModel(json.subscriptionPackage);
@@ -37,6 +39,8 @@ export class SubscriptionModel {
     this.tokens = plan.tokens;
     this.planType = plan.type;
     this.tokensRemaining = json.remaining_tokens;
+    this.isLiveForPurchase = plan.isLiveForPurchase;
+    this.isUnlimited = plan.isUnlimited
 
   }
 }

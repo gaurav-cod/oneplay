@@ -569,11 +569,11 @@ input:-webkit-autofill:active {
 }
 
 .height52 {
-  height: 52px;
+  height: 52px !important;
 }
 
 .mutedBg {
-  background: linear-gradient(270deg, #616161 0%, #434343 100%);
+  background: linear-gradient(270deg, #616161 0%, #434343 100%) !important;
 }
 
 .borderRadius10 {
@@ -1152,7 +1152,10 @@ select {
   background-image: url('./assets/img/speed-test/image23.svg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center;  
+  @media (max-width: 991.98px) {
+    background-position: -182px -5px;
+  }
 }
 .alert-dismissible .close {
   top: 12% !important;
@@ -1232,4 +1235,11 @@ select {
   border-left: 0px !important;
   border-right: 0px !important;
   border-top: 0px !important;
+}
+
+.borderRadiusCustom {
+  border-radius: 6px !important;
+  @media (max-width: 992px) {
+    border-radius: 60px !important;
+  }
 }

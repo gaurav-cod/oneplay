@@ -1,10 +1,10 @@
 export const environment = {
-  appVersion: "3.2.3",
+  appVersion: "4.0.0",
   production: true,
   cookie_domain: "oneplay.in",
   domain: "https://www.oneplay.in",
   client_api: "https://client-apis.oneplay.in/services/v2",
-  render_mix_api: "https://rendermix.oneplay.in/v1",
+  render_mix_api: "https://rendermix.oneplay.in",
   socket_endpoint: "https://chatservices.oneplay.in",
   game_assets: "https://cdn.edge-net.co/game_assets/",
   partner_id: "28cceed5-8ab9-11ed-bde5-0ab3c1edb81a",
@@ -26,5 +26,5 @@ export const environment = {
     key: "292851cc7abdfc6770504910155cd0de1307024e",
     url: "https://analytics-api.oneplay.in/",
   },
-  webrtc_prefix: "https://www.oneplay.in/webplay",
+  webrtc_prefix: "",
 };

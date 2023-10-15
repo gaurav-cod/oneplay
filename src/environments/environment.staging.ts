@@ -1,10 +1,10 @@
 export const environment = {
-  appVersion: "3.2.3",
+  appVersion: "4.0.0",
   production: true,
   cookie_domain: "qa.oneream.com",
   domain: "https://qa.oneream.com",
   client_api: "https://client-apis.qa.oneream.com/services/v2",
-  render_mix_api: "https://rendermix.qa.oneream.com/v1",
+  render_mix_api: "https://rendermix.qa.oneream.com",
   socket_endpoint: "https://chatservices.qa.oneream.com",
   game_assets:
     "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",

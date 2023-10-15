@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import {
+  AbstractControl,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
@@ -18,6 +19,9 @@ import { StartEvent } from "src/app/services/countly";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
+import { phoneValidator } from "src/app/utils/validators.util";
+import { Subscription } from "rxjs";
+import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 
 @Component({
   selector: "app-register",
@@ -32,6 +36,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
+  private countryCodeSub: Subscription;
+  private referralSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
 
@@ -48,7 +54,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     country_code: new UntypedFormControl("+91", [Validators.required]),
     phone: new UntypedFormControl("", [
       Validators.required,
-      Validators.pattern(/^[0-9]{10}$/),
+      phoneValidator("country_code"),
     ]),
     password: new UntypedFormControl("", [
       Validators.required,
@@ -82,17 +88,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  readonly contryCodeCurrencyMapping = {
-    INR: "+91",
-    MYR: "+60",
-    SGD: "+65",
-    KRW: "+82",
-    AED: "+971",
-    QAR: "+974",
-  };
-
   get countryCodes() {
-    return Object.values(this.contryCodeCurrencyMapping);
+    return Object.values(contryCodeCurrencyMapping);
   }
 
   get checkvalidationValue() {
@@ -142,12 +139,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ctrl.disable();
       this.getName(ctrl.value);
     });
-    ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.referralSub = ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.countryCodeSub = this.registerForm.controls[
+      "country_code"
+    ].valueChanges.subscribe(() =>
+      this.registerForm.controls["phone"].updateValueAndValidity()
+    );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (this.contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.currency]) {
           this.registerForm.controls["country_code"].setValue(
-            this.contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.currency]
           );
           this.nonFunctionalRegion = false;
         } else {
@@ -161,13 +163,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
             confirmButtonText: "Okay",
           });
         }
-        
       },
     });
   }
 
   ngOnDestroy(): void {
     this._signupEvent.cancel();
+    this.countryCodeSub?.unsubscribe();
+    this.referralSub?.unsubscribe();
   }
 
   register() {

@@ -69,17 +69,21 @@ export class PaymentComponent implements OnInit, OnDestroy {
             customClass: "swalPadding",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              this.packageID = params.subscribe || params.renew;
-              this.planType = !!params.renew ? "base" : params.plan;
-              this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
-                centered: true,
-                modalDialogClass: "modal-lg",
-                scrollable: true,
-                backdrop: "static",
-                keyboard: false,
-              });
+              if(params.isLiveForPurchase === 'false') {
+                window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
+              } else {
+                this.packageID = params.subscribe || params.renew;
+                this.planType = !!params.renew ? "base" : params.plan;
+                this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
+                  centered: true,
+                  modalDialogClass: "modal-lg",
+                  scrollable: true,
+                  backdrop: "static",
+                  keyboard: false,
+                });
+              }
             } else if (result.isDenied) {
-              window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
+              window.location.href = `${environment.domain}/subscription.html`;
             } else {
               this.removeQueryParams();
             }
@@ -141,7 +145,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           childWindow: true,
           returnUrl: await this.getReturnURL(
             environment.render_mix_api +
-              "/accounts/subscription/billdesk_frontend_redirect"
+              "/v1/accounts/subscription/billdesk_frontend_redirect"
           ),
           retryCount: 3,
           crossButtonHandling: "Y",
@@ -226,16 +230,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
         return "Once the current one expires, this subscription pack will start.";
       }
     }
-    if(params.renew) {
-      return "You are about to renew your subscription <br/> plan.";
-    }
     return "You are about to pay for the chosen subscription plan.";
   }
 
   private removeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { subscribe: null, renew: null, plan: null, minutes: null },
+      queryParams: { subscribe: null, renew: null, plan: null, minutes: null, isLiveForPurchase: null },
       replaceUrl: true,
       queryParamsHandling: "merge",
     });

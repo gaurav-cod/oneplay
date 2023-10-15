@@ -66,7 +66,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
-  macDownloadLink:boolean = false;
 
   similarGames: GameModel[] = [];
 
@@ -300,7 +299,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                );
                if (preferredStoreIndex >= 0) {
                  this.selectedStore =
-                   game.storesMapping.at(preferredStoreIndex);
+                   game.storesMapping[preferredStoreIndex];
                } else {
                 this.selectedStore = game.storesMapping[0] ?? null;
                }
@@ -458,12 +457,14 @@ export class ViewComponent implements OnInit, OnDestroy {
       case "Windows":
         return "https://cdn.edge-net.co/clients/latest/windows_client.exe";
       case "Mac OS":
-        return this.macDownloadLink = true;
-      case "Android":
-        return "";
+        return "macos";
       default:
         return "";
     }
+  }
+
+  get macDownloadLink() {
+    return this.clientDownloadLink === "macos";
   }
 
   macDownload(container) {
@@ -496,20 +497,22 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get shortDescLength() {
-    if (screen.width >= 2438) {
-      return 276;
-    } else if (screen.width >= 1440) {
-      return 145;
-    } else if (screen.width >= 1024) {
+    if (window.innerWidth >= 2438) {
+      return 200;
+    } else if (window.innerWidth >= 1440) {
+      return 105;
+    } else if (window.innerWidth >= 1024) {
+      return 70;
+    } else if (window.innerWidth >= 768) {
+      return 57;
+    } else if (window.innerWidth >= 576) {
       return 100;
-    } else if (screen.width >= 768) {
-      return 84;
-    } else if (screen.width >= 425) {
-      return 145;
-    } else if (screen.width >= 375) {
-      return 125;
+    }else if (window.innerWidth >= 425) {
+      return 75;
+    } else if (window.innerWidth >= 360) {
+      return 55;
     } else {
-      return 92;
+      return 40;
     }
   }
 
@@ -607,9 +610,9 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.getTokensUsage().subscribe((data) => {
       let swal_html = null;
       if (data.total_tokens === 0) {
-        swal_html = `Level up and purchase a new subscription to continue Gaming. <p class="mt-4 "><a href="${this.domain}/subscription.html" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+        swal_html = `Level up and purchase a new subscription to continue Gaming.`;
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
-        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!<p class="mt-4 "><a href="${this.domain}/subscription.html" class="btn playBtn border-0 text-white GradientBtnPadding">Buy Now</a></p>`;
+        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
         if (this.showSettings.value) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
@@ -643,8 +646,13 @@ export class ViewComponent implements OnInit, OnDestroy {
           customClass: "swalPaddingTop",
           title: "Wait!",
           html: swal_html,
-          showCloseButton: true,
-          showConfirmButton: false,
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Buy Now",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
         });
       }
     });
@@ -1048,6 +1056,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       confirmButtonText: "Try Again",
       showCancelButton: true,
       cancelButtonText: "Report",
+      allowEscapeKey: false,
+      allowOutsideClick: false,
     }).then((res) => {
       this.stopLoading();
       this.initializationErrored = false;
@@ -1153,13 +1163,13 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   reportError() {
     this.restService
-      .postAReport(this.reportText.value, this.reportResponse, this.reportResponse.code)
+      .postAReport(this.reportText.value, this.reportResponse, String(this.reportResponse.code))
       .subscribe({
         next: () => {
           Swal.fire({
             icon: "success",
             title: "Reported!",
-            text: "We have recieve your report. We will look into it.",
+            text: "Thank you for your report, our team will investigate the issue promptly. ",
           });
         },
         error: (err) => {
@@ -1285,6 +1295,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         centered: true,
         windowClass: "blurBG",
         modalDialogClass: "modal-sm",
+        scrollable: true,
+        backdrop: "static",
+        keyboard: false,
       });
     } else if (result.isConfirmed) {
       this.startGame();

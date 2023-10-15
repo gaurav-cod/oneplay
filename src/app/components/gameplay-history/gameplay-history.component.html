@@ -1,6 +1,13 @@
-<div class="row mt-4">
-    <div class="col-md-12">
+<div class="row mt-4 justify-content-center">
+    <div class="col-lg-5 col-md-7 col-sm-9 col-11 text-center mt-4" *ngIf="gamePlaysessions.length === 0 && !loading">
+      <img src="assets/img/setting/Isolation-Mode.svg" class="img-fluid px-4" alt="" />
+      <h1 class="headingSub font700 text-white mt-4">
+        No Gameplay History Yet. Start Your Journey!
+      </h1>
+    </div>
+    <div class="col-md-12" *ngIf="gamePlaysessions.length">
     <p class="font18 font500 text-white mb-0">Gameplay History</p>
+    <cdk-virtual-scroll-viewport itemSize="85" class="virtualScrollWH">
       <div class="table-responsive">
         <table class="customTable table w-100 mt-4 borderBottomTab">
           <thead>
@@ -18,7 +25,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let gameplay of gamePlaysessions">
+            <tr *cdkVirtualFor="let gameplay of gamePlaysessions">
               <td class="align-middle py-3 pl-0">
                 <div class="width120">
                   <span class="truncate-line-clamp">{{gameplay.game}}</span>
@@ -59,5 +66,6 @@
           <button (click)="loadMore()" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
         </div>
       </div>
+    </cdk-virtual-scroll-viewport>
     </div>
 </div>
