@@ -27,6 +27,7 @@ import { PlayComponent } from 'src/app/pages/play/play.component';
 import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { WishlistGuard } from "src/app/guards/wishlist.guard";
+import { CheckoutComponent } from "src/app/pages/checkout/checkout.component";
 
 @NgModule({
   imports: [
@@ -56,6 +57,7 @@ import { WishlistGuard } from "src/app/guards/wishlist.guard";
     WishlistComponent,
     PlayComponent,
     FeedbackComponent,
+    CheckoutComponent
   ],
   providers: [ViewGuard, WishlistGuard],
 })

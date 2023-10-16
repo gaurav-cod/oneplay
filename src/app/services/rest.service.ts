@@ -40,6 +40,7 @@ import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
+import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
 
 @Injectable({
   providedIn: "root",
@@ -335,6 +336,19 @@ export class RestService {
       .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
         null
+      )
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getSubscriptionPackage(planID: string): Observable<SubscriptionPackageModel> {
+    return this.http
+      .get<SubscriptionPackageModel>(
+        this.r_mix_api + "/accounts/subscription/" + planID + "/info"
       )
       .pipe(
         map((res) => res),
