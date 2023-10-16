@@ -44,6 +44,7 @@ export interface Thumbnail {
 export interface PurchaseStore {
   name: string;
   link: string;
+  store_image: string;
 }
 
 export interface StripeTxn {

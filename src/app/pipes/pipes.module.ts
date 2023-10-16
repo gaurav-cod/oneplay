@@ -4,7 +4,6 @@ import { SafePipe } from "./safe.pipe";
 import { AvatarPipe } from "./avatar.pipe";
 import { GLinkPipe } from "./glink.pipe";
 import { TimeAgoPipe } from "./time-ago.pipe";
-import { StorePipe } from "./store.pipe";
 import { TokensPipe } from "./tokens.pipe";
 
 @NgModule({
@@ -13,7 +12,6 @@ import { TokensPipe } from "./tokens.pipe";
     AvatarPipe,
     GLinkPipe,
     TimeAgoPipe,
-    StorePipe,
     TokensPipe,
   ],
   imports: [CommonModule],
@@ -22,7 +20,6 @@ import { TokensPipe } from "./tokens.pipe";
     AvatarPipe,
     GLinkPipe,
     TimeAgoPipe,
-    StorePipe,
     TokensPipe,
   ],
 })
