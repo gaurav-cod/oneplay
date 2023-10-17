@@ -8,6 +8,7 @@ import { environment } from "src/environments/environment";
 import {
   BilldeskPaymentRO,
   ClientTokenRO,
+  CouponResponse,
   GameSessionRO,
   GameStatusRO,
   ILocation,
@@ -351,18 +352,18 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/" + planID + "/info"
       )
       .pipe(
-        map((res) => res),
+        map((res) => new SubscriptionPackageModel(res)),
         catchError(({ error }) => {
           throw error;
         })
       );
   }
 
-  payWithBilldesk(planID: string): Observable<BilldeskPaymentRO> {
+  payWithBilldesk(planID: string, coupon_code?: string ): Observable<BilldeskPaymentRO> {
     return this.http
       .post<BilldeskPaymentRO>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
-        null
+        {coupon_code}
       )
       .pipe(
         map((res) => res),
@@ -1080,6 +1081,23 @@ export class RestService {
       })
       .pipe(
         map((res) => res["success"] ?? false),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  applyCoupon(subscriptionPackageId: string, couponCode: string): Observable<CouponResponse> {
+    return this.http
+      .post<CouponResponse>(
+        this.r_mix_api + "/accounts/subscription/apply_coupon",
+        {
+          subscription_package_id : subscriptionPackageId,
+          coupon_code : couponCode
+        }
+      )
+      .pipe(
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })

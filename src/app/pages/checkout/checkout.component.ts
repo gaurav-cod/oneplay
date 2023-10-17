@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
+import { UntypedFormControl, Validators } from "@angular/forms";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import {
@@ -14,6 +15,7 @@ import {
   loadStripe,
 } from "@stripe/stripe-js";
 import { Subscription, lastValueFrom } from "rxjs";
+import { SubscriptionPackageModel } from "src/app/models/subscriptionPackage.model";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
@@ -23,6 +25,8 @@ import Swal from "sweetalert2";
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
+
+
 export class CheckoutComponent implements OnInit, OnDestroy {
   
   @ViewChild("paymentModal") paymentModal: ElementRef<HTMLDivElement>;
@@ -33,6 +37,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   currentamount: string;
   currency: string;
 
+  coupon_code = new UntypedFormControl("", [Validators.required]);
+  applied_coupon_code: string;
+  coupon_message: string;
+  applied_coupon_code_value: number;
+  is_base_plan_active: number;
+  selected_payment_source: string;
+  payment_source: "billdesk" | "stripe";
+
+  subscriptionPacakage: SubscriptionPackageModel;
+
   private querySubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
   private paymentModalRef: NgbModalRef;
@@ -40,8 +54,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
   private planType: "base" | "topup";
-  private packageID: string;
-  private _getSubscriptionPacakage: Subscription;
 
   constructor(
     private readonly router: Router,
@@ -51,14 +63,40 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.querySubscriptions = this.route.params.subscribe(
-      async (params) => {
-      this._getSubscriptionPacakage?.unsubscribe();
-      this._getSubscriptionPacakage = this.restService
-        .getSubscriptionPackage(params.id)
-        .subscribe((games) => (console.log(games)));
+    this.applied_coupon_code_value = 0;
+    this.is_base_plan_active = 0;
+    this.selected_payment_source = '';
+
+    this.restService.getCurrentSubscription().subscribe((current_plans) => {
+      let total_current_plans = Object.keys(current_plans).length;
+      if(total_current_plans > 0)
+      {
+        for (var i=0; i < total_current_plans; i++) {
+            if(current_plans[i]['planType'] == 'base')
+            {
+              this.is_base_plan_active = 1;
+              break
+            }
+        }
+
       }
-    );
+    });
+
+    this.querySubscriptions = this.route.params.subscribe((params) => {
+      this.restService
+        .getSubscriptionPackage(params.id)
+        .toPromise()
+        .then(async (data) => {
+          this.subscriptionPacakage = data;
+        })
+        .catch((error) =>
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
+        );
+      })
 
     // this.querySubscriptions = this.route.queryParams.subscribe(
     //   async (params) => {
@@ -144,9 +182,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   handlePayWithBilldesk() {
-    this.paymentModalRef.close();
+    // this.paymentModalRef.close();
     this.restService
-      .payWithBilldesk(this.packageID)
+      .payWithBilldesk(this.subscriptionPacakage.id, this.applied_coupon_code)
       .toPromise()
       .then(async (data) => {
         const flowConfig = {
@@ -156,7 +194,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           childWindow: true,
           returnUrl: await this.getReturnURL(
             environment.render_mix_api +
-              "/accounts/subscription/billdesk_frontend_redirect"
+              "/v1/accounts/subscription/billdesk_frontend_redirect"
           ),
           retryCount: 3,
           crossButtonHandling: "Y",
@@ -189,10 +227,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   handlePayWithStripe() {
-    this.paymentModalRef.close();
+    // this.paymentModalRef.close();
     const stripeAppearance = { theme: "night" } as Appearance;
     this.restService
-      .payWithStripe(this.packageID)
+      .payWithStripe(this.subscriptionPacakage.id)
       .toPromise()
       .then(async (data) => {
         this.currentamount = (data.amount / 100).toFixed(2);
@@ -281,5 +319,47 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         window.location.href = "/dashboard/settings/subscription";
       }
     });
+  }
+
+  handleApplyCoupon(subscriptionPacakage) {
+    this.restService
+      .applyCoupon(subscriptionPacakage.id, this.coupon_code.value)
+      .toPromise()
+      .then(async (data) => {
+        this.coupon_message = '';
+        let temp_applied_coupon_code = this.coupon_code.value;
+        this.applied_coupon_code = temp_applied_coupon_code;
+        // this.applied_coupon_code = this.coupon_code.value;
+        this.applied_coupon_code_value = data.discount;
+        this.coupon_code.reset();
+      })
+      .catch((error) => {
+        this.applied_coupon_code_value = 0;
+        this.coupon_message = error.message;
+        this.applied_coupon_code = '';
+      });
+  }
+
+  handlePayment(payment_source) {
+    this.selected_payment_source = payment_source;
+    if(payment_source == 'billdesk')
+    {
+      //disable stripe
+    }
+    if(payment_source == 'stripe')
+    {
+      //disable billdesk
+    }
+  }
+
+  handlePaymentCheckout() {
+    if(this.selected_payment_source == 'billdesk')
+    {
+      this.handlePayWithBilldesk();
+    }
+    if(this.selected_payment_source == 'stripe')
+    {
+      this.handlePayWithStripe();
+    }
   }
 }
