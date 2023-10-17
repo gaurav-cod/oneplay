@@ -1,0 +1,12 @@
+.menudropdown {
+  background-color: #151515 !important;
+  overflow: auto;
+  -ms-overflow-style: none; /* IE 11 */
+  scrollbar-width: none;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.dropdown-menu {
+  min-width: 0rem !important;
+}
