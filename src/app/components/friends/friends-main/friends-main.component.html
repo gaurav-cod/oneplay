@@ -18,7 +18,11 @@
         class="font16 font500 anchorGradientPurple"
         (click)="goToMail.emit()"
       >
-        <img src="assets/img/chat/friend-request.svg" class="img-fluid mr-3" alt="" />
+        <img
+          src="assets/img/chat/friend-request.svg"
+          class="img-fluid mr-3"
+          alt=""
+        />
         <span class="align-middle">{{ requests }} new friend requests</span>
       </a>
     </div>
@@ -27,209 +31,42 @@
         <div class="col-auto">
           <span class="muteText">{{ friends.length }} friends</span>
         </div>
-        <div class="col-auto borderLeftColor">
-          <span class="gradientInfoText">{{onlineCount}} Online</span>
+        <div
+          class="col-auto borderLeftColor"
+          *ngIf="friends.length > offlineCount"
+        >
+          <span class="gradientInfoText">{{ onlineCount }} Online</span>
+        </div>
+        <div
+          class="col-auto borderLeftColor"
+          *ngIf="friends.length > offlineCount"
+        >
+          <span class="yellowGradient">{{ inGameCount }} Ingame</span>
         </div>
         <div class="col-auto borderLeftColor">
-          <span class="yellowGradient">2 Ingame</span>
-        </div>
-        <div class="col-auto borderLeftColor">
-          <span class="mutedColorDark">2 Offline</span>
+          <span class="mutedColorDark"
+            >{{
+              friends.length > offlineCount ? offlineCount : "All"
+            }}
+            Offline</span
+          >
         </div>
       </div>
     </div>
     <div class="col-12 mt-2">
-      <div class="row mt-2" *ngFor="let friend of friends">
-        <div class="col-auto align-self-center cursorPointer" (click)="onChat(friend)">
-          <img
-            [src]="friend.name | avatar"
-            class="rounded-circle"
-            width="48"
-            height="48"
-            alt=""
-          />
-        </div>
-        <div class="col p-0 align-self-center text-truncate">
-          <p class="font14 font500 offWhiteText mb-0">
-            {{ friend.name }}
-            <img src="assets/img/chat/in-game.svg" class="img-fluid position-absolute" alt="" />
-          </p>
-          <p class="font14 font500 gradientInfoText mb-0" *ngIf="friend.isOnline" >Online</p>
-        </div>
-        <div class="col-auto align-self-center">
-          <div
-            class="col text-right align-self-end"
-            ngbDropdown
-            placement="bottom-right"
-          >
-            <a
-              href="javascript:void(0)"
-              class="nav-link p-0"
-              role="button"
-              ngbDropdownToggle
-            >
-              <img src="assets/img/chat/three-dot.svg" class="img-fluid" alt="" />
-            </a>
-            <div class="dropdown-bug">
-              <div
-                class="dropdown-menu-arrow menudropdown py-0"
-                ngbDropdownMenu
-              >
-                <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText" (click)="openUnfriendModal()">
-                  Unfriend
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <app-friends-list
+        [friends]="liveFriends"
+        (goToChat)="goToChat.emit($event)"
+      ></app-friends-list>
     </div>
-    <div class="col-12 mt-3">
-      <p class="muteText font14 font500">22 Offline Friends</p>
-      <div class="row cursorPointer mt-2" *ngFor="let friend of friends">
-        <div class="col-auto align-self-center" (click)="onChat(friend)">
-          <img
-            [src]="friend.name | avatar"
-            class="rounded-circle"
-            width="48"
-            height="48"
-            alt=""
-          />
-        </div>
-        <div class="col p-0 align-self-center text-truncate">
-          <p class="font14 font500 offWhiteText mb-0">
-            {{ friend.name }}
-          </p>
-          <p class="font14 font500 muteText mb-0">Offline</p>
-        </div>
-        <div class="col-auto align-self-center">
-          <div
-            class="col text-right align-self-end"
-            ngbDropdown
-            placement="bottom-right"
-          >
-            <a
-              href="javascript:void(0)"
-              class="nav-link p-0"
-              role="button"
-              ngbDropdownToggle
-            >
-              <img src="assets/img/chat/three-dot.svg" class="img-fluid" alt="" />
-            </a>
-            <div class="dropdown-bug">
-              <div
-                class="dropdown-menu-arrow menudropdown py-0"
-                ngbDropdownMenu
-              >
-                <a href="javascript:void(0)" class="dropdown-item font16 font500 offWhiteText" (click)="openUnfriendModal()">
-                  Unfriend
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="col-12 mt-3" *ngIf="offlineCount > 0">
+      <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
+        {{ offlineCount }} Offline Friends
+      </p>
+      <app-friends-list
+        [friends]="offlineFriends"
+        (goToChat)="goToChat.emit($event)"
+      ></app-friends-list>
     </div>
   </div>
 </div>
-
-
-
-<ng-template #UnfriendModal let-d="dismiss">
-  <div class="modal-content modalBg">
-    <div class="modal-body p-4 text-center">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn modalBG rounded-circle right-0 top-2 p-0"
-        (click)="d('Cross click')"
-      >
-        <i class="fas fa-times-circle text-white"></i>
-      </a>
-      <img
-        src="assets/img/singup-login/female.svg"
-        class="rounded-circle mt-4"
-        width="90"
-        height="90"
-        alt=""
-      />
-      <h2 class="text-white font600 text-center font20 my-4">
-        Unfriend Marvel ?
-      </h2>
-      <button class="btn btn-block text-white font18btn responsiveBr60 font500 linearGradient focusBorder">Yes</button>
-      <button class="btn btn-block text-white font18btn font500 modalBg">No</button>
-    </div>
-  </div>
-</ng-template>
-
-<!-- <div class="d-flex flex-column">
-  <div class="d-flex align-items-center p-3 bg-gray-dark">
-    <div class="flex-grow-1 d-flex align-items-center">
-      <span class="text-white">Your status</span>
-      <div
-        class="rounded-circle bg-success mx-1"
-        style="width: 8px; height: 8px"
-      ></div>
-      <span class="text-success">Online</span>
-    </div>
-    <button
-      class="btn btn-github rounded-circle py-2 px-3"
-      (click)="toggle.emit()"
-    >
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-
-  <div class="p-3">
-    <button class="btn btn-block btn-github" (click)="goToParties.emit()">
-      View your parties
-    </button>
-  </div>
-
-  <div class="bg-gray-dark" style="height: 1px"></div>
-
-  <div class="p-3">
-    <a
-      href="javascript:void(0)"
-      class="nav-link d-flex"
-      style="background-color: rgba(243, 20, 64, 0.1); cursor: pointer"
-      (click)="goToMail.emit()"
-    >
-      <i class="fas fa-envelope text-danger" style="font-size: 36px"></i>
-      <div class="ml-2">
-        <div class="text-danger text-xs">
-          You have {{ requests }} friend requests
-        </div>
-        <div class="text-white text-xs">Click to view ></div>
-      </div>
-    </a>
-  </div>
-
-  <div class="bg-gray-dark" style="height: 1px"></div>
-
-  <h5 class="text-white m-3">{{ friends.length }} friends ({{onlineCount}} online)</h5>
-
-  <ul class="navbar-nav flex-grow-1 px-3 overflow-auto">
-    <li
-      *ngFor="let friend of friends"
-      class="media mb-1 align-items-center mb-3"
-      style="cursor: pointer"
-      (click)="onChat(friend)"
-    >
-      <img
-        [src]="friend.name | avatar"
-        class="rounded-circle mr-2"
-        width="36"
-        height="36"
-        alt=""
-      />
-      <div>
-        <div class="text-white small">
-          {{ friend.name }}
-          <span *ngIf="friend.isOnline" class="text-xs">
-            <em class="fas fa-circle text-success"></em>
-          </span>
-        </div>
-      </div>
-    </li>
-  </ul>
-</div> -->
