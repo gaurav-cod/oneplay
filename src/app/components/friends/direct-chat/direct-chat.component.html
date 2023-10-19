@@ -61,7 +61,7 @@
 
   <form (submit)="sendMessage()">
     <div class="input-group mutedBg" style="padding: 2px">
-      <div class="input-group-prepend">
+      <div class="input-group-prepend" (click)="toggleEmoji()">
         <span class="input-group-text lightBg border-0"
           ><img
             src="assets/img/chat/emoji.svg"
@@ -82,4 +82,12 @@
       </div>
     </div>
   </form>
+
+  <emoji-mart
+    *ngIf="showEmoji"
+    [style]="{ position: 'absolute', bottom: 'calc(50px + 1rem)' }"
+    [showPreview]="false"
+    [isNative]="true"
+    (emojiSelect)="selectEmoji($event)"
+  ></emoji-mart>
 </div>

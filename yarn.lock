@@ -1319,6 +1319,13 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@ctrl/ngx-emoji-mart@8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@ctrl/ngx-emoji-mart/-/ngx-emoji-mart-8.2.0.tgz#b073ce5674aaf9126c53242c130723de65e0a490"
+  integrity sha512-Y9mRCNR4X8+EaNaaLI6QfxrzsA/RgLWcTiw1ncHQDzrUNtb4V/3UcNHcHTclgVle1hzPrCwicdUYEOOIkVvIfw==
+  dependencies:
+    tslib "^2.3.0"
+
 "@discoveryjs/json-ext@0.5.7":
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"

@@ -35,6 +35,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   message = new UntypedFormControl("", Validators.required);
   user: UserModel = {} as UserModel;
   friend: FriendModel = {} as FriendModel;
+  showEmoji = false;
 
   private userSub: Subscription;
   private messageSub1: Subscription;
@@ -82,7 +83,6 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
       }, 10);
     });
   }
-
 
   get defaultImage() {
     return (
@@ -141,6 +141,14 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   isUserSender(message: MessageModel) {
     return message.sender === this.user.id;
+  }
+
+  toggleEmoji() {
+    this.showEmoji = !this.showEmoji;
+  }
+
+  selectEmoji({ emoji }) {
+    this.message.setValue(this.message.value + (emoji.native ?? ""));
   }
 
   private scrollToBottom() {
