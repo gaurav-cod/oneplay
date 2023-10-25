@@ -39,6 +39,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   coupon_code = new UntypedFormControl("", [Validators.required]);
   applied_coupon_code: string;
+  coupon_code_apply_text: string;
   coupon_message: string;
   applied_coupon_code_value: number;
   is_base_plan_active: number;
@@ -64,6 +65,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.applied_coupon_code_value = 0;
+    this.coupon_code_apply_text = 'APPLY';
     this.is_base_plan_active = 0;
     this.selected_payment_source = '';
 
@@ -306,19 +308,27 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   backButton() {
-    Swal.fire({
-      imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
-      customClass: "swalPaddingTop",
-      title: "Wait!",
-      html: "Are you sure you want to exit?<br />You will miss out on the amazing offers.",
-      showCancelButton: true,
-      cancelButtonText: "NO",
-      confirmButtonText: "Yes",
-    }).then((res) => {
-      if (res.isConfirmed) {
-        window.location.href = "/dashboard/settings/subscription";
-      }
-    });
+    if(!this.applied_coupon_code)
+    {
+      window.location.href = "/dashboard/settings/subscription";
+    }
+    else
+    {
+      Swal.fire({
+        imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+        customClass: "swalPaddingTop",
+        title: "Wait!",
+        html: "Are you sure you want to exit?<br />You will miss out on the amazing offers.",
+        showCancelButton: true,
+        cancelButtonText: "No",
+        confirmButtonText: "Yes",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          window.location.href = "/dashboard/settings/subscription";
+        }
+      });
+    }
+    
   }
 
   handleApplyCoupon(subscriptionPacakage) {
@@ -331,6 +341,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.applied_coupon_code = temp_applied_coupon_code;
         // this.applied_coupon_code = this.coupon_code.value;
         this.applied_coupon_code_value = data.discount;
+        this.coupon_code_apply_text = 'REMOVE';
         this.coupon_code.reset();
       })
       .catch((error) => {
