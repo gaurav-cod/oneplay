@@ -20,7 +20,7 @@
                             <p class="font16 font500">Plan Chosen</p>
                         </div>
                         <div class="col text-right pl-0">
-                            <p class="font25 font500 foundText">
+                            <p class="font25 font500 " [ngClass]="{'fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
                                 {{ subscriptionPacakage.name }}
                             </p>
                             <span class="font16 font500 py-1 px-2"
@@ -72,7 +72,7 @@
                                     placeholder="Enter coupon code" />
                                 <div class="input-group-append">
                                     <span class="input-group-text p-0 inputBox border-0" id="basic-addon2">
-                                        <button class="btn customgradientText "
+                                        <button class="btn " [ngClass]="{'customgradientText': coupon_code_apply_text == 'APPLY'}"
                                         [disabled]="coupon_code.invalid"
                                             (click)="handleApplyCoupon(subscriptionPacakage)">{{coupon_code_apply_text}}</button>
                                     </span>
