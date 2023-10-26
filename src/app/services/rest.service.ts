@@ -332,11 +332,11 @@ export class RestService {
     );
   }
 
-  payWithStripe(planID: string): Observable<IPayment> {
+  payWithStripe(planID: string, coupon_code?: string): Observable<IPayment> {
     return this.http
       .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
-        null
+        coupon_code ? {coupon_code} : null
       )
       .pipe(
         map((res) => res),
@@ -363,7 +363,7 @@ export class RestService {
     return this.http
       .post<BilldeskPaymentRO>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
-        {coupon_code}
+        coupon_code ? {coupon_code} : null
       )
       .pipe(
         map((res) => res),

@@ -99,6 +99,27 @@
     background-clip: text;
     text-fill-color: transparent;
   }
+
+  .fountGradientText {
+    background: linear-gradient(180deg, #3AA0FE 0%, #3AF2FE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .orangeGradientText {
+      background: linear-gradient(180deg, #E9651B 0%, #FF8933 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+
+  .unlimitedGradientText {
+      background: linear-gradient(180deg, #FF0C0C 0%, #FF630C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
   
   .badgeBg {
     background: #151515;
@@ -130,8 +151,8 @@
   .gradientBorder {
     border: 1px solid transparent;
     border-radius: 5px !important;
-    background-image: linear-gradient(rgba(95, 37, 159, 1), rgba(14, 14, 14, 1), rgba(255, 255, 255, 1)), 
-                      linear-gradient(270deg, #E1DCFE 0%, rgba(95, 37, 159, 1) 100%);
+    background-image: linear-gradient(rgba(5, 117, 230, 1), rgba(14, 14, 14, 1), rgba(255, 255, 255, 1)), 
+                      linear-gradient(270deg, #E1DCFE 0%, rgba(255, 12, 245, 1) 100%);
     background-origin: border-box;
     background-clip: content-box, border-box;
     padding: 2px !important;

@@ -232,7 +232,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // this.paymentModalRef.close();
     const stripeAppearance = { theme: "night" } as Appearance;
     this.restService
-      .payWithStripe(this.subscriptionPacakage.id)
+      .payWithStripe(this.subscriptionPacakage.id, this.applied_coupon_code)
       .toPromise()
       .then(async (data) => {
         this.currentamount = (data.amount / 100).toFixed(2);
@@ -332,7 +332,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   handleApplyCoupon(subscriptionPacakage) {
-    this.restService
+
+    if(this.coupon_code_apply_text == 'REMOVE')
+    {
+        this.applied_coupon_code = '';
+        this.applied_coupon_code_value = 0;
+        this.coupon_code_apply_text = 'APPLY';
+        this.coupon_code.reset();
+    }
+    if(this.coupon_code.value.length > 0)
+    {
+      this.restService
       .applyCoupon(subscriptionPacakage.id, this.coupon_code.value)
       .toPromise()
       .then(async (data) => {
@@ -342,13 +352,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         // this.applied_coupon_code = this.coupon_code.value;
         this.applied_coupon_code_value = data.discount;
         this.coupon_code_apply_text = 'REMOVE';
-        this.coupon_code.reset();
+        // this.coupon_code.reset();
       })
       .catch((error) => {
         this.applied_coupon_code_value = 0;
         this.coupon_message = error.message;
         this.applied_coupon_code = '';
       });
+    }
+    
   }
 
   handlePayment(payment_source) {
