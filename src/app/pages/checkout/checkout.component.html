@@ -21,7 +21,7 @@
                         </div>
                         <div class="col text-right pl-0">
                             <p class="font25 font500 " [ngClass]="{'fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
-                                {{ subscriptionPacakage.name }}
+                                {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' : subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 + (subscriptionPacakage.tokens/60 == 1 ? 'hr' : 'hrs') : '0' }}
                             </p>
                             <span class="font16 font500 py-1 px-2"
                             *ngIf="subscriptionPacakage.type == 'base' && is_base_plan_active == 1" style="line-height: 26px; letter-spacing: 0.32px;">
