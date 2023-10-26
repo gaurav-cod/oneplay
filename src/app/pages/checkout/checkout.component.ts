@@ -307,12 +307,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return path + "?swal=" + popupId;
   }
 
-  backButton() {
-    if(!this.applied_coupon_code)
+  backButton(subscriptionPacakage) {
+    let offered_discount = subscriptionPacakage?.actual_price - subscriptionPacakage.amount;
+    let offered_discount_flag = false;
+    if(offered_discount > 0)
     {
-      window.location.href = "/dashboard/settings/subscription";
+      offered_discount_flag = true;
     }
-    else
+
+    if(offered_discount_flag || this.applied_coupon_code)
     {
       Swal.fire({
         imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
@@ -327,6 +330,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           window.location.href = "/dashboard/settings/subscription";
         }
       });
+    }
+    else
+    {
+      window.location.href = "/dashboard/settings/subscription";
     }
     
   }
