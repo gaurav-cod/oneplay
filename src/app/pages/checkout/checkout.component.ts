@@ -333,7 +333,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
     else
     {
-      window.location.href = "/dashboard/settings/subscription";
+      window.location.href = `${environment.domain}/subscription.html`;
     }
     
   }
