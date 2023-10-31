@@ -56,6 +56,10 @@ export class PaymentComponent implements OnInit, OnDestroy {
           if(params.renew) {
             confirmText = 'Renew';
           }
+          if(params.isLiveForPurchase === 'false') {
+            window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+            return false;
+          }
           Swal.fire({
             title: "Ready to unlock?",
             html: await this.getSwalTextForBasePlan(params),
@@ -69,21 +73,16 @@ export class PaymentComponent implements OnInit, OnDestroy {
             customClass: "swalPadding",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              if(params.isLiveForPurchase === 'false') {
-                window.location.href = `${environment.domain}/subscription.html?plan=${params.minutes}`;
-              } else {
-                this.packageID = params.subscribe || params.renew;
-                this.planType = !!params.renew ? "base" : params.plan;
-                this.paymentModalRef = this.ngbModal.open(this.paymentModal, {
-                  centered: true,
-                  modalDialogClass: "modal-lg",
-                  scrollable: true,
-                  backdrop: "static",
-                  keyboard: false,
-                });
+              if(params.isLiveForPurchase === 'true') {
+                let subscription_package_id = params.renew;
+                if(!params.renew)
+                {
+                  subscription_package_id = params.subscribe;
+                }
+                window.location.href =  "/dashboard/checkout/"+subscription_package_id;
               }
             } else if (result.isDenied) {
-              window.location.href = `${environment.domain}/subscription.html`;
+                window.location.href = `${environment.domain}/subscription.html?plan=10800`;
             } else {
               this.removeQueryParams();
             }
