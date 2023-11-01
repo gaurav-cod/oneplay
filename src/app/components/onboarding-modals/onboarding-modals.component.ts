@@ -242,9 +242,15 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   private triggerSpeedTest() {
     if (!this.authService.trigger_speed_test) return;
-    if (!this._showTnC && !this._showSelectGames) {
+    if(this.router.url.match(/\/home((\/|\?)|$)/))
+    {
+      if (!this._showTnC && !this._showSelectGames) {
+        this.authService.trigger_speed_test = false;
+        this.router.navigateByUrl("/speed-test");
+      }
+    } else {
       this.authService.trigger_speed_test = false;
-      this.router.navigateByUrl("/speed-test");
     }
+    
   }
 }
