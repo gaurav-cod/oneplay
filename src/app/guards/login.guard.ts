@@ -23,6 +23,9 @@ export class LoginGuard implements CanActivateChild {
     this.authService.sessionTokenExists.subscribe((u) => {
       if (u && !isEdgeCase) {
         let { redirectUrl } = childRoute.queryParams;
+        console.log((redirectUrl === "/" || redirectUrl === "/home" || !redirectUrl));
+        console.log(this.authService.trigger_speed_test);
+        console.log(localStorage.getItem("#onboardingUser") === "true");
         if ((redirectUrl === "/" || redirectUrl === "/home" || !redirectUrl)
           && this.authService.trigger_speed_test
           && localStorage.getItem("#onboardingUser") === "true") {
