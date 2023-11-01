@@ -245,7 +245,6 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     if(this.router.url.match(/\/home((\/|\?)|$)/))
     {
       if (!this._showTnC && !this._showSelectGames) {
-        this.authService.trigger_speed_test = false;
         this.router.navigateByUrl("/speed-test");
       }
     } else {
