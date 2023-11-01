@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
+import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 import { v4 } from "uuid";
@@ -86,11 +87,15 @@ export class SpeedTestComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
-    private readonly title: Title
+    private readonly title: Title,
+    private readonly authService: AuthService,
   ) {}
 
   ngOnInit(): void {
     this.title.setTitle("Speed Test");
+    if (this.authService.trigger_speed_test) {
+      this.authService.trigger_speed_test = false;
+    }
     this.runTests();
   }
 

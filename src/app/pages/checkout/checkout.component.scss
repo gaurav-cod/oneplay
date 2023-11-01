@@ -1,0 +1,172 @@
+.modalHeading {
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 34px;
+    letter-spacing: 0.02em;
+  }
+  
+  .cardBG {
+    background: #0e0e0e !important;
+    border-radius: 12px !important;
+  }
+  
+  .cardBG:hover {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+      linear-gradient(270deg, #a83afe 0%, #6e59fe 100%) !important;
+  }
+  
+  .subHeading {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0em;
+    color: #959595;
+  }
+  
+  .height60 {
+    height: 60px;
+    @media (max-width: 991.9px) {
+      height: 24px;
+    }
+  }
+  
+  .tagText {
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+  }
+  
+  .recommended {
+    position: absolute;
+    top: -10px;
+    color: #fff;
+    left: 15px;
+  }
+  
+  .skyBgGradient {
+    background: linear-gradient(259.59deg, #3AA0FE 0%, #0575E6 100%);
+  }
+  
+  .blink_bg {
+    -webkit-animation: backgroundColor 1s infinite;  /* Safari 4+ */
+    -moz-animation: backgroundColor 1s infinite;  /* Fx 5+ */
+    -o-animation: backgroundColor 1s infinite;  /* Opera 12+ */
+    animation: backgroundColor 1s infinite;  /* IE 10+, Fx 29+ */
+  }
+  
+  @keyframes backgroundColor {
+    0%, 49% {
+      background-color: #e31c34;
+    }
+    50%, 100% {
+      background-color: transparent;
+    }
+  }
+  
+  .borderRadius50 {
+    border-radius: 50px;
+  }
+  
+  
+  .br20 {
+    border-radius: 20px !important;
+  }
+  
+  .SNo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #151515;
+    font-size: 18px;
+    line-height: 40px;
+    font-weight: 500;
+    align-items: center;
+  }
+  
+  .font25 {
+    font-size: 25px;
+    line-height: 37.5px;
+    @media (max-width: 767.9px) {
+      font-size: 18px;
+      line-height: 20px;
+    }
+  }
+  
+  .foundText {
+    background: linear-gradient(180deg, #3AA0FE 0%, #3AF2FE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+  }
+
+  .defaultGradientText {
+    background: linear-gradient(180deg, #3AA0FE 0%, #3AF2FE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .fountGradientText {
+    background: linear-gradient(180deg, #3AA0FE 0%, #3AF2FE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .orangeGradientText {
+      background: linear-gradient(180deg, #E9651B 0%, #FF8933 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+
+  .unlimitedGradientText {
+      background: linear-gradient(180deg, #FF0C0C 0%, #FF630C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+  
+  .badgeBg {
+    background: #151515;
+    border-radius: 20px;
+  }
+  
+  .greenText {
+    color: #36FF78;
+  }
+  
+  .inputBox {
+    background-color: #151515 !important;
+    font-size: 16px;
+    line-height: 26px;
+    color: #576068;
+    font-weight: 500;
+  }
+  
+  .customBorder0 {
+    border-top: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+  }
+  
+  .dotBorder {
+    border-top: 8px #212123 dotted;
+  }
+  
+  .gradientBorder {
+    border: 1px solid transparent;
+    border-radius: 5px !important;
+    background-image: linear-gradient(rgba(167.76, 58, 254), rgba(14, 14, 14, 1), rgba(255, 255, 255, 1)), 
+                      linear-gradient(270deg, rgb(110, 89, 254) 0%,  rgb(167.76, 58, 254) 100%);                      
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    padding: 2px !important;
+}
+
+.disabledDiv {
+    border-radius: 12px;
+    opacity: 0.4;
+    background: #0E0E0E;
+}

@@ -171,3 +171,8 @@ export interface BilldeskPaymentRO {
   bdOrderId: string;
   token: string;
 }
+
+export interface CouponResponse {
+  coupon_id: string;
+  discount: number;
+}

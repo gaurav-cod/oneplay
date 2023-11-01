@@ -2,6 +2,7 @@ export class SubscriptionPackageModel {
   id: string;
   name: string;
   description: string;
+  actual_price: number;
   amount: number;
   currency: string;
   can_run_4k: boolean;
@@ -17,6 +18,7 @@ export class SubscriptionPackageModel {
     this.id = json.id;
     this.name = json.plan_name;
     this.description = json.plan_description;
+    this.actual_price = json.plan_config.actual_price;
     this.amount = json.value;
     this.currency = json.currency;
     this.can_run_4k = json.can_run_4k === "true";

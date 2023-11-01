@@ -12,6 +12,7 @@ import { PlayComponent } from 'src/app//pages/play/play.component';
 import { ViewGuard } from 'src/app/guards/view.guard';
 import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 import { WishlistGuard } from 'src/app/guards/wishlist.guard';
+import { CheckoutComponent } from 'src/app/pages/checkout/checkout.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
@@ -28,4 +29,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'search/:tab',          component: SearchComponent },
     { path: 'play',                 component: PlayComponent },
     { path: "quit",                 component: FeedbackComponent },
+    { path: "checkout/:id",             component: CheckoutComponent },
 ];

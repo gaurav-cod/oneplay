@@ -8,6 +8,7 @@ import { environment } from "src/environments/environment";
 import {
   BilldeskPaymentRO,
   ClientTokenRO,
+  CouponResponse,
   GameSessionRO,
   GameStatusRO,
   ILocation,
@@ -40,6 +41,7 @@ import { PaymentIntent } from "@stripe/stripe-js";
 import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
+import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
 
 @Injectable({
   providedIn: "root",
@@ -330,11 +332,11 @@ export class RestService {
     );
   }
 
-  payWithStripe(planID: string): Observable<IPayment> {
+  payWithStripe(planID: string, coupon_code?: string): Observable<IPayment> {
     return this.http
       .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
-        null
+        coupon_code ? {coupon_code} : null
       )
       .pipe(
         map((res) => res),
@@ -344,11 +346,24 @@ export class RestService {
       );
   }
 
-  payWithBilldesk(planID: string): Observable<BilldeskPaymentRO> {
+  getSubscriptionPackage(planID: string): Observable<SubscriptionPackageModel> {
+    return this.http
+      .get<SubscriptionPackageModel>(
+        this.r_mix_api + "/accounts/subscription/" + planID + "/info"
+      )
+      .pipe(
+        map((res) => new SubscriptionPackageModel(res)),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  payWithBilldesk(planID: string, coupon_code?: string ): Observable<BilldeskPaymentRO> {
     return this.http
       .post<BilldeskPaymentRO>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
-        null
+        coupon_code ? {coupon_code} : null
       )
       .pipe(
         map((res) => res),
@@ -1066,6 +1081,23 @@ export class RestService {
       })
       .pipe(
         map((res) => res["success"] ?? false),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  applyCoupon(subscriptionPackageId: string, couponCode: string): Observable<CouponResponse> {
+    return this.http
+      .post<CouponResponse>(
+        this.r_mix_api + "/accounts/subscription/apply_coupon",
+        {
+          subscription_package_id : subscriptionPackageId,
+          coupon_code : couponCode
+        }
+      )
+      .pipe(
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
