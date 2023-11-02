@@ -148,7 +148,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   selectEmoji({ emoji }) {
-    this.message.setValue(this.message.value + (emoji.native ?? ""));
+    this.message.setValue((this.message.value ?? "") + (emoji.native ?? ""));
   }
 
   private scrollToBottom() {

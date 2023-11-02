@@ -51,6 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
   private pendingFriends: FriendModel[] = [];
+  private friendRequests: FriendModel[] = [];
   private dontClose = false;
   private keyword = "";
   private keywordHash = "";
@@ -59,12 +60,50 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private focusSubscription: Subscription;
   private gameStatusSubscription: Subscription;
   private querySubscription: Subscription;
+  private userSub: Subscription;
+  private friendsSub: Subscription;
+  private pendingsSub: Subscription;
+  private requestsSub: Subscription;
 
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
 
   isMenuCollapsed = true;
+
+  get actions(): {
+    [key in "add" | "accept" | "decline" | "cancel" | "wait" | "none"]: {
+      icon: string;
+      action: ((friend: UserModel) => any) | null;
+    };
+  } {
+    return {
+      add: {
+        icon: "add-friend",
+        action: (f) => this.addFriend(f),
+      },
+      accept: {
+        icon: "Subtract",
+        action: (f) => this.acceptFriend(f),
+      },
+      decline: {
+        icon: "Cross",
+        action: (f) => this.declineFriend(f),
+      },
+      cancel: {
+        icon: "delete",
+        action: (f) => this.cancelRequest(f),
+      },
+      wait: {
+        icon: "wait-request",
+        action: null,
+      },
+      none: {
+        icon: "friend",
+        action: null,
+      },
+    };
+  }
 
   get title() {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
@@ -112,8 +151,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isMenuCollapsed = true;
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
-      actionDone: 'yes',
-      actionType: 'gameClicked',
+      actionDone: "yes",
+      actionType: "gameClicked",
     });
     this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
@@ -170,19 +209,29 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService
-  ) {
-    this.authService.user.subscribe((u) => (this.user = u));
-    this.friendsService.friends.subscribe((f) => (this.acceptedFriends = f));
-    this.friendsService.pendings.subscribe((f) => (this.pendingFriends = f));
-  }
+  ) {}
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
     this.gameStatusSubscription?.unsubscribe();
     this.querySubscription?.unsubscribe();
+    this.userSub?.unsubscribe();
+    this.friendsSub?.unsubscribe();
+    this.pendingsSub?.unsubscribe();
+    this.requestsSub?.unsubscribe();
   }
 
   ngOnInit() {
+    this.userSub = this.authService.user.subscribe((u) => (this.user = u));
+    this.friendsSub = this.friendsService.friends.subscribe(
+      (f) => (this.acceptedFriends = f)
+    );
+    this.pendingsSub = this.friendsService.pendings.subscribe(
+      (f) => (this.pendingFriends = f)
+    );
+    this.requestsSub = this.friendsService.requests.subscribe(
+      (f) => (this.friendRequests = f)
+    );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -244,64 +293,77 @@ export class NavbarComponent implements OnInit, OnDestroy {
     event.target.src = "assets/img/defaultUser.svg";
   }
 
-  getFriendAddIcon(friend: UserModel) {
+  getActions(friend: UserModel) {
     if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
-      return "friend";
+      return ["none"];
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
-      return "wait-request";
-    } else if (this.user.id === friend.id) {
-      return "d-none";
+      return ["cancel","wait"];
+    } else if (this.friendRequests.find((f) => f.user_id === friend.id)) {
+      return ["decline", "accept"];
     } else {
-      return "add-friend";
+      return ["add"];
     }
   }
 
-  addFriend(friend: UserModel) {
+  private acceptFriend(friend: UserModel) {
+    this.dontClose = true;
+    const request = this.friendRequests.find((f) => f.user_id === friend.id);
+    if (request) {
+      this.restService.acceptFriend(request.id).subscribe({
+        next: () => this.friendsService.acceptRequest(request),
+        error: (err) => this.showError(err),
+      });
+    }
+  }
+
+  private declineFriend(friend: UserModel) {
+    this.dontClose = true;
+    const request = this.friendRequests.find((f) => f.user_id === friend.id);
+    if (request) {
+      this.restService.deleteFriend(request.id).subscribe({
+        next: () => this.friendsService.declineRequest(request),
+        error: (err) => this.showError(err),
+      });
+    }
+  }
+
+  private cancelRequest(friend: UserModel) {
+    this.dontClose = true;
+    const request = this.pendingFriends.find((f) => f.user_id === friend.id);
+    if (request) {
+      this.restService.deleteFriend(request.id).subscribe({
+        next: () => this.friendsService.cancelRequest(request),
+        error: (err) => this.showError(err),
+      });
+    }
+  }
+
+  private addFriend(friend: UserModel) {
+    this.dontClose = true;
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
-      actionDone: 'yes',
-      actionType: 'addFriend',
-    })
-    if (this.user.id === friend.id) {
-      return;
-    }
-    this.dontClose = true;
-    const acceptedFriend = this.acceptedFriends.find(
-      (f) => f.user_id === friend.id
-    );
-    const pendingFriend = this.pendingFriends.find(
-      (f) => f.user_id === friend.id
-    );
-    if (acceptedFriend) {
-      this.restService.deleteFriend(acceptedFriend.id).subscribe(
-        () => {
-          this.friendsService.deleteFriend(acceptedFriend);
-        },
-        (err) => this.showError(err)
-      );
-    } else if (pendingFriend) {
-      this.restService.deleteFriend(pendingFriend.id).subscribe(
-        () => {
-          this.friendsService.cancelRequest(pendingFriend);
-        },
-        (err) => this.showError(err)
-      );
-    } else {
-      this.restService.addFriend(friend.id).subscribe(
-        (id) => {
-          this.friendsService.addFriend(friend, id);
-        },
-        (err) => this.showError(err)
-      );
+      actionDone: "yes",
+      actionType: "addFriend",
+    });
+    const record = [
+      ...this.acceptedFriends,
+      ...this.pendingFriends,
+      ...this.friendRequests,
+    ].find((f) => f.user_id === friend.id);
+    if (!record) {
+      this.restService.addFriend(friend.id).subscribe({
+        next: (id) => this.friendsService.addFriend(friend, id),
+        error: (err) => this.showError(err),
+      });
     }
   }
 
   private showError(error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error Code: " + error.code,
-        text: error.message,
-      });
+    Swal.fire({
+      icon: "error",
+      title: "Error Code: " + error.code,
+      text: error.message,
+    });
   }
 
   search(value: string) {
@@ -323,7 +385,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logoutRef.close();
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
     // this.messagingService.removeToken().finally(() => {
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.loggedOutByUser = true;
@@ -361,12 +423,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
-              Swal.fire({
-                title: "Error Code: " + err.code,
-                text: err.message,
-                icon: "error",
-                confirmButtonText: "Try Again",
-              });
+            Swal.fire({
+              title: "Error Code: " + err.code,
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "Try Again",
+            });
           },
         });
       }
@@ -381,8 +443,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
       actionDone: "no",
-      actionType: 'cancelled',
-    })
+      actionType: "cancelled",
+    });
     this.focus.next(false);
   }
 
@@ -405,9 +467,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   searchNavigate(tab: "games" | "users") {
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
-      actionDone: 'yes',
-      actionType: tab === 'games' ? 'seeMoreGames' : 'seeMoreUsers',
-    })
+      actionDone: "yes",
+      actionType: tab === "games" ? "seeMoreGames" : "seeMoreUsers",
+    });
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
         discardOldData: true,
@@ -446,11 +508,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.authService.updateProfile({ searchPrivacy: !privacy });
-          Swal.fire({
-            icon: "error",
-            title: "Error Code: " + err.code,
-            text: err.message,
-          });
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
       },
     });
   }
