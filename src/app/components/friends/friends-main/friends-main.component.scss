@@ -1,7 +1,24 @@
 .borderLeftColor {
-    border-left: 1px solid #3E4246;
+  border-left: 1px solid #3E4246;
 }
 
 .mutedColorDark {
-    color: #576068;
+  color: #576068;
+}
+
+.friends-list {
+  height: calc(80vh - 170px);
+  overflow-y: auto;
+}
+
+.friends-list::-webkit-scrollbar {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-track {
+  display: none;
 }

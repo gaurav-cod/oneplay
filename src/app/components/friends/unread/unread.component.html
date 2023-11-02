@@ -2,20 +2,14 @@
   <div class="col-12">
     <button class="btn bg-transparent px-0 mb-3" (click)="goBack.emit()">
       <img src="assets/img/chat/left-arrow.svg" class="img-fluid mr-3" alt="" />
-      <span class="font16 font500 offWhiteText align-middle"
-        >Friend Requests</span
-      >
+      <span class="font16 font500 offWhiteText align-middle">Friend Requests</span>
     </button>
     <div class="borderBottomTab"></div>
   </div>
   <div class="col-12" *ngIf="requests.length === 0">
     <div class="row justify-content-center align-items-center customHeight">
       <div class="col-9">
-        <img
-          src="assets/img/chat/no-friend-request.svg"
-          class="img-fluid"
-          alt=""
-        />
+        <img src="assets/img/chat/no-friend-request.svg" class="img-fluid" alt="" />
         <p class="font16 font500 muteText mb-0">
           You have no friends, click the search icon to begin connecting with
           them.
@@ -23,20 +17,11 @@
       </div>
     </div>
   </div>
-  <div class="col-12 mt-2">
+  <div class="col-12 mt-2 friends-list">
     <div *ngFor="let friend of requests" class="row mt-3">
-      <div
-        class="col-auto cursorPointer align-self-center"
-        (click)="onChat(friend)"
-      >
-        <img
-          [src]="friend.profile_image || getGenderImage(friend)"
-          (error)="onImgError($event, friend)"
-          class="rounded-circle"
-          width="48"
-          height="48"
-          alt=""
-        />
+      <div class="col-auto cursorPointer align-self-center" (click)="onChat(friend)">
+        <img [src]="friend.profile_image || getGenderImage(friend)" (error)="onImgError($event, friend)"
+          class="rounded-circle" width="48" height="48" alt="" />
       </div>
       <div class="col p-0 align-self-center text-truncate cursorPointer">
         <p class="font14 font500 offWhiteText mb-0">
@@ -45,26 +30,13 @@
         <p class="font14 font500 muteText mb-0" *ngIf="!!friend.inGame">
           <span class="yellowGradient">InGame</span> - {{ friend.inGame }}
         </p>
-        <p
-          class="font14 font500 gradientInfoText mb-0"
-          *ngIf="friend.isOnline && !friend.inGame"
-        >
+        <p class="font14 font500 gradientInfoText mb-0" *ngIf="friend.isOnline && !friend.inGame">
           Online
         </p>
       </div>
       <div class="col-auto align-self-center">
-        <img
-          src="assets/img/chat/Subtract.svg"
-          (click)="accept(friend)"
-          class="img-fluid cursorPointer mr-4"
-          alt=""
-        />
-        <img
-          src="assets/img/chat/Cross.svg"
-          (click)="decline(friend)"
-          class="img-fluid cursorPointer ml-4"
-          alt=""
-        />
+        <img src="assets/img/chat/Subtract.svg" (click)="accept(friend)" class="img-fluid cursorPointer mr-4" alt="" />
+        <img src="assets/img/chat/Cross.svg" (click)="decline(friend)" class="img-fluid cursorPointer ml-4" alt="" />
       </div>
     </div>
   </div>

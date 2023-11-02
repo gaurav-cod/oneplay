@@ -1,78 +1,50 @@
-<nav>
-  <div class="row customNavTab customCareerTab border-0 nav nav-tabs mx-1">
-    <div class="col-6 p-0 text-center mt-2">
-      <a
-        href="javascript:void(0)"
-        class="nav-item nav-link border-0 py-3 active w-100"
-        >Friends</a
-      >
-    </div>
-  </div>
-  <div class="borderBottomTab"></div>
-</nav>
-<div class="tab-content">
-  <div class="row p-3">
-    <div class="col-12 mb-3">
-      <a
-        href="javascript:void(0)"
-        class="font16 font500 anchorGradientPurple"
-        (click)="goToMail.emit()"
-      >
-        <img
-          src="assets/img/chat/friend-request.svg"
-          class="img-fluid mr-3"
-          alt=""
-        />
-        <span class="align-middle"
-          >{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span
-        >
-      </a>
-    </div>
-    <div class="col-12">
-      <div class="row font14 font500">
-        <div class="col-auto">
-          <span class="muteText"
-            >{{ friends.length }} Friend{{
-              friends.length > 1 ? "s" : ""
-            }}</span
-          >
-        </div>
-        <div
-          class="col-auto borderLeftColor"
-          *ngIf="friends.length > offlineCount"
-        >
-          <span class="gradientInfoText">{{ onlineCount }} Online</span>
-        </div>
-        <div
-          class="col-auto borderLeftColor"
-          *ngIf="friends.length > offlineCount"
-        >
-          <span class="yellowGradient">{{ inGameCount }} Ingame</span>
-        </div>
-        <div class="col-auto borderLeftColor">
-          <span class="mutedColorDark"
-            >{{
-              friends.length > offlineCount ? offlineCount : "All"
-            }}
-            Offline</span
-          >
-        </div>
+<section class="chat-section">
+  <nav>
+    <div class="row customNavTab customCareerTab border-0 nav nav-tabs mx-1 sticky-top-bar">
+      <div class="col-6 p-0 text-center mt-2">
+        <a href="javascript:void(0)" class="nav-item nav-link border-0 py-3 active w-100">Friends</a>
       </div>
     </div>
-    <div class="col-12 mt-2">
-      <app-friends-list
-        [friends]="liveFriends"
-        (goToChat)="goToChat.emit($event)"
-      ></app-friends-list>
-    </div>
-    <div class="col-12 mt-3" *ngIf="offlineCount > 0">
-      <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
-        {{ offlineCount }} Offline Friends
-      </p>
-      <app-friends-list
-        [friends]="offlineFriends"
-        (goToChat)="goToChat.emit($event)"
-      ></app-friends-list>
+    <div class="borderBottomTab"></div>
+  </nav>
+  <div class="tab-content">
+    <div class="row p-3">
+      <div class="col-12 mb-3">
+        <a href="javascript:void(0)" class="font16 font500 anchorGradientPurple" (click)="goToMail.emit()">
+          <img src="assets/img/chat/friend-request.svg" class="img-fluid mr-3" alt="" />
+          <span class="align-middle">{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span>
+        </a>
+      </div>
+      <div class="col-12">
+        <div class="row font14 font500">
+          <div class="col-auto">
+            <span class="muteText">{{ friends.length }} Friend{{
+              friends.length > 1 ? "s" : ""
+              }}</span>
+          </div>
+          <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
+            <span class="gradientInfoText">{{ onlineCount }} Online</span>
+          </div>
+          <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
+            <span class="yellowGradient">{{ inGameCount }} Ingame</span>
+          </div>
+          <div class="col-auto borderLeftColor">
+            <span class="mutedColorDark">{{
+              friends.length > offlineCount ? offlineCount : "All"
+              }}
+              Offline</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+      </div>
+      <div class="col-12 mt-3 friends-list" *ngIf="offlineCount > 0">
+        <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
+          {{ offlineCount }} Offline Friends
+        </p>
+        <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+      </div>
     </div>
   </div>
-</div>
+</section>
