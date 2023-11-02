@@ -31,7 +31,11 @@
     <div class="col-12">
       <div class="row font14 font500">
         <div class="col-auto">
-          <span class="muteText">{{ friends.length }} friends</span>
+          <span class="muteText"
+            >{{ friends.length }} Friend{{
+              friends.length > 1 ? "s" : ""
+            }}</span
+          >
         </div>
         <div
           class="col-auto borderLeftColor"
