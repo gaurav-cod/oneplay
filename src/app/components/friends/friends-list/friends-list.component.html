@@ -19,11 +19,12 @@
   >
     <p class="font14 font500 offWhiteText mb-0">
       {{ friend.username }}
-      <!-- <img
+      <img
+        *ngIf="isUnread(friend)"
         src="assets/img/chat/in-game.svg"
-        class="img-fluid position-absolute"
+        class="img-fluid position-absolute ml-1"
         alt=""
-      /> -->
+      />
     </p>
     <p class="font14 font500 muteText mb-0" *ngIf="!!friend.inGame">
       <span class="yellowGradient">InGame</span> - {{ friend.inGame }}
