@@ -392,7 +392,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.restService
       .payWithPhonePay(this.subscriptionPacakage.id).subscribe({
         next: (response: any) => {
-          window.open(response.payment_url);
+          window.open(response.payment_url, '_self');
         }, error: (error: any) => {
           Swal.fire({
             title: "Error Code: " + error.code,
