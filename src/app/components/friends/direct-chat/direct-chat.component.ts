@@ -96,6 +96,10 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.chatService.canLoadMore;
   }
 
+  get loading() {
+    return this.chatService.loading;
+  }
+
   isSameDate(index: number) {
     if (index === 0) {
       return false;
