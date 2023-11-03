@@ -1,7 +1,41 @@
 .borderLeftColor {
-    border-left: 1px solid #3E4246;
+  border-left: 1px solid #3E4246;
 }
 
 .mutedColorDark {
-    color: #576068;
+  color: #576068;
+}
+
+.friends-list {
+  height: calc(80vh - 120px);
+  width: 100%;
+  overflow-y: auto;
+}
+
+.emptyContainer {
+  height: calc(80vh - 150px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .chat-section {
+    height: calc(100vh - 140px);
+  }
+}
+
+.friends-list::-webkit-scrollbar {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-track {
+  display: none;
 }

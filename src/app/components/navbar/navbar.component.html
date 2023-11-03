@@ -6,6 +6,13 @@
     class="container-fluid p-0"
     style="padding-left: 1% !important; padding-right: 2% !important"
   >
+    <div class="search">
+      <span class="bgTransparent offWhiteColor font16 font500">
+        <a href="javascript:void(0)"routerLinkActive="active"
+        [routerLink]="['/search']"><i class="fas fa-search text-white"></i></a>
+      </span>
+    </div>
+
     <!-- Brand -->
     <a href="javascript:void(0)" class="navbar-brand" [routerLink]="['/home']">
       <img
@@ -234,8 +241,9 @@
               class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
-              <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-                <i class="fas fa-user-friends"></i>
+              <span class="nav-chat">
+                <!-- <i class="fas fa-user-friends"></i> -->
+                <img src="assets/img/navbar/chat-icon.svg" alt="">
               </span>
             </a>
           </div>
