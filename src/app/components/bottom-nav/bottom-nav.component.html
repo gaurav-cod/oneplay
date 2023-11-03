@@ -30,19 +30,21 @@
         routerLinkActive="active"
         [routerLink]="['/home']"
       >
-        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-          <i class="fas fa-home"></i>
-        </span>
+        <div class="iconContainer">
+          <img src="assets/img/navbar/home-icon.svg" alt="">
+          <span class="font14 font400 text-gray">Home</span>
+        </div>
       </a>
       <a
         href="javascript:void(0)"
+        routerLinkActive="active"
+        [routerLink]="['/store']"
         class="navbar-nav text-center"
-        [routerLink]="['search']"
-        routerLinkActive="text-primary"
       >
-        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-          <i class="fas fa-search"></i>
-        </span>
+        <div class="iconContainer">
+          <img src="assets/img/navbar/game-icon.svg" alt="">
+          <span class="font14 font400 text-gray">Game</span>
+        </div>
       </a>
       <a
         href="javascript:void(0)"
@@ -52,6 +54,7 @@
         ngbTooltip="{{ gamePlayTooltip }}"
         triggers="click:blur"
       >
+      <div class="iconContainer">
         <img
           *ngIf="isGameRunning && isUserLive"
           src="assets/img/Dashboard/Speedtest.svg"
@@ -61,7 +64,7 @@
           width="36px"
           height="36px"
         />
-        <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span>
+        <!-- <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span> -->
         <img
           *ngIf="isGameRunning && !isUserLive"
           src="assets/img/Dashboard/resumeSpeedtest.svg"
@@ -73,33 +76,38 @@
         />
         <img
           *ngIf="!isGameRunning"
-          src="assets/img/Dashboard/inactiveGame.svg"
+          src="assets/img/navbar/live-icon.svg"
           class="img-fluid"
           alt=""
           aria-hidden="true"
           width="36px"
           height="36px"
         />
+        <span class="font14 font400 text-gray">Live</span>
+      </div>
+      </a>
+      <a
+        href="javascript:void(0)"
+        class="navbar-nav text-center"
+        [routerLink]="['speed-test']"
+        routerLinkActive="text-primary"
+      >
+        <div class="iconContainer">
+          <img src="assets/img/navbar/test-icon.svg" alt="">
+          <span class="font14 font400 text-gray">Test</span>
+        </div>
       </a>
       <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
         (click)="toggleFriendsList()"
       >
-        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-          <i class="fas fa-user-friends"></i>
-        </span>
+        <div class="iconContainer">
+          <img src="assets/img/navbar/chat-icon.svg" alt="">
+          <span class="font14 font400 text-gray">Chat</span>
+        </div>
       </a>
-      <a
-        href="javascript:void(0)"
-        routerLinkActive="active"
-        [routerLink]="['/store']"
-        class="navbar-nav text-center"
-      >
-        <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-          <i class="fas fa-gamepad"></i>
-        </span>
-      </a>
+      
     </div>
   </nav>
 </div>
