@@ -20,7 +20,7 @@
                             <p class="font16 font500">Plan Chosen</p>
                         </div>
                         <div class="col text-right pl-0">
-                            <p class="font25 font500 " [ngClass]="{'fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
+                            <p class="font25 font500 " [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
                                 {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' : subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 + (subscriptionPacakage.tokens/60 == 1 ? 'hr' : 'hrs') : '0' }}
                             </p>
                         </div>
