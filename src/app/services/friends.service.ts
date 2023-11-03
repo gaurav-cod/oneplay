@@ -10,29 +10,38 @@ export class FriendsService {
   private _$friends = new BehaviorSubject<FriendModel[]>([]);
   private _$pendings = new BehaviorSubject<FriendModel[]>([]);
   private _$requests = new BehaviorSubject<FriendModel[]>([]);
+  private _$unreadSenders = new BehaviorSubject<string[]>([]);
 
   get friends(): Observable<FriendModel[]> {
     return this._$friends.asObservable();
   }
 
-  set friends(friends: Observable<FriendModel[]>) {
-    friends.subscribe((friends) => this._$friends.next(friends));
+  setFriends(friends: FriendModel[]) {
+    this._$friends.next(friends);
   }
 
   get pendings(): Observable<FriendModel[]> {
     return this._$pendings.asObservable();
   }
 
-  set pendings(pendings: Observable<FriendModel[]>) {
-    pendings.subscribe((pendings) => this._$pendings.next(pendings));
+  setPendings(pendings: FriendModel[]) {
+    this._$pendings.next(pendings);
   }
 
   get requests(): Observable<FriendModel[]> {
     return this._$requests.asObservable();
   }
 
-  set requests(requests: Observable<FriendModel[]>) {
-    requests.subscribe((requests) => this._$requests.next(requests));
+  setRequests(requests: FriendModel[]) {
+    this._$requests.next(requests);
+  }
+
+  get unreadSenders(): Observable<string[]> {
+    return this._$unreadSenders.asObservable();
+  }
+
+  setUnreadSenders(data: string[]) {
+    this._$unreadSenders.next(data);
   }
 
   getFriendById(id: string): FriendModel {

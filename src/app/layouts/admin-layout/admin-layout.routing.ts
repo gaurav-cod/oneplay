@@ -13,11 +13,13 @@ import { ViewGuard } from 'src/app/guards/view.guard';
 import { FeedbackComponent } from 'src/app/pages/feedback/feedback.component';
 import { WishlistGuard } from 'src/app/guards/wishlist.guard';
 import { CheckoutComponent } from 'src/app/pages/checkout/checkout.component';
+import { ChatComponent } from 'src/app/pages/chat/chat.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
     { path: 'home',                 component: HomeComponent },
     { path: 'home/:filter',         component: HomeComponent },
+    { path: 'chat',                 component: ChatComponent },
     { path: 'store',                component: StoreComponent },
     { path: 'store/:filter',        component: StoreComponent },
     { path: 'view/:id',             component: ViewComponent, canDeactivate: [ViewGuard] },
@@ -29,5 +31,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'search/:tab',          component: SearchComponent },
     { path: 'play',                 component: PlayComponent },
     { path: "quit",                 component: FeedbackComponent },
-    { path: "checkout/:id",             component: CheckoutComponent },
+    { path: "checkout/:id",         component: CheckoutComponent },
 ];

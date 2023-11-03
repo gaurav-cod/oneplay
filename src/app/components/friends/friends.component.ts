@@ -1,22 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from "@angular/core";
+import { Component } from "@angular/core";
 
 @Component({
   selector: "app-friends",
   templateUrl: "./friends.component.html",
   styleUrls: ["./friends.component.scss"],
 })
-export class FriendsComponent implements OnInit, OnDestroy {
-  @Input("isCollapsed") isCollapsed: boolean;
-
-  @Output() toggleCollapse = new EventEmitter();
-
+export class FriendsComponent {
   _screens: Array<
     | "main"
     | "mail"
@@ -32,33 +21,8 @@ export class FriendsComponent implements OnInit, OnDestroy {
   selectedParty: string;
   selectedFriend: string;
 
-  constructor() {}
-
-  ngOnInit(): void {
-    window.addEventListener("keyup", (e) => this.onPopState(e));
-  }
-
-  ngOnDestroy(): void {
-    window.removeEventListener("keyup", (e) => this.onPopState(e));
-  }
-
-  private onPopState(e: KeyboardEvent) {
-    if (!this.isCollapsed && e.keyCode === 27) {
-      if (this._screens.length > 1) {
-        this.goBack();
-      } else {
-        this.toggleCollapse.emit();
-      }
-    }
-  }
-
   get currentScreen() {
     return this._screens[this._screens.length - 1];
-  }
-
-  toggle() {
-    this._screens = ["main"];
-    this.toggleCollapse.emit();
   }
 
   selectParty(partyId: string) {
