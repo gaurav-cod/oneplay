@@ -18,7 +18,7 @@
 
   <ul #chatBox class="navbar-nav flex-grow-1 px-3 chat-list">
     <div *ngIf="canLoadMore" class="d-flex justify-content-center w-100 my-3">
-      <a href="javascript:void(0)" class="date-tag" (click)="loadMore()"><span
+      <a href="javascript:void(0)" class="date-tag w-auto" (click)="loadMore()"><span
           class="font14 font500 gradientInfoText">Load older messages</span></a>
     </div>
     <ng-container *ngFor="let msg of messages; index as i">
