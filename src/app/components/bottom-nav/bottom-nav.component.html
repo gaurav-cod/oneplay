@@ -100,7 +100,8 @@
       <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
-        (click)="toggleFriendsList()"
+        routerLinkActive="active"
+        [routerLink]="['/chat']"
       >
         <div class="iconContainer">
           <img src="assets/img/navbar/chat-icon.svg" alt="">

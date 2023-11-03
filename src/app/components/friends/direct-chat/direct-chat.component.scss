@@ -33,3 +33,13 @@
     word-wrap: break-word;
   }
 }
+.warning-message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  gap: 5px;
+  background: -webkit-linear-gradient(#FF0C0C, #FF630C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+}

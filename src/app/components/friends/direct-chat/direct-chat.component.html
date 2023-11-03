@@ -37,6 +37,10 @@
   </ul>
 
   <form (submit)="sendMessage()">
+    <div class="warning-message font500" *ngIf="message.value.length > 2000">
+      <img src="assets/img/chat/warning-icon.svg" alt="">
+      <span>Character limit exceeded.</span>
+    </div>
     <div class="input-group mutedBg" style="padding: 2px">
       <div class="input-group-prepend" (click)="toggleEmoji()">
         <span class="input-group-text lightBg border-0"><img src="assets/img/chat/emoji.svg"

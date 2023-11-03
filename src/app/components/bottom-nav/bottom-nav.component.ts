@@ -31,7 +31,7 @@ import UAParser from "ua-parser-js";
   providers: [GLinkPipe],
 })
 export class BottomNavComponent implements OnInit, OnDestroy {
-  @Output() toggleFriends = new EventEmitter();
+  // @Output() toggleFriends = new EventEmitter();
 
   public gameStatus: GameStatusRO | null = null;
   private user: UserModel;
@@ -121,9 +121,9 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleFriendsList() {
-    this.toggleFriends.emit();
-  }
+  // toggleFriendsList() {
+  //   this.toggleFriends.emit();
+  // }
 
   logout() {
     this.messagingService.removeToken().finally(() => {
