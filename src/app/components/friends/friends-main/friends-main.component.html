@@ -15,6 +15,7 @@
           <span class="align-middle">{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span>
         </a>
       </div>
+
       <ng-container *ngIf="friends.length > 0; else EmptyFriendsList">
         <div class="col-12">
           <div class="row font14 font500">
@@ -37,14 +38,16 @@
             </div>
           </div>
         </div>
-        <div class="col-12 mt-2">
-          <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
-        </div>
-        <div class="col-12 mt-3 friends-list" *ngIf="offlineCount > 0">
-          <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
-            {{ offlineCount }} Offline Friends
-          </p>
-          <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+        <div class="friends-list">
+          <div class="col-12 mt-2">
+            <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+          </div>
+          <div class="col-12 mt-3" *ngIf="offlineCount > 0">
+            <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
+              {{ offlineCount }} Offline Friends
+            </p>
+            <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+          </div>
         </div>
       </ng-container>
       <ng-template #EmptyFriendsList>
