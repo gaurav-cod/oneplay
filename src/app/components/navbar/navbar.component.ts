@@ -47,6 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
   public notifications = [];
+  public hasUnread = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -64,6 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private friendsSub: Subscription;
   private pendingsSub: Subscription;
   private requestsSub: Subscription;
+  private unreadSub: Subscription;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -219,6 +221,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.friendsSub?.unsubscribe();
     this.pendingsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
+    this.unreadSub?.unsubscribe();
   }
 
   ngOnInit() {
@@ -231,6 +234,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     );
     this.requestsSub = this.friendsService.requests.subscribe(
       (f) => (this.friendRequests = f)
+    );
+    this.unreadSub = this.friendsService.unreadSenders.subscribe(
+      (ids) => (this.hasUnread = ids.length > 0)
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
@@ -297,7 +303,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
       return ["none"];
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
-      return ["cancel","wait"];
+      return ["cancel", "wait"];
     } else if (this.friendRequests.find((f) => f.user_id === friend.id)) {
       return ["decline", "accept"];
     } else {

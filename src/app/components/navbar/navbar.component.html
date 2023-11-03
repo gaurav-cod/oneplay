@@ -8,8 +8,12 @@
   >
     <div class="search">
       <span class="bgTransparent offWhiteColor font16 font500">
-        <a href="javascript:void(0)"routerLinkActive="active"
-        [routerLink]="['/search']"><i class="fas fa-search text-white"></i></a>
+        <a
+          href="javascript:void(0)"
+          routerLinkActive="active"
+          [routerLink]="['/search']"
+          ><i class="fas fa-search text-white"></i
+        ></a>
       </span>
     </div>
 
@@ -241,9 +245,16 @@
               class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
+              <img
+                *ngIf="hasUnread"
+                src="assets/img/chat/in-game.svg"
+                class="img-fluid position-absolute"
+                style="right: 12px; z-index: 1;"
+                alt=""
+              />
               <span class="nav-chat">
                 <!-- <i class="fas fa-user-friends"></i> -->
-                <img src="assets/img/navbar/chat-icon.svg" alt="">
+                <img src="assets/img/navbar/chat-icon.svg" alt="" />
               </span>
             </a>
           </div>
