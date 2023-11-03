@@ -394,7 +394,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           window.open(response.payment_url);
         }, error: (error: any) => {
-
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
         }
       })
   }
