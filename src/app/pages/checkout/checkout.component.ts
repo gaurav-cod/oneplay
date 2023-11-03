@@ -28,7 +28,7 @@ import Swal from "sweetalert2";
 
 
 export class CheckoutComponent implements OnInit, OnDestroy {
-  
+
   @ViewChild("paymentModal") paymentModal: ElementRef<HTMLDivElement>;
   @ViewChild("stripeModal") stripeModal: ElementRef<HTMLDivElement>;
   @ViewChild("upiPaymentModal") upiPaymentModal: ElementRef<HTMLDivElement>;
@@ -61,7 +61,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.applied_coupon_code_value = 0;
@@ -71,25 +71,25 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     this.restService.getCurrentSubscription().subscribe((current_plans) => {
       let total_current_plans = Object.keys(current_plans).length;
-      if(total_current_plans > 0)
-      {
-        for (var i=0; i < total_current_plans; i++) {
-            if(current_plans[i]['planType'] == 'base')
-            {
-              this.is_base_plan_active = 1;
-              break
-            }
+      if (total_current_plans > 0) {
+        for (var i = 0; i < total_current_plans; i++) {
+          if (current_plans[i]['planType'] == 'base') {
+            this.is_base_plan_active = 1;
+            break
+          }
         }
 
       }
     });
 
     this.querySubscriptions = this.route.params.subscribe((params) => {
+
       this.restService
         .getSubscriptionPackage(params.id)
         .toPromise()
         .then(async (data) => {
           this.subscriptionPacakage = data;
+
         })
         .catch((error) =>
           Swal.fire({
@@ -98,7 +98,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             icon: "error",
           })
         );
-      })
+    })
 
     // this.querySubscriptions = this.route.queryParams.subscribe(
     //   async (params) => {
@@ -196,7 +196,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           childWindow: true,
           returnUrl: await this.getReturnURL(
             environment.render_mix_api +
-              "/v1/accounts/subscription/billdesk_frontend_redirect"
+            "/v1/accounts/subscription/billdesk_frontend_redirect"
           ),
           retryCount: 3,
           crossButtonHandling: "Y",
@@ -230,6 +230,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   handlePayWithStripe() {
     // this.paymentModalRef.close();
+
     const stripeAppearance = { theme: "night" } as Appearance;
     this.restService
       .payWithStripe(this.subscriptionPacakage.id, this.applied_coupon_code)
@@ -310,13 +311,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   backButton(subscriptionPacakage) {
     let offered_discount = subscriptionPacakage?.actual_price - subscriptionPacakage.amount;
     let offered_discount_flag = false;
-    if(offered_discount > 0)
-    {
+    if (offered_discount > 0) {
       offered_discount_flag = true;
     }
 
-    if(offered_discount_flag || this.applied_coupon_code)
-    {
+    if (offered_discount_flag || this.applied_coupon_code) {
       Swal.fire({
         imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
         customClass: "swalPaddingTop",
@@ -331,65 +330,76 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         }
       });
     }
-    else
-    {
+    else {
       window.location.href = `${environment.domain}/subscription.html`;
     }
-    
+
   }
 
   handleApplyCoupon(subscriptionPacakage) {
 
-    if(this.coupon_code_apply_text == 'REMOVE')
-    {
-        this.applied_coupon_code = '';
-        this.applied_coupon_code_value = 0;
-        this.coupon_code_apply_text = 'APPLY';
-        this.coupon_code.reset();
+    if (this.coupon_code_apply_text == 'REMOVE') {
+      this.applied_coupon_code = '';
+      this.applied_coupon_code_value = 0;
+      this.coupon_code_apply_text = 'APPLY';
+      this.coupon_code.reset();
     }
-    if(this.coupon_code.value.length > 0)
-    {
+    if (this.coupon_code.value.length > 0) {
       this.restService
-      .applyCoupon(subscriptionPacakage.id, this.coupon_code.value)
-      .toPromise()
-      .then(async (data) => {
-        this.coupon_message = '';
-        let temp_applied_coupon_code = this.coupon_code.value;
-        this.applied_coupon_code = temp_applied_coupon_code;
-        // this.applied_coupon_code = this.coupon_code.value;
-        this.applied_coupon_code_value = data.discount;
-        this.coupon_code_apply_text = 'REMOVE';
-        // this.coupon_code.reset();
-      })
-      .catch((error) => {
-        this.applied_coupon_code_value = 0;
-        this.coupon_message = error.message;
-        this.applied_coupon_code = '';
-      });
+        .applyCoupon(subscriptionPacakage.id, this.coupon_code.value)
+        .toPromise()
+        .then(async (data) => {
+          this.coupon_message = '';
+          let temp_applied_coupon_code = this.coupon_code.value;
+          this.applied_coupon_code = temp_applied_coupon_code;
+          // this.applied_coupon_code = this.coupon_code.value;
+          this.applied_coupon_code_value = data.discount;
+          this.coupon_code_apply_text = 'REMOVE';
+          // this.coupon_code.reset();
+        })
+        .catch((error) => {
+          this.applied_coupon_code_value = 0;
+          this.coupon_message = error.message;
+          this.applied_coupon_code = '';
+        });
     }
-    
+
   }
 
   handlePayment(payment_source) {
     this.selected_payment_source = payment_source;
-    if(payment_source == 'billdesk')
-    {
+    if (payment_source == 'billdesk') {
       //disable stripe
     }
-    if(payment_source == 'stripe')
-    {
+    if (payment_source == 'stripe') {
       //disable billdesk
     }
   }
 
   handlePaymentCheckout() {
-    if(this.selected_payment_source == 'billdesk')
-    {
+    if (this.selected_payment_source == 'upi_payment') {
+      this.handlePayWithPhonePay();
+    }
+    else if (this.selected_payment_source == 'net_banking_payment') {
       this.handlePayWithBilldesk();
     }
-    if(this.selected_payment_source == 'stripe')
-    {
+    else if (this.selected_payment_source == 'card_payment') {
       this.handlePayWithStripe();
     }
+  }
+
+  handlePayWithPhonePay() {
+    this.restService
+      .payWithPhonePay(this.subscriptionPacakage.id).subscribe({
+        next: (response: any) => {
+          window.open(response.payment_url);
+        }, error: (error: any) => {
+          Swal.fire({
+            title: "Error Code: " + error.code,
+            text: error.message,
+            icon: "error",
+          })
+        }
+      })
   }
 }
