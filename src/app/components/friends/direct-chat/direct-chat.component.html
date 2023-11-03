@@ -49,7 +49,7 @@
       <input type="text" class="form-control font16 muteText font500 lightBg border-0" [formControl]="message"
         placeholder="Send message" />
       <div class="input-group-append">
-        <button class="btn lightBg" type="submit">
+        <button class="btn lightBg" type="submit" [disabled]="message.value.length > 2000">
           <em class="fas fa-paper-plane text-white text-xs"></em>
         </button>
       </div>
