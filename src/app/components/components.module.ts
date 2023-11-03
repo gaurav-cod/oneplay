@@ -33,6 +33,7 @@ import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.co
 import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
+import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ import { OtpScreenComponent } from './otp-screen/otp-screen.component';
     GameplayHistoryComponent,
     PaymentComponent,
     OtpScreenComponent,
+    ChatBottomSheetComponent,
   ],
   exports: [
     GameCardComponent,
@@ -96,6 +98,7 @@ import { OtpScreenComponent } from './otp-screen/otp-screen.component';
     InitializingGameComponent,
     GameplayHistoryComponent,
     PaymentComponent,
+    ChatBottomSheetComponent,
   ],
 })
 export class ComponentsModule {}

@@ -1,0 +1,13 @@
+<div
+  class="mask bg-darker opacity-5 position-fixed"
+  style="z-index: 9"
+  [ngClass]="{ 'd-none': isCollapsed }"
+  (click)="toggle()"
+></div>
+<div
+  class="position-fixed lightBg right-0 bottom-0 chatContainer"
+  [ngbCollapse]="isCollapsed"
+  id="sidenav-collapse-friends"
+>
+  <app-friends *ngIf="!isCollapsed"></app-friends>
+</div>

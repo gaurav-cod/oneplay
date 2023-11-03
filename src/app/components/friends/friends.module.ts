@@ -51,6 +51,7 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
     PartyInviteComponent,
     InvitesComponent,
     PartyChatComponent,
+    FriendsListComponent,
   ],
 })
 export class FriendsModule {}

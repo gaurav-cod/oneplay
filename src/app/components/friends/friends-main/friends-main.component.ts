@@ -16,7 +16,6 @@ import { FriendsService } from "src/app/services/friends.service";
   styleUrls: ["./friends-main.component.scss"],
 })
 export class FriendsMainComponent {
-  @Output("toggle") toggle = new EventEmitter();
   @Output("goToParties") goToParties = new EventEmitter();
   @Output("goToMail") goToMail = new EventEmitter();
   @Output("goToChat") goToChat = new EventEmitter();
