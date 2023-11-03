@@ -1,24 +1,24 @@
 <div
   class="mask bg-darker opacity-5 position-fixed"
-  style="z-index: 99999999999999"
+  style="z-index: 9"
   [ngClass]="{ 'd-none': isCollapsed }"
   (click)="toggle()"
 ></div>
 <div
-  class="flex-column flex-shrink-0 bg-dark position-fixed right-0"
-  [ngClass]="{ 'd-flex': !isCollapsed }"
+  class="position-fixed lightBg right-0 bottom-0 chatContainer"
   [ngbCollapse]="isCollapsed"
   id="sidenav-collapse-friends"
-  style="width: 350px; z-index: 999999999999999"
 >
-  <app-friends-main
-    *ngIf="currentScreen === 'main'"
-    (toggle)="toggle()"
-    (goToParties)="goToParties()"
-    (goToMail)="goToMail()"
-    (goToChat)="goToChat($event)"
-  ></app-friends-main>
-
+  <ng-container>
+    <app-friends-main
+      *ngIf="currentScreen === 'main'"
+      (toggle)="toggle()"
+      (goToParties)="goToParties()"
+      (goToMail)="goToMail()"
+      (goToChat)="goToChat($event)">
+    </app-friends-main>
+  </ng-container>
+  
   <app-invites
     *ngIf="currentScreen === 'invites'"
     (goBack)="goBack()"

@@ -10,9 +10,12 @@ import { RestService } from "./rest.service";
   providedIn: "root",
 })
 export class ChatService {
+  public canLoadMore = true;
+
   private socket: Socket;
   private messages: BehaviorSubject<MessageModel[]> = new BehaviorSubject([]);
   private userId: string;
+  private readonly pagingLimit = 10;
 
   constructor(
     private readonly restService: RestService,
@@ -28,8 +31,23 @@ export class ChatService {
   public loadMessages(friendId: string) {
     this.messages.next([]);
     this.restService
-      .getDirectMessages(friendId)
-      .subscribe((messages) => this.messages.next(messages));
+      .getDirectMessages(friendId, 0, this.pagingLimit)
+      .toPromise()
+      .then((messages) => {
+        this.messages.next([...messages].reverse());
+        this.canLoadMore = messages.length === this.pagingLimit;
+      });
+  }
+
+  public loadMore(friendId: string) {
+    const oldMessages = this.messages.value;
+    this.restService
+      .getDirectMessages(friendId, oldMessages.length, this.pagingLimit)
+      .toPromise()
+      .then((messages) => {
+        this.messages.next([...[...messages].reverse(), ...oldMessages]);
+        this.canLoadMore = messages.length === this.pagingLimit;
+      });
   }
 
   public handleConnect(friendId: string) {
@@ -46,10 +64,7 @@ export class ChatService {
     });
   }
 
-  public sendMessage(
-    message: string,
-    receiver: string,
-  ) {
+  public sendMessage(message: string, receiver: string) {
     this.socket?.emit("message", {
       message,
       receiver,
@@ -59,5 +74,7 @@ export class ChatService {
 
   public handleDisconnect() {
     this.socket?.disconnect();
+    this.canLoadMore = true;
+    this.messages.next([]);
   }
 }

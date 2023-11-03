@@ -4,6 +4,7 @@
 @import "../node_modules/ngx-sharebuttons/themes/modern/modern-light-theme";
 @import "../node_modules/ngx-sharebuttons/themes/circles/circles-dark-theme";
 @import "../node_modules/sweetalert2/src/sweetalert2.scss";
+@import "../node_modules//@ctrl/ngx-emoji-mart/picker.css";
 
 @font-face {
   font-family: "Poppins";
@@ -1229,6 +1230,12 @@ select {
 
 .blurBG {
   backdrop-filter: blur(9px);
+}
+
+.focusBorder {
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-top: 0px !important;
 }
 
 .borderRadiusCustom {

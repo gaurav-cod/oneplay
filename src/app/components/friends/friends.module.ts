@@ -14,6 +14,8 @@ import { PartySettingsComponent } from './party-settings/party-settings.componen
 import { PartyInviteComponent } from './party-invite/party-invite.component';
 import { InvitesComponent } from './invites/invites.component';
 import { PartyChatComponent } from './party-chat/party-chat.component';
+import { FriendsListComponent } from './friends-list/friends-list.component';
+import { PickerModule } from "@ctrl/ngx-emoji-mart";
 
 @NgModule({
   imports: [
@@ -23,6 +25,7 @@ import { PartyChatComponent } from './party-chat/party-chat.component';
     FormsModule,
     ReactiveFormsModule,
     PipesModule,
+    PickerModule,
   ],
   declarations: [
     FriendsMainComponent,
@@ -35,6 +38,7 @@ import { PartyChatComponent } from './party-chat/party-chat.component';
     PartyInviteComponent,
     InvitesComponent,
     PartyChatComponent,
+    FriendsListComponent,
   ],
   exports: [
     FriendsMainComponent,

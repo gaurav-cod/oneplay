@@ -24,6 +24,14 @@ export class UnreadComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  getGenderImage(friend: FriendModel) {
+    return "assets/img/singup-login/" + friend.gender + ".svg";
+  }
+
+  onImgError(event, friend: FriendModel) {
+    event.target.src = this.getGenderImage(friend);
+  }
+
   accept(friend: FriendModel) {
     this.restService.acceptFriend(friend.id).subscribe((response) => {
       this.friendsService.acceptRequest(friend);
