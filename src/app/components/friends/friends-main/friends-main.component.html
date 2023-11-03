@@ -15,36 +15,46 @@
           <span class="align-middle">{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span>
         </a>
       </div>
-      <div class="col-12">
-        <div class="row font14 font500">
-          <div class="col-auto">
-            <span class="muteText">{{ friends.length }} Friend{{
-              friends.length > 1 ? "s" : ""
-              }}</span>
-          </div>
-          <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
-            <span class="gradientInfoText">{{ onlineCount }} Online</span>
-          </div>
-          <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
-            <span class="yellowGradient">{{ inGameCount }} Ingame</span>
-          </div>
-          <div class="col-auto borderLeftColor">
-            <span class="mutedColorDark">{{
-              friends.length > offlineCount ? offlineCount : "All"
-              }}
-              Offline</span>
+      <ng-container *ngIf="friends.length > 0; else EmptyFriendsList">
+        <div class="col-12">
+          <div class="row font14 font500">
+            <div class="col-auto">
+              <span class="muteText">{{ friends.length }} Friend{{
+                friends.length > 1 ? "s" : ""
+                }}</span>
+            </div>
+            <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
+              <span class="gradientInfoText">{{ onlineCount }} Online</span>
+            </div>
+            <div class="col-auto borderLeftColor" *ngIf="friends.length > offlineCount">
+              <span class="yellowGradient">{{ inGameCount }} Ingame</span>
+            </div>
+            <div class="col-auto borderLeftColor">
+              <span class="mutedColorDark">{{
+                friends.length > offlineCount ? offlineCount : "All"
+                }}
+                Offline</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-12 mt-2">
-        <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
-      </div>
-      <div class="col-12 mt-3 friends-list" *ngIf="offlineCount > 0">
-        <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
-          {{ offlineCount }} Offline Friends
-        </p>
-        <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
-      </div>
+        <div class="col-12 mt-2">
+          <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+        </div>
+        <div class="col-12 mt-3 friends-list" *ngIf="offlineCount > 0">
+          <p class="muteText font14 font500" *ngIf="friends.length > offlineCount">
+            {{ offlineCount }} Offline Friends
+          </p>
+          <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+        </div>
+      </ng-container>
+      <ng-template #EmptyFriendsList>
+        <div class="emptyContainer col-12">
+          <img src="assets/img/chat/empty-friend-request-list.svg" alt="">
+          <p class="emptyText muteText font14 font600">You have no friends, click the seach icon to begin
+            connecting with them.
+          </p>
+        </div>
+      </ng-template>
     </div>
   </div>
 </section>

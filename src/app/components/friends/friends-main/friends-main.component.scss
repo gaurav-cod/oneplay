@@ -11,6 +11,16 @@
   overflow-y: auto;
 }
 
+.emptyContainer {
+  height: calc(80vh - 150px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  text-align: center;
+}
+
 .friends-list::-webkit-scrollbar {
   display: none;
 }
