@@ -112,35 +112,36 @@
           <div class="row mt-3">
             <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
               <div
-                [ngClass]="{'gradientBorder': selected_payment_source === 'upi_payment', 'disabledDiv': selected_payment_source != 'upi_payment'}">
+                [ngClass]="{'gradientBorder': selected_payment_source === 'billdesk', 'disabledDiv': selected_payment_source != 'billdesk'}">
                 <!-- <a href="javascript:void(0)" (click)="handlePayWithBilldesk()"> -->
-                <a href="javascript:void(0)" (click)="selected_payment_source = 'upi_payment'">
+                <a href="javascript:void(0)" (click)="selected_payment_source = 'billdesk'">
                   <div class="card border-0 cardBG p-4 tabHeading ">
                     <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
-                    <img src="assets/img/payment/upi-payment-option.svg" class="height60" alt="" />
+                    <!-- <img src="assets/img/payment/upi-payment-option.svg" class="height60" alt="" /> -->
+                    <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
                   </div>
                 </a>
               </div>
               <p class="subHeading my-2">
-                UPI
+                UPI, Debit Card, Netbanking
               </p>
             </div>
             <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
               <div
-                [ngClass]="{'gradientBorder': selected_payment_source === 'card_payment', 'disabledDiv': selected_payment_source != 'card_payment'}">
+                [ngClass]="{'gradientBorder': selected_payment_source === 'stripe', 'disabledDiv': selected_payment_source != 'stripe'}">
                 <!-- <a href="javascript:void(0)" (click)="handlePayWithStripe()"> -->
-                <a href="javascript:void(0)" (click)="selected_payment_source = 'card_payment'">
+                <a href="javascript:void(0)" (click)="selected_payment_source = 'stripe'">
                   <div class="card border-0 cardBG p-4 ">
-                    <img src="assets/img/payment/card-payment-option.svg" class="height60" alt="" />
+                    <!-- <img src="assets/img/payment/card-payment-option.svg" class="height60" alt="" /> -->
+                    <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
                   </div>
                 </a>
               </div>
               <p class="subHeading my-2">Debit Card & Credit Card</p>
             </div>
-            <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
+            <!-- <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
               <div
                 [ngClass]="{'gradientBorder': selected_payment_source === 'net_banking_payment', 'disabledDiv': selected_payment_source != 'net_banking_payment'}">
-                <!-- <a href="javascript:void(0)" (click)="handlePayWithStripe()"> -->
                 <a href="javascript:void(0)" (click)="selected_payment_source = 'net_banking_payment'">
                   <div class="card border-0 cardBG p-4 ">
                     <img src="assets/img/payment/net-banking-payment-option.svg" class="height60" alt="" />
@@ -148,7 +149,7 @@
                 </a>
               </div>
               <p class="subHeading my-2">Net Banking</p>
-            </div>
+            </div> -->
             <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                 <a href="javascript:void(0)" (click)="handlePayWithUPI()">
                   <div class="card border-0 cardBG p-4">
