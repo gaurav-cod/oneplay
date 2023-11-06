@@ -37,7 +37,7 @@
   </ul>
 
   <form (submit)="sendMessage()">
-    <div class="warning-message font500" *ngIf="message.value.length > 2000">
+    <div class="warning-message font500" *ngIf="message.value?.length > 2000">
       <img src="assets/img/chat/warning-icon.svg" alt="">
       <span>Character limit exceeded.</span>
     </div>
@@ -49,7 +49,7 @@
       <input type="text" class="form-control font16 muteText font500 lightBg border-0" [formControl]="message"
         placeholder="Send message" />
       <div class="input-group-append">
-        <button class="btn lightBg" type="submit" [disabled]="message.value.length > 2000">
+        <button class="btn lightBg" type="submit" [disabled]="message.value?.length > 2000">
           <em class="fas fa-paper-plane text-white text-xs"></em>
         </button>
       </div>
