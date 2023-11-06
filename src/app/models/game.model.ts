@@ -40,6 +40,7 @@ export class GameModel {
   readonly publisher: string[];
   readonly storesMapping: PurchaseStore[];
   readonly preferredStore: string;
+  readonly warningMessage: string;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
@@ -74,5 +75,6 @@ export class GameModel {
     this.publisher = json["publisher"];
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
+    this.warningMessage = json["warning_message"];
   }
 }
