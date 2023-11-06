@@ -4,8 +4,8 @@
       <img src="assets/img/chat/left-arrow.svg" (click)="goBack.emit()" class="img-fluid mr-3 cursorPointer" alt="" />
     </div>
     <div class="col-auto align-self-center p-0">
-      <img [src]="friend.profile_image || defaultImage" (error)="onImgError($event)" class="img-fluid rounded-circle"
-        width="48" height="48" alt="" />
+      <img [src]="friend.profile_image || defaultImage" (error)="onImgError($event)" class="rounded-circle" width="48"
+        height="48" alt="" />
     </div>
     <div class="col align-self-center">
       <p class="font16 font500 offWhiteText mb-0">{{ friend.username }}</p>

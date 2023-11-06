@@ -42,8 +42,9 @@
         [routerLink]="['/home']"
       >
         <div class="iconContainer">
-          <img src="assets/img/navbar/home-icon.svg" alt="" />
-          <span class="font14 font400 text-gray">Home</span>
+          <img src="assets/img/navbar/home-icon.svg" alt="home" *ngIf="selectedBottomNav !== 'HOME'" />
+          <img src="assets/img/navbar/home-icon_active.svg" alt="home" *ngIf="selectedBottomNav === 'HOME'" />
+          <span class="font14 font500 navigation-text text-gray">Home</span>
         </div>
       </a>
       <a
@@ -53,8 +54,9 @@
         class="navbar-nav text-center"
       >
         <div class="iconContainer">
-          <img src="assets/img/navbar/game-icon.svg" alt="" />
-          <span class="font14 font400 text-gray">Game</span>
+          <img src="assets/img/navbar/game-icon.svg" alt="game" *ngIf="selectedBottomNav !== 'GAME'" />
+          <img src="assets/img/navbar/game-icon_active.svg" alt="game" *ngIf="selectedBottomNav === 'GAME'" />
+          <span class="font14 font500 navigation-text text-gray">Game</span>
         </div>
       </a>
       <a
@@ -94,18 +96,19 @@
             width="36px"
             height="36px"
           />
-          <span class="font14 font400 text-gray">Live</span>
+          <span class="font14 font500 navigation-text text-gray">Live</span>
         </div>
       </a>
       <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
         [routerLink]="['speed-test']"
-        routerLinkActive="text-primary"
+        routerLinkActive="active"
       >
         <div class="iconContainer">
-          <img src="assets/img/navbar/test-icon.svg" alt="" />
-          <span class="font14 font400 text-gray">Test</span>
+          <img src="assets/img/navbar/test-icon.svg" alt="test" *ngIf="selectedBottomNav !== 'SPEED_TEST'" />
+          <img src="assets/img/navbar/test-icon_active.svg" alt="test" *ngIf="selectedBottomNav === 'SPEED_TEST'" />
+          <span class="font14 font500 navigation-text text-gray">Test</span>
         </div>
       </a>
       <a
@@ -115,7 +118,8 @@
         [routerLink]="['/chat']"
       >
         <div class="iconContainer position-relative">
-          <img src="assets/img/navbar/chat-icon.svg" alt="" />
+          <img src="assets/img/navbar/chat-icon.svg" alt="chat" *ngIf="selectedBottomNav !== 'CHAT'" />
+          <img src="assets/img/navbar/chat-icon_active.svg" alt="chat" *ngIf="selectedBottomNav === 'CHAT'" />
           <img
             *ngIf="hasUnread"
             src="assets/img/chat/in-game.svg"
@@ -123,7 +127,7 @@
             style="right: -12px; top: -6px;"
             alt=""
           />
-          <span class="font14 font400 text-gray">Chat</span>
+          <span class="font14 font500 navigation-text text-gray">Chat</span>
         </div>
       </a>
     </div>

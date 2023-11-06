@@ -9,6 +9,11 @@
         color: #7a7a7a;
     }
 }
+.active .navigation-text {
+    background: -webkit-linear-gradient(#A83AFE, #6E59FE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 @media (min-width: 1200.9px) {
     .hideInlarge {

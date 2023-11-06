@@ -7,7 +7,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { GameStatusRO } from "src/app/interface";
@@ -25,6 +25,14 @@ import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import UAParser from "ua-parser-js";
 
+enum BOTTOM_NAV {
+  HOME = "HOME",
+  GAME = "GAME",
+  LIVE = "LIVE",
+  SPEED_TEST = "SPEED_TEST",
+  CHAT = "CHAT"
+}
+
 @Component({
   selector: "app-bottom-nav",
   templateUrl: "./bottom-nav.component.html",
@@ -34,12 +42,14 @@ import UAParser from "ua-parser-js";
 export class BottomNavComponent implements OnInit, OnDestroy {
   // @Output() toggleFriends = new EventEmitter();
 
+
   public gameStatus: GameStatusRO | null = null;
   public hasUnread = false;
   private user: UserModel;
   private userSubscription: Subscription;
   private gameStatusSubscription: Subscription;
   private unreadSub: Subscription;
+  public  selectedBottomNav: BOTTOM_NAV = null;
   downloadAlert: boolean = true;
 
   constructor(
@@ -52,7 +62,13 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly ngbModal: NgbModal,
     private readonly router: Router,
     private readonly countlyService: CountlyService
-  ) {}
+  ) {
+    this.router.events.subscribe((event: any)=> {
+      if (event instanceof NavigationEnd) {
+        this.selectedBottomNav = this.getCurrentSelectedTab(event.url);
+      }
+    })
+  }
 
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
@@ -154,5 +170,20 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       modalDialogClass: "modal-md",
       scrollable: true,
     });
+  }
+
+  getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {
+    switch (currentUrl) {
+      case '/chat':
+        return BOTTOM_NAV.CHAT;
+      case '/store':
+        return BOTTOM_NAV.GAME;
+      case '/home':
+        return BOTTOM_NAV.HOME;
+      case '/speed-test':
+        return BOTTOM_NAV.SPEED_TEST;
+      case '/live':
+        return BOTTOM_NAV.LIVE;
+    }
   }
 }
