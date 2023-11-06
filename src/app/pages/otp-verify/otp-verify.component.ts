@@ -1,5 +1,6 @@
 import { Component, ViewChildren, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-otp-verify',
@@ -7,6 +8,10 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
   styleUrls: ['./otp-verify.component.scss']
 })
 export class OtpVerifyComponent implements OnInit {
+
+  constructor(
+    private router: Router
+  ) { }
 
   form: UntypedFormGroup;
   display: any;
@@ -61,6 +66,10 @@ export class OtpVerifyComponent implements OnInit {
         clearInterval(timer);
       }
     }, 1000);
+  }
+
+  verifyOTP() {
+    this.router.navigate(['/reset-password']);
   }
 
   resendOTP() {

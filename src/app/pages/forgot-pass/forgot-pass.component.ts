@@ -70,9 +70,11 @@ export class ForgotPassComponent implements OnInit {
   }
 
   submit() {
+    this.router.navigate(['/otp-verify']);
     this.restService.requestResetPassword(this.email.value).subscribe(
       () => {
         this.resetemail = true;
+
       },
       (error) =>
         Swal.fire({

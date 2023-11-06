@@ -29,7 +29,7 @@
         <div class="input-group-append borderRadius0">
           <select
             class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
-            formControlName="country_code">
+            [formControl]="country_code">
             <option *ngFor="let code of countryCodes" [value]="code">
               {{ code }}
             </option>
