@@ -52,6 +52,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   public  selectedBottomNav: BOTTOM_NAV = null;
   downloadAlert: boolean = true;
 
+  private routerSub: Subscription;
+
   constructor(
     private readonly messagingService: MessagingService,
     private readonly restService: RestService,
@@ -63,7 +65,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly countlyService: CountlyService
   ) {
-    this.router.events.subscribe((event: any)=> {
+    this.selectedBottomNav = this.getCurrentSelectedTab(this.router.url)
+    this.routerSub = this.router.events.subscribe((event: any)=> {
       if (event instanceof NavigationEnd) {
         this.selectedBottomNav = this.getCurrentSelectedTab(event.url);
       }
@@ -74,6 +77,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.userSubscription.unsubscribe();
     this.gameStatusSubscription.unsubscribe();
     this.unreadSub?.unsubscribe();
+    this.routerSub?.unsubscribe();
   }
 
   viewGame() {
@@ -178,6 +182,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
         return BOTTOM_NAV.CHAT;
       case '/store':
         return BOTTOM_NAV.GAME;
+      case '/':
       case '/home':
         return BOTTOM_NAV.HOME;
       case '/speed-test':
