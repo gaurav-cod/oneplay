@@ -37,6 +37,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   friend: FriendModel = {} as FriendModel;
   showEmoji = false;
 
+  private loadMoreHeight: number = 0;
   private userSub: Subscription;
   private messageSub1: Subscription;
   private messageSub2: Subscription;
@@ -122,6 +123,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadMore() {
+    this.loadMoreHeight = this.chatBox.nativeElement.scrollHeight;
     this.chatService.loadMore(this.friend.user_id);
   }
 
@@ -157,6 +159,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private scrollToBottom() {
     this.chatBox.nativeElement.scrollTop =
-      this.chatBox.nativeElement.scrollHeight;
+      this.chatBox.nativeElement.scrollHeight - this.loadMoreHeight;
+    this.loadMoreHeight = 0;
   }
 }
