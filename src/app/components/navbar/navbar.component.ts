@@ -252,7 +252,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     this.focusSubscription = this.focus.asObservable().subscribe((focused) => {
       setTimeout(() => {
-        if (!this.dontClose) this.isMenuCollapsed = !focused;
+        if (!this.dontClose) {
+          this.isMenuCollapsed = !focused;
+          if (focused) {
+            this.restService
+              .getAllFriends()
+              .toPromise()
+              .then((friends) => this.friendsService.setFriends(friends));
+            this.restService
+              .getPendingSentRequests()
+              .toPromise()
+              .then((pendings) => this.friendsService.setPendings(pendings));
+            this.restService
+              .getPendingReceivedRequests()
+              .toPromise()
+              .then((requests) => this.friendsService.setRequests(requests));
+          }
+        }
       }, 300);
 
       if (!focused) {
