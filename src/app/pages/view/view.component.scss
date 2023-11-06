@@ -629,3 +629,20 @@ live {
 .display-hide {
   display: none;
 }
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
+}

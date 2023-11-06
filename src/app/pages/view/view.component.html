@@ -62,7 +62,8 @@
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
-                  {{ game.isFree ? " - Free" : "" }}
+                  &nbsp;<span *ngIf="game.isFree && game.status !== 'coming_soon'"  class="freeTag px-2 tagText">
+                    FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                 </p>
                 <div class="row">
                   <!-- <div
