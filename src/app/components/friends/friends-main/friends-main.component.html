@@ -38,7 +38,7 @@
             </div>
           </div>
         </div>
-        <div class="friends-list">
+        <div class="friends-list" [ngClass]="{'friends-list_advance': requests > 0}">
           <div class="col-12 mt-2">
             <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
           </div>

@@ -11,6 +11,9 @@
   width: 100%;
   overflow-y: auto;
 }
+.friends-list_advance {
+  height: calc(80vh - 160px) !important;
+}
 
 .emptyContainer {
   height: calc(80vh - 150px);
