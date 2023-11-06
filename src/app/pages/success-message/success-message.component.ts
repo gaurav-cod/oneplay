@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-success-message',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class SuccessMessageComponent {
 
+  constructor(
+    private router: Router
+  ) {
+
+  }
+
+  goToLoginPage() {
+    this.router.navigate(['/login']);
+  }
 }
