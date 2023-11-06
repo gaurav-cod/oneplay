@@ -34,7 +34,7 @@ import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.componen
     OtpVerifyComponent,
     ResetPassComponent,
     StartgamingSignupComponent,
-    NonFunctionalRegionComponent,
+    NonFunctionalRegionComponent
   ]
 })
 export class AuthLayoutModule { }
