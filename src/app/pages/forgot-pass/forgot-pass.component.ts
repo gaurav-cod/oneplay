@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { UntypedFormControl, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -18,21 +18,34 @@ import Swal from "sweetalert2";
 export class ForgotPassComponent implements OnInit {
 
   private countryCodeSub: Subscription;
+  private emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
-  email = new UntypedFormControl("", [Validators.required, Validators.email]);
-  country_code = new UntypedFormControl("+91", [Validators.required]);
-  phone = new UntypedFormControl("", [
-    Validators.required,
-    phoneValidator("country_code"),
-  ]);
+  forgotPasswordForm = new UntypedFormGroup({
+    email: new UntypedFormControl("", [Validators.email,
+    Validators.pattern(this.emailPattern)]),
+    country_code: new UntypedFormControl("+91", []),
+    phone: new UntypedFormControl("", [
+
+      phoneValidator("country_code"),
+    ])
+  });
+
   nonFunctionalRegion: boolean = null;
   resetemail = false;
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
   }
   get phoneErrored() {
-    const control = this.phone;
+    const control = this.forgotPasswordForm.controls['phone'];
     return control.touched && control.invalid;
+  }
+  get emailErrored() {
+    const control = this.forgotPasswordForm.controls["email"];
+    return control.touched && control.invalid;
+  }
+  get checkvalidationValue() {
+    return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : true) ||
+      (this.forgotPasswordForm.controls['phone'].value ? this.forgotPasswordForm.controls['phone'].invalid : true);
   }
 
   constructor(
@@ -44,13 +57,13 @@ export class ForgotPassComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle("Forgot Password");
-    this.countryCodeSub = this.country_code.valueChanges.subscribe(() =>
-      this.phone.updateValueAndValidity()
+    this.countryCodeSub = this.forgotPasswordForm.controls['country_code'].valueChanges.subscribe(() =>
+      this.forgotPasswordForm.controls['phone'].updateValueAndValidity()
     );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
-          this.country_code.setValue(
+          this.forgotPasswordForm.controls['country_code'].setValue(
             contryCodeCurrencyMapping[res.currency]
           );
           this.nonFunctionalRegion = false;
@@ -70,7 +83,7 @@ export class ForgotPassComponent implements OnInit {
   }
 
   forgotPasswordWithEmail() {
-    this.restService.requestResetPassword(this.email.value).subscribe(
+    this.restService.requestResetPassword(this.forgotPasswordForm.controls['email'].value).subscribe(
       () => {
         this.resetemail = true;
 
@@ -85,7 +98,7 @@ export class ForgotPassComponent implements OnInit {
     );
   }
   forgotPasswordWithMobile() {
-    const phone = this.country_code.value + this.phone.value;
+    const phone = this.forgotPasswordForm.controls['country_code'].value + this.forgotPasswordForm.controls['phone'].value;
     this.restService.requestResetPasswordWithMobile(phone).subscribe({
       next: () => {
         this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
@@ -101,7 +114,7 @@ export class ForgotPassComponent implements OnInit {
   }
 
   submit() {
-    if (this.phone.value) {
+    if (this.forgotPasswordForm.controls['phone'].value) {
       this.forgotPasswordWithMobile();
     } else {
       this.forgotPasswordWithEmail();
