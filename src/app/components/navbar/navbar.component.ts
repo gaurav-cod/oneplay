@@ -115,6 +115,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.user?.photo;
   }
 
+  get userId() {
+    return this.user?.id;
+  }
+
   get isFocused() {
     return this.focus.asObservable();
   }

@@ -1,11 +1,22 @@
 <div class="d-flex flex-column p-3" style="height: 100%">
   <div class="row mb-3">
     <div class="col-auto align-self-center pr-0">
-      <img src="assets/img/chat/left-arrow.svg" (click)="goBack.emit()" class="img-fluid mr-3 cursorPointer" alt="" />
+      <img
+        src="assets/img/chat/left-arrow.svg"
+        (click)="goBack.emit()"
+        class="img-fluid mr-3 cursorPointer"
+        alt=""
+      />
     </div>
     <div class="col-auto align-self-center p-0">
-      <img [src]="friend.profile_image || defaultImage" (error)="onImgError($event)" class="rounded-circle" width="48"
-        height="48" alt="" />
+      <img
+        [src]="friend.profile_image || defaultImage"
+        (error)="onImgError($event)"
+        class="rounded-circle"
+        width="48"
+        height="48"
+        alt=""
+      />
     </div>
     <div class="col align-self-center">
       <p class="font16 font500 offWhiteText mb-0">{{ friend.username }}</p>
@@ -17,16 +28,26 @@
   <div class="borderBottomTab"></div>
 
   <ul #chatBox class="navbar-nav flex-grow-1 px-3 chat-list">
-    <div *ngIf="canLoadMore && !loading" class="d-flex justify-content-center w-100 my-3">
-      <a href="javascript:void(0)" class="date-tag w-auto" (click)="loadMore()"><span
-          class="font14 font500 gradientInfoText">Load older messages</span></a>
+    <div
+      *ngIf="canLoadMore && !loading"
+      class="d-flex justify-content-center w-100 my-3"
+    >
+      <a href="javascript:void(0)" class="date-tag w-auto" (click)="loadMore()"
+        ><span class="font14 font500 gradientInfoText"
+          >Load older messages</span
+        ></a
+      >
     </div>
     <ng-container *ngFor="let msg of messages; index as i">
-      <div *ngIf="!isSameDate(i)" class="d-flex justify-content-center w-100 position-sticky top-0 my-3">
+      <div
+        *ngIf="!isSameDate(i)"
+        class="d-flex justify-content-center w-100 position-sticky top-0 my-3"
+      >
         <div class="date-tag font14 font500 muteText">{{ getDate(msg) }}</div>
       </div>
-      <li class="d-flex align-items-center my-3" [ngClass]="{ 'justify-content-end': isUserSender(msg) }">
-        <div class="w-100">
+      <li class="d-flex align-items-center my-3"
+        [ngClass]="{ 'justify-content-end': isUserSender(msg), 'ml-3': isUserSender(msg), 'mr-3': !isUserSender(msg) }">
+        <div class="w-90">
           <p class="mb-0 font16 font500 offWhiteText breakWord">{{ msg.message }}</p>
           <p class="mb-0 font14 muteText" [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }">
             {{ msg.createdAt | date : "hh:mm a" }}
@@ -38,24 +59,42 @@
 
   <form (submit)="sendMessage()">
     <div class="warning-message font500" *ngIf="message.value?.length > 2000">
-      <img src="assets/img/chat/warning-icon.svg" alt="">
+      <img src="assets/img/chat/warning-icon.svg" alt="" />
       <span>Character limit exceeded.</span>
     </div>
     <div class="input-group mutedBg" style="padding: 2px">
       <div class="input-group-prepend" (click)="toggleEmoji()">
-        <span class="input-group-text lightBg border-0"><img src="assets/img/chat/emoji.svg"
-            class="img-fluid cursorPointer" alt="" /></span>
+        <span class="input-group-text lightBg border-0"
+          ><img
+            src="assets/img/chat/emoji.svg"
+            class="img-fluid cursorPointer"
+            alt=""
+        /></span>
       </div>
-      <input type="text" class="form-control font16 muteText font500 lightBg border-0" [formControl]="message"
-        placeholder="Send message" />
+      <input
+        type="text"
+        class="form-control font16 muteText font500 lightBg border-0"
+        [formControl]="message"
+        placeholder="Send message"
+      />
       <div class="input-group-append">
-        <button class="btn lightBg" type="submit" [disabled]="message.value?.length > 2000">
+        <button
+          class="btn lightBg"
+          type="submit"
+          [disabled]="message.value?.length > 2000"
+        >
           <em class="fas fa-paper-plane text-white text-xs"></em>
         </button>
       </div>
     </div>
   </form>
 
-  <emoji-mart *ngIf="showEmoji" [style]="{ position: 'absolute', bottom: 'calc(50px + 1rem)' }" [showPreview]="false"
-    [isNative]="true" (emojiSelect)="selectEmoji($event)"></emoji-mart>
+  <emoji-mart
+    *ngIf="showEmoji"
+    [style]="{ position: 'absolute', bottom: 'calc(50px + 1rem)' }"
+    [showPreview]="false"
+    [isNative]="true"
+    (emojiSelect)="selectEmoji($event)"
+    [emojisToShowFilter]="isMissingEmoji"
+  ></emoji-mart>
 </div>

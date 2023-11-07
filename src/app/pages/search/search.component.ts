@@ -97,6 +97,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
 
+  get userId() {
+    return this.user?.id;
+  }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
