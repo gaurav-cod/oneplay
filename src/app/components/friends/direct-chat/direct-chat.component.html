@@ -45,18 +45,11 @@
       >
         <div class="date-tag font14 font500 muteText">{{ getDate(msg) }}</div>
       </div>
-      <li
-        class="d-flex align-items-center my-3"
-        [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
-      >
-        <div class="w-100">
-          <p class="mb-0 font16 font500 offWhiteText breakWord">
-            {{ msg.message }}
-          </p>
-          <p
-            class="mb-0 font14 muteText"
-            [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }"
-          >
+      <li class="d-flex align-items-center my-3"
+        [ngClass]="{ 'justify-content-end': isUserSender(msg), 'ml-3': isUserSender(msg), 'mr-3': !isUserSender(msg) }">
+        <div class="w-90">
+          <p class="mb-0 font16 font500 offWhiteText breakWord">{{ msg.message }}</p>
+          <p class="mb-0 font14 muteText" [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }">
             {{ msg.createdAt | date : "hh:mm a" }}
           </p>
         </div>
