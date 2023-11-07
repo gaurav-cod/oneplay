@@ -11,15 +11,40 @@ import Swal from "sweetalert2";
 })
 export class OtpVerifyComponent implements OnInit {
 
+  displayTimer: any = 60;
+  errorCode: number = null;
+
   constructor(
     private readonly router: Router,
     private readonly restService: RestService,
     private readonly activatedRoute: ActivatedRoute
-  ) { }
+  ) {
+    this.getDisplayTimer();
+  }
+
+  getDisplayTimer() {
+
+    if (localStorage.getItem("displayTimer")) {
+      this.displayTimer = Number((((new Date()).getTime() - (new Date(localStorage.getItem("displayTimer"))).getTime()) / 1000).toFixed(0));
+      if (this.displayTimer <= 60 && this.displayTimer >= 0)
+        this.timer();
+    } else {
+      localStorage.setItem("displayTimer", new Date().toJSON());
+      this.displayTimer = 60;
+      this.timer();
+    }
+  }
+
+  get showResentOTPButton() {
+    return this.displayTimer > 60 || this.displayTimer == 0;
+  }
+  get endJourney() {
+    return this.errorCode == 429;
+  }
 
   form: UntypedFormGroup;
-  display: any;
   senderMobileNumber: string = null;
+  isWrongOTPEntered: boolean = false;
 
   formInput = ["one", "two", "three", "four", "five", "six"];
   @ViewChildren("formRow") rows: any;
@@ -34,7 +59,6 @@ export class OtpVerifyComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.timer();
     this.activatedRoute.queryParams.subscribe((qParm: any) => {
       this.senderMobileNumber = qParm.mobile;
     })
@@ -66,11 +90,11 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   timer(minutes: number = 1) {
-    let seconds: any = minutes * 60;
+    let seconds: any = this.displayTimer;
     const timer = setInterval(() => {
       seconds--;
       const prefix = seconds < 10 ? "0" : "";
-      this.display = `${prefix}${seconds}`;
+      this.displayTimer = `${prefix}${seconds}`;
       if (seconds == 0) {
         clearInterval(timer);
       }
@@ -87,6 +111,8 @@ export class OtpVerifyComponent implements OnInit {
       next: (response: any) => {
         this.router.navigate([`/reset-password/${response.token}`]);
       }, error: (error: any) => {
+        this.isWrongOTPEntered = true;
+        this.errorCode = error.code;
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
@@ -98,6 +124,18 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   resendOTP() {
-
+    this.restService.requestResetPasswordWithMobile(this.senderMobileNumber).subscribe({
+      next: (response: any) => {
+        localStorage.removeItem("displayTimer");
+        this.getDisplayTimer();
+      }, error: (error) => {
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    })
   }
 }

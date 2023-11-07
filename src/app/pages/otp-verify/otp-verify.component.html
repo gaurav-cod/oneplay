@@ -16,15 +16,28 @@
 
         </div>
         <div class="col text-center align-self-center">
-            <p class="font16 font500 mb-0 darkGrey">Didn't Receive code? <span class="offWhiteText"
-                    (click)="resendOTP()">Resend in : {{
-                    display
-                    }} </span>
+            <p class="font16 font500 mb-0 darkGrey" *ngIf="!isWrongOTPEntered">Didn't Receive code?
+                <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in : {{displayTimer}} </span>
+                <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
+                    OTP</span>
             </p>
+            <div *ngIf="isWrongOTPEntered">
+                <div>
+                    <span class="errorGradientColor font500">Incorrect Security Code</span>
+                    <span class="offWhiteText">, Please check</span>
+                </div>
+                <div>
+                    <span class="offWhiteText">carfully or </span>
+                    <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in : {{displayTimer}} </span>
+                    <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
+                        OTP</span>
+                </div>
+            </div>
         </div>
         <div class="col-12 mt-4">
             <button type="button" class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
-                (click)="verifyOTP()">
+                (click)="verifyOTP()" [ngClass]="{ mutedBg: codeForm.invalid || endJourney }"
+                [disabled]="endJourney ? false : codeForm.invalid">
                 Verify
             </button>
         </div>
