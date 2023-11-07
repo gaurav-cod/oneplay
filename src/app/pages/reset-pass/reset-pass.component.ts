@@ -62,12 +62,13 @@ export class ResetPassComponent implements OnInit {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.resetPassword(token, this.resetForm.value.password).subscribe(
       () => {
-        Swal.fire({
-          title: "Success",
-          text: "Password reset successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => this.goToLogin());
+        this.router.navigate(['/success']);
+        // Swal.fire({
+        //   title: "Success",
+        //   text: "Password reset successfully",
+        //   icon: "success",
+        //   confirmButtonText: "OK",
+        // }).then(() => this.goToLogin());
       },
       (error) => {
         Swal.fire({
