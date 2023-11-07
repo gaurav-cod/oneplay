@@ -69,8 +69,7 @@ export class ForgotPassComponent implements OnInit {
     });
   }
 
-  submit() {
-    this.router.navigate(['/otp-verify']);
+  forgotPasswordWithEmail() {
     this.restService.requestResetPassword(this.email.value).subscribe(
       () => {
         this.resetemail = true;
@@ -84,6 +83,29 @@ export class ForgotPassComponent implements OnInit {
           confirmButtonText: "Try Again",
         })
     );
+  }
+  forgotPasswordWithMobile() {
+    const phone = this.country_code.value + this.phone.value;
+    this.restService.requestResetPasswordWithMobile(phone).subscribe({
+      next: () => {
+        this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
+      }, error: (error) => {
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "Try Again",
+        })
+      }
+    })
+  }
+
+  submit() {
+    if (this.phone.value) {
+      this.forgotPasswordWithMobile();
+    } else {
+      this.forgotPasswordWithEmail();
+    }
   }
 
   goToLogin() {

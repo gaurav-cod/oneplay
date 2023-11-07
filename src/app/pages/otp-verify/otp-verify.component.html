@@ -5,11 +5,11 @@
         <div class="col-12 my-3">
             <!-- <span class="font16 font500 errorGradientColor float-right">*invalid
                 OTP</span> -->
-            <form [formControl]="codeForm">
+            <form [formGroup]="codeForm">
                 <div class="row justify-content-center">
                     <div class="col-auto p-1 otpInput" *ngFor="let input of formInput; index as i">
-                        <input #formRow type="text" class="form-control w70h61 p-1" maxlength="1"
-                            (input)="jump($event, i)" (keydown)="jumpPrev($event, i)" />
+                        <input #formRow type="text" formControlName="{{ input }}" class="form-control w70h61 p-1"
+                            maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)" />
                     </div>
                 </div>
             </form>

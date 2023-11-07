@@ -1,6 +1,8 @@
 import { Component, ViewChildren, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RestService } from 'src/app/services/rest.service';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-otp-verify',
@@ -10,11 +12,15 @@ import { Router } from '@angular/router';
 export class OtpVerifyComponent implements OnInit {
 
   constructor(
-    private router: Router
+    private readonly router: Router,
+    private readonly restService: RestService,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   form: UntypedFormGroup;
   display: any;
+  senderMobileNumber: string = null;
+
   formInput = ["one", "two", "three", "four", "five", "six"];
   @ViewChildren("formRow") rows: any;
 
@@ -29,6 +35,9 @@ export class OtpVerifyComponent implements OnInit {
 
   ngOnInit() {
     this.timer();
+    this.activatedRoute.queryParams.subscribe((qParm: any) => {
+      this.senderMobileNumber = qParm.mobile;
+    })
   }
 
   jump(event: any, index: number) {
@@ -69,7 +78,23 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   verifyOTP() {
-    this.router.navigate(['/reset-password']);
+    const c = Object.values(
+      this.codeForm.value as { [key: string]: string }
+    ).map((el) => `${el}`);
+    const code = c[0] + c[1] + c[2] + c[3] + c[4] + c[5];
+
+    this.restService.verifyOTPForMobile(this.senderMobileNumber, code).subscribe({
+      next: (response: any) => {
+        this.router.navigate([`/reset-password/${response.token}`]);
+      }, error: (error: any) => {
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+      }
+    })
   }
 
   resendOTP() {
