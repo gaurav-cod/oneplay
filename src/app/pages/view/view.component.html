@@ -252,12 +252,14 @@
                     shortly!
                   </p>
                   <p
-                    class="orangeGradient font600"
+                    class="redMessage font600"
                     *ngIf="game.status === 'not_optimized'"
                   >
                     The Quality of the gameplay may vary depending on your
                     device.
                   </p>
+                  <p *ngIf="game.status === 'updating'" class="text-white bottomTag"><span class="updatingGradient px-2 tagText">UPDATING</span></p>
+                  <p *ngIf="game.status === 'not_optimized'" class="text-white bottomTag"><span class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></p>
                 </div>
               </div>
             </div>

@@ -647,6 +647,10 @@ live {
   gap: 10px;
 }
 
+.redMessage {
+  color: #FF5151;
+}
+
 // warning message css
 @media (min-width: 480px) {
   .warningMessageDivMob {
