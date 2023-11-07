@@ -1244,3 +1244,22 @@ select {
     border-radius: 60px !important;
   }
 }
+
+
+.tagText {
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
+}

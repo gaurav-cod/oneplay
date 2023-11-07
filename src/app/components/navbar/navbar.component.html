@@ -108,11 +108,8 @@
                       alt=""
                     />
                     <div class="card-img-overlay p-0">
-                      <span
-                        *ngIf="game.isFree && game.status !== 'coming_soon'"
-                        class="freeTag px-1 free tagText"
-                        >FREE</span
-                      >
+                      <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
+                        FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                       <span
                         *ngIf="game.status === 'coming_soon'"
                         class="redGradient px-1 free tagText"
