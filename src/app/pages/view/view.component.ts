@@ -393,7 +393,13 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private toggleWarning()
   {
+    event.stopPropagation();
     this.waring_message_display = !this.waring_message_display;
+  }
+
+  private hideWarning(event: Event)
+  {
+    this.waring_message_display = true;
   }
 
   @HostListener("window:beforeunload", ["$event"])
