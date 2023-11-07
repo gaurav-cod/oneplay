@@ -22,6 +22,7 @@ import { Router } from "@angular/router";
 })
 export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   @ViewChild("VPNAlert") VPNAlert: ElementRef<HTMLDivElement>;
+  @ViewChild("iOsAlert") iOsAlert: ElementRef<HTMLDivElement>;
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
   @ViewChild("onboardingUserModal")
   onboardingUserModal: ElementRef<HTMLDivElement>;
@@ -41,6 +42,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
   private _VPNAlertRef: NgbModalRef;
+  private _iOsAlertRef: NgbModalRef;
   private _showSelectGames: boolean = false;
   private _showTnC: boolean = false;
 
@@ -69,6 +71,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.detectiOsDevice();
     this.detectVPN();
   }
 
@@ -85,9 +88,34 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       },
     });
   }
+  
+  private detectiOsDevice() {
+    let iOsCond1 = [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod'
+    ].includes(navigator.userAgent);
+    // iPad on iOS 13 detection
+    let iOsCond2 = (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+    if(iOsCond1 || iOsCond2)
+    {
+      this._iOsAlertRef = this.ngbModal.open(this.iOsAlert, {
+        centered: true,
+        modalDialogClass: "modal-sm",
+        scrollable: true,
+      });
+    }
+  }
 
   cancelVPNAlert() {
     this._VPNAlertRef.close();
+  }
+
+  canceliOsAlert() {
+    this._iOsAlertRef.close();
   }
 
   ngOnDestroy(): void {

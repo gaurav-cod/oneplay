@@ -218,3 +218,20 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #iOsAlert>
+  <div class="modal-content modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <p class="mb-0">
+        <img src="assets/icons/oneplay-console-icon.svg" class="img-fluid py-4" alt="" />
+      </p>
+      <p class="font16 font500 muteText mt-2">Currently, our service is not available on iOS devices. Stay tuned for further information!</p>
+      <button
+        class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60 mt-4"
+        (click)="canceliOsAlert()"
+      >
+        Okay
+      </button>
+    </div>
+  </div>
+</ng-template>
