@@ -19,6 +19,7 @@ import { ChatService } from "src/app/services/chat.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import * as moment from "moment";
+import { EmojiEvent } from "@ctrl/ngx-emoji-mart/ngx-emoji";
 
 @Component({
   selector: "app-direct-chat",
@@ -153,8 +154,18 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showEmoji = !this.showEmoji;
   }
 
-  selectEmoji({ emoji }) {
-    this.message.setValue((this.message.value ?? "") + (emoji.native ?? ""));
+  selectEmoji(event: EmojiEvent) {
+    this.message.setValue(
+      (this.message.value ?? "") + (event.emoji.native ?? "")
+    );
+  }
+
+  isMissingEmoji(data: string) {
+    const emoji = String.fromCodePoint(parseInt(data, 16));
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.canvas.width = ctx.canvas.height = 1;
+    ctx.fillText(emoji, -4, 4);
+    return ctx.getImageData(0, 0, 1, 1).data[3] > 0;
   }
 
   private scrollToBottom() {
