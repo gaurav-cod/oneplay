@@ -133,6 +133,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendMessage() {
+    this.showEmoji = false;
     if (this.message.valid) {
       this.chatService.sendMessage(this.message.value, this.friend.user_id);
       this.message.reset();

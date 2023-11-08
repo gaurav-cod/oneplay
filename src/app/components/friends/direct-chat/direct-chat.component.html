@@ -1,4 +1,4 @@
-<div class="d-flex flex-column p-3 chat-screen" style="height: 100%">
+<div class="d-flex flex-column p-3 chat-screen position-relative" style="height: 100%">
   <div class="row mb-3">
     <div class="col-auto align-self-center pr-0">
       <img
@@ -87,6 +87,7 @@
 
   <emoji-mart
     *ngIf="showEmoji"
+    [darkMode]="true"
     [style]="{ position: 'absolute', bottom: 'calc(50px + 1rem)' }"
     [showPreview]="false"
     [isNative]="true"
