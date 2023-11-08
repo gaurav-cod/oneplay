@@ -4,12 +4,6 @@
   }
 }
 
-@media (min-width: 476px) and (max-width: 1200px) {
-  .chat-screen {
-    height: calc(100vh - 170px) !important;
-  }
-}
-
 .chat-list {
   overflow-y: scroll;
   overflow-x: hidden;
@@ -61,15 +55,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
 
-  &::-webkit-scrollbar-track {
-    display: none;
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  &::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-track, &::-webkit-scrollbar, &::-webkit-scrollbar-thumb {
     display: none;
   }
 }

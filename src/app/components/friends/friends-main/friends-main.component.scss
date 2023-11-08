@@ -6,6 +6,29 @@
   color: #576068;
 }
 
+.chat-header {
+    position: relative;
+    top: 10px;
+    left: -10px;
+    padding-right: 0px !important;
+
+    .boldHeadingWhite {
+        color: #fff;
+
+    }
+}
+@media (max-width: 475px) {
+    .chat-header {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .chat-header {
+        display: none !important;
+    }
+}
+
 .friends-list {
   height: calc(80vh - 120px);
   width: 100%;
@@ -65,15 +88,7 @@
       overflow-y: auto !important;
     }
 
-    &::-webkit-scrollbar-track {
-      display: none;
-    }
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    &::-webkit-scrollbar-thumb {
+    &::-webkit-scrollbar-track, &::-webkit-scrollbar, &::-webkit-scrollbar-thumb {
       display: none;
     }
   }

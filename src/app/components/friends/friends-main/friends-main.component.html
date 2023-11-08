@@ -1,4 +1,13 @@
 <section class="chat-section">
+  <div class="chat-header container-fluid d-flex align-item-center row justify-content-between">
+    <div class="display-4 boldHeadingWhite px-10">Chat</div>
+    <div *ngIf="requests > 0" class="d-flex align-item-center">
+      <a href="javascript:void(0)" class="font16 font500 anchorGradientPurple" (click)="goToMail()">
+        <img src="assets/img/chat/friend-request.svg" class="img-fluid mr-3" alt="" />
+        <span class="align-middle">{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span>
+      </a>
+    </div>
+  </div>
   <nav>
     <div class="row customNavTab customCareerTab border-0 nav nav-tabs mx-1 sticky-top-bar">
       <div class="col-6 p-0 text-center mt-2">
@@ -40,14 +49,21 @@
         </div>
         <div class="friends-list" [ngClass]="{'friends-list_advance': requests > 0}">
           <div class="col-12 mt-2 friend-listing" *ngIf="liveFriends.length > 0">
-            <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+            <app-friends-list 
+              [friends]="liveFriends" 
+              (goToChat)="goToChat.emit($event)"
+            ></app-friends-list>
           </div>
-          <div class="col-12 mt-3 friend-listing" *ngIf="offlineCount > 0">
+          <div class="col-12 mt-2 friend-listing" *ngIf="offlineCount > 0">
             <p class="muteText font14 sticky-notes font500"
-              [style.marginTop]="liveFriends.length === 0 ? '20px' : '0px'">
+              [style.marginTop]="liveFriends.length === 0 ? '20px' : '0px'" 
+              *ngIf="liveFriends.length > 0">
               {{ offlineCount }} Offline Friends
             </p>
-            <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
+            <app-friends-list 
+              [friends]="offlineFriends" 
+              (goToChat)="goToChat.emit($event)"
+            ></app-friends-list>
           </div>
         </div>
       </ng-container>
