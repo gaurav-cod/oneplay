@@ -39,11 +39,12 @@
           </div>
         </div>
         <div class="friends-list" [ngClass]="{'friends-list_advance': requests > 0}">
-          <div class="col-12 mt-2 friend-listing">
+          <div class="col-12 mt-2 friend-listing" *ngIf="liveFriends.length > 0">
             <app-friends-list [friends]="liveFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
           </div>
           <div class="col-12 mt-3 friend-listing" *ngIf="offlineCount > 0">
-            <p class="muteText font14 sticky-notes font500">
+            <p class="muteText font14 sticky-notes font500"
+              [style.marginTop]="liveFriends.length === 0 ? '20px' : '0px'">
               {{ offlineCount }} Offline Friends
             </p>
             <app-friends-list [friends]="offlineFriends" (goToChat)="goToChat.emit($event)"></app-friends-list>
