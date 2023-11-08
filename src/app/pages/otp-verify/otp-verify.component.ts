@@ -1,4 +1,4 @@
-import { Component, ViewChildren, OnInit } from '@angular/core';
+import { Component, ViewChildren, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from 'src/app/services/rest.service';
@@ -46,6 +46,12 @@ export class OtpVerifyComponent implements OnInit {
     this.getDisplayTimer();
   }
 
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((qParm: any) => {
+      this.senderMobileNumber = qParm.mobile;
+    })
+  }
+
   getDisplayTimer() {
 
     if (localStorage.getItem("displayTimer")) {
@@ -57,12 +63,6 @@ export class OtpVerifyComponent implements OnInit {
       this.displayTimer = 60;
       this.timer();
     }
-  }
-
-  ngOnInit() {
-    this.activatedRoute.queryParams.subscribe((qParm: any) => {
-      this.senderMobileNumber = qParm.mobile;
-    })
   }
 
   jump(event: any, index: number) {
@@ -110,7 +110,7 @@ export class OtpVerifyComponent implements OnInit {
 
     this.restService.verifyOTPForMobile(this.senderMobileNumber, code).subscribe({
       next: (token: any) => {
-
+        localStorage.removeItem("displayTimer");
         this.router.navigate([`/reset-password/${token}`]);
       }, error: (error: any) => {
         this.isWrongOTPEntered = true;
