@@ -186,7 +186,7 @@
               {{ user.username }}
             </p>
           </div>
-          <div class="col-auto d-flex align-items-baseline">
+          <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline">
             <ng-container *ngFor="let key of getActions(user); index as i">
               <div *ngIf="i > 0" class="action-divider"></div>
               <img

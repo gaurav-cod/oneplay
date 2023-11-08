@@ -53,6 +53,30 @@
               </button>
             </div>
             <div class="row imagesText height330 align-items-end mt-md-4">
+              <div *ngIf="game.warningMessage != ''" class="warningMessageDiv">
+                <img class="warningMessageSymbol" src="assets/img/error/warning-message-symbol.svg" />
+                <div class="warningMessageTextDivOuter">
+                  <div class="warningMessageTextDiv">
+                    <p class="warningMessageText">
+                      {{game.warningMessage}}
+                    </p>
+                  </div>
+                  <img class="warningMessageCone" src="https://c.animaapp.com/7GY89q9V/img/vector-126.svg" />
+                </div>
+              </div>
+              <div *ngIf="game.warningMessage != ''" class="warningMessageDivMob">
+                <img class="warningMessageSymbol" src="assets/img/error/warning-message-symbol.svg" />
+                <div class="div-wrapper">
+                  <div class="warningMessageTextDivOuter">
+                    <div class="warningMessageTextDiv">
+                      <p class="warningMessageText">
+                        {{game.warningMessage}}
+                      </p>
+                    </div>
+                    <img class="warningMessageConeLeft" src="https://c.animaapp.com/swzkcKaS/img/vector-126.svg" />
+                  </div>
+                </div>
+              </div>
               <div class="col-md-12 pb-5">
                 <div class="row height100px">
                   <div class="col">
@@ -62,7 +86,8 @@
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
-                  {{ game.isFree ? " - Free" : "" }}
+                  &nbsp;<span *ngIf="game.isFree && game.status !== 'coming_soon'"  class="freeTag px-2 tagText">
+                    FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                 </p>
                 <div class="row">
                   <!-- <div

@@ -629,3 +629,143 @@ live {
 .display-hide {
   display: none;
 }
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
+}
+
+// warning message css
+@media (min-width: 480px) {
+  .warningMessageDivMob {
+    display: none;
+  }
+
+  .warningMessageDiv {
+    position: absolute;
+    width: 404px;
+    height: 108px;
+    top: 10px;
+    right: 20px;
+  }
+  
+  .warningMessageSymbol {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 0;
+    left: 347px;
+  }
+  
+  .warningMessageTextDivOuter {
+    position: absolute;
+    width: 404px;
+    height: 79px;
+    top: 29px;
+    left: 0;
+  }
+  
+  .warningMessageTextDiv {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 0px 0px 8px;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    background-color: #000;
+    border-radius: 10px;
+  }
+  
+  .warningMessageText {
+    position: relative;
+    width: 388px;
+    margin-top: -1px;
+    font-family: "Poppins", Helvetica;
+    font-weight: 600;
+    color: rgba(220, 220, 220, 1);
+    font-size: 14px;
+    letter-spacing: 0.28px;
+    line-height: 24px;
+  }
+  
+  .warningMessageCone {
+    float: right;
+    margin-top: 2px;
+    margin-right: 20px;
+  }
+}
+
+
+
+@media (max-width: 480px) {
+  .warningMessageDiv {
+    display: none;
+  }
+  
+  .warningMessageDivMob {
+    position: absolute;
+    width: 404px;
+    height: 108px;
+    top: 10px;
+  }
+  
+  .warningMessageSymbol {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 20px;
+  }
+  
+  
+  .warningMessageTextDivOuter {
+    position: absolute;
+    width: 404px;
+    height: 79px;
+    top: -12px;
+    left: 30px;
+    z-index: 1000;;
+  }
+  
+  .warningMessageTextDiv {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 8px 0px 8px;
+    position: absolute;
+    top: 15px;
+    left: 0;
+    background-color: #000;
+    border-radius: 10px;
+  }
+  
+  .warningMessageText {
+    position: relative;
+    width: 220px;
+    margin-top: -1px;
+    font-family: "Poppins", Helvetica;
+    color: rgba(220, 220, 220, 1);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.24px;
+  }
+  
+  .warningMessageConeLeft {
+    margin-top: 30px;
+    margin-left: -7px;
+  }
+}

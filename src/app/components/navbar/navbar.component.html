@@ -193,7 +193,7 @@
                     {{ user.username }}
                   </p>
                 </div>
-                <div class="col-auto d-flex align-items-baseline pr-0">
+                <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline pr-0">
                   <ng-container
                     *ngFor="let key of getActions(user); index as i"
                   >
