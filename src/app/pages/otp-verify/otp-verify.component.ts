@@ -14,6 +14,30 @@ export class OtpVerifyComponent implements OnInit {
   displayTimer: any = 60;
   errorCode: number = null;
 
+  form: UntypedFormGroup;
+  senderMobileNumber: string = null;
+  isWrongOTPEntered: boolean = false;
+
+  formInput = ["one", "two", "three", "four", "five", "six"];
+  @ViewChildren("formRow") rows: any;
+
+
+  public codeForm = new UntypedFormGroup({
+    one: new UntypedFormControl("", [Validators.required]),
+    two: new UntypedFormControl("", [Validators.required]),
+    three: new UntypedFormControl("", [Validators.required]),
+    four: new UntypedFormControl("", [Validators.required]),
+    five: new UntypedFormControl("", [Validators.required]),
+    six: new UntypedFormControl("", [Validators.required]),
+  });
+
+  get showResentOTPButton() {
+    return this.displayTimer >= 60 || this.displayTimer == 0;
+  }
+  get endJourney() {
+    return this.errorCode == 429;
+  }
+
   constructor(
     private readonly router: Router,
     private readonly restService: RestService,
@@ -34,29 +58,6 @@ export class OtpVerifyComponent implements OnInit {
       this.timer();
     }
   }
-
-  get showResentOTPButton() {
-    return this.displayTimer >= 60 || this.displayTimer == 0;
-  }
-  get endJourney() {
-    return this.errorCode == 429;
-  }
-
-  form: UntypedFormGroup;
-  senderMobileNumber: string = null;
-  isWrongOTPEntered: boolean = false;
-
-  formInput = ["one", "two", "three", "four", "five", "six"];
-  @ViewChildren("formRow") rows: any;
-
-  public codeForm = new UntypedFormGroup({
-    one: new UntypedFormControl("", [Validators.required]),
-    two: new UntypedFormControl("", [Validators.required]),
-    three: new UntypedFormControl("", [Validators.required]),
-    four: new UntypedFormControl("", [Validators.required]),
-    five: new UntypedFormControl("", [Validators.required]),
-    six: new UntypedFormControl("", [Validators.required]),
-  });
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((qParm: any) => {

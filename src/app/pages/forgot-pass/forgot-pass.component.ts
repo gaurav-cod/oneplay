@@ -21,16 +21,14 @@ export class ForgotPassComponent implements OnInit {
   private emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
 
   forgotPasswordForm = new UntypedFormGroup({
-    email: new UntypedFormControl("", [Validators.email,
-    Validators.pattern(this.emailPattern)]),
+    email: new UntypedFormControl("", [Validators.email, Validators.pattern(this.emailPattern)]),
     country_code: new UntypedFormControl("+91", []),
-    phone: new UntypedFormControl("", [
-      phoneValidator("country_code")
-    ])
+    phone: new UntypedFormControl("", [phoneValidator("country_code")])
   });
 
   nonFunctionalRegion: boolean = null;
   resetemail = false;
+
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
   }
@@ -46,6 +44,9 @@ export class ForgotPassComponent implements OnInit {
     return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : false) ||
       (this.forgotPasswordForm.controls['phone'].value ? this.forgotPasswordForm.controls['phone'].invalid : false) ||
       (!this.forgotPasswordForm.controls['email'].value && !this.forgotPasswordForm.controls['phone'].value);
+  }
+  get domain() {
+    return environment.domain;
   }
 
   constructor(
@@ -130,7 +131,4 @@ export class ForgotPassComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
-  get domain() {
-    return environment.domain;
-  }
 }
