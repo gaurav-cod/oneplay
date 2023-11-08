@@ -14,6 +14,7 @@ import { GameModel } from "src/app/models/game.model";
 import { UntypedFormControl } from "@angular/forms";
 import { environment } from "src/environments/environment";
 import { Router } from "@angular/router";
+import { UAParser } from "ua-parser-js";
 
 @Component({
   selector: "app-onboarding-modals",
@@ -90,17 +91,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   }
   
   private detectiOsDevice() {
-    let iOsCond1 = [
-      'iPad Simulator',
-      'iPhone Simulator',
-      'iPod Simulator',
-      'iPad',
-      'iPhone',
-      'iPod'
-    ].includes(navigator.userAgent);
-    // iPad on iOS 13 detection
-    let iOsCond2 = (navigator.userAgent.includes("Mac") && "ontouchend" in document);
-    if(iOsCond1 || iOsCond2)
+    const ua = new UAParser();
+    if(ua.getOS().name === 'ios')
     {
       this._iOsAlertRef = this.ngbModal.open(this.iOsAlert, {
         centered: true,
