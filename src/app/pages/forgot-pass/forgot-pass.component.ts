@@ -43,7 +43,9 @@ export class ForgotPassComponent implements OnInit {
     return control.touched && control.invalid;
   }
   get checkvalidationValue() {
-    return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : true);
+    return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : false) ||
+      (this.forgotPasswordForm.controls['phone'].value ? this.forgotPasswordForm.controls['phone'].invalid : false) ||
+      (!this.forgotPasswordForm.controls['email'].value && !this.forgotPasswordForm.controls['phone'].value);
   }
 
   constructor(
