@@ -14,6 +14,7 @@ import { GameModel } from "src/app/models/game.model";
 import { UntypedFormControl } from "@angular/forms";
 import { environment } from "src/environments/environment";
 import { Router } from "@angular/router";
+import { UAParser } from "ua-parser-js";
 
 @Component({
   selector: "app-onboarding-modals",
@@ -22,6 +23,7 @@ import { Router } from "@angular/router";
 })
 export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   @ViewChild("VPNAlert") VPNAlert: ElementRef<HTMLDivElement>;
+  @ViewChild("iOsAlert") iOsAlert: ElementRef<HTMLDivElement>;
   @ViewChild("selectGameModal") selectGameModal: ElementRef<HTMLDivElement>;
   @ViewChild("onboardingUserModal")
   onboardingUserModal: ElementRef<HTMLDivElement>;
@@ -41,6 +43,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
   private _VPNAlertRef: NgbModalRef;
+  private _iOsAlertRef: NgbModalRef;
   private _showSelectGames: boolean = false;
   private _showTnC: boolean = false;
 
@@ -69,6 +72,7 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       }
     });
 
+    this.detectiOsDevice();
     this.detectVPN();
   }
 
@@ -85,9 +89,25 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       },
     });
   }
+  
+  private detectiOsDevice() {
+    const ua = new UAParser();
+    if(ua.getOS().name === 'ios')
+    {
+      this._iOsAlertRef = this.ngbModal.open(this.iOsAlert, {
+        centered: true,
+        modalDialogClass: "modal-sm",
+        scrollable: true,
+      });
+    }
+  }
 
   cancelVPNAlert() {
     this._VPNAlertRef.close();
+  }
+
+  canceliOsAlert() {
+    this._iOsAlertRef.close();
   }
 
   ngOnDestroy(): void {
