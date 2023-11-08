@@ -25,8 +25,7 @@ export class ForgotPassComponent implements OnInit {
     Validators.pattern(this.emailPattern)]),
     country_code: new UntypedFormControl("+91", []),
     phone: new UntypedFormControl("", [
-
-      phoneValidator("country_code"),
+      phoneValidator("country_code")
     ])
   });
 
@@ -37,15 +36,14 @@ export class ForgotPassComponent implements OnInit {
   }
   get phoneErrored() {
     const control = this.forgotPasswordForm.controls['phone'];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.value;
   }
   get emailErrored() {
     const control = this.forgotPasswordForm.controls["email"];
     return control.touched && control.invalid;
   }
   get checkvalidationValue() {
-    return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : true) ||
-      (this.forgotPasswordForm.controls['phone'].value ? this.forgotPasswordForm.controls['phone'].invalid : true);
+    return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : true);
   }
 
   constructor(
