@@ -36,7 +36,7 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   get showResentOTPButton() {
-    return this.displayTimer > 60 || this.displayTimer == 0;
+    return this.displayTimer >= 60 || this.displayTimer == 0;
   }
   get endJourney() {
     return this.errorCode == 429;
@@ -108,8 +108,9 @@ export class OtpVerifyComponent implements OnInit {
     const code = c[0] + c[1] + c[2] + c[3] + c[4] + c[5];
 
     this.restService.verifyOTPForMobile(this.senderMobileNumber, code).subscribe({
-      next: (response: any) => {
-        this.router.navigate([`/reset-password/${response.token}`]);
+      next: (token: any) => {
+
+        this.router.navigate([`/reset-password/${token}`]);
       }, error: (error: any) => {
         this.isWrongOTPEntered = true;
         this.errorCode = error.code;
@@ -126,6 +127,7 @@ export class OtpVerifyComponent implements OnInit {
   resendOTP() {
     this.restService.requestResetPasswordWithMobile(this.senderMobileNumber).subscribe({
       next: (response: any) => {
+        this.codeForm.reset();
         localStorage.removeItem("displayTimer");
         this.getDisplayTimer();
       }, error: (error) => {

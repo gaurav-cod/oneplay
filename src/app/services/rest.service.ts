@@ -287,7 +287,7 @@ export class RestService {
   verifyOTPForMobile(mobile: string, otp: string): Observable<void> {
     return this.http.post(this.r_mix_api + "/accounts/get_password_reset_token", { "phone": mobile, "code": otp })
     .pipe(
-      map((res)=> {}),
+      map((res: any)=> res.token),
       catchError(({error})=> {
         throw error;
       })
