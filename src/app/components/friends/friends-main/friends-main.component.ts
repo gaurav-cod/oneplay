@@ -19,7 +19,6 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
   @Output("goToParties") goToParties = new EventEmitter();
   @Output("goToMail") goToMail = new EventEmitter();
   @Output("goToChat") goToChat = new EventEmitter();
-  @Output("recievedFriendRequest") recievedFriendRequest = new EventEmitter();
 
   friends: FriendModel[] = [];
   requests = 0;
@@ -59,7 +58,6 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
     });
     this.requestsSub = this.friendsService.requests.subscribe((requests) => {
       this.requests = requests.length;
-      this.recievedFriendRequest.emit(this.requests);
     });
     this.timer = setInterval(() => {
       this.restService
