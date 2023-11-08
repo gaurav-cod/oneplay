@@ -58,11 +58,13 @@ export class ResetPassComponent implements OnInit {
   showPassword = false;
   showConfirmPassword = false;
 
+  resetPasswordSuccessfull: boolean = false;
+
   reset() {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.resetPassword(token, this.resetForm.value.password).subscribe(
       () => {
-        this.router.navigate(['/success']);
+        this.resetPasswordSuccessfull = true;
         // Swal.fire({
         //   title: "Success",
         //   text: "Password reset successfully",

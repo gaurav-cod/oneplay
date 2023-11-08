@@ -16,7 +16,6 @@ export const AuthLayoutRoutes: Routes = [
     { path: 'forgot-password',          component: ForgotPassComponent },
     { path: 'otp-verify',               component: OtpVerifyComponent },
     { path: 'reset-password/:token',    component: ResetPassComponent },
-    { path: 'reset-password',           component: ResetPassComponent },
-    { path: 'success',                  component: SuccessMessageComponent },
+    // { path: 'success',                  component: SuccessMessageComponent },
     { path: 'start-gaming',             component: StartgamingSignupComponent },
 ];

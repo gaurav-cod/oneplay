@@ -15,6 +15,7 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/startgaming-signup.component';
 import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-region/non-functional-region.component';
 import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.component';
+import { SuccessMessageComponent } from 'src/app/pages/success-message/success-message.component';
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.componen
     OtpVerifyComponent,
     ResetPassComponent,
     StartgamingSignupComponent,
-    NonFunctionalRegionComponent
+    NonFunctionalRegionComponent,
+    SuccessMessageComponent
   ]
 })
 export class AuthLayoutModule { }
