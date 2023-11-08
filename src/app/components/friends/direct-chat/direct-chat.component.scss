@@ -1,3 +1,15 @@
+@media (max-width: 475px) {
+  .chat-screen {
+    padding-bottom: 0px !important;
+  }
+}
+
+@media (min-width: 476px) and (max-width: 1200px) {
+  .chat-screen {
+    height: calc(100vh - 170px) !important;
+  }
+}
+
 .chat-list {
   overflow-y: scroll;
   overflow-x: hidden;
