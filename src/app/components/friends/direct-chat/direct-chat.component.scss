@@ -33,6 +33,7 @@
     word-wrap: break-word;
   }
 }
+
 .warning-message {
   display: flex;
   align-items: center;
@@ -41,5 +42,26 @@
   background: -webkit-linear-gradient(#FF0C0C, #FF630C);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
 
+.chatArea {
+  resize: none;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-track {
+    width: 0px !important;
+    height: 0px !important;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent !important;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #959595;
+  }
 }

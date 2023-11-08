@@ -21,6 +21,8 @@ export class FriendsComponent {
   selectedParty: string;
   selectedFriend: string;
 
+  requests: number = 0;
+
   get currentScreen() {
     return this._screens[this._screens.length - 1];
   }
@@ -64,6 +66,10 @@ export class FriendsComponent {
   goToPartyChat(partyId: string) {
     this.selectedParty = partyId;
     this._screens.push("party_chat");
+  }
+
+  recievedFriendRequest(event) {
+    this.requests = event;
   }
 
   goBack() {

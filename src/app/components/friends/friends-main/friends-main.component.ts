@@ -19,6 +19,7 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
   @Output("goToParties") goToParties = new EventEmitter();
   @Output("goToMail") goToMail = new EventEmitter();
   @Output("goToChat") goToChat = new EventEmitter();
+  @Output("recievedFriendRequest") recievedFriendRequest = new EventEmitter();
 
   friends: FriendModel[] = [];
   requests = 0;
@@ -50,7 +51,7 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
   constructor(
     private readonly friendsService: FriendsService,
     private readonly restService: RestService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.friendsSub = this.friendsService.friends.subscribe((friends) => {
@@ -58,6 +59,7 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
     });
     this.requestsSub = this.friendsService.requests.subscribe((requests) => {
       this.requests = requests.length;
+      this.recievedFriendRequest.emit(this.requests);
     });
     this.timer = setInterval(() => {
       this.restService
@@ -80,4 +82,5 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
     this.friendsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
   }
+
 }

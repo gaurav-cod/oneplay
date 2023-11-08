@@ -1,0 +1,23 @@
+.chat-header {
+    position: relative;
+    top: 10px;
+    left: -10px;
+    padding-right: 0px !important;
+
+    .boldHeadingWhite {
+        color: #fff;
+
+    }
+}
+
+@media (max-width: 475px) {
+    .chat-header {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .chat-header {
+        display: none !important;
+    }
+}
