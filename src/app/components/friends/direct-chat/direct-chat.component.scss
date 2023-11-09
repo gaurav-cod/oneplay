@@ -34,10 +34,6 @@
     background: #3e4246;
     width: 100px;
   }
-
-  .breakWord {
-    word-wrap: break-word;
-  }
 }
 
 .warning-message {
@@ -45,17 +41,33 @@
   align-items: center;
   margin-bottom: 5px;
   gap: 5px;
-  background: -webkit-linear-gradient(#FF0C0C, #FF630C);
+  background: -webkit-linear-gradient(#ff0c0c, #ff630c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
+.textHeight {
+  z-index: -1;
+  opacity: 0;
+  position: absolute;
+  max-height: 112px;
+  line-height: 1.5;
+  font-size: 0.875rem;
+  padding: 0 54.36px 0 44px;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
 .chatArea {
   resize: none;
+  min-height: 44px;
+  max-height: 112px;
   overflow-y: scroll;
   overflow-x: hidden;
 
-  &::-webkit-scrollbar-track, &::-webkit-scrollbar, &::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
     display: none;
   }
 }

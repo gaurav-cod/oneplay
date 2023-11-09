@@ -16,6 +16,7 @@ import { InvitesComponent } from './invites/invites.component';
 import { PartyChatComponent } from './party-chat/party-chat.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
 import { PickerModule } from "@ctrl/ngx-emoji-mart";
+import { TextComponent } from './text/text.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
     InvitesComponent,
     PartyChatComponent,
     FriendsListComponent,
+    TextComponent,
   ],
   exports: [
     FriendsMainComponent,
@@ -51,7 +53,6 @@ import { PickerModule } from "@ctrl/ngx-emoji-mart";
     PartyInviteComponent,
     InvitesComponent,
     PartyChatComponent,
-    FriendsListComponent,
   ],
 })
 export class FriendsModule {}

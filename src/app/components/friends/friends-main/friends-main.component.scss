@@ -8,14 +8,7 @@
 
 .chat-header {
     position: relative;
-    top: 10px;
-    left: -10px;
-    padding-right: 0px !important;
-
-    .boldHeadingWhite {
-        color: #fff;
-
-    }
+    padding: 24px 24px 0 24px;
 }
 @media (max-width: 475px) {
     .chat-header {

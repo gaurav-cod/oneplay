@@ -1,0 +1,12 @@
+<div
+  #para
+  [ngStyle]="{ height: height }"
+  class="font16 font500 offWhiteText breakWord"
+>
+  {{ text }}
+  <div *ngIf="showReadMore" class="readMore">
+    ...<span class="gradientInfoText cursorPointer" (click)="readMore()"
+      >Read More</span
+    >
+  </div>
+</div>

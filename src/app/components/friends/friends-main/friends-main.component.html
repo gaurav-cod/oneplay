@@ -1,8 +1,8 @@
 <section class="chat-section">
-  <div class="chat-header container-fluid d-flex align-item-center row justify-content-between">
-    <div class="display-4 boldHeadingWhite px-10">Chat</div>
+  <div class="chat-header d-flex align-item-center justify-content-between">
+    <div class="display-4 text-white px-10">Chat</div>
     <div *ngIf="requests > 0" class="d-flex align-item-center">
-      <a href="javascript:void(0)" class="font16 font500 anchorGradientPurple" (click)="goToMail()">
+      <a href="javascript:void(0)" class="font16 font500 anchorGradientPurple" (click)="goToMail.emit()">
         <img src="assets/img/chat/friend-request.svg" class="img-fluid mr-3" alt="" />
         <span class="align-middle">{{ requests }} new friend request{{ requests > 1 ? "s" : "" }}</span>
       </a>
