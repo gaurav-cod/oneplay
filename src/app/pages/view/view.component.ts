@@ -66,7 +66,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
-  waring_message_display: boolean = false;
+  waring_message_display: boolean = true;
 
   similarGames: GameModel[] = [];
 
