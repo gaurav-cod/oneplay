@@ -91,8 +91,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   }
   
   private detectiOsDevice() {
-    const ua = new UAParser();
-    if(ua.getOS().name === 'ios')
+    const uagent = new UAParser();
+    if(uagent.getOS().name === "iOS")
     {
       this._iOsAlertRef = this.ngbModal.open(this.iOsAlert, {
         centered: true,
