@@ -31,6 +31,8 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output("goBack") goBack = new EventEmitter();
 
   @ViewChild("chatBox") chatBox: ElementRef<HTMLUListElement>;
+  @ViewChild("textarea") textarea: ElementRef<HTMLTextAreaElement>;
+  @ViewChild("textHeight") textHeight: ElementRef<HTMLDivElement>;
 
   messages: MessageModel[] = [];
   message = new UntypedFormControl("", Validators.required);
@@ -42,6 +44,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   private userSub: Subscription;
   private messageSub1: Subscription;
   private messageSub2: Subscription;
+  private messageChangesSub: Subscription;
 
   constructor(
     private readonly chatService: ChatService,
@@ -75,6 +78,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userSub?.unsubscribe();
     this.messageSub1?.unsubscribe();
     this.messageSub2?.unsubscribe();
+    this.messageChangesSub?.unsubscribe();
     this.messages = [];
   }
 
@@ -84,6 +88,9 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.scrollToBottom();
       }, 10);
     });
+    this.messageChangesSub = this.message.valueChanges.subscribe(() => {
+      this.textarea.nativeElement.style.height = this.textHeight.nativeElement.scrollHeight + "px";
+    });
   }
 
   get defaultImage() {
@@ -92,6 +99,11 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
       (this.friend?.gender ?? Gender.Unknown) +
       ".svg"
     );
+  }
+
+  get emojiBottom() {
+    const tHeight = this.textarea.nativeElement?.scrollHeight ?? 44;
+    return `calc(${tHeight}px + 1rem)`;
   }
 
   get canLoadMore() {
