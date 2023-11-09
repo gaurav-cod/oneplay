@@ -88,7 +88,8 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.scrollToBottom();
       }, 10);
     });
-    this.messageChangesSub = this.message.valueChanges.subscribe(() => {
+    this.messageChangesSub = this.message.valueChanges.subscribe((text) => {
+      this.textHeight.nativeElement.innerText = text;
       this.textarea.nativeElement.style.height = this.textHeight.nativeElement.scrollHeight + "px";
     });
   }
