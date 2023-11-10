@@ -176,3 +176,7 @@ export interface CouponResponse {
   coupon_id: string;
   discount: number;
 }
+
+export interface SetOnlineRO {
+  unread_senders: string[];
+}

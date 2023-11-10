@@ -7,7 +7,7 @@ import {
   ViewChild,
   ElementRef,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { GameStatusRO } from "src/app/interface";
@@ -16,6 +16,7 @@ import { UserModel } from "src/app/models/user.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
+import { FriendsService } from "src/app/services/friends.service";
 // import { CountlyService } from "src/app/services/countly.service";
 import { GameService } from "src/app/services/game.service";
 import { MessagingService } from "src/app/services/messaging.service";
@@ -24,6 +25,14 @@ import { getGameLandingViewSource } from "src/app/utils/countly.util";
 import { environment } from "src/environments/environment";
 import UAParser from "ua-parser-js";
 
+enum BOTTOM_NAV {
+  HOME = "HOME",
+  GAME = "GAME",
+  LIVE = "LIVE",
+  SPEED_TEST = "SPEED_TEST",
+  CHAT = "CHAT"
+}
+
 @Component({
   selector: "app-bottom-nav",
   templateUrl: "./bottom-nav.component.html",
@@ -31,28 +40,44 @@ import UAParser from "ua-parser-js";
   providers: [GLinkPipe],
 })
 export class BottomNavComponent implements OnInit, OnDestroy {
-  @Output() toggleFriends = new EventEmitter();
+  // @Output() toggleFriends = new EventEmitter();
+
 
   public gameStatus: GameStatusRO | null = null;
+  public hasUnread = false;
   private user: UserModel;
   private userSubscription: Subscription;
   private gameStatusSubscription: Subscription;
+  private unreadSub: Subscription;
+  public  selectedBottomNav: BOTTOM_NAV = null;
   downloadAlert: boolean = true;
+
+  private routerSub: Subscription;
 
   constructor(
     private readonly messagingService: MessagingService,
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly gameService: GameService,
+    private readonly friendsService: FriendsService,
     private readonly gLink: GLinkPipe,
     private readonly ngbModal: NgbModal,
     private readonly router: Router,
     private readonly countlyService: CountlyService
-  ) {}
+  ) {
+    this.selectedBottomNav = this.getCurrentSelectedTab(this.router.url)
+    this.routerSub = this.router.events.subscribe((event: any)=> {
+      if (event instanceof NavigationEnd) {
+        this.selectedBottomNav = this.getCurrentSelectedTab(event.url);
+      }
+    })
+  }
 
   ngOnDestroy(): void {
     this.userSubscription.unsubscribe();
     this.gameStatusSubscription.unsubscribe();
+    this.unreadSub?.unsubscribe();
+    this.routerSub?.unsubscribe();
   }
 
   viewGame() {
@@ -110,6 +135,9 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.unreadSub = this.friendsService.unreadSenders.subscribe(
+      (ids) => (this.hasUnread = ids.length > 0)
+    );
     this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
       (status) => {
         this.gameStatus = status;
@@ -121,9 +149,9 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleFriendsList() {
-    this.toggleFriends.emit();
-  }
+  // toggleFriendsList() {
+  //   this.toggleFriends.emit();
+  // }
 
   logout() {
     this.messagingService.removeToken().finally(() => {
@@ -146,5 +174,21 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       modalDialogClass: "modal-md",
       scrollable: true,
     });
+  }
+
+  getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {
+    switch (currentUrl) {
+      case '/chat':
+        return BOTTOM_NAV.CHAT;
+      case '/store':
+        return BOTTOM_NAV.GAME;
+      case '/':
+      case '/home':
+        return BOTTOM_NAV.HOME;
+      case '/speed-test':
+        return BOTTOM_NAV.SPEED_TEST;
+      case '/live':
+        return BOTTOM_NAV.LIVE;
+    }
   }
 }

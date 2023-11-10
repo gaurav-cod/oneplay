@@ -15,6 +15,7 @@ import {
   IPayment,
   LoginDTO,
   PurchaseStore,
+  SetOnlineRO,
   SignupDTO,
   SpeedTestServerRO,
   StartGameRO,
@@ -51,11 +52,11 @@ export class RestService {
   private readonly r_mix_api = environment.render_mix_api + "/v1";
   private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   login(data: LoginDTO): Observable<{
-    session_token: string,
-    trigger_speed_test: boolean,
+    session_token: string;
+    trigger_speed_test: boolean;
   }> {
     return this.http
       .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
@@ -77,7 +78,7 @@ export class RestService {
         partnerId: environment.partner_id,
       })
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -121,9 +122,9 @@ export class RestService {
 
   updatePassword(old_password: string, password: string): Observable<void> {
     return this.http
-      .put(this.r_mix_api_2 + "/accounts/password", { old_password , password })
+      .put(this.r_mix_api_2 + "/accounts/password", { old_password, password })
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -131,102 +132,126 @@ export class RestService {
   }
 
   updateEmail(email: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/update_email_request", { email }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/update_email_request", { email })
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resendEmailRequestUpdate() {
-    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_request_secret").pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .get(this.r_mix_api + "/accounts/resend_update_email_request_secret")
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   verifyEmailUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_request_secret", { code }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
+    return this.http
+      .post(this.r_mix_api + "/accounts/verify_update_email_request_secret", {
+        code,
       })
-    );
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resendUpdateEmail() {
-    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_secret").pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .get(this.r_mix_api + "/accounts/resend_update_email_secret")
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resendEmailUpdate() {
-    return this.http.get(this.r_mix_api + "/accounts/resend_update_email_secret").pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .get(this.r_mix_api + "/accounts/resend_update_email_secret")
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   confirmEmailUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_email_secret", { code }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/verify_update_email_secret", { code })
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   updatePhone(phone: string): Observable<string> {
-    return this.http.post(this.r_mix_api + "/accounts/update_phone_request", { phone }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/update_phone_request", { phone })
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resendPhoneRequestUpdate() {
-    return this.http.get(this.r_mix_api + "/accounts/resend_update_phone_request_otp").pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .get(this.r_mix_api + "/accounts/resend_update_phone_request_otp")
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   verifyPhoneUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone_request", { code }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/verify_update_phone_request", { code })
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resendPhoneUpdate() {
-    return this.http.get(this.r_mix_api + "/accounts/resend_update_phone_otp").pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .get(this.r_mix_api + "/accounts/resend_update_phone_otp")
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   confirmPhoneUpdate(code: string) {
-    return this.http.post(this.r_mix_api + "/accounts/verify_update_phone", { code }).pipe(
-      map((res) => res["msg"]),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+    return this.http
+      .post(this.r_mix_api + "/accounts/verify_update_phone", { code })
+      .pipe(
+        map((res) => res["msg"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   verify(data: VerifySignupDTO): Observable<string> {
@@ -247,7 +272,7 @@ export class RestService {
         password,
       })
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -258,7 +283,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/send_otp/" + token, null)
       .pipe(
-        map((res) => {}),
+        map((res) => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -269,7 +294,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/request_reset_password/" + email, null)
       .pipe(
-        map((res) => {}),
+        map((res) => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -280,7 +305,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/reset_password", { token, password })
       .pipe(
-        map((res) => {}),
+        map((res) => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -311,8 +336,8 @@ export class RestService {
     entries_per_page: number
   ): Observable<GameplayHistoryModel[]> {
     const formData = new FormData();
-    formData.append('page_number',page_number.toString())
-    formData.append('entries_per_page',entries_per_page.toString());
+    formData.append("page_number", page_number.toString());
+    formData.append("entries_per_page", entries_per_page.toString());
     return this.http
       .post<any>(this.client_api + "/game_session_history", formData)
       .pipe(
@@ -325,7 +350,7 @@ export class RestService {
 
   deleteSession(key: string): Observable<void> {
     return this.http.delete(this.r_mix_api + "/accounts/sessions/" + key).pipe(
-      map(() => {}),
+      map(() => { }),
       catchError(({ error }) => {
         throw error;
       })
@@ -336,7 +361,7 @@ export class RestService {
     return this.http
       .post<IPayment>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay",
-        coupon_code ? {coupon_code} : null
+        coupon_code ? { coupon_code } : null
       )
       .pipe(
         map((res) => res),
@@ -359,11 +384,11 @@ export class RestService {
       );
   }
 
-  payWithBilldesk(planID: string, coupon_code?: string ): Observable<BilldeskPaymentRO> {
+  payWithBilldesk(planID: string, coupon_code?: string): Observable<BilldeskPaymentRO> {
     return this.http
       .post<BilldeskPaymentRO>(
         this.r_mix_api + "/accounts/subscription/" + planID + "/pay-billdesk",
-        coupon_code ? {coupon_code} : null
+        coupon_code ? { coupon_code } : null
       )
       .pipe(
         map((res) => res),
@@ -371,6 +396,12 @@ export class RestService {
           throw error;
         })
       );
+  }
+
+  payWithPhonePay(planId: string): Observable<string> {
+    return this.http.post<string>(this.r_mix_api + "/accounts/subscription/" + planId + "/pay-phonepe", {}).pipe(map((res) => res), catchError(({ error }) => {
+      throw error;
+    }))
   }
 
   getSubscriptions(
@@ -420,9 +451,9 @@ export class RestService {
       .pipe(map((res) => res.length > 0));
   }
 
-  setOnline(): Observable<void> {
-    return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
-      map((res) => {}),
+  setOnline(): Observable<SetOnlineRO> {
+    return this.http.post<SetOnlineRO>(this.r_mix_api + "/accounts/online", null).pipe(
+      map((res) => res),
       catchError(({ error }) => {
         throw error;
       })
@@ -481,11 +512,17 @@ export class RestService {
   }
 
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
-    return this.http.get<SpeedTestServerRO>(this.r_mix_api + "/games/speed-test-server")
+    return this.http.get<SpeedTestServerRO>(
+      this.r_mix_api + "/games/speed-test-server"
+    );
   }
 
   sendSpeedTestDLPacket(url: string, packetSize: number) {
-    return this.http.post(url, { size: packetSize, id: 1 }, { responseType: 'arraybuffer' });
+    return this.http.post(
+      url,
+      { size: packetSize, id: 1 },
+      { responseType: "arraybuffer" }
+    );
   }
 
   sendSpeedTestULPacket(url: string, index: string, file: Blob) {
@@ -512,14 +549,14 @@ export class RestService {
     let clientType: "web" | "windows" | "mac" | "android_mobile" | "android_tv";
 
     switch (ua.getOS().name) {
-      case 'Windows':
+      case "Windows":
         clientType = "windows";
         break;
-      case 'Mac OS':
+      case "Mac OS":
         clientType = "mac";
         break;
-      case 'Android':
-        if (ua.getDevice().type === 'smarttv') {
+      case "Android":
+        if (ua.getDevice().type === "smarttv") {
           clientType = "android_tv";
         } else {
           clientType = "android_mobile";
@@ -533,11 +570,9 @@ export class RestService {
     formData.append("client_type", clientType);
     formData.append("client_version", environment.appVersion);
     formData.append("type", "tips");
-    return this.http
-    .post(this.client_api + "/get_config", formData)
-    .pipe(
-        map(res => res["data"]?.find(d => d.type === 'tips')?.tips ?? []),
-        catchError(({ error }) => {
+    return this.http.post(this.client_api + "/get_config", formData).pipe(
+      map((res) => res["data"]?.find((d) => d.type === "tips")?.tips ?? []),
+      catchError(({ error }) => {
         throw error;
       })
     );
@@ -683,9 +718,9 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed( params?: any): Observable<GameFeedModel[]> {
+  getHomeFeed(params?: any): Observable<GameFeedModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/feed/personalized", {params})
+      .get<any[]>(this.r_mix_api + "/games/feed/personalized", { params })
       .pipe(
         map((res) => res.map((d) => new GameFeedModel(d))),
         catchError(({ error }) => {
@@ -748,7 +783,7 @@ export class RestService {
     return this.http
       .put(this.r_mix_api + "/social/friends/" + id + "/accept_request", null)
       .pipe(
-        map((data) => {}),
+        map((data) => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -757,7 +792,7 @@ export class RestService {
 
   deleteFriend(id: string): Observable<void> {
     return this.http.delete<any>(this.r_mix_api + "/social/friends/" + id).pipe(
-      map(() => {}),
+      map(() => { }),
       catchError(({ error }) => {
         throw error;
       })
@@ -775,7 +810,7 @@ export class RestService {
 
   updateParty(id: string, data: any): Observable<void> {
     return this.http.put(this.r_mix_api + "/social/groups/" + id, data).pipe(
-      map(() => {}),
+      map(() => { }),
       catchError(({ error }) => {
         throw error;
       })
@@ -826,7 +861,7 @@ export class RestService {
         null
       )
       .pipe(
-        map((data) => {}),
+        map((data) => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -840,16 +875,23 @@ export class RestService {
         null
       )
       .pipe(
-        map((data) => {}),
+        map((data) => { }),
         catchError(({ error }) => {
           throw error;
         })
       );
   }
 
-  getDirectMessages(friendId: string): Observable<MessageModel[]> {
+  getDirectMessages(
+    friendId: string,
+    skip: number,
+    limit: number
+  ): Observable<MessageModel[]> {
     return this.http
-      .get<any[]>(this.r_mix_api + "/social/friends/" + friendId + "/messages")
+      .get<any[]>(
+        this.r_mix_api + "/social/friends/" + friendId + "/messages",
+        { params: { skip, limit } }
+      )
       .pipe(map((res) => res.map((d) => new MessageModel(d))));
   }
 
@@ -867,7 +909,7 @@ export class RestService {
 
   getLocation(ip: string): Observable<ILocation> {
     return this.http.get<ILocation>(this.r_mix_api + "/location/" + ip).pipe(
-      map(res => res),
+      map((res) => res),
       catchError(({ error }) => {
         throw error;
       })
@@ -882,7 +924,7 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/notification/push/device/" + token, null)
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -893,7 +935,7 @@ export class RestService {
     return this.http
       .delete(this.r_mix_api + "/notification/push/device/" + token)
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -901,12 +943,16 @@ export class RestService {
   }
 
   getSeriousNotification(): Observable<string | null> {
-    return this.http.get(this.r_mix_api + "/notification/serious", { params: { partnerId: environment.partner_id } }).pipe(
-      map((res) => res["text"]),
-      catchError(({ error }) => {
-        throw error;
+    return this.http
+      .get(this.r_mix_api + "/notification/serious", {
+        params: { partnerId: environment.partner_id },
       })
-    );
+      .pipe(
+        map((res) => res["text"]),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   startGame(
@@ -944,14 +990,12 @@ export class RestService {
   getClientToken(sessionId: string): Observable<ClientTokenRO> {
     const formData = new FormData();
     formData.append("session_id", sessionId);
-    return this.http
-      .post(this.client_api + "/get_session", formData)
-      .pipe(
-        map((res) => res["data"]),
-        catchError(({ error }) => {
-          throw error;
-        })
-      );
+    return this.http.post(this.client_api + "/get_session", formData).pipe(
+      map((res) => res["data"]),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   getWebPlayToken(sessionId: string): Observable<WebPlayTokenRO> {
@@ -1007,7 +1051,7 @@ export class RestService {
     return this.http
       .post<void>(this.r_mix_api + "/logging/feedback", feedback)
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -1018,18 +1062,26 @@ export class RestService {
     return this.http
       .post<void>(this.client_api + "/delete_user_data", new FormData())
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
       );
   }
 
-  postAReport(message: string, response: any, error_code: string): Observable<void> {
+  postAReport(
+    message: string,
+    response: any,
+    error_code: string
+  ): Observable<void> {
     return this.http
-      .post<void>(this.r_mix_api + "/logging/report", { message, response, error_code })
+      .post<void>(this.r_mix_api + "/logging/report", {
+        message,
+        response,
+        error_code,
+      })
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -1042,7 +1094,7 @@ export class RestService {
         search_privacy: isPrivate,
       })
       .pipe(
-        map(() => {}),
+        map(() => { }),
         catchError(({ error }) => {
           throw error;
         })
@@ -1092,8 +1144,8 @@ export class RestService {
       .post<CouponResponse>(
         this.r_mix_api + "/accounts/subscription/apply_coupon",
         {
-          subscription_package_id : subscriptionPackageId,
-          coupon_code : couponCode
+          subscription_package_id: subscriptionPackageId,
+          coupon_code: couponCode
         }
       )
       .pipe(

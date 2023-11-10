@@ -1,136 +1,156 @@
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8 col-md-12">
-            <a href="javascript:void(0)" (click)="backButton(subscriptionPacakage)">
-                <img src="assets/img/Arrow_Right_Large.svg" class="img-fluid mr-3" width="28" alt="" />
-            </a>
-            <span class="font28 font700 text-white align-middle">Checkout</span>
-            <div class="card border-0 lightBg br20 mt-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-auto">
-                            <div class="SNo text-center">1</div>
-                        </div>
-                        <div class="col align-self-center pl-0">
-                            <p class="mb-0 font18 font500 text-white">Payment Summary</p>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-auto align-self-center offWhiteText pr-0">
-                            <p class="font16 font500">Plan Chosen</p>
-                        </div>
-                        <div class="col text-right pl-0">
-                            <p class="font25 font500 " [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
-                                {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' : subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 + (subscriptionPacakage.tokens/60 == 1 ? 'hr' : 'hrs') : '0' }}
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row mt-3" *ngIf="subscriptionPacakage.type == 'base' && is_base_plan_active == 1" >
-                        <div class="col-auto align-self-center offWhiteText pr-0">
-                            <p class="font16 font500">&nbsp;</p>
-                        </div>
-                        <div class="col text-right pl-0 ">
-                            <span class="font16 font500 py-1 px-2 "
-                            style="line-height: 26px; letter-spacing: 0.32px;">
-                                *This plan will begin once the current active plan expires.
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto offWhiteText pr-0">
-                            <p class="font16 font500 mb-1">Total</p>
-                            <span class="font16 font500 badgeBg py-1 px-2"
-                                *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">Offer
-                                Applied</span>
-                        </div>
-                        <div class="col text-right pl-0">
-                            <p class="font20 font500 text-white mb-1">{{ subscriptionPacakage.actual_price }}</p>
-                            <p class="font20 font500 greenText"
-                                *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
-                                {{ subscriptionPacakage.amount - subscriptionPacakage.actual_price }}</p>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="applied_coupon_code_value > 0">
-                        <div class="col-auto offWhiteText pr-0">
-                            <span class="font16 font500 badgeBg py-1 px-2">{{ applied_coupon_code }} Coupon Applied</span>
-                        </div>
-                        <div class="col text-right pl-0">
-                            <p class="font20 font500 greenText">-₹{{ applied_coupon_code_value }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-auto align-self-end pr-0">
-                            <p class="font20 font500 offWhiteText mb-0">Total Payable</p>
-                        </div>
-                        <div class="col text-right pl-0">
-                            <h2 class="font38 font700 text-white mb-0">₹{{ subscriptionPacakage.amount - applied_coupon_code_value }}</h2>
-                        </div>
-                    </div>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-md-12">
+      <a href="javascript:void(0)" (click)="backButton(subscriptionPacakage)">
+        <img src="assets/img/Arrow_Right_Large.svg" class="img-fluid mr-3" width="28" alt="" />
+      </a>
+      <span class="font28 font700 text-white align-middle">Checkout</span>
+      <div class="card border-0 lightBg br20 mt-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-auto">
+              <div class="SNo text-center">1</div>
             </div>
-            <div class="dotBorder mx-4"></div>
-            <div class="card border-0 lightBg br20">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-7">
-                            <label class="font16 font500 muteText">Have a Coupon?</label>
-                            <div class="input-group">
-                                <input type="text" [formControl]="coupon_code" maxlength="20"  class="form-control form-control-lg inputBox border-0"
-                                [readonly]="coupon_code_apply_text != 'APPLY'" placeholder="Enter coupon code" />
-                                <div class="input-group-append">
-                                    <span class="input-group-text p-0 inputBox border-0" id="basic-addon2">
-                                        <button class="btn " [ngClass]="{'customgradientText': coupon_code_apply_text == 'APPLY'}"
-                                        [disabled]="coupon_code.invalid"
-                                            (click)="handleApplyCoupon(subscriptionPacakage)">{{coupon_code_apply_text}}</button>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="row mt-3 coupon-message">
-                                <div class="col-auto align-self-center offWhiteText pr-0">
-                                    <p class="font16 font500 customgradientText">{{ coupon_message }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col align-self-center pl-0">
+              <p class="mb-0 font18 font500 text-white">Payment Summary</p>
             </div>
-            <div class="card border-0 lightBg br20 mt-4 mt-lg-5">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-auto">
-                            <div class="SNo text-center">2</div>
-                        </div>
-                        <div class="col align-self-center p-0">
-                            <p class="mb-0 font18 font500 text-white">Choose Payment Method</p>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
-                            <div [ngClass]="{'gradientBorder': selected_payment_source === 'billdesk', 'disabledDiv': selected_payment_source != 'billdesk'}">
-                                <!-- <a href="javascript:void(0)" (click)="handlePayWithBilldesk()"> -->
-                                <a href="javascript:void(0)" (click)="handlePayment('billdesk')">
-                                    <div class="card border-0 cardBG p-4 tabHeading ">
-                                        <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
-                                        <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
-                                    </div>
-                                </a>
-                            </div>
-                            <p class="subHeading my-2">
-                                UPI, Debit Card, Netbanking
-                            </p>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
-                            <div [ngClass]="{'gradientBorder': selected_payment_source === 'stripe', 'disabledDiv': selected_payment_source != 'stripe'}" >
-                                <!-- <a href="javascript:void(0)" (click)="handlePayWithStripe()"> -->
-                                <a href="javascript:void(0)" (click)="handlePayment('stripe')">
-                                    <div class="card border-0 cardBG p-4 ">
-                                        <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
-                                    </div>
-                                </a>
-                            </div>
-                            <p class="subHeading my-2">Debit Card & Credit Card</p>
-                        </div>
-                        <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
+          </div>
+          <div class="row mt-3">
+            <div class="col-auto align-self-center offWhiteText pr-0">
+              <p class="font16 font500">Plan Chosen</p>
+            </div>
+            <div class="col text-right pl-0">
+              <p class="font25 font500 "
+                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
+                {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' :
+                subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 +
+                (subscriptionPacakage.tokens/60
+                == 1 ? 'hr' : 'hrs') : '0' }}
+              </p>
+            </div>
+          </div>
+          <div class="row mt-3" *ngIf="subscriptionPacakage.type == 'base' && is_base_plan_active == 1">
+            <div class="col-auto align-self-center offWhiteText pr-0">
+              <p class="font16 font500">&nbsp;</p>
+            </div>
+            <div class="col text-right pl-0 ">
+              <span class="font16 font500 py-1 px-2 " style="line-height: 26px; letter-spacing: 0.32px;">
+                *This plan will begin once the current active plan expires.
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-auto offWhiteText pr-0">
+              <p class="font16 font500 mb-1">Total</p>
+              <span class="font16 font500 badgeBg py-1 px-2"
+                *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">Offer
+                Applied</span>
+            </div>
+            <div class="col text-right pl-0">
+              <p class="font20 font500 text-white mb-1">{{ subscriptionPacakage.actual_price }}</p>
+              <p class="font20 font500 greenText"
+                *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
+                {{ subscriptionPacakage.amount - subscriptionPacakage.actual_price }}</p>
+            </div>
+          </div>
+          <div class="row" *ngIf="applied_coupon_code_value > 0">
+            <div class="col-auto offWhiteText pr-0">
+              <span class="font16 font500 badgeBg py-1 px-2">{{ applied_coupon_code }} Coupon Applied</span>
+            </div>
+            <div class="col text-right pl-0">
+              <p class="font20 font500 greenText">-₹{{ applied_coupon_code_value }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-auto align-self-end pr-0">
+              <p class="font20 font500 offWhiteText mb-0">Total Payable</p>
+            </div>
+            <div class="col text-right pl-0">
+              <h2 class="font38 font700 text-white mb-0">₹{{ subscriptionPacakage.amount - applied_coupon_code_value }}
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dotBorder mx-4"></div>
+      <div class="card border-0 lightBg br20">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-12 col-md-7">
+              <label class="font16 font500 muteText">Have a Coupon?</label>
+              <div class="input-group">
+                <input type="text" [formControl]="coupon_code" maxlength="20"
+                  class="form-control form-control-lg inputBox border-0" [readonly]="coupon_code_apply_text != 'APPLY'"
+                  placeholder="Enter coupon code" />
+                <div class="input-group-append">
+                  <span class="input-group-text p-0 inputBox border-0" id="basic-addon2">
+                    <button class="btn " [ngClass]="{'customgradientText': coupon_code_apply_text == 'APPLY'}"
+                      [disabled]="coupon_code.invalid"
+                      (click)="handleApplyCoupon(subscriptionPacakage)">{{coupon_code_apply_text}}</button>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3 coupon-message">
+                <div class="col-auto align-self-center offWhiteText pr-0">
+                  <p class="font16 font500 customgradientText">{{ coupon_message }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card border-0 lightBg br20 mt-4 mt-lg-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-auto">
+              <div class="SNo text-center">2</div>
+            </div>
+            <div class="col align-self-center p-0">
+              <p class="mb-0 font18 font500 text-white">Choose Payment Method</p>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
+              <div
+                [ngClass]="{'gradientBorder': selected_payment_source === 'billdesk', 'disabledDiv': selected_payment_source != 'billdesk'}">
+                <!-- <a href="javascript:void(0)" (click)="handlePayWithBilldesk()"> -->
+                <a href="javascript:void(0)" (click)="selected_payment_source = 'billdesk'">
+                  <div class="card border-0 cardBG p-4 tabHeading ">
+                    <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
+                    <!-- <img src="assets/img/payment/upi-payment-option.svg" class="height60" alt="" /> -->
+                    <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
+                  </div>
+                </a>
+              </div>
+              <p class="subHeading my-2">
+                UPI, Debit Card, Netbanking
+              </p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
+              <div
+                [ngClass]="{'gradientBorder': selected_payment_source === 'stripe', 'disabledDiv': selected_payment_source != 'stripe'}">
+                <!-- <a href="javascript:void(0)" (click)="handlePayWithStripe()"> -->
+                <a href="javascript:void(0)" (click)="selected_payment_source = 'stripe'">
+                  <div class="card border-0 cardBG p-4 ">
+                    <!-- <img src="assets/img/payment/card-payment-option.svg" class="height60" alt="" /> -->
+                    <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
+                  </div>
+                </a>
+              </div>
+              <p class="subHeading my-2">Debit Card & Credit Card</p>
+            </div>
+            <!-- <div class="col-12 col-sm-6 col-md-5 col-lg-6 mt-3">
+              <div
+                [ngClass]="{'gradientBorder': selected_payment_source === 'net_banking_payment', 'disabledDiv': selected_payment_source != 'net_banking_payment'}">
+                <a href="javascript:void(0)" (click)="selected_payment_source = 'net_banking_payment'">
+                  <div class="card border-0 cardBG p-4 ">
+                    <img src="assets/img/payment/net-banking-payment-option.svg" class="height60" alt="" />
+                  </div>
+                </a>
+              </div>
+              <p class="subHeading my-2">Net Banking</p>
+            </div> -->
+            <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
                 <a href="javascript:void(0)" (click)="handlePayWithUPI()">
                   <div class="card border-0 cardBG p-4">
                     <span class="skyBgGradient px-2  recommended tagText">BETA</span>
@@ -145,54 +165,53 @@
                   Pay through any UPI app
                 </p>
               </div> -->
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-end mt-4 mt-lg-5 mx-5 mx-md-0">
-                <div class="col-12 col-md-5 col-lg-4">
-
-                    <button (click)="handlePaymentCheckout()" 
-                     [ngClass]="{'mutedBg': selected_payment_source == ''}"
-                    class="btn btn-block text-white font18 font500 customBorder0 customLinearGradient ">
-                        Proceed
-                    </button>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="row justify-content-end mt-4 mt-lg-5 mx-5 mx-md-0">
+        <div class="col-12 col-md-5 col-lg-4">
+
+          <button (click)="handlePaymentCheckout()" [ngClass]="{'mutedBg': selected_payment_source == ''}"
+            class="btn btn-block text-white font18 font500 customBorder0 customLinearGradient ">
+            Proceed
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 
 
 <ng-template #paymentModal let-d="dismiss">
-    <div class="modal-content position-relative modalBG stripeModal">
-        <a href="javascript:void(0)" class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
-            (click)="d('Cross click')">
-            <i class="fas fa-times-circle"></i>
-        </a>
-        <div class="modal-body text-center">
-            <h1 class="modalHeading text-white">Choose your payment method</h1>
-            <div class="row mt-3">
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
-                    <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
-                        <div class="card border-0 cardBG p-4">
-                            <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
-                            <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
-                        </div>
-                    </a>
-                    <p class="subHeading my-2">
-                        UPI, Debit Card, Netbanking
-                    </p>
-                </div>
-                <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
-                    <a href="javascript:void(0)" (click)="handlePayWithStripe()">
-                        <div class="card border-0 cardBG p-4">
-                            <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
-                        </div>
-                    </a>
-                    <p class="subHeading my-2">Debit Card & Credit Card</p>
-                </div>
-                <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
+  <div class="modal-content position-relative modalBG stripeModal">
+    <a href="javascript:void(0)" class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
+      (click)="d('Cross click')">
+      <i class="fas fa-times-circle"></i>
+    </a>
+    <div class="modal-body text-center">
+      <h1 class="modalHeading text-white">Choose your payment method</h1>
+      <div class="row mt-3">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
+          <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
+            <div class="card border-0 cardBG p-4">
+              <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
+              <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
+            </div>
+          </a>
+          <p class="subHeading my-2">
+            UPI, Debit Card, Netbanking
+          </p>
+        </div>
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
+          <a href="javascript:void(0)" (click)="handlePayWithStripe()">
+            <div class="card border-0 cardBG p-4">
+              <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
+            </div>
+          </a>
+          <p class="subHeading my-2">Debit Card & Credit Card</p>
+        </div>
+        <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
             <a href="javascript:void(0)" (click)="handlePayWithUPI()">
               <div class="card border-0 cardBG p-4">
                 <span class="skyBgGradient px-2  recommended tagText">BETA</span>
@@ -207,66 +226,66 @@
               Pay through any UPI app
             </p>
           </div> -->
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </ng-template>
 
 <ng-template #upiPaymentModal let-d="dismiss">
-    <div class="modal-content position-relative modalBG stripeModal">
-        <div class="borderBottomTab p-3 text-center">
-            <h1 class="modalHeading text-white mb-0">Scan to Pay!</h1>
-            <a href="javascript:void(0)" class="position-absolute btn p-0 rounded-circle top-2 right-1"
-                (click)="d('Cross click')">
-                <i class="fas fa-times-circle text-white"></i>
-            </a>
-        </div>
-        <div class="modal-body text-center">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="font16 font500 text-white br6 redBtn p-2 blink_bg">
-                        To begin your subscription, send your payment screenshot and oneplay username to <a
-                            href="mailto:support@oneplay.in" class="text-white text-underline">support@oneplay.in</a> or
-                        share them in our <a href="https://discord.com/invite/Cg4ZskStE2"
-                            class="text-white text-underline">Discord channel</a>.
-                    </div>
-                    <div class="row mt-4 justify-content-center">
-                        <div class="col-lg-4 col-md-5 col-sm-9 col-10 bg-white borderRadius50 p-3">
-                            <img src="assets/img/payment/scanner.jpg" class="img-fluid" alt="" />
-                        </div>
-                    </div>
-                    <button class="btn linearGradient border-top-0 border-left-0 border-right-0 text-white px-5 mt-4"
-                        (click)="d('Cross click')">OK</button>
-                </div>
-            </div>
-        </div>
+  <div class="modal-content position-relative modalBG stripeModal">
+    <div class="borderBottomTab p-3 text-center">
+      <h1 class="modalHeading text-white mb-0">Scan to Pay!</h1>
+      <a href="javascript:void(0)" class="position-absolute btn p-0 rounded-circle top-2 right-1"
+        (click)="d('Cross click')">
+        <i class="fas fa-times-circle text-white"></i>
+      </a>
     </div>
+    <div class="modal-body text-center">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="font16 font500 text-white br6 redBtn p-2 blink_bg">
+            To begin your subscription, send your payment screenshot and oneplay username to <a
+              href="mailto:support@oneplay.in" class="text-white text-underline">support@oneplay.in</a> or
+            share them in our <a href="https://discord.com/invite/Cg4ZskStE2" class="text-white text-underline">Discord
+              channel</a>.
+          </div>
+          <div class="row mt-4 justify-content-center">
+            <div class="col-lg-4 col-md-5 col-sm-9 col-10 bg-white borderRadius50 p-3">
+              <img src="assets/img/payment/scanner.jpg" class="img-fluid" alt="" />
+            </div>
+          </div>
+          <button class="btn linearGradient border-top-0 border-left-0 border-right-0 text-white px-5 mt-4"
+            (click)="d('Cross click')">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </ng-template>
 
 <ng-template #stripeModal let-c="cose">
-    <div class="modal-content position-relative modalBG stripeModal">
-        <form (submit)="onPay()">
-            <div class="modal-body borderBottomTab">
-                <div class="row borderBottomTab pb-3 mb-3">
-                    <div class="col align-self-center">
-                        <p class="font500 offWhiteText mb-0">Total Amount</p>
-                    </div>
-                    <div class="col-auto">
-                        <h2 class="font800 text-white mb-0 text-right">
-                            {{ currentamount | currency : (currency | uppercase) }}
-                        </h2>
-                    </div>
-                </div>
-                <div id="stripe-card"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn linearGradient text-white border-0" [disabled]="stripeLoad">
-                    {{ stripeLoad ? "Proccessing..." : "Confirm Payment" }}
-                </button>
-                <button type="button" (click)="closeStripeModal()" class="btn mutedBg text-white border-0">
-                    Close
-                </button>
-            </div>
-        </form>
-    </div>
+  <div class="modal-content position-relative modalBG stripeModal">
+    <form (submit)="onPay()">
+      <div class="modal-body borderBottomTab">
+        <div class="row borderBottomTab pb-3 mb-3">
+          <div class="col align-self-center">
+            <p class="font500 offWhiteText mb-0">Total Amount</p>
+          </div>
+          <div class="col-auto">
+            <h2 class="font800 text-white mb-0 text-right">
+              {{ currentamount | currency : (currency | uppercase) }}
+            </h2>
+          </div>
+        </div>
+        <div id="stripe-card"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn linearGradient text-white border-0" [disabled]="stripeLoad">
+          {{ stripeLoad ? "Proccessing..." : "Confirm Payment" }}
+        </button>
+        <button type="button" (click)="closeStripeModal()" class="btn mutedBg text-white border-0">
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
 </ng-template>

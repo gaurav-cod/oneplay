@@ -1,0 +1,104 @@
+<div class="row mt-2" *ngFor="let friend of friends">
+  <div
+    class="col-auto cursorPointer align-self-center"
+    (click)="onChat(friend)"
+  >
+    <img
+      [src]="friend.profile_image || getGenderImage(friend)"
+      (error)="onImgError($event, friend)"
+      class="rounded-circle"
+      width="48"
+      height="48"
+      alt=""
+    />
+  </div>
+
+  <div
+    class="col p-0 align-self-center text-truncate cursorPointer"
+    (click)="onChat(friend)"
+  >
+    <p class="font14 font500 offWhiteText mb-0">
+      {{ friend.username }}
+      <img
+        *ngIf="isUnread(friend)"
+        src="assets/img/chat/in-game.svg"
+        class="img-fluid position-absolute ml-1"
+        alt=""
+      />
+    </p>
+    <p class="font14 font500 muteText mb-0 text-overflow" *ngIf="!!friend.inGame">
+      <span class="yellowGradient">InGame</span> - {{ friend.inGame }}
+    </p>
+    <p
+      class="font14 font500 gradientInfoText mb-0"
+      *ngIf="friend.isOnline && !friend.inGame"
+    >
+      Online
+    </p>
+  </div>
+
+  <div class="col-auto align-self-center">
+    <div
+      class="col text-right align-self-end"
+      ngbDropdown
+      placement="bottom-right"
+    >
+      <a
+        href="javascript:void(0)"
+        class="nav-link p-0"
+        role="button"
+        ngbDropdownToggle
+      >
+        <img src="assets/img/chat/three-dot.svg" class="img-fluid" alt="" />
+      </a>
+      <div class="dropdown-bug">
+        <div class="dropdown-menu-arrow menudropdown py-0" ngbDropdownMenu>
+          <a
+            href="javascript:void(0)"
+            class="dropdown-item font16 font500 offWhiteText"
+            (click)="openUnfriendModal(UnfriendModal)"
+          >
+            Unfriend
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #UnfriendModal let-d="dismiss" let-c="close">
+    <div class="modal-content modalBg">
+      <div class="modal-body p-4 text-center">
+        <a
+          href="javascript:void(0)"
+          class="position-absolute btn modalBG rounded-circle right-0 top-2 p-0"
+          (click)="d('Cross click')"
+        >
+          <i class="fas fa-times-circle text-white"></i>
+        </a>
+        <img
+          [src]="friend.profile_image || getGenderImage(friend)"
+          (error)="onImgError($event, friend)"
+          class="rounded-circle mt-4"
+          width="90"
+          height="90"
+          alt=""
+        />
+        <h2 class="text-white font600 text-center font20 my-4">
+          Unfriend {{ friend.username }} ?
+        </h2>
+        <button
+          class="btn btn-block text-white font18btn responsiveBr60 font500 linearGradient focusBorder"
+          (click)="unfriend(friend, c)"
+        >
+          Yes
+        </button>
+        <button
+          class="btn btn-block text-white font18btn font500 modalBg"
+          (click)="c()"
+        >
+          No
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

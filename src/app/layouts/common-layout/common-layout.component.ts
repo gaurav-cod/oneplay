@@ -59,10 +59,18 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initFriends() {
-    this.friendsService.friends = this.restService.getAllFriends();
-    this.friendsService.pendings = this.restService.getPendingSentRequests();
-    this.friendsService.requests =
-      this.restService.getPendingReceivedRequests();
+    this.restService
+      .getAllFriends()
+      .toPromise()
+      .then((friends) => this.friendsService.setFriends(friends));
+    this.restService
+      .getPendingSentRequests()
+      .toPromise()
+      .then((pendings) => this.friendsService.setPendings(pendings));
+    this.restService
+      .getPendingReceivedRequests()
+      .toPromise()
+      .then((requests) => this.friendsService.setRequests(requests));
   }
 
   private initParties() {

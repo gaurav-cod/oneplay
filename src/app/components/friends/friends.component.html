@@ -1,78 +1,64 @@
-<div
-  class="mask bg-darker opacity-5 position-fixed"
-  style="z-index: 99999999999999"
-  [ngClass]="{ 'd-none': isCollapsed }"
-  (click)="toggle()"
-></div>
-<div
-  class="flex-column flex-shrink-0 bg-dark position-fixed right-0"
-  [ngClass]="{ 'd-flex': !isCollapsed }"
-  [ngbCollapse]="isCollapsed"
-  id="sidenav-collapse-friends"
-  style="width: 350px; z-index: 999999999999999"
+
+<app-friends-main
+  *ngIf="currentScreen === 'main'"
+  (goToParties)="goToParties()"
+  (goToMail)="goToMail()"
+  (goToChat)="goToChat($event)"
 >
-  <app-friends-main
-    *ngIf="currentScreen === 'main'"
-    (toggle)="toggle()"
-    (goToParties)="goToParties()"
-    (goToMail)="goToMail()"
-    (goToChat)="goToChat($event)"
-  ></app-friends-main>
+</app-friends-main>
 
-  <app-invites
-    *ngIf="currentScreen === 'invites'"
-    (goBack)="goBack()"
-    ></app-invites>
+<app-invites
+  *ngIf="currentScreen === 'invites'"
+  (goBack)="goBack()"
+></app-invites>
 
-  <app-parties
-    *ngIf="currentScreen === 'parties'"
-    (goBack)="goBack()"
-    (goToInvites)="goToInvites()"
-    (goToCreateParty)="goToCreateParty()"
-    (selectParty)="selectParty($event)"
-  >
-  </app-parties>
+<app-parties
+  *ngIf="currentScreen === 'parties'"
+  (goBack)="goBack()"
+  (goToInvites)="goToInvites()"
+  (goToCreateParty)="goToCreateParty()"
+  (selectParty)="selectParty($event)"
+>
+</app-parties>
 
-  <app-party
-    *ngIf="currentScreen === 'party'"
-    [partyId]="selectedParty"
-    (goBack)="goBack()"
-    (goToPartySettings)="goToPartySettings($event)"
-    (goToPartyInvite)="goToPartyInvite($event)"
-    (goToPartyChat)="goToPartyChat($event)"
-  ></app-party>
+<app-party
+  *ngIf="currentScreen === 'party'"
+  [partyId]="selectedParty"
+  (goBack)="goBack()"
+  (goToPartySettings)="goToPartySettings($event)"
+  (goToPartyInvite)="goToPartyInvite($event)"
+  (goToPartyChat)="goToPartyChat($event)"
+></app-party>
 
-  <app-create-party
-    *ngIf="currentScreen === 'create_party'"
-    (goBack)="goBack()"
-    (selectParty)="selectParty($event)"
-  >
-  </app-create-party>
+<app-create-party
+  *ngIf="currentScreen === 'create_party'"
+  (goBack)="goBack()"
+  (selectParty)="selectParty($event)"
+>
+</app-create-party>
 
-  <app-party-settings
-    *ngIf="currentScreen === 'party_settings'"
-    [partyId]="selectedParty"
-    (goBack)="goBack()"
-  ></app-party-settings>
+<app-party-settings
+  *ngIf="currentScreen === 'party_settings'"
+  [partyId]="selectedParty"
+  (goBack)="goBack()"
+></app-party-settings>
 
-  <app-party-invite
-    *ngIf="currentScreen === 'party_invite'"
-    [partyId]="selectedParty"
-    (goBack)="goBack()"
-  ></app-party-invite>
+<app-party-invite
+  *ngIf="currentScreen === 'party_invite'"
+  [partyId]="selectedParty"
+  (goBack)="goBack()"
+></app-party-invite>
 
-  <app-unread *ngIf="currentScreen === 'mail'" (goBack)="goBack()">
-  </app-unread>
+<app-unread *ngIf="currentScreen === 'mail'" (goBack)="goBack()"> </app-unread>
 
-  <app-direct-chat
-    *ngIf="currentScreen === 'chat'"
-    (goBack)="goBack()"
-    [friendId]="selectedFriend"
-  ></app-direct-chat>
+<app-direct-chat
+  *ngIf="currentScreen === 'chat'"
+  (goBack)="goBack()"
+  [friendId]="selectedFriend"
+></app-direct-chat>
 
-  <app-party-chat
-    *ngIf="currentScreen === 'party_chat'"
-    [partyId]="selectedParty"
-    (goBack)="goBack()"
-  ></app-party-chat>
-</div>
+<app-party-chat
+  *ngIf="currentScreen === 'party_chat'"
+  [partyId]="selectedParty"
+  (goBack)="goBack()"
+></app-party-chat>

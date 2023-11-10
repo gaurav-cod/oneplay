@@ -1,3 +1,5 @@
+import { Gender } from "./user.model";
+
 export class FriendModel {
     readonly id: string;
     readonly status: "pending" | "accepted";
@@ -11,7 +13,9 @@ export class FriendModel {
     readonly email: string;
     readonly last_login_timestamp: Date;
     readonly profile_image: string | null;
+    readonly gender: Gender;
     readonly isOnline: boolean;
+    readonly inGame: string | null;
 
     constructor(data: any) {
         this.id = data.id;
@@ -26,7 +30,9 @@ export class FriendModel {
         this.email = data.email;
         this.last_login_timestamp = new Date(data.last_login_timestamp);
         this.profile_image = data.profile_image;
+        this.gender = data.gender;
         this.isOnline = data.isOnline;
+        this.inGame = data.in_game;
     }
 
     get name(): string {
@@ -47,7 +53,9 @@ export class FriendModel {
             email: data.email || this.email,
             last_login_timestamp: data.last_login_timestamp || this.last_login_timestamp,
             profile_image: data.profile_image || this.profile_image,
+            gender: this.gender,
             isOnline: data.isOnline || this.isOnline,
+            in_game: data.inGame || this.inGame,
         });
     }
 }

@@ -1,43 +1,98 @@
-<div class="d-flex flex-column" style="height: 100vh">
-  <div class="d-flex align-items-center p-3 bg-gray-dark">
-    <button class="btn bg-transparent" (click)="goBack.emit()">
-      <em class="fas fa-chevron-left text-white text-xs"></em>
-    </button>
-    <div class="text-white">
-      {{ friend.name }}
-      <span *ngIf="friend.isOnline" class="text-xs">
-        <em class="fas fa-circle text-success"></em>
-      </span>
+<div class="d-flex flex-column p-3 chat-screen position-relative" style="height: 100%">
+  <div class="row mb-3">
+    <div class="col-auto align-self-center pr-0">
+      <img
+        src="assets/img/chat/left-arrow.svg"
+        (click)="goBack.emit()"
+        class="img-fluid mr-3 cursorPointer"
+        alt=""
+      />
+    </div>
+    <div class="col-auto align-self-center p-0">
+      <img
+        [src]="friend.profile_image || defaultImage"
+        (error)="onImgError($event)"
+        class="rounded-circle"
+        width="48"
+        height="48"
+        alt=""
+      />
+    </div>
+    <div class="col align-self-center">
+      <p class="font16 font500 offWhiteText mb-0">{{ friend.username }}</p>
+      <p class="font16 font500 gradientInfoText mb-0" *ngIf="friend.isOnline">
+        Online
+      </p>
     </div>
   </div>
+  <div class="borderBottomTab"></div>
 
-  <ul #chatBox class="navbar-nav flex-grow-1 px-3 overflow-auto">
-    <li
-      *ngFor="let msg of messages"
-      class="d-flex align-items-center my-3"
-      [ngClass]="{ 'justify-content-end': isUserSender(msg) }"
+  <ul #chatBox class="navbar-nav flex-grow-1 px-3 chat-list">
+    <div
+      *ngIf="canLoadMore && !loading"
+      class="d-flex justify-content-center w-100 my-3"
     >
-      <div
-        class="mr-2"
+      <a href="javascript:void(0)" class="date-tag w-auto" (click)="loadMore()"
+        ><span class="font14 font500 gradientInfoText"
+          >Load older messages</span
+        ></a
       >
-        <img [src]="getSenderName(msg) | avatar" width="24px" height="24px" class="avatar avatar-sm rounded-circle" alt="" />
+    </div>
+    <ng-container *ngFor="let msg of messages; index as i">
+      <div
+        *ngIf="!isSameDate(i)"
+        class="d-flex justify-content-center w-100 position-sticky top-0 my-3"
+      >
+        <div class="date-tag font14 font500 muteText">{{ getDate(msg) }}</div>
       </div>
-      <div class="text-white-50 mr-2 text-sm">
-        {{ getSenderName(msg) }}
-      </div>
-      <div class="text-white text-sm">{{ msg.message }}</div>
-    </li>
+      <li class="d-flex align-items-center my-3"
+        [ngClass]="{ 'justify-content-end': isUserSender(msg), 'ml-3': isUserSender(msg), 'mr-3': !isUserSender(msg) }">
+        <div class="w-90">
+          <app-text [text]="msg.message"></app-text>
+          <p class="mb-0 font14 muteText" [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }">
+            {{ msg.createdAt | date : "hh:mm a" }}
+          </p>
+        </div>
+      </li>
+    </ng-container>
   </ul>
 
-  <form class="p-3 d-flex align-items-center" (submit)="sendMessage()">
-    <input
-      type="text"
-      class="form-control-lg flex-grow-1"
-      [formControl]="message"
-      placeholder="Enter message"
-    />
-    <button class="btn bg-transparent" type="submit">
-      <em class="fas fa-paper-plane text-white text-xs"></em>
-    </button>
+  <form (submit)="sendMessage()">
+    <div class="warning-message font500" *ngIf="message.value?.length > 2000">
+      <img src="assets/img/chat/warning-icon.svg" alt="" />
+      <span>Character limit exceeded.</span>
+    </div>
+    <div class="input-group mutedBg" style="padding: 2px">
+      <div class="input-group-prepend" (click)="toggleEmoji()">
+        <span class="input-group-text lightBg border-0"
+          ><img
+            src="assets/img/chat/emoji.svg"
+            class="img-fluid cursorPointer"
+            alt=""
+        /></span>
+      </div>
+      <div #textHeight class="textHeight"></div>
+      <textarea #textarea rows="1" type="text" class="form-control font16 muteText font500 lightBg border-0 chatArea" [formControl]="message"
+        placeholder="Send message"></textarea>
+      <div class="input-group-append">
+        <button
+          class="btn lightBg"
+          type="submit"
+          [disabled]="message.value?.length > 2000"
+        >
+          <em class="fas fa-paper-plane text-white text-xs"></em>
+        </button>
+      </div>
+    </div>
   </form>
+
+  <emoji-mart
+    *ngIf="showEmoji"
+    [darkMode]="true"
+    [style]="{ position: 'absolute', bottom: emojiBottom }"
+    [showPreview]="false"
+    [isNative]="true"
+    (emojiSelect)="selectEmoji($event)"
+    [emojisToShowFilter]="isMissingEmoji"
+  ></emoji-mart>
 </div>

@@ -7,7 +7,7 @@
             <div class="input-group border-0">
               <input
                 class="form-control searchPleaceholder border-0"
-                placeholder="Search games or users"
+                placeholder="Search for games or friends"
                 type="text"
                 [formControl]="queryControl"
                 (focus)="isFocused = true"
@@ -34,16 +34,22 @@
       </div>
     </div>
 
-    <div class="d-flex justify-content-between" *ngIf="games.length !== 0 || users.length !== 0">
+    <div
+      class="d-flex justify-content-between"
+      *ngIf="games.length !== 0 || users.length !== 0"
+    >
       <h1 class="text-white font20 font500 text-center mt-2" *ngIf="!!query">
-        <span>You searched for <span class="gradientInfoText ml-2">"{{ query }}"</span> </span>
+        <span
+          >You searched for
+          <span class="gradientInfoText ml-2">"{{ query }}"</span>
+        </span>
         <a
           *ngFor="let t of ['games', 'users']"
           href="javascript:void(0)"
           (click)="changeTab(t)"
           class="mx-2 d-none d-md-inline-block"
           [ngClass]="{
-            'anchorGradientPurple': t === tab,
+            anchorGradientPurple: t === tab,
             'text-white': t !== tab
           }"
         >
@@ -53,10 +59,14 @@
     </div>
 
     <p
-      *ngIf="games.length !== 0" 
+      *ngIf="games.length !== 0"
       class="mb-1 font16 font500 mutedTextColor mb-md-2"
     >
-      <span *ngIf="!!query" class="mb-0"><span *ngIf="!tab || tab === 'games'">{{ games.length }} games found</span></span>
+      <span *ngIf="!!query" class="mb-0"
+        ><span *ngIf="!tab || tab === 'games'"
+          >{{ games.length }} games found</span
+        ></span
+      >
     </p>
 
     <div
@@ -67,10 +77,7 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div
-        *ngFor="let game of games"
-        class="col-12 col-md-6 col-lg-4 mb-1"
-      >
+      <div *ngFor="let game of games" class="col-12 col-md-6 col-lg-4 mb-1">
         <div
           class="row h-100 gameRowHover py-2"
           (click)="viewGame(game)"
@@ -87,14 +94,30 @@
                 alt=""
               />
               <div class="card-img-overlay p-0">
-                <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-1 free tagText">FREE</span>
-                <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
+                <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
+                  FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
+                <span
+                  *ngIf="game.status === 'coming_soon'"
+                  class="redGradient px-1 free tagText"
+                  >COMING SOON</span
+                >
                 <div class="row h-100 justify-content-center align-items-end">
-                  <div *ngIf="game.status === 'maintenance'" class="col-auto"><span class="orangeGradientBg text-white px-1 tagText">MAINTENANCE</span></div>
-                  <div *ngIf="game.status === 'updating'" class="col-auto"><span class="updatingGradient px-1 text-white tagText">UPDATING</span></div>
-                  <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-1 text-white tagText">NOT OPTIMIZED</span></div>
+                  <div *ngIf="game.status === 'maintenance'" class="col-auto">
+                    <span class="orangeGradientBg text-white px-1 tagText"
+                      >MAINTENANCE</span
+                    >
+                  </div>
+                  <div *ngIf="game.status === 'updating'" class="col-auto">
+                    <span class="updatingGradient px-1 text-white tagText"
+                      >UPDATING</span
+                    >
+                  </div>
+                  <div *ngIf="game.status === 'not_optimized'" class="col-auto">
+                    <span class="darkredGradient px-1 text-white tagText"
+                      >NOT OPTIMIZED</span
+                    >
+                  </div>
                 </div>
-                
               </div>
             </div>
           </div>
@@ -121,11 +144,12 @@
       </div>
     </div>
 
-    <p
-      *ngIf="users.length !== 0"
-      class="font16 font500 mutedTextColor pt-3"
-    >
-      <span *ngIf="!!query" class="mb-0"><span *ngIf="!tab || tab === 'users'">{{ users.length }} people found</span></span>
+    <p *ngIf="users.length !== 0" class="font16 font500 mutedTextColor pt-3">
+      <span *ngIf="!!query" class="mb-0"
+        ><span *ngIf="!tab || tab === 'users'"
+          >{{ users.length }} people found</span
+        ></span
+      >
     </p>
 
     <div
@@ -136,7 +160,10 @@
       [infiniteScrollThrottle]="200"
       (scrolled)="onScroll()"
     >
-      <div *ngFor="let user of users" class="col-12 col-md-6 col-lg-3 mb-1 col-xxl-3">
+      <div
+        *ngFor="let user of users"
+        class="col-12 col-md-6 col-lg-3 mb-1 col-xxl-3"
+      >
         <div class="row gameRowHover py-2">
           <div class="col-auto align-self-center">
             <img
@@ -156,14 +183,17 @@
               {{ user.username }}
             </p>
           </div>
-          <div class="col-auto align-self-center">
-            <button
-              type="button offWhitecolor"
-              class="btn"
-              (click)="addFriend(user)"
-            >
-              <i class="fas {{ getFriendAddIcon(user) }} offWhitecolor"></i>
-            </button>
+          <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline">
+            <ng-container *ngFor="let key of getActions(user); index as i">
+              <div *ngIf="i > 0" class="action-divider"></div>
+              <img
+                (click)="actions[key].action(user)"
+                src="assets/img/chat/{{ actions[key].icon }}.svg"
+                class="img-fluid m-2 "
+                [ngClass]="{cursorPointer: actions[key].action != null}"
+                alt=""
+              />
+            </ng-container>
           </div>
         </div>
       </div>
@@ -192,7 +222,9 @@
     >
       <div class="col-12 text-center">
         Sorry, No Results Found!
-        <p class="mb-0 font14 font500 mutedTextColor">Please try different keywords.</p>
+        <p class="mb-0 font14 font500 mutedTextColor">
+          Please try different keywords.
+        </p>
       </div>
     </div>
   </div>

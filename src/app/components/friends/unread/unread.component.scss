@@ -1,0 +1,21 @@
+.customHeight {
+  height: 65vh;
+  overflow: hidden;
+}
+
+.friends-list {
+  height: calc(80vh - 100px);
+  overflow-y: auto;
+}
+
+.friends-list::-webkit-scrollbar {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-thumb {
+  display: none;
+}
+
+.friends-list::-webkit-scrollbar-track {
+  display: none;
+}

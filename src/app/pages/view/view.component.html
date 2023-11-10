@@ -6,13 +6,17 @@
   *ngIf="initializationPage"
 ></app-initializing-game>
 
-<div *ngIf="!initializationPage" class="container-fluid">
+<div
+  *ngIf="!initializationPage"
+  class="container-fluid"
+  (click)="hideWarning()"
+>
   <div
     class="container-fluid removePaddingContainer mt-3 mt-lg-0"
     *ngIf="!!game"
   >
     <div class="row justify-content-center">
-      <div class="col-md-12">
+      <div class="col-md-12 position-relative">
         <div class="card border-0 bgTransparent borderRadius10">
           <img
             class="card-img height80 borderRadius10"
@@ -62,7 +66,16 @@
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
                   {{ game.releaseDate | date : "MMM, yyyy" }} -
                   {{ game.ageRating }}
-                  {{ game.isFree ? " - Free" : "" }}
+                  &nbsp;<span
+                    *ngIf="game.isFree && game.status !== 'coming_soon'"
+                    class="freeTag px-2 tagText"
+                  >
+                    FREE ON
+                    <img
+                      src="assets/img/store/store.svg"
+                      class="freeOnStoreIcon"
+                      alt="store"
+                  /></span>
                 </p>
                 <div class="row">
                   <!-- <div
@@ -105,7 +118,11 @@
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
-                      [disabled]="startingGame || game.status === 'unlive' || !selectedStore"
+                      [disabled]="
+                        startingGame ||
+                        game.status === 'unlive' ||
+                        !selectedStore
+                      "
                       [ngClass]="{ 'hide-text': startingGame }"
                       (click)="playGame(smallModal)"
                     >
@@ -227,16 +244,40 @@
                     shortly!
                   </p>
                   <p
-                    class="orangeGradient font600"
+                    class="redMessage font600"
                     *ngIf="game.status === 'not_optimized'"
                   >
                     The Quality of the gameplay may vary depending on your
                     device.
                   </p>
+                  <p
+                    *ngIf="game.status === 'not_optimized'"
+                    class="text-white bottomTag"
+                  >
+                    <span class="darkredGradient px-2 tagText"
+                      >NOT OPTIMIZED</span
+                    >
+                  </p>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container">
+          <img
+            class="warning-message hideInMobile"
+            src="assets/img/error/warning-message-symbol.svg"
+            [ngbTooltip]="game.warningMessage"
+            triggers="click"
+            placement="bottom-right"
+          />
+          <img
+            class="warning-message-mob hideInLarge"
+            src="assets/img/error/warning-message-symbol.svg"
+            [ngbTooltip]="game.warningMessage"
+            triggers="click"
+            placement="right"
+          />
         </div>
       </div>
       <div class="col-md-12 px-0 marginTopRes">
@@ -987,7 +1028,9 @@
           <a
             [href]="macDownloadLink ? 'javascript:void(0)' : clientDownloadLink"
             class="btn btn-link btn-block activeBG responsiveBr60"
-            (click)="macDownloadLink ? macDownload(macDownloadModal) : undefined"
+            (click)="
+              macDownloadLink ? macDownload(macDownloadModal) : undefined
+            "
           >
             <div
               class="customBtnPadding btn btn-block text-white font18btn responsiveBr60 font500 p-md-3 p-2 modalBg"
@@ -1001,7 +1044,7 @@
             </div>
           </a>
         </div>
-        <div class="col-12 col-md-11 mt-md-4 mt-3">
+        <div class="display-hide col-12 col-md-11 mt-md-4 mt-3">
           <a
             href="javascript:void(0)"
             class="btn btn-link btn-block activeBG responsiveBr60"
@@ -1035,9 +1078,7 @@
 <ng-template #reportErrorModal let-d="dismiss">
   <div class="modal-content modalBgBlur">
     <div class="modal-body">
-      <h2 class="text-white w-100 font600 font18responsive">
-        Report an issue
-      </h2>
+      <h2 class="text-white w-100 font600 font18responsive">Report an issue</h2>
       <p class="font16 font500 muteText">
         What kind of problems are you facing?
       </p>
@@ -1050,7 +1091,11 @@
             placeholder="Type your concerns here."
           ></textarea>
           <span
-            *ngIf="reportText.touched && reportText.invalid && reportText.value.length > 0"
+            *ngIf="
+              reportText.touched &&
+              reportText.invalid &&
+              reportText.value.length > 0
+            "
             class="font16 font500 errorGradientColor"
             >*Character limit exceeded</span
           >
@@ -1115,29 +1160,41 @@
       >
         <i class="fas fa-times-circle"></i>
       </a>
-      <h5 class="modal-title font20 font600 text-white text-center mt-3">Select the version of OnePlay application that’s right for your Mac</h5>
+      <h5 class="modal-title font20 font600 text-white text-center mt-3">
+        Select the version of OnePlay application that’s right for your Mac
+      </h5>
       <div class="row">
-          <div class="col-lg-6 text-center mt-4">
-              <a href="https://cdn.edge-net.co/clients/latest/mac_client.dmg">
-                  <div class="card blackDarkBg border-0 py-lg-3 py-2">
-                      <p class="mb-0 font28 font700 text-white">
-                          Mac with Intel
-                          <img src="assets/img/downloadIntel.svg" width="28px" class="img-fluid ml-2 h42" alt="" />
-                      </p>
-                  </div>
-              </a>
-          </div>
-          <div class="col-lg-6 text-center mt-4 ps-lg-0">
-            <a href="https://cdn.edge-net.co/clients/latest/mac_client.dmg">
-              <div class="card blackDarkBg border-0 py-lg-3 py-2">
-                <p class="mb-0 font28 font700 text-white">
-                  Mac with M1 & above
-                  <img src="assets/img/downloadMac.svg" width="42px" class="img-fluid" alt="" />
-                </p>
-              </div>
-            </a>
-            <p class="font16 offWhiteColor mb-0 mt-1">Nov 2020 & Later</p>
-          </div>
+        <div class="col-lg-6 text-center mt-4">
+          <a href="https://cdn.edge-net.co/clients/latest/mac_client.dmg">
+            <div class="card blackDarkBg border-0 py-lg-3 py-2">
+              <p class="mb-0 font28 font700 text-white">
+                Mac with Intel
+                <img
+                  src="assets/img/downloadIntel.svg"
+                  width="28px"
+                  class="img-fluid ml-2 h42"
+                  alt=""
+                />
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-6 text-center mt-4 ps-lg-0">
+          <a href="https://cdn.edge-net.co/clients/latest/mac_client.dmg">
+            <div class="card blackDarkBg border-0 py-lg-3 py-2">
+              <p class="mb-0 font28 font700 text-white">
+                Mac with M1 & above
+                <img
+                  src="assets/img/downloadMac.svg"
+                  width="42px"
+                  class="img-fluid"
+                  alt=""
+                />
+              </p>
+            </div>
+          </a>
+          <p class="font16 offWhiteColor mb-0 mt-1">Nov 2020 & Later</p>
+        </div>
       </div>
     </div>
   </div>

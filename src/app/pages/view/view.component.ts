@@ -66,6 +66,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   terminatingGame = false;
   initializationPage = false;
   initializationErrored = false;
+  waring_message_display: boolean = true;
 
   similarGames: GameModel[] = [];
 
@@ -388,6 +389,17 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.action = "Play";
       }
     }
+  }
+
+  private toggleWarning()
+  {
+    event.stopPropagation();
+    this.waring_message_display = !this.waring_message_display;
+  }
+
+  private hideWarning(event: Event)
+  {
+    this.waring_message_display = true;
   }
 
   @HostListener("window:beforeunload", ["$event"])

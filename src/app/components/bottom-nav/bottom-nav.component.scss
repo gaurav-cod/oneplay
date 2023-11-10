@@ -2,15 +2,31 @@
     background-color: #151515;
     width: 100%;
     z-index: 900;
+    padding-top: 10px;
+    padding-bottom: 10px;
     
     a {
         color: #7a7a7a;
     }
 }
+.active .navigation-text {
+    background: -webkit-linear-gradient(#A83AFE, #6E59FE);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 @media (min-width: 1200.9px) {
     .hideInlarge {
         display: none !important;
+    }
+}
+.iconContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 12px;
+    img {
+        height: 18px;
     }
 }
 
