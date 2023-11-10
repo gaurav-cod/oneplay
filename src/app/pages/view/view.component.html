@@ -12,7 +12,7 @@
     *ngIf="!!game"
   >
     <div class="row justify-content-center">
-      <div class="col-md-12">
+      <div class="col-md-12 position-relative">
         <div class="card border-0 bgTransparent borderRadius10">
           <img
             class="card-img height80 borderRadius10"
@@ -53,30 +53,6 @@
               </button>
             </div>
             <div class="row imagesText height330 align-items-end mt-md-4">
-              <div *ngIf="game.warningMessage != ''" class="warningMessageDiv" >
-                <img class="warningMessageSymbol" (click)='toggleWarning($event)' src="assets/img/error/warning-message-symbol.svg" />
-                <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> 
-                  <div class="warningMessageTextDiv">
-                    <p class="warningMessageText">
-                      {{game.warningMessage}}
-                    </p>
-                  </div>
-                  <img class="warningMessageCone" src="https://c.animaapp.com/7GY89q9V/img/vector-126.svg" />
-                </div>
-              </div>
-              <div *ngIf="game.warningMessage != ''" class="warningMessageDivMob">
-                <img class="warningMessageSymbol" (click)='toggleWarning($event)' src="assets/img/error/warning-message-symbol.svg" />
-                <div class="div-wrapper">
-                  <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> 
-                    <div class="warningMessageTextDiv">
-                      <p class="warningMessageText">
-                        {{game.warningMessage}}
-                      </p>
-                    </div>
-                    <img class="warningMessageConeLeft" src="https://c.animaapp.com/swzkcKaS/img/vector-126.svg" />
-                  </div>
-                </div>
-              </div>
               <div class="col-md-12 pb-5">
                 <div class="row height100px">
                   <div class="col">
@@ -263,6 +239,11 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="warning-message-container">
+
+        <img class="warning-message hideInMobile" src="assets/img/error/warning-message-symbol.svg" [ngbTooltip]="game.warningMessage" triggers="click" placement="bottom-right"  />
+        <img class="warning-message-mob hideInLarge" src="assets/img/error/warning-message-symbol.svg" [ngbTooltip]="game.warningMessage" triggers="click" placement="right"  />
         </div>
       </div>
       <div class="col-md-12 px-0 marginTopRes">

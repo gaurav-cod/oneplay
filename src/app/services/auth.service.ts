@@ -93,9 +93,9 @@ export class AuthService {
 
   login(sessionToken: string) {
     Cookies.set("op_session_token", sessionToken, {
-      // domain: environment.cookie_domain,
-      // path: "/",
-      // expires: moment().add(90, "days").toDate(),
+      domain: environment.cookie_domain,
+      path: "/",
+      expires: moment().add(90, "days").toDate(),
     });
     this._$sessionToken.next(sessionToken);
   }
@@ -109,8 +109,8 @@ export class AuthService {
   logout() {
     this.trigger_speed_test = false;
     Cookies.remove("op_session_token", {
-      // domain: environment.cookie_domain,
-      // path: "/",
+      domain: environment.cookie_domain,
+      path: "/",
     });
     Countly.enable_offline_mode();
     this._$sessionToken.next(null);
