@@ -10,3 +10,9 @@
 .dropdown-menu {
   min-width: 0rem !important;
 }
+
+.text-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
