@@ -55,7 +55,7 @@
             <div class="row imagesText height330 align-items-end mt-md-4">
               <div *ngIf="game.warningMessage != ''" class="warningMessageDiv" >
                 <img class="warningMessageSymbol" (click)='toggleWarning($event)' src="assets/img/error/warning-message-symbol.svg" />
-                <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> >
+                <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> 
                   <div class="warningMessageTextDiv">
                     <p class="warningMessageText">
                       {{game.warningMessage}}
@@ -67,7 +67,7 @@
               <div *ngIf="game.warningMessage != ''" class="warningMessageDivMob">
                 <img class="warningMessageSymbol" (click)='toggleWarning($event)' src="assets/img/error/warning-message-symbol.svg" />
                 <div class="div-wrapper">
-                  <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> >
+                  <div class="warningMessageTextDivOuter" [ngClass]="waring_message_display ? 'd-none' : ''"> 
                     <div class="warningMessageTextDiv">
                       <p class="warningMessageText">
                         {{game.warningMessage}}
