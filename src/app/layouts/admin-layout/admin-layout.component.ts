@@ -20,7 +20,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   showOnboardingPopup = false;
 
   private fiveSecondsTimer: NodeJS.Timer;
-  private oneMinuteTimer: NodeJS.Timer;
+  private threeSecondsTimer: NodeJS.Timer;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
@@ -48,7 +48,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.initGames();
     }, 5 * 1000);
 
-    this.oneMinuteTimer = setInterval(() => {
+    this.threeSecondsTimer = setInterval(() => {
       this.setOnline();
     }, 3 * 1000);
 
@@ -81,7 +81,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
-    clearInterval(this.oneMinuteTimer);
+    clearInterval(this.threeSecondsTimer);
     this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
     this.userCanGameSubscription.unsubscribe();

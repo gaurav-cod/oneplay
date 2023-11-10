@@ -1,4 +1,7 @@
-<div class="d-flex flex-column p-3 chat-screen position-relative" style="height: 100%">
+<div
+  class="d-flex flex-column p-3 chat-screen position-relative"
+  style="height: 100%"
+>
   <div class="row mb-3">
     <div class="col-auto align-self-center pr-0">
       <img
@@ -45,11 +48,20 @@
       >
         <div class="date-tag font14 font500 muteText">{{ getDate(msg) }}</div>
       </div>
-      <li class="d-flex align-items-center my-3"
-        [ngClass]="{ 'justify-content-end': isUserSender(msg), 'ml-3': isUserSender(msg), 'mr-3': !isUserSender(msg) }">
+      <li
+        class="d-flex align-items-center my-3"
+        [ngClass]="{
+          'justify-content-end': isUserSender(msg),
+          'ml-3': isUserSender(msg),
+          'mr-3': !isUserSender(msg)
+        }"
+      >
         <div class="w-90">
           <app-text [text]="msg.message"></app-text>
-          <p class="mb-0 font14 muteText" [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }">
+          <p
+            class="mb-0 font14 muteText"
+            [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }"
+          >
             {{ msg.createdAt | date : "hh:mm a" }}
           </p>
         </div>
@@ -72,8 +84,15 @@
         /></span>
       </div>
       <div #textHeight class="textHeight"></div>
-      <textarea #textarea rows="1" type="text" class="form-control font16 muteText font500 lightBg border-0 chatArea" [formControl]="message"
-        placeholder="Send message"></textarea>
+      <textarea
+        #textarea
+        rows="1"
+        type="text"
+        class="form-control font16 muteText font500 lightBg border-0 chatArea"
+        [formControl]="message"
+        placeholder="Send message"
+        (keydown)="onInput($event)"
+      ></textarea>
       <div class="input-group-append">
         <button
           class="btn lightBg"

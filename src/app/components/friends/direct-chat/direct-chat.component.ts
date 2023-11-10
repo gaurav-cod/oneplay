@@ -182,6 +182,13 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     return ctx.getImageData(0, 0, 1, 1).data[3] > 0;
   }
 
+  onInput(e: KeyboardEvent) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      this.sendMessage();
+    }
+  }
+
   private scrollToBottom() {
     this.chatBox.nativeElement.scrollTop =
       this.chatBox.nativeElement.scrollHeight - this.loadMoreHeight;

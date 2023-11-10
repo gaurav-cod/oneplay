@@ -16,6 +16,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   public friendsCollapsed = true;
 
   private timer: any;
+  private threeSecondsTimer: NodeJS.Timer;
 
   constructor(
     private readonly authService: AuthService,
@@ -32,10 +33,23 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       if (exists) {
         this.authService.user = this.restService.getProfile();
         this.gameService.gameStatus = this.restService.getGameStatus();
+        this.setOnline();
+
+        if (this.timer) {
+          clearInterval(this.timer);
+        }
 
         this.timer = setInterval(() => {
           this.gameService.gameStatus = this.restService.getGameStatus();
         }, 5 * 60 * 1000);
+
+        if (this.threeSecondsTimer) {
+          clearInterval(this.threeSecondsTimer);
+        }
+
+        this.threeSecondsTimer = setInterval(() => {
+          this.setOnline();
+        }, 3 * 1000);
 
         this.router.events.subscribe((event) => {
           if (event instanceof NavigationEnd) {
@@ -48,6 +62,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.timer);
+    clearInterval(this.threeSecondsTimer);
   }
 
   toggleFriendsCollapsed() {
@@ -76,5 +91,14 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private initParties() {
     this.partyService.parties = this.restService.getParties();
     this.partyService.invites = this.restService.getPartyInvites();
+  }
+
+  private setOnline() {
+    this.restService
+      .setOnline()
+      .toPromise()
+      .then((data) => {
+        this.friendsService.setUnreadSenders(data.unread_senders);
+      });
   }
 }
