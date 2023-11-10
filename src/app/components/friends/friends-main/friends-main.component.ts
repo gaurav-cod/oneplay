@@ -50,7 +50,7 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
   constructor(
     private readonly friendsService: FriendsService,
     private readonly restService: RestService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.friendsSub = this.friendsService.friends.subscribe((friends) => {
@@ -80,4 +80,5 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
     this.friendsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
   }
+
 }

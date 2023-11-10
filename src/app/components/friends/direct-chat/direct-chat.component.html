@@ -1,4 +1,4 @@
-<div class="d-flex flex-column p-3 position-relative" style="height: 100%">
+<div class="d-flex flex-column p-3 chat-screen position-relative" style="height: 100%">
   <div class="row mb-3">
     <div class="col-auto align-self-center pr-0">
       <img
@@ -48,7 +48,7 @@
       <li class="d-flex align-items-center my-3"
         [ngClass]="{ 'justify-content-end': isUserSender(msg), 'ml-3': isUserSender(msg), 'mr-3': !isUserSender(msg) }">
         <div class="w-90">
-          <p class="mb-0 font16 font500 offWhiteText breakWord">{{ msg.message }}</p>
+          <app-text [text]="msg.message"></app-text>
           <p class="mb-0 font14 muteText" [ngStyle]="{ 'text-align': isUserSender(msg) ? 'end' : 'start' }">
             {{ msg.createdAt | date : "hh:mm a" }}
           </p>
@@ -71,12 +71,9 @@
             alt=""
         /></span>
       </div>
-      <input
-        type="text"
-        class="form-control font16 muteText font500 lightBg border-0"
-        [formControl]="message"
-        placeholder="Send message"
-      />
+      <div #textHeight class="textHeight"></div>
+      <textarea #textarea rows="1" type="text" class="form-control font16 muteText font500 lightBg border-0 chatArea" [formControl]="message"
+        placeholder="Send message"></textarea>
       <div class="input-group-append">
         <button
           class="btn lightBg"
@@ -92,7 +89,7 @@
   <emoji-mart
     *ngIf="showEmoji"
     [darkMode]="true"
-    [style]="{ position: 'absolute', bottom: 'calc(50px + 1rem)' }"
+    [style]="{ position: 'absolute', bottom: emojiBottom }"
     [showPreview]="false"
     [isNative]="true"
     (emojiSelect)="selectEmoji($event)"

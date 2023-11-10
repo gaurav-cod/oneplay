@@ -65,7 +65,7 @@ export class FriendsComponent {
     this.selectedParty = partyId;
     this._screens.push("party_chat");
   }
-
+  
   goBack() {
     this._screens.pop();
   }

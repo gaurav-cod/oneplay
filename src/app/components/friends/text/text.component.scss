@@ -1,0 +1,17 @@
+.breakWord {
+  word-break: break-all;
+  overflow: hidden;
+  position: relative;
+}
+
+.readMore {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #212123;
+
+  @media (max-width: 1200px) {
+    background-color: #151515;
+    
+  }
+}
