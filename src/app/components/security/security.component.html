@@ -1,5 +1,5 @@
-<div class="row mb-5">
-  <div class="col-md-10 col-lg-8 mt-4">
+<div class="mb-5 mainContainer">
+  <div class="col-md-6 col-lg-8 mt-4">
     <p class="font18 font500 text-white">Contact</p>
     <form autocomplete="on">
       <div class="row">
@@ -67,37 +67,38 @@
         </div>
       </div>
     </form>
-    <div class="user-data-container mt-5">
-      <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
     
-        <img src="assets/img/setting/privacy-setting.svg" class="img-fluid cursorPointer col-1" alt="" />
-        <p class="mb-0 font18 font500 text-white col-5">Privacy</p>
-        <div class="col-6 d-flex justify-content-end position-relative" style="left: 35px;">
-          <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="privacyCheckBox" [checked]="isPrivate">
-            <label class="custom-control-label" for="privacyCheckBox" (click)="switchSearchPrivacy()"></label>
-          </div>
+  </div>
+  <div class="user-data-container col-md-6 col-lg-8 mt-4">
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+  
+      <img src="assets/img/setting/privacy-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <p class="mb-0 font18 font500 text-white col-5">Privacy</p>
+      <div class="col-6 d-flex justify-content-end position-relative" style="left: 35px;">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="privacyCheckBox" [checked]="isPrivate">
+          <label class="custom-control-label" for="privacyCheckBox" (click)="switchSearchPrivacy()"></label>
         </div>
       </div>
-      <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
-    
-        <img src="assets/img/setting/session-setting.svg" class="img-fluid cursorPointer col-1" alt="" />
-    
-        <p class="mb-0 font18 font500 text-white col-5">Session Data</p>
-        <div class="col-6 d-flex justify-content-end cursorPointer" (click)="deleteSessionData()">
-          <img src="assets/img/setting/delete-icon.svg" alt="" class="img-fluid">
-        </div>
+    </div>
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+  
+      <img src="assets/img/setting/session-setting.svg" class="img-fluid cursorPointer" alt="" />
+  
+      <p class="mb-0 font18 font500 text-white col-5">Session Data</p>
+      <div class="col-6 d-flex justify-content-end cursorPointer" (click)="deleteSessionData()">
+        <img src="assets/img/setting/delete-icon.svg" alt="" class="img-fluid">
       </div>
-      <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
-    
-        <img src="assets/img/setting/tv-setting.svg" class="img-fluid cursorPointer col-1" alt="" />
-        <p class="mb-0 font18 font500 text-white col-5">TV Sign In</p>
-      </div>
-      <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
-    
-        <img src="assets/img/setting/logout-setting.svg" class="img-fluid col-1 cursorPointer" alt="" />
-        <p class="mb-0 font18 font500 text-white col-5">Logout</p>
-      </div>
+    </div>
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+  
+      <img src="assets/img/setting/tv-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <p class="mb-0 font18 font500 text-white col-5">TV Sign In</p>
+    </div>
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+  
+      <img src="assets/img/setting/logout-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <p class="mb-0 font18 font500 text-white col-5">Logout</p>
     </div>
   </div>
 </div>

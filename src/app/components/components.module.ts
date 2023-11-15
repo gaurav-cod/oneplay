@@ -34,6 +34,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
+import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.
     PaymentComponent,
     OtpScreenComponent,
     ChatBottomSheetComponent,
+    GeneralSettingsComponent,
   ],
   exports: [
     GameCardComponent,
