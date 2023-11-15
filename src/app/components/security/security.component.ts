@@ -1,8 +1,11 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from "@angular/core";
 import {
@@ -10,14 +13,21 @@ import {
   UntypedFormGroup,
   Validators,
 } from "@angular/forms";
+import {
+  genDefaultMenuClickSegments,
+  genDefaultMenuDropdownClickSegments,
+  getGameLandingViewSource,
+} from "src/app/utils/countly.util";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
+import { CustomCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { phoneValidator } from "src/app/utils/validators.util";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
+// import { EventEmitter } from "stream";
 import Swal from "sweetalert2";
 
 @Component({
@@ -47,6 +57,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   errorMessage: string;
   errorCode: number;
+
+  get isPrivate() {
+    return this.user?.searchPrivacy;
+  }
 
   get endJourney() {
     return this.errorCode == 429;
@@ -122,7 +136,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       this.updateSecurity.value.oldPassword &&
       this.updateSecurity.value.password.length &&
       this.updateSecurity.value.password ===
-        this.updateSecurity.value.confirmPassword
+      this.updateSecurity.value.confirmPassword
     ) {
       return false;
     } else {
@@ -464,5 +478,70 @@ export class SecurityComponent implements OnInit, OnDestroy {
   private clearErrors() {
     this.errorMessage = null;
     this.errorCode = null;
+  }
+  logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
+    this.countlyService.addEvent("menuDropdownClick", {
+      ...genDefaultMenuDropdownClickSegments(),
+      [item]: "yes",
+    });
+  }
+
+  deleteSessionData() {
+    this.logDropdownEvent("deleteSessionDataClicked");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to delete all your session data?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.logDropdownEvent("deleteSessionDataConfirmClicked");
+        this.restService.deleteSessionData().subscribe({
+          next: () => {
+            Swal.fire({
+              title: "Success",
+              text: "Successfully deleted sessions",
+              icon: "success",
+              confirmButtonText: "OK",
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: "Error Code: " + err.code,
+              text: err.message,
+              icon: "error",
+              confirmButtonText: "Try Again",
+            });
+          },
+        });
+      }
+    });
+  }
+
+  switchSearchPrivacy() {
+    const privacy = !this.isPrivate;
+    this.logDropdownEvent(
+      privacy ? "turnOffPrivacyDisabled" : "turnOffPrivacyEnabled"
+    );
+    this.authService.updateProfile({ searchPrivacy: privacy });
+    this.restService.setSearchPrivacy(privacy).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: `Successfully turned ${privacy ? "on" : "off"} search privacy.`,
+        });
+      },
+      error: (err) => {
+        this.authService.updateProfile({ searchPrivacy: !privacy });
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      },
+    });
   }
 }

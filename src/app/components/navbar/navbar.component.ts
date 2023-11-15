@@ -215,7 +215,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -545,10 +545,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     // this.isMenuCollapsed = true;
+
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
+    this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {

@@ -296,7 +296,6 @@
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
-            ngbDropdown
             placement="bottom-right"
           >
             <a
@@ -304,7 +303,6 @@
               class="nav-link p-0 br50"
               role="button"
               (click)="headerNavOnClick('profileClicked')"
-              ngbDropdownToggle
             >
               <img
                 alt=""
@@ -315,7 +313,7 @@
                 (error)="onUserError($event)"
               />
             </a>
-            <div class="dropdown-bug">
+            <!-- <div class="dropdown-bug">
               <div
                 class="dropdown-menu-arrow menudropdown dropdown-menu-right"
                 ngbDropdownMenu
@@ -341,14 +339,14 @@
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
                 </a>
-                <!-- <a
+                 <a
                   href="javascript:void(0)"
                   class="dropdown-item"
                   (click)="open(share)"
                 >
                   <i class="fa fa-user-plus font14 align-middle" aria-hidden="true"></i>
                   <span class="align-middle">Refer</span>
-                </a> -->
+                </a> 
 
                 <a
                   (click)="logDropdownEvent('speedTestClicked')"
@@ -432,7 +430,7 @@
                   Version <span class="ml-1">{{ appVersion }}</span>
                 </a>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </li>
