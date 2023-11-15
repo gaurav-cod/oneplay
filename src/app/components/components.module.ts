@@ -33,6 +33,7 @@ import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.co
 import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
+import { SuccessMessageComponent } from "./success-message/success-message.component";
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ import { OtpScreenComponent } from './otp-screen/otp-screen.component';
     GameplayHistoryComponent,
     PaymentComponent,
     OtpScreenComponent,
+    SuccessMessageComponent,
   ],
   exports: [
     GameCardComponent,
@@ -96,6 +98,7 @@ import { OtpScreenComponent } from './otp-screen/otp-screen.component';
     InitializingGameComponent,
     GameplayHistoryComponent,
     PaymentComponent,
+    SuccessMessageComponent,
   ],
 })
 export class ComponentsModule {}

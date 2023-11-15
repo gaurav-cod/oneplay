@@ -7,7 +7,6 @@ import { LoginComponent } from '../../pages/login/login.component';
 import { RegisterComponent } from '../../pages/register/register.component';
 import { StartgamingSignupComponent } from '../../pages/startgaming-signup/startgaming-signup.component';
 import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.component';
-import { SuccessMessageComponent } from 'src/app/pages/success-message/success-message.component';
 
 export const AuthLayoutRoutes: Routes = [
     { path: 'login',                    component: LoginComponent },

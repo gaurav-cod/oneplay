@@ -15,11 +15,12 @@ import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/startgaming-signup.component';
 import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-region/non-functional-region.component';
 import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.component';
-import { SuccessMessageComponent } from 'src/app/pages/success-message/success-message.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    ComponentsModule,
     RouterModule.forChild(AuthLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
@@ -36,7 +37,6 @@ import { SuccessMessageComponent } from 'src/app/pages/success-message/success-m
     ResetPassComponent,
     StartgamingSignupComponent,
     NonFunctionalRegionComponent,
-    SuccessMessageComponent
   ]
 })
 export class AuthLayoutModule { }
