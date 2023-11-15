@@ -299,6 +299,24 @@ export class RestService {
         })
       );
   }
+  requestResetPasswordWithMobile(mobile: string): Observable<void> {
+    return this.http.post(this.r_mix_api + "/accounts/request_reset_password_with_phone", { "phone": mobile })
+    .pipe(
+      map((res)=> {}),
+      catchError(({error})=> {
+        throw error;
+      })
+    )
+  }
+  verifyOTPForMobile(mobile: string, otp: string): Observable<void> {
+    return this.http.post(this.r_mix_api + "/accounts/get_password_reset_token", { "phone": mobile, "code": otp })
+    .pipe(
+      map((res: any)=> res.token),
+      catchError(({error})=> {
+        throw error;
+      })
+    )
+  }
 
   resetPassword(token: string, password: string): Observable<void> {
     return this.http

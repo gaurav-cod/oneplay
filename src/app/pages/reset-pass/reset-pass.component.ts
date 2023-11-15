@@ -16,11 +16,11 @@ export class ResetPassComponent implements OnInit {
 
   resetForm = new UntypedFormGroup({
     password: new UntypedFormControl("", [Validators.required, Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)]),
-    confirmPassword: new UntypedFormControl("",  [Validators.required]),
+    confirmPassword: new UntypedFormControl("", [Validators.required]),
   });
 
   get checkvalidationValue() {
-    if(this.resetForm.value.password.length && this.resetForm.value.password === this.resetForm.value.confirmPassword) {
+    if (this.resetForm.value.password.length && this.resetForm.value.password === this.resetForm.value.confirmPassword) {
       return false;
     } else {
       return true;
@@ -34,7 +34,7 @@ export class ResetPassComponent implements OnInit {
 
   get confirmPasswordErrored() {
     const control = this.resetForm.controls["confirmPassword"];
-    if(this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
+    if (this.resetForm.value.password !== this.resetForm.value.confirmPassword) {
       return control.touched && true;
     } else {
       return control.touched && false;
@@ -49,7 +49,7 @@ export class ResetPassComponent implements OnInit {
     private restService: RestService,
     private readonly title: Title,
     private readonly countlyService: CountlyService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.title.setTitle("Reset Password");
@@ -58,16 +58,19 @@ export class ResetPassComponent implements OnInit {
   showPassword = false;
   showConfirmPassword = false;
 
+  resetPasswordSuccessfull: boolean = false;
+
   reset() {
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.resetPassword(token, this.resetForm.value.password).subscribe(
       () => {
-        Swal.fire({
-          title: "Success",
-          text: "Password reset successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => this.goToLogin());
+        this.resetPasswordSuccessfull = true;
+        // Swal.fire({
+        //   title: "Success",
+        //   text: "Password reset successfully",
+        //   icon: "success",
+        //   confirmButtonText: "OK",
+        // }).then(() => this.goToLogin());
       },
       (error) => {
         Swal.fire({
