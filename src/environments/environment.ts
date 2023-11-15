@@ -1,7 +1,7 @@
 // import { version } from '../../package.json';
 
 export const environment = {
-  appVersion: "4.0.0",
+  appVersion: "5.0.0",
   production: false,
   cookie_domain: "localhost",
   domain: "http://localhost:4200",

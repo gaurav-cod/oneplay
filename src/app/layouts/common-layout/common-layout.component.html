@@ -1,9 +1,9 @@
 <div class="main-content">
-  <app-friends
+  <app-chat-bottom-sheet
     *ngIf="isAuthenticated"
     [isCollapsed]="friendsCollapsed"
     (toggleCollapse)="toggleFriendsCollapsed()"
-  ></app-friends>
+  ></app-chat-bottom-sheet>
   <app-navbar
     *ngIf="isAuthenticated"
     (toggleFriends)="toggleFriendsCollapsed()"

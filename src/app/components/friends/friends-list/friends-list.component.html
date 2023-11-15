@@ -18,14 +18,15 @@
     (click)="onChat(friend)"
   >
     <p class="font14 font500 offWhiteText mb-0">
-      {{ friend.username }}
-      <!-- <img
+      {{ friend.username || friend.name }}
+      <img
+        *ngIf="isUnread(friend)"
         src="assets/img/chat/in-game.svg"
-        class="img-fluid position-absolute"
+        class="img-fluid position-absolute ml-1"
         alt=""
-      /> -->
+      />
     </p>
-    <p class="font14 font500 muteText mb-0" *ngIf="!!friend.inGame">
+    <p class="font14 font500 muteText mb-0 text-overflow" *ngIf="!!friend.inGame">
       <span class="yellowGradient">InGame</span> - {{ friend.inGame }}
     </p>
     <p
@@ -83,7 +84,7 @@
           alt=""
         />
         <h2 class="text-white font600 text-center font20 my-4">
-          Unfriend {{ friend.username }} ?
+          Unfriend {{ friend.username || friend.name }} ?
         </h2>
         <button
           class="btn btn-block text-white font18btn responsiveBr60 font500 linearGradient focusBorder"

@@ -94,10 +94,21 @@
   font-size: 12px;
   font-weight: 700;
   border-radius: 6px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
 
 .bottomTag {
   position: absolute;
   bottom: 0px;
   color: #fff;
+}
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
 }

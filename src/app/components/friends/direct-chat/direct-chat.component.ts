@@ -19,6 +19,7 @@ import { ChatService } from "src/app/services/chat.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import * as moment from "moment";
+import { EmojiEvent } from "@ctrl/ngx-emoji-mart/ngx-emoji";
 
 @Component({
   selector: "app-direct-chat",
@@ -30,6 +31,8 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output("goBack") goBack = new EventEmitter();
 
   @ViewChild("chatBox") chatBox: ElementRef<HTMLUListElement>;
+  @ViewChild("textarea") textarea: ElementRef<HTMLTextAreaElement>;
+  @ViewChild("textHeight") textHeight: ElementRef<HTMLDivElement>;
 
   messages: MessageModel[] = [];
   message = new UntypedFormControl("", Validators.required);
@@ -37,9 +40,11 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   friend: FriendModel = {} as FriendModel;
   showEmoji = false;
 
+  private loadMoreHeight: number = 0;
   private userSub: Subscription;
   private messageSub1: Subscription;
   private messageSub2: Subscription;
+  private messageChangesSub: Subscription;
 
   constructor(
     private readonly chatService: ChatService,
@@ -73,6 +78,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userSub?.unsubscribe();
     this.messageSub1?.unsubscribe();
     this.messageSub2?.unsubscribe();
+    this.messageChangesSub?.unsubscribe();
     this.messages = [];
   }
 
@@ -81,6 +87,10 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
       setTimeout(() => {
         this.scrollToBottom();
       }, 10);
+    });
+    this.messageChangesSub = this.message.valueChanges.subscribe((text) => {
+      this.textHeight.nativeElement.innerText = text;
+      this.textarea.nativeElement.style.height = this.textHeight.nativeElement.scrollHeight + "px";
     });
   }
 
@@ -92,8 +102,17 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     );
   }
 
+  get emojiBottom() {
+    const tHeight = this.textarea.nativeElement?.scrollHeight ?? 44;
+    return `calc(${tHeight}px + 1rem)`;
+  }
+
   get canLoadMore() {
     return this.chatService.canLoadMore;
+  }
+
+  get loading() {
+    return this.chatService.loading;
   }
 
   isSameDate(index: number) {
@@ -118,6 +137,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   loadMore() {
+    this.loadMoreHeight = this.chatBox.nativeElement.scrollHeight;
     this.chatService.loadMore(this.friend.user_id);
   }
 
@@ -126,6 +146,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendMessage() {
+    this.showEmoji = false;
     if (this.message.valid) {
       this.chatService.sendMessage(this.message.value, this.friend.user_id);
       this.message.reset();
@@ -147,12 +168,30 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showEmoji = !this.showEmoji;
   }
 
-  selectEmoji({ emoji }) {
-    this.message.setValue((this.message.value ?? "") + (emoji.native ?? ""));
+  selectEmoji(event: EmojiEvent) {
+    this.message.setValue(
+      (this.message.value ?? "") + (event.emoji.native ?? "")
+    );
+  }
+
+  isMissingEmoji(data: string) {
+    const emoji = String.fromCodePoint(parseInt(data, 16));
+    const ctx = document.createElement("canvas").getContext("2d");
+    ctx.canvas.width = ctx.canvas.height = 1;
+    ctx.fillText(emoji, -4, 4);
+    return ctx.getImageData(0, 0, 1, 1).data[3] > 0;
+  }
+
+  onInput(e: KeyboardEvent) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      this.sendMessage();
+    }
   }
 
   private scrollToBottom() {
     this.chatBox.nativeElement.scrollTop =
-      this.chatBox.nativeElement.scrollHeight;
+      this.chatBox.nativeElement.scrollHeight - this.loadMoreHeight;
+    this.loadMoreHeight = 0;
   }
 }

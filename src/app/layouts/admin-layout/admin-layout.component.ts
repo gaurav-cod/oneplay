@@ -20,11 +20,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   showOnboardingPopup = false;
 
   private fiveSecondsTimer: NodeJS.Timer;
-  private oneMinuteTimer: NodeJS.Timer;
+  private threeSecondsTimer: NodeJS.Timer;
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
-  
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -48,9 +48,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.initGames();
     }, 5 * 1000);
 
-    this.oneMinuteTimer = setInterval(() => {
+    this.threeSecondsTimer = setInterval(() => {
       this.setOnline();
-    }, 60 * 1000);
+    }, 3 * 1000);
 
     this.routerEventSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -81,7 +81,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
-    clearInterval(this.oneMinuteTimer);
+    clearInterval(this.threeSecondsTimer);
     this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
     this.userCanGameSubscription.unsubscribe();
@@ -104,10 +104,18 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initFriends() {
-    this.friendsService.friends = this.restService.getAllFriends();
-    this.friendsService.pendings = this.restService.getPendingSentRequests();
-    this.friendsService.requests =
-      this.restService.getPendingReceivedRequests();
+    this.restService
+      .getAllFriends()
+      .toPromise()
+      .then((friends) => this.friendsService.setFriends(friends));
+    this.restService
+      .getPendingSentRequests()
+      .toPromise()
+      .then((pendings) => this.friendsService.setPendings(pendings));
+    this.restService
+      .getPendingReceivedRequests()
+      .toPromise()
+      .then((requests) => this.friendsService.setRequests(requests));
   }
 
   private initParties() {
@@ -136,6 +144,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private setOnline() {
-    this.restService.setOnline().subscribe();
+    this.restService
+      .setOnline()
+      .toPromise()
+      .then((data) => {
+        this.friendsService.setUnreadSenders(data.unread_senders);
+      });
   }
 }

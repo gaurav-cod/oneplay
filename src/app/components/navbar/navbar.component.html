@@ -6,6 +6,17 @@
     class="container-fluid p-0"
     style="padding-left: 1% !important; padding-right: 2% !important"
   >
+    <div class="search">
+      <span class="bgTransparent offWhiteColor font16 font500">
+        <a
+          href="javascript:void(0)"
+          routerLinkActive="active"
+          [routerLink]="['/search']"
+          ><i class="fas fa-search text-white"></i
+        ></a>
+      </span>
+    </div>
+
     <!-- Brand -->
     <a href="javascript:void(0)" class="navbar-brand" [routerLink]="['/home']">
       <img
@@ -97,11 +108,8 @@
                       alt=""
                     />
                     <div class="card-img-overlay p-0">
-                      <span
-                        *ngIf="game.isFree && game.status !== 'coming_soon'"
-                        class="freeTag px-1 free tagText"
-                        >FREE</span
-                      >
+                      <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
+                        FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                       <span
                         *ngIf="game.status === 'coming_soon'"
                         class="redGradient px-1 free tagText"
@@ -182,7 +190,7 @@
                     {{ user.username }}
                   </p>
                 </div>
-                <div class="col-auto d-flex align-items-baseline pr-0">
+                <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline pr-0">
                   <ng-container
                     *ngFor="let key of getActions(user); index as i"
                   >
@@ -234,8 +242,16 @@
               class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
             >
-              <span class="avatar avatar-sm rounded-circle bg-gray-dark">
-                <i class="fas fa-user-friends"></i>
+              <img
+                *ngIf="hasUnread"
+                src="assets/img/chat/in-game.svg"
+                class="img-fluid position-absolute"
+                style="right: 12px; z-index: 1;"
+                alt=""
+              />
+              <span class="nav-chat">
+                <!-- <i class="fas fa-user-friends"></i> -->
+                <img src="assets/img/navbar/chat-icon.svg" alt="" />
               </span>
             </a>
           </div>

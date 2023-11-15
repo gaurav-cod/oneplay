@@ -97,6 +97,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     return this.user ? this.user.firstName + " " + this.user.lastName : "User";
   }
 
+  get userId() {
+    return this.user?.id;
+  }
+
   constructor(
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -132,6 +136,18 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.requestsSub = this.friendsService.requests.subscribe(
       (f) => (this.friendRequests = f)
     );
+    this.restService
+      .getAllFriends()
+      .toPromise()
+      .then((friends) => this.friendsService.setFriends(friends));
+    this.restService
+      .getPendingSentRequests()
+      .toPromise()
+      .then((pendings) => this.friendsService.setPendings(pendings));
+    this.restService
+      .getPendingReceivedRequests()
+      .toPromise()
+      .then((requests) => this.friendsService.setRequests(requests));
     this.paramsSub = this.route.params.subscribe((params) => {
       this.route.queryParams.subscribe((query) => {
         this.tab = params.tab;
@@ -378,7 +394,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.acceptedFriends.find((f) => f.user_id === friend.id)) {
       return ["none"];
     } else if (this.pendingFriends.find((f) => f.user_id === friend.id)) {
-      return ["cancel","wait"];
+      return ["cancel", "wait"];
     } else if (this.friendRequests.find((f) => f.user_id === friend.id)) {
       return ["decline", "accept"];
     } else {

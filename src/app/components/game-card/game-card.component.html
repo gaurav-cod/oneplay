@@ -40,7 +40,8 @@
       [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"
     ></ngx-ui-loader>
-    <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">FREE</span>
+    <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
+      FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
     <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 free tagText">COMING SOON</span>
     <div class="row justify-content-center">
       <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag"><span class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>

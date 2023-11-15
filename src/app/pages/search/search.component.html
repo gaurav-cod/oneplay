@@ -94,11 +94,8 @@
                 alt=""
               />
               <div class="card-img-overlay p-0">
-                <span
-                  *ngIf="game.isFree && game.status !== 'coming_soon'"
-                  class="freeTag px-1 free tagText"
-                  >FREE</span
-                >
+                <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
+                  FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                 <span
                   *ngIf="game.status === 'coming_soon'"
                   class="redGradient px-1 free tagText"
@@ -186,7 +183,7 @@
               {{ user.username }}
             </p>
           </div>
-          <div class="col-auto d-flex align-items-baseline">
+          <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline">
             <ng-container *ngFor="let key of getActions(user); index as i">
               <div *ngIf="i > 0" class="action-divider"></div>
               <img

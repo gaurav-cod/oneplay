@@ -185,10 +185,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   handlePayWithBilldesk() {
     // this.paymentModalRef.close();
+
     this.restService
       .payWithBilldesk(this.subscriptionPacakage.id, this.applied_coupon_code)
       .toPromise()
       .then(async (data) => {
+
         const flowConfig = {
           merchantId: environment.billdesk_key,
           bdOrderId: data.bdOrderId,
@@ -377,13 +379,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   handlePaymentCheckout() {
-    if (this.selected_payment_source == 'upi_payment') {
-      this.handlePayWithPhonePay();
-    }
-    else if (this.selected_payment_source == 'net_banking_payment') {
+
+    // if (this.selected_payment_source == 'upi_payment') {
+    //   this.handlePayWithPhonePay();
+    // }
+    if (this.selected_payment_source == 'billdesk') {
       this.handlePayWithBilldesk();
     }
-    else if (this.selected_payment_source == 'card_payment') {
+    else if (this.selected_payment_source == 'stripe') {
       this.handlePayWithStripe();
     }
   }

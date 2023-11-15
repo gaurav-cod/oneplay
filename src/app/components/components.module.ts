@@ -34,6 +34,7 @@ import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 import { SuccessMessageComponent } from "./success-message/success-message.component";
+import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
 
 @NgModule({
   imports: [
@@ -75,6 +76,7 @@ import { SuccessMessageComponent } from "./success-message/success-message.compo
     PaymentComponent,
     OtpScreenComponent,
     SuccessMessageComponent,
+    ChatBottomSheetComponent,
   ],
   exports: [
     GameCardComponent,
@@ -99,6 +101,7 @@ import { SuccessMessageComponent } from "./success-message/success-message.compo
     GameplayHistoryComponent,
     PaymentComponent,
     SuccessMessageComponent,
+    ChatBottomSheetComponent,
   ],
 })
 export class ComponentsModule {}

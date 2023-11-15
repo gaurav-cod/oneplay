@@ -15,6 +15,7 @@ import {
   IPayment,
   LoginDTO,
   PurchaseStore,
+  SetOnlineRO,
   SignupDTO,
   SpeedTestServerRO,
   StartGameRO,
@@ -468,9 +469,9 @@ export class RestService {
       .pipe(map((res) => res.length > 0));
   }
 
-  setOnline(): Observable<void> {
-    return this.http.post(this.r_mix_api + "/accounts/online", null).pipe(
-      map((res) => { }),
+  setOnline(): Observable<SetOnlineRO> {
+    return this.http.post<SetOnlineRO>(this.r_mix_api + "/accounts/online", null).pipe(
+      map((res) => res),
       catchError(({ error }) => {
         throw error;
       })

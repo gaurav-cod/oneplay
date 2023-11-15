@@ -1,28 +1,31 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
+  OnDestroy,
   OnInit,
   Output,
-  ViewChild,
 } from "@angular/core";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { Subscription } from "rxjs";
 import { FriendModel } from "src/app/models/friend.model";
 import { FriendsService } from "src/app/services/friends.service";
+import { RestService } from "src/app/services/rest.service";
 
 @Component({
   selector: "app-friends-main",
   templateUrl: "./friends-main.component.html",
   styleUrls: ["./friends-main.component.scss"],
 })
-export class FriendsMainComponent {
-  @Output("toggle") toggle = new EventEmitter();
+export class FriendsMainComponent implements OnInit, OnDestroy {
   @Output("goToParties") goToParties = new EventEmitter();
   @Output("goToMail") goToMail = new EventEmitter();
   @Output("goToChat") goToChat = new EventEmitter();
 
   friends: FriendModel[] = [];
   requests = 0;
+
+  private timer: NodeJS.Timer;
+  private friendsSub: Subscription;
+  private requestsSub: Subscription;
 
   get onlineCount() {
     return this.friends.filter((friend) => friend.isOnline).length;
@@ -44,12 +47,38 @@ export class FriendsMainComponent {
     return this.friends.filter((friend) => !friend.isOnline && !friend.inGame);
   }
 
-  constructor(private readonly friendsService: FriendsService) {
-    this.friendsService.friends.subscribe((friends) => {
+  constructor(
+    private readonly friendsService: FriendsService,
+    private readonly restService: RestService
+  ) { }
+
+  ngOnInit(): void {
+    this.friendsSub = this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
     });
-    this.friendsService.requests.subscribe((requests) => {
+    this.requestsSub = this.friendsService.requests.subscribe((requests) => {
       this.requests = requests.length;
     });
+    this.timer = setInterval(() => {
+      this.restService
+        .getAllFriends()
+        .toPromise()
+        .then((friends) => this.friendsService.setFriends(friends));
+      this.restService
+        .getPendingSentRequests()
+        .toPromise()
+        .then((pendings) => this.friendsService.setPendings(pendings));
+      this.restService
+        .getPendingReceivedRequests()
+        .toPromise()
+        .then((requests) => this.friendsService.setRequests(requests));
+    }, 5000);
   }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+    this.friendsSub?.unsubscribe();
+    this.requestsSub?.unsubscribe();
+  }
+
 }
