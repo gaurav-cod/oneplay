@@ -1,0 +1,21 @@
+.offWhiteColor {
+    color: #959595 !important;
+}
+
+.success-message {
+    gap: 15px;
+}
+
+@media (max-width: 475px) {
+    .success-img {
+        height: 60px !important;
+    }
+
+    .display-3 {
+        font-size: 20px !important;
+    }
+
+    .font500 {
+        font-size: 14px !important;
+    }
+}

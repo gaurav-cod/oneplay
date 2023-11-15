@@ -19,6 +19,17 @@
   }
 }
 
+.section-divider {
+  margin: 40px 0px 5px 0px;
+  color: #434343;
+
+  .border {
+    width: 45px;
+    border: 1px solid #434343 !important;
+    opacity: 0.5;
+  }
+}
+
 .footerWhiteColor {
   color: #E1E1E1;
 }
@@ -26,6 +37,7 @@
 .font16 {
   font-size: 16px;
   line-height: 26px;
+
   @media (max-width: 500px) {
     font-size: 14px;
     line-height: 21px;
@@ -63,42 +75,56 @@
 .inputFocus:focus {
   background-color: transparent;
   box-shadow: none;
-  color: #DCDCDC !important; 
+  color: #DCDCDC !important;
 }
 
 
-.inputFocus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.inputFocus::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #8898aa !important;
-  opacity: 0.5; /* Firefox */
+  opacity: 0.5;
+  /* Firefox */
 }
 
-.inputFocus:-ms-input-placeholder { /* Internet Explorer 10-11 */
+.inputFocus:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: #8898aa !important;
 }
 
-.inputFocus::-ms-input-placeholder { /* Microsoft Edge */
+.inputFocus::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: #8898aa !important;
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
   transition: background-color 5000s;
   -webkit-text-fill-color: #fff !important;
 }
 
 ::placeholder {
   color: #DCDCDC !important;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
- color: #DCDCDC !important;
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #DCDCDC !important;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
- color: #DCDCDC !important;
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #DCDCDC !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 
 .inputBorder {
@@ -116,6 +142,7 @@ input:-webkit-autofill:active  {
 .font20 {
   font-size: 20px;
   line-height: 34px;
+
   @media (max-width: 1121px) {
     font-size: 16px;
     line-height: 26px;
@@ -140,6 +167,7 @@ input:-internal-autofill-selected {
 .font30 {
   font-size: 30px;
   line-height: 40px;
+
   @media (max-width: 991.9px) {
     font-size: 24px;
     line-height: 34px;
@@ -149,6 +177,7 @@ input:-internal-autofill-selected {
 .wh70 {
   width: 70px;
   height: 70px;
+
   @media (max-width: 991.9px) {
     width: 50px;
     height: 50px;

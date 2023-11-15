@@ -33,6 +33,7 @@ import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.co
 import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
+import { SuccessMessageComponent } from "./success-message/success-message.component";
 import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
 
 @NgModule({
@@ -74,6 +75,7 @@ import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.
     GameplayHistoryComponent,
     PaymentComponent,
     OtpScreenComponent,
+    SuccessMessageComponent,
     ChatBottomSheetComponent,
   ],
   exports: [
@@ -98,6 +100,7 @@ import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.
     InitializingGameComponent,
     GameplayHistoryComponent,
     PaymentComponent,
+    SuccessMessageComponent,
     ChatBottomSheetComponent,
   ],
 })

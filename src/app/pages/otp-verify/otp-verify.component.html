@@ -1,0 +1,51 @@
+<h1 class="text-white text-center">Enter Security Code</h1>
+<div>
+    <p class="mutedTextColor font500 mb-0 text-center">A security code has been sent to your mobile number</p>
+    <div class="row">
+        <div class="col-12 my-3">
+            <!-- <span class="font16 font500 errorGradientColor float-right">*invalid
+                OTP</span> -->
+            <form [formGroup]="codeForm">
+                <div class="row justify-content-center">
+                    <div class="col-auto p-1 otpInput" *ngFor="let input of formInput; index as i">
+                        <input #formRow type="text" formControlName="{{ input }}" class="form-control w70h61 p-1"
+                            maxlength="1" (input)="jump($event, i)" (keydown)="jumpPrev($event, i)" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="col text-center align-self-center my-4">
+            <p class="font16 font500 mb-0 darkGrey" *ngIf="!isWrongOTPEntered">Didn't Receive code?
+                <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in 00 : {{displayTimer}} </span>
+                <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
+                    OTP</span>
+            </p>
+            <div *ngIf="isWrongOTPEntered">
+                <div>
+                    <span class="errorGradientColor font500">Incorrect Security Code</span>
+                    <span class="offWhiteText">, Please check</span>
+                </div>
+                <div>
+                    <span class="offWhiteText">carfully or </span>
+                    <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in 00 : {{displayTimer}} </span>
+                    <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
+                        OTP</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-4">
+            <button type="button" class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
+                (click)="verifyOTP()" [ngClass]="{ mutedBg: codeForm.invalid || endJourney }"
+                [disabled]="endJourney ? false : codeForm.invalid">
+                Verify
+            </button>
+        </div>
+    </div>
+    <div class="col-md-12 pt-3 text-center margintop20">
+        <p class="font20 font500 mt-lg-3 offWhiteText">
+            Remember password?
+            <span class="purpleGradient"><a href="javascript:void(0)" (click)="goToLogin()">Log in</a></span>
+        </p>
+    </div>
+</div>
