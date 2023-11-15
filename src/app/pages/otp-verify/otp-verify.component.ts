@@ -43,26 +43,19 @@ export class OtpVerifyComponent implements OnInit {
     private readonly restService: RestService,
     private readonly activatedRoute: ActivatedRoute
   ) {
-    this.getDisplayTimer();
   }
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((qParm: any) => {
       this.senderMobileNumber = qParm.mobile;
     })
+
+    this.getDisplayTimer();
   }
 
   getDisplayTimer() {
-
-    if (localStorage.getItem("displayTimer")) {
-      this.displayTimer = Number((((new Date()).getTime() - (new Date(localStorage.getItem("displayTimer"))).getTime()) / 1000).toFixed(0));
-      if (this.displayTimer <= 60 && this.displayTimer >= 0)
-        this.timer();
-    } else {
-      localStorage.setItem("displayTimer", new Date().toJSON());
       this.displayTimer = 60;
       this.timer();
-    }
   }
 
   jump(event: any, index: number) {
@@ -110,7 +103,6 @@ export class OtpVerifyComponent implements OnInit {
 
     this.restService.verifyOTPForMobile(this.senderMobileNumber, code).subscribe({
       next: (token: any) => {
-        localStorage.removeItem("displayTimer");
         this.router.navigate([`/reset-password/${token}`]);
       }, error: (error: any) => {
         this.isWrongOTPEntered = true;
@@ -129,7 +121,6 @@ export class OtpVerifyComponent implements OnInit {
     this.restService.requestResetPasswordWithMobile(this.senderMobileNumber).subscribe({
       next: (response: any) => {
         this.codeForm.reset();
-        localStorage.removeItem("displayTimer");
         this.getDisplayTimer();
       }, error: (error) => {
         Swal.fire({

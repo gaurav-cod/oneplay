@@ -26,7 +26,6 @@ export class ForgotPassComponent implements OnInit {
     phone: new UntypedFormControl("", [phoneValidator("country_code")])
   });
 
-  nonFunctionalRegion: boolean = null;
   resetemail = false;
 
   get countryCodes() {
@@ -67,18 +66,7 @@ export class ForgotPassComponent implements OnInit {
           this.forgotPasswordForm.controls['country_code'].setValue(
             contryCodeCurrencyMapping[res.currency]
           );
-          this.nonFunctionalRegion = false;
-        } else {
-          this.nonFunctionalRegion = true;
-        }
-        if (res.hosting) {
-          Swal.fire({
-            title: "Alert!",
-            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
-            imageUrl: "assets/img/error/vpn_icon.svg",
-            confirmButtonText: "Okay",
-          });
-        }
+        } 
       },
     });
   }
