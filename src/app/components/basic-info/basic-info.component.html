@@ -67,7 +67,11 @@
             *ngIf="name.touched && name.invalid"
             class="font16 font500 errorGradientColor float-right"
             >*invalid name</span
-          >
+          ><span
+          *ngIf="name.value?.length > 25"
+          class="font16 font500 errorGradientColor float-right"
+          >(max character limit 25 characters)</span
+        >
           <input
             type="text"
             [formControl]="name"
@@ -103,7 +107,7 @@
           <input
             type="submit"
             (click)="saveChanges()"
-            [disabled]="saveProfileLoder || !isValid || !isChanged"
+            [disabled]="saveProfileLoder || !isValid || !isChanged || name.value?.length > 25"
             class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
             value="Save Changes"
           />
