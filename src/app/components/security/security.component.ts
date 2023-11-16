@@ -60,10 +60,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
   errorMessage: string;
   errorCode: number;
 
-  get isPrivate() {
-    return this.user?.searchPrivacy;
-  }
-
   get endJourney() {
     return this.errorCode == 429;
   }
@@ -96,6 +92,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   showPass = false;
+  isPrivate: boolean = false;
 
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
@@ -114,6 +111,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
+      this.isPrivate = this.user?.searchPrivacy;
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
     });
@@ -531,6 +529,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.authService.updateProfile({ searchPrivacy: privacy });
     this.restService.setSearchPrivacy(privacy).subscribe({
       next: () => {
+        this.isPrivate = !this.isPrivate;
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -538,6 +537,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
         });
       },
       error: (err) => {
+
         this.authService.updateProfile({ searchPrivacy: !privacy });
         Swal.fire({
           icon: "error",

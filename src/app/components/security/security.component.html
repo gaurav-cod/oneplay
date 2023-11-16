@@ -1,102 +1,83 @@
 <div class="mb-5 mainContainer">
-  <div class="col-md-6 col-lg-8 mt-4">
+  <div class="col-sm-12 col-md-6 col-lg-6 mt-4">
     <p class="font18 font500 text-white">Contact</p>
     <form autocomplete="on">
       <div class="row">
-        <div class="col-md-12 mt-2">
+        <div class="col-md-12 mt-2 adjustWidth">
           <label class="font16 font500 offWhiteText mx-1">Email</label>
-          <div
-            class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1"
-          >
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
             <div class="col">
               <p class="mb-0 font18 font500 text-white">{{ user?.email }}</p>
             </div>
             <div class="col-auto">
-              <img
-                *ngIf="allowEmailEdit"
-                (click)="openEmailModal()"
-                src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid cursorPointer"
-                alt=""
-              />
+              <img *ngIf="allowEmailEdit" (click)="openEmailModal()" src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid cursorPointer" alt="" />
             </div>
           </div>
         </div>
-        <div class="col-md-12 mt-4">
+        <div class="col-md-12 mt-4 adjustWidth">
           <label class="font16 font500 offWhiteText mx-1">Phone number</label>
-          <div
-            class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1"
-          >
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
             <div class="col">
               <p class="mb-0 font18 font500 text-white">{{ user?.phone }}</p>
             </div>
             <div class="col-auto">
-              <img
-                *ngIf="allowPhoneEdit"
-                (click)="openPhoneModal()"
-                src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid cursorPointer"
-                alt=""
-              />
+              <img *ngIf="allowPhoneEdit" (click)="openPhoneModal()" src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid cursorPointer" alt="" />
             </div>
           </div>
         </div>
-        <div class="col-md-12 mt-4">
+        <div class="col-md-12 mt-4 adjustWidth">
           <p class="font18 font500 text-white mb-2 mt-2">Security</p>
         </div>
-        <div class="col-md-12 mt-4">
+        <div class="col-md-12 mt-4 adjustWidth">
           <label class="font16 font500 offWhiteText mx-1">
             Update Password
           </label>
-          <div
-            class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1"
-          >
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
             <div class="col">
               <p class="mb-0 font18 font500 text-white">*********</p>
             </div>
             <div class="col-auto">
-              <img
-                *ngIf="allowPasswordEdit"
-                (click)="openPasswordModal()"
-                src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid cursorPointer"
-                alt=""
-              />
+              <img *ngIf="allowPasswordEdit" (click)="openPasswordModal()" src="assets/img/singup-login/Group (1).svg"
+                class="img-fluid cursorPointer" alt="" />
             </div>
           </div>
         </div>
       </div>
     </form>
-    
+
   </div>
-  <div class="user-data-container col-md-6 col-lg-8 mt-4">
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
-  
+  <div class="user-data-container col-sm-12 col-md-6 col-lg-6 mt-4">
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth">
+
       <img src="assets/img/setting/privacy-setting.svg" class="img-fluid cursorPointer" alt="" />
       <p class="mb-0 font18 font500 text-white col-5">Privacy</p>
       <div class="col-6 d-flex justify-content-end position-relative" style="left: 35px;">
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="privacyCheckBox" [checked]="isPrivate">
+          <input type="checkbox" class="custom-control-input" id="privacyCheckBox" [(ngModel)]="isPrivate">
           <label class="custom-control-label" for="privacyCheckBox" (click)="switchSearchPrivacy()"></label>
         </div>
       </div>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
-  
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth">
+
       <img src="assets/img/setting/session-setting.svg" class="img-fluid cursorPointer" alt="" />
-  
+
       <p class="mb-0 font18 font500 text-white col-5">Session Data</p>
       <div class="col-6 d-flex justify-content-end cursorPointer" (click)="deleteSessionData()">
         <img src="assets/img/setting/delete-icon.svg" alt="" class="img-fluid">
       </div>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer" (click)="tvSignInClicked()">
-  
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer adjustWidth"
+      (click)="tvSignInClicked()">
+
       <img src="assets/img/setting/tv-setting.svg" class="img-fluid" alt="" />
       <p class="mb-0 font18 font500 text-white col-5">TV Sign In</p>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer" (click)="LogoutAlert(LogoutModal)">
-  
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer adjustWidth"
+      (click)="LogoutAlert(LogoutModal)">
+
       <img src="assets/img/setting/logout-setting.svg" class="img-fluid" alt="" />
       <p class="mb-0 font18 font500 text-white col-5">Logout</p>
     </div>
@@ -108,86 +89,36 @@
   <div class="modal-content modalBg">
     <div class="modal-body text-center">
       <div *ngIf="emailOTP">
-        <a
-          href="javascript:void(0)"
-          class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-          (click)="closeEmailModal()"
-        >
+        <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+          (click)="closeEmailModal()">
           <i class="fas fa-times-circle font20"></i>
         </a>
-        <app-otp-screen
-          *ngIf="isVerify"
-          [otpHeading]="'Enter Security Code'"
-          [otpSubHeading]="
+        <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
             'A security code has been sent to your mobile number and previous email address.'
-          "
-          [buttonText]="buttonText"
-          [codeForm]="codeForm"
-          (verfiyEmail)="verfiyEmail($event)"
-          [remainingTimer]="remainingTimer"
-          (resendUpdateEmail)="resendEmailUpdate()"
-          [display]="display"
-          [errorMessage]="errorMessage"
-          [errorCode]="errorCode"
-          (closePopUp)="closeEmailModal()"
-        ></app-otp-screen>
-        <app-otp-screen
-          *ngIf="!isVerify"
-          [otpHeading]="'Verify Your New Email Address'"
-          [otpSubHeading]="
+          " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
+          [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
+          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify Your New Email Address'" [otpSubHeading]="
             'Please enter the code sent to your new email address.'
-          "
-          [buttonText]="buttonText"
-          [codeForm]="codeForm"
-          (verfiyEmail)="confirmEmail($event)"
-          [remainingTimer]="remainingTimer"
-          (resendUpdateEmail)="resendUpdateEmail()"
-          [display]="display"
-          [errorMessage]="errorMessage"
-          [errorCode]="errorCode"
-          (closePopUp)="closeEmailModal()"
-        ></app-otp-screen>
+          " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
+          [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
+          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
       </div>
       <div *ngIf="!emailOTP">
-        <a
-          href="javascript:void(0)"
-          class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-          (click)="closePhoneModal()"
-        >
+        <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+          (click)="closePhoneModal()">
           <i class="fas fa-times-circle font20"></i>
         </a>
-        <app-otp-screen
-          *ngIf="isPhone"
-          [otpHeading]="'Enter Security Code'"
-          [otpSubHeading]="
+        <app-otp-screen *ngIf="isPhone" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
             'A security code has been sent to your previous mobile number and email address.'
-          "
-          [buttonText]="buttonText"
-          [codeForm]="codeForm"
-          (verfiyEmail)="verfiyPhone($event)"
-          [remainingTimer]="remainingTimer"
-          (resendUpdateEmail)="resendPhoneUpdate()"
-          [display]="display"
-          [errorMessage]="errorMessage"
-          [errorCode]="errorCode"
-          (closePopUp)="closePhoneModal()"
-        ></app-otp-screen>
-        <app-otp-screen
-          *ngIf="!isPhone"
-          [otpHeading]="'Verify Your New Phone Number'"
-          [otpSubHeading]="
+          " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
+          [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
+          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
+        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify Your New Phone Number'" [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
-          "
-          [buttonText]="buttonText"
-          [codeForm]="codeForm"
-          (verfiyEmail)="confirmPhone($event)"
-          [remainingTimer]="remainingTimer"
-          (resendUpdateEmail)="resendUpdatePhone()"
-          [display]="display"
-          [errorMessage]="errorMessage"
-          [errorCode]="errorCode"
-          (closePopUp)="closePhoneModal()"
-        ></app-otp-screen>
+          " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)"
+          [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display"
+          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
       </div>
     </div>
   </div>
@@ -196,11 +127,8 @@
 <ng-template #changeEmailModal>
   <div class="modal-content modalBg">
     <div class="modal-body">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-        (click)="closeEmailModal()"
-      >
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="closeEmailModal()">
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
@@ -210,23 +138,14 @@
         A Security code verification is required to make this change.
       </p>
       <form role="form">
-        <input
-          type="email"
-          class="form-control inputBorder font18 font500 text-white"
-          placeholder="New Email"
-          [formControl]="email"
-        />
-        <span *ngIf="emailErrored" class="font16 font500 errorGradientColor"
-          >*invalid email id</span
-        >
+        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email"
+          [formControl]="email" />
+        <span *ngIf="emailErrored" class="font16 font500 errorGradientColor">*invalid email id</span>
         <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
           *{{ errorMessage }}
         </p>
-        <button
-          class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          [ngClass]="{ mutedBg: endJourney }"
-          (click)="endJourney ? closeEmailModal() : updateEmail()"
-        >
+        <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
+          [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : updateEmail()">
           {{ buttonText }}
         </button>
       </form>
@@ -238,11 +157,8 @@
 <ng-template #changePhoneModal>
   <div class="modal-content modalBg">
     <div class="modal-body">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-        (click)="closePhoneModal()"
-      >
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="closePhoneModal()">
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
@@ -254,37 +170,22 @@
       <form role="form" [formGroup]="phoneForm">
         <div class="input-group inputBorder">
           <div class="input-group-append bgTransparent">
-            <select
-              class="select-form bgTransparent height52 inputFocus border-0 font18 font500 text-white"
-              formControlName="country_code"
-            >
-              <option
-                *ngFor="let code of countryCodes"
-                [value]="code"
-                class="text-white"
-              >
+            <select class="select-form bgTransparent height52 inputFocus border-0 font18 font500 text-white"
+              formControlName="country_code">
+              <option *ngFor="let code of countryCodes" [value]="code" class="text-white">
                 {{ code }}
               </option>
             </select>
           </div>
-          <input
-            type="tel"
-            class="form-control bgTransparent height52 font18 font500 text-white border-0"
-            placeholder="New Mobile Number"
-            formControlName="phone"
-          />
+          <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
+            placeholder="New Mobile Number" formControlName="phone" />
         </div>
-        <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor"
-          >*invalid mobile number</span
-        >
+        <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor">*invalid mobile number</span>
         <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
           *{{ errorMessage }}
         </p>
-        <button
-          class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          [ngClass]="{ mutedBg: endJourney }"
-          (click)="endJourney ? closePhoneModal() : updatePhone()"
-        >
+        <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
+          [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closePhoneModal() : updatePhone()">
           Confirm
         </button>
       </form>
@@ -295,11 +196,8 @@
 <ng-template #changePasswordModal>
   <div class="modal-content modalBg">
     <div class="modal-body">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
-        (click)="closePasswordModal()"
-      >
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="closePasswordModal()">
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 my-3 text-center">
@@ -309,58 +207,30 @@
         <div class="row pb-2">
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">Current Password</label>
-            <input
-              type="password"
-              class="form-control inputBorder font18 font500 text-white"
-              placeholder="Enter your current Password"
-              formControlName="oldPassword"
-            />
-            <span
-              *ngIf="oldPasswordErrored"
-              class="font16 font500 errorGradientColor"
-              >*Invalid password</span
-            >
+            <input type="password" class="form-control inputBorder font18 font500 text-white"
+              placeholder="Enter your current Password" formControlName="oldPassword" />
+            <span *ngIf="oldPasswordErrored" class="font16 font500 errorGradientColor">*Invalid password</span>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">New Password</label>
-            <input
-              type="password"
-              class="form-control inputBorder font18 font500 text-white"
-              placeholder="Enter your New Password"
-              formControlName="password"
-            />
+            <input type="password" class="form-control inputBorder font18 font500 text-white"
+              placeholder="Enter your New Password" formControlName="password" />
             <p class="font16 font500 muteText mb-0">
               Password should be at least 8 characters, 1 UPPERCASE, 1
               lowercase, 1 Symbol and 1 number.
             </p>
-            <span
-              *ngIf="passwordErrored"
-              class="font16 font500 errorGradientColor"
-              >*invalid password</span
-            >
+            <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor">*invalid password</span>
           </div>
           <div class="col-12 mt-4">
-            <label class="font16 font500 offWhiteText"
-              >Confirm New Password</label
-            >
-            <input
-              type="password"
-              class="form-control inputBorder font18 font500 text-white"
-              placeholder="Re-enter your New Password"
-              formControlName="confirmPassword"
-            />
-            <span
-              *ngIf="confirmPasswordErrored"
-              class="font16 font500 errorGradientColor"
-              >*password does not match</span
-            >
+            <label class="font16 font500 offWhiteText">Confirm New Password</label>
+            <input type="password" class="form-control inputBorder font18 font500 text-white"
+              placeholder="Re-enter your New Password" formControlName="confirmPassword" />
+            <span *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor">*password does not
+              match</span>
           </div>
         </div>
-        <button
-          class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
-          [disabled]="checkvalidationValue"
-          (click)="updatePassword()"
-        >
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
+          [disabled]="checkvalidationValue" (click)="updatePassword()">
           Confirm
         </button>
       </form>
@@ -374,23 +244,13 @@
     <div class="modal-body">
       <div class="row justify-content-center">
         <div class="col-9 text-center">
-          <img
-            src="assets/img/Logout.svg"
-            width="40"
-            class="img-fluid py-4"
-            alt=""
-          />
+          <img src="assets/img/Logout.svg" width="40" class="img-fluid py-4" alt="" />
           <p class="font16 font500 offWhiteText pb-3">Do you want to Logout?</p>
-          <button
-            (click)="logout()"
-            class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
-          >
+          <button (click)="logout()"
+            class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3">
             Yes
           </button>
-          <button
-            (click)="d('Cross click')"
-            class="btn btn-block text-white font16 font500 borderRadius60 border-0"
-          >
+          <button (click)="d('Cross click')" class="btn btn-block text-white font16 font500 borderRadius60 border-0">
             No
           </button>
         </div>
@@ -398,4 +258,3 @@
     </div>
   </div>
 </ng-template>
-
