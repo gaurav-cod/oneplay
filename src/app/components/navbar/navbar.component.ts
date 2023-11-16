@@ -550,7 +550,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
-    this.router.navigate(['settings/profile']);
+    // this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
