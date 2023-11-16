@@ -54,8 +54,8 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   getDisplayTimer() {
-      this.displayTimer = 60;
-      this.timer();
+    this.displayTimer = 60;
+    this.timer();
   }
 
   jump(event: any, index: number) {
@@ -105,13 +105,15 @@ export class OtpVerifyComponent implements OnInit {
       next: (token: any) => {
         this.router.navigate([`/reset-password/${token}`]);
       }, error: (error: any) => {
-        this.isWrongOTPEntered = true;
+
         this.errorCode = error.code;
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
           confirmButtonText: "Ok",
+        }).then(() => {
+          this.isWrongOTPEntered = true;
         });
       }
     })

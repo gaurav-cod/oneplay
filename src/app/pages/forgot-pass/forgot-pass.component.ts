@@ -66,7 +66,7 @@ export class ForgotPassComponent implements OnInit {
           this.forgotPasswordForm.controls['country_code'].setValue(
             contryCodeCurrencyMapping[res.currency]
           );
-        } 
+        }
       },
     });
   }
@@ -93,10 +93,10 @@ export class ForgotPassComponent implements OnInit {
         this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
       }, error: (error) => {
         Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
+          title: (error.code == '401' ? '' : error.code),
+          text: (error.code == '401' ? 'Sorry, the username and password do not match. Please try again.' : error.message),
+          imageUrl: (error.code == '401' ? "assets/img/swal-icon/Account.svg" : 'assets/img/error 1.svg'),
+          confirmButtonText: (error.code == '401' ? "Okay" : "Try Again"),
         })
       }
     })

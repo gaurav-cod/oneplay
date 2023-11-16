@@ -10,7 +10,7 @@
         </p>
       </div>
       <div class="col-md-12 mt-3">
-        <label for="" class="font16 font500 customOffWhite mb-0">Password
+        <label for="" class="font16 font500 customOffWhite mb-0 required">New Password
           <i class="fas fa-info-circle ml-1"
             ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
             placement="bottom" triggers="click:blur">
@@ -20,7 +20,7 @@
         <div class="input-group">
           <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
             class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-            placeholder="" />
+            placeholder="**********" />
           <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
             <button class="btn p-0 bgTransparent customOffWhite borderRadius0" type="button"
               (click)="showPassword = !showPassword">
@@ -32,14 +32,14 @@
         </div>
       </div>
       <div class="col-md-12 mt-4">
-        <label for="" class="font16 font500 customOffWhite mb-0">Confirm Password</label><span
+        <label for="" class="font16 font500 customOffWhite mb-0 required">Confirm New Password</label><span
           *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor float-right">
           *Password does not match
         </span>
         <div class="input-group">
           <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
             class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-            placeholder="" />
+            placeholder="**********" />
           <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
             <button class="btn p-0 bgTransparent customOffWhite borderRadius0" type="button"
               (click)="showConfirmPassword = !showConfirmPassword">
@@ -52,7 +52,7 @@
       </div>
       <div class="col-md-12 mt-5">
         <input type="button" [disabled]="checkvalidationValue" (click)="reset()"
-          class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Reset" />
+          class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Submit" />
       </div>
       <div class="col-md-12 pt-3 text-center margintop20">
         <p class="font20 font500 mt-lg-3 offWhiteColor">
