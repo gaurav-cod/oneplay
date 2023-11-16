@@ -90,14 +90,14 @@
         <img src="assets/img/setting/delete-icon.svg" alt="" class="img-fluid">
       </div>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer" (click)="tvSignInClicked()">
   
-      <img src="assets/img/setting/tv-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <img src="assets/img/setting/tv-setting.svg" class="img-fluid" alt="" />
       <p class="mb-0 font18 font500 text-white col-5">TV Sign In</p>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3">
+    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 cursorPointer" (click)="LogoutAlert(LogoutModal)">
   
-      <img src="assets/img/setting/logout-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <img src="assets/img/setting/logout-setting.svg" class="img-fluid" alt="" />
       <p class="mb-0 font18 font500 text-white col-5">Logout</p>
     </div>
   </div>
@@ -367,3 +367,35 @@
     </div>
   </div>
 </ng-template>
+
+
+<ng-template #LogoutModal let-d="dismiss">
+  <div class="modal-content position-relative modalBG">
+    <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-9 text-center">
+          <img
+            src="assets/img/Logout.svg"
+            width="40"
+            class="img-fluid py-4"
+            alt=""
+          />
+          <p class="font16 font500 offWhiteText pb-3">Do you want to Logout?</p>
+          <button
+            (click)="logout()"
+            class="btn btn-block linearGradient text-white font16 font500 borderRadius60 border-0 my-3"
+          >
+            Yes
+          </button>
+          <button
+            (click)="d('Cross click')"
+            class="btn btn-block text-white font16 font500 borderRadius60 border-0"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+

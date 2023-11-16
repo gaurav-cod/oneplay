@@ -29,6 +29,7 @@ import { phoneValidator } from "src/app/utils/validators.util";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 // import { EventEmitter } from "stream";
 import Swal from "sweetalert2";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-security",
@@ -54,6 +55,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   private emailIconHideTimer: NodeJS.Timeout;
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
+  private logoutRef: NgbModalRef;
 
   errorMessage: string;
   errorCode: number;
@@ -107,7 +109,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly router: Router
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -542,6 +545,30 @@ export class SecurityComponent implements OnInit, OnDestroy {
           text: err.message,
         });
       },
+    });
+  }
+
+  tvSignInClicked() {
+    this.logDropdownEvent('tvSignInClicked');
+    this.router.navigate(['/tv']);
+  }
+
+  async logout() {
+    this.logoutRef.close();
+    this.logDropdownEvent("logOutConfirmClicked");
+    // wait for countly to send the req before deleting the session
+    await new Promise((r) => setTimeout(r, 500));
+    // this.messagingService.removeToken().finally(() => {
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
+    this.authService.loggedOutByUser = true;
+    this.authService.logout();
+    // });
+  }
+  LogoutAlert(container) {
+    this.logDropdownEvent("logOutClicked");
+    this.logoutRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
     });
   }
 }
