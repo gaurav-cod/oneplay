@@ -67,6 +67,14 @@ export class ForgotPassComponent implements OnInit {
             contryCodeCurrencyMapping[res.currency]
           );
         }
+        if (res.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
       },
     });
   }
