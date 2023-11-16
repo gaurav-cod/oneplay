@@ -17,16 +17,16 @@ export class GeneralSettingsComponent {
   generalSettingRedirection(type: "FAQ" | "TERMS" | "SUPPORT" | "PRIVACY_POLICY") {
     switch (type) {
       case 'FAQ':
-        window.open(environment.domain + '/FAQs.html');
+        window.open(environment.domain + '/FAQs.html', '_self');
         break;
       case 'TERMS':
-        window.open(environment.domain + '/tnc.html');
+        window.open(environment.domain + '/tnc.html', '_self');
         break;
       case 'SUPPORT':
-        // window.open(environment.domain + '/FAQs.html');
+        window.open(environment.domain + '/contact.html', '_self');
         break;
       case "PRIVACY_POLICY":
-        window.open(environment.domain + '/privacy.html');
+        window.open(environment.domain + '/privacy.html', '_self');
         break;
     }
   }
