@@ -16,7 +16,7 @@
 
         </div>
         <div class="col text-center align-self-center my-4">
-            <p class="font16 font500 mb-0 darkGrey" *ngIf="!isWrongOTPEntered">Didn't Receive code?
+            <p class="font16 font500 mb-0 darkGrey" *ngIf="!isWrongOTPEntered">Didn't Receive Code?
                 <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in 00 : {{displayTimer}} </span>
                 <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
                     OTP</span>
@@ -27,7 +27,7 @@
                     <span class="offWhiteText">, Please check</span>
                 </div>
                 <div>
-                    <span class="offWhiteText">carfully or </span>
+                    <span class="offWhiteText">carefully or </span>
                     <span class="offWhiteText" *ngIf="!showResentOTPButton">Resend in 00 : {{displayTimer}} </span>
                     <span class="offWhiteText cursor-pointer" (click)="resendOTP()" *ngIf="showResentOTPButton">Resend
                         OTP</span>

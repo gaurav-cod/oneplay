@@ -1,16 +1,16 @@
 <form role="form" *ngIf="!resetemail">
   <div class="row mt-4">
     <div class="col-md-12">
-      <h1 class="text-white font30 font800 textCenterCustom">
+      <h1 class="text-white text-center font30 font800 textCenterCustom">
         Forgot Password
       </h1>
-      <p class="font20 font500 offWhiteColor mt-4">
-        Enter the email address or phone number associated with your account.
+      <p class="font20 font500 text-center offWhiteColor mt-4">
+        Enter the email address or phone number linked to your account
       </p>
     </div>
     <form [formGroup]="forgotPasswordForm" role="form" autocomplete="off" class="col-md-12 mt-3">
       <div class="col-md-12 mt-3 email-container">
-        <label class="font16 font500 customOffWhite required">Email</label><span *ngIf="emailErrored"
+        <label class="font16 font500 customOffWhite">Email Address</label><span *ngIf="emailErrored"
           class="font16 font500 errorGradientColor float-right">*invalid email</span>
         <div class="input-group">
           <input type="email" formControlName="email"
@@ -24,7 +24,7 @@
         <div class="right-divider border"></div>
       </div>
       <div class="col-md-12 mt-4 mobile-container">
-        <label class="font16 font500 customOffWhite required">Phone</label>
+        <label class="font16 font500 customOffWhite">Phone Number</label>
         <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor float-right">*invalid phone number</span>
         <div class="input-group border-bottomInput borderRadius0">
           <div class="input-group-append borderRadius0">
@@ -38,12 +38,12 @@
           </div>
           <input type="tel" formControlName="phone"
             class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-            placeholder="9999999999" />
+            placeholder="Mobile Number" />
         </div>
       </div>
       <div class="col-md-12 mt-5">
         <input type="button" [disabled]="checkvalidationValue" (click)="submit()"
-          class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Submit" />
+          class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Next" />
       </div>
     </form>
     <div class="col-md-12 pt-3 text-center margintop20">
