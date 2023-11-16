@@ -126,9 +126,6 @@ export class OtpVerifyComponent implements OnInit {
           confirmButtonText: "Ok",
         }).then(() => {
           this.isWrongOTPEntered = true;
-          if (this.errorCode == 429) {
-            this.isMaxOTPLimitRechead = true;
-          }
         });
       }
     })
@@ -145,6 +142,10 @@ export class OtpVerifyComponent implements OnInit {
           text: error.message,
           icon: "error",
           confirmButtonText: "Ok",
+        }).then(() => {
+          if (error.code == 429) {
+            this.isMaxOTPLimitRechead = true;
+          }
         });
       }
     })
