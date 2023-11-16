@@ -40,7 +40,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
     private readonly restService: RestService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.title.setTitle("OnePlay | Settings");
@@ -63,8 +63,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userSubscription?.unsubscribe();
   }
 
- 
-  
+
+
 
   // async logout() {
   //   this.logoutRef.close();
@@ -144,5 +144,5 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  
+
 }

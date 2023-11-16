@@ -543,6 +543,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToSubscriptionPage() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        if (response?.length === 0) {
+          this.logDropdownEvent('subscriptionClicked');
+          window.open(environment.domain + '/subscription.html', '_self');
+        } else {
+          this.router.navigate(['/settings/subscription']);
+        }
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+    // domain + '/subscription.html'
+  }
+
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     // this.isMenuCollapsed = true;
 
