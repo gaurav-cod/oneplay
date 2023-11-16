@@ -101,6 +101,7 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     GameplayHistoryComponent,
     PaymentComponent,
     ChatBottomSheetComponent,
+    GeneralSettingsComponent
   ],
 })
 export class ComponentsModule {}
