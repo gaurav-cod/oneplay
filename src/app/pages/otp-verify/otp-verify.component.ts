@@ -52,6 +52,17 @@ export class OtpVerifyComponent implements OnInit {
 
     this.getDisplayTimer();
   }
+  ngAfterViewInit(): void {
+    this.rows._results[0].nativeElement.addEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
+  ngOnDestroy(): void {
+
+    this.rows._results[0].nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
 
   getDisplayTimer() {
     this.displayTimer = 60;
@@ -133,6 +144,20 @@ export class OtpVerifyComponent implements OnInit {
         });
       }
     })
+  }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{6}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.codeForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[5].nativeElement.focus();
+    }
   }
 
   goToLogin() {
