@@ -13,6 +13,7 @@ export class OtpVerifyComponent implements OnInit {
 
   displayTimer: any = 60;
   errorCode: number = null;
+  isMaxOTPLimitRechead: boolean = false;
 
   form: UntypedFormGroup;
   senderMobileNumber: string = null;
@@ -125,6 +126,9 @@ export class OtpVerifyComponent implements OnInit {
           confirmButtonText: "Ok",
         }).then(() => {
           this.isWrongOTPEntered = true;
+          if (this.errorCode == 429) {
+            this.isMaxOTPLimitRechead = true;
+          }
         });
       }
     })
