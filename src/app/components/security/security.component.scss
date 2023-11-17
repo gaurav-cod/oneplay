@@ -14,3 +14,21 @@
     background-color: transparent !important;
     height: 52px !important;
 }
+
+@media (min-width: 475px) and (max-width: 700px) {
+    .adjustWidth {
+        width: 70% !important;
+    }
+}
+
+@media (min-width: 750px) and (max-width: 1200px) {
+    .mainContainer {
+        display: flex;
+        align-items: center;
+
+        .font500 {
+            font-size: 14px !important;
+        }
+
+    }
+}
