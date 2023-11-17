@@ -16,13 +16,13 @@ export class SuccessMessageComponent implements OnInit {
   intervalRef: any;
 
   ngOnInit(): void {
-    this.intervalRef = setInterval(()=> {
-      this.timer--;
-      if (this.timer === 0) {
-        clearInterval(this.intervalRef);
-        this.goToLoginPage();
-      }
-    }, 1000);
+    // this.intervalRef = setInterval(()=> {
+    //   this.timer--;
+    //   if (this.timer === 0) {
+    //     clearInterval(this.intervalRef);
+    //     this.goToLoginPage();
+    //   }
+    // }, 1000);
   }
 
   goToLoginPage() {
