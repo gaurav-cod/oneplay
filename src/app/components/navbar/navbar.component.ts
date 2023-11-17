@@ -215,7 +215,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -543,12 +543,34 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToSubscriptionPage() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        if (response?.length === 0) {
+          this.logDropdownEvent('subscriptionClicked');
+          window.open(environment.domain + '/subscription.html', '_self');
+        } else {
+          this.router.navigate(['/settings/subscription']);
+        }
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+    // domain + '/subscription.html'
+  }
+
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     // this.isMenuCollapsed = true;
+
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
+    // this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {

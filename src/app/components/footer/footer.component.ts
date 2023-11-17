@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { CustomCountlyEvents } from 'src/app/services/countly';
 import { CountlyService } from 'src/app/services/countly.service';
 import { genDefaultWebsiteFooterViewSegments } from 'src/app/utils/countly.util';
@@ -11,10 +12,19 @@ import { environment } from 'src/environments/environment';
 })
 export class FooterComponent implements OnInit {
   test: Date = new Date();
+  isInSettingPage: boolean = false; // need to remove footer link when in setting page
 
   constructor(
-    private readonly countlyService: CountlyService
-  ) { }
+    private readonly countlyService: CountlyService,
+    private readonly router: Router
+  ) {
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.isInSettingPage = this.router.url.includes("settings");
+      }
+    });
+  }
 
   ngOnInit() {
   }
