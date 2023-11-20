@@ -141,7 +141,6 @@ export interface CustomTimedCountlyEvents {
   websiteDecentralizationView: {
     connectWithUsClicked: "yes" | "no";
   };
-
   signUpFormSubmitted: {
     name: "yes" | "no";
     email: "yes" | "no";
@@ -197,26 +196,9 @@ export interface CustomTimedCountlyEvents {
     passwordChanged: "yes" | "no";
     logoutFromAllClicked: "yes" | "no";
   };
-  subscriptionConfirmPlan: {
-    selection: "yes" | "no";
-  };
-  // todo: payment details
-  subscriptionPaymentView: {
-    country: string;
-    state: string;
-    mode: "credit" | "debit" | "upi" | "netBanking";
-  };
-  subscriptionPaymentDone: {
-    result: "success" | "failure";
-    type: "newPurchase" | "renewal";
-    failReason:
-      | "card"
-      | "quota"
-      | "validation"
-      | "connection"
-      | "authentication"
-      | "other";
-    [XCountlySUM]: number;
+  subscriptionCheckOut: {
+    couponApplied: "yes" | "no";
+    paymentOption: "stripe" | "billdesk";
   };
   searchResultsViewMoreGames: {
     keywords: string;
