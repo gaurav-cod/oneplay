@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
-import { XCountlySUM } from "src/app/services/countly";
+import { CustomCountlyEvents, XCountlySUM } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
@@ -41,6 +41,7 @@ export class SubscriptionsComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
+    private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly countlyService: CountlyService
   ) {}
@@ -56,7 +57,7 @@ export class SubscriptionsComponent implements OnInit {
       this.isCurrentLoading = false;
       for (let sub = 0; sub < this.currentSubscriptions.length; sub++) {
         const element = this.currentSubscriptions[sub];
-        if(element.isUnlimited) {
+        if (element.isUnlimited) {
           this.isUnlimited = true;
           break;
         }
@@ -172,12 +173,64 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   onRenew(sub: SubscriptionModel) {
-    this.countlyService.addEvent("subscriptionCardClick", {
-      [`${sub.planName.replace(/\s/g, "")}${sub.amount}Clicked`]: "yes",
-      cta: "renew",
-      source: "settingsPage",
-      [XCountlySUM]: sub.amount,
+    Swal.fire({
+      title: "Ready to unlock?",
+      html:
+        sub.planType === "base"
+          ? "Once the current one expires, this subscription pack will start."
+          : "You are about to pay for the chosen subscription plan.",
+      imageUrl: "assets/img/error/payment.svg",
+      showDenyButton: true,
+      showCloseButton: true,
+      confirmButtonText: "Renew",
+      cancelButtonText: "No",
+      denyButtonText: "Change plan",
+      customClass: "swalPadding",
+    }).then(async (result) => {
+      if (result.isConfirmed || result.isDenied) {
+        this.addSubCardEvent("renew", sub);
+      }
+      if (result.isConfirmed) {
+        if (sub.isLiveForPurchase) {
+          this.router.navigateByUrl("/dashboard/checkout/" + sub.planId);
+        } else {
+          window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+        }
+      } else if (result.isDenied) {
+        window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+      }
     });
+  }
+
+  buyTopUp(sub: SubscriptionModel) {
+    this.addSubCardEvent("topUp", sub);
+    window.location.href = environment.domain + "/subscription.html";
+  }
+
+  buyNow() {
+    this.addSubCardEvent("buyNow");
+    window.location.href = environment.domain + "/subscription.html";
+  }
+
+  private addSubCardEvent(
+    cta: "renew" | "topUp" | "buyNow",
+    sub?: SubscriptionModel
+  ) {
+    const data: CustomCountlyEvents["subscriptionCardClick"] = {
+      cta,
+      source: "settingsPage",
+      [XCountlySUM]: 0,
+    };
+    if (sub) {
+      const hours = Math.round(sub.tokens / 60);
+      const planName = sub.planName.replace(/\s/g, "");
+      const key = `${hours}${hours > 1 ? "hrs" : "hr"}${planName}Inr${
+        sub.amount
+      }Clicked`;
+      data[key] = "yes";
+      data[XCountlySUM] = sub.amount;
+    }
+    this.countlyService.addEvent("subscriptionCardClick", data);
   }
 
   calculatePercentage(remaining = 0, total = 0) {
