@@ -566,6 +566,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     // this.isMenuCollapsed = true;
 
+    this.toggleFriends.emit("profileClicked");
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
