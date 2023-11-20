@@ -75,10 +75,8 @@
                   Buy Top-up
                 </a>
                 <a
+                  href="javascript:void(0)"
                   *ngIf="isAboutToExpire(sub.endsAt)"
-                  [routerLink]="['/settings', 'subscription']"
-                  [queryParams]="{ renew: sub.planId, minutes: sub.tokens, isLiveForPurchase: sub.isLiveForPurchase }"
-                  replaceUrl
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
