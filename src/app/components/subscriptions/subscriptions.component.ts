@@ -175,7 +175,10 @@ export class SubscriptionsComponent implements OnInit {
   onRenew(sub: SubscriptionModel) {
     Swal.fire({
       title: "Ready to unlock?",
-      html: this.getSwalTextForBasePlan(sub),
+      html:
+        sub.planType === "base"
+          ? "Once the current one expires, this subscription pack will start."
+          : "You are about to pay for the chosen subscription plan.",
       imageUrl: "assets/img/error/payment.svg",
       showDenyButton: true,
       showCloseButton: true,
@@ -209,7 +212,10 @@ export class SubscriptionsComponent implements OnInit {
     window.location.href = environment.domain + "/subscription.html";
   }
 
-  private addSubCardEvent(cta: "renew" | "topUp" | "buyNow", sub?: SubscriptionModel) {
+  private addSubCardEvent(
+    cta: "renew" | "topUp" | "buyNow",
+    sub?: SubscriptionModel
+  ) {
     const data: CustomCountlyEvents["subscriptionCardClick"] = {
       cta,
       source: "settingsPage",
@@ -225,16 +231,6 @@ export class SubscriptionsComponent implements OnInit {
       data[XCountlySUM] = sub.amount;
     }
     this.countlyService.addEvent("subscriptionCardClick", data);
-  }
-
-  private getSwalTextForBasePlan(sub: SubscriptionModel) {
-    if (
-      sub.planType === "base" &&
-      this.currentSubscriptions.some((s) => s.planType === "base")
-    ) {
-      return "Once the current one expires, this subscription pack will start.";
-    }
-    return "You are about to pay for the chosen subscription plan.";
   }
 
   calculatePercentage(remaining = 0, total = 0) {
