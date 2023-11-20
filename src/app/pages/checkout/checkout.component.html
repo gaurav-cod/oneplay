@@ -1,6 +1,6 @@
 <div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-8 col-md-12">
+    <div *ngIf="!!subscriptionPacakage" class="col-12 col-lg-8 col-md-12">
       <a href="javascript:void(0)" (click)="backButton(subscriptionPacakage)">
         <img src="assets/img/Arrow_Right_Large.svg" class="img-fluid mr-3" width="28" alt="" />
       </a>
@@ -29,7 +29,7 @@
               </p>
             </div>
           </div>
-          <div class="row mt-3" *ngIf="subscriptionPacakage.type == 'base' && is_base_plan_active == 1">
+          <div class="row mt-3" *ngIf="is_upcoming_plan">
             <div class="col-auto align-self-center offWhiteText pr-0">
               <p class="font16 font500">&nbsp;</p>
             </div>
@@ -80,13 +80,13 @@
               <label class="font16 font500 muteText">Have a Coupon?</label>
               <div class="input-group">
                 <input type="text" [formControl]="coupon_code" maxlength="20"
-                  class="form-control form-control-lg inputBox border-0" [readonly]="coupon_code_apply_text != 'APPLY'"
+                  class="form-control form-control-lg inputBox border-0" [readonly]="!!applied_coupon_code"
                   placeholder="Enter coupon code" />
                 <div class="input-group-append">
                   <span class="input-group-text p-0 inputBox border-0" id="basic-addon2">
-                    <button class="btn " [ngClass]="{'customgradientText': coupon_code_apply_text == 'APPLY'}"
+                    <button class="btn " [ngClass]="{'customgradientText': !applied_coupon_code}"
                       [disabled]="coupon_code.invalid"
-                      (click)="handleApplyCoupon(subscriptionPacakage)">{{coupon_code_apply_text}}</button>
+                      (click)="handleApplyCoupon(subscriptionPacakage)">{{ !applied_coupon_code ? 'APPLY' : 'REMOVE' }}</button>
                   </span>
                 </div>
               </div>
@@ -171,7 +171,7 @@
       <div class="row justify-content-end mt-4 mt-lg-5 mx-5 mx-md-0">
         <div class="col-12 col-md-5 col-lg-4">
 
-          <button (click)="handlePaymentCheckout()" [ngClass]="{'mutedBg': selected_payment_source == ''}"
+          <button (click)="handlePaymentCheckout()" [ngClass]="{'mutedBg': !selected_payment_source}"
             class="btn btn-block text-white font18 font500 customBorder0 customLinearGradient ">
             Proceed
           </button>
@@ -181,88 +181,7 @@
   </div>
 </div>
 
-
-
-<ng-template #paymentModal let-d="dismiss">
-  <div class="modal-content position-relative modalBG stripeModal">
-    <a href="javascript:void(0)" class="position-absolute btn btn-github p-0 rounded-circle top-2 right-1"
-      (click)="d('Cross click')">
-      <i class="fas fa-times-circle"></i>
-    </a>
-    <div class="modal-body text-center">
-      <h1 class="modalHeading text-white">Choose your payment method</h1>
-      <div class="row mt-3">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
-          <a href="javascript:void(0)" (click)="handlePayWithBilldesk()">
-            <div class="card border-0 cardBG p-4">
-              <span class="freeTag px-2 recommended tagText">RECOMMENDED</span>
-              <img src="assets/img/payment/Group 5.svg" class="height60" alt="" />
-            </div>
-          </a>
-          <p class="subHeading my-2">
-            UPI, Debit Card, Netbanking
-          </p>
-        </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 mt-3">
-          <a href="javascript:void(0)" (click)="handlePayWithStripe()">
-            <div class="card border-0 cardBG p-4">
-              <img src="assets/img/payment/Vector.svg" class="height60" alt="" />
-            </div>
-          </a>
-          <p class="subHeading my-2">Debit Card & Credit Card</p>
-        </div>
-        <!-- <div class="col-sm-6 col-md-6 col-lg-4 mt-3">
-            <a href="javascript:void(0)" (click)="handlePayWithUPI()">
-              <div class="card border-0 cardBG p-4">
-                <span class="skyBgGradient px-2  recommended tagText">BETA</span>
-                <img
-                  src="assets/img/payment/UPI-Logo.svg"
-                  class="height60"
-                  alt=""
-                />
-              </div>
-            </a>
-            <p class="subHeading my-2">
-              Pay through any UPI app
-            </p>
-          </div> -->
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #upiPaymentModal let-d="dismiss">
-  <div class="modal-content position-relative modalBG stripeModal">
-    <div class="borderBottomTab p-3 text-center">
-      <h1 class="modalHeading text-white mb-0">Scan to Pay!</h1>
-      <a href="javascript:void(0)" class="position-absolute btn p-0 rounded-circle top-2 right-1"
-        (click)="d('Cross click')">
-        <i class="fas fa-times-circle text-white"></i>
-      </a>
-    </div>
-    <div class="modal-body text-center">
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div class="font16 font500 text-white br6 redBtn p-2 blink_bg">
-            To begin your subscription, send your payment screenshot and oneplay username to <a
-              href="mailto:support@oneplay.in" class="text-white text-underline">support@oneplay.in</a> or
-            share them in our <a href="https://discord.com/invite/Cg4ZskStE2" class="text-white text-underline">Discord
-              channel</a>.
-          </div>
-          <div class="row mt-4 justify-content-center">
-            <div class="col-lg-4 col-md-5 col-sm-9 col-10 bg-white borderRadius50 p-3">
-              <img src="assets/img/payment/scanner.jpg" class="img-fluid" alt="" />
-            </div>
-          </div>
-          <button class="btn linearGradient border-top-0 border-left-0 border-right-0 text-white px-5 mt-4"
-            (click)="d('Cross click')">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #stripeModal let-c="cose">
+<ng-template #stripeModal>
   <div class="modal-content position-relative modalBG stripeModal">
     <form (submit)="onPay()">
       <div class="modal-body borderBottomTab">
