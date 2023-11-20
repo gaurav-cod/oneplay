@@ -80,7 +80,7 @@ export interface CustomCountlyEvents {
   };
   subscriptionCardClick: {
     source: "settingsPage";
-    cta: "renew";
+    cta: "renew" | "topUp" | "buyNow" | "select";
     [XCountlySUM]: number;
   };
   SubscriptionConfirmPayment: {

@@ -15,7 +15,7 @@
             <p class="font20 font500 text-white mb-0">Unlock the ultimate beast, offer ends soon!</p>
           </div>
           <div class="col-auto align-self-center p-0">
-            <a [href]="domain + '/subscription.html'" class="btn btnGradient border-0 text-white">Buy Now</a>
+            <a href="javascript:void(0)" (click)="buyNow()" class="btn btnGradient border-0 text-white">Buy Now</a>
           </div>
         </div>
       </div>
@@ -67,8 +67,9 @@
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
-                  [href]="domain + '/subscription.html#Hourly_Plan'"
+                  href="javascript:void(0)"
                   *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
+                  (click)="buyTopUp(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Buy Top-up
