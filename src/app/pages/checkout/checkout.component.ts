@@ -56,7 +56,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.countlyService.startEvent("subscriptionCheckOut");
+    this.countlyService.startEvent("subscriptionCheckOut", {
+      discardOldData: true,
+    });
     this.querySubscriptions = combineLatest([
       this.route.params,
       this.route.queryParams,
