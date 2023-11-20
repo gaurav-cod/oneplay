@@ -22,31 +22,6 @@ export const getGameLandingViewSource =
     }
   };
 
-export const mapStripeErrorsToSubscriptionPaymentDone = (
-  error: StripeErrorType
-): CustomTimedCountlyEvents["subscriptionPaymentDone"]["failReason"] => {
-  switch (error) {
-    case "api_error":
-      return "connection";
-    case "api_connection_error":
-      return "connection";
-    case "authentication_error":
-      return "authentication";
-    case "card_error":
-      return "card";
-    case "idempotency_error":
-      return "authentication";
-    case "invalid_request_error":
-      return "validation";
-    case "rate_limit_error":
-      return "quota";
-    case "validation_error":
-      return "validation";
-    default:
-      return "other";
-  }
-};
-
 export const mapResolutionstoGamePlaySettingsPageView = (
   resolution: string
 ): CustomTimedCountlyEvents["gamePlaySettingsPageView"]["resolution"] => {
