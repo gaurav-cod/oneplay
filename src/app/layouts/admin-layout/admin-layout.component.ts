@@ -34,7 +34,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly gameService: GameService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initAuth();
@@ -87,12 +87,17 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.userCanGameSubscription.unsubscribe();
   }
 
-  toggleFriendsCollapsed() {
-    if (this.friendsCollapsed) {
-      this.initFriends();
-      this.initParties();
+  toggleFriendsCollapsed(event: string | undefined = undefined) {
+    if (event != "profileClicked") {
+      if (this.friendsCollapsed) {
+        this.initFriends();
+        this.initParties();
+      }
+
+      this.friendsCollapsed = !this.friendsCollapsed;
+    } else {
+      this.friendsCollapsed = true;
     }
-    this.friendsCollapsed = !this.friendsCollapsed;
   }
 
   private initAuth() {
