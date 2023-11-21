@@ -45,7 +45,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.setOnline();
     this.initGames();
     this.initPushNotification();
-    this.checkSessionCount();
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
@@ -159,15 +158,5 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
       });
-  }
-
-  checkSessionCount() {
-    this.restService.checkCasualGamingSession().subscribe({
-      next: (response: any) => {
-        this.showCasualGamingLabel = response.is_new;
-      }, error: () => {
-        this.showCasualGamingLabel = false;
-      }
-    })
   }
 }

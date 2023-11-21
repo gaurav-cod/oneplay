@@ -4,7 +4,7 @@
     (toggleCollapse)="toggleFriendsCollapsed()"
   ></app-chat-bottom-sheet>
   <!-- Top navbar -->
-  <app-navbar (toggleFriends)="toggleFriendsCollapsed($event)" [showCasualGamingLabel]="showCasualGamingLabel"></app-navbar>
+  <app-navbar (toggleFriends)="toggleFriendsCollapsed($event)" ></app-navbar>
   <!-- Pages -->
   <div
     class="container-fluid"
@@ -17,7 +17,7 @@
       <app-footer></app-footer>
     </div>
   </div>
-  <app-bottom-nav (toggleFriends)="toggleFriendsCollapsed()" [showCasualGamingLabel]="showCasualGamingLabel"></app-bottom-nav>
+  <app-bottom-nav (toggleFriends)="toggleFriendsCollapsed()"></app-bottom-nav>
 </div>
 
 <app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>
