@@ -59,6 +59,7 @@
           <span class="font14 font500 navigation-text text-gray">Game</span>
         </div>
       </a>
+      
       <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
@@ -77,7 +78,6 @@
             width="36px"
             height="36px"
           />
-          <!-- <span *ngIf="isGameRunning && isUserLive" id="live">LIVE</span> -->
           <img
             *ngIf="isGameRunning && !isUserLive"
             src="assets/img/Dashboard/resumeSpeedtest.svg"
@@ -99,7 +99,7 @@
           <span class="font14 font500 navigation-text text-gray">Live</span>
         </div>
       </a>
-      <a
+      <!-- <a
         href="javascript:void(0)"
         class="navbar-nav text-center"
         [routerLink]="['speed-test']"
@@ -109,6 +109,25 @@
           <img src="assets/img/navbar/test-icon.svg" alt="test" *ngIf="selectedBottomNav !== 'SPEED_TEST'" />
           <img src="assets/img/navbar/test-icon_active.svg" alt="test" *ngIf="selectedBottomNav === 'SPEED_TEST'" />
           <span class="font14 font500 navigation-text text-gray">Test</span>
+        </div>
+      </a> -->
+      <a href="https://www.gamezop.com/" target="_blank" class="navbar-nav text-center" (click)="goToCasualGamingPage()">
+        <div class="iconContainer">
+          <div class="label" *ngIf="showCasualGamingLabel">
+            <img 
+              src="assets/img/navbar/new-label-side.svg"
+              alt="casual gaming"
+              width="36px"
+            height="36px"
+              >
+            <img 
+              src="assets/img/navbar/new-label.svg"
+              alt="casual gaming"
+              width="36px"
+            height="36px"
+              >
+          </div>
+          <span class="font14 font500 navigation-text text-gray">Level 1</span>
         </div>
       </a>
       <a

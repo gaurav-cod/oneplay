@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild("search") searchElement: ElementRef;
 
   isMenuCollapsed = true;
+  @Input() showCasualGamingLabel: boolean = false;
 
   get actions(): {
     [key in "add" | "accept" | "decline" | "cancel" | "wait" | "none"]: {
@@ -561,6 +563,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     })
     // domain + '/subscription.html'
+  }
+
+  goToCasualGamingPage() {
+    
+    if (!this.showCasualGamingLabel)
+      return;
+
+    this.restService.visitCasulGamingSection().subscribe({
+      next: (response: any)=> {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: (error)=> {
+       
+      }, complete: ()=> {
+        window.open("https://www.gamezop.com/");
+      }
+    })
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {

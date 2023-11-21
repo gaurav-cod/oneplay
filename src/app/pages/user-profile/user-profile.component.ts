@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { CustomCountlyEvents } from "src/app/services/countly";
@@ -36,6 +36,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly title: Title,
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
@@ -63,6 +64,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userSubscription?.unsubscribe();
   }
 
+  redirectToSpeedTest() {
+    this.router.navigate(['/speed-test']);
+  }
 
 
 

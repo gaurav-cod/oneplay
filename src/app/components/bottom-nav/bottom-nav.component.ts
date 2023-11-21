@@ -6,6 +6,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
+  Input,
 } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -53,6 +54,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   downloadAlert: boolean = true;
 
   private routerSub: Subscription;
+
+  @Input() showCasualGamingLabel: boolean = false;
 
   constructor(
     private readonly messagingService: MessagingService,
@@ -174,6 +177,20 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       modalDialogClass: "modal-md",
       scrollable: true,
     });
+  }
+
+  goToCasualGamingPage() {
+
+    if (!this.showCasualGamingLabel)
+      return;
+
+    this.restService.visitCasulGamingSection().subscribe({
+      next: (response: any)=> {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: (error)=> {
+        
+      }
+    })
   }
 
   getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {

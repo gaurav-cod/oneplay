@@ -24,6 +24,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
+  
+  showCasualGamingLabel: boolean = false;
 
   constructor(
     private readonly restService: RestService,
@@ -43,6 +45,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.setOnline();
     this.initGames();
     this.initPushNotification();
+    this.checkSessionCount();
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
@@ -88,6 +91,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
+
     if (event != "profileClicked") {
       if (this.friendsCollapsed) {
         this.initFriends();
@@ -155,5 +159,15 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
       });
+  }
+
+  checkSessionCount() {
+    this.restService.checkCasualGamingSession().subscribe({
+      next: (response: any) => {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: () => {
+        this.showCasualGamingLabel = false;
+      }
+    })
   }
 }
