@@ -13,6 +13,7 @@ export class OtpVerifyComponent implements OnInit {
 
   displayTimer: any = 60;
   errorCode: number = null;
+  isMaxOTPLimitRechead: boolean = false;
 
   form: UntypedFormGroup;
   senderMobileNumber: string = null;
@@ -52,10 +53,21 @@ export class OtpVerifyComponent implements OnInit {
 
     this.getDisplayTimer();
   }
+  ngAfterViewInit(): void {
+    this.rows._results[0].nativeElement.addEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
+  ngOnDestroy(): void {
+
+    this.rows._results[0].nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
+  }
 
   getDisplayTimer() {
-      this.displayTimer = 60;
-      this.timer();
+    this.displayTimer = 60;
+    this.timer();
   }
 
   jump(event: any, index: number) {
@@ -105,13 +117,15 @@ export class OtpVerifyComponent implements OnInit {
       next: (token: any) => {
         this.router.navigate([`/reset-password/${token}`]);
       }, error: (error: any) => {
-        this.isWrongOTPEntered = true;
+
         this.errorCode = error.code;
         Swal.fire({
           title: "Error Code: " + error.code,
           text: error.message,
           icon: "error",
           confirmButtonText: "Ok",
+        }).then(() => {
+          this.isWrongOTPEntered = true;
         });
       }
     })
@@ -128,9 +142,27 @@ export class OtpVerifyComponent implements OnInit {
           text: error.message,
           icon: "error",
           confirmButtonText: "Ok",
+        }).then(() => {
+          if (error.code == 429) {
+            this.isMaxOTPLimitRechead = true;
+          }
         });
       }
     })
+  }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{6}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.codeForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[5].nativeElement.focus();
+    }
   }
 
   goToLogin() {

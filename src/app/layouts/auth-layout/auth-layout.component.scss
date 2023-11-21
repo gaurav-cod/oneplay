@@ -38,6 +38,13 @@
   }
 }
 
+.routing-container {
+  @media (max-width: 475px) {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
 .borderBottom {
   border-bottom: 1px solid #3e4246;
 }

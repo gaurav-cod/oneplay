@@ -30,6 +30,20 @@
   }
 }
 
+@media (max-width: 475px) {
+
+  .email-container,
+  .mobile-container,
+  .form-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .errorGradientColor {
+    margin-top: 3px !important;
+  }
+}
+
 .footerWhiteColor {
   color: #E1E1E1;
 }

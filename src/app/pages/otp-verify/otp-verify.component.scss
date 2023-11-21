@@ -17,6 +17,11 @@
         width: 30px;
         height: 30px;
     }
+
+    @media (min-width: 372px) and (max-width: 450px) {
+        height: 40px !important;
+        width: 40px !important;
+    }
 }
 
 .cursor-pointer {
