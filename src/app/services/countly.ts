@@ -78,16 +78,6 @@ export interface CustomCountlyEvents {
     logOutClicked: "yes" | "no";
     logOutConfirmClicked: "yes" | "no";
   };
-  subscriptionCardClick: {
-    source: "settingsPage";
-    cta: "renew" | "topUp" | "buyNow" | "select";
-    [XCountlySUM]: number;
-  };
-  SubscriptionConfirmPayment: {
-    paymentConfirmed: "yes" | "no";
-    type: "newPurchase" | "renewal";
-    [XCountlySUM]: number;
-  };
   search: {
     keywords: string;
     actionDone: "yes" | "no";
@@ -195,6 +185,11 @@ export interface CustomTimedCountlyEvents {
     updateProfileClicked: "yes" | "no";
     passwordChanged: "yes" | "no";
     logoutFromAllClicked: "yes" | "no";
+  };
+  subscriptionCardClick: {
+    source: "settingsPage";
+    cta: "renew" | "topUp" | "buyNow" | "select";
+    [XCountlySUM]: number;
   };
   subscriptionCheckOut: {
     couponApplied: "yes" | "no";
