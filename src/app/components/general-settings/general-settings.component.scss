@@ -1,18 +1,14 @@
-@media (min-width: 1200px) {
+@media (min-width: 475px) and (max-width: 1200px) {
     .boxContainer {
         height: 140px !important;
         display: flex;
         flex-direction: column;
         padding: 25px;
+        justify-content: center;
+        align-items: unset !important;
     }
 }
 
-@media (max-width: 1200px) {
-    .boxContainer {
-        align-items: center !important;
-        justify-content: flex-start !important;
-    }
-}
 
 @media (max-width: 475px) {
     .website-version {
@@ -23,12 +19,13 @@
 .general-settings {
     gap: 10px;
     margin-top: 30px;
+
 }
 
 .boxContainer {
     display: flex;
-    align-items: start;
-    justify-content: center;
+    align-items: center;
+    // justify-content: center;
     border: none;
     border-radius: 6px;
     margin-top: 3px;

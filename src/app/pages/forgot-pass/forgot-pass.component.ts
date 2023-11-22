@@ -86,12 +86,12 @@ export class ForgotPassComponent implements OnInit {
 
       },
       (error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-        })
+      Swal.fire({
+        title: (error.code == '403' ? '' : error.code),
+        text: (error.code == '403' ? 'Unable to find a user with this email or phone number. Update your email address or phone number or sign up now.' : error.message),
+        imageUrl: (error.code == '403' ? "assets/img/swal-icon/Account.svg" : 'assets/img/error 1.svg'),
+        confirmButtonText: (error.code == '403' ? "Okay" : "Try Again"),
+      })
     );
   }
   forgotPasswordWithMobile() {
@@ -102,7 +102,7 @@ export class ForgotPassComponent implements OnInit {
       }, error: (error) => {
         Swal.fire({
           title: (error.code == '401' ? '' : error.code),
-          text: (error.code == '401' ? 'Sorry, the username and password do not match. Please try again.' : error.message),
+          text: (error.code == '401' ? 'Unable to find a user with this email or phone number. Update your email address or phone number or sign up now.' : error.message),
           imageUrl: (error.code == '401' ? "assets/img/swal-icon/Account.svg" : 'assets/img/error 1.svg'),
           confirmButtonText: (error.code == '401' ? "Okay" : "Try Again"),
         })

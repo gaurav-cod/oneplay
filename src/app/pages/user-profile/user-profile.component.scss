@@ -7,6 +7,10 @@
   border-radius: 0;
 }
 
+.customNavTab a {
+  font-size: 15px !important;
+}
+
 .form-control-underline:focus {
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -14,11 +18,12 @@
 
 .customCareerTab {
   overflow-x: auto;
-  -ms-overflow-style: none; /* IE 11 */
-  scrollbar-width: none; 
-  overflow-y:hidden;
+  -ms-overflow-style: none;
+  /* IE 11 */
+  scrollbar-width: none;
+  overflow-y: hidden;
   flex-wrap: nowrap !important;
-  scrollbar-color: transparent transparent; 
+  scrollbar-color: transparent transparent;
 }
 
 .customCareerTab::-webkit-scrollbar {
@@ -27,14 +32,15 @@
 }
 
 .customCareerTab .nav-link {
- white-space: nowrap;
+  white-space: nowrap;
 }
 
 .paddingBottom {
   padding-bottom: 38px;
 }
+
 @media (min-width: 480px) and (max-width: 1200px) {
-  .container  {
+  .container {
     min-width: 770px !important;
     max-width: 1200px !important;
   }
