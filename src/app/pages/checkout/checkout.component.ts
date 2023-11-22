@@ -107,9 +107,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         return_url:
           environment.domain +
           "/dashboard/settings/subscription?swal=" +
-          this.is_upcoming_plan
-            ? "1"
-            : "0",
+          (this.is_upcoming_plan ? "1" : "0"),
       },
     });
 
