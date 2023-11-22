@@ -2,11 +2,11 @@
   <app-chat-bottom-sheet
     *ngIf="isAuthenticated"
     [isCollapsed]="friendsCollapsed"
-    (toggleCollapse)="toggleFriendsCollapsed()"
+    (toggleCollapse)="toggleFriendsCollapsed($event)"
   ></app-chat-bottom-sheet>
   <app-navbar
     *ngIf="isAuthenticated"
-    (toggleFriends)="toggleFriendsCollapsed()"
+    (toggleFriends)="toggleFriendsCollapsed($event)"
   ></app-navbar>
   <div
     class="container-fluid"

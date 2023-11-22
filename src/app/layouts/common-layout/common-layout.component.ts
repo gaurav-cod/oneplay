@@ -65,12 +65,18 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     clearInterval(this.threeSecondsTimer);
   }
 
-  toggleFriendsCollapsed() {
-    if (this.friendsCollapsed) {
-      this.initFriends();
-      this.initParties();
+  toggleFriendsCollapsed(event: string | undefined = undefined) {
+
+    if (event != "profileClicked") {
+      if (this.friendsCollapsed) {
+        this.initFriends();
+        this.initParties();
+      }
+
+      this.friendsCollapsed = !this.friendsCollapsed;
+    } else {
+      this.friendsCollapsed = true;
     }
-    this.friendsCollapsed = !this.friendsCollapsed;
   }
 
   private initFriends() {
