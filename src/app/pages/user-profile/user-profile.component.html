@@ -1,7 +1,14 @@
 <div class="container paddingBottom">
   <div class="row justify-content-center">
     <div class="col-md-12 col-lg-11">
-      <h1 class="font700 text-white mt-3">Settings</h1>
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="font700 text-white mt-3">Settings</h1>
+        <div class="speed-test lightBg d-flex align-items-center justify-content-between cursorPointer" style="border-radius: 18px; padding: 3px 10px" (click)="redirectToSpeedTest()">
+          
+          <span class="font18 font500 text-white">Speed Test</span>
+          <img src="assets/img/setting/speed-test-icon.svg" alt="" class="h-25 w-25">
+        </div>
+      </div>
       <nav >
         <div class="customNavTab customCareerTab border-0 nav nav-tabs pl-1">
           <a

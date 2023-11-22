@@ -25,6 +25,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
 
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -88,6 +89,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
+
     if (event != "profileClicked") {
       if (this.friendsCollapsed) {
         this.initFriends();

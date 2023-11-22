@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild("search") searchElement: ElementRef;
 
   isMenuCollapsed = true;
+  showCasualGamingLabel: boolean = false;
 
   get actions(): {
     [key in "add" | "accept" | "decline" | "cancel" | "wait" | "none"]: {
@@ -297,6 +299,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.gameStatus = status;
       }
     );
+
+    this.sessionCountForCasualGaming();
   }
 
   openSetting() {
@@ -561,6 +565,33 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     })
     // domain + '/subscription.html'
+  }
+
+  goToCasualGamingPage() {
+
+    if (!this.showCasualGamingLabel) {
+      window.open("https://www.gamezop.com/");
+      return;
+    }
+
+    this.restService.visitCasulGamingSection().subscribe({
+      next: (response: any) => {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: (error) => {
+
+      }, complete: () => {
+        window.open("https://www.gamezop.com/");
+      }
+    })
+  }
+  sessionCountForCasualGaming() {
+    this.restService.checkCasualGamingSession().subscribe({
+      next: (response: any) => {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: () => {
+        this.showCasualGamingLabel = false;
+      }
+    })
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {

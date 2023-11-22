@@ -59,6 +59,20 @@
             >Streams</a
           >
         </li>
+        <li class="nav-item position-relative">
+          <img src="assets/img/navbar/new-label.svg" 
+              class="position-absolute" 
+              style="right: 25px; top: -8px; z-index: 1;" 
+              alt="casual gaming"
+              *ngIf="showCasualGamingLabel"
+          >
+          <a
+            href="javascript:void(0)"
+            class="nav-link p-0 mt-2 pt-1 mr-3"
+            (click)="goToCasualGamingPage()"
+            >Level 1</a
+          >
+        </li>
         <li class="d-none d-lg-inline ml-2">
           <form
             class="navbar-search form-inline d-none d-md-flex mt-md-3 mt-lg-0 ml-lg-auto position-relative"
