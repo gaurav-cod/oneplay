@@ -119,14 +119,7 @@ export class OtpVerifyComponent implements OnInit {
       }, error: (error: any) => {
 
         this.errorCode = error.code;
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          this.isWrongOTPEntered = true;
-        });
+        this.isWrongOTPEntered = true;
       }
     })
   }
@@ -137,16 +130,9 @@ export class OtpVerifyComponent implements OnInit {
         this.codeForm.reset();
         this.getDisplayTimer();
       }, error: (error) => {
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Ok",
-        }).then(() => {
-          if (error.code == 429) {
-            this.isMaxOTPLimitRechead = true;
-          }
-        });
+        if (error.code == 429) {
+          this.isMaxOTPLimitRechead = true;
+        }
       }
     })
   }
