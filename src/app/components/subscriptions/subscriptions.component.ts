@@ -3,7 +3,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
-import { CustomCountlyEvents, XCountlySUM } from "src/app/services/countly";
+import {
+  CustomCountlyEvents,
+  CustomTimedCountlyEvents,
+  XCountlySUM,
+} from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
@@ -216,7 +220,7 @@ export class SubscriptionsComponent implements OnInit {
     cta: "renew" | "topUp" | "buyNow",
     sub?: SubscriptionModel
   ) {
-    const data: CustomCountlyEvents["subscriptionCardClick"] = {
+    const data: CustomTimedCountlyEvents["subscriptionCardClick"] = {
       cta,
       source: "settingsPage",
       [XCountlySUM]: 0,
@@ -230,7 +234,10 @@ export class SubscriptionsComponent implements OnInit {
       data[key] = "yes";
       data[XCountlySUM] = sub.amount;
     }
-    this.countlyService.addEvent("subscriptionCardClick", data);
+    this.countlyService.startEvent("subscriptionCardClick", {
+      data,
+      discardOldData: true,
+    });
   }
 
   calculatePercentage(remaining = 0, total = 0) {
