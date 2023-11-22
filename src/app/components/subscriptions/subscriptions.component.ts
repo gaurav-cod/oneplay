@@ -191,23 +191,23 @@ export class SubscriptionsComponent implements OnInit {
       denyButtonText: "Change plan",
       customClass: "swalPadding",
     }).then(async (result) => {
-      if (result.isConfirmed || result.isDenied) {
-        this.addSubCardEvent("renew", sub);
-      }
       if (result.isConfirmed) {
         if (sub.isLiveForPurchase) {
+          this.addSubCardEvent("renew", sub);
           this.router.navigateByUrl("/dashboard/checkout/" + sub.planId);
         } else {
+          this.addSubCardEvent("renew");
           window.location.href = `${environment.domain}/subscription.html?plan=10800`;
         }
       } else if (result.isDenied) {
+        this.addSubCardEvent("renew");
         window.location.href = `${environment.domain}/subscription.html?plan=10800`;
       }
     });
   }
 
   buyTopUp(sub: SubscriptionModel) {
-    this.addSubCardEvent("topUp", sub);
+    this.addSubCardEvent("topUp");
     window.location.href = environment.domain + "/subscription.html";
   }
 
