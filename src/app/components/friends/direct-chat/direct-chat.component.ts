@@ -66,7 +66,11 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   @HostListener('click', ['$event'])
   clickout(event) {
     
-    if (!event.target.className.includes('emoji-mart-icon')) {
+    if (
+      !event.target.className.includes('emoji-mart-icon') &&  
+      !event.target.className.includes('emoji-mart-anchor') && // top icons
+      !event.target.className.includes('ng-pristine') // search field
+    ) {
       this.showEmoji = false;
     }
   }
