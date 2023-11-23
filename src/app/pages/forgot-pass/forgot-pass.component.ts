@@ -86,11 +86,14 @@ export class ForgotPassComponent implements OnInit {
 
       },
       (error) =>
-      Swal.fire({
-        title: error.message,
-        imageUrl: "assets/img/swal-icon/Account.svg",
-        confirmButtonText: "Okay",
-      })
+        Swal.fire({
+          title: error.message,
+          imageUrl: "assets/img/swal-icon/Account.svg",
+          confirmButtonText: "Okay",
+        }).then(() => {
+          if (error.code == 429)
+            this.router.navigate(['/login']);
+        })
     );
   }
   forgotPasswordWithMobile() {
@@ -103,6 +106,9 @@ export class ForgotPassComponent implements OnInit {
           title: error.message,
           imageUrl: "assets/img/swal-icon/Account.svg",
           confirmButtonText: "Okay",
+        }).then(() => {
+          if (error.code == 429)
+            this.router.navigate(['/login']);
         })
       }
     })
