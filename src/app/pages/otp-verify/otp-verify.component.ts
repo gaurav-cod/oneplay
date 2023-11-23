@@ -14,6 +14,7 @@ export class OtpVerifyComponent implements OnInit {
   displayTimer: any = 60;
   errorCode: number = null;
   isMaxOTPLimitRechead: boolean = false;
+  verifyOTPError: string = null;
 
   form: UntypedFormGroup;
   senderMobileNumber: string = null;
@@ -108,6 +109,12 @@ export class OtpVerifyComponent implements OnInit {
   }
 
   verifyOTP() {
+
+    if (this.isMaxOTPLimitRechead) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     const c = Object.values(
       this.codeForm.value as { [key: string]: string }
     ).map((el) => `${el}`);
@@ -120,6 +127,7 @@ export class OtpVerifyComponent implements OnInit {
 
         this.errorCode = error.code;
         this.isWrongOTPEntered = true;
+        this.verifyOTPError = error.message;
       }
     })
   }
@@ -132,6 +140,7 @@ export class OtpVerifyComponent implements OnInit {
       }, error: (error) => {
         if (error.code == 429) {
           this.isMaxOTPLimitRechead = true;
+          this.verifyOTPError = error.message;
         }
       }
     })
