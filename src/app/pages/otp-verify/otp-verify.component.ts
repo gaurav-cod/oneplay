@@ -36,9 +36,6 @@ export class OtpVerifyComponent implements OnInit {
   get showResentOTPButton() {
     return this.displayTimer >= 60 || this.displayTimer == 0;
   }
-  get endJourney() {
-    return this.errorCode == 429;
-  }
 
   constructor(
     private readonly router: Router,
