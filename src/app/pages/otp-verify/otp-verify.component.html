@@ -24,7 +24,7 @@
                 </p>
                 <div *ngIf="isWrongOTPEntered">
                     <div>
-                        <span class="errorGradientColor font500">Incorrect Security Code</span>
+                        <span class="errorGradientColor font500">{{ verifyOTPError }}</span>
                         <span class="offWhiteText">, Please check</span>
                     </div>
                     <div>
@@ -37,13 +37,13 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="isMaxOTPLimitRechead">
-                <span class="errorGradientColor font500">You've entered the code incorrectly to many times.</span>
+                <span class="errorGradientColor font500">{{ verifyOTPError }}</span>
             </ng-container>
         </div>
         <div class="col-12 mt-4">
             <button type="button" class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
                 (click)="verifyOTP()" [ngClass]="{ mutedBg: codeForm.invalid || endJourney }"
-                [disabled]="endJourney ? false : codeForm.invalid">
+                [disabled]="codeForm.invalid">
                 Next
             </button>
         </div>
