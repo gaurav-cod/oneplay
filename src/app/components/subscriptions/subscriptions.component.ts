@@ -51,26 +51,6 @@ export class SubscriptionsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.restService.getTokensUsage().subscribe((data) => {
-      this.totalTokens = data.total_tokens;
-      this.remainingTokens = data.remaining_tokens;
-    });
-    this.successFilter();
-    this.restService.getCurrentSubscription().subscribe((s) => {
-      this.currentSubscriptions = s;
-      this.isCurrentLoading = false;
-      for (let sub = 0; sub < this.currentSubscriptions.length; sub++) {
-        const element = this.currentSubscriptions[sub];
-        if (element.isUnlimited) {
-          this.isUnlimited = true;
-          break;
-        }
-      }
-    });
-    this.countlyService.updateEventData("settingsView", {
-      subscriptionViewed: "yes",
-    });
-
     const params = this.route.snapshot.queryParams;
 
     if (params.swal) {
@@ -86,6 +66,27 @@ export class SubscriptionsComponent implements OnInit {
         });
       } catch {}
     }
+
+    this.restService.getTokensUsage().subscribe((data) => {
+      this.totalTokens = data.total_tokens;
+      this.remainingTokens = data.remaining_tokens;
+    });
+    this.successFilter();
+
+    this.restService.getCurrentSubscription().subscribe((s) => {
+      this.currentSubscriptions = s;
+      this.isCurrentLoading = false;
+      this.isUnlimited = s.some(s => s.isUnlimited);
+      if (params.renew) {
+        const renewSub = s.find(s => s.planId === params.renew);
+        if (renewSub) {
+          this.onRenew(renewSub);
+        }
+      }
+    });
+    this.countlyService.updateEventData("settingsView", {
+      subscriptionViewed: "yes",
+    });
   }
 
   private resetData(tab: "success" | "processing" | "failed") {
@@ -194,7 +195,7 @@ export class SubscriptionsComponent implements OnInit {
       if (result.isConfirmed) {
         if (sub.isLiveForPurchase) {
           this.addSubCardEvent("renew", sub);
-          this.router.navigateByUrl("/dashboard/checkout/" + sub.planId);
+          this.router.navigateByUrl("/checkout/" + sub.planId);
         } else {
           this.addSubCardEvent("renew");
           window.location.href = `${environment.domain}/subscription.html?plan=10800`;

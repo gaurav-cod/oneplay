@@ -30,7 +30,6 @@ import { SelectGameCardComponent } from './select-game-card/select-game-card.com
 import { ClipboardModule } from "ngx-clipboard";
 import { InitializingGameComponent } from './initializing-game/initializing-game.component';
 import { GameplayHistoryComponent } from './gameplay-history/gameplay-history.component';
-import { PaymentComponent } from './payment/payment.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 import { SuccessMessageComponent } from "./success-message/success-message.component";
@@ -74,7 +73,6 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     SelectGameCardComponent,
     InitializingGameComponent,
     GameplayHistoryComponent,
-    PaymentComponent,
     OtpScreenComponent,
     SuccessMessageComponent,
     ChatBottomSheetComponent,
@@ -101,7 +99,6 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     SelectGameCardComponent,
     InitializingGameComponent,
     GameplayHistoryComponent,
-    PaymentComponent,
     SuccessMessageComponent,
     ChatBottomSheetComponent,
     GeneralSettingsComponent
