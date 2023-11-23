@@ -19,6 +19,7 @@ export class FooterComponent implements OnInit {
     private readonly router: Router
   ) {
 
+    this.isInSettingPage = this.router.url.includes("settings");
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.isInSettingPage = this.router.url.includes("settings");

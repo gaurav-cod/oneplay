@@ -1,9 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
 import { SubscriptionPaymentModel } from "src/app/models/subscriptionPayment.modal";
-import { XCountlySUM } from "src/app/services/countly";
+import {
+  CustomCountlyEvents,
+  CustomTimedCountlyEvents,
+  XCountlySUM,
+} from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
@@ -41,31 +45,12 @@ export class SubscriptionsComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService,
+    private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
-    this.restService.getTokensUsage().subscribe((data) => {
-      this.totalTokens = data.total_tokens;
-      this.remainingTokens = data.remaining_tokens;
-    });
-    this.successFilter();
-    this.restService.getCurrentSubscription().subscribe((s) => {
-      this.currentSubscriptions = s;
-      this.isCurrentLoading = false;
-      for (let sub = 0; sub < this.currentSubscriptions.length; sub++) {
-        const element = this.currentSubscriptions[sub];
-        if(element.isUnlimited) {
-          this.isUnlimited = true;
-          break;
-        }
-      }
-    });
-    this.countlyService.updateEventData("settingsView", {
-      subscriptionViewed: "yes",
-    });
-
     const params = this.route.snapshot.queryParams;
 
     if (params.swal) {
@@ -81,6 +66,27 @@ export class SubscriptionsComponent implements OnInit {
         });
       } catch {}
     }
+
+    this.restService.getTokensUsage().subscribe((data) => {
+      this.totalTokens = data.total_tokens;
+      this.remainingTokens = data.remaining_tokens;
+    });
+    this.successFilter();
+
+    this.restService.getCurrentSubscription().subscribe((s) => {
+      this.currentSubscriptions = s;
+      this.isCurrentLoading = false;
+      this.isUnlimited = s.some(s => s.isUnlimited);
+      if (params.renew) {
+        const renewSub = s.find(s => s.planId === params.renew);
+        if (renewSub) {
+          this.onRenew(renewSub);
+        }
+      }
+    });
+    this.countlyService.updateEventData("settingsView", {
+      subscriptionViewed: "yes",
+    });
   }
 
   private resetData(tab: "success" | "processing" | "failed") {
@@ -172,11 +178,66 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   onRenew(sub: SubscriptionModel) {
-    this.countlyService.addEvent("subscriptionCardClick", {
-      [`${sub.planName.replace(/\s/g, "")}${sub.amount}Clicked`]: "yes",
-      cta: "renew",
+    Swal.fire({
+      title: "Ready to unlock?",
+      html:
+        sub.planType === "base"
+          ? "Once the current one expires, this subscription pack will start."
+          : "You are about to pay for the chosen subscription plan.",
+      imageUrl: "assets/img/error/payment.svg",
+      showDenyButton: true,
+      showCloseButton: true,
+      confirmButtonText: "Renew",
+      cancelButtonText: "No",
+      denyButtonText: "Change plan",
+      customClass: "swalPadding",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (sub.isLiveForPurchase) {
+          this.addSubCardEvent("renew", sub);
+          this.router.navigateByUrl("/checkout/" + sub.planId);
+        } else {
+          this.addSubCardEvent("renew");
+          window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+        }
+      } else if (result.isDenied) {
+        this.addSubCardEvent("renew");
+        window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+      }
+    });
+  }
+
+  buyTopUp(sub: SubscriptionModel) {
+    this.addSubCardEvent("topUp");
+    window.location.href = environment.domain + "/subscription.html";
+  }
+
+  buyNow() {
+    this.addSubCardEvent("buyNow");
+    window.location.href = environment.domain + "/subscription.html";
+  }
+
+  private addSubCardEvent(
+    cta: "renew" | "topUp" | "buyNow",
+    sub?: SubscriptionModel
+  ) {
+    const data: CustomTimedCountlyEvents["subscriptionCardClick"] = {
+      cta,
       source: "settingsPage",
-      [XCountlySUM]: sub.amount,
+      [XCountlySUM]: 0,
+    };
+    if (sub) {
+      const hours = Math.round(sub.tokens / 60);
+      const planName = sub.planName.replace(/\s/g, "");
+      const key = `${hours}${hours > 1 ? "hrs" : "hr"}${planName}Inr${
+        sub.amount
+      }Clicked`;
+      data[key] = "yes";
+      data[XCountlySUM] = sub.amount;
+    }
+    this.countlyService.startEvent("subscriptionCardClick", {
+      data,
+      discardOldData: true,
     });
   }
 

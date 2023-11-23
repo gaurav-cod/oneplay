@@ -14,10 +14,13 @@ import { PipesModule } from 'src/app/pipes/pipes.module';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/startgaming-signup.component';
 import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-region/non-functional-region.component';
+import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.component';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    ComponentsModule,
     RouterModule.forChild(AuthLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
@@ -30,6 +33,7 @@ import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-
     RegisterComponent,
     VerifyComponent,
     ForgotPassComponent,
+    OtpVerifyComponent,
     ResetPassComponent,
     StartgamingSignupComponent,
     NonFunctionalRegionComponent,

@@ -78,16 +78,6 @@ export interface CustomCountlyEvents {
     logOutClicked: "yes" | "no";
     logOutConfirmClicked: "yes" | "no";
   };
-  subscriptionCardClick: {
-    source: "settingsPage";
-    cta: "renew";
-    [XCountlySUM]: number;
-  };
-  SubscriptionConfirmPayment: {
-    paymentConfirmed: "yes" | "no";
-    type: "newPurchase" | "renewal";
-    [XCountlySUM]: number;
-  };
   search: {
     keywords: string;
     actionDone: "yes" | "no";
@@ -141,7 +131,6 @@ export interface CustomTimedCountlyEvents {
   websiteDecentralizationView: {
     connectWithUsClicked: "yes" | "no";
   };
-
   signUpFormSubmitted: {
     name: "yes" | "no";
     email: "yes" | "no";
@@ -197,26 +186,14 @@ export interface CustomTimedCountlyEvents {
     passwordChanged: "yes" | "no";
     logoutFromAllClicked: "yes" | "no";
   };
-  subscriptionConfirmPlan: {
-    selection: "yes" | "no";
-  };
-  // todo: payment details
-  subscriptionPaymentView: {
-    country: string;
-    state: string;
-    mode: "credit" | "debit" | "upi" | "netBanking";
-  };
-  subscriptionPaymentDone: {
-    result: "success" | "failure";
-    type: "newPurchase" | "renewal";
-    failReason:
-      | "card"
-      | "quota"
-      | "validation"
-      | "connection"
-      | "authentication"
-      | "other";
+  subscriptionCardClick: {
+    source: "settingsPage";
+    cta: "renew" | "topUp" | "buyNow" | "select";
     [XCountlySUM]: number;
+  };
+  subscriptionCheckOut: {
+    couponApplied: "yes" | "no";
+    paymentOption: "stripe" | "billdesk";
   };
   searchResultsViewMoreGames: {
     keywords: string;

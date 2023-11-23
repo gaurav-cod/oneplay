@@ -1,0 +1,37 @@
+.w70h61 {
+    width: 50px;
+    height: 40px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 30px;
+    color: #ffffff;
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 5px solid #3e4246;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px !important;
+
+    @media (max-width: 371px) {
+        width: 30px;
+        height: 30px;
+    }
+
+    @media (min-width: 372px) and (max-width: 450px) {
+        height: 40px !important;
+        width: 40px !important;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.darkGrey {
+    color: #959595;
+}
+
+.otpInput {
+    margin-right: 5px;
+}

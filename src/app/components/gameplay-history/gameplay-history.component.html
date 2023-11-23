@@ -1,11 +1,11 @@
 <div class="row mt-4 justify-content-center">
-    <div class="col-lg-5 col-md-7 col-sm-9 col-11 text-center mt-4" *ngIf="gamePlaysessions.length === 0 && !loading">
+    <!-- <div class="col-lg-5 col-md-7 col-sm-9 col-11 text-center mt-4" *ngIf="gamePlaysessions.length === 0 && !loading">
       <img src="assets/img/setting/Isolation-Mode.svg" class="img-fluid px-4" alt="" />
       <h1 class="headingSub font700 text-white mt-4">
         No Gameplay History Yet. Start Your Journey!
       </h1>
-    </div>
-    <div class="col-md-12" *ngIf="gamePlaysessions.length; else EmptyList">
+    </div> -->
+    <div class="col-md-12" *ngIf="gamePlaysessions.length > 0; else EmptyList">
       <p class="font18 font500 text-white mb-0">Gameplay History</p>
       <cdk-virtual-scroll-viewport itemSize="85" class="virtualScrollWH">
         <div class="table-responsive">
@@ -69,10 +69,10 @@
       </cdk-virtual-scroll-viewport>
     </div>
     <ng-template #EmptyList>
-      <div class="d-flex flex-column align-items-center justify-content-center">
-      <img src="assets/img/setting/empty-game-history.svg" height="150" alt="">
-      <p class="font18 font500 text-white mb-2 mt-2">No Gameplay History Yet.</p>
-      <p class="font18 font500 text-white mb-0">Start Your Journey!</p>
-    </div>
+      <div class="d-flex flex-column align-items-center justify-content-center" style="height: calc(100vh - 400px);">
+        <img src="assets/img/setting/empty-game-history.svg" height="150" alt="empty image">
+        <p class="font18 font500 text-white mb-2 mt-2">No Gameplay History Yet.</p>
+        <p class="font18 font500 text-white mb-0">Start Your Journey!</p>
+      </div>
     </ng-template>
 </div>

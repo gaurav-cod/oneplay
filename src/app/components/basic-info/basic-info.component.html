@@ -1,5 +1,5 @@
 <div class="row mb-5">
-  <div class="col-md-10 col-lg-8 mt-4">
+  <div class="col-md-10 col-lg-12 mt-4">
     <p class="font18 font500 text-white">Profile Settings</p>
     <form>
       <div class="row mt-2">
@@ -68,9 +68,9 @@
             class="font16 font500 errorGradientColor float-right"
             >*invalid name</span
           ><span
-          *ngIf="name.value?.length > 25"
+          *ngIf="name.value?.length > 255"
           class="font16 font500 errorGradientColor float-right"
-          >(max character limit 25 characters)</span
+          >*Character limit exceeded</span
         >
           <input
             type="text"
@@ -107,9 +107,9 @@
           <input
             type="submit"
             (click)="saveChanges()"
-            [disabled]="saveProfileLoder || !isValid || !isChanged || name.value?.length > 25"
+            [disabled]="saveProfileLoder || !isValid || !isChanged || name.value?.length > 255"
             class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
-            value="Save Changes"
+            value="Update Profile"
           />
         </div>
       </div>

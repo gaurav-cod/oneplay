@@ -1,101 +1,68 @@
-<form role="form" [formGroup]="resetForm">
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <h1 class="text-white font30 font800 textCenterCustom">
-        Reset Password
-      </h1>
-      <p class="font20 font500 offWhiteColor mt-4">
-        Verify and reset your password
-      </p>
-    </div>
-    <div class="col-md-12 mt-3">
-      <label for="" class="font16 font500 customOffWhite mb-0"
-        >Password
-        <i class="fas fa-info-circle ml-1"
-          ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
-          placement="bottom"
-          triggers="click:blur">
-        </i>
-      </label
-      ><span
-        *ngIf="passwordErrored"
-        class="font16 font500 errorGradientColor float-right"
-        >*invalid password</span
-      >
-      <div class="input-group">
-        <input
-          [type]="showPassword ? 'text' : 'password'"
-          formControlName="password"
-          class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-          placeholder=""
-        />
-        <span
-          class="bgTransparent fixedIcon offWhiteColor font16 font500"
-        >
-          <button
-            class="btn p-0 bgTransparent customOffWhite borderRadius0"
-            type="button"
-            (click)="showPassword = !showPassword"
-          >
-            <img
-              class="img-fluid"
-              [src]="showPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
-              alt=""
-            />
-          </button>
+<ng-container *ngIf="!resetPasswordSuccessfull; else SuccessMessage">
+  <form role="form" [formGroup]="resetForm">
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <h1 class="text-white font30 font800 textCenterCustom text-center ">
+          Reset your Password
+        </h1>
+        <!-- <p class="font20 font500 offWhiteColor mt-4">
+          Verify and reset your password
+        </p> -->
+      </div>
+      <div class="col-md-12 mt-3">
+        <label for="" class="font16 font500 customOffWhite mb-0 required">New Password
+          <i class="fas fa-info-circle ml-1"
+            ngbTooltip="Password should be at least 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number!"
+            placement="bottom" triggers="click:blur">
+          </i>
+        </label><span *ngIf="passwordErrored" class="font16 font500 errorGradientColor float-right">*invalid
+          password</span>
+        <div class="input-group">
+          <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
+            class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+            placeholder="**********" />
+          <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
+            <button class="btn p-0 bgTransparent customOffWhite borderRadius0" type="button"
+              (click)="showPassword = !showPassword">
+              <img class="img-fluid"
+                [src]="showPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
+                alt="" />
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-md-12 mt-4">
+        <label for="" class="font16 font500 customOffWhite mb-0 required">Confirm New Password</label><span
+          *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor float-right">
+          *Password does not match
         </span>
+        <div class="input-group">
+          <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+            class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+            placeholder="**********" />
+          <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
+            <button class="btn p-0 bgTransparent customOffWhite borderRadius0" type="button"
+              (click)="showConfirmPassword = !showConfirmPassword">
+              <img class="img-fluid"
+                [src]="showConfirmPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
+                alt="" />
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-md-12 mt-5">
+        <input type="button" [disabled]="checkvalidationValue" (click)="reset()"
+          class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Submit" />
+      </div>
+      <div class="col-md-12 pt-3 text-center margintop20">
+        <p class="font20 font500 mt-lg-3 offWhiteColor">
+          Remember password?
+          <span class="purpleGradient"><a href="javascript:void(0)" (click)="goToLogin()">Log in</a></span>
+        </p>
       </div>
     </div>
-    <div class="col-md-12 mt-4">
-      <label for="" class="font16 font500 customOffWhite mb-0"
-        >Confirm Password</label
-      ><span
-        *ngIf="confirmPasswordErrored"
-        class="font16 font500 errorGradientColor float-right"
-      >
-        *Password does not match
-      </span
-      >
-      <div class="input-group">
-        <input
-          [type]="showConfirmPassword ? 'text' : 'password'"
-          formControlName="confirmPassword"
-          class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-          placeholder=""
-        />
-        <span
-          class="bgTransparent fixedIcon offWhiteColor font16 font500"
-        >
-          <button
-            class="btn p-0 bgTransparent customOffWhite borderRadius0"
-            type="button"
-            (click)="showConfirmPassword = !showConfirmPassword"
-          >
-            <img
-              class="img-fluid"
-              [src]="showConfirmPassword ? 'assets/img/singup-login/Views.svg' : 'assets/img/singup-login/Group.svg'"
-              alt=""
-            />
-          </button>
-        </span>
-      </div>
-    </div>
-    <div class="col-md-12 mt-5">
-      <input
-        type="button"
-        [disabled]="checkvalidationValue"
-        (click)="reset()"
-        class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
-        value="Reset"
-      />
-    </div>
-    <div class="col-md-12 pt-3 text-center margintop20">
-      <p class="font20 font500 mt-lg-3 offWhiteColor">
-        Remember password?
-        <span class="purpleGradient"
-          ><a href="javascript:void(0)" (click)="goToLogin()">Log in</a></span
-        >
-      </p>
-    </div>
-  </div>
-</form>
+  </form>
+</ng-container>
+<ng-template #SuccessMessage>
+  <app-success-message></app-success-message>
+</ng-template>
