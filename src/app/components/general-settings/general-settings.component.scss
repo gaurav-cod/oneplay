@@ -12,7 +12,9 @@
 
 @media (max-width: 475px) {
     .website-version {
-        margin: 20px auto !important;
+        position: absolute;
+        bottom: -40px;
+        width: 100% !important;
     }
 }
 
