@@ -42,7 +42,7 @@
         </div>
         <div class="col-12 mt-4">
             <button type="button" class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white"
-                (click)="verifyOTP()" [ngClass]="{ mutedBg: codeForm.invalid || endJourney }"
+                (click)="verifyOTP()" [ngClass]="{ mutedBg: codeForm.invalid && !isMaxOTPLimitRechead }"
                 [disabled]="codeForm.invalid && !isMaxOTPLimitRechead">
                 Next
             </button>

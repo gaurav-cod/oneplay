@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -59,6 +60,19 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     this.messageSub1 = this.chatService.messages$.subscribe((messages) => {
       this.messages = messages;
     });
+  }
+
+  // Unsubscribption not required
+  @HostListener('click', ['$event'])
+  clickout(event) {
+    
+    if (
+      !event.target.className.includes('emoji-mart-icon') &&  
+      !event.target.className.includes('emoji-mart-anchor') && // top icons
+      !event.target.className.includes('ng-pristine') // search field
+    ) {
+      this.showEmoji = false;
+    }
   }
 
   ngOnInit(): void {
@@ -174,7 +188,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
       (this.message.value ?? "") + (event.emoji.native ?? "")
     );
   }
-
+  
   isMissingEmoji(data: string) {
     return !UNSUPPORTED_EMOJIS.includes(data);
   }
