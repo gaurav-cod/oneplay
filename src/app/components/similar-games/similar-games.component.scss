@@ -103,6 +103,20 @@
     height: 95px;
   }
 }
+.w300 {
+  height: 180px;
+  width: 300px;
+  @media (min-width: 768px) {
+    &:hover {
+      transform: scale(1.1) !important;
+      z-index: 9;
+    }
+
+    &:first-child:hover {
+      transform: scale(1.1) !important;
+    }
+  }
+}
 
 .borderRadius15 {
   border-radius: 15px !important;

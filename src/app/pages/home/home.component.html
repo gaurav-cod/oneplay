@@ -136,6 +136,13 @@
     </div>
     <div>
       <app-similar-games
+        [title]="'Install & Play'"
+        [isInstallPlay]="true"
+        [games]="installPlayRow.games"
+      ></app-similar-games>
+    </div>
+    <div>
+      <app-similar-games
         *ngIf="library.length != 0"
         [title]="'My Library'"
         [games]="library"

@@ -5,6 +5,7 @@ import { AvatarPipe } from "./avatar.pipe";
 import { GLinkPipe } from "./glink.pipe";
 import { TimeAgoPipe } from "./time-ago.pipe";
 import { TokensPipe } from "./tokens.pipe";
+import { TrimBySeperatorPipe } from './trim-by-seperator.pipe';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TokensPipe } from "./tokens.pipe";
     GLinkPipe,
     TimeAgoPipe,
     TokensPipe,
+    TrimBySeperatorPipe,
   ],
   imports: [CommonModule],
   exports: [
@@ -21,6 +23,7 @@ import { TokensPipe } from "./tokens.pipe";
     GLinkPipe,
     TimeAgoPipe,
     TokensPipe,
+    TrimBySeperatorPipe
   ],
 })
 export class PipesModule {}

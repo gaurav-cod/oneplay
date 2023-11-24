@@ -10,12 +10,14 @@ export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
   @Input() games: GameModel[];
 
+  @Input() isInstallPlay: boolean = false;
+
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
   showRightArrow = false;
   showLeftArrow = false;
 
-  constructor() {}
+  constructor() { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.updateArrows(), 100)

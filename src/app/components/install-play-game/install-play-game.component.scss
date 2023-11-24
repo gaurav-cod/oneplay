@@ -1,0 +1,50 @@
+.card {
+    background: none !important;
+    border: 1px solid red !important;
+    cursor: pointer;
+
+    .card-img {
+        object-position: center;
+        height: 100%;
+        width: 100%;
+    }
+
+    .game-title {
+        color: #ffffff;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        // width: 150px;
+        height: 95px;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .card {
+        // width: 150px;
+        height: 121px;
+    }
+}
+
+@media (max-width: 320px) {
+    .card {
+        // width: 150px;
+        height: 80px;
+    }
+}
+
+@media (min-width: 768px) {
+    .card {
+        // width: 150px;
+        height: 150px !important;
+    }
+}
+
+@media (min-width: 1300px) {
+    .card {
+        // width: 150px;
+        height: 150px !important;
+    }
+}
