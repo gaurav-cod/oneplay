@@ -48,3 +48,51 @@
         height: 150px !important;
     }
 }
+
+@media (min-width: 1201px) {
+
+    .freeToPlayTab,
+    .developerListTab {
+        display: none !important;
+    }
+
+    .freeToPlayDesktop {
+        display: block !important;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 1200px) {
+
+    .secondaryTags {
+        margin-top: -10px !important;
+        justify-content: center !important;
+        z-index: 1;
+    }
+
+    .developerListDesktop,
+    .freeToPlayDesktop {
+        display: none !important;
+    }
+
+    .developerListTab {
+        text-align: center !important;
+        font-weight: 600;
+    }
+
+    .freeToPlayTab {
+        display: block !important;
+    }
+
+    .store-list {
+        justify-content: center !important;
+    }
+
+    .game-title {
+        text-align: center;
+    }
+
+    .mainContainer {
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
+}

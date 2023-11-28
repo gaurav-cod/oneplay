@@ -29,6 +29,9 @@ export class SimilarGamesComponent implements AfterViewInit {
       return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
     });
   }
+  get isInstallPlayDesktop() {
+    return window.innerWidth > 1200 && this.isInstallPlay;
+  }
 
   scrollRight() {
     const container = this.containerRef.nativeElement;

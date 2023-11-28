@@ -34,10 +34,10 @@ export class InstallPlayGameComponent {
     private readonly gLink: GLinkPipe,
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-   }
+  }
 
   onGameClick() {
     this.countlyService.endEvent("gameLandingView")
