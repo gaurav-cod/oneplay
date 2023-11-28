@@ -115,7 +115,7 @@
                       game.status === 'live' || game.status === 'not_optimized'
                     "
                   >
-                  <ng-container *ngIf="game.is_install_and_play">
+                  <ng-container *ngIf="!game.is_install_and_play">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -139,7 +139,7 @@
                       {{ !startingGame ? action + " Now" : "Initializing..." }}
                     </button>
                   </ng-container>
-                  <ng-container *ngIf="!game.is_install_and_play">
+                  <ng-container *ngIf="game.is_install_and_play">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -147,8 +147,16 @@
                       [ngClass]="{ 'hide-text': startingGame }"
                       (click)="installAndPlaySession(termsConditionModal)"
                     >
-                     
-                     Install & Play
+                    <ngx-ui-loader
+                    [fgsColor]="'#c32ead'"
+                    [hasProgressBar]="false"
+                    [fgsSize]="20"
+                    [fgsPosition]="'center-left'"
+                    [text]="'Initializing...'"
+                    [overlayBorderRadius]="'90px'"
+                    [loaderId]="'play-loader'"
+                  ></ngx-ui-loader>
+                    {{ !startingGame ? "Install & Play" : "Initializing..." }}
                     </button>
                   </ng-container>
                     <button
@@ -612,12 +620,12 @@
       <div class="modal-footer">
         <button class="border-0" style="width: 180px;
         border-radius: 3px;
-        padding: 5px 10px;" (click)="startInstallAndPlay()">
+        padding: 5px 10px;" (click)="startInstallAndPlay(smallModal)">
           I Agree
         </button>
         <button class="text-white bgTransparent border-0" style="width: 180px;
         border-radius: 3px;
-        padding: 5px 10px;" (click)="_settingsModalRef.close()">
+        padding: 5px 10px;" (click)="_termConditionModalRef?.close()">
           I Disagree
         </button>
       </div>

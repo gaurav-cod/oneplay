@@ -111,6 +111,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _initializedModalRef: NgbModalRef;
   private _settingsModalRef: NgbModalRef;
   private _launchModalRef: NgbModalRef;
+  private _termConditionModalRef: NgbModalRef;
   private _advancedModalRef: NgbModalRef;
   private _macDownloadModalRef: NgbModalRef;
   private _gamepads: Gamepad[] = [];
@@ -241,6 +242,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.stopLoading();
     }
     // this._initializedModalRef?.close();
+    this._termConditionModalRef?.close();
     this._settingsModalRef?.close();
     this._launchModalRef?.close();
     this._advancedModalRef?.close();
@@ -591,7 +593,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               data.data.tnc = parser.parseFromString(data.data.tnc, 'text/html').body.textContent;
 
               this.gameTermsCondition = data.data;
-              this._settingsModalRef = this.ngbModal.open(container, {
+              this._termConditionModalRef = this.ngbModal.open(container, {
                 centered: true,
                 modalDialogClass: "modal-md",
                 backdrop: "static",
@@ -608,7 +610,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               });
             },
           });
-       
+
       } else {
 
       }
@@ -617,8 +619,9 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   }
 
-  startInstallAndPlay() {
-    
+  startInstallAndPlay(container: ElementRef<HTMLDivElement>) {
+    this._termConditionModalRef?.close();
+    this.playGame(container);
   }
 
   async playGame(
