@@ -695,3 +695,50 @@ live {
     line-height: 24px !important;
   }
 }
+.term-n-condition-modal {
+  .model-content {
+    background-color: #444444 !important;
+    padding: 10px !important;
+
+    .modal-body {
+      background-color: #151515 !important;
+      padding-bottom: 0px;
+      margin-top: 10px;
+    }
+
+    .modal-footer {
+      padding: 0px;
+      padding-bottom: 10px;
+      background-color: #151515;
+    }
+
+   
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: center !important;
+  }
+
+  .term-condition-content {
+    height: 50vh;
+    overflow: auto;
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      width: 3px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: #dcdcdc;
+    }
+  }
+}

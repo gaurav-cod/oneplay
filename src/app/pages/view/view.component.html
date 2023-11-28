@@ -115,6 +115,7 @@
                       game.status === 'live' || game.status === 'not_optimized'
                     "
                   >
+                  <ng-container *ngIf="game.is_install_and_play">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -137,6 +138,19 @@
                       ></ngx-ui-loader>
                       {{ !startingGame ? action + " Now" : "Initializing..." }}
                     </button>
+                  </ng-container>
+                  <ng-container *ngIf="!game.is_install_and_play">
+                    <button
+                      *ngIf="!terminatingGame"
+                      class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
+                    
+                      [ngClass]="{ 'hide-text': startingGame }"
+                      (click)="installAndPlaySession(termsConditionModal)"
+                    >
+                     
+                     Install & Play
+                    </button>
+                  </ng-container>
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
                       class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
@@ -579,6 +593,36 @@
       allowfullscreen
     ></iframe>
   </div>
+</ng-template>
+
+<ng-template #termsConditionModal>
+  <section class="term-n-condition-modal">
+    <div class="modal-content position-relative modalBg">
+      <div class="modal-body">
+        <h2 class="text-white font600 mb-0 font18responsive">
+          Terms and Conditions
+        </h2>
+        <div class="d-flex justify-content-between py-1">
+          <a [href]="gameTermsCondition.url" class="font14">Official Page</a>
+          <span class="text-white font14">Last Updated: November 7, 2022</span>
+
+        </div>
+        <h1 class="term-condition-content muteText" style="font-size: 12px;" [innerHTML]="gameTermsCondition.tnc"></h1>
+      </div>
+      <div class="modal-footer">
+        <button class="border-0" style="width: 180px;
+        border-radius: 3px;
+        padding: 5px 10px;" (click)="startInstallAndPlay()">
+          I Agree
+        </button>
+        <button class="text-white bgTransparent border-0" style="width: 180px;
+        border-radius: 3px;
+        padding: 5px 10px;" (click)="_settingsModalRef.close()">
+          I Disagree
+        </button>
+      </div>
+    </div>
+  </section>
 </ng-template>
 
 <!-- small modal to select resolution, vsync and fps before launching the game -->

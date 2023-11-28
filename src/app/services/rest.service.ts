@@ -11,6 +11,7 @@ import {
   CouponResponse,
   GameSessionRO,
   GameStatusRO,
+  GameTermCondition,
   ILocation,
   IPayment,
   LoginDTO,
@@ -1021,6 +1022,29 @@ export class RestService {
     formData.append("launch_payload", JSON.stringify(payload));
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+  getTermsConditionForGame(
+    gameId: string,
+    userId: string,
+    store?: PurchaseStore
+  ): Observable<GameTermCondition> {
+    // gameId = "462e547dc867ce8343df8cd545bc6d9f6144433d67a2c309fe5075857e3e4dbb"; // nned to remove
+    // store.name = "epic";
+    // userId = "13e33fd2-d9e3-4163-946c-5bd90d398d68";
+    
+    const formData = new FormData();
+    formData.append("game_id", gameId);
+    formData.append("user_id", userId);
+    formData.append("store", store.name.replace(/\s/g, "").toLowerCase());
+    // formData.append("session_token", "755d62c0-a553-4252-8d7b-6a1b40cfc6a3");
+    return this.http
+      .post<GameTermCondition>(this.client_api + "/install_n_play", formData)
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
