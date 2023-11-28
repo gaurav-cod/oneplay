@@ -37,7 +37,7 @@ export class StoreComponent implements OnInit {
         release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
       },
     },
-    
+
     // "Top 20": {
     //   label: "common",
     //   value: {
@@ -63,6 +63,12 @@ export class StoreComponent implements OnInit {
     //     stores: "Epic Games",
     //   },
     // },
+    "Install & Play": {
+      label: "common",
+      value: {
+        is_free: "true", // need to check this value from jasmin
+      },
+    },
   };
 
   get routes() {
@@ -99,7 +105,7 @@ export class StoreComponent implements OnInit {
     private readonly loaderService: NgxUiLoaderService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({

@@ -1,5 +1,5 @@
 <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
-    (click)="onGameClick()">
+    (click)="onGameClick()" [ngClass]="{'adjustHeight': calledFrom.includes('STORE')}">
     <img src="game.bgImage" height="100%" width="100%" alt="">
     <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
@@ -29,7 +29,7 @@
         </div>
     </div>
 </a>
-<div class="secondaryTags d-flex justify-content-end mt-1 position-relative">
+<div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER'">
     <span *ngIf="game.status === 'coming_soon' || true" class="redGradient px-2 tagText">COMING SOON</span>
 
     <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag"><span
@@ -40,7 +40,7 @@
             class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
 </div>
 <!-- </div> -->
-<div class="developerListTab mt-2">
+<div class="developerListTab mt-2" *ngIf="calledFrom !== 'STORE_OTHER'">
     <span style="color: #DCDCDC">
         {{ game.developer | trimBySeperator }}
     </span>

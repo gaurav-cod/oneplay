@@ -11,12 +11,14 @@ import { v4 } from 'uuid';
 @Component({
   selector: 'app-install-play-game',
   templateUrl: './install-play-game.component.html',
-  styleUrls: ['./install-play-game.component.scss']
+  styleUrls: ['./install-play-game.component.scss'],
+  providers: [GLinkPipe],
 })
 export class InstallPlayGameComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
+  @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" = "HOME";
 
   timer: NodeJS.Timeout;
   muted = true;
