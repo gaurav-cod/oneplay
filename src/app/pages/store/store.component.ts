@@ -63,10 +63,10 @@ export class StoreComponent implements OnInit {
     //     stores: "Epic Games",
     //   },
     // },
-    "Install & Play": {
+    "Install and Play": {
       label: "common",
       value: {
-        is_free: "true", // need to check this value from jasmin
+        "install_and_play": "true"
       },
     },
   };

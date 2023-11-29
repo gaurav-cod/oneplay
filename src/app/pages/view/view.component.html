@@ -412,7 +412,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-6 col-lg-auto pr-lg-5 mt-4 d-md-none d-lg-block" *ngIf="game.is_install_and_play">
+              <div class="col-md-6 col-lg-auto pr-lg-5 mt-4 d-md-none d-md-none d-lg-block" *ngIf="game.is_install_and_play">
                 <p class="font16 font500 muteText">Website</p>
                 <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
               </div>
@@ -426,7 +426,7 @@
                   >{{ genre }}</span
                 >
               </div>
-              <div class="col-auto pr-lg-5 d-lg-none mt-sm-4" *ngIf="game.is_install_and_play">
+              <div class="col-auto pr-lg-5 d-lg-none d-md-block removeOnMob" *ngIf="game.is_install_and_play">
                 <p class="font16 font500 muteText">Website</p>
                 <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
               </div>
@@ -617,26 +617,22 @@
 <ng-template #termsConditionModal>
   <section class="term-n-condition-modal">
     <div class="modal-content position-relative modalBg">
-      <div class="modal-body">
+      <div class="modal-body pb-0">
         <h2 class="text-white font600 mb-0 font18responsive">
           Terms and Conditions
         </h2>
-        <div class="d-flex justify-content-between py-1">
-          <a [href]="gameTermsCondition.url" class="font14">Official Page</a>
+        <div class="d-flex justify-content-between py-1 mt-sm-2">
+          <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
           <span class="text-white font14">Last Updated: November 7, 2022</span>
 
         </div>
-        <h1 class="term-condition-content muteText" style="font-size: 12px;" [innerHTML]="gameTermsCondition.tnc"></h1>
+        <p class="term-condition-content muteText mt-2" style="font-size: 12px;">{{ gameMetaDetails.tnc }}</p>
       </div>
-      <div class="modal-footer">
-        <button class="border-0" style="width: 180px;
-        border-radius: 3px;
-        padding: 5px 10px;" (click)="startInstallAndPlay()">
+      <div class="modal-footer pt-0">
+        <button class="border-0 term-condition-btn" (click)="startInstallAndPlay()">
           I Agree
         </button>
-        <button class="text-white bgTransparent border-0" style="width: 180px;
-        border-radius: 3px;
-        padding: 5px 10px;" (click)="_termConditionModalRef?.close()">
+        <button class="text-white bgTransparent border-0 term-condition-btn" (click)="_termConditionModalRef?.close()">
           I Disagree
         </button>
       </div>

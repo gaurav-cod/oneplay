@@ -86,6 +86,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   user: UserModel;
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
+  
+  gameMetaDetails: any;
 
   showSettings = new UntypedFormControl();
 
@@ -568,7 +570,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  gameTermsCondition: any;
   installAndPlaySession(container: ElementRef<HTMLDivElement>) {
 
     Swal.fire({
@@ -589,10 +590,8 @@ export class ViewComponent implements OnInit, OnDestroy {
           )
           .subscribe({
             next: (data) => {
-              const parser = new DOMParser();
-              data.data.tnc = parser.parseFromString(data.data.tnc, 'text/html').body.textContent;
-
-              this.gameTermsCondition = data.data;
+             
+              this.gameMetaDetails = data.data;
               this._termConditionModalRef = this.ngbModal.open(container, {
                 centered: true,
                 modalDialogClass: "modal-md",

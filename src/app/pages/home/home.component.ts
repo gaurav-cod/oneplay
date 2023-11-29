@@ -41,7 +41,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     Adventure: { genres: "Adventure" },
     Casual: { genres: "Casual" },
     RPG: { genres: "RPG" },
-    Racing: { genres: "Racing" }
+    Racing: { genres: "Racing" },
+    "Install and Play": {
+      "install_and_play": "true"
+    }
   };
 
   get routes() {
@@ -98,6 +101,11 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.firstRow = feeds.filter((f) => f.type === 'header')[0];
               this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
               this.restRows = feeds.filter((f) => f.type === 'rail');
+
+              // delete install & play tab if less than 5 games avaible in it
+              if (this.installPlayRow.games.length < 5)
+                delete(this.queries["Install and Play"]);
+
               document.body.click();
               this.loaderService.stop();
             },
