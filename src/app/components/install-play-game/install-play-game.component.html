@@ -1,6 +1,6 @@
 <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
     (click)="onGameClick()" [ngClass]="{'adjustHeight': calledFrom.includes('STORE')}">
-    <img src="game.bgImage" height="100%" width="100%" alt="">
+    <img [src]="game.bgImage" height="100%" width="100%" alt="">
     <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
         <h4 class="game-title">{{ game.title }}</h4>
