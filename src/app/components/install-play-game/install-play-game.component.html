@@ -1,7 +1,16 @@
-<a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
-    (click)="onGameClick()" [ngClass]="{'adjustHeight': calledFrom.includes('STORE')}">
-    <img [src]="game.bgImage" height="100%" width="100%" alt="">
-    <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
+<a 
+    href="javascript:void(0)"
+    class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
+    (click)="onGameClick()" 
+    [ngClass]="{'adjustHeight': calledFrom.includes('STORE')}"
+>
+    <img 
+        [src]="game.bgImage" 
+        height="100%" 
+        width="100%" alt=""
+    >
+    <div 
+        class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
         <h4 class="game-title">{{ game.title }}</h4>
         <div class="d-flex align-items-center justify-content-between">
@@ -17,7 +26,7 @@
                     </div>
                     <div class="d-flex h-100 flex-column align-items-end justify-content-end">
                         <span *ngIf="game.isFree && game.status !== 'coming_soon'"
-                            class="freeTag px-2 tagText freeToPlayDesktop">
+                            class="freeTag px-2 tagText text-white freeToPlayDesktop">
                             FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
                         <span class="freeToPlayTab">
                             <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
@@ -29,17 +38,17 @@
         </div>
     </div>
 </a>
-<div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER'">
-    <span *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'" class="redGradient px-2 tagText">COMING SOON</span>
-
-    <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag"><span
-            class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
-    <!-- <div *ngIf="game.status === 'updating'" class="col-auto bottomTag"><span
-            class="updatingGradient px-2 tagText">UPDATING</span></div> -->
-    <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag"><span
-            class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
+<div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER' && showBottomLabel">
+    <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
+        <span class="redGradient px-2 tagText text-white">COMING SOON</span>
+    </div>
+    <div *ngIf="game.status === 'maintenance'">
+        <span class="orangeGradientBg px-2 tagText text-white">MAINTENANCE</span>
+    </div>
+    <div *ngIf="game.status === 'not_optimized'">
+        <span class="darkredGradient px-2 tagText text-white">NOT OPTIMIZED</span>
+    </div>
 </div>
-<!-- </div> -->
 <div class="developerListTab mt-2" *ngIf="calledFrom !== 'STORE_OTHER'">
     <span style="color: #DCDCDC">
         {{ game.developer | trimBySeperator }}
