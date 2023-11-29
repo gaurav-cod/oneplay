@@ -1,3 +1,4 @@
+
 .desc {
   min-width: 450px;
 
@@ -740,5 +741,20 @@ live {
       -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
       background-color: #dcdcdc;
     }
+  }
+}
+
+.licenseRequired {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #576068;
+  color: white;
+  width: 140px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 5px 0px;
+  @media (max-width: 475px) {
+    margin: 5px auto !important;
   }
 }
