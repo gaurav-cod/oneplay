@@ -30,12 +30,12 @@
     </div>
 </a>
 <div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER'">
-    <span *ngIf="game.status === 'coming_soon' || true" class="redGradient px-2 tagText">COMING SOON</span>
+    <span *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'" class="redGradient px-2 tagText">COMING SOON</span>
 
     <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag"><span
             class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
-    <div *ngIf="game.status === 'updating' && false" class="col-auto bottomTag"><span
-            class="updatingGradient px-2 tagText">UPDATING</span></div>
+    <!-- <div *ngIf="game.status === 'updating'" class="col-auto bottomTag"><span
+            class="updatingGradient px-2 tagText">UPDATING</span></div> -->
     <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag"><span
             class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
 </div>

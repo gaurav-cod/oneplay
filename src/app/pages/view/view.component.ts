@@ -619,9 +619,9 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   }
 
-  startInstallAndPlay(container: ElementRef<HTMLDivElement>) {
+  startInstallAndPlay() {
     this._termConditionModalRef?.close();
-    this.playGame(container);
+    this.startGame();
   }
 
   async playGame(
