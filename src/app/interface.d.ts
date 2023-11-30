@@ -57,6 +57,8 @@ export interface TokensUsageDTO {
   total_tokens: number;
   used_tokens: number;
   remaining_tokens: number;
+  total_daily_tokens: number;
+  used_daily_tokens: number
 }
 
 export interface UpdateProfileDTO {

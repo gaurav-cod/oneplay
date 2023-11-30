@@ -25,6 +25,8 @@ export class SubscriptionsComponent implements OnInit {
   currentSubscriptions: SubscriptionModel[] = [];
   totalTokens: number;
   remainingTokens: number;
+  totalDailyToken: number;
+  remainingDailyToken: number;
   showBody = false;
   failedProcess = false;
   sucess = true;
@@ -70,6 +72,8 @@ export class SubscriptionsComponent implements OnInit {
     this.restService.getTokensUsage().subscribe((data) => {
       this.totalTokens = data.total_tokens;
       this.remainingTokens = data.remaining_tokens;
+      this.totalDailyToken = data.total_daily_tokens;
+      this.remainingDailyToken = data.total_daily_tokens - data.used_daily_tokens;
     });
     this.successFilter();
 

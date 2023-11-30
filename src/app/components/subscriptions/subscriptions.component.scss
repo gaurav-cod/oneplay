@@ -7,13 +7,19 @@
 }
 
 .outerRange {
-    height: 10px;
+    height: 18px;
     width: 286px;
     background: #3E4246;
     border-radius: 15px;
     overflow: hidden;
+    margin-top: 3px;
     @media (max-width: 480px) {
-        width: 150px;
+        width: 100%;
+    }
+}
+.gameBarContainer {
+    @media (max-width: 480px) {
+        width: 100%;
     }
 }
 
@@ -21,7 +27,13 @@
     background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
     border-radius: 15px;
     // width: 169px;
-    height: 10px;
+    height: inherit;
+    font-size: 13px;
+}
+.timeText {
+    position: relative; 
+    top: -1px; 
+    color: black
 }
 
 .border-top {
