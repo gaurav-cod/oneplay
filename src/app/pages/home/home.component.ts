@@ -21,7 +21,6 @@ import Swal from "sweetalert2";
 export class HomeComponent implements OnInit, OnDestroy {
   firstRow: GameFeedModel;
   restRows: GameFeedModel[] = [];
-  installPlayRow: GameFeedModel;
   loadingWishlist = false;
   library: GameModel[] = [];
   genreGames: GameModel[] = [];
@@ -42,9 +41,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     Casual: { genres: "Casual" },
     RPG: { genres: "RPG" },
     Racing: { genres: "Racing" },
-    "Install and Play": {
-      "install_and_play": "true"
-    }
   };
 
   get routes() {
@@ -99,12 +95,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           .subscribe((res) => {
               const feeds = res.filter((f) => f.games.length > 0);
               this.firstRow = feeds.filter((f) => f.type === 'header')[0];
-              this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
+              // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
               this.restRows = feeds.filter((f) => f.type === 'rail');
-
-              // delete install & play tab if less than 5 games avaible in it
-              if (this.installPlayRow.games.length < 5)
-                delete(this.queries["Install and Play"]);
+              this.queries["Install & Play"] = {
+                "install_and_play": "true"
+              }
 
               document.body.click();
               this.loaderService.stop();

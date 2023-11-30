@@ -63,12 +63,6 @@ export class StoreComponent implements OnInit {
     //     stores: "Epic Games",
     //   },
     // },
-    "Install and Play": {
-      label: "common",
-      value: {
-        "install_and_play": "true"
-      },
-    },
   };
 
   get routes() {
@@ -186,6 +180,15 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = games;
+          if (this.games.some((game)=> game.is_install_and_play)) {
+            this.queries["Install and Play"] =  {
+              label: "common",
+              value: {
+                "install_and_play": "true"
+              },
+            }
+          }
+
           if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }

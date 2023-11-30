@@ -98,7 +98,7 @@
                 style="cursor: pointer"
                 (click)="viewGameFromSearch(game)"
               >
-              <ng-container *ngIf="!game.is_install_and_play">
+              <div *ngIf="!game.is_install_and_play" class="d-flex">
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
@@ -156,17 +156,18 @@
                     {{ game.releaseDate.getFullYear() }}
                   </p>
                 </div>
-              </ng-container>
-              <ng-container *ngIf="game.is_install_and_play">
+              </div>
+              <div *ngIf="game.is_install_and_play" class="d-flex">
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
-                      src="assets/img/feed/install_and_play_search_thumbnail.svg"
+                      [src]="game.textBgImage"
                       (error)="onImgError($event)"
                       class="br6"
                       width="125"
                       height="80"
                       alt=""
+                      style="object-fit: contain;"
                     />
                   </div>
                  
@@ -193,7 +194,7 @@
                       OPTIMIZED</span>
                   </div>
                   </div>
-              </ng-container>
+                </div>
               </div>
               <div
                 *ngIf="results.length === 3"

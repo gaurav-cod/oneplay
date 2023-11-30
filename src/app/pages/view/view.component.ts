@@ -549,6 +549,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       centered: true,
     });
   }
+  closeTermConditionModal() {
+    this._termConditionModalRef?.close();
+  }
 
   back(): void {
     this.location.back();
@@ -573,7 +576,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   installAndPlaySession(container: ElementRef<HTMLDivElement>) {
 
     Swal.fire({
-      imageUrl: "assets/img/swal-icon/game-consol.svg",
+      imageUrl: "assets/icons/oneplay-console-icon.svg",
       title: "Wait",
       text: "Do you agree to install & play this game?",
       confirmButtonText: "Yes",
@@ -581,11 +584,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       cancelButtonText: "No"
     }).then((respons: any) => {
       if (respons.isConfirmed) {
-        this._startGameSubscription?.unsubscribe();
-        this._startGameSubscription = this.restService
+        this.restService
           .getTermsConditionForGame(
             this.game.oneplayId,
-            this.user.id,
             this.selectedStore
           )
           .subscribe({
@@ -622,6 +623,15 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._termConditionModalRef?.close();
     this.startGame();
   }
+
+  startGameWithCheck(container: ElementRef<HTMLDivElement>) {
+    if (this.game.is_install_and_play && this.action === "Play") {
+      this.installAndPlaySession(container);
+    } else {
+      this.playGame(container);
+    }
+  }
+  
 
   async playGame(
     container: ElementRef<HTMLDivElement>,

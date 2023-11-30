@@ -83,7 +83,7 @@
           (click)="viewGame(game)"
           style="cursor: pointer"
         >
-        <ng-container *ngIf="!game.is_install_and_play">
+        <div *ngIf="!game.is_install_and_play" class="row">
           <div class="col-auto pr-0">
             <div class="card border-0 bg-dark">
               <img
@@ -130,12 +130,12 @@
               {{ game.releaseDate.getFullYear() }}
             </p>
           </div>
-        </ng-container>
-        <ng-container *ngIf="game.is_install_and_play">
+        </div>
+        <div *ngIf="game.is_install_and_play" class="d-flex">
           <div class="col-auto align-self-center pr-0">
             <div class="card border-0 bg-dark">
               <img
-                src="assets/img/feed/install_and_play_search_thumbnail.svg"
+                [src]="game.textBgImage"
                 (error)="onImgError($event)"
                 class="br6"
                 width="125"
@@ -150,7 +150,7 @@
               </ng-container>
             </div>
           </div>
-          <div class="col pr-0">
+          <div class="col pr-0 align-self-center">
             <p class="font16 font500 offWhitecolor mb-0">
               <span class="truncate-line-clamp">{{ game.title }}</span>
             </p>
@@ -167,7 +167,7 @@
                 OPTIMIZED</span>
             </div>
             </div>
-        </ng-container>
+          </div>
         </div>
       </div>
     </div>

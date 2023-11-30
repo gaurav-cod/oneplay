@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TrimBySeperatorPipe implements PipeTransform {
 
-  transform(data: any[], seperator: string = ',', characterLimitDesktop: number = 28, characterLimitTab: number = 20, characterLimitMob: number = 12): unknown {
+  transform(data: any[], seperator: string = ',', characterLimitDesktop: number = 15, characterLimitTab: number = 12, characterLimitMob: number = 10): unknown {
     let combinedData = '';
     const characterLimit = (window.innerWidth > 1200 ? characterLimitDesktop : (window.innerWidth > 700 ? characterLimitTab : characterLimitMob))
     if (data.length > 1)

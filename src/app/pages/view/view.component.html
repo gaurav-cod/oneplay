@@ -115,7 +115,6 @@
                       game.status === 'live' || game.status === 'not_optimized'
                     "
                   >
-                  <ng-container *ngIf="!game.is_install_and_play">
                     <button
                       *ngIf="!terminatingGame"
                       class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
@@ -125,7 +124,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="playGame(smallModal)"
+                      (click)="startGameWithCheck(this.game.is_install_and_play ? termsConditionModal : smallModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
@@ -136,29 +135,9 @@
                         [overlayBorderRadius]="'90px'"
                         [loaderId]="'play-loader'"
                       ></ngx-ui-loader>
-                      {{ !startingGame ? action + " Now" : "Initializing..." }}
+                      {{ !startingGame ? (game.is_install_and_play && action === "Play" ? "Install & Play" : (action + " Now")) : "Initializing..." }}
                     </button>
-                  </ng-container>
-                  <ng-container *ngIf="game.is_install_and_play">
-                    <button
-                      *ngIf="!terminatingGame"
-                      class="btn playBtn borderRadius90 px-lg-4 mt-3 border-0 text-white GradientBtnPadding position-relative fullWidthBtn"
-                    
-                      [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="installAndPlaySession(termsConditionModal)"
-                    >
-                    <ngx-ui-loader
-                    [fgsColor]="'#c32ead'"
-                    [hasProgressBar]="false"
-                    [fgsSize]="20"
-                    [fgsPosition]="'center-left'"
-                    [text]="'Initializing...'"
-                    [overlayBorderRadius]="'90px'"
-                    [loaderId]="'play-loader'"
-                  ></ngx-ui-loader>
-                    {{ !startingGame ? "Install & Play" : "Initializing..." }}
-                    </button>
-                  </ng-container>
+                  
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
                       class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
@@ -623,7 +602,7 @@
         </h2>
         <div class="d-flex justify-content-between py-1 mt-sm-2">
           <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
-          <span class="text-white font14">Last Updated: November 7, 2022</span>
+          <!-- <span class="text-white font14">Last Updated: November 7, 2022</span> -->
 
         </div>
         <p class="term-condition-content muteText mt-2" style="font-size: 12px;">{{ gameMetaDetails.tnc }}</p>
@@ -632,7 +611,7 @@
         <button class="border-0 term-condition-btn" (click)="startInstallAndPlay()">
           I Agree
         </button>
-        <button class="text-white bgTransparent border-0 term-condition-btn" (click)="_termConditionModalRef?.close()">
+        <button class="text-white bgTransparent border-0 term-condition-btn" (click)="closeTermConditionModal()">
           I Disagree
         </button>
       </div>

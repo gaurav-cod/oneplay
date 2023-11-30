@@ -9,12 +9,9 @@
       <div class="col-md-12">
         <div #container class="row scrollGame" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0" [ngClass]="{'w290': !isInstallPlayDesktop, 'w300': isInstallPlayDesktop}">
-            <ng-container *ngIf="!game.is_install_and_play">
-              <app-game-card [game]="game" [hasFixedWidth]="true"></app-game-card>
-            </ng-container>
-            <ng-container *ngIf="game.is_install_and_play">
-              <app-install-play-game [game]="game" [hasFixedWidth]="true" [showBottomLabel]="isInstallPlay"></app-install-play-game>
-            </ng-container>
+            <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.is_install_and_play"></app-game-card>
+            <app-install-play-game [game]="game" [hasFixedWidth]="true" [showBottomLabel]="isInstallPlay"
+              *ngIf="game.is_install_and_play"></app-install-play-game>
           </div>
         </div>
       </div>
