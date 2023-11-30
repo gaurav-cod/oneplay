@@ -987,7 +987,7 @@ export class RestService {
   getSeriousNotification(): Observable<string | null> {
     return this.http
       .get(this.r_mix_api + "/notification/serious", {
-        params: { partnerId: environment.partner_id },
+        params: { partnerId: environment.partner_id, platform: 'web' },
       })
       .pipe(
         map((res) => res["text"]),
