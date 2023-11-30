@@ -1200,4 +1200,25 @@ export class RestService {
         })
       );
   }
+
+  checkCasualGamingSession() {
+    return this.http.get(
+      this.r_mix_api + "/games/gamezop/is_new_visit"
+      ).pipe(map((res) => res), 
+        catchError(({ error }) => {
+        throw error;
+    }))
+  }
+  visitCasulGamingSection() {
+    return this.http
+      .post<void>(
+        this.r_mix_api + "/games/gamezop/visit", null
+      )
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
 }

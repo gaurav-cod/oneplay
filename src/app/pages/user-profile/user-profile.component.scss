@@ -45,3 +45,8 @@
     max-width: 1200px !important;
   }
 }
+@media (min-width: 1200px) {
+  .speed-test {
+    display: none !important;
+  }
+}

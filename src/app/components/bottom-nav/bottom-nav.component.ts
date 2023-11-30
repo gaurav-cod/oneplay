@@ -6,6 +6,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
+  Input,
 } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -49,10 +50,12 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   private userSubscription: Subscription;
   private gameStatusSubscription: Subscription;
   private unreadSub: Subscription;
-  public  selectedBottomNav: BOTTOM_NAV = null;
+  public selectedBottomNav: BOTTOM_NAV = null;
   downloadAlert: boolean = true;
 
   private routerSub: Subscription;
+
+  showCasualGamingLabel: boolean = false;
 
   constructor(
     private readonly messagingService: MessagingService,
@@ -66,7 +69,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     private readonly countlyService: CountlyService
   ) {
     this.selectedBottomNav = this.getCurrentSelectedTab(this.router.url)
-    this.routerSub = this.router.events.subscribe((event: any)=> {
+    this.routerSub = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.selectedBottomNav = this.getCurrentSelectedTab(event.url);
       }
@@ -84,7 +87,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     if (this.gameStatus && this.gameStatus.is_running) {
       this.countlyService.endEvent("gameLandingView")
       this.countlyService.startEvent("gameLandingView", {
-        data: {source: getGameLandingViewSource(), trigger: 'gameStatus' },
+        data: { source: getGameLandingViewSource(), trigger: 'gameStatus' },
       })
       const path = [
         "view",
@@ -147,6 +150,8 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.user = user;
     });
+
+    this.sessionCountForCasualGaming();
   }
 
   // toggleFriendsList() {
@@ -174,6 +179,33 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       modalDialogClass: "modal-md",
       scrollable: true,
     });
+  }
+
+  goToCasualGamingPage() {
+
+    if (!this.showCasualGamingLabel) {
+      window.open("https://www.gamezop.com/");
+      return;
+    }
+
+    this.restService.visitCasulGamingSection().subscribe({
+      next: (response: any) => {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: (error) => {
+
+      }, complete: () => {
+        window.open("https://www.gamezop.com/");
+      }
+    })
+  }
+  sessionCountForCasualGaming() {
+    this.restService.checkCasualGamingSession().subscribe({
+      next: (response: any) => {
+        this.showCasualGamingLabel = response.is_new;
+      }, error: () => {
+        this.showCasualGamingLabel = false;
+      }
+    })
   }
 
   getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {
