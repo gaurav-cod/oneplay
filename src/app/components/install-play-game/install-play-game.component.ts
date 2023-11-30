@@ -15,7 +15,7 @@ export class InstallPlayGameComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("showBottomLabel") showBottomLabel: boolean = true;
-  @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" = "HOME";
+  @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" | "LIBRARY" = "HOME";
 
 
   get isMobile() {

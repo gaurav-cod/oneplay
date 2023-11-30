@@ -2,7 +2,7 @@
     href="javascript:void(0)"
     class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
     (click)="onGameClick()" 
-    [ngClass]="{'adjustHeight': calledFrom.includes('STORE')}"
+    [ngClass]="{'adjustHeight': calledFrom.includes('STORE') || calledFrom.includes('LIBRARY')}"
 >
     <img 
         [src]="game.bgImage" 
@@ -13,7 +13,7 @@
         class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
         <h4 class="game-title">{{ game.title }}</h4>
-        <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center justify-content-between" *ngIf="!calledFrom.includes('LIBRARY')">
             <div class="d-flex flex-column w-100">
                 <span style="color: #DCDCDC" class="developerListDesktop">
                     {{ game.developer | trimBySeperator }}
@@ -38,7 +38,7 @@
         </div>
     </div>
 </a>
-<div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER' && showBottomLabel">
+<div class="secondaryTags d-flex justify-content-end mt-1 position-relative" *ngIf="calledFrom !== 'STORE_OTHER'  && showBottomLabel">
     <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
         <span class="redGradient px-2 tagText text-white">COMING SOON</span>
     </div>
@@ -49,7 +49,7 @@
         <span class="darkredGradient px-2 tagText text-white">NOT OPTIMIZED</span>
     </div>
 </div>
-<div class="developerListTab mt-2" *ngIf="calledFrom !== 'STORE_OTHER'">
+<div class="developerListTab mt-2" *ngIf="calledFrom !== 'STORE_OTHER' && calledFrom !== 'LIBRARY'">
     <span style="color: #DCDCDC">
         {{ game.developer | trimBySeperator }}
     </span>
