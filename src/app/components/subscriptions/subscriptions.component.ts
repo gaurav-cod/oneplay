@@ -77,7 +77,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
 
     this._playTimeBarIntervalRef = setInterval(()=> {
 
-      this.restService.getTokensUsage().subscribe((data) => {
+      this.restService.getTokensUsage().toPromise().then((data) => {
         this.totalTokens = data.total_tokens;
         this.remainingTokens = data.remaining_tokens;
         this.totalDailyToken = data.total_daily_tokens;
