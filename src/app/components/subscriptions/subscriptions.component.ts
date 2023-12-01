@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { title } from "process";
 import { SubscriptionModel } from "src/app/models/subscription.model";
@@ -20,11 +20,13 @@ import Swal from "sweetalert2";
   templateUrl: "./subscriptions.component.html",
   styleUrls: ["./subscriptions.component.scss"],
 })
-export class SubscriptionsComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit, OnDestroy {
   subscriptions: Array<SubscriptionModel | SubscriptionPaymentModel> = [];
   currentSubscriptions: SubscriptionModel[] = [];
   totalTokens: number;
   remainingTokens: number;
+  totalDailyToken: number;
+  remainingDailyToken: number;
   showBody = false;
   failedProcess = false;
   sucess = true;
@@ -43,12 +45,18 @@ export class SubscriptionsComponent implements OnInit {
   isCurrentLoading = true;
   isUnlimited: boolean = false;
 
+  private _playTimeBarIntervalRef: NodeJS.Timer;
+
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly countlyService: CountlyService
   ) {}
+
+  ngOnDestroy(): void {
+    clearInterval(this._playTimeBarIntervalRef);
+  }
 
   ngOnInit(): void {
     const params = this.route.snapshot.queryParams;
@@ -67,10 +75,15 @@ export class SubscriptionsComponent implements OnInit {
       } catch {}
     }
 
-    this.restService.getTokensUsage().subscribe((data) => {
-      this.totalTokens = data.total_tokens;
-      this.remainingTokens = data.remaining_tokens;
-    });
+    this._playTimeBarIntervalRef = setInterval(()=> {
+
+      this.restService.getTokensUsage().toPromise().then((data) => {
+        this.totalTokens = data.total_tokens;
+        this.remainingTokens = data.remaining_tokens;
+        this.totalDailyToken = data.total_daily_tokens;
+        this.remainingDailyToken = data.total_daily_tokens - data.used_daily_tokens;
+      });
+    }, 1000);
     this.successFilter();
 
     this.restService.getCurrentSubscription().subscribe((s) => {
