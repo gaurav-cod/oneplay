@@ -181,13 +181,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
-  private casualGamingScreen() {
-    let isSuccessGamezop = window.open("https://www.gamezop.com/");
-    
-    if (!isSuccessGamezop) {
-      window.open("https://www.gamezop.com/", "_self")
-    }
-  }
   goToCasualGamingPage() {
 
     this.restService.visitCasulGamingSection().subscribe({
@@ -196,7 +189,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       }, error: (error) => {
 
       }, complete: () => {
-        this.casualGamingScreen();
+        window.open("https://www.gamezop.com/", "_self");
       }
     })
   }

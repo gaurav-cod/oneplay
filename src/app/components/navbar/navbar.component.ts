@@ -567,14 +567,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // domain + '/subscription.html'
   }
 
-  private casualGamingScreen() {
-    let isSuccessGamezop = window.open("https://www.gamezop.com/");
-    
-    if (!isSuccessGamezop) {
-      window.open("https://www.gamezop.com/", "_self")
-    }
-  }
-
   goToCasualGamingPage() {
 
     this.restService.visitCasulGamingSection().subscribe({
@@ -583,7 +575,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }, error: (error) => {
 
       }, complete: () => {
-       this.casualGamingScreen();
+        window.open("https://www.gamezop.com/", "_self");
       }
     })
   }
