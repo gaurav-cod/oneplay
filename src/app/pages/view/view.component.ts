@@ -86,7 +86,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   user: UserModel;
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
-  
+
   gameMetaDetails: any;
 
   showSettings = new UntypedFormControl();
@@ -591,7 +591,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           )
           .subscribe({
             next: (data) => {
-             
+
               this.gameMetaDetails = data.data;
               this._termConditionModalRef = this.ngbModal.open(container, {
                 centered: true,
@@ -625,13 +625,13 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGameWithCheck(container: ElementRef<HTMLDivElement>) {
-    if (this.game.is_install_and_play && this.action === "Play") {
+    if (this.game.isInstallAndPlay && this.action === "Play") {
       this.installAndPlaySession(container);
     } else {
       this.playGame(container);
     }
   }
-  
+
 
   async playGame(
     container: ElementRef<HTMLDivElement>,

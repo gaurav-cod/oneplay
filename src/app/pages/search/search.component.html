@@ -83,7 +83,7 @@
           (click)="viewGame(game)"
           style="cursor: pointer"
         >
-        <div *ngIf="!game.is_install_and_play" class="row">
+        <div *ngIf="!game.isInstallAndPlay" class="row">
           <div class="col-auto pr-0">
             <div class="card border-0 bg-dark">
               <img
@@ -131,7 +131,7 @@
             </p>
           </div>
         </div>
-        <div *ngIf="game.is_install_and_play" class="d-flex">
+        <div *ngIf="game.isInstallAndPlay" class="d-flex">
           <div class="col-auto align-self-center pr-0">
             <div class="card border-0 bg-dark">
               <img

@@ -124,7 +124,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="startGameWithCheck(this.game.is_install_and_play ? termsConditionModal : smallModal)"
+                      (click)="startGameWithCheck(this.game.isInstallAndPlay ? termsConditionModal : smallModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
@@ -135,7 +135,7 @@
                         [overlayBorderRadius]="'90px'"
                         [loaderId]="'play-loader'"
                       ></ngx-ui-loader>
-                      {{ !startingGame ? (game.is_install_and_play && action === "Play" ? "Install & Play" : (action + " Now")) : "Initializing..." }}
+                      {{ !startingGame ? (game.isInstallAndPlay && action === "Play" ? "Install & Play" : (action + " Now")) : "Initializing..." }}
                     </button>
                   
                     <button

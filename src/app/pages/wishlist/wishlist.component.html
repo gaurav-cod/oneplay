@@ -26,10 +26,10 @@
       class="col-6 col-sm-4 col-md-4 col-lg-3 mb-3 px-2"
     >
       <div class="zoom">
-        <ng-container *ngIf="!gamecard.is_install_and_play">
+        <ng-container *ngIf="!gamecard.isInstallAndPlay">
         <app-game-card [game]="gamecard"></app-game-card>
       </ng-container>
-      <ng-container *ngIf="gamecard.is_install_and_play">
+      <ng-container *ngIf="gamecard.isInstallAndPlay">
         <app-install-play-game [game]="gamecard" [calledFrom]="'LIBRARY'" [showBottomLabel]="false"></app-install-play-game>
       </ng-container>
       </div>

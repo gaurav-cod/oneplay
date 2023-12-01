@@ -180,18 +180,11 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = games;
-          if (this.games.some((game)=> game.is_install_and_play)) {
-            this.queries["Install and Play"] =  {
-              label: "common",
-              value: {
-                "install_and_play": "true"
-              },
-            }
-          }
 
           if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }
+          this.shouldShowInstallPlayTag();
           this.stopLoading(0);
         },
         (error) => {
@@ -201,6 +194,23 @@ export class StoreComponent implements OnInit {
           }
         }
       );
+  }
+
+  private shouldShowInstallPlayTag() {
+    let payload = {
+      "install_and_play": "true"
+    }
+    this.restService.getFilteredGames(payload, 0, 5).subscribe((res) => {
+
+      // need to check this condition
+      if (res.length === 5) {
+        this.queries["Install & Play"] = {
+          "install_and_play": "true"
+        }
+      }
+    }, (error: any) => {
+
+    })
   }
 
   private loadMore() {

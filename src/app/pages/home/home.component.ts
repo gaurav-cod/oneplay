@@ -97,9 +97,8 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.firstRow = feeds.filter((f) => f.type === 'header')[0];
               // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
               this.restRows = feeds.filter((f) => f.type === 'rail');
-              this.queries["Install & Play"] = {
-                "install_and_play": "true"
-              }
+             
+              this.shouldShowInstallPlayTag();
 
               document.body.click();
               this.loaderService.stop();
@@ -111,6 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
             }
           );
+          
 
       },
     });
@@ -123,6 +123,22 @@ export class HomeComponent implements OnInit, OnDestroy {
           .subscribe((games) => (this.library = games));
       } 
     });
+  }
+
+  private shouldShowInstallPlayTag() {
+    let payload = {
+      "install_and_play": "true"
+    }
+    this.restService.getFilteredGames(payload, 0, 5).subscribe((res) => {
+
+      if (res.length === 5) {
+        this.queries["Install & Play"] = {
+          "install_and_play": "true"
+        }
+      }
+    }, (error: any) => {
+
+    })
   }
 
   viewBannerGame(game: GameModel) {

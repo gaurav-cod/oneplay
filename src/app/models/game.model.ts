@@ -41,7 +41,7 @@ export class GameModel {
   readonly storesMapping: PurchaseStore[];
   readonly preferredStore: string;
   readonly warningMessage: string;
-  readonly is_install_and_play: boolean;
+  readonly isInstallAndPlay: boolean;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
@@ -77,6 +77,6 @@ export class GameModel {
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
-    this.is_install_and_play = json["is_install_and_play"] === "true";
+    this.isInstallAndPlay = json["is_install_and_play"] === "true";
   }
 }
