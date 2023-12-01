@@ -59,8 +59,11 @@
             <div class="row imagesText height330 align-items-end mt-md-4">
               <div class="col-md-12 pb-5">
                 <div class="row height100px">
-                  <div class="col">
+                  <div class="col" *ngIf="!game.isInstallAndPlay">
                     <img [src]="game.textLogo" class="text-logo" alt="" />
+                  </div>
+                  <div class="col header text-white" *ngIf="game.isInstallAndPlay">
+                    {{ game.title }}
                   </div>
                 </div>
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">

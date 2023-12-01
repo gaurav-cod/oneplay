@@ -5,7 +5,7 @@
   <div class="h-100">
     <img
       class="card-img"
-      [src]="game.textBgImage"
+      [src]="( game.isInstallAndPlay ? game.installPlayRailImg : game.textBgImage)"
       (error)="onImgError($event)"
       alt=""
     />
