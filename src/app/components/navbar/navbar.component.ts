@@ -567,10 +567,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // domain + '/subscription.html'
   }
 
+  private casualGamingScreen() {
+    let isSuccessGamezop = window.open("https://www.gamezop.com/");
+    
+    if (!isSuccessGamezop) {
+      window.open("https://www.gamezop.com/", "_self")
+    }
+  }
+
   goToCasualGamingPage() {
 
     if (!this.showCasualGamingLabel) {
-      window.open("https://www.gamezop.com/");
+      this.casualGamingScreen();
       return;
     }
 
@@ -580,10 +588,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }, error: (error) => {
 
       }, complete: () => {
-        window.open("https://www.gamezop.com/");
+       this.casualGamingScreen();
       }
     })
   }
+
+
   sessionCountForCasualGaming() {
     this.restService.checkCasualGamingSession().subscribe({
       next: (response: any) => {
