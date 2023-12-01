@@ -21,7 +21,7 @@
           <img
             class="card-img height80 borderRadius10"
             style="object-fit: cover; object-position: top"
-            [src]="game.bgImage"
+            [src]="(game.isInstallAndPlay ? game.installPlayDetailImg : game.bgImage)"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
@@ -59,8 +59,11 @@
             <div class="row imagesText height330 align-items-end mt-md-4">
               <div class="col-md-12 pb-5">
                 <div class="row height100px">
-                  <div class="col">
+                  <div class="col" *ngIf="!game.isInstallAndPlay">
                     <img [src]="game.textLogo" class="text-logo" alt="" />
+                  </div>
+                  <div class="col header text-white" *ngIf="game.isInstallAndPlay">
+                    {{ game.title }}
                   </div>
                 </div>
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
@@ -124,7 +127,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="playGame(smallModal)"
+                      (click)="startGameWithCheck(this.game.isInstallAndPlay ? termsConditionModal : smallModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
@@ -135,8 +138,9 @@
                         [overlayBorderRadius]="'90px'"
                         [loaderId]="'play-loader'"
                       ></ngx-ui-loader>
-                      {{ !startingGame ? action + " Now" : "Initializing..." }}
+                      {{ !startingGame ? (game.isInstallAndPlay && action === "Play" ? "Install & Play" : (action + " Now")) : "Initializing..." }}
                     </button>
+                  
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
                       class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
@@ -191,6 +195,9 @@
                     </button>
                   </div>
                 </div>
+
+                <div *ngIf="game.isInstallAndPlay" class="licenseRequired">LICENSE REQUIRED</div>
+
                 <form
                   class="row justify-content-center checkBox pl-3"
                   *ngIf="
@@ -312,7 +319,7 @@
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 mt-sm-4">
+          <div class="col-md-6 mt-sm-4" *ngIf="!game.isInstallAndPlay">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 font24 text-white">About Game</h1>
@@ -343,11 +350,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12" [ngClass]="{'col-lg-12': game.isInstallAndPlay, 'col-lg-6': !game.isInstallAndPlay}">
             <div class="row">
               <div
                 *ngIf="game.storesMapping.length"
-                class="col-auto pr-lg-5 mt-4"
+                class="col-md-6 col-lg-auto pr-lg-5 mt-4"
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
@@ -374,7 +381,7 @@
                   />
                 </a>
               </div>
-              <div class="col mt-4" *ngIf="game.developer.length">
+              <div class="col-md-6 col-lg-auto mr-lg-4 mt-4" *ngIf="game.developer.length">
                 <p class="font16 font500 muteText mb-2">Developer</p>
                 <div class="row">
                   <div
@@ -387,15 +394,23 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-6 col-lg-auto pr-lg-5 mt-4 d-md-none d-md-none d-lg-block" *ngIf="game.isInstallAndPlay">
+                <p class="font16 font500 muteText">Website</p>
+                <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
+              </div>
             </div>
-            <div class="row mt-4">
-              <div class="col-12">
+            <div class="row mt-4 mb-4">
+              <div class="col-12 col-md-6">
                 <p class="font16 font500 muteText mb-0">Tags</p>
                 <span
                   *ngFor="let genre of game.genreMappings"
                   class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
                   >{{ genre }}</span
                 >
+              </div>
+              <div class="col-auto pr-lg-5 d-lg-none d-md-block removeOnMob" *ngIf="game.isInstallAndPlay">
+                <p class="font16 font500 muteText">Website</p>
+                <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
               </div>
             </div>
           </div>
@@ -579,6 +594,32 @@
       allowfullscreen
     ></iframe>
   </div>
+</ng-template>
+
+<ng-template #termsConditionModal>
+  <section class="term-n-condition-modal">
+    <div class="modal-content position-relative modalBg">
+      <div class="modal-body pb-0">
+        <h2 class="text-white font600 mb-0 font18responsive">
+          Terms and Conditions
+        </h2>
+        <div class="d-flex justify-content-between py-1 mt-sm-2">
+          <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
+          <!-- <span class="text-white font14">Last Updated: November 7, 2022</span> -->
+
+        </div>
+        <p class="term-condition-content muteText mt-2" style="font-size: 12px;">{{ gameMetaDetails.tnc }}</p>
+      </div>
+      <div class="modal-footer pt-0">
+        <button class="border-0 term-condition-btn" (click)="startInstallAndPlay()">
+          I Agree
+        </button>
+        <button class="text-white bgTransparent border-0 term-condition-btn" (click)="closeTermConditionModal()">
+          I Disagree
+        </button>
+      </div>
+    </div>
+  </section>
 </ng-template>
 
 <!-- small modal to select resolution, vsync and fps before launching the game -->

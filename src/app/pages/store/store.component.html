@@ -121,8 +121,11 @@
         (scrolled)="onScroll()"
       >
         <div *ngFor="let game of games" class="col-6 col-sm-4 col-md-4 col-lg-4 mb-3 px-2">
-          <div class="zoom">
+          <div class="zoom" *ngIf="!game.isInstallAndPlay">
             <app-game-card [game]="game" ></app-game-card>
+          </div>
+          <div class="zoom" *ngIf="game.isInstallAndPlay">
+            <app-install-play-game [game]="game" [calledFrom]="(genreSelected.includes('Install') ? 'STORE_INSTALL_PLAY' : 'STORE_OTHER')"></app-install-play-game>
           </div>
         </div>
       </div>

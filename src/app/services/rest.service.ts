@@ -11,6 +11,7 @@ import {
   CouponResponse,
   GameSessionRO,
   GameStatusRO,
+  GameTermCondition,
   ILocation,
   IPayment,
   LoginDTO,
@@ -1021,6 +1022,23 @@ export class RestService {
     formData.append("launch_payload", JSON.stringify(payload));
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+  getTermsConditionForGame(
+    gameId: string,
+    store?: PurchaseStore
+  ): Observable<GameTermCondition> {
+    
+    const formData = new FormData();
+    formData.append("game_id", gameId);
+    formData.append("store", store.name.replace(/\s/g, "").toLowerCase());
+    return this.http
+      .post<GameTermCondition>(this.client_api + "/install_n_play", formData)
       .pipe(
         map((res) => res),
         catchError(({ error }) => {

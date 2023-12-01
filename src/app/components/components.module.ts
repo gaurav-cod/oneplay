@@ -35,10 +35,12 @@ import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 import { SuccessMessageComponent } from "./success-message/success-message.component";
 import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
+import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    PipesModule,
     RouterModule,
     NgbModule,
     NgxUiLoaderModule,
@@ -77,6 +79,7 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     SuccessMessageComponent,
     ChatBottomSheetComponent,
     GeneralSettingsComponent,
+    InstallPlayGameComponent,
   ],
   exports: [
     GameCardComponent,
@@ -101,7 +104,8 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
     GameplayHistoryComponent,
     SuccessMessageComponent,
     ChatBottomSheetComponent,
-    GeneralSettingsComponent
+    GeneralSettingsComponent,
+    InstallPlayGameComponent
   ],
 })
 export class ComponentsModule {}

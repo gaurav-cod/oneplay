@@ -10,12 +10,14 @@ export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
   @Input() games: GameModel[];
 
+  // @Input() isInstallPlay: boolean = false;
+
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
   showRightArrow = false;
   showLeftArrow = false;
 
-  constructor() {}
+  constructor() { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.updateArrows(), 100)
@@ -27,6 +29,9 @@ export class SimilarGamesComponent implements AfterViewInit {
       return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
     });
   }
+  // get isInstallPlayDesktop() {
+  //   return window.innerWidth > 1200 && this.isInstallPlay;
+  // }
 
   scrollRight() {
     const container = this.containerRef.nativeElement;
