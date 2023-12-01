@@ -183,18 +183,13 @@ export class BottomNavComponent implements OnInit, OnDestroy {
 
   goToCasualGamingPage() {
 
-    if (!this.showCasualGamingLabel) {
-      window.open("https://www.gamezop.com/");
-      return;
-    }
-
     this.restService.visitCasulGamingSection().subscribe({
       next: (response: any) => {
         this.showCasualGamingLabel = response.is_new;
       }, error: (error) => {
 
       }, complete: () => {
-        window.open("https://www.gamezop.com/");
+        window.open("https://www.gamezop.com/", "_self");
       }
     })
   }
