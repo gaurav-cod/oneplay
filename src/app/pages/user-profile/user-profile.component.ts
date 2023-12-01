@@ -64,9 +64,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.userSubscription?.unsubscribe();
   }
 
-  redirectToSpeedTest() {
-    this.router.navigate(['/speed-test']);
-  }
+  // redirectToSpeedTest() {
+  //   this.router.navigate(['/speed-test']);
+  // }
 
 
 
