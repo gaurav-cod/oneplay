@@ -190,11 +190,6 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
   goToCasualGamingPage() {
 
-    if (!this.showCasualGamingLabel) {
-      this.casualGamingScreen();
-      return;
-    }
-
     this.restService.visitCasulGamingSection().subscribe({
       next: (response: any) => {
         this.showCasualGamingLabel = response.is_new;
