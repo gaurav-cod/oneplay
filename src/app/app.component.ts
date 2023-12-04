@@ -35,7 +35,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getSeriousNotification();
+    
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Make your API call here after every navigation
+        this.getSeriousNotification();
+      });
 
     this.gamepadMessageSubscription = this.gamepadService.message.subscribe(
       (message) => {
