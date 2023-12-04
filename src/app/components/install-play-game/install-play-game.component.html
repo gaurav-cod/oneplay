@@ -33,7 +33,7 @@
     </div>
 </a>
 <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute"
-    *ngIf="calledFrom !== 'STORE_OTHER'  && showBottomLabel">
+    *ngIf="calledFrom !== 'STORE_OTHER'  && showBottomLabel && isInstallAndPlayList">
     <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
         <span class="redGradient px-2 tagText text-white">COMING SOON</span>
     </div>
