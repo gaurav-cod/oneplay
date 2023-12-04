@@ -9,6 +9,7 @@ import { GameModel } from "src/app/models/game.model";
 export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
   @Input() games: GameModel[];
+  @Input() isInstallAndPlayList: boolean = false;
 
   // @Input() isInstallPlay: boolean = false;
 
@@ -17,7 +18,7 @@ export class SimilarGamesComponent implements AfterViewInit {
   showRightArrow = false;
   showLeftArrow = false;
 
-  constructor() { }
+  constructor() {}
 
   ngAfterViewInit(): void {
     setTimeout(() => this.updateArrows(), 100)

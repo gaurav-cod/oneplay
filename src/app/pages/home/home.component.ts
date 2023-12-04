@@ -168,4 +168,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.authService.removeFromWishlist(game.oneplayId);
     });
   }
+
+  isInstallPlayList(games: GameModel[]) {
+   
+    return games.every((game)=> game.isInstallAndPlay);
+  }
 }

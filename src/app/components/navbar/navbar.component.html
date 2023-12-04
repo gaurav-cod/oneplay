@@ -98,7 +98,7 @@
                 style="cursor: pointer"
                 (click)="viewGameFromSearch(game)"
               >
-              <div *ngIf="!game.isInstallAndPlay" class="d-flex">
+              <div *ngIf="!game.isInstallAndPlay" class="d-flex w-100">
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
@@ -150,14 +150,14 @@
                 </div>
                 <div class="col align-self-center pr-0">
                   <p class="font16 font500 offWhitecolor mb-0">
-                    <span class="truncate-line-clamp">{{ game.title }}</span>
+                    <span class="truncate-line-clamp text-wrap">{{ game.title }}</span>
                   </p>
                   <p class="font14 font500 mb-0 mutedTextColor">
                     {{ game.releaseDate.getFullYear() }}
                   </p>
                 </div>
               </div>
-              <div *ngIf="game.isInstallAndPlay" class="d-flex">
+              <div *ngIf="game.isInstallAndPlay" class="d-flex w-100">
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
@@ -177,20 +177,20 @@
                     </ng-container>
                   </div>
                 </div>
-                <div class="col pr-0">
-                  <p class="font16 font500 offWhitecolor mb-0">
-                    <span class="truncate-line-clamp">{{ game.title }}</span>
+                <div class="col-6 pr-0">
+                  <p class="font16 font500 offWhitecolor mb-0 text-wrap">
+                    <span class="gameTitle truncate-line-clamp">{{ game.title }}</span>
                   </p>
                   <p class="font14 font500 mb-0 mutedTextColor">
                     {{ game.releaseDate.getFullYear() }} . {{ game.developer | trimBySeperator }} 
                   </p>
                   <div class="_card-img-overlay_ p-0">
-                    <span *ngIf="(game.isFree && game.status !== 'coming_soon')" class="freeTag px-2 free tagText">
+                    <span *ngIf="(game.isFree && game.status !== 'coming_soon')" class="freeTag px-2 secondaryTag tagText">
                       FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
-                    <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
-                    <span *ngIf="game.status === 'maintenance'" class="orangeGradientBg text-white px-1 free tagText">MAINTENANCE</span>
-                    <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 free tagText">UPDATING</span>
-                    <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 free tagText">NOT
+                    <span *ngIf="game.status === 'coming_soon'" [ngClass]="{'adjustPosition': (game.isFree && game.status !== 'coming_soon')}" class="redGradient px-1 secondaryTag tagText">COMING SOON</span>
+                    <span *ngIf="game.status === 'maintenance'" [ngClass]="{'adjustPosition': (game.isFree && game.status !== 'coming_soon')}" class="orangeGradientBg text-white px-1 secondaryTag tagText">MAINTENANCE</span>
+                    <span *ngIf="game.status === 'updating'" [ngClass]="{'adjustPosition': (game.isFree && game.status !== 'coming_soon')}" class="updatingGradient text-white px-1 secondaryTag tagText">UPDATING</span>
+                    <span *ngIf="game.status === 'not_optimized'" [ngClass]="{'adjustPosition': (game.isFree && game.status !== 'coming_soon')}" class="darkredGradient text-white px-1 secondaryTag tagText">NOT
                       OPTIMIZED</span>
                   </div>
                   </div>

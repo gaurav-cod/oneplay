@@ -38,7 +38,7 @@
 .header {
   font-size: 40px;
   font-weight: 600;
-  top: 15px;
+  top: 10px;
   @media (max-width: 1000px) {
     top: 0px !important;
   }
@@ -48,6 +48,9 @@
   @media (max-width: 480px) {
     font-size: 22px !important;
   }
+}
+.truncate-line-clamp {
+  -webkit-line-clamp: 3 !important;
 }
 
 .bg-gradient-banner-bottom {
@@ -585,6 +588,10 @@ live {
   @media (max-width: 1200px) {
     height: 100px;
   }
+}
+.adjustHeightWidth {
+  height: auto !important;
+  width: 55% !important;
 }
 
 .blackBbg {

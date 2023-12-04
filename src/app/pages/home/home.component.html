@@ -153,6 +153,7 @@
         *ngFor="let row of restRows"
         [title]="row.title"
         [games]="row.games"
+        [isInstallAndPlayList]="isInstallPlayList(row.games)"
       ></app-similar-games>
     </ng-container>
   </div>

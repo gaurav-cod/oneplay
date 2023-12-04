@@ -58,11 +58,11 @@
             </div>
             <div class="row imagesText height330 align-items-end mt-md-4">
               <div class="col-md-12 pb-5">
-                <div class="row height100px">
+                <div class="row height100px"[ngClass]="{'adjustHeightWidth': game.isInstallAndPlay}">
                   <div class="col" *ngIf="!game.isInstallAndPlay">
                     <img [src]="game.textLogo" class="text-logo" alt="" />
                   </div>
-                  <div class="col header text-white" *ngIf="game.isInstallAndPlay">
+                  <div class="col header text-white truncate-line-clamp" *ngIf="game.isInstallAndPlay">
                     {{ game.title }}
                   </div>
                 </div>
@@ -206,6 +206,7 @@
                 >
                   <div
                     class="col-auto customResponsiveWidth custom-control custom-checkbox mt-3 mb-md-0"
+                    *ngIf="!game.isInstallAndPlay"
                   >
                     <input
                       type="checkbox"
@@ -611,7 +612,7 @@
         <p class="term-condition-content muteText mt-2" style="font-size: 12px;">{{ gameMetaDetails.tnc }}</p>
       </div>
       <div class="modal-footer pt-0">
-        <button class="border-0 term-condition-btn" (click)="startInstallAndPlay()">
+        <button class="border-0 term-condition-btn" (click)="startInstallAndPlay(smallModal)">
           I Agree
         </button>
         <button class="text-white bgTransparent border-0 term-condition-btn" (click)="closeTermConditionModal()">

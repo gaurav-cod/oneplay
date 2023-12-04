@@ -318,3 +318,15 @@
   bottom: 30px;
   width: 100%;
 }
+.truncate-line-clamp {
+  -webkit-line-clamp: 1 !important;
+}
+.secondaryTag {
+  position: absolute;
+  top: 3px;
+  right: -15px !important;
+}
+
+.adjustPosition {
+  right: -100px !important;
+}

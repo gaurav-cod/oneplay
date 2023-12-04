@@ -158,12 +158,12 @@
               {{ game.releaseDate.getFullYear() }} . {{ game.developer | trimBySeperator }}
             </p>
             <div class="_card-img-overlay_ p-0">
-              <span *ngIf="(game.isFree && game.status !== 'coming_soon')" class="freeTag px-2 free tagText">
+              <span *ngIf="(game.isFree && game.status !== 'coming_soon')" class="freeTag px-2 secondaryTag tagText">
                 FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
-              <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 free tagText">COMING SOON</span>
-              <span *ngIf="game.status === 'maintenance'" class="orangeGradientBg text-white px-1 free tagText">MAINTENANCE</span>
-              <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 free tagText">UPDATING</span>
-              <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 free tagText">NOT
+              <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 secondaryTag tagText">COMING SOON</span>
+              <span *ngIf="game.status === 'maintenance'" class="orangeGradientBg text-white px-1 secondaryTag tagText">MAINTENANCE</span>
+              <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 secondaryTag tagText">UPDATING</span>
+              <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 secondaryTag tagText">NOT
                 OPTIMIZED</span>
             </div>
             </div>
