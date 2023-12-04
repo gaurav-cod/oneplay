@@ -606,10 +606,10 @@
         </h2>
         <div class="d-flex justify-content-between py-1 mt-sm-2">
           <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
-          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated }}</span>
+          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | dateFormatter }}</span>
 
         </div>
-        <p class="term-condition-content muteText mt-2" style="font-size: 12px;">{{ gameMetaDetails.tnc }}</p>
+        <p class="term-condition-content muteText mt-2" style="font-size: 12px;" [innerHTML]="gameMetaDetails.tnc"></p>
       </div>
       <div class="modal-footer pt-0">
         <button class="border-0 term-condition-btn" (click)="startInstallAndPlay(smallModal)">
