@@ -16,7 +16,7 @@ export class InstallPlayGameComponent {
   @Input("queryParams") queryParams?: any;
   @Input("showBottomLabel") showBottomLabel: boolean = true;
   @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" | "LIBRARY" = "HOME";
-
+  @Input("isInstallAndPlayList") isInstallAndPlayList: boolean = false;
 
   get isMobile() {
     return window.innerWidth < 768;
@@ -39,6 +39,9 @@ export class InstallPlayGameComponent {
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
     });
+  }
+  onImgError(event) {
+    event.target.src = 'assets/img/store/store.svg';
   }
 
 }

@@ -619,9 +619,9 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   }
 
-  startInstallAndPlay() {
+  startInstallAndPlay(container: ElementRef<HTMLDivElement>) {
     this._termConditionModalRef?.close();
-    this.startGame();
+    this.playGame(container);
   }
 
   startGameWithCheck(container: ElementRef<HTMLDivElement>) {
@@ -692,7 +692,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
         swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
-        if (this.showSettings.value) {
+        if (this.showSettings.value || this.game.isInstallAndPlay) {
           this.countlyService.startEvent("gamePlaySettingsPageView", {
             discardOldData: true,
             data: {

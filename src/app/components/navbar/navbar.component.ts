@@ -312,7 +312,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   onImgError(event) {
-    event.target.src = "assets/img/default_bg.webp";
+    event.target.src = "assets/img/store/store.svg";
   }
 
   onUserError(event) {

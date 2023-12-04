@@ -15,54 +15,41 @@
 
 @media (max-width: 480px) {
     .card {
-        // width: 150px;
-        height: 95px;
+      // width: 150px;
+      height: 110px !important;
     }
-
-    .adjustHeight {
-        height: 95px !important;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 767px) {
+  }
+  
+  @media (min-width: 481px) and (max-width: 767px) {
     .card {
-        // width: 150px;
-        height: 121px;
+      // width: 150px;
+      height: 121px;
     }
-}
-
-@media (max-width: 320px) {
+  }
+  
+  @media (max-width: 320px) {
     .card {
-        // width: 150px;
-        height: 80px;
+      // width: 150px;
+      height: 80px;
     }
-
-    .adjustHeight {
-        height: 95px !important;
-    }
-}
-
-@media (min-width: 768px) {
+  }
+  
+  @media (min-width: 768px) {
     .card {
-        // width: 150px;
-        height: 150px !important;
+      // width: 150px;
+      height: 150px !important;
     }
-
     .adjustHeight {
         height: 130px !important;
     }
-}
-
-@media (min-width: 1300px) {
+  }
+  
+  @media (min-width: 1300px) {
     .card {
-        // width: 150px;
-        height: 150px !important;
+      // width: 150px;
+      height: 150px !important;
     }
-
-    .adjustHeight {
-        height: 130px !important;
-    }
-}
+  }
 
 @media (min-width: 1201px) {
 
@@ -82,6 +69,7 @@
         margin-top: -10px !important;
         justify-content: center !important;
         z-index: 1;
+        width: 100%;
     }
 
     .developerListDesktop,
@@ -109,5 +97,10 @@
     .mainContainer {
         padding-top: 15px !important;
         padding-bottom: 15px !important;
+    }
+}
+@media (min-width: 320px) and (max-width: 475px) {
+    .secondaryTags {
+        margin-top: -13px !important;
     }
 }

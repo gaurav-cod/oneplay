@@ -202,8 +202,7 @@ export class StoreComponent implements OnInit {
     }
     this.restService.getFilteredGames(payload, 0, 5).subscribe((res) => {
 
-      // need to check this condition
-      if (res.length === 5) {
+      if (res.length >= 1) {
         this.queries["Install & Play"] = {
           "install_and_play": "true"
         }

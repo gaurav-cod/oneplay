@@ -91,7 +91,8 @@ export interface GameTermCondition {
   code: number;
   data: {
     tnc: string,
-    url: string
+    url: string,
+    last_updated: string
   };
   msg: string;
   status: number;
