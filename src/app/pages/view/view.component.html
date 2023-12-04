@@ -606,7 +606,7 @@
         </h2>
         <div class="d-flex justify-content-between py-1 mt-sm-2">
           <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
-          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | dateFormatter }}</span>
+          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | date:'dd-MMM-YYYY' }}</span>
 
         </div>
         <p class="term-condition-content muteText mt-2" style="font-size: 12px;" [innerHTML]="gameMetaDetails.tnc"></p>
