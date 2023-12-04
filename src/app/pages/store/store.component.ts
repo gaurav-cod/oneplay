@@ -204,6 +204,7 @@ export class StoreComponent implements OnInit {
 
       if (res.length >= 1) {
         this.queries["Install & Play"] = {
+          "label": "common",
           "install_and_play": "true"
         }
       }
