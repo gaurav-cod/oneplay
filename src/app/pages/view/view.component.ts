@@ -626,10 +626,39 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   startGameWithCheck(container: ElementRef<HTMLDivElement>) {
     if (this.game.isInstallAndPlay && this.action === "Play") {
-      this.installAndPlaySession(container);
+      this.startGameCheckUp(container);
+      
     } else {
       this.playGame(container);
     }
+  }
+
+  startGameCheckUp(container: ElementRef<HTMLDivElement>) {
+    this.restService.getTokensUsage().subscribe((data) => {
+      let swal_html = null;
+      if (data.total_tokens === 0) {
+        swal_html = `Level up and purchase a new subscription to continue Gaming.`;
+      } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
+        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
+      } else {
+        this.installAndPlaySession(container);
+      }
+      if (swal_html != null) {
+        Swal.fire({
+          imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+          customClass: "swalPaddingTop",
+          title: "Wait!",
+          html: swal_html,
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Buy Now",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
+        });
+      }
+    });
   }
 
 
