@@ -74,11 +74,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     Swal.close();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.title.setTitle("Home");
     this.loaderService.start();
     
-    this.shouldShowInstallPlayTag();
+    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+    if (response.length === 5) {
+      this.queries["Install & Play"] = {
+        "install_and_play": "true"
+      };
+    }
     this.paramsSubscription = this.route.params.subscribe({
       next: (params) => {
         this.feedSubscription?.unsubscribe();
@@ -128,20 +133,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  private shouldShowInstallPlayTag() {
+  private async shouldShowInstallPlayTag() {
     let payload = {
-      "install_and_play": "true"
+      
     }
-    this.restService.getFilteredGames(payload, 0, 5).subscribe((res) => {
+   
 
-      if (res.length === 5) {
-        this.queries["Install & Play"] = {
-          "install_and_play": "true"
-        }
-      }
-    }, (error: any) => {
-
-    })
   }
 
   viewBannerGame(game: GameModel) {

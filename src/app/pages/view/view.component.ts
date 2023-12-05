@@ -620,22 +620,15 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startInstallAndPlay(container: ElementRef<HTMLDivElement>) {
+
     this._termConditionModalRef?.close();
-    this.playGame(container);
+    this.gamePlaySettingModal(container);
   }
-
-  startGameWithCheck(container: ElementRef<HTMLDivElement>) {
-    if (this.game.isInstallAndPlay && this.action === "Play") {
-      this.installAndPlaySession(container);
-    } else {
-      this.playGame(container);
-    }
-  }
-
 
   async playGame(
     container: ElementRef<HTMLDivElement>,
-    skipCheckResume = false
+    skipCheckResume = false,
+    termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
 
     const uagent = new UAParser();
@@ -692,28 +685,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
         swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
-        if (this.showSettings.value || this.game.isInstallAndPlay) {
-          this.countlyService.startEvent("gamePlaySettingsPageView", {
-            discardOldData: true,
-            data: {
-              gameTitle: this.game.title,
-              gameId: this.game.oneplayId,
-              gameGenre: this.game.genreMappings.join(', '),
-              store: this.selectedStore?.name,
-              advanceSettingsViewed: 'no',
-              settingsChanged: 'no',
-              bitRate: this.bitrate.value,
-              vsyncEnabled: this.vsync.value ? "yes" : "no",
-              resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
-              fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
-            }
-          })
-          this._settingsModalRef = this.ngbModal.open(container, {
-            centered: true,
-            modalDialogClass: "modal-md",
-            backdrop: "static",
-            keyboard: false,
-          });
+        if (this.game.isInstallAndPlay && this.action === "Play") {
+          this.installAndPlaySession(termConditionModal);
+        } else if (this.showSettings.value) {
+          this.gamePlaySettingModal(container);
         } else {
           this.startGame();
         }
@@ -733,6 +708,30 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
       }
+    });
+  }
+
+  private gamePlaySettingModal(container: ElementRef<HTMLDivElement>) {
+    this.countlyService.startEvent("gamePlaySettingsPageView", {
+      discardOldData: true,
+      data: {
+        gameTitle: this.game.title,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.join(', '),
+        store: this.selectedStore?.name,
+        advanceSettingsViewed: 'no',
+        settingsChanged: 'no',
+        bitRate: this.bitrate.value,
+        vsyncEnabled: this.vsync.value ? "yes" : "no",
+        resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
+        fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
+      }
+    })
+    this._settingsModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      backdrop: "static",
+      keyboard: false,
     });
   }
 
