@@ -717,9 +717,29 @@ live {
     line-height: 24px !important;
   }
 }
+@media (min-width: 320px) and (max-width: 475px) {
+  .term-n-condition-modal {
+    padding: 5px !important;
+    .modal-content {
+      padding: 5px !important;
+      .modal-body {
+        margin-top: 5px !important;
+      }
+    }
+  }
+}
 .term-n-condition-modal {
-  .model-content {
-    background-color: #444444 !important;
+  padding: 0px 5px 5px !important;
+  position: relative;
+  .termConditionCrossIcon {
+    color: white;
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    z-index: 1;
+  }
+  .modal-content {
+    background-color: #212123 !important;
     padding: 10px !important;
 
     .modal-body {
