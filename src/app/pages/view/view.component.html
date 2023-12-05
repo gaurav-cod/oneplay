@@ -21,7 +21,7 @@
           <img
             class="card-img height80 borderRadius10"
             style="object-fit: cover; object-position: top"
-            [src]="(game.isInstallAndPlay ? game.installPlayDetailImg : game.bgImage)"
+            [src]="bgBannerImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
