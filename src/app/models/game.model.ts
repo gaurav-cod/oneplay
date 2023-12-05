@@ -47,6 +47,7 @@ export class GameModel {
   readonly installPlayRailImg: string;
   readonly installPlayLoadingImg: string;
   readonly installPlayDetailImg: string;
+  readonly installPlayDetailImgMob: string;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
@@ -87,5 +88,6 @@ export class GameModel {
     this.installPlayDetailImg = json["install_and_play_details_image"];
     this.installPlayRailImg = json["install_and_play_rail_image"];
     this.installPlayLoadingImg = json["install_and_play_loading_image"];
+    this.installPlayDetailImgMob = json["install_and_play_details_image_android"];
   }
 }

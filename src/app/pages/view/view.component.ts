@@ -67,6 +67,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   initializationPage = false;
   initializationErrored = false;
   waring_message_display: boolean = true;
+  bgBannerImage: string;
 
   similarGames: GameModel[] = [];
 
@@ -298,6 +299,8 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "keywords", content: game.tagsMapping?.join(", ") },
               { name: "description", content: game.description },
             ]);
+
+            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? game.installPlayDetailImg : game.installPlayDetailImgMob) : game.bgImage);
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
                 (store) => store.name === game.preferredStore
