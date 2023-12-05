@@ -127,7 +127,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="startGameWithCheck(this.game.isInstallAndPlay ? termsConditionModal : smallModal)"
+                      (click)="startGameWithCheck(this.game.isInstallAndPlay && action === 'Play' ? termsConditionModal : smallModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"

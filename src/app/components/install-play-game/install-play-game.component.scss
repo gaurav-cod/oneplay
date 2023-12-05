@@ -16,7 +16,10 @@
 @media (max-width: 480px) {
     .card {
       // width: 150px;
-      height: 110px !important;
+      height: 95px !important;
+    }
+    .truncate-line-clamp {
+      -webkit-line-clamp: 1 !important;
     }
   }
   
@@ -103,4 +106,8 @@
     .secondaryTags {
         margin-top: -13px !important;
     }
+}
+.secondaryTags {
+  width: 95%;
+  margin-left: auto;
 }

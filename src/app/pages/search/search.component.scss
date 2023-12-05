@@ -122,3 +122,8 @@
   // right: -15px !important;
 }
 
+.gameTitle {
+  @media (max-width: 475px) {
+    width: 65% !important;
+  }
+}
