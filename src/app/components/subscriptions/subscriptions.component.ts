@@ -75,14 +75,9 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
       } catch {}
     }
 
+    this.getSubscriptionPlayTime();
     this._playTimeBarIntervalRef = setInterval(()=> {
-
-      this.restService.getTokensUsage().toPromise().then((data) => {
-        this.totalTokens = data.total_tokens;
-        this.remainingTokens = data.remaining_tokens;
-        this.totalDailyToken = data.total_daily_tokens;
-        this.remainingDailyToken = data.total_daily_tokens - data.used_daily_tokens;
-      });
+      this.getSubscriptionPlayTime();
     }, 1000);
     this.successFilter();
 
@@ -99,6 +94,15 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     });
     this.countlyService.updateEventData("settingsView", {
       subscriptionViewed: "yes",
+    });
+  }
+
+  private getSubscriptionPlayTime() {
+    this.restService.getTokensUsage().toPromise().then((data) => {
+      this.totalTokens = data.total_tokens;
+      this.remainingTokens = data.remaining_tokens;
+      this.totalDailyToken = data.total_daily_tokens;
+      this.remainingDailyToken = data.total_daily_tokens - data.used_daily_tokens;
     });
   }
 
