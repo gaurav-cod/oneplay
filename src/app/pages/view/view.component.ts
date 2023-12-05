@@ -685,16 +685,12 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
         swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
-
-        if (this.showSettings.value) {
+        if (this.game.isInstallAndPlay && this.action === "Play") {
+          this.installAndPlaySession(termConditionModal);
+        } else if (this.showSettings.value) {
           this.gamePlaySettingModal(container);
         } else {
-          if (this.game.isInstallAndPlay && this.action === "Play") {
-            this.installAndPlaySession(termConditionModal);
-          } else {
-
-            this.startGame();
-          }
+          this.startGame();
         }
       }
       if (swal_html != null) {
