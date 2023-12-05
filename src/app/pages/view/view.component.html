@@ -90,9 +90,9 @@
                   <div
                     class="col-auto align-self-center fullWidthBtn"
                     *ngIf="
-                      game.status === 'coming_soon' ||
+                      (game.status === 'coming_soon' ||
                       game.status === 'maintenance' ||
-                      game.status === 'updating'
+                      game.status === 'updating') 
                     "
                   >
                     <div class="borderRadius90 mt-3 blackBbg">
@@ -127,7 +127,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="startGameWithCheck(this.game.isInstallAndPlay ? termsConditionModal : smallModal)"
+                      (click)="startGameWithCheck(this.game.isInstallAndPlay && action === 'Play' ? termsConditionModal : smallModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
@@ -230,7 +230,7 @@
                     >
                   </div>
                 </form>
-                <div class="font16 my-3 textCenterInResponsive hideInMobile">
+                <div class="font16 my-3 textCenterInResponsive hideInMobile" *ngIf="!game.isInstallAndPlay">
                   <p
                     class="cancelgradientText font600"
                     *ngIf="game.status === 'coming_soon'"
@@ -599,6 +599,9 @@
 
 <ng-template #termsConditionModal>
   <section class="term-n-condition-modal">
+    <div class="termConditionCrossIcon cursorPointer" (click)="closeTermConditionModal()">
+      <img src="assets/icons/close-icon.svg" />
+    </div>
     <div class="modal-content position-relative modalBg">
       <div class="modal-body pb-0">
         <h2 class="text-white font600 mb-0 font18responsive">
@@ -606,7 +609,7 @@
         </h2>
         <div class="d-flex justify-content-between py-1 mt-sm-2">
           <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
-          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | dateFormatter }}</span>
+          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | date:'MMMM d, y' }}</span>
 
         </div>
         <p class="term-condition-content muteText mt-2" style="font-size: 12px;" [innerHTML]="gameMetaDetails.tnc"></p>

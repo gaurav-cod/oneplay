@@ -19,6 +19,7 @@ export class StoreComponent implements OnInit {
   isLoading = false;
   canLoadMore = true;
   genreSelected: string = "";
+  isInstallPlayList: boolean = false;
 
   private queries = {
     // "All Games": {
@@ -156,6 +157,7 @@ export class StoreComponent implements OnInit {
         };
       });
     });
+    this.shouldShowInstallPlayTag();
   }
 
   onScroll() {
@@ -180,11 +182,11 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = games;
+          this.isInstallPlayList = games.every((game)=> game.isInstallAndPlay);
 
           if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }
-          this.shouldShowInstallPlayTag();
           this.stopLoading(0);
         },
         (error) => {
@@ -204,7 +206,10 @@ export class StoreComponent implements OnInit {
 
       if (res.length >= 1) {
         this.queries["Install & Play"] = {
-          "install_and_play": "true"
+          "label": "common",
+          value: {
+            "install_and_play": "true"
+          }
         }
       }
     }, (error: any) => {

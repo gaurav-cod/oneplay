@@ -125,7 +125,7 @@
             <app-game-card [game]="game" ></app-game-card>
           </div>
           <div class="zoom" *ngIf="game.isInstallAndPlay">
-            <app-install-play-game [game]="game" [calledFrom]="(genreSelected.includes('Install') ? 'STORE_INSTALL_PLAY' : 'STORE_OTHER')"></app-install-play-game>
+            <app-install-play-game [game]="game" [calledFrom]="(genreSelected.includes('Install') ? 'STORE_INSTALL_PLAY' : 'STORE_OTHER')" [isInstallAndPlayList]="isInstallPlayList"></app-install-play-game>
           </div>
         </div>
       </div>

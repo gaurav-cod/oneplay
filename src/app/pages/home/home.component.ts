@@ -77,6 +77,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.title.setTitle("Home");
     this.loaderService.start();
+    
+    this.shouldShowInstallPlayTag();
     this.paramsSubscription = this.route.params.subscribe({
       next: (params) => {
         this.feedSubscription?.unsubscribe();
@@ -85,10 +87,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (!query) {
           this.genreSelected = '';
         } else {
+             
           this.genreSelected = query;
           this.gameFilterSubscription = this.restService
           .getFilteredGames(this.queries[query], 0)
-          .subscribe((games) => (this.genreGames = games));
+          .subscribe((games) => {
+            this.genreGames = games;
+          });
         }
         this.feedSubscription = this.restService
           .getHomeFeed()
@@ -97,8 +102,6 @@ export class HomeComponent implements OnInit, OnDestroy {
               this.firstRow = feeds.filter((f) => f.type === 'header')[0];
               // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
               this.restRows = feeds.filter((f) => f.type === 'rail');
-             
-              this.shouldShowInstallPlayTag();
 
               document.body.click();
               this.loaderService.stop();

@@ -6,7 +6,6 @@ import { GLinkPipe } from "./glink.pipe";
 import { TimeAgoPipe } from "./time-ago.pipe";
 import { TokensPipe } from "./tokens.pipe";
 import { TrimBySeperatorPipe } from './trim-by-seperator.pipe';
-import { DateFormatterPipe } from './date-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -15,8 +14,7 @@ import { DateFormatterPipe } from './date-formatter.pipe';
     GLinkPipe,
     TimeAgoPipe,
     TokensPipe,
-    TrimBySeperatorPipe,
-    DateFormatterPipe,
+    TrimBySeperatorPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -25,8 +23,7 @@ import { DateFormatterPipe } from './date-formatter.pipe';
     GLinkPipe,
     TimeAgoPipe,
     TokensPipe,
-    TrimBySeperatorPipe,
-    DateFormatterPipe
+    TrimBySeperatorPipe
   ],
 })
 export class PipesModule { }

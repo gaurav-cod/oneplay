@@ -152,19 +152,21 @@
           </div>
           <div class="col pr-0 align-self-center">
             <p class="font16 font500 offWhitecolor mb-0">
-              <span class="truncate-line-clamp">{{ game.title }}</span>
+              <span class="truncate-line-clamp gameTitle">{{ game.title }}</span>
             </p>
             <p class="font14 font500 mb-0 mutedTextColor">
               {{ game.releaseDate.getFullYear() }} . {{ game.developer | trimBySeperator }}
             </p>
             <div class="_card-img-overlay_ p-0">
-              <span *ngIf="(game.isFree && game.status !== 'coming_soon')" class="freeTag px-2 secondaryTag tagText">
+              <span *ngIf="(game.isFree && game.status !== 'coming_soon'); else canShowOtherTags" class="freeTag px-2 secondaryTag text-white tagText">
                 FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
-              <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 secondaryTag tagText">COMING SOON</span>
-              <span *ngIf="game.status === 'maintenance'" class="orangeGradientBg text-white px-1 secondaryTag tagText">MAINTENANCE</span>
-              <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 secondaryTag tagText">UPDATING</span>
-              <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 secondaryTag tagText">NOT
-                OPTIMIZED</span>
+                <ng-template #canShowOtherTags>
+                  <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 text-white secondaryTag tagText">COMING SOON</span>
+                  <span *ngIf="game.status === 'maintenance'" class="orangeGradientBg text-white px-1 secondaryTag tagText">MAINTENANCE</span>
+                  <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 secondaryTag tagText">UPDATING</span>
+                  <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 secondaryTag tagText">NOT
+                    OPTIMIZED</span>
+              </ng-template>
             </div>
             </div>
           </div>
