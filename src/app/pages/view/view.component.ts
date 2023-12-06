@@ -33,7 +33,7 @@ import { GamepadService } from "src/app/services/gamepad.service";
 import { RestService } from "src/app/services/rest.service";
 import { ToastService } from "src/app/services/toast.service";
 import { environment } from "src/environments/environment";
-import Swal, { SweetAlertResult } from "sweetalert2";
+import Swal, { SweetAlertOptions, SweetAlertResult } from "sweetalert2";
 import { UAParser } from "ua-parser-js";
 import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
@@ -682,18 +682,33 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     this.restService.getTokensUsage().subscribe((data) => {
-      let swal_html = null;
+      let showSwal = false;
+      let onConfirm = () => {
+        window.location.href = `${environment.domain}/subscription.html`;
+      };
+      const swalConf: SweetAlertOptions = {
+        imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+        customClass: "swalPaddingTop",
+        title: "Wait!",
+        html: '',
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Buy Now",
+      };
       if (data.total_tokens === 0) {
-        swal_html = `Level up and purchase a new subscription to continue Gaming.`;
+        showSwal = true;
+        swalConf.html = `Level up and purchase a new subscription to continue Gaming.`;
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
-        swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
-      } else if ((data.total_daily_tokens - data.used_daily_tokens) <= 0){  
-        Swal.fire({
-          title: "Alert!",
-          html: "You have consumed your daily gameplay limit quota of "+(Math.round(data.total_daily_tokens/60))+" hrs. See you again tomorrow!",
-          imageUrl: `assets/img/error/time_limit 1.svg`,
-          confirmButtonText: "Okay",
-        });
+        showSwal = true;
+        swalConf.html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
+        } else if ((data.total_daily_tokens - data.used_daily_tokens) <= 0){ 
+        showSwal = true;
+        swalConf.html = "You have consumed your daily gameplay limit quota of " + (Math.round(data.total_daily_tokens / 60)) + " hrs. See you again tomorrow!";
+        swalConf.title = "Alert!";
+        swalConf.imageUrl = `assets/img/error/time_limit 1.svg`;
+        swalConf.confirmButtonText = "Okay";
+        swalConf.showCancelButton = false;
+        onConfirm = () => {};
       } else {
         if (this.game.isInstallAndPlay && this.action === "Play") {
           this.installAndPlaySession(termConditionModal);
@@ -703,18 +718,10 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.startGame();
         }
       }
-      if (swal_html != null) {
-        Swal.fire({
-          imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
-          customClass: "swalPaddingTop",
-          title: "Wait!",
-          html: swal_html,
-          showCancelButton: true,
-          cancelButtonText: "Cancel",
-          confirmButtonText: "Buy Now",
-        }).then((res) => {
+      if (showSwal) {
+        Swal.fire(swalConf).then((res) => {
           if (res.isConfirmed) {
-            window.location.href = `${environment.domain}/subscription.html`;
+            onConfirm();
           }
         });
       }
