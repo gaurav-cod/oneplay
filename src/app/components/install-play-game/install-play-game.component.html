@@ -1,7 +1,14 @@
-<section [ngClass]="{'mt-4': isInstallAndPlayList && calledFrom.includes('STORE')}">
+<section [ngClass]="{'mt-4': isInstallAndPlayList && calledFrom.includes('STORE')}" style="position: relative;">
+    <div class="d-flex text-center position-absolute freeToPlayTab w-100" style="z-index: 1; top: -12px" *ngIf="calledFrom !== 'STORE_OTHER'">
+        <span *ngIf="game.isFree && game.status !== 'coming_soon'"
+            class="freeTag px-2 tagText text-white">
+            FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon"
+                alt="store" /></span>
+    </div>
     <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
         (click)="onGameClick()"
         [ngClass]="{'adjustHeight': calledFrom.includes('STORE') || calledFrom.includes('LIBRARY')}">
+
         <img [src]="game.installPlayRailImg" height="100%" width="100%" alt="">
         <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
@@ -43,7 +50,7 @@
 </section>
 
 <ng-template #showSecondaryTags>
-    <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute">
+    <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute" *ngIf="calledFrom != 'STORE_OTHER'">
         <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
             <span class="redGradient px-2 tagText text-white">COMING SOON</span>
         </div>
