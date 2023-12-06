@@ -594,7 +594,7 @@ live {
 }
 .adjustHeightWidth {
   height: auto !important;
-  width: 55% !important;
+  width: 40% !important;
 }
 
 .blackBbg {
@@ -732,8 +732,11 @@ live {
   }
 }
 .term-n-condition-modal {
-  padding: 0px 5px 5px !important;
+  padding: 3px !important;
   position: relative;
+  border-radius: 10px;
+  // padding-top: 4px !important;
+  background: linear-gradient(270deg, #0575E6 0%, #FF0CF5 100%);
   .termConditionCrossIcon {
     color: white;
     position: absolute;
@@ -804,6 +807,13 @@ live {
   @media (min-width: 320px) and (max-width: 700px) {
     width: 120px !important;
   }
+}
+
+@media (min-width: 475px) and (max-width: 1200px) {
+ 
+  .bgImage {
+    object-position: right !important;
+  } 
 }
 
 .licenseRequired {
