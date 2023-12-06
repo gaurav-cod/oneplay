@@ -1,7 +1,7 @@
 <section [ngClass]="{'mt-4': isInstallAndPlayList && calledFrom.includes('STORE')}" style="position: relative;">
     <div class="d-flex text-center position-absolute freeToPlayTab w-100" style="z-index: 1; top: -12px"
         *ngIf="calledFrom !== 'STORE_OTHER' && calledFrom !== 'LIBRARY'">
-        <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 tagText text-white">
+        <span *ngIf="game.isFree" class="freeTag px-2 tagText text-white">
             FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
     </div>
     <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
@@ -26,7 +26,7 @@
                             </ng-container>
                         </div>
                         <div class="d-flex h-100 flex-column justify-content-end secondaryTagOne">
-                            <span *ngIf="game.isFree && game.status !== 'coming_soon'; else showSecondaryTags"
+                            <span *ngIf="game.isFree; else showSecondaryTags"
                                 class="freeTag px-2 tagText text-white freeToPlayDesktop">
                                 FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon"
                                     alt="store" /></span>
@@ -40,7 +40,10 @@
             </div>
         </div>
     </a>
-    <div class="" *ngIf="!(game.isFree && game.status !== 'coming_soon'); else showSecondaryTags"></div>
+    <div class="" *ngIf="!game.isFree; else showSecondaryTags"></div>
+    <div class="md-status">
+        <div *ngIf="game.isFree; else showSecondaryTags"></div>
+    </div>
     <div class="developerListTab mt-2" *ngIf="isInstallAndPlayList || calledFrom === 'HOME'">
         <span style="color: #DCDCDC">
             {{ game.developer | trimBySeperator }}
@@ -49,7 +52,7 @@
 </section>
 
 <ng-template #showSecondaryTags>
-    <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute" *ngIf="calledFrom != 'STORE_OTHER' && calledFrom != 'LIBRARY'">
+    <div class="secondaryTags d-flex justify-content-end mt-1" [ngClass]="{'position-absolute': game.isFree}" *ngIf="calledFrom != 'STORE_OTHER' && calledFrom != 'LIBRARY'">
         <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
             <span class="redGradient px-2 tagText text-white">COMING SOON</span>
         </div>
