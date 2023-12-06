@@ -67,6 +67,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   initializationPage = false;
   initializationErrored = false;
   waring_message_display: boolean = true;
+  bgBannerImage: string;
 
   similarGames: GameModel[] = [];
 
@@ -87,6 +88,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   sessionToTerminate = "";
   selectedStore: PurchaseStore;
 
+  gameMetaDetails: any;
+
   showSettings = new UntypedFormControl();
 
   advancedOptions = new UntypedFormGroup({
@@ -98,7 +101,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     video_decoder_selection: new UntypedFormControl("auto"),
   });
 
-  reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)]});
+  reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)] });
 
   queueSequence = "";
   queueMessge1 = "";
@@ -111,6 +114,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _initializedModalRef: NgbModalRef;
   private _settingsModalRef: NgbModalRef;
   private _launchModalRef: NgbModalRef;
+  private _termConditionModalRef: NgbModalRef;
   private _advancedModalRef: NgbModalRef;
   private _macDownloadModalRef: NgbModalRef;
   private _gamepads: Gamepad[] = [];
@@ -210,9 +214,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         const resolution = localStorage.getItem("resolution");
         this.resolution.setValue(
           resolution ||
-            (MediaQueries.isMobile
-              ? PlayConstants.MOBILE_RESOLUTION
-              : PlayConstants.DEFAULT_RESOLUTIONS["Founder"])
+          (MediaQueries.isMobile
+            ? PlayConstants.MOBILE_RESOLUTION
+            : PlayConstants.DEFAULT_RESOLUTIONS["Founder"])
         );
         this.user = user;
       }
@@ -241,6 +245,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.stopLoading();
     }
     // this._initializedModalRef?.close();
+    this._termConditionModalRef?.close();
     this._settingsModalRef?.close();
     this._launchModalRef?.close();
     this._advancedModalRef?.close();
@@ -294,39 +299,41 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "keywords", content: game.tagsMapping?.join(", ") },
               { name: "description", content: game.description },
             ]);
-             if (game.preferredStore) {
-               const preferredStoreIndex = game.storesMapping.findIndex(
-                 (store) => store.name === game.preferredStore
-               );
-               if (preferredStoreIndex >= 0) {
-                 this.selectedStore =
-                   game.storesMapping[preferredStoreIndex];
-               } else {
+
+            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? game.installPlayDetailImg : game.installPlayDetailImgMob) : game.bgImage);
+            if (game.preferredStore) {
+              const preferredStoreIndex = game.storesMapping.findIndex(
+                (store) => store.name === game.preferredStore
+              );
+              if (preferredStoreIndex >= 0) {
+                this.selectedStore =
+                  game.storesMapping[preferredStoreIndex];
+              } else {
                 this.selectedStore = game.storesMapping[0] ?? null;
-               }
-             } else {
-               this.selectedStore = game.storesMapping[0] ?? null;
-             }
-              this._getGamesByDeveloperSub?.unsubscribe();
-              this._getGamesByDeveloperSub = this.restService
-                .getGamesByDeveloper(game.developer.join(","))
-                .subscribe(
-                  (games) =>
-                    (this._devGames = this.getShuffledGames([
-                      ...this._devGames,
-                      ...games,
-                    ]))
-                )
-              this._getGamesByGenreSub?.unsubscribe();
-              this._getGamesByGenreSub = this.restService
-                .getGamesByGenre(game.genreMappings.join(","))
-                .subscribe(
-                  (games) =>
-                    (this._genreGames = this.getShuffledGames([
-                      ...this._genreGames,
-                      ...games,
-                    ]))
-                )
+              }
+            } else {
+              this.selectedStore = game.storesMapping[0] ?? null;
+            }
+            this._getGamesByDeveloperSub?.unsubscribe();
+            this._getGamesByDeveloperSub = this.restService
+              .getGamesByDeveloper(game.developer.join(","))
+              .subscribe(
+                (games) =>
+                (this._devGames = this.getShuffledGames([
+                  ...this._devGames,
+                  ...games,
+                ]))
+              )
+            this._getGamesByGenreSub?.unsubscribe();
+            this._getGamesByGenreSub = this.restService
+              .getGamesByGenre(game.genreMappings.join(","))
+              .subscribe(
+                (games) =>
+                (this._genreGames = this.getShuffledGames([
+                  ...this._genreGames,
+                  ...games,
+                ]))
+              )
             this.loaderService.stop();
             const segments = this.countlyService.getEventData("gameLandingView");
             if (segments) {
@@ -339,11 +346,11 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.countlyService.startEvent("gameLandingView", {
                 discardOldData: false,
                 data: {
-                    gameId: game.oneplayId,
-                    gameTitle: game.title,
-                    gameGenre: game.genreMappings.join(', '),
-                    source: "directLink",
-                    trigger: "card",
+                  gameId: game.oneplayId,
+                  gameTitle: game.title,
+                  gameGenre: game.genreMappings.join(', '),
+                  source: "directLink",
+                  trigger: "card",
                 }
               });
             }
@@ -391,14 +398,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private toggleWarning()
-  {
+  private toggleWarning() {
     event.stopPropagation();
     this.waring_message_display = !this.waring_message_display;
   }
 
-  private hideWarning(event: Event)
-  {
+  private hideWarning(event: Event) {
     this.waring_message_display = true;
   }
 
@@ -519,7 +524,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       return 57;
     } else if (window.innerWidth >= 576) {
       return 100;
-    }else if (window.innerWidth >= 425) {
+    } else if (window.innerWidth >= 425) {
       return 75;
     } else if (window.innerWidth >= 360) {
       return 55;
@@ -547,6 +552,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       centered: true,
     });
   }
+  closeTermConditionModal() {
+    this._termConditionModalRef?.close();
+  }
 
   back(): void {
     this.location.back();
@@ -568,10 +576,64 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
 
+  installAndPlaySession(container: ElementRef<HTMLDivElement>) {
+
+    Swal.fire({
+      imageUrl: "assets/icons/oneplay-console-icon.svg",
+      title: "Wait",
+      text: "Do you agree to install & play this game?",
+      confirmButtonText: "Yes",
+      showCancelButton: true,
+      cancelButtonText: "No"
+    }).then((respons: any) => {
+      if (respons.isConfirmed) {
+        this.restService
+          .getTermsConditionForGame(
+            this.game.oneplayId,
+            this.selectedStore
+          )
+          .subscribe({
+            next: (data) => {
+
+              this.gameMetaDetails = data.data;
+              this._termConditionModalRef = this.ngbModal.open(container, {
+                centered: true,
+                modalDialogClass: "modal-md",
+                backdrop: "static",
+                keyboard: false,
+              });
+            },
+            error: (err) => {
+              // need to verify the message to show
+              Swal.fire({
+                // title: "Set up on Safari",
+                // text: "Streaming games is not supported in this browser",
+                // icon: "error",
+                confirmButtonText: "Close",
+              });
+            },
+          });
+
+      } else {
+
+      }
+    });
+    return;
+
+  }
+
+  startInstallAndPlay(container: ElementRef<HTMLDivElement>) {
+
+    this._termConditionModalRef?.close();
+    this.gamePlaySettingModal(container);
+  }
+
   async playGame(
     container: ElementRef<HTMLDivElement>,
-    skipCheckResume = false
+    skipCheckResume = false,
+    termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
+
     const uagent = new UAParser();
     this.countlyService.endEvent("gameLandingView")
     this.countlyService.startEvent("gamePlayStart", {
@@ -626,28 +688,10 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
         swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
       } else {
-        if (this.showSettings.value) {
-          this.countlyService.startEvent("gamePlaySettingsPageView", {
-            discardOldData: true,
-            data: {
-              gameTitle: this.game.title,
-              gameId: this.game.oneplayId,
-              gameGenre: this.game.genreMappings.join(', '),
-              store: this.selectedStore?.name,
-              advanceSettingsViewed: 'no',
-              settingsChanged: 'no',
-              bitRate: this.bitrate.value,
-              vsyncEnabled: this.vsync.value ? "yes" : "no",
-              resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
-              fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
-            }
-          })
-          this._settingsModalRef = this.ngbModal.open(container, {
-            centered: true,
-            modalDialogClass: "modal-md",
-            backdrop: "static",
-            keyboard: false,
-          });
+        if (this.game.isInstallAndPlay && this.action === "Play") {
+          this.installAndPlaySession(termConditionModal);
+        } else if (this.showSettings.value) {
+          this.gamePlaySettingModal(container);
         } else {
           this.startGame();
         }
@@ -667,6 +711,30 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
       }
+    });
+  }
+
+  private gamePlaySettingModal(container: ElementRef<HTMLDivElement>) {
+    this.countlyService.startEvent("gamePlaySettingsPageView", {
+      discardOldData: true,
+      data: {
+        gameTitle: this.game.title,
+        gameId: this.game.oneplayId,
+        gameGenre: this.game.genreMappings.join(', '),
+        store: this.selectedStore?.name,
+        advanceSettingsViewed: 'no',
+        settingsChanged: 'no',
+        bitRate: this.bitrate.value,
+        vsyncEnabled: this.vsync.value ? "yes" : "no",
+        resolution: mapResolutionstoGamePlaySettingsPageView(this.resolution.value),
+        fps: mapFPStoGamePlaySettingsPageView(this.fps.value),
+      }
+    })
+    this._settingsModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      backdrop: "static",
+      keyboard: false,
     });
   }
 
@@ -734,16 +802,16 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.terminateGame(this.sessionToTerminate).subscribe(
       (res) => {
         this.countlyService.addEvent("gameTerminate", {
-            gameSessionId: this.sessionToTerminate,
-            gameId: this.game.oneplayId,
-            gameTitle: this.game.title,
-            gameGenre: this.game.genreMappings.join(', '),
-            store: this.selectedStore.name,
-            terminationType: "userInitiated",
-            sessionDuration: res.data.session_duration,
-            playDuration: res.data.play_duration,
-            idleDuration: res.data.idle_duration,
-          });
+          gameSessionId: this.sessionToTerminate,
+          gameId: this.game.oneplayId,
+          gameTitle: this.game.title,
+          gameGenre: this.game.genreMappings.join(', '),
+          store: this.selectedStore.name,
+          terminationType: "userInitiated",
+          sessionDuration: res.data.session_duration,
+          playDuration: res.data.play_duration,
+          idleDuration: res.data.idle_duration,
+        });
         Swal.fire({
           title: "Session terminated",
           text: "Your session has been terminated",
@@ -751,14 +819,14 @@ export class ViewComponent implements OnInit, OnDestroy {
           confirmButtonText: "Okay",
         }).then(() => {
           this.countlyService.startEvent("gameFeedback", {
-              data: {
-                gameSessionId: this.sessionToTerminate,
-                gameId: this.game.oneplayId,
-                gameTitle: this.game.title,
-                gameGenre: this.game.genreMappings.join(', '),
-                store: this.selectedStore.name,
-              }
-            });
+            data: {
+              gameSessionId: this.sessionToTerminate,
+              gameId: this.game.oneplayId,
+              gameTitle: this.game.title,
+              gameGenre: this.game.genreMappings.join(', '),
+              store: this.selectedStore.name,
+            }
+          });
           this.router.navigate(["/quit"], {
             queryParams: {
               session_id: this.sessionToTerminate,

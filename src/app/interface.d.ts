@@ -87,6 +87,16 @@ export interface StartGameRO {
   msg: string;
   status: number;
 }
+export interface GameTermCondition {
+  code: number;
+  data: {
+    tnc: string,
+    url: string,
+    last_updated: string
+  };
+  msg: string;
+  status: number;
+}
 
 export interface VideoWithGameId {
   gameId: string;

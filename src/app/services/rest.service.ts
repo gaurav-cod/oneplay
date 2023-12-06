@@ -11,6 +11,7 @@ import {
   CouponResponse,
   GameSessionRO,
   GameStatusRO,
+  GameTermCondition,
   ILocation,
   IPayment,
   LoginDTO,
@@ -987,7 +988,7 @@ export class RestService {
   getSeriousNotification(): Observable<string | null> {
     return this.http
       .get(this.r_mix_api + "/notification/serious", {
-        params: { partnerId: environment.partner_id },
+        params: { partnerId: environment.partner_id, platform: 'web' },
       })
       .pipe(
         map((res) => res["text"]),
@@ -1021,6 +1022,23 @@ export class RestService {
     formData.append("launch_payload", JSON.stringify(payload));
     return this.http
       .post<StartGameRO>(this.client_api + "/start_game", formData)
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+  getTermsConditionForGame(
+    gameId: string,
+    store?: PurchaseStore
+  ): Observable<GameTermCondition> {
+    
+    const formData = new FormData();
+    formData.append("game_id", gameId);
+    formData.append("store", store.name.replace(/\s/g, "").toLowerCase());
+    return this.http
+      .post<GameTermCondition>(this.client_api + "/install_n_play", formData)
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
@@ -1192,6 +1210,27 @@ export class RestService {
           subscription_package_id: subscriptionPackageId,
           coupon_code: couponCode,
         }
+      )
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  checkCasualGamingSession() {
+    return this.http.get(
+      this.r_mix_api + "/games/gamezop/is_new_visit"
+      ).pipe(map((res) => res), 
+        catchError(({ error }) => {
+        throw error;
+    }))
+  }
+  visitCasulGamingSection() {
+    return this.http
+      .post<void>(
+        this.r_mix_api + "/games/gamezop/visit", null
       )
       .pipe(
         map((res) => res),

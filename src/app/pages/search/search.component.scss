@@ -116,3 +116,14 @@
   margin-left: 4px;
   margin-right: 4px;
 }
+.secondaryTag {
+  position: absolute;
+  bottom: -25px;
+  // right: -15px !important;
+}
+
+.gameTitle {
+  @media (max-width: 475px) {
+    width: 65% !important;
+  }
+}

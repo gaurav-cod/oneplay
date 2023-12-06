@@ -74,6 +74,11 @@
     padding-top: 16px;
   }
 }
+.scrollGameHeight {
+  @media (min-width: 1200px) {
+    height: 210px !important;
+  }
+}
 
 .paddingLeft {
   @media (max-width: 767.9px) {
@@ -101,6 +106,20 @@
   @media (max-width: 767.9px) {
     width: 175px;
     height: 95px;
+  }
+}
+.w300 {
+  height: 180px;
+  width: 300px;
+  @media (min-width: 768px) {
+    &:hover {
+      transform: scale(1.1) !important;
+      z-index: 9;
+    }
+
+    &:first-child:hover {
+      transform: scale(1.1) !important;
+    }
   }
 }
 
