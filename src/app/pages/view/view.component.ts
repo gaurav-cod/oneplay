@@ -687,6 +687,13 @@ export class ViewComponent implements OnInit, OnDestroy {
         swal_html = `Level up and purchase a new subscription to continue Gaming.`;
       } else if (data.total_tokens > 0 && data.remaining_tokens < 10) {
         swal_html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
+      } else if ((data.total_daily_tokens - data.used_daily_tokens) <= 0){  
+        Swal.fire({
+          title: "Alert!",
+          html: "You have consumed your daily gameplay limit quota of "+(Math.round(data.total_daily_tokens/60))+" hrs. See you again tomorrow!",
+          imageUrl: `assets/img/error/time_limit 1.svg`,
+          confirmButtonText: "Okay",
+        });
       } else {
         if (this.game.isInstallAndPlay && this.action === "Play") {
           this.installAndPlaySession(termConditionModal);
