@@ -319,6 +319,9 @@
   width: 100%;
 }
 .truncate-line-clamp {
+  -webkit-line-clamp: 2 !important;
+}
+._truncate-line-clamp {
   -webkit-line-clamp: 1 !important;
 }
 .secondaryTag {
