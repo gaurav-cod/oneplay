@@ -5,8 +5,7 @@
         <img [src]="game.installPlayRailImg" height="100%" width="100%" alt="">
         <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
-            <h4 class="game-title w-100 text-wrap truncate-line-clamp">{{ (game.title.length > 50 ? game.title.substr(0, 50)
-                + '...' : game.title ) }}</h4>
+            <h4 class="game-title w-100 text-wrap truncate-line-clamp">{{ game.title }}</h4>
             <div class="d-flex align-items-center justify-content-between" *ngIf="!calledFrom.includes('LIBRARY')">
                 <div class="d-flex flex-column w-100">
                     <span style="color: #DCDCDC" class="developerListDesktop">

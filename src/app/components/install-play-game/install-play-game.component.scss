@@ -18,8 +18,14 @@
       // width: 150px;
       height: 95px !important;
     }
-    .truncate-line-clamp {
+  }
+
+  .truncate-line-clamp {
+    @media (max-width: 475px) { 
       -webkit-line-clamp: 1 !important;
+    }
+    @media (min-width: 476px) {
+      -webkit-line-clamp: 3 !important;
     }
   }
   
