@@ -1,124 +1,136 @@
 .card {
-    background: none !important;
-    cursor: pointer;
+  background: none !important;
+  cursor: pointer;
 
-    .card-img {
-        object-position: center;
-        height: 100%;
-        width: 100%;
-    }
+  .card-img {
+    object-position: center;
+    height: 100%;
+    width: 100%;
+  }
 
-    .game-title {
-        color: #ffffff;
-    }
+  .game-title {
+    color: #ffffff;
+  }
 }
 
 @media (max-width: 480px) {
-    .card {
-      // width: 150px;
-      height: 95px !important;
-    }
+  .card {
+    // width: 150px;
+    height: 95px !important;
+  }
+}
+
+.truncate-line-clamp {
+  @media (max-width: 475px) {
+    -webkit-line-clamp: 1 !important;
   }
 
-  .truncate-line-clamp {
-    @media (max-width: 475px) { 
-      -webkit-line-clamp: 1 !important;
-    }
-    @media (min-width: 476px) {
-      -webkit-line-clamp: 2 !important;
-    }
-   
+  @media (min-width: 476px) {
+    -webkit-line-clamp: 2 !important;
   }
-  ._truncate-line-clamp {
-    @media (min-width: 476px) {
-      -webkit-line-clamp: 3 !important;
-    }
+
+}
+
+._truncate-line-clamp {
+  @media (min-width: 476px) {
+    -webkit-line-clamp: 3 !important;
   }
-  
-  @media (min-width: 481px) and (max-width: 767px) {
-    .card {
-      // width: 150px;
-      height: 121px;
-    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .card {
+    // width: 150px;
+    height: 121px;
   }
-  
-  @media (max-width: 320px) {
-    .card {
-      // width: 150px;
-      height: 80px;
-    }
+}
+
+@media (max-width: 320px) {
+  .card {
+    // width: 150px;
+    height: 80px;
   }
-  
-  @media (min-width: 768px) {
-    .card {
-      // width: 150px;
-      height: 150px !important;
-    }
-    .adjustHeight {
-        height: 130px !important;
-    }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .card {
+    // width: 150px;
+    height: 150px !important;
   }
-  
-  @media (min-width: 1300px) {
-    .card {
-      // width: 150px;
-      height: 150px !important;
-    }
+
+  .adjustHeight {
+    height: 140px !important;
   }
+}
+
+@media (min-width: 1300px) {
+  .card {
+    // width: 150px;
+    height: 150px !important;
+  }
+}
 
 @media (min-width: 1201px) {
 
-    .freeToPlayTab,
-    .developerListTab {
-        display: none !important;
-    }
+  .freeToPlayTab,
+  .developerListTab {
+    display: none !important;
+  }
 
-    .freeToPlayDesktop {
-        display: block !important;
-    }
+  .freeToPlayDesktop {
+    display: block !important;
+  }
+
+  .card {
+    // width: 150px;
+    height: 150px !important;
+  }
+  .adjustHeight {
+    height: 130px !important;
+  }
 }
 
 @media (min-width: 320px) and (max-width: 1200px) {
 
-    .secondaryTags {
-        margin-top: -10px !important;
-        justify-content: center !important;
-        z-index: 1;
-        width: 100%;
-    }
+  .secondaryTagOne {
+    display: none !important;
+  }
+  .secondaryTags {
+    margin-top: -17px !important;
+    justify-content: center !important;
+    z-index: 1;
+    width: 100%;
+  }
 
-    .developerListDesktop,
-    .freeToPlayDesktop {
-        display: none !important;
-    }
+  .developerListDesktop,
+  .freeToPlayDesktop {
+    display: none !important;
+  }
 
-    .developerListTab {
-        text-align: center !important;
-        font-weight: 600;
-    }
+  .developerListTab {
+    text-align: center !important;
+    font-weight: 600;
+    position: absolute;
+    width: 100%;
+  }
 
-    .freeToPlayTab {
-        display: block !important;
-    }
+  .freeToPlayTab {
+    display: block !important;
+  }
 
-    .store-list {
-        justify-content: center !important;
-    }
+  .store-list {
+    justify-content: center !important;
+  }
 
-    .game-title {
-        text-align: center;
-    }
+  .game-title {
+    text-align: center;
+  }
 
-    .mainContainer {
-        padding-top: 15px !important;
-        padding-bottom: 15px !important;
-    }
+  .mainContainer {
+    padding-top: 15px !important;
+    padding-bottom: 20px !important;
+  }
 }
-@media (min-width: 320px) and (max-width: 475px) {
-    .secondaryTags {
-        margin-top: -13px !important;
-    }
-}
+
 .secondaryTags {
   width: 95%;
   margin-left: auto;
