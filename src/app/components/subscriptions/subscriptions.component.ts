@@ -259,6 +259,10 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   calculatePercentage(remaining = 0, total = 0) {
+    if(total == 0)
+    {
+      return 0 + "%";
+    }
     return Math.round((remaining / total) * 100) + "%";
   }
 
