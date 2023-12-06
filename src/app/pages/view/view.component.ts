@@ -300,7 +300,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "description", content: game.description },
             ]);
 
-            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? game.installPlayDetailImg : game.installPlayDetailImgMob) : game.bgImage);
+            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? ( window.innerWidth < 1200 ? game.installPlayDetailImgTab : game.installPlayDetailImg) : game.installPlayDetailImgMob) : game.bgImage);
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
                 (store) => store.name === game.preferredStore
