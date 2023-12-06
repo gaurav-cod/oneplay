@@ -25,6 +25,12 @@
       -webkit-line-clamp: 1 !important;
     }
     @media (min-width: 476px) {
+      -webkit-line-clamp: 2 !important;
+    }
+   
+  }
+  ._truncate-line-clamp {
+    @media (min-width: 476px) {
       -webkit-line-clamp: 3 !important;
     }
   }
