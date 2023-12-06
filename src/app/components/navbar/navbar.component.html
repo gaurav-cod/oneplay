@@ -60,16 +60,14 @@
           >
         </li>
         <li class="nav-item position-relative">
-          <img src="assets/img/navbar/new-label.svg" 
-              class="position-absolute" 
-              style="right: 25px; top: -8px; z-index: 1;" 
-              alt="casual gaming"
-              *ngIf="showCasualGamingLabel"
-          >
-          <a
-            href="javascript:void(0)"
-            class="nav-link p-0 mt-2 pt-1 mr-3"
-            (click)="goToCasualGamingPage()"
+          <img
+            src="assets/img/navbar/new-label.svg"
+            class="position-absolute"
+            style="right: 25px; top: -8px; z-index: 1"
+            alt="casual gaming"
+            *ngIf="showCasualGamingLabel"
+          />
+          <a href="https://www.gamezop.com/" class="nav-link p-0 mt-2 pt-1 mr-3"
             >Level 1</a
           >
         </li>
@@ -122,8 +120,16 @@
                       alt=""
                     />
                     <div class="card-img-overlay p-0">
-                      <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
-                        FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
+                      <span
+                        *ngIf="game.isFree && game.status !== 'coming_soon'"
+                        class="freeTag px-2 free tagText"
+                      >
+                        FREE ON
+                        <img
+                          src="assets/img/store/store.svg"
+                          class="freeOnStoreIcon"
+                          alt="store"
+                      /></span>
                       <span
                         *ngIf="game.status === 'coming_soon'"
                         class="redGradient px-1 free tagText"
@@ -204,7 +210,10 @@
                     {{ user.username }}
                   </p>
                 </div>
-                <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline pr-0">
+                <div
+                  *ngIf="user.id != userId"
+                  class="col-auto d-flex align-items-baseline pr-0"
+                >
                   <ng-container
                     *ngFor="let key of getActions(user); index as i"
                   >
@@ -260,7 +269,7 @@
                 *ngIf="hasUnread"
                 src="assets/img/chat/in-game.svg"
                 class="img-fluid position-absolute"
-                style="right: 12px; z-index: 1;"
+                style="right: 12px; z-index: 1"
                 alt=""
               />
               <span class="nav-chat">
@@ -355,7 +364,7 @@
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
                 </a>
-                 <!-- <a
+                <!-- <a
                   href="javascript:void(0)"
                   class="dropdown-item"
                   (click)="open(share)"
@@ -541,4 +550,3 @@
     </div>
   </div>
 </ng-template>
-
