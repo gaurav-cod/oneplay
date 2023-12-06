@@ -51,6 +51,9 @@
 }
 .truncate-line-clamp {
   -webkit-line-clamp: 3 !important;
+  @media (max-width: 475px) {
+    -webkit-line-clamp: 2 !important;
+  }
 }
 
 .bg-gradient-banner-bottom {
