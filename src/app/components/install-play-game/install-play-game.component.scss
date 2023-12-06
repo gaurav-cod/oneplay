@@ -96,14 +96,21 @@
   }
 }
 
+.md-status {
+  display: none;
+}
 
 @media (min-width: 320px) and (max-width: 1200px) {
+  .md-status {
+    display: block;
+  }
 
   .secondaryTagOne {
     display: none !important;
     margin-left: auto !important;
   }
   .secondaryTags {
+    position: absolute;
     margin-top: -17px !important;
     justify-content: center !important;
     z-index: 1;
