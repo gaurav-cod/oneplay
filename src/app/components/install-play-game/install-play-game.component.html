@@ -1,19 +1,18 @@
 <section [ngClass]="{'mt-4': isInstallAndPlayList && calledFrom.includes('STORE')}" style="position: relative;">
-    <div class="d-flex text-center position-absolute freeToPlayTab w-100" style="z-index: 1; top: -12px" *ngIf="calledFrom !== 'STORE_OTHER'">
-        <span *ngIf="game.isFree && game.status !== 'coming_soon'"
-            class="freeTag px-2 tagText text-white">
-            FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon"
-                alt="store" /></span>
+    <div class="d-flex text-center position-absolute freeToPlayTab w-100" style="z-index: 1; top: -12px"
+        *ngIf="calledFrom !== 'STORE_OTHER' && calledFrom !== 'LIBRARY'">
+        <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 tagText text-white">
+            FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
     </div>
     <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
         (click)="onGameClick()"
-        [ngClass]="{'adjustHeight': calledFrom.includes('STORE') || calledFrom.includes('LIBRARY')}">
+        [ngClass]="{'adjustHeight': calledFrom=='HOME'}">
 
         <img [src]="game.installPlayRailImg" height="100%" width="100%" alt="">
         <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
             <h4 class="game-title w-100 text-wrap truncate-line-clamp"
-                [ngClass]="{'_truncate-line-clamp': calledFrom === 'HOME'}">{{ game.title }}</h4>
+                >{{ game.title }}</h4>
             <div class="d-flex align-items-center justify-content-between" *ngIf="!calledFrom.includes('LIBRARY')">
                 <div class="d-flex flex-column w-100">
                     <span style="color: #DCDCDC" class="developerListDesktop">
@@ -50,7 +49,7 @@
 </section>
 
 <ng-template #showSecondaryTags>
-    <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute" *ngIf="calledFrom != 'STORE_OTHER'">
+    <div class="secondaryTags d-flex justify-content-end mt-1 position-absolute" *ngIf="calledFrom != 'STORE_OTHER' && calledFrom != 'LIBRARY'">
         <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
             <span class="redGradient px-2 tagText text-white">COMING SOON</span>
         </div>
@@ -59,5 +58,7 @@
         </div>
         <div *ngIf="game.status === 'updating'" class="col-auto bottomTag"><span
                 class="updatingGradient px-2 tagText text-white">UPDATING</span></div>
+        <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag"><span
+                class="darkredGradient px-2 tagText text-white">NOT OPTIMIZED</span></div>
     </div>
 </ng-template>
