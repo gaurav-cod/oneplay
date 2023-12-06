@@ -55,7 +55,7 @@
       height: 150px !important;
     }
     .adjustHeight {
-        height: 130px !important;
+        height: 140px !important;
     }
   }
   
@@ -81,7 +81,7 @@
 @media (min-width: 320px) and (max-width: 1200px) {
 
     .secondaryTags {
-        margin-top: -10px !important;
+        margin-top: -17px !important;
         justify-content: center !important;
         z-index: 1;
         width: 100%;
@@ -111,12 +111,7 @@
 
     .mainContainer {
         padding-top: 15px !important;
-        padding-bottom: 15px !important;
-    }
-}
-@media (min-width: 320px) and (max-width: 475px) {
-    .secondaryTags {
-        margin-top: -13px !important;
+        padding-bottom: 20px !important;
     }
 }
 .secondaryTags {
