@@ -102,10 +102,14 @@
 .w290 {
   width: 270px;
   height: 150px;
+  
+  @media (max-width: 320px) {
+    height: 145px;
+  }
 
   @media (max-width: 767.9px) {
-    width: 175px;
-    height: 95px;
+    width: 220px;
+    height: 140px;
   }
 }
 .w300 {

@@ -182,7 +182,7 @@
                     <span class="gameTitle truncate-line-clamp">{{ game.title }}</span>
                   </p>
                   <p class="font14 font500 mb-0 mutedTextColor">
-                    {{ game.releaseDate.getFullYear() }} . {{ game.developer | trimBySeperator }} 
+                    {{ game.releaseDate.getFullYear() }} . {{ game.developer.join(", ").length > 13 ? game.developer.join(", ").substr(0, 13) + "..." : ame.developer.join(", ") }} 
                   </p>
                   <div class="_card-img-overlay_ p-0">
                     <span *ngIf="(game.isFree && game.status !== 'coming_soon'); else canShowOtherTags" class="freeTag px-2 secondaryTag text-white tagText">
