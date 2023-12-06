@@ -47,20 +47,10 @@
 @media (max-width: 320px) {
   .card {
     // width: 150px;
-    height: 80px;
+    height: 80px !important;
   }
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
-  .card {
-    // width: 150px;
-    height: 150px !important;
-  }
-
-  .adjustHeight {
-    height: 140px !important;
-  }
-}
 
 @media (min-width: 1300px) {
   .card {
@@ -69,30 +59,31 @@
   }
 }
 
-@media (min-width: 1201px) {
-
-  .freeToPlayTab,
-  .developerListTab {
-    display: none !important;
+@media (min-width: 768px) {
+  .card {
+    // width: 150px;
+    height: 130px !important;
   }
-
-  .freeToPlayDesktop {
-    display: block !important;
-  }
-
+}
+@media (min-width: 1300px) {
   .card {
     // width: 150px;
     height: 150px !important;
   }
-  .adjustHeight {
-    height: 130px !important;
+}
+@media (min-width: 481px) and (max-width: 767px) {
+  .card {
+    // width: 150px;
+    height: 121px !important;
   }
 }
+
 
 @media (min-width: 320px) and (max-width: 1200px) {
 
   .secondaryTagOne {
     display: none !important;
+    margin-left: auto !important;
   }
   .secondaryTags {
     margin-top: -17px !important;
@@ -132,6 +123,42 @@
 }
 
 .secondaryTags {
-  width: 95%;
+  width: 100%;
   margin-left: auto;
+}
+@media (min-width: 475px) and (max-width: 750px) {
+  .adjustHeight {
+    height: 95px !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .card {
+    // width: 150px;
+    height: 130px !important;
+  }
+
+  .adjustHeight {
+    height: 150px !important;
+  }
+}
+
+@media (min-width: 1201px) {
+
+  .freeToPlayTab,
+  .developerListTab {
+    display: none !important;
+  }
+
+  .freeToPlayDesktop {
+    display: block !important;
+  }
+
+  // .card {
+  //   // width: 150px;
+  //   height: 150px !important;
+  // }
+  .adjustHeight {
+    height: 150px !important;
+  }
 }
