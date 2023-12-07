@@ -4,8 +4,11 @@
 
   .card-img {
     object-position: center;
-    height: 100%;
-    width: 100%;
+  }
+  @media (max-width: 475px) {
+    
+    height: 100% !important;
+    width: 100% !important;
   }
 
   .game-title {
@@ -19,15 +22,6 @@
   padding-right: 0px !important;
 }
 
-@media (max-width: 480px) {
-  .card {
-    // width: 150px;
-    height: 140px !important;
-  }
-  .adjustHeightStore {
-    height: 90px !important;
-  }
-}
 
 .adjustHeightStore {
   .truncate-line-clamp {
@@ -54,6 +48,12 @@
   .card {
     // width: 150px;
     height: 121px;
+  }
+}
+
+@media (min-width: 755px) and (max-width: 770px) {
+  .card {
+    height: 140px !important;
   }
 }
 
@@ -150,6 +150,15 @@
 .secondaryTags {
   width: 100%;
   margin-left: auto;
+}
+@media (max-width: 480px) {
+  .card {
+    // width: 150px;
+    height: 140px !important;
+  }
+  .adjustHeightStore {
+    height: 92px !important;
+  }
 }
 @media (min-width: 475px) and (max-width: 750px) {
   .adjustHeight {
