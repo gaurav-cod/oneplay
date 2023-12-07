@@ -9,7 +9,7 @@ export class TokensPipe implements PipeTransform {
     if (hr > 0) {
       // str =  str + hr + (format === "hour" ? ` hour${hr > 1 ? 's' : ''} ` : 'Hrs ');
       if (format == "hour")
-        str = hr + `hour${hr > 1 ? 's' : ''} `
+        str = hr + `hour ${hr > 1 ? 's' : ''} `
       else if (format == "Hr")
         str = hr + `Hr${hr > 1 ? 's' : ''} `
       else
