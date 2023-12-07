@@ -63,14 +63,14 @@
 
   @media (max-width: 1300px) {
     padding-left: 39px;
-    padding-bottom: 10px;
+    padding-bottom: 45px;
   }
 
   @media (max-width: 480px) {
     overflow-y: hidden;
     padding-left: 15px;
     padding-right: 30px;
-    padding-bottom: 5px;
+    padding-bottom: 30px;
     padding-top: 16px;
   }
 }
@@ -102,10 +102,14 @@
 .w290 {
   width: 270px;
   height: 150px;
+  
+  @media (max-width: 320px) {
+    height: 145px;
+  }
 
   @media (max-width: 767.9px) {
-    width: 175px;
-    height: 95px;
+    width: 220px;
+    height: 140px;
   }
 }
 .w300 {

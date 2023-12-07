@@ -102,7 +102,19 @@ export class StoreComponent implements OnInit {
     private readonly router: Router
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
+    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+    if (response.length >= 1) {
+      this.queries["Install & Play"] = {
+        "label": "common",
+        value: {
+          "install_and_play": "true"
+        }
+      }
+    }
+      
+
     this.route.params.subscribe({
       next: (params) => {
         this.heading = params.filter || "All Games";
@@ -157,7 +169,7 @@ export class StoreComponent implements OnInit {
         };
       });
     });
-    this.shouldShowInstallPlayTag();
+    // this.shouldShowInstallPlayTag();
   }
 
   onScroll() {
@@ -198,24 +210,12 @@ export class StoreComponent implements OnInit {
       );
   }
 
-  private shouldShowInstallPlayTag() {
-    let payload = {
-      "install_and_play": "true"
-    }
-    this.restService.getFilteredGames(payload, 0, 5).subscribe((res) => {
-
-      if (res.length >= 1) {
-        this.queries["Install & Play"] = {
-          "label": "common",
-          value: {
-            "install_and_play": "true"
-          }
-        }
-      }
-    }, (error: any) => {
-
-    })
-  }
+  // private shouldShowInstallPlayTag() {
+  //   let payload = {
+  //     "install_and_play": "true"
+  //   }
+    
+  // }
 
   private loadMore() {
     if (this.isLoading || !this.canLoadMore) {

@@ -3,6 +3,7 @@
   href="javascript:void(0)"
   class="card card-block border-0 shadow-1 position-relative"
   (click)="onGameClick()"
+  [ngClass]="{'adjustCardStore': calledFrom.includes('STORE')}"
 >
   <div
     class="mask"

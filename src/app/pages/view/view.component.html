@@ -19,14 +19,15 @@
       <div class="col-md-12 position-relative">
         <div class="card border-0 bgTransparent borderRadius10">
           <img
-            class="card-img height80 borderRadius10"
+            class="card-img height80 borderRadius10 bgImage"
             style="object-fit: cover; object-position: top"
             [src]="bgBannerImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
           <div
-            class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
+            class="card-img-overlay p-lg-4 pl-lg-5 borderRadius10"
+            [ngClass]="{'cardOverlay': !game.isInstallAndPlay}"
           >
             <div class="hideInLarge position-absolute right-2 top-2">
               <button
@@ -600,7 +601,7 @@
 <ng-template #termsConditionModal>
   <section class="term-n-condition-modal">
     <div class="termConditionCrossIcon cursorPointer" (click)="closeTermConditionModal()">
-      <img src="assets/icons/close-icon.svg" />
+      <img src="assets/icons/cross-icon.svg" />
     </div>
     <div class="modal-content position-relative modalBg">
       <div class="modal-body pb-0">
