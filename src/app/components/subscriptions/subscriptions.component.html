@@ -36,16 +36,16 @@
               <div class="innerRange text-center font700"
                 triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
                 [ngStyle]="{width: calculatePercentage(remainingDailyToken, totalDailyToken)}">
-                <div class="timeText">
-                  {{ remainingDailyToken | tokens:"Hr" }} 
-                  <span style="font-size: 10px;">left till 12 midnight</span>
-                </div>
+              </div>
+              <div class="timeText">
+                {{ remainingDailyToken | tokens:"Hr" }} 
+                <span style="font-size: 10px;">left till 12 midnight</span>
               </div>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>
               <span class="font16 font500 muteText float-right">
-                {{ totalDailyToken | tokens }} 
+                {{ totalDailyToken | tokens:"Hr" }} 
                 
               </span>
             </div>
@@ -56,8 +56,8 @@
               <div class="innerRange text-center font700"
                 triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
                 [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
-                <span class="timeText">{{ (isUnlimited ? "Unlimited" : (remainingTokens | tokens:"Hr")) }}</span>
               </div>
+              <span class="timeText">{{ (isUnlimited ? "Unlimited" : (remainingTokens | tokens:"Hr")) }}</span>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>

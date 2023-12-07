@@ -25,7 +25,7 @@ export class TokensPipe implements PipeTransform {
         str = min.toString();
     }
     if (str === '') {
-      return '0';
+      return '0Hrs';
     }
     return str.trim();
   }

@@ -259,7 +259,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   calculatePercentage(remaining = 0, total = 0) {
-    if(total == 0)
+    if(total == 0 || remaining <= 0)
     {
       return 0 + "%";
     }
