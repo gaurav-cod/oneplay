@@ -97,7 +97,7 @@
           <i class="fas fa-times-circle font20"></i>
         </a>
         <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
-            'A security code has been sent to your mobile number and previous email address.'
+            'Security code has been sent to your mobile number and previous email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
@@ -113,7 +113,7 @@
           <i class="fas fa-times-circle font20"></i>
         </a>
         <app-otp-screen *ngIf="isPhone" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
-            'A security code has been sent to your previous mobile number and email address.'
+            'Security code has been sent to your previous mobile number and email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
@@ -138,7 +138,7 @@
         Change Email Address
       </h3>
       <p class="muteText font14 font500 mb-5 px-2 text-center">
-        A Security code verification is required to make this change.
+        Security code verification is required to make this change.
       </p>
       <form role="form">
         <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email"
@@ -168,7 +168,7 @@
         Change Mobile Number
       </h3>
       <p class="muteText font14 font500 mb-5 px-2 text-center">
-        A Security code verification is required to make this change.
+        Security code verification is required to make this change.
       </p>
       <form role="form" [formGroup]="phoneForm">
         <div class="input-group inputBorder">
