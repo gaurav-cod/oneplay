@@ -105,7 +105,7 @@ export class StoreComponent implements OnInit {
   async ngOnInit() {
 
     const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
-    if (response.length >= 5) {
+    if (response.length >= 1) {
       this.queries["Install & Play"] = {
         "label": "common",
         value: {
