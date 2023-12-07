@@ -50,7 +50,11 @@
 @media (max-width: 480px) {
   .card {
     // width: 150px;
-    height: 95px;
+    height: 135px;
+    top: -2px;
+  }
+  .adjustCardStore {
+    height: 95px !important;
   }
 }
 

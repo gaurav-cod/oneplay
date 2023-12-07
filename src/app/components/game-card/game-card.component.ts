@@ -18,6 +18,7 @@ export class GameCardComponent implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
+  @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" | "LIBRARY" = "HOME";
 
   timer: NodeJS.Timeout;
   muted = true;
