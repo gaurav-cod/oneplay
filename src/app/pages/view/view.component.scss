@@ -743,6 +743,10 @@ live {
     top: -10px;
     right: -5px;
     z-index: 1;
+    img {
+      border-radius: 50%;
+      background-color: gray;
+    }
   }
   .modal-content {
     background-color: #212123 !important;
