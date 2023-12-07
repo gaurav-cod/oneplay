@@ -744,8 +744,10 @@ live {
     right: -5px;
     z-index: 1;
     img {
-      border-radius: 50%;
+      border-radius: 40%;
       background-color: gray;
+      height: 22px;
+      width: 22px;
     }
   }
   .modal-content {
