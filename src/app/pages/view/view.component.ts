@@ -384,7 +384,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private gameStatusSuccess(status: GameStatusRO) {
     if (!this.startingGame) {
-      if (status && status.game_id === this.game.oneplayId) {
+      if (status && status.game_id === this.game?.oneplayId) {
         this.isConnected = status.is_user_connected;
         if (status.is_running) {
           this.action = "Resume";
