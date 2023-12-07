@@ -54,7 +54,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
   @ViewChild("macDownloadModal") macDownloadModal: ElementRef<HTMLDivElement>;
 
-  initialized: string = "Loading...";
+  initialized: string = "Please wait...";
   progress: number = 0;
   isReadMore = true;
 
@@ -712,7 +712,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       } else {
         if (this.game.isInstallAndPlay && this.action === "Play") {
           this.installAndPlaySession(termConditionModal);
-        } else if (this.showSettings.value) {
+        } else if (this.showSettings.value || this.game.isInstallAndPlay) {
           this.gamePlaySettingModal(container);
         } else {
           this.startGame();
@@ -1119,7 +1119,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
     } else {
-      this.initialized = data.msg || "Loading...";
+      this.initialized = data.msg || "Please wait...";
       this.progress = data.progress;
 
       const timeTaken = Date.now() - startTime;
@@ -1346,7 +1346,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.loaderService.stopLoader("play-loader");
     // this._initializedModalRef?.close();
     this.initializationPage = false;
-    this.initialized = "Loading...";
+    this.initialized = "Please wait...";
     this.progress = 0;
     this._startGameSubscription?.unsubscribe();
     this._clientTokenSubscription?.unsubscribe();
