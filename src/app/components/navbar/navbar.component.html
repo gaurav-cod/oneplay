@@ -361,6 +361,24 @@
             </a>
           </div>
           <div
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
+              <a
+                href="javascript:void(0)"
+                class="nav-link p-0 br50"
+                role="button"
+              >
+                <img
+                  alt=""
+                  width="25px"
+                  height="25px"
+                  class="rounded-circle profileImgCover"
+                  src="assets/icons/notification-icon.svg"
+                  (error)="onUserError($event)"
+                />
+             </a>
+             <ng-container *ngTemplateOutlet="notificationAlert"></ng-container>
+          </div>
+          <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
@@ -560,6 +578,16 @@
         </div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #notificationAlert>
+  <div class="position-absolute d-flex flex-column notification-box">
+    <div class="notification-content d-flex p-2">
+      <img src="assets/icons/alert-icon.svg" height="20" width="20" alt="">
+      <div>Exciting News! New games have arrived on our platform. Check out the latest titles, including Counter Strike 2.0, GTA 5, and more.</div>
+    </div>
+    <div class="notification-footer"></div>
   </div>
 </ng-template>
 
