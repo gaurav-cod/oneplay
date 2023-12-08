@@ -68,6 +68,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private requestsSub: Subscription;
   private unreadSub: Subscription;
 
+  private showNotificationContent: boolean = false;
+
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
@@ -593,5 +595,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
       ...genDefaultMenuDropdownClickSegments(),
       [item]: "yes",
     });
+  }
+
+  toggleNotificationContent() {
+    this.showNotificationContent = !this.showNotificationContent;
   }
 }
