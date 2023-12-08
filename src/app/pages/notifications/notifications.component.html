@@ -1,0 +1,47 @@
+<div class="paddingBottom container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-12 col-lg-10 d-flex align-items-center">
+            <h1 class="col-6 text-white font700">Notifications</h1>
+            <div class="col-6 d-flex">
+                <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="notificationListing col-md-12 col-lg-10 ">
+            <div class="d-flex position-relative notificationCard">
+                <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
+                    <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt="">
+                    <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt="">
+                    <div class="ml-2">
+                        <span class="text-white font500 font14 ">You have a friend request from silly gamer</span>
+                        <p class="text-white my-1 font12">
+                            We will update the game servers with a better a faster experience
+                            & yield a better overall performance. This will take around 5-6 Mins.
+                            Please bare with us
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
+                    <a class="font500 update ctaLink" href="">Update</a>
+                    <div class="verticalDivider"></div>
+                    <a class="text-white font500 ctaLink" href="">Reject</a>
+                    <div>
+                        <span class="muteText mr-4 notificationTime">1:23 PM</span>
+                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
+                    </div>
+                </div>
+                <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2" *ngIf="true">
+                    <a class="mutedTextColor font500" href="">Mark as Read</a>
+                    <a class="mutedTextColor font500 mt-2 mb-1" href="">Mark as Unread</a>
+                    <div class="horizontalDivider my-2"></div>
+                    <a class="mutedTextColor font500" href="">Delete</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 d-flex flex-column align-items-center justify-content-center" *ngIf="false">
+            <img src="assets/img/empty-screens/empty-notification-screen.svg" height="200" width="200" alt="">
+            <span class="muteText font500 mt-2">You have zero notifications</span>
+        </div>
+    </div>
+</div>

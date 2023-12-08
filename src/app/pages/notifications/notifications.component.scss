@@ -1,0 +1,78 @@
+.paddingBottom {
+    padding-bottom: 38px;
+}
+
+.notificationListing {
+    height: 80vh;
+}
+
+.notificationCard {
+    border-radius: 10px;
+    background-color: #212123;
+    padding: 15px 5px;
+}
+
+.horizontalDivider {
+    width: 90%;
+    border: 1px solid rgb(219, 219, 219);
+}
+
+.verticalDivider {
+    border: 1px solid #4a4a4a;
+    height: 40%;
+}
+
+.secActContainer {
+    right: 0px;
+    top: 50px;
+    height: 100px;
+    width: 130px;
+    border-radius: 10px;
+    background-color: #212123;
+    border: 1px solid #595858;
+
+    a {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 520px) {
+    .notificationCard {
+        flex-direction: column !important;
+    }
+    .notificationTime {
+        display: none;
+    }
+    .ctaLink {
+        width: 50%;
+        text-align: center;
+    }
+    .secActContainer {
+        top: 0px !important;
+    }
+}
+
+.unreadIcon {
+    left: 0px;
+    top: -5px;
+}
+
+.font12 {
+    font-size: 12px !important;
+}
+
+.success {
+    color: #36FF78;
+}
+
+.alert {
+    color: #F4C37A;
+}
+
+.error {
+    color: #FF5151;
+}
+
+.info {
+    color: #726b99;
+}
