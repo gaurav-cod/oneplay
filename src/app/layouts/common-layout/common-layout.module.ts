@@ -14,6 +14,7 @@ import { ServerErrorComponent } from "src/app/pages/server-error/server-error.co
 import { InstallGuard } from "src/app/guards/install.guard";
 import { InstallComponent } from "src/app/pages/install/install.component";
 import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.component";
+import { NotificationsComponent } from "src/app/pages/notifications/notifications.component";
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.componen
     ServerErrorComponent,
     InstallComponent,
     SpeedTestComponent,
+    NotificationsComponent
   ],
   providers: [InstallGuard],
 })
