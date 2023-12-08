@@ -176,7 +176,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.coupon_message = "";
           this.applied_coupon_code = this.coupon_code.value;
           this.applied_coupon_code_value = data.discount;
-          this.coupon_code.reset();
         })
         .catch((error) => {
           this.applied_coupon_code_value = 0;
