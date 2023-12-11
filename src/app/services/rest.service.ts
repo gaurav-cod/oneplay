@@ -1253,7 +1253,7 @@ export class RestService {
     return this.http.put<string>(this.r_mix_api + `/notification/${id}/read`, {})
   }
   markNotificationUnRead(id: string) {
-    debugger;
+    
     return this.http.put<string>(this.r_mix_api + `/notification/${id}/unread`, {})
   }
   markAllNotificationRead() {

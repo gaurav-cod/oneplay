@@ -1,6 +1,6 @@
 <div class="paddingBottom container mt-4">
     <div class="row justify-content-center">
-        <div class="col-md-12 col-lg-10 d-flex align-items-center">
+        <div class="col-md-12 col-lg-11 d-flex align-items-center">
             <h1 class="col-6 text-white font700">Notifications</h1>
             <div class="col-6 d-flex">
                 <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
@@ -26,15 +26,15 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
-                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RENEW')">Renew</a>
-                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('BUY_NOW')">Buy Now</a>
-                    <a class="font500 accept ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('ACCEPT')">Accept</a>
-                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RESET_PASSWORD')">Reset Password</a>
-                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('DOWNLOAD')">Download</a>
-                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RETRY')">Retry</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RENEW')" (click)="navigateByCTA('RENEW', notification)">Renew</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('BUY_NOW')" (click)="navigateByCTA('BUY_NOW', notification)">Buy Now</a>
+                    <a class="font500 accept ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('ACCEPT')" (click)="navigateByCTA('ACCEPT', notification)">Accept</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RESET_PASSWORD')" (click)="navigateByCTA('RESET_PASSWORD', notification)">Reset Password</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('DOWNLOAD')" (click)="navigateByCTA('DOWNLOAD', notification)">Download</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RETRY')" (click)="navigateByCTA('RETRY', notification)">Retry</a>
                     <div class="verticalDivider"></div>
-                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('IGNORE')">Ignore</a>
-                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('REJECT')">Reject</a>
+                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('IGNORE')" (click)="navigateByCTA('IGNORE', notification)">Ignore</a>
+                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('REJECT')" (click)="navigateByCTA('REJECT', notification)">Reject</a>
                     <div style="display: flex; width: 120px;">
                         <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a" }}</span>
                         <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto" (click)="toggleNotificationActionBtn(notification)">
