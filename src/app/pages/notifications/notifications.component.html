@@ -8,40 +8,52 @@
         </div>
     </div>
     <div class="row justify-content-center mt-3">
-        <div class="notificationListing col-md-12 col-lg-10 ">
-            <div class="d-flex position-relative notificationCard">
+        <div class="notificationListing col-md-12 col-lg-11 " *ngIf="userNotificationList.length > 0; else EmptyScreen">
+            <div class="d-flex position-relative notificationCard mt-2" *ngFor="let notification of userNotificationList">
                 <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
-                    <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt="">
-                    <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt="">
+                    <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt="" *ngIf="!notification.isRead">
+                    <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt="" *ngIf="notification.type === 'question' || notification.type === 'alert'">
+                    <img src="assets/icons/info-icon.svg" class="mt-1" height="25" width="25" alt="" *ngIf="notification.type === 'information'">
+                    <img src="assets/icons/warning-icon.svg" class="mt-1" height="25" width="25" alt="" *ngIf="notification.type === 'warning'">
+                    <img src="assets/icons/error-icon.svg" class="mt-1" height="25" width="25" alt="" *ngIf="notification.type === 'error'">
+                    <img src="assets/icons/success-icon.svg" class="mt-1" height="25" width="25" alt="" *ngIf="notification.type === 'success'">
+                    
                     <div class="ml-2">
-                        <span class="text-white font500 font14 ">You have a friend request from silly gamer</span>
+                        <span class="text-white font500 font14 ">{{ notification.title }}</span>
                         <p class="text-white my-1 font12">
-                            We will update the game servers with a better a faster experience
-                            & yield a better overall performance. This will take around 5-6 Mins.
-                            Please bare with us
+                            {{ notification.description }}
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
-                    <a class="font500 update ctaLink" href="">Update</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RENEW')">Renew</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('BUY_NOW')">Buy Now</a>
+                    <a class="font500 accept ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('ACCEPT')">Accept</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RESET_PASSWORD')">Reset Password</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('DOWNLOAD')">Download</a>
+                    <a class="font500 update ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('RETRY')">Retry</a>
                     <div class="verticalDivider"></div>
-                    <a class="text-white font500 ctaLink" href="">Reject</a>
-                    <div>
-                        <span class="muteText mr-4 notificationTime">1:23 PM</span>
-                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
+                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('IGNORE')">Ignore</a>
+                    <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('REJECT')">Reject</a>
+                    <div style="display: flex; width: 120px;">
+                        <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a" }}</span>
+                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto" (click)="toggleNotificationActionBtn(notification)">
                     </div>
                 </div>
-                <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2" *ngIf="true">
-                    <a class="mutedTextColor font500" href="">Mark as Read</a>
-                    <a class="mutedTextColor font500 mt-2 mb-1" href="">Mark as Unread</a>
-                    <div class="horizontalDivider my-2"></div>
-                    <a class="mutedTextColor font500" href="">Delete</a>
+                <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
+                    *ngIf="notification.showActionBtns">
+                    <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.isNew || !notification.isRead" (click)="markRead(notification)">Mark as Read</a>
+                    <a class="mutedTextColor font500 mt-2 mb-1" href="javascript:void(0)" *ngIf="notification.isNew || notification.isRead" (click)="markUnread(notification)">Mark as Unread</a>
+                    <div class="horizontalDivider my-2" *ngIf="notification.deleteAllowed"></div>
+                    <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.deleteAllowed" (click)="deleteNotification(notification)">Delete</a>
                 </div>
             </div>
         </div>
-        <div class="col-12 d-flex flex-column align-items-center justify-content-center" *ngIf="false">
-            <img src="assets/img/empty-screens/empty-notification-screen.svg" height="200" width="200" alt="">
-            <span class="muteText font500 mt-2">You have zero notifications</span>
-        </div>
+        <ng-template #EmptyScreen>
+            <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                <img src="assets/img/empty-screens/empty-notification-screen.svg" height="200" width="200" alt="">
+                <span class="muteText font500 mt-2">You have zero notifications</span>
+            </div>
+        </ng-template>
     </div>
 </div>

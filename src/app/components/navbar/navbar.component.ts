@@ -68,7 +68,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private requestsSub: Subscription;
   private unreadSub: Subscription;
 
-  private showNotificationContent: boolean = false;
+  notificationData: any = null;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -233,6 +233,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.initPushNotification();
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
@@ -599,5 +600,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   goToNotificationScreen() {
     this.router.navigate(['/notifications']);
+  }
+
+  private initPushNotification() {
+    this.messagingService.requestToken();
+    this.messagingService.receiveMessage();
+    this.messagingService.currentMessage.subscribe((message) => {
+      this.notificationData = message;
+    });
   }
 }

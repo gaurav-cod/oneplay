@@ -44,6 +44,7 @@ import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
 import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
+import { NotificationModel } from "../models/notification.model";
 
 @Injectable({
   providedIn: "root",
@@ -1239,4 +1240,30 @@ export class RestService {
         })
       );
   }
+
+
+  // Notification API's
+  getAllUserNotifications(
+    page: number,
+    limit: number
+  ) {
+    return this.http.get<any[]>(this.r_mix_api + `/notification/all?page=${page}&limit=${limit}`).pipe(map((res: any) => res.notifications.map((d) => new NotificationModel(d))));
+  }
+  markNotificationRead(id: string) {
+    return this.http.put<string>(this.r_mix_api + `/notification/${id}/read`, {})
+  }
+  markNotificationUnRead(id: string) {
+    debugger;
+    return this.http.put<string>(this.r_mix_api + `/notification/${id}/unread`, {})
+  }
+  markAllNotificationRead() {
+    return this.http.put<void>(this.r_mix_api + `/notification/read_all`, {})
+  }
+  markNotificationsSeen() {
+    return this.http.put<void>(this.r_mix_api + `/notification/seen`, {})
+  }
+  deleteNotification(id: string) {
+    return this.http.delete<void>(this.r_mix_api + `/notification/${id}/delete`)
+  }
+
 }

@@ -20,6 +20,17 @@
 .verticalDivider {
     border: 1px solid #4a4a4a;
     height: 40%;
+    margin-left: 20px;
+}
+
+.ctaLink {
+    width: 49%;
+    text-align: center;
+    font-size: 13px;
+}
+
+.notificationTime {
+    font-size: 12px;
 }
 
 .secActContainer {
@@ -30,6 +41,7 @@
     border-radius: 10px;
     background-color: #212123;
     border: 1px solid #595858;
+    z-index: 1;
 
     a {
         font-size: 12px;
@@ -40,13 +52,16 @@
     .notificationCard {
         flex-direction: column !important;
     }
+
     .notificationTime {
         display: none;
     }
+
     .ctaLink {
         width: 50%;
         text-align: center;
     }
+
     .secActContainer {
         top: 0px !important;
     }
