@@ -23,26 +23,46 @@
   </div>
   <div class="col-md-11 col-lg-12 mt-4">
     <div class="row mb-3" *ngIf="currentSubscriptions.length && !isCurrentLoading">
-      <div class="col-6 align-self-center">
+      <div class="col-12 align-self-center">
         <p class="font18 font500 text-white mb-0">
           Current Subscription
         </p>
       </div>
-      <div class="col-6 pl-0">
-        <div class="row justify-content-end">
-          <div class="col-auto pl-0" *ngIf="totalTokens !== undefined">
-            <p class="mb-0 font16 font500 text-white">Play Time Remaining</p>
+      <div class="col-12 mt-4">
+        <div class="row">
+          <div class="col-auto gameBarContainer" *ngIf="totalDailyToken !== undefined">
+            <p class="mb-0 font14 font500 text-white">Daily Game Play Limit</p>
             <div class="outerRange">
-              <div class="innerRange"
+              <div class="innerRange text-center font700"
                 triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
-                ngbTooltip="{{ remainingTokens | tokens }} left"
-                [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
+                [ngStyle]="{width: calculatePercentage(remainingDailyToken, totalDailyToken)}">
+              </div>
+              <div class="timeText">
+                {{ remainingDailyToken | tokens:"Hr" }} 
+                <span style="font-size: 10px;">left till 12 midnight</span>
               </div>
             </div>
             <div>
               <span class="font16 font500 muteText">0</span>
               <span class="font16 font500 muteText float-right">
-                {{ isUnlimited ? 'Unlimited' : totalTokens | tokens:true }}
+                {{ totalDailyToken | tokens }} 
+                
+              </span>
+            </div>
+          </div>
+          <div class="col-auto gameBarContainer" *ngIf="totalTokens !== undefined">
+            <p class="mb-0 font14 font500 text-white">Total Play Time Remaining</p>
+            <div class="outerRange">
+              <div class="innerRange text-center font700"
+                triggers="{{isUnlimited ? 'false' : 'hover focus click'}}"
+                [ngStyle]="{width: isUnlimited ? '100%' : calculatePercentage(remainingTokens, totalTokens)}">
+              </div>
+              <span class="timeText">{{ (isUnlimited ? "Unlimited" : (remainingTokens | tokens:"Hr")) }}</span>
+            </div>
+            <div>
+              <span class="font16 font500 muteText">0</span>
+              <span class="font16 font500 muteText float-right">
+                {{ isUnlimited ? 'Unlimited' : totalTokens | tokens }}
               </span>
             </div>
           </div>
@@ -86,7 +106,7 @@
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
                 <span class="font18 font500 offWhiteText align-middle"> 
-                  <span *ngIf="!sub.isUnlimited">{{ sub.tokensRemaining | tokens }}/{{ sub.tokens | tokens : true }} left </span>
+                  <span *ngIf="!sub.isUnlimited">{{ sub.tokensRemaining | tokens:"Hr" }}/{{ sub.tokens | tokens:"Hr" }} left </span>
                   <span *ngIf="sub.isUnlimited">Unlimited </span> .
                 </span>
                 <!-- <span

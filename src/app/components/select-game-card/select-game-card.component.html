@@ -5,11 +5,12 @@
   <div class="h-100">
     <img
       class="card-img"
-      [src]="game.textBgImage"
+      [src]="( game.isInstallAndPlay ? game.installPlayRailImg : game.textBgImage)"
       (error)="onImgError($event)"
       alt=""
     />
-    <h4 *ngIf="showTitle" class="game-title">{{ game.title }}</h4>
+    <h4 *ngIf="showTitle && !game.isInstallAndPlay" class="game-title">{{ game.title }}</h4>
+    <h4 class="w-100 game-title truncate-line-clamp" *ngIf="game.isInstallAndPlay">{{ game.title }}</h4>
   </div>
   <div class="card-img-overlay p-1" (click)="onclick()">
     <div class="row">

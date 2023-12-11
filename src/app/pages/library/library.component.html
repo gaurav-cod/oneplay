@@ -27,7 +27,7 @@
       >
         <img
           class="card-img img-fluid w-100"
-          [src]="game.bgImage"
+          [src]="(game.isInstallAndPlay ? game.installPlayRailImg : game.bgImage)"
           
           alt=""
         />

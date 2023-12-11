@@ -157,11 +157,9 @@
   
   .gradientBorder {
     border: 1px solid transparent;
-    border-radius: 5px !important;
-    background-image: linear-gradient(rgba(167.76, 58, 254), rgba(14, 14, 14, 1), rgba(255, 255, 255, 1)), 
-                      linear-gradient(270deg, rgb(110, 89, 254) 0%,  rgb(167.76, 58, 254) 100%);                      
+    border-radius: 15px !important;
+    background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
     background-origin: border-box;
-    background-clip: content-box, border-box;
     padding: 2px !important;
 }
 
