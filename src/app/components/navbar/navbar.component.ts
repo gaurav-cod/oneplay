@@ -597,7 +597,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleNotificationContent() {
-    this.showNotificationContent = !this.showNotificationContent;
+  goToNotificationScreen() {
+    this.router.navigate(['/notifications']);
   }
 }

@@ -334,47 +334,6 @@
   right: -100px !important;
 }
 
-.notification-container {
-  right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-}
-.notification-box {
-  width: 300px;
-  height: fit-content;
-  border-radius: 10px;
-  background-color: #39393a;
-  border: 1px solid #595858;
-  right: 0;
-  overflow: hidden;
-  .notification-footer {
-    padding: 5px 40px;
-    background-color: #707172;
-    .offWhiteText {
-      font-size: 12px !important;
-    }
-  }
-}
-.rotate-arrow {
-  animation: all 0.3s;
-  transform: rotate(-270deg) !important;
-}
-.cta-container {
-  height: 100px;
-  width: 130px;
-  border-radius: 10px;
-  background-color: #212123;
-  border: 1px solid #595858;
-  a {
-    font-size: 12px;
-  }
-}
-.verticalDivider {
-  border: 1px solid #4a4a4a;
-  height: 40%;
-}
-
 .box-with-shadow {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
