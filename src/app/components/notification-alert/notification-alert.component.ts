@@ -9,11 +9,15 @@ import { Router } from '@angular/router';
 export class NotificationAlertComponent {
 
   showNotificationContent: boolean = false;
+  showSecondaryCTA: boolean = false;
   constructor(
     private router: Router
   ) { }
 
   toggleNotificationContent() {
     this.showNotificationContent = !this.showNotificationContent;
+  }
+  toggleSecondaryCTA() {
+    this.showSecondaryCTA = !this.showSecondaryCTA;
   }
 }

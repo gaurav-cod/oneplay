@@ -24,7 +24,7 @@
             </div>
             <div class="footer-right d-flex align-items-center" style="left: 20px">
                 <a href="javascript:void(0)" class="font16 font500 offWhiteText">Ignore</a>
-                <div style="left: 30px" class="position-relative">
+                <div style="left: 30px" class="position-relative" (click)="toggleSecondaryCTA()">
                     <a href="javascript:void(0)" class="nav-link p-0 br50" role="button">
                         <img alt="" width="18px" height="18px" src="assets/img/chat/three-dot.svg" />
                     </a>
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="position-relative cta-container d-flex flex-column justify-content-center p-2 mt-2 mr-2">
+    <div class="position-relative secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2" *ngIf="showSecondaryCTA">
         <a class="mutedTextColor font500" href="">Mark as Read</a>
         <a class="mutedTextColor font500 mt-2 mb-1" href="">Mark as Unread</a>
         <div class="horizontalDivider my-2"></div>
