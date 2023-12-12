@@ -191,4 +191,5 @@ export interface CouponResponse {
 
 export interface SetOnlineRO {
   unread_senders: string[];
+  new_notification_count: number
 }

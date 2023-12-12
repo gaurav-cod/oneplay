@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
+import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -24,7 +25,8 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly partyService: PartyService,
     private readonly restService: RestService,
     private readonly gameService: GameService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -105,6 +107,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
+        this.notificationService.setNotificationCount(data.new_notification_count);
       });
   }
 }

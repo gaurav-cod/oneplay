@@ -34,6 +34,7 @@ import {
   getGameLandingViewSource,
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
+import { NotificationService } from "src/app/services/notification.service";
 
 @Component({
   selector: "app-navbar",
@@ -67,8 +68,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private pendingsSub: Subscription;
   private requestsSub: Subscription;
   private unreadSub: Subscription;
+  private notificationSub: Subscription;
 
   notificationData: any = null;
+  unseenNotificationCount: number = 0;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -218,7 +221,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly notificationService: NotificationService
   ) { }
 
   ngOnDestroy(): void {
@@ -230,6 +234,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.pendingsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
     this.unreadSub?.unsubscribe();
+    this.notificationSub?.unsubscribe();
   }
 
   ngOnInit() {
@@ -246,6 +251,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     );
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
+    );
+    this.notificationSub = this.notificationService.notificationCount.subscribe(
+      (counts) => ( this.unseenNotificationCount = counts )
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),

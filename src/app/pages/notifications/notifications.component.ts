@@ -34,15 +34,18 @@ export class NotificationsComponent implements OnInit {
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        break;
-      case "ACCEPT":
-        break;
-      case "DOWNLOAD":
-        break;
-      case "RENEW":
         window.open("https://www.oneplay.in/subscription.html");
         break;
+      case "ACCEPT":
+        this.acceptFriendRequest(notification);
+        break;
+      case "DOWNLOAD":
+        window.open("https://www.oneplay.in/subscription.html");
+        break;
+      case "RENEW":
+        break;
       case "RESET_PASSWORD":
+        this.router.navigate(['/dashboard/settings/security']);
         break;
       case "RETRY":
         break;
@@ -51,10 +54,18 @@ export class NotificationsComponent implements OnInit {
   toggleNotificationActionBtn(notificationDetail) {
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
   }
+  acceptFriendRequest(notification) {
+    this.restService.acceptFriend(notification.data?.friend_id).subscribe((response) => {
+
+    }, (error: any)=> {
+
+    });
+  }
   deleteNotification(notification) {
     this.restService.deleteNotification(notification.notificationId).subscribe({
       next: ()=> {
-        
+        this.userNotificationList = this.userNotificationList.filter((notificationData: any)=> notificationData.notificationId != notification.notificationId)
+        notification.showActionBtns = false;
       }, error: ()=> {
 
       }
@@ -64,6 +75,7 @@ export class NotificationsComponent implements OnInit {
     this.restService.markNotificationRead(notification.notificationId).subscribe({
       next: ()=> {
         notification.isRead = true;
+        notification.showActionBtns = false;
       }, error: ()=> {
 
       }
@@ -73,6 +85,7 @@ export class NotificationsComponent implements OnInit {
     this.restService.markNotificationUnRead(notification.notificationId).subscribe({
       next: ()=> {
         notification.isRead = false;
+        notification.showActionBtns = false;
       }, error: ()=> {
       }
     })

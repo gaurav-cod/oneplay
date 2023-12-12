@@ -37,7 +37,7 @@
                     <a class="text-white font500 ctaLink" href="javascript:void(0)" *ngIf="notification.CTAs.includes('REJECT')" (click)="navigateByCTA('REJECT', notification)">Reject</a>
                     <div style="display: flex; width: 120px;">
                         <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a" }}</span>
-                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto" (click)="toggleNotificationActionBtn(notification)">
+                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto cursorPointer" (click)="toggleNotificationActionBtn(notification)">
                     </div>
                 </div>
                 <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
