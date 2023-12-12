@@ -2,15 +2,15 @@ interface FriendInterface {
     readonly friendId: string;
     readonly friendName: string;
     readonly friendRequestId: string;
-}
+} 
 
 export class NotificationModel {
     readonly notificationId: string;
     readonly userId: string;
     readonly title: string;
     readonly description: string;
-    readonly type: "question";
-    readonly subType: "FRIEND_REQUEST";
+    readonly type: "question" | "information" | "warning" | "alert" | "success" | "error";
+    readonly subType: "FRIEND_REQUEST" | "NEW_DIRECT_MESSAGE" | "NEW_PARTY_MESSAGE" | "NEW_PROMOTION" | "PAYMENT_SUCCESS" | "PAYMENT_FAILED" |  "SCHEDULED_MAINTENANCE" | "WELCOME_MESSAGE" | "LIMITED_TOKEN_REMAIN" | "UNUSUAL_ACCOUNT_ACTIVITY" | "NEW_GAMES_AVAILABLE" | "GAME_UPDATE_AVAILABLE" | "SUBSCRIPTION_EXPIRING" | "SUBSCRIPTION_EXPIRED" | "DISCOUNT_OFFER" | "PASSWORD_CHANGE";
     readonly isRead: boolean;
     readonly isNew: boolean;
     readonly CTAs: string[];

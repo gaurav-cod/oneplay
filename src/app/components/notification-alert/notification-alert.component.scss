@@ -30,7 +30,7 @@
 }
 
 .secActContainer {
-    height: 100px;
+    height: auto;
     width: 130px;
     border-radius: 10px;
     background-color: #212123;
@@ -40,10 +40,9 @@
         font-size: 12px;
     }
 }
-
-.verticalDivider {
+.horizontalDivider {
     border: 1px solid #4a4a4a;
-    height: 40%;
+    width: 90%;
 }
 
 @media (min-width: 320px) and (max-width: 475px) {

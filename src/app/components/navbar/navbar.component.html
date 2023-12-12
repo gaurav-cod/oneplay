@@ -379,7 +379,7 @@
                   src="assets/icons/notification-icon.svg"
                 />
              </a>
-             <app-notification-alert *ngIf="notificationData" [data]="notificationData"></app-notification-alert>
+             <app-notification-alert *ngIf="notificationData || true" ></app-notification-alert>
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
