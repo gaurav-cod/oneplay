@@ -231,7 +231,7 @@
                     >
                   </div>
                 </form>
-                <div class="font16 my-3 textCenterInResponsive hideInMobile" >
+                <div class="font16 my-3 textCenterInResponsive hideInMobile adjustHeight" >
                   <p
                     class="cancelgradientText font600"
                     *ngIf="game.status === 'coming_soon'"
@@ -291,7 +291,7 @@
       </div>
       <div class="col-md-12 px-0 marginTopRes">
         <div class="font16 textCenterInResponsive px-2">
-          <p
+          <!-- <p
             class="cancelgradientText font600"
             *ngIf="game.status === 'coming_soon'"
           >
@@ -315,7 +315,14 @@
             *ngIf="game.status === 'not_optimized'"
           >
             The Quality of the gameplay may vary depending on your device.
-          </p>
+          </p> -->
+          <div class="d-flex justify-content-center">
+            <div *ngIf="game.status === 'coming_soon'" class="col-auto bottomTag removePadding mr-1"><span class="redGradient px-2 text-white tagText">COMING SOON</span></div>
+            <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag removePadding mr-1"><span class="orangeGradientBg px-2 text-white tagText">MAINTENANCE</span></div>
+            <div *ngIf="game.status === 'updating'" class="col-auto bottomTag removePadding mr-1"><span class="updatingGradient px-2 text-white tagText">UPDATING</span></div>
+            <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag removePadding"><span class="darkredGradient px-2 text-white tagText">NOT OPTIMIZED</span></div>
+          </div>
+          
         </div>
         <hr class="borderColor hideInLarge" />
       </div>
