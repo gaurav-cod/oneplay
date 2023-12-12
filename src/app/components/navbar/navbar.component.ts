@@ -35,6 +35,7 @@ import {
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
+import { NotificationModel } from "src/app/models/notification.model";
 
 @Component({
   selector: "app-navbar",
@@ -68,10 +69,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private pendingsSub: Subscription;
   private requestsSub: Subscription;
   private unreadSub: Subscription;
-  private notificationSub: Subscription;
+  private notificationCountSub: Subscription;
+  private showAlertNotification: Subscription;
 
   notificationData: any = null;
   unseenNotificationCount: number = 0;
+  showUserNotification: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -223,7 +226,32 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
-  ) { }
+  ) {
+    this.notificationData = new NotificationModel({
+      "data": {
+        "friend_name": "MrJZ",
+        "friend_id": "db42ba05-3bfa-466b-bc9d-037595ccf76e",
+        "friend_request_id": "c9bca495-a13d-4ece-b1a5-4edf56f8cff2"
+      },
+      "is_new": false,
+      "description": "",
+      "created_at": 1702283936112,
+      "notification_id": "de9b4424-7a46-429b-93c9-11747636e94e",
+      "title": "You've received a friend request from MrJZ. Accept to connect and play games together!",
+      "type": "question",
+      "version": 1,
+      "is_read": false,
+      "delete_allowed": true,
+      "updated_at": 1702360693508,
+      "user_id": "9d2100b9-7304-43bd-acdd-c13f461a0810",
+      "sub_type": "FRIEND_REQUEST",
+      "CTAs": [
+        "ACCEPT",
+        "REJECT"
+      ]
+    })
+    
+   }
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -234,7 +262,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.pendingsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
     this.unreadSub?.unsubscribe();
-    this.notificationSub?.unsubscribe();
+    this.notificationCountSub?.unsubscribe();
+    this.showAlertNotification?.unsubscribe();
   }
 
   ngOnInit() {
@@ -252,8 +281,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
     );
-    this.notificationSub = this.notificationService.notificationCount.subscribe(
+    this.notificationCountSub = this.notificationService.notificationCount.subscribe(
       (counts) => ( this.unseenNotificationCount = counts )
+    );
+    this.showAlertNotification = this.notificationService.showAlertNotification.subscribe(
+      (value)=> ( this.showUserNotification = value )
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),

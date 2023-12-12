@@ -362,7 +362,7 @@
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
-            <div class="notification-container-container text-center font800 p-2" *ngIf="unseenNotificationCount > 0">
+            <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
               <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? (unseenNotificationCount + '+') : unseenNotificationCount}}</div>
             </div>
               <a
@@ -379,7 +379,7 @@
                   src="assets/icons/notification-icon.svg"
                 />
              </a>
-             <app-notification-alert *ngIf="notificationData || true" ></app-notification-alert>
+             <app-notification-alert *ngIf="showUserNotification && notificationData" [notification]="notificationData" ></app-notification-alert>
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"

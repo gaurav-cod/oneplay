@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-notifications',
@@ -34,13 +35,13 @@ export class NotificationsComponent implements OnInit {
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        window.open("https://www.oneplay.in/subscription.html");
+        window.open(environment.domain + "/subscription.html");
         break;
       case "ACCEPT":
         this.acceptFriendRequest(notification);
         break;
       case "DOWNLOAD":
-        window.open("https://www.oneplay.in/subscription.html");
+        window.open(environment.domain + "/subscription.html");
         break;
       case "RENEW":
         break;

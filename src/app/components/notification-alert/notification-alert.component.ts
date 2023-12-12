@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationModel } from 'src/app/models/notification.model';
+import { NotificationService } from 'src/app/services/notification.service';
 import { RestService } from 'src/app/services/rest.service';
+import { environment } from 'src/environments/environment';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-notification-alert',
@@ -17,31 +20,9 @@ export class NotificationAlertComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly notificationService: NotificationService
   ) {
-    this.notification = new NotificationModel({
-      "data": {
-        "friend_name": "MrJZ",
-        "friend_id": "db42ba05-3bfa-466b-bc9d-037595ccf76e",
-        "friend_request_id": "c9bca495-a13d-4ece-b1a5-4edf56f8cff2"
-      },
-      "is_new": false,
-      "description": "",
-      "created_at": 1702283936112,
-      "notification_id": "de9b4424-7a46-429b-93c9-11747636e94e",
-      "title": "You've received a friend request from MrJZ. Accept to connect and play games together!",
-      "type": "question",
-      "version": 1,
-      "is_read": false,
-      "delete_allowed": true,
-      "updated_at": 1702360693508,
-      "user_id": "9d2100b9-7304-43bd-acdd-c13f461a0810",
-      "sub_type": "FRIEND_REQUEST",
-      "CTAs": [
-        "ACCEPT",
-        "REJECT"
-      ]
-    })
   }
   ngOnInit(): void {
     this.notification = {
@@ -56,52 +37,108 @@ export class NotificationAlertComponent implements OnInit {
   toggleSecondaryCTA() {
     this.showSecondaryCTA = !this.showSecondaryCTA;
   }
-  
+
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     switch (type) {
       case "REJECT" || "IGNORE":
-        // this.deleteNotification(notification);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "BUY_NOW":
-        window.open("https://www.oneplay.in/subscription.html");
+        this.renewSubscription();
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
         break;
       case "DOWNLOAD":
-        window.open("https://www.oneplay.in/subscription.html");
+        this.notificationService.setShowAlertNotification(false);
+        window.open(environment.domain + "/subscription.html");
         break;
       case "RENEW":
+        this.renewSubscription();
         break;
       case "RESET_PASSWORD":
+        this.notificationService.setShowAlertNotification(false);
         this.router.navigate(['/dashboard/settings/security']);
         break;
       case "RETRY":
         break;
     }
   }
+
+  messageClicked() {
+    switch (this.notification.subType) {
+      case "WELCOME_MESSAGE":
+        break;
+      case "SCHEDULED_MAINTENANCE":
+        this.router.navigate(['/dashboard']);
+        break;
+      case "SUBSCRIPTION_EXPIRING" || "SUBSCRIPTION_EXPIRED":
+        this.renewSubscription();
+        break;
+      case "LIMITED_TOKEN_REMAIN":
+        break;
+      case "NEW_GAMES_AVAILABLE" || "GAME_UPDATE_AVAILABLE":
+        break;
+      case "DISCOUNT_OFFER":
+        break;
+      case "PASSWORD_CHANGE" || "UNUSUAL_ACCOUNT_ACTIVITY":
+        this.router.navigate(['/dashboard/settings/security']);
+        break;
+      case "PAYMENT_FAILED":
+        break;
+      case "PAYMENT_SUCCESS":
+        break;
+      case "FRIEND_REQUEST":
+        this.router.navigate(['/dashboard']);
+        break;
+      default:
+        this.router.navigate(['/dashboard']);
+    }
+  }
   toggleNotificationActionBtn() {
     this.notification.showActionBtns = !this.notification.showActionBtns;
   }
+  renewSubscription() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        if (response?.length === 0) {
+          window.open(environment.domain + '/subscription.html', '_self');
+        } else {
+          this.router.navigate(['/settings/subscription']);
+        }
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+  }
   acceptFriendRequest() {
-    this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
 
-    }, (error: any)=> {
+    this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
+      this.notificationService.setShowAlertNotification(false);
+    }, (error: any) => {
+
+    }, () => {
 
     });
   }
   markRead() {
     this.restService.markNotificationRead(this.notification.notificationId).subscribe({
-      next: ()=> {
-      }, error: ()=> {
+      next: () => {
+        this.notificationService.setShowAlertNotification(false);
+      }, error: () => {
 
       }
     })
   }
   markUnread() {
     this.restService.markNotificationUnRead(this.notification.notificationId).subscribe({
-      next: ()=> {
-      }, error: ()=> {
+      next: () => {
+        this.notificationService.setShowAlertNotification(false);
+      }, error: () => {
       }
     })
   }
