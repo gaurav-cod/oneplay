@@ -1,9 +1,16 @@
+
 .paddingBottom {
     padding-bottom: 38px;
 }
 
 .notificationListing {
     height: 80vh;
+    overflow-y: auto;
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb {
+        display: none;
+    }
 }
 
 .notificationCard {

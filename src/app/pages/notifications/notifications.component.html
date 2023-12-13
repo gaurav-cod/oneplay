@@ -7,7 +7,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center mt-3">
+    <div class="row justify-content-center mt-3 notificationListingContainer">
         <div class="notificationListing col-md-12 col-lg-11 " *ngIf="userNotificationList.length > 0; else EmptyScreen">
 
             <div *ngFor="let notification of userNotificationList; let i = index">
@@ -85,6 +85,9 @@
                             (click)="deleteNotification(notification)">Delete</a>
                     </div>
                 </div>
+            </div>
+            <div class="text-center py-3" *ngIf="loadMoreBtn">
+                <button (click)="loadMore()" class="btn mutedBg text-white border-0 btn-sm">Load more</button>
             </div>
         </div>
         <ng-template #EmptyScreen>

@@ -18,6 +18,7 @@ export class NotificationsComponent implements OnInit {
 
   currentPage: number = 0;
   pageLimit: number = 5;
+  loadMoreBtn: boolean = true;
   
   constructor(
     private restService: RestService,
@@ -33,9 +34,27 @@ export class NotificationsComponent implements OnInit {
           showActionBtns: false
         }
       });
+      if (response.length < this.pageLimit) {
+        this.loadMoreBtn = true;
+      }
       this.currentPage++;
     }, (error: any)=> {
     })
+  }
+
+  
+  loadMore() {
+    this.restService
+      .getAllUserNotifications(this.currentPage, this.pageLimit)
+      .subscribe({
+        next: (data) => {
+          this.userNotificationList = [...this.userNotificationList, ...data];
+          this.currentPage++;
+          if (data.length < this.pageLimit) {
+            this.loadMoreBtn = true;
+          }
+        }
+      });
   }
   
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
