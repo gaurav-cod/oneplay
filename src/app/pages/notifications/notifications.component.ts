@@ -57,7 +57,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   checkoutPageOfPlan(notifiaction) {
-    this.router.navigate([`/dashboard/checkout/${notifiaction.subscription_id}`]);
+    this.router.navigate([`/dashboard/checkout/${notifiaction.data.subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({

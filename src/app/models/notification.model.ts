@@ -9,6 +9,12 @@ interface SubscriptionInterface {
     readonly offered_tokens: number;
 }
 
+interface InvoiceInterface {
+    readonly download_link: string;
+    readonly payment_id: string;
+    readonly subscription_id: string;
+}
+
 export class NotificationModel {
     readonly notificationId: string;
     readonly userId: string;
@@ -21,7 +27,7 @@ export class NotificationModel {
     readonly CTAs: string[];
     readonly deleteAllowed: boolean;
     readonly createdAt: Date;
-    readonly data: FriendInterface | SubscriptionInterface;
+    readonly data: FriendInterface | SubscriptionInterface | InvoiceInterface;
 
     constructor(data: any) {
         this.notificationId = data["notification_id"];

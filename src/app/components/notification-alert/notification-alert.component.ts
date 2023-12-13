@@ -43,7 +43,7 @@ export class NotificationAlertComponent implements OnInit {
     this.showSecondaryCTA = !this.showSecondaryCTA;
   }
 
-  navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
+  navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
     switch (type) {
       case "REJECT" || "IGNORE":
         this.notificationService.setShowAlertNotification(false);
@@ -56,7 +56,7 @@ export class NotificationAlertComponent implements OnInit {
         break;
       case "DOWNLOAD":
         this.notificationService.setShowAlertNotification(false);
-        window.open(environment.domain + "/subscription.html");
+        window.open(this.notification.data?.download_link);
         break;
       case "RENEW":
         this.checkoutPageOfPlan();
@@ -109,6 +109,9 @@ export class NotificationAlertComponent implements OnInit {
         this.router.navigate(['/dashboard']);
         this.notificationService.setShowAlertNotification(false);
         break;
+      case "SCHEDULED_MAINTENANCE":
+        this.router.navigate(['/dashboard']);
+        this.notificationService.setShowAlertNotification(false);
       default:
         this.router.navigate(['/dashboard']);
     }
@@ -125,7 +128,7 @@ export class NotificationAlertComponent implements OnInit {
     this.notification.showActionBtns = !this.notification.showActionBtns;
   }
   checkoutPageOfPlan() {
-    this.router.navigate([`/dashboard/checkout/${this.notification.subscription_id}`]);
+    this.router.navigate([`/dashboard/checkout/${this.notification.data.subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
