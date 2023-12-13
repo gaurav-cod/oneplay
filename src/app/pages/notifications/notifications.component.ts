@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-notifications',
@@ -28,14 +29,14 @@ export class NotificationsComponent implements OnInit {
     }, (error: any)=> {
     })
   }
-
+  
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     switch (type) {
       case "REJECT" || "IGNORE":
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        window.open(environment.domain + "/subscription.html");
+        this.checkoutPageOfPlan(notification);
         break;
       case "ACCEPT":
         this.acceptFriendRequest(notification);
@@ -44,14 +45,38 @@ export class NotificationsComponent implements OnInit {
         window.open(environment.domain + "/subscription.html");
         break;
       case "RENEW":
+        this.checkoutPageOfPlan(notification);
         break;
       case "RESET_PASSWORD":
         this.router.navigate(['/dashboard/settings/security']);
         break;
       case "RETRY":
+        this.checkoutPageOfPlan(notification);
         break;
     }
   }
+
+  checkoutPageOfPlan(notifiaction) {
+    this.router.navigate([`/dashboard/checkout/${notifiaction.subscription_id}`]);
+  }
+  renewSubscription() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        if (response?.length === 0) {
+          window.open(environment.domain + '/subscription.html', '_self');
+        } else {
+          this.router.navigate(['/settings/subscription']);
+        }
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+  }
+
   toggleNotificationActionBtn(notificationDetail) {
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
   }

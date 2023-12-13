@@ -1,8 +1,13 @@
 interface FriendInterface {
-    readonly friendId: string;
-    readonly friendName: string;
-    readonly friendRequestId: string;
+    readonly friend_id: string;
+    readonly friend_name: string;
+    readonly friend_request_id: string;
 } 
+interface SubscriptionInterface {
+    readonly subscription_id: string;
+    readonly subscription_package_id: string;
+    readonly offered_tokens: number;
+}
 
 export class NotificationModel {
     readonly notificationId: string;
@@ -16,7 +21,7 @@ export class NotificationModel {
     readonly CTAs: string[];
     readonly deleteAllowed: boolean;
     readonly createdAt: Date;
-    readonly data: FriendInterface;
+    readonly data: FriendInterface | SubscriptionInterface;
 
     constructor(data: any) {
         this.notificationId = data["notification_id"];

@@ -1,6 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GameModel } from 'src/app/models/game.model';
 import { NotificationModel } from 'src/app/models/notification.model';
+import { GLinkPipe } from 'src/app/pipes/glink.pipe';
+import { CountlyService } from 'src/app/services/countly.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
@@ -21,7 +24,9 @@ export class NotificationAlertComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly restService: RestService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly gLink: GLinkPipe,
+    private readonly countlyService: CountlyService
   ) {
   }
   ngOnInit(): void {
@@ -44,7 +49,7 @@ export class NotificationAlertComponent implements OnInit {
         this.notificationService.setShowAlertNotification(false);
         break;
       case "BUY_NOW":
-        this.renewSubscription();
+        this.checkoutPageOfPlan();
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
@@ -54,13 +59,14 @@ export class NotificationAlertComponent implements OnInit {
         window.open(environment.domain + "/subscription.html");
         break;
       case "RENEW":
-        this.renewSubscription();
+        this.checkoutPageOfPlan();
         break;
       case "RESET_PASSWORD":
         this.notificationService.setShowAlertNotification(false);
         this.router.navigate(['/dashboard/settings/security']);
         break;
       case "RETRY":
+        this.checkoutPageOfPlan();
         break;
     }
   }
@@ -76,27 +82,50 @@ export class NotificationAlertComponent implements OnInit {
         this.renewSubscription();
         break;
       case "LIMITED_TOKEN_REMAIN":
+        this.renewSubscription();
         break;
-      case "NEW_GAMES_AVAILABLE" || "GAME_UPDATE_AVAILABLE":
+      case "NEW_GAMES_AVAILABLE":
+        this.router.navigate(['/dashboard']);
+        break;
+      case "GAME_UPDATE_AVAILABLE":
+        this.router.navigate(['/dashboard']);
+        // this.viewBannerGame(this.notification.data);
         break;
       case "DISCOUNT_OFFER":
         break;
-      case "PASSWORD_CHANGE" || "UNUSUAL_ACCOUNT_ACTIVITY":
+      case "PASSWORD_CHANGE":
+        this.router.navigate(['/dashboard']);
+        break;
+      case "UNUSUAL_ACCOUNT_ACTIVITY":
         this.router.navigate(['/dashboard/settings/security']);
         break;
       case "PAYMENT_FAILED":
+        this.router.navigate(['/dashboard']);
         break;
       case "PAYMENT_SUCCESS":
+        this.router.navigate(['/dashboard']);
         break;
       case "FRIEND_REQUEST":
         this.router.navigate(['/dashboard']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       default:
         this.router.navigate(['/dashboard']);
     }
   }
+
+  viewBannerGame(game: GameModel) {
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: 'homePage', trigger: 'banner' }, // need to change source
+      discardOldData: true,
+    });
+    this.router.navigate(['view', this.gLink.transform(game)]);
+  }
   toggleNotificationActionBtn() {
     this.notification.showActionBtns = !this.notification.showActionBtns;
+  }
+  checkoutPageOfPlan() {
+    this.router.navigate([`/dashboard/checkout/${this.notification.subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
@@ -120,17 +149,23 @@ export class NotificationAlertComponent implements OnInit {
     this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
       this.notificationService.setShowAlertNotification(false);
     }, (error: any) => {
-
-    }, () => {
-
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Error Code: " + error.code,
+      //   text: error.message,
+      // });
     });
   }
   markRead() {
     this.restService.markNotificationRead(this.notification.notificationId).subscribe({
       next: () => {
         this.notificationService.setShowAlertNotification(false);
-      }, error: () => {
-
+      }, error: (error) => {
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Error Code: " + error.code,
+        //   text: error.message,
+        // });
       }
     })
   }
@@ -138,7 +173,12 @@ export class NotificationAlertComponent implements OnInit {
     this.restService.markNotificationUnRead(this.notification.notificationId).subscribe({
       next: () => {
         this.notificationService.setShowAlertNotification(false);
-      }, error: () => {
+      }, error: (error) => {
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Error Code: " + error.code,
+        //   text: error.message,
+        // });
       }
     })
   }
