@@ -144,7 +144,7 @@
         <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email"
           [formControl]="email" />
         <span *ngIf="emailErrored" class="font16 font500 errorGradientColor">*invalid email id</span>
-        <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+        <p *ngIf="errorMessage && email.value?.length > 0" class="font16 font500 errorGradientColor mb-0">
           *{{ errorMessage }}
         </p>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"

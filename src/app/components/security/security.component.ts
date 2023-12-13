@@ -156,7 +156,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   get emailErrored() {
-    return this.email.touched && this.email.invalid;
+    return this.email.touched && this.email.invalid && this.email.value?.length > 0;
   }
 
   get passwordErrored() {

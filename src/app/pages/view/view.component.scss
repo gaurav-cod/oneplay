@@ -234,6 +234,20 @@ live {
     display: none;
   }
 }
+.adjustHeight {
+  @media (min-width: 480px) and (max-width: 600px) {
+    margin: 0px !important;
+    p {
+      margin-bottom: 5px !important;
+    }
+  }
+  @media (min-width: 780px) and (max-width: 800px) {
+    margin: 0px !important;
+    p {
+      margin-bottom: 5px !important;
+    }
+  }
+}
 
 @media (max-width: 480px) {
   .hideInMobile {
@@ -485,6 +499,9 @@ live {
 // input[type=range] {
 //   accent-color: #a83afe;
 // }
+.removePadding {
+  padding: 0px !important;
+}
 
 .range {
   width: 100%;
