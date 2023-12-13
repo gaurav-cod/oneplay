@@ -227,7 +227,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
   ) {
-
+    
 
   }
 

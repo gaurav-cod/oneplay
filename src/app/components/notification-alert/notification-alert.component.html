@@ -2,11 +2,9 @@
     <div class="position-relatived-flex flex-column offset-md-3 notification-box box-with-shadow" (click)="messageClicked()">
         <div class="notification-content d-flex p-2 justify-between">
             <img src="assets/icons/alert-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
-                *ngIf="notification?.type === 'question' || notification?.type === 'alert'">
+                *ngIf="notification?.type === 'question' || notification?.type === 'alert' || notification?.type === 'warning'">
             <img src="assets/icons/info-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
                 *ngIf="notification?.type === 'information'">
-            <img src="assets/icons/warning-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
-                *ngIf="notification?.type === 'warning'">
             <img src="assets/icons/error-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
                 *ngIf="notification?.type === 'error'">
             <img src="assets/icons/success-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
@@ -14,7 +12,7 @@
             <div>
                 <div class="d-flex justify-content-between w-100">
                     <span class="text-white font500 font14 mb-1"
-                        [style.width]="notification.description?.length > 0 ? '85%': '100%'">
+                        [style.width]="notification.description?.length > 0 ? '95%': '100%'">
                         {{ notification.title }}
                     </span>
                     <img src="assets/img/Vector.svg" height="15" width="15" alt="" class="mt-1 mr-2 cursorPointer"

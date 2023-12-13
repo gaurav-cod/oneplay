@@ -34,9 +34,7 @@ export class NotificationsComponent implements OnInit {
           showActionBtns: false
         }
       });
-      if (response.length < this.pageLimit) {
-        this.loadMoreBtn = true;
-      }
+      this.loadMoreBtn = response.length === this.pageLimit;
       this.currentPage++;
     }, (error: any)=> {
     })
@@ -50,16 +48,15 @@ export class NotificationsComponent implements OnInit {
         next: (data) => {
           this.userNotificationList = [...this.userNotificationList, ...data];
           this.currentPage++;
-          if (data.length < this.pageLimit) {
-            this.loadMoreBtn = true;
-          }
+          this.loadMoreBtn = data.length === this.pageLimit;
         }
       });
   }
   
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     switch (type) {
-      case "REJECT" || "IGNORE":
+      case "REJECT":
+      case "IGNORE":
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
@@ -148,7 +145,6 @@ export class NotificationsComponent implements OnInit {
     if (index === 0) {
       return false;
     }
-    debugger;
     const moment1 = moment(this.userNotificationList[index].createdAt);
     const moment2 = moment(this.userNotificationList[index - 1].createdAt);
     return moment1.isSame(moment2, "day");
