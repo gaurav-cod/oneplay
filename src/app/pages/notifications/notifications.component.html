@@ -9,75 +9,81 @@
     </div>
     <div class="row justify-content-center mt-3">
         <div class="notificationListing col-md-12 col-lg-11 " *ngIf="userNotificationList.length > 0; else EmptyScreen">
-            <div class="d-flex position-relative notificationCard mt-2"
-                *ngFor="let notification of userNotificationList">
-                <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
-                    <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""
-                        *ngIf="!notification.isRead">
-                    <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt=""
-                        *ngIf="notification.type === 'question' || notification.type === 'alert'">
-                    <img src="assets/icons/info-icon.svg" class="mt-1" height="25" width="25" alt=""
-                        *ngIf="notification.type === 'information'">
-                    <img src="assets/icons/warning-icon.svg" class="mt-1" height="25" width="25" alt=""
-                        *ngIf="notification.type === 'warning'">
-                    <img src="assets/icons/error-icon.svg" class="mt-1" height="25" width="25" alt=""
-                        *ngIf="notification.type === 'error'">
-                    <img src="assets/icons/success-icon.svg" class="mt-1" height="25" width="25" alt=""
-                        *ngIf="notification.type === 'success'">
 
-                    <div class="ml-2">
-                        <span class="text-white font500 font14 ">{{ notification.title }}</span>
-                        <p class="text-white my-1 font12">
-                            {{ notification.description }}
-                        </p>
-                    </div>
+            <div *ngFor="let notification of userNotificationList; let i = index">
+                <div *ngIf="!isSameDate(i)" class="d-flex w-100 top-0 my-3">
+                    <div class="date-tag font14 font500 muteText">{{ getDate(notification) }}</div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
-                    <ng-container *ngIf="notification.CTAs.length > 0">
-                        <a class="font500 update ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('RENEW')"
-                            (click)="navigateByCTA('RENEW', notification)">Renew</a>
-                        <a class="font500 update ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('BUY_NOW')"
-                            (click)="navigateByCTA('BUY_NOW', notification)">Buy Now</a>
-                        <a class="font500 accept ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('ACCEPT')"
-                            (click)="navigateByCTA('ACCEPT', notification)">Accept</a>
-                        <a class="font500 update ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('RESET_PASSWORD')"
-                            (click)="navigateByCTA('RESET_PASSWORD', notification)">Reset Password</a>
-                        <a class="font500 update ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('DOWNLOAD')"
-                            (click)="navigateByCTA('DOWNLOAD', notification)">Download</a>
-                        <a class="font500 update ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('RETRY')"
-                            (click)="navigateByCTA('RETRY', notification)">Retry</a>
-                        <div class="verticalDivider"></div>
-                        <a class="text-white font500 ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('IGNORE')"
-                            (click)="navigateByCTA('IGNORE', notification)">Ignore</a>
-                        <a class="text-white font500 ctaLink" href="javascript:void(0)"
-                            *ngIf="notification.CTAs.includes('REJECT')"
-                            (click)="navigateByCTA('REJECT', notification)">Reject</a>
-                    </ng-container>
-                    <div style="display: flex; width: 120px;">
-                        <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a"
-                            }}</span>
-                        <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto cursorPointer"
-                            (click)="toggleNotificationActionBtn(notification)">
+                <div class="d-flex position-relative notificationCard mt-2">
+
+                    <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
+                        <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""
+                            *ngIf="!notification.isRead">
+                        <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt=""
+                            *ngIf="notification.type === 'question' || notification.type === 'alert'">
+                        <img src="assets/icons/info-icon.svg" class="mt-1" height="25" width="25" alt=""
+                            *ngIf="notification.type === 'information'">
+                        <img src="assets/icons/warning-icon.svg" class="mt-1" height="25" width="25" alt=""
+                            *ngIf="notification.type === 'warning'">
+                        <img src="assets/icons/error-icon.svg" class="mt-1" height="25" width="25" alt=""
+                            *ngIf="notification.type === 'error'">
+                        <img src="assets/icons/success-icon.svg" class="mt-1" height="25" width="25" alt=""
+                            *ngIf="notification.type === 'success'">
+
+                        <div class="ml-2">
+                            <span class="text-white font500 font14 ">{{ notification.title }}</span>
+                            <p class="text-white my-1 font12">
+                                {{ notification.description }}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
-                    *ngIf="notification.showActionBtns">
-                    <a class="mutedTextColor font500" href="javascript:void(0)"
-                        *ngIf="notification.isNew || !notification.isRead" (click)="markRead(notification)">Mark as
-                        Read</a>
-                    <a class="mutedTextColor font500 mt-2 mb-1" href="javascript:void(0)"
-                        *ngIf="notification.isNew || notification.isRead" (click)="markUnread(notification)">Mark as
-                        Unread</a>
-                    <div class="horizontalDivider my-2" *ngIf="notification.deleteAllowed"></div>
-                    <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.deleteAllowed"
-                        (click)="deleteNotification(notification)">Delete</a>
+                    <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
+                        <ng-container *ngIf="notification.CTAs.length > 0">
+                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('RENEW')"
+                                (click)="navigateByCTA('RENEW', notification)">Renew</a>
+                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('BUY_NOW')"
+                                (click)="navigateByCTA('BUY_NOW', notification)">Buy Now</a>
+                            <a class="font500 accept ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('ACCEPT')"
+                                (click)="navigateByCTA('ACCEPT', notification)">Accept</a>
+                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('RESET_PASSWORD')"
+                                (click)="navigateByCTA('RESET_PASSWORD', notification)">Reset Password</a>
+                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('DOWNLOAD')"
+                                (click)="navigateByCTA('DOWNLOAD', notification)">Download</a>
+                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('RETRY')"
+                                (click)="navigateByCTA('RETRY', notification)">Retry</a>
+                            <div class="verticalDivider"></div>
+                            <a class="text-white font500 ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('IGNORE')"
+                                (click)="navigateByCTA('IGNORE', notification)">Ignore</a>
+                            <a class="text-white font500 ctaLink" href="javascript:void(0)"
+                                *ngIf="notification.CTAs.includes('REJECT')"
+                                (click)="navigateByCTA('REJECT', notification)">Reject</a>
+                        </ng-container>
+                        <div style="display: flex; width: 120px;">
+                            <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a"
+                                }}</span>
+                            <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto cursorPointer"
+                                (click)="toggleNotificationActionBtn(notification)">
+                        </div>
+                    </div>
+                    <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
+                        *ngIf="notification.showActionBtns">
+                        <a class="mutedTextColor font500" href="javascript:void(0)"
+                            *ngIf="notification.isNew || !notification.isRead" (click)="markRead(notification)">Mark as
+                            Read</a>
+                        <a class="mutedTextColor font500 mt-2 mb-1" href="javascript:void(0)"
+                            *ngIf="notification.isNew || notification.isRead" (click)="markUnread(notification)">Mark as
+                            Unread</a>
+                        <div class="horizontalDivider my-2" *ngIf="notification.deleteAllowed"></div>
+                        <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.deleteAllowed"
+                            (click)="deleteNotification(notification)">Delete</a>
+                    </div>
                 </div>
             </div>
         </div>

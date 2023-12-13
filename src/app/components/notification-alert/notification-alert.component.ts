@@ -66,7 +66,7 @@ export class NotificationAlertComponent implements OnInit {
         break;
       case "RESET_PASSWORD":
         this.notificationService.setShowAlertNotification(false);
-        this.router.navigate(['/dashboard/settings/security']);
+        this.router.navigate(['/settings/security']);
         break;
       case "RETRY":
         this.checkoutPageOfPlan();
@@ -131,7 +131,7 @@ export class NotificationAlertComponent implements OnInit {
     this.notification.showActionBtns = !this.notification.showActionBtns;
   }
   checkoutPageOfPlan() {
-    this.router.navigate([`/dashboard/checkout/${this.notification.data.subscription_id}`]);
+    this.router.navigate([`/checkout/${this.notification.data.subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({

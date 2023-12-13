@@ -41,6 +41,6 @@ export class NotificationModel {
         this.deleteAllowed = data["delete_allowed"];
         this.CTAs = data["CTAs"];
         this.data = data["data"];
-        this.createdAt = new Date(data["created_at"] * 1000);;
+        this.createdAt = new Date(data["created_at"]);
     }
 }

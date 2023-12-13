@@ -4,6 +4,7 @@ import { NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
 import Swal from "sweetalert2";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-notifications',
@@ -13,7 +14,7 @@ import Swal from "sweetalert2";
 export class NotificationsComponent implements OnInit {
   
   
-  userNotificationList: NotificationModel[] = [];
+  userNotificationList: any = {};
 
   currentPage: number = 0;
   pageLimit: number = 5;
@@ -55,7 +56,7 @@ export class NotificationsComponent implements OnInit {
         this.checkoutPageOfPlan(notification);
         break;
       case "RESET_PASSWORD":
-        this.router.navigate(['/dashboard/settings/security']);
+        this.router.navigate(['/settings/security']);
         break;
       case "RETRY":
         this.checkoutPageOfPlan(notification);
@@ -64,7 +65,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   checkoutPageOfPlan(notifiaction) {
-    this.router.navigate([`/dashboard/checkout/${notifiaction.data.subscription_id}`]);
+    this.router.navigate([`/checkout/${notifiaction.data.subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
@@ -122,5 +123,27 @@ export class NotificationsComponent implements OnInit {
       }, error: ()=> {
       }
     })
+  }
+
+  isSameDate(index: number) {
+    if (index === 0) {
+      return false;
+    }
+    debugger;
+    const moment1 = moment(this.userNotificationList[index].createdAt);
+    const moment2 = moment(this.userNotificationList[index - 1].createdAt);
+    return moment1.isSame(moment2, "day");
+  }
+
+  getDate(notifiaction: NotificationModel) {
+    const moment1 = moment(notifiaction.createdAt);
+    const moment2 = moment(new Date());
+    if (moment1.isSame(moment2, "day")) {
+      return "Today";
+    } else if (moment1.isSame(moment2.subtract(1, "day"), "day")) {
+      return "Yesterday";
+    } else {
+      return moment1.format("DD/MM/yyyy");
+    }
   }
 }
