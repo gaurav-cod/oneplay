@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -17,6 +18,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
+  private sessionSubscription: Subscription;
 
   constructor(
     private readonly authService: AuthService,
@@ -28,7 +30,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.authService.sessionTokenExists.subscribe((exists) => {
+    this.sessionSubscription = this.authService.sessionTokenExists.subscribe((exists) => {
       this.isAuthenticated = exists;
       if (exists) {
         this.authService.user = this.restService.getProfile();
@@ -61,6 +63,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.sessionSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }
