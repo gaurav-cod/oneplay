@@ -11,21 +11,28 @@ import Swal from "sweetalert2";
   styleUrls: ['./notifications.component.scss']
 })
 export class NotificationsComponent implements OnInit {
+  
+  
+  userNotificationList: NotificationModel[] = [];
+
+  currentPage: number = 0;
+  pageLimit: number = 5;
+  
   constructor(
     private restService: RestService,
     private router: Router
   ) {}
 
-  userNotificationList: NotificationModel[] = [];
   ngOnInit(): void {
     this.restService.markNotificationsSeen().toPromise();
-    this.restService.getAllUserNotifications(0, 10).subscribe((response: any)=> {
+    this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response: any)=> {
       this.userNotificationList = response.map((res: any)=> {
         return {
           ...res,
           showActionBtns: false
         }
       });
+      this.currentPage++;
     }, (error: any)=> {
     })
   }

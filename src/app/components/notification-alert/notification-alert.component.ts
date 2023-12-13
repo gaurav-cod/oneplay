@@ -34,6 +34,9 @@ export class NotificationAlertComponent implements OnInit {
       ...this.notification,
       showActionBtns: false
     }
+    setTimeout(()=> {
+      this.notificationService.setShowAlertNotification(false);
+    }, 5000);
   }
 
   toggleNotificationContent() {
