@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 })
 export class NotificationService {
     private _$notificationCount: BehaviorSubject<number | null> = new BehaviorSubject(null);
-    private _$showAlertNotification: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    private _$showAlertNotification: BehaviorSubject<number | null> = new BehaviorSubject(null);
 
 
     get notificationCount() {
@@ -20,7 +20,7 @@ export class NotificationService {
     get showAlertNotification() {
         return this._$showAlertNotification.asObservable();
     }
-    setShowAlertNotification(value: boolean) {
+    setShowAlertNotification(value: number) {
         this._$showAlertNotification.next(value);
     }
 }

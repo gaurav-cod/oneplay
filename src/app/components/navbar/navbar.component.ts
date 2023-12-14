@@ -75,7 +75,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   notificationData: any = null;
   unseenNotificationCount: number = 0;
-  showUserNotification: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -228,7 +227,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService,
   ) {
-    
   }
 
   ngOnDestroy(): void {
@@ -263,7 +261,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
       (counts) => (this.unseenNotificationCount = counts)
     );
     this.showAlertNotification = this.notificationService.showAlertNotification.subscribe(
-      (value) => (this.showUserNotification = value)
+      (value) => {
+        this.notificationData = this.notificationData.filter((_: any, index)=> index != value);
+      }
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
@@ -617,14 +617,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goToNotificationScreen() {
-    this.router.navigate(['/notifications'], {queryParams: {"previousPage": this.router.url.split("/")[1]}});
+    this.router.navigate(['/notifications'], { queryParams: { "previousPage": this.router.url.split("/")[1] } });
   }
 
   private initPushNotification() {
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe((message) => {
-      this.notificationData = message;
+      if (!this.notificationData)
+        this.notificationData = [];
+      this.notificationData = [...this.notificationData, message];
+
     });
   }
 }

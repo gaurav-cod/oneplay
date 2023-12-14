@@ -1,4 +1,4 @@
-<div class="notification-container position-absolute">
+<div class="notification-container position-absolute" [style.top]="20 + 5*index + 'px'" [style.right]="25 + 5*index + 'px'">
     <div class="position-relatived-flex flex-column offset-md-3 notification-box box-with-shadow" (click)="messageClicked()">
         <div class="notification-content d-flex p-2 justify-between">
             <img src="assets/icons/alert-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="notification-footer d-flex justify-content-between pb-2">
-            <div class="footer-left" *ngIf="notification.CTAs.length > 0">
+            <div class="footer-left" *ngIf="notification.CTAs?.length > 0">
                 <!-- <a href="javascript:void(0)" class="font16 font500 offWhiteText">Play Now</a> -->
 
                 <a class="font500 alert-text offWhiteText" href="javascript:void(0)"
