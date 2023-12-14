@@ -5,6 +5,7 @@ import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
 import Swal from "sweetalert2";
 import * as moment from "moment";
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-notifications',
@@ -21,8 +22,9 @@ export class NotificationsComponent implements OnInit {
   loadMoreBtn: boolean = true;
   
   constructor(
-    private restService: RestService,
-    private router: Router
+    private readonly restService: RestService,
+    private readonly router: Router,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +108,10 @@ export class NotificationsComponent implements OnInit {
   }
   acceptFriendRequest(notification) {
     this.restService.acceptFriend(notification.data?.friend_id).subscribe((response) => {
-
+      this.toastService.show(`You are now friends with ${notification.data?.friend_name}`, {
+        classname: `bg-gray-dark text-white`,
+        delay: 4000,
+      });
     }, (error: any)=> {
 
     });

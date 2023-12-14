@@ -20,11 +20,9 @@
                         <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""
                             *ngIf="!notification.isRead">
                         <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt=""
-                            *ngIf="notification.type === 'question' || notification.type === 'alert'">
+                            *ngIf="notification.type === 'question' || notification.type === 'alert' || notification.type === 'warning'">
                         <img src="assets/icons/info-icon.svg" class="mt-1" height="25" width="25" alt=""
                             *ngIf="notification.type === 'information'">
-                        <img src="assets/icons/warning-icon.svg" class="mt-1" height="25" width="25" alt=""
-                            *ngIf="notification.type === 'warning'">
                         <img src="assets/icons/error-icon.svg" class="mt-1" height="25" width="25" alt=""
                             *ngIf="notification.type === 'error'">
                         <img src="assets/icons/success-icon.svg" class="mt-1" height="25" width="25" alt=""

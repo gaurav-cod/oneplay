@@ -6,6 +6,7 @@ import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { RestService } from 'src/app/services/rest.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { environment } from 'src/environments/environment';
 import Swal from "sweetalert2";
 
@@ -27,7 +28,8 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly notificationService: NotificationService,
     private readonly gLink: GLinkPipe,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly toastService: ToastService
   ) {
   }
   ngOnInit(): void {
@@ -172,6 +174,11 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
     this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
       this.notificationService.setShowAlertNotification(false);
+      
+      this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
+        classname: `bg-gray-dark text-white`,
+        delay: 4000,
+      });
     }, (error: any) => {
       // Swal.fire({
       //   icon: "error",

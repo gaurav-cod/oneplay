@@ -36,6 +36,7 @@ import {
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
 import { NotificationModel } from "src/app/models/notification.model";
+import { ToastService } from "src/app/services/toast.service";
 
 @Component({
   selector: "app-navbar",
@@ -225,10 +226,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
   ) {
     
-
   }
 
   ngOnDestroy(): void {
