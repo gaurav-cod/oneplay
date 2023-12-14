@@ -617,7 +617,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goToNotificationScreen() {
-    this.router.navigate(['/notifications']);
+    this.router.navigate(['/notifications'], {queryParams: {"previousPage": this.router.url.split("/")[1]}});
   }
 
   private initPushNotification() {

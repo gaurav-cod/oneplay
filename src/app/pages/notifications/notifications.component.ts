@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
@@ -20,15 +20,20 @@ export class NotificationsComponent implements OnInit {
   currentPage: number = 0;
   pageLimit: number = 5;
   loadMoreBtn: boolean = true;
+  private previousPage: string = "home";
   
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.restService.markNotificationsSeen().toPromise();
+    this.activatedRoute.queryParams.subscribe((qParam)=> {
+      this.previousPage = qParam['previousPage'];
+    })
     this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response: any)=> {
       this.userNotificationList = response.map((res: any)=> {
         return {
@@ -168,5 +173,28 @@ export class NotificationsComponent implements OnInit {
     } else {
       return moment1.format("DD/MM/yyyy");
     }
+  }
+  goBack() {
+    let redirectURL = "";
+    switch(this.previousPage) {
+      case "store":
+        redirectURL = "/store";
+        break;
+      case "streams":
+        redirectURL = "/streams";
+        break;
+      case "wishlist":
+        redirectURL = "/wishlist";
+        break;
+      case "settings":
+        redirectURL = "/settings/profile"
+        break;
+      case "search":
+        redirectURL = "/search"
+        break;
+      default: 
+        redirectURL = "/home";
+    }
+    this.router.navigate([redirectURL]);
   }
 }

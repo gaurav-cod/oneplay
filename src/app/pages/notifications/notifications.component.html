@@ -1,10 +1,13 @@
 <div class="paddingBottom container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-12 col-lg-11 d-flex align-items-center">
-            <h1 class="col-6 text-white font700">Notifications</h1>
-            <div class="col-6 d-flex">
-                <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
+            <div class="col-6 d-flex align-items-center">
+                <img src="assets/img/chat/left-arrow.svg" alt="" class="mr-4 cursorPointer" (click)="goBack()">
+                <h1 class="text-white font700 mb-0">Notifications</h1>
             </div>
+            <!-- <div class="col-6 d-flex">
+                <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto">
+            </div> -->
         </div>
     </div>
     <div class="row justify-content-center mt-3 notificationListingContainer">
@@ -33,8 +36,11 @@
                             <p class="text-white my-1 font12">
                                 {{ notification.description }}
                             </p>
+                            <span class="muteText d-block d-sm-none" style="font-size: 12px;">{{ notification.createdAt
+                                | date : "hh:mm a"}}</span>
                         </div>
                     </div>
+
                     <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-end">
                         <ng-container *ngIf="notification.CTAs.length > 0 && !notification.isRead">
                             <a class="font500 alert-text ctaLink" href="javascript:void(0)"
@@ -63,8 +69,10 @@
                                 *ngIf="notification.CTAs.includes('REJECT')"
                                 (click)="navigateByCTA('REJECT', notification)">Reject</a>
                         </ng-container>
-                        <div style="display: flex;" [style.width]="(notification.CTAs.length > 0 && !notification.isRead) ? '120px' : '78px'">
-                            <span class="muteText mr-2 notificationTime">{{ notification.createdAt | date : "hh:mm a"
+                        <div style="display: flex;" class="dotContainer"
+                            [style.width]="(notification.CTAs.length > 0 && !notification.isRead) ? '120px' : '78px'">
+                            <span class="muteText mr-2 notificationTime d-none d-sm-block">{{ notification.createdAt |
+                                date : "hh:mm a"
                                 }}</span>
                             <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto cursorPointer"
                                 (click)="toggleNotificationActionBtn(notification)">

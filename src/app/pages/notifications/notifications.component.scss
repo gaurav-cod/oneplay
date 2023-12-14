@@ -57,14 +57,12 @@
 }
 
 @media (max-width: 520px) {
+    .dotContainer {
+        width: unset !important;
+    }
     .notificationCard {
         flex-direction: column !important;
     }
-
-    .notificationTime {
-        display: none;
-    }
-
     .ctaLink {
         width: 50%;
         text-align: center;
