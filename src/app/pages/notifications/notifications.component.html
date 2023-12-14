@@ -35,8 +35,8 @@
                             </p>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-between">
-                        <ng-container *ngIf="notification.CTAs.length > 0">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-end">
+                        <ng-container *ngIf="notification.CTAs.length > 0 && !notification.isRead">
                             <a class="font500 update ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('RENEW')"
                                 (click)="navigateByCTA('RENEW', notification)">Renew</a>

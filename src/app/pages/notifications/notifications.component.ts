@@ -56,6 +56,9 @@ export class NotificationsComponent implements OnInit {
   }
   
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
+    
+    this.restService.markNotificationRead(notification.notificationId).toPromise();
+
     switch (type) {
       case "REJECT":
       case "IGNORE":

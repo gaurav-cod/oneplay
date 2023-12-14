@@ -57,7 +57,7 @@
                         *ngIf="notification.CTAs.includes('REJECT')"
                         (click)="navigateByCTA('REJECT', notification)">Reject</a>
                 </ng-container>
-                <div style="left: 30px" class="position-relative" (click)="toggleSecondaryCTA()">
+                <div style="left: 30px" class="position-relative" (click)="toggleSecondaryCTA($event)">
                     <a href="javascript:void(0)" class="nav-link p-0 br50" role="button">
                         <img alt="" width="18px" height="18px" src="assets/img/chat/three-dot.svg" />
                     </a>

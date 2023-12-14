@@ -58,12 +58,15 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   toggleNotificationContent() {
     this.showNotificationContent = !this.showNotificationContent;
   }
-  toggleSecondaryCTA() {
+  toggleSecondaryCTA(event) {
     this.showSecondaryCTA = !this.showSecondaryCTA;
+    event.stopPropagation();
   }
 
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
     
+    this.restService.markNotificationRead(this.notification.notificationId).toPromise();
+
     switch (type) {
       case "REJECT":
       case "IGNORE":
@@ -94,11 +97,16 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   messageClicked() {
   
+    this.restService.markNotificationRead(this.notification.notificationId).toPromise();
+
     switch (this.notification.subType) {
       case "WELCOME_MESSAGE":
+        this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "SCHEDULED_MAINTENANCE":
         this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "SUBSCRIPTION_EXPIRING":
       case "SUBSCRIPTION_EXPIRED":
@@ -109,6 +117,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "NEW_GAMES_AVAILABLE":
         this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "GAME_UPDATE_AVAILABLE":
         this.router.navigate(['']);
@@ -118,15 +127,19 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "PASSWORD_CHANGE":
         this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "UNUSUAL_ACCOUNT_ACTIVITY":
         this.router.navigate(['/settings/security']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "PAYMENT_FAILED":
         this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "PAYMENT_SUCCESS":
         this.router.navigate(['']);
+        this.notificationService.setShowAlertNotification(false);
         break;
       case "FRIEND_REQUEST":
         this.router.navigate(['']);
@@ -161,6 +174,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigate(['/settings/subscription']);
         }
+        this.notificationService.setShowAlertNotification(false);
       }, error: (err) => {
         Swal.fire({
           icon: "error",
