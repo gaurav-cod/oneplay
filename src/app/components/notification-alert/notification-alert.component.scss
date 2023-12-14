@@ -44,6 +44,18 @@
     border: 1px solid #4a4a4a;
     width: 90%;
 }
+.alert-text {
+    color: #FF843F !important;
+}
+.info-text {
+    color: #3AA0FE !important;
+}
+.success-text {
+    color: #36FF78 !important;
+}
+.error-text {
+    color: #FF5151 !important;
+}
 
 @media (min-width: 320px) and (max-width: 475px) {
     .notification-container {

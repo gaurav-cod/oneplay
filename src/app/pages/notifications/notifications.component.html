@@ -37,22 +37,22 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12 mt-sm-2 d-flex align-items-center justify-content-end">
                         <ng-container *ngIf="notification.CTAs.length > 0 && !notification.isRead">
-                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                            <a class="font500 alert-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('RENEW')"
                                 (click)="navigateByCTA('RENEW', notification)">Renew</a>
-                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                            <a class="font500 info-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('BUY_NOW')"
                                 (click)="navigateByCTA('BUY_NOW', notification)">Buy Now</a>
-                            <a class="font500 accept ctaLink" href="javascript:void(0)"
+                            <a class="font500 alert-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('ACCEPT')"
                                 (click)="navigateByCTA('ACCEPT', notification)">Accept</a>
-                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                            <a class="font500 alert-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('RESET_PASSWORD')"
                                 (click)="navigateByCTA('RESET_PASSWORD', notification)">Reset Password</a>
-                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                            <a class="font500 success-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('DOWNLOAD')"
                                 (click)="navigateByCTA('DOWNLOAD', notification)">Download</a>
-                            <a class="font500 update ctaLink" href="javascript:void(0)"
+                            <a class="font500 error-text ctaLink" href="javascript:void(0)"
                                 *ngIf="notification.CTAs.includes('RETRY')"
                                 (click)="navigateByCTA('RETRY', notification)">Retry</a>
                             <div class="verticalDivider"></div>
@@ -63,8 +63,8 @@
                                 *ngIf="notification.CTAs.includes('REJECT')"
                                 (click)="navigateByCTA('REJECT', notification)">Reject</a>
                         </ng-container>
-                        <div style="display: flex; width: 120px;">
-                            <span class="muteText mr-4 notificationTime">{{ notification.createdAt | date : "hh:mm a"
+                        <div style="display: flex;" [style.width]="(notification.CTAs.length > 0 && !notification.isRead) ? '120px' : '78px'">
+                            <span class="muteText mr-2 notificationTime">{{ notification.createdAt | date : "hh:mm a"
                                 }}</span>
                             <img src="assets/img/chat/three-dot.svg" alt="" class="ml-auto cursorPointer"
                                 (click)="toggleNotificationActionBtn(notification)">

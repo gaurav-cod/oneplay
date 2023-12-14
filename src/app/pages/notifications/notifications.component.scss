@@ -84,18 +84,16 @@
     font-size: 12px !important;
 }
 
-.success {
-    color: #36FF78;
-}
 
-.alert {
-    color: #F4C37A;
+.alert-text {
+    color: #FF843F !important;
 }
-
-.error {
-    color: #FF5151;
+.info-text {
+    color: #3AA0FE !important;
 }
-
-.info {
-    color: #726b99;
+.success-text {
+    color: #36FF78 !important;
+}
+.error-text {
+    color: #FF5151 !important;
 }
