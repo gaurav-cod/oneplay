@@ -245,8 +245,8 @@
                 </div>
                 <div class="col p-0 align-self-center text-truncate">
                   <div class="">
-                    <p class="font16 font500 offWhitecolor mb-0">
-                      {{ user.name }}
+                    <p class="font16 font500 offWhitecolor mb-0 truncate-line-clamp">
+                      {{ user.name.length > 30 ? user.name.substr(0, 30) + '...' : user.name }}
                     </p>
                   </div>
                   <p class="font14 font500 mb-0 mutedTextColor">
