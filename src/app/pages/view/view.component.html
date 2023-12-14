@@ -309,13 +309,13 @@
             *ngIf="game.status === 'updating'"
           >
             We're implementing important updates, game will be back shortly!
-          </p>
+          </p> -->
           <p
             class="orangeGradient font600"
             *ngIf="game.status === 'not_optimized'"
           >
             The Quality of the gameplay may vary depending on your device.
-          </p> -->
+          </p>
           <div class="d-flex justify-content-center">
             <div *ngIf="game.status === 'coming_soon'" class="col-auto bottomTag removePadding mr-1"><span class="redGradient px-2 text-white tagText">COMING SOON</span></div>
             <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag removePadding mr-1"><span class="orangeGradientBg px-2 text-white tagText">MAINTENANCE</span></div>
