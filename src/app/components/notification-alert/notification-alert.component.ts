@@ -188,7 +188,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
 
   removeFriendRequest() {
-    this.restService.deleteFriend(this.notification.data?.friend_request_id).subscribe((response) => {
+    this.restService.deleteFriend((this.notification.data as FriendInterface)?.friend_request_id).subscribe((response) => {
       // this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
       //   classname: `bg-gray-dark text-white`,
       //   delay: 4000,
@@ -198,14 +198,13 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   acceptFriendRequest() {
 
-    this.restService.acceptFriend((this.notification.data as FriendInterface)?.friend_id).subscribe((response) => {
+    this.restService.acceptFriend((this.notification.data as FriendInterface)?.friend_request_id).subscribe((response) => {
       this.notificationService.removeNotification(this.index);
 
       this.toastService.show(`You are now friends with ${(this.notification.data as FriendInterface)?.friend_name}`, {
         classname: `bg-gray-dark text-white`,
         delay: 4000,
       });
-    }, (error: any) => {
     });
   }
   markRead() {
