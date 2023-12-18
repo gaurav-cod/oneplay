@@ -71,6 +71,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
     switch (type) {
       case "REJECT":
+        this.removeFriendRequest();
+        this.notificationService.setShowAlertNotification(this.index);
+        break;
       case "IGNORE":
         this.notificationService.setShowAlertNotification(this.index);
         break;
@@ -186,9 +189,18 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  removeFriendRequest() {
+    this.restService.deleteFriend(this.notification.data?.friend_request_id).subscribe((response) => {
+      // this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
+      //   classname: `bg-gray-dark text-white`,
+      //   delay: 4000,
+      // });
+    });
+  }
   acceptFriendRequest() {
 
-    this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
+    this.restService.acceptFriend(this.notification.data?.friend_request_id).subscribe((response) => {
       this.notificationService.setShowAlertNotification(this.index);
 
       this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
