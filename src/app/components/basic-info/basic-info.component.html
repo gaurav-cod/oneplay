@@ -13,34 +13,35 @@
           <label for="editProfile" class="d-flex mb-0">
             <div class="card transparentBg cursorPointer profile-image">
               <img
-                class="card-img rounded-circle wh48"
+                class="card-img rounded-circle wh48 profileImg"
                 [src]="photo || 'assets/img/defaultUser.svg'"
                 alt=""
                 (error)="onUserError($event)"
               />
-              <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
+              <img src="assets/img/singup-login/edit-profile.svg" height="35px" width="35px" alt="" class="position-absolute editProfileIcon">
+              <!-- <div class="card-img-overlay transparentBlackBg pl-3 pt-2">
                 <i class="fas fa-pen-fancy text-white mt-2"></i>
-              </div>
+              </div> -->
             </div>
           </label>
         </div>
-        <div class="col align-self-center pl-0">
+        <!-- <div class="col align-self-center pl-0">
           <div class="align-middle font16 font500 muteText">
             Edit profile picture.
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="row">
-        <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText required">
+        <div class="col-md-12 mt-2">
+          <label class="font16 font500 offWhiteText">
             Username
-            <i
+            <!-- <i
               class="fas fa-info-circle ml-1"
               ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
               placement="bottom"
               triggers="click:blur"
             >
-            </i>
+            </i> -->
           </label>
           <span
             *ngIf="username.touched && username.invalid"
@@ -60,9 +61,41 @@
               }"
             />
           </div>
+          
+          <p class="text-white mb-0 mt-1 font500" style="font-size: 12px;">
+            *Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed.
+          </p>
         </div>
         <div class="col-md-12 mt-4">
-          <label class="font16 font500 offWhiteText required">Full Name</label
+          <label class="font16 font500 offWhiteText">Date Of Birth</label
+          ><span
+            class="font16 font500 errorGradientColor float-right"
+            *ngIf="dateOfBirthErrored"
+            >*invalid Date of Birth</span
+          >
+          <div class="input-group dateDropdown">
+            <input
+              class="form-control height52 font18 font500 text-white border-0 borderRadius10 lightBg"
+              formControlName="dob"
+              placeholder="DD\MM\YYYY"
+              ngbDatepicker
+              #d="ngbDatepicker"
+              (click)="d.toggle()"
+              (dateSelect)="d.toggle()"
+              [min]="minDate"
+              [max]="maxDate"
+            />
+            <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
+              <img
+                class="img-fluid"
+                src="assets/img/singup-login/fontAwesomeCalender.svg"
+                alt=""
+              />
+            </span>
+          </div>
+        </div>
+        <div class="col-md-12 mt-4">
+          <label class="font16 font500 offWhiteText">Full Name</label
           ><span
             *ngIf="name.touched && name.invalid"
             class="font16 font500 errorGradientColor float-right"

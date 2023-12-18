@@ -93,6 +93,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   showPass = false;
   isPrivate: boolean = false;
+  passwordExist: boolean = false;
 
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
@@ -122,6 +123,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+   
     this.countlyService.updateEventData("settingsView", {
       logInSecurityViewed: "yes",
     });
@@ -152,7 +154,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   get phoneErrored() {
     const control = this.phoneForm.controls["phone"];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.value?.length > 0;
   }
 
   get emailErrored() {
@@ -448,6 +450,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.email.reset();
     this.allowEmailEdit = false;
     this.clearErrors();
+    
     clearTimeout(this.emailIconHideTimer);
     this.emailIconHideTimer = setTimeout(() => {
       this.allowEmailEdit = true;
@@ -460,6 +463,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.phoneForm.reset();
     this.allowPhoneEdit = false;
     this.clearErrors();
+    if (this.isPhone) {
+      Swal.fire({
+        icon: "success",
+        text: "You have successfully changed your phone number.",
+        showConfirmButton: false,
+        showCancelButton: false,
+      });
+    }
     clearTimeout(this.phoneIconHideTimer);
     this.phoneIconHideTimer = setTimeout(() => {
       this.allowPhoneEdit = true;
@@ -570,5 +581,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-sm",
     });
+  }
+
+  resetValidation() {
+    this.errorMessage = null;
   }
 }
