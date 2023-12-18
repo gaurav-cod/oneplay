@@ -167,7 +167,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     this.notification.showActionBtns = !this.notification.showActionBtns;
   }
   checkoutPageOfPlan() {
-    this.router.navigate([`/checkout/${(this.notification.data as SubscriptionInterface).subscription_id}`]);
+    this.router.navigate([`/checkout/${(this.notification.data as SubscriptionInterface).subscription_package_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({

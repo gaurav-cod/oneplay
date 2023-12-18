@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationModel } from 'src/app/models/notification.model';
+import { InvoiceInterface, NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
 import Swal from "sweetalert2";
@@ -74,7 +74,7 @@ export class NotificationsComponent implements OnInit {
         this.acceptFriendRequest(notification);
         break;
       case "DOWNLOAD":
-        window.open(environment.domain + "/subscription.html");
+        window.open((notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
         this.checkoutPageOfPlan(notification);
@@ -89,7 +89,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   checkoutPageOfPlan(notifiaction) {
-    this.router.navigate([`/checkout/${notifiaction.data.subscription_id}`]);
+    this.router.navigate([`/checkout/${notifiaction.data.subscription_package_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
