@@ -49,7 +49,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
-  public notifications = [];
   public hasUnread = false;
 
   private user: UserModel;
@@ -262,7 +261,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         (counts) => (this.unseenNotificationCount = counts)
       );
     this.notificationsSub = this.notificationService.notifications.subscribe(
-      (n) => (this.notifications = n)
+      (n) => (this.notificationData = n)
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
@@ -629,7 +628,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.messagingService.receiveMessage();
     this.currMsgSub = this.messagingService.currentMessage.subscribe(
       (message) => {
-        console.log(message);
         this.notificationService.addNotification(message);
       }
     );
