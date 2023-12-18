@@ -3,13 +3,13 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
 // Initialize the Firebase app in the service worker by passing the generated config
 var firebaseConfig = {
-  apiKey: "AIzaSyC5milGrnk5xUZyniQfvEVjd3CIX72puBA",
-  authDomain: "oneplay-ba044.firebaseapp.com",
-  projectId: "oneplay-ba044",
-  storageBucket: "oneplay-ba044.appspot.com",
-  messagingSenderId: "744840875406",
-  appId: "1:744840875406:web:056e488d551ade3e9ba8df",
-  measurementId: "G-X80K2YEKBS",
+  apiKey: "AIzaSyD37MW-f2U9q1MZK-aN49ZHXJDQFGGjjzA",
+  authDomain: "oneplayapp-2ce5f.firebaseapp.com",
+  projectId: "oneplayapp-2ce5f",
+  storageBucket: "oneplayapp-2ce5f.appspot.com",
+  messagingSenderId: "288317360848",
+  appId: "1:288317360848:web:e23276f437f94102256cd5",
+  measurementId: "G-HPVSR3Y6Z5",
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -23,6 +23,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
+    icon: 'assets/img/brand/brandLogo.svg'
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

@@ -57,6 +57,8 @@ export interface TokensUsageDTO {
   total_tokens: number;
   used_tokens: number;
   remaining_tokens: number;
+  total_daily_tokens: number;
+  used_daily_tokens: number
 }
 
 export interface UpdateProfileDTO {
@@ -81,6 +83,16 @@ export interface StartGameRO {
       id: string;
       launched_at: number;
     };
+  };
+  msg: string;
+  status: number;
+}
+export interface GameTermCondition {
+  code: number;
+  data: {
+    tnc: string,
+    url: string,
+    last_updated: string
   };
   msg: string;
   status: number;
@@ -179,4 +191,5 @@ export interface CouponResponse {
 
 export interface SetOnlineRO {
   unread_senders: string[];
+  new_notification_count: number
 }

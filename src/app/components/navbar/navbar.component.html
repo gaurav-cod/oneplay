@@ -60,16 +60,14 @@
           >
         </li>
         <li class="nav-item position-relative">
-          <img src="assets/img/navbar/new-label.svg" 
-              class="position-absolute" 
-              style="right: 25px; top: -8px; z-index: 1;" 
-              alt="casual gaming"
-              *ngIf="showCasualGamingLabel"
-          >
-          <a
-            href="javascript:void(0)"
-            class="nav-link p-0 mt-2 pt-1 mr-3"
-            (click)="goToCasualGamingPage()"
+          <img
+            src="assets/img/navbar/new-label.svg"
+            class="position-absolute"
+            style="right: 25px; top: -8px; z-index: 1"
+            alt="casual gaming"
+            *ngIf="showCasualGamingLabel"
+          />
+          <a href="https://8129.play.gamezop.com/" class="nav-link p-0 mt-2 pt-1 mr-3"
             >Level 1</a
           >
         </li>
@@ -92,6 +90,7 @@
                 (click)="headerNavOnClick('searchClicked')"
                 (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
+              
               <span
                 class="bgTransparent fixedIcon offWhiteColor font16 font500"
               >
@@ -111,6 +110,7 @@
                 style="cursor: pointer"
                 (click)="viewGameFromSearch(game)"
               >
+              <div *ngIf="!game.isInstallAndPlay" class="d-flex w-100">
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
@@ -122,8 +122,16 @@
                       alt=""
                     />
                     <div class="card-img-overlay p-0">
-                      <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
-                        FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
+                      <span
+                        *ngIf="game.isFree && game.status !== 'coming_soon'"
+                        class="freeTag px-2 free tagText"
+                      >
+                        FREE ON
+                        <img
+                          src="assets/img/store/store.svg"
+                          class="freeOnStoreIcon"
+                          alt="store"
+                      /></span>
                       <span
                         *ngIf="game.status === 'coming_soon'"
                         class="redGradient px-1 free tagText"
@@ -162,11 +170,52 @@
                 </div>
                 <div class="col align-self-center pr-0">
                   <p class="font16 font500 offWhitecolor mb-0">
-                    <span class="truncate-line-clamp">{{ game.title }}</span>
+                    <span class="truncate-line-clamp text-wrap">{{ game.title }}</span>
                   </p>
                   <p class="font14 font500 mb-0 mutedTextColor">
                     {{ game.releaseDate.getFullYear() }}
                   </p>
+                </div>
+              </div>
+              <div *ngIf="game.isInstallAndPlay" class="d-flex w-100">
+                <div class="col-auto align-self-center pr-0">
+                  <div class="card border-0 bg-dark">
+                    <img
+                      [src]="game.installPlaySearchImg"
+                      (error)="onImgError($event)"
+                      class="br6"
+                      width="125"
+                      height="80"
+                      alt=""
+                      style="object-fit: contain;"
+                    />
+                  </div>
+                 
+                  <div class="d-flex mt-1">
+                    <ng-container *ngFor="let store of game.storesMapping">
+                      <img [src]="store.store_image" height="18" width="18" alt="" class="mr-1">
+                    </ng-container>
+                  </div>
+                </div>
+                <div class="col-6 pr-0">
+                  <p class="font16 font500 offWhitecolor mb-0 text-wrap">
+                    <span class="gameTitle truncate-line-clamp">{{ game.title }}</span>
+                  </p>
+                  <p class="font500 mb-0 mutedTextColor" style="font-size: 12px;">
+                    {{ game.releaseDate.getFullYear() }} . {{ game.developer.join(", ").length > 13 ? game.developer.join(", ").substr(0, 13) + "..." : game.developer.join(", ") }} 
+                  </p>
+                  <div class="_card-img-overlay_ p-0">
+                    <span *ngIf="(game.isFree && game.status !== 'coming_soon'); else canShowOtherTags" class="freeTag px-2 secondaryTag text-white tagText">
+                      FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
+                    <ng-template #canShowOtherTags>
+                      <span *ngIf="game.status === 'coming_soon'" class="redGradient px-1 secondaryTag text-white tagText">COMING SOON</span>
+                      <span *ngIf="game.status === 'maintenance'"  class="orangeGradientBg text-white px-1 secondaryTag tagText">MAINTENANCE</span>
+                      <span *ngIf="game.status === 'updating'" class="updatingGradient text-white px-1 secondaryTag tagText">UPDATING</span>
+                      <span *ngIf="game.status === 'not_optimized'" class="darkredGradient text-white px-1 secondaryTag tagText">NOT
+                        OPTIMIZED</span>
+                    </ng-template>
+                  </div>
+                  </div>
                 </div>
               </div>
               <div
@@ -196,15 +245,18 @@
                 </div>
                 <div class="col p-0 align-self-center text-truncate">
                   <div class="">
-                    <p class="font16 font500 offWhitecolor mb-0">
-                      {{ user.name }}
+                    <p class="font16 font500 offWhitecolor mb-0 truncate-line-clamp">
+                      {{ user.name.length > 30 ? user.name.substr(0, 30) + '...' : user.name }}
                     </p>
                   </div>
                   <p class="font14 font500 mb-0 mutedTextColor">
                     {{ user.username }}
                   </p>
                 </div>
-                <div *ngIf="user.id != userId" class="col-auto d-flex align-items-baseline pr-0">
+                <div
+                  *ngIf="user.id != userId"
+                  class="col-auto d-flex align-items-baseline pr-0"
+                >
                   <ng-container
                     *ngFor="let key of getActions(user); index as i"
                   >
@@ -260,7 +312,7 @@
                 *ngIf="hasUnread"
                 src="assets/img/chat/in-game.svg"
                 class="img-fluid position-absolute"
-                style="right: 12px; z-index: 1;"
+                style="right: 12px; z-index: 1"
                 alt=""
               />
               <span class="nav-chat">
@@ -309,6 +361,30 @@
             </a>
           </div>
           <div
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
+            <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
+              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? (unseenNotificationCount + '+') : unseenNotificationCount}}</div>
+            </div>
+              <a
+                href="javascript:void(0)"
+                class="nav-link p-0 br50"
+                role="button"
+                (click)="goToNotificationScreen()"
+              >
+                <img
+                  alt=""
+                  width="25px"
+                  height="25px"
+                  class="rounded-circle profileImgCover"
+                  src="assets/icons/notification-icon.svg"
+                />
+             </a>
+            
+             <ng-container *ngFor="let notification of notificationData; let i = index">
+             <app-notification-alert *ngIf="notification" [notification]="notification" [index]="i" ></app-notification-alert>
+            </ng-container>
+          </div>
+          <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
@@ -355,7 +431,7 @@
                   <i class="ni ni-credit-card font14 align-middle"></i>
                   <span class="align-middle">Subscription</span>
                 </a>
-                 <!-- <a
+                <!-- <a
                   href="javascript:void(0)"
                   class="dropdown-item"
                   (click)="open(share)"
@@ -511,6 +587,7 @@
   </div>
 </ng-template>
 
+
 <ng-template #TermsAndConditions let-d="dismiss">
   <div class="modal-content position-relative modalBorderGradient">
     <div class="modal-body modalBG">
@@ -541,4 +618,3 @@
     </div>
   </div>
 </ng-template>
-

@@ -7,13 +7,20 @@
 }
 
 .outerRange {
-    height: 10px;
+    position: relative;
+    height: 18px;
     width: 286px;
-    background: #3E4246;
+    background: #959595;
     border-radius: 15px;
     overflow: hidden;
+    margin-top: 3px;
     @media (max-width: 480px) {
-        width: 150px;
+        width: 100%;
+    }
+}
+.gameBarContainer {
+    @media (max-width: 480px) {
+        width: 100%;
     }
 }
 
@@ -21,7 +28,18 @@
     background: linear-gradient(270deg, #3AA0FE 0%, #59FEF4 100%);
     border-radius: 15px;
     // width: 169px;
-    height: 10px;
+    height: inherit;
+    font-size: 13px;
+    font-family: "Poppins";
+}
+.timeText {
+    position: absolute; 
+    font-weight: bold;
+    top: -3px; 
+    color: black;
+    width: 100%;
+    text-align: center;
+    font-family: "Poppins";
 }
 
 .border-top {

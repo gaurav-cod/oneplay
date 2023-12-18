@@ -19,14 +19,15 @@
       <div class="col-md-12 position-relative">
         <div class="card border-0 bgTransparent borderRadius10">
           <img
-            class="card-img height80 borderRadius10"
+            class="card-img height80 borderRadius10 bgImage"
             style="object-fit: cover; object-position: top"
-            [src]="game.bgImage"
+            [src]="bgBannerImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
           <div
-            class="card-img-overlay cardOverlay p-lg-4 pl-lg-5 borderRadius10"
+            class="card-img-overlay p-lg-4 pl-lg-5 borderRadius10"
+            [ngClass]="{'cardOverlay': !game.isInstallAndPlay}"
           >
             <div class="hideInLarge position-absolute right-2 top-2">
               <button
@@ -58,9 +59,12 @@
             </div>
             <div class="row imagesText height330 align-items-end mt-md-4">
               <div class="col-md-12 pb-5">
-                <div class="row height100px">
-                  <div class="col">
+                <div class="row height100px"[ngClass]="{'adjustHeightWidth': game.isInstallAndPlay}">
+                  <div class="col" *ngIf="!game.isInstallAndPlay">
                     <img [src]="game.textLogo" class="text-logo" alt="" />
+                  </div>
+                  <div class="col header text-white truncate-line-clamp" *ngIf="game.isInstallAndPlay">
+                    {{ game.title }}
                   </div>
                 </div>
                 <p class="font16 font500 text-white mt-2 mt-lg-4 mb-0">
@@ -87,9 +91,9 @@
                   <div
                     class="col-auto align-self-center fullWidthBtn"
                     *ngIf="
-                      game.status === 'coming_soon' ||
+                      (game.status === 'coming_soon' ||
                       game.status === 'maintenance' ||
-                      game.status === 'updating'
+                      game.status === 'updating') 
                     "
                   >
                     <div class="borderRadius90 mt-3 blackBbg">
@@ -124,7 +128,7 @@
                         !selectedStore
                       "
                       [ngClass]="{ 'hide-text': startingGame }"
-                      (click)="playGame(smallModal)"
+                      (click)="playGame(smallModal, false, termsConditionModal)"
                     >
                       <ngx-ui-loader
                         [fgsColor]="'#c32ead'"
@@ -135,8 +139,9 @@
                         [overlayBorderRadius]="'90px'"
                         [loaderId]="'play-loader'"
                       ></ngx-ui-loader>
-                      {{ !startingGame ? action + " Now" : "Initializing..." }}
+                      {{ !startingGame ? (game.isInstallAndPlay && action === "Play" ? "Install & Play" : (action + " Now")) : "Initializing..." }}
                     </button>
+                  
                     <button
                       *ngIf="action !== 'Play' && !startingGame"
                       class="btn text-white redButtonGradient fullWidthBtn borderRadius90 GradientBtnPadding mt-3 px-lg-4 position-relative"
@@ -191,6 +196,9 @@
                     </button>
                   </div>
                 </div>
+
+                <div *ngIf="game.isInstallAndPlay" class="licenseRequired">LICENSE REQUIRED</div>
+
                 <form
                   class="row justify-content-center checkBox pl-3"
                   *ngIf="
@@ -199,6 +207,7 @@
                 >
                   <div
                     class="col-auto customResponsiveWidth custom-control custom-checkbox mt-3 mb-md-0"
+                    *ngIf="!game.isInstallAndPlay"
                   >
                     <input
                       type="checkbox"
@@ -222,7 +231,7 @@
                     >
                   </div>
                 </form>
-                <div class="font16 my-3 textCenterInResponsive hideInMobile">
+                <div class="font16 my-3 textCenterInResponsive hideInMobile adjustHeight" >
                   <p
                     class="cancelgradientText font600"
                     *ngIf="game.status === 'coming_soon'"
@@ -251,7 +260,7 @@
                     device.
                   </p>
                   <p
-                    *ngIf="game.status === 'not_optimized'"
+                    *ngIf="game.status === 'not_optimized' && !game.isInstallAndPlay"
                     class="text-white bottomTag"
                   >
                     <span class="darkredGradient px-2 tagText"
@@ -282,7 +291,7 @@
       </div>
       <div class="col-md-12 px-0 marginTopRes">
         <div class="font16 textCenterInResponsive px-2">
-          <p
+          <!-- <p
             class="cancelgradientText font600"
             *ngIf="game.status === 'coming_soon'"
           >
@@ -300,19 +309,26 @@
             *ngIf="game.status === 'updating'"
           >
             We're implementing important updates, game will be back shortly!
-          </p>
+          </p> -->
           <p
             class="orangeGradient font600"
             *ngIf="game.status === 'not_optimized'"
           >
             The Quality of the gameplay may vary depending on your device.
           </p>
+          <div class="d-flex justify-content-center">
+            <div *ngIf="game.status === 'coming_soon'" class="col-auto bottomTag removePadding mr-1"><span class="redGradient px-2 text-white tagText">COMING SOON</span></div>
+            <div *ngIf="game.status === 'maintenance'" class="col-auto bottomTag removePadding mr-1"><span class="orangeGradientBg px-2 text-white tagText">MAINTENANCE</span></div>
+            <div *ngIf="game.status === 'updating'" class="col-auto bottomTag removePadding mr-1"><span class="updatingGradient px-2 text-white tagText">UPDATING</span></div>
+            <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag removePadding"><span class="darkredGradient px-2 text-white tagText">NOT OPTIMIZED</span></div>
+          </div>
+          
         </div>
         <hr class="borderColor hideInLarge" />
       </div>
       <div class="col-md-12">
         <div class="row">
-          <div class="col-md-6 mt-sm-4">
+          <div class="col-md-6 mt-sm-4" *ngIf="!game.isInstallAndPlay">
             <div class="row">
               <div class="col-lg-10 mt-md-0">
                 <h1 class="font700 font24 text-white">About Game</h1>
@@ -343,11 +359,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12" [ngClass]="{'col-lg-12': game.isInstallAndPlay, 'col-lg-6': !game.isInstallAndPlay}">
             <div class="row">
               <div
                 *ngIf="game.storesMapping.length"
-                class="col-auto pr-lg-5 mt-4"
+                class="col-md-6 col-lg-auto pr-lg-5 mt-4"
               >
                 <p class="font16 font500 muteText">Store</p>
                 <a
@@ -374,7 +390,7 @@
                   />
                 </a>
               </div>
-              <div class="col mt-4" *ngIf="game.developer.length">
+              <div class="col-md-6 col-lg-auto mr-lg-4 mt-4" *ngIf="game.developer.length">
                 <p class="font16 font500 muteText mb-2">Developer</p>
                 <div class="row">
                   <div
@@ -387,15 +403,23 @@
                   </div>
                 </div>
               </div>
+              <div class="col-md-6 col-lg-auto pr-lg-5 mt-4 d-md-none d-md-none d-lg-block" *ngIf="game.isInstallAndPlay">
+                <p class="font16 font500 muteText">Website</p>
+                <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
+              </div>
             </div>
-            <div class="row mt-4">
-              <div class="col-12">
+            <div class="row mt-4 mb-4">
+              <div class="col-12 col-md-6">
                 <p class="font16 font500 muteText mb-0">Tags</p>
                 <span
                   *ngFor="let genre of game.genreMappings"
                   class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
                   >{{ genre }}</span
                 >
+              </div>
+              <div class="col-auto pr-lg-5 d-lg-none d-md-block removeOnMob" *ngIf="game.isInstallAndPlay">
+                <p class="font16 font500 muteText">Website</p>
+                <a [href]="game.officialWebsite" class="gradientInfoText font-weight-500">Official Website</a>
               </div>
             </div>
           </div>
@@ -579,6 +603,35 @@
       allowfullscreen
     ></iframe>
   </div>
+</ng-template>
+
+<ng-template #termsConditionModal>
+  <section class="term-n-condition-modal">
+    <div class="termConditionCrossIcon cursorPointer" (click)="closeTermConditionModal()">
+      <img src="assets/icons/cross-icon.svg" />
+    </div>
+    <div class="modal-content position-relative modalBg">
+      <div class="modal-body pb-0">
+        <h2 class="text-white font600 mb-0 font18responsive">
+          Terms and Conditions
+        </h2>
+        <div class="d-flex justify-content-between py-1 mt-sm-2">
+          <a [href]="gameMetaDetails.url" class="font14 gradientInfoText">Official Page</a>
+          <span class="text-white font14">Last Updated: {{ gameMetaDetails.last_updated | date:'MMMM d, y' }}</span>
+
+        </div>
+        <p class="term-condition-content muteText mt-2" style="font-size: 12px;" [innerHTML]="gameMetaDetails.tnc"></p>
+      </div>
+      <div class="modal-footer pt-0">
+        <button class="border-0 term-condition-btn" (click)="startInstallAndPlay(smallModal)">
+          I Agree
+        </button>
+        <button class="text-white bgTransparent border-0 term-condition-btn" (click)="closeTermConditionModal()">
+          I Disagree
+        </button>
+      </div>
+    </div>
+  </section>
 </ng-template>
 
 <!-- small modal to select resolution, vsync and fps before launching the game -->

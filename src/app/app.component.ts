@@ -6,6 +6,7 @@ import { RestService } from "./services/rest.service";
 import { ToastService } from "./services/toast.service";
 import { CountlyService } from "./services/countly.service";
 import Swal from "sweetalert2";
+import { AuthService } from "./services/auth.service";
 
 @Component({
   selector: "app-root",
@@ -17,12 +18,14 @@ export class AppComponent implements OnInit, OnDestroy {
   seriousNotification: string | null = null;
 
   private gamepadMessageSubscription: Subscription;
+  private isLoggedInUserSub: Subscription;
 
   constructor(
     private readonly router: Router,
     private readonly restService: RestService,
     private readonly toastService: ToastService,
     private readonly gamepadService: GamepadService,
+    private readonly authService: AuthService,
     private readonly countlyService: CountlyService
   ) {
     const navEvents = this.router.events.pipe(
@@ -35,7 +38,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getSeriousNotification();
+    
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Make your API call here after every navigation
+        this.getSeriousNotification();
+      });
 
     this.gamepadMessageSubscription = this.gamepadService.message.subscribe(
       (message) => {
@@ -49,6 +58,17 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.isLoggedInUserSub = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        if (exists) {
+          this.restService
+            .visitCasulGamingSection()
+            .toPromise()
+            .catch(() => {});
+        }
+      }
+    );
+
     this.gamepadService.init();
 
     window.addEventListener("popstate", this.closeSwals.bind(this));
@@ -57,7 +77,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.gamepadService.destroy();
     this.toastService.clear();
-    this.gamepadMessageSubscription.unsubscribe();
+    this.gamepadMessageSubscription?.unsubscribe();
+    this.isLoggedInUserSub?.unsubscribe();
     window.removeEventListener("popstate", this.closeSwals.bind(this));
   }
 

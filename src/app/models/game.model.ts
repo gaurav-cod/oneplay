@@ -41,6 +41,14 @@ export class GameModel {
   readonly storesMapping: PurchaseStore[];
   readonly preferredStore: string;
   readonly warningMessage: string;
+  readonly isInstallAndPlay: boolean;
+  
+  readonly installPlaySearchImg: string;
+  readonly installPlayRailImg: string;
+  readonly installPlayLoadingImg: string;
+  readonly installPlayDetailImg: string;
+  readonly installPlayDetailImgMob: string;
+  readonly installPlayDetailImgTab: string;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
@@ -76,5 +84,12 @@ export class GameModel {
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
+    this.isInstallAndPlay = json["is_install_and_play"] === "true";
+    this.installPlaySearchImg = json["install_and_play_search_image"];
+    this.installPlayDetailImg = json["install_and_play_details_image"];
+    this.installPlayRailImg = json["install_and_play_rail_image"];
+    this.installPlayLoadingImg = json["install_and_play_loading_image"];
+    this.installPlayDetailImgMob = json["install_and_play_details_image_android"];
+    this.installPlayDetailImgTab = json["install_and_play_details_image_tablet"];
   }
 }

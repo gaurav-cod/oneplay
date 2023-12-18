@@ -19,6 +19,7 @@ export class StoreComponent implements OnInit {
   isLoading = false;
   canLoadMore = true;
   genreSelected: string = "";
+  isInstallPlayList: boolean = false;
 
   private queries = {
     // "All Games": {
@@ -37,7 +38,7 @@ export class StoreComponent implements OnInit {
         release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
       },
     },
-    
+
     // "Top 20": {
     //   label: "common",
     //   value: {
@@ -99,9 +100,21 @@ export class StoreComponent implements OnInit {
     private readonly loaderService: NgxUiLoaderService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
+    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+    if (response.length >= 1) {
+      this.queries["Install & Play"] = {
+        "label": "common",
+        value: {
+          "install_and_play": "true"
+        }
+      }
+    }
+      
+
     this.route.params.subscribe({
       next: (params) => {
         this.heading = params.filter || "All Games";
@@ -156,6 +169,7 @@ export class StoreComponent implements OnInit {
         };
       });
     });
+    // this.shouldShowInstallPlayTag();
   }
 
   onScroll() {
@@ -180,6 +194,8 @@ export class StoreComponent implements OnInit {
       .subscribe(
         (games) => {
           this.games = games;
+          this.isInstallPlayList = games.every((game)=> game.isInstallAndPlay);
+
           if (games.length < this.pagelimit) {
             this.canLoadMore = false;
           }
@@ -193,6 +209,13 @@ export class StoreComponent implements OnInit {
         }
       );
   }
+
+  // private shouldShowInstallPlayTag() {
+  //   let payload = {
+  //     "install_and_play": "true"
+  //   }
+    
+  // }
 
   private loadMore() {
     if (this.isLoading || !this.canLoadMore) {

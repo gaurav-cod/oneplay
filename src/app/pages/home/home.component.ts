@@ -74,9 +74,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     Swal.close();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.title.setTitle("Home");
     this.loaderService.start();
+    
+    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+    if (response.length === 5) {
+      this.queries["Install & Play"] = {
+        "install_and_play": "true"
+      };
+    }
     this.paramsSubscription = this.route.params.subscribe({
       next: (params) => {
         this.feedSubscription?.unsubscribe();
@@ -85,17 +92,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (!query) {
           this.genreSelected = '';
         } else {
+             
           this.genreSelected = query;
           this.gameFilterSubscription = this.restService
           .getFilteredGames(this.queries[query], 0)
-          .subscribe((games) => (this.genreGames = games));
+          .subscribe((games) => {
+            this.genreGames = games;
+          });
         }
         this.feedSubscription = this.restService
           .getHomeFeed()
           .subscribe((res) => {
               const feeds = res.filter((f) => f.games.length > 0);
               this.firstRow = feeds.filter((f) => f.type === 'header')[0];
+              // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
               this.restRows = feeds.filter((f) => f.type === 'rail');
+
               document.body.click();
               this.loaderService.stop();
             },
@@ -106,6 +118,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
             }
           );
+          
 
       },
     });
@@ -118,6 +131,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           .subscribe((games) => (this.library = games));
       } 
     });
+  }
+
+  private async shouldShowInstallPlayTag() {
+    let payload = {
+      
+    }
+   
+
   }
 
   viewBannerGame(game: GameModel) {
@@ -146,5 +167,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(game.oneplayId);
     });
+  }
+
+  isInstallPlayList(games: GameModel[]) {
+   
+    return games.every((game)=> game.isInstallAndPlay);
   }
 }
