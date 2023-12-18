@@ -36,6 +36,7 @@ import {
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
 import { MessagePayload } from "firebase/messaging";
+import { NotificationModel } from "src/app/models/notification.model";
 
 @Component({
   selector: "app-navbar",
@@ -72,7 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private notificationsSub: Subscription;
   private currMsgSub: Subscription;
 
-  notificationData: MessagePayload[] | null = null;
+  notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
 
   @Output() toggleFriends = new EventEmitter();

@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/services/toast.service';
 export class NotificationsComponent implements OnInit {
   
   
-  userNotificationList: any = {};
+  userNotificationList: NotificationModel[] = [];
 
   currentPage: number = 0;
   pageLimit: number = 5;
@@ -34,14 +34,9 @@ export class NotificationsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       this.previousPage = qParam['previousPage'];
     })
-    this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response: any)=> {
-      this.userNotificationList = response.map((res: any)=> {
-        return {
-          ...res,
-          showActionBtns: false
-        }
-      });
-      this.loadMoreBtn = response.length === this.pageLimit;
+    this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response)=> {
+      this.userNotificationList = response.notifications;
+      this.loadMoreBtn = this.userNotificationList.length < response.total;
       this.currentPage++;
     }, (error: any)=> {
     })
@@ -53,9 +48,9 @@ export class NotificationsComponent implements OnInit {
       .getAllUserNotifications(this.currentPage, this.pageLimit)
       .subscribe({
         next: (data) => {
-          this.userNotificationList = [...this.userNotificationList, ...data];
+          this.userNotificationList = [...this.userNotificationList, ...data.notifications];
           this.currentPage++;
-          this.loadMoreBtn = data.length === this.pageLimit;
+          this.loadMoreBtn = this.userNotificationList.length < data.total;
         }
       });
   }

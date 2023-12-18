@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { MessagePayload } from "firebase/messaging";
 import { BehaviorSubject, Observable } from "rxjs";
+import { NotificationModel } from "../models/notification.model";
 
 @Injectable({
   providedIn: "root",
@@ -8,7 +9,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 export class NotificationService {
   private _$notificationCount: BehaviorSubject<number | null> =
     new BehaviorSubject(null);
-  private _$notifications: BehaviorSubject<MessagePayload[] | null> =
+  private _$notifications: BehaviorSubject<NotificationModel[] | null> =
     new BehaviorSubject(null);
 
   get notificationCount() {
@@ -24,11 +25,15 @@ export class NotificationService {
   }
 
   addNotification(message: MessagePayload) {
+    if (!message) return;
     let notifications = this._$notifications.value;
     if (!notifications) {
       notifications = [];
     }
-    this._$notifications.next([...notifications, message]);
+    this._$notifications.next([
+      ...notifications,
+      new NotificationModel(message.data),
+    ]);
   }
 
   removeNotification(index: number) {

@@ -1,7 +1,8 @@
 import { Component, Host, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessagePayload } from 'firebase/messaging';
 import { GameModel } from 'src/app/models/game.model';
-import { NotificationModel } from 'src/app/models/notification.model';
+import { FriendInterface, InvoiceInterface, NotificationModel, SubscriptionInterface } from 'src/app/models/notification.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { NotificationService } from 'src/app/services/notification.service';
@@ -20,7 +21,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   showNotificationContent: boolean = false;
   showSecondaryCTA: boolean = false;
 
-  @Input() notification: any;
+  @Input() notification: NotificationModel;
   @Input() index: number = 0;
 
   private intervalRef: NodeJS.Timeout;
@@ -35,10 +36,6 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit(): void {
-    this.notification = {
-      ...this.notification,
-      showActionBtns: false
-    }
     this.intervalRef = setTimeout(()=> {
       this.notificationService.removeNotification(this.index);
     }, 5000);
@@ -82,7 +79,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "DOWNLOAD":
         this.notificationService.removeNotification(this.index);
-        window.open(this.notification.data?.download_link);
+        window.open((this.notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
         this.checkoutPageOfPlan();
@@ -166,7 +163,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     this.notification.showActionBtns = !this.notification.showActionBtns;
   }
   checkoutPageOfPlan() {
-    this.router.navigate([`/checkout/${this.notification.data.subscription_id}`]);
+    this.router.navigate([`/checkout/${(this.notification.data as SubscriptionInterface).subscription_id}`]);
   }
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
@@ -188,10 +185,10 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   acceptFriendRequest() {
 
-    this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
+    this.restService.acceptFriend((this.notification.data as FriendInterface)?.friend_id).subscribe((response) => {
       this.notificationService.removeNotification(this.index);
 
-      this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
+      this.toastService.show(`You are now friends with ${(this.notification.data as FriendInterface)?.friend_name}`, {
         classname: `bg-gray-dark text-white`,
         delay: 4000,
       });
