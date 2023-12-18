@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceInterface, NotificationModel } from 'src/app/models/notification.model';
 import { RestService } from 'src/app/services/rest.service';
@@ -28,6 +28,13 @@ export class NotificationsComponent implements OnInit {
     private readonly toastService: ToastService,
     private readonly activatedRoute: ActivatedRoute
   ) {}
+
+  @HostListener('click', ['$event'])
+  clickout(event) {
+    if (!event.target.className.includes("three-dot")) {
+      this.userNotificationList.forEach((notification)=> notification.showActionBtns = false);
+    }
+  }
 
   ngOnInit(): void {
     this.restService.markNotificationsSeen().toPromise();
