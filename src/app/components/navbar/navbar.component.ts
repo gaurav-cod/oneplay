@@ -437,11 +437,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    // this.messagingService.removeToken().finally(() => {
-    this.restService.deleteSession(this.authService.sessionKey).subscribe();
-    this.authService.loggedOutByUser = true;
-    this.authService.logout();
-    // });
+    this.messagingService.removeToken().finally(() => {
+      this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
+      this.authService.logout();
+    });
   }
 
   LogoutAlert(container) {
