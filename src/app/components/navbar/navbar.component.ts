@@ -617,13 +617,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   goToNotificationScreen() {
-    this.router.navigate(['/notifications'], { queryParams: { "previousPage": this.router.url.split("/")[1] } });
+    if (!this.router.url.includes("notifications"))
+      this.router.navigate(['/notifications'], { queryParams: { "previousPage": this.router.url.split("/")[1] } });
   }
 
   private initPushNotification() {
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
     this.messagingService.currentMessage.subscribe((message) => {
+      console.log(message);
       if (!this.notificationData)
         this.notificationData = [];
       this.notificationData = [...this.notificationData, message];
