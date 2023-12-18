@@ -217,8 +217,8 @@
             />
           </div>
           <div class="col align-self-center p-0 text-truncate">
-            <p class="m-0 font16 font500 offWhitecolor">
-              {{ user.name }}
+            <p class="m-0 font16 font500 offWhitecolor truncate-line-clamp">
+              {{ user.name.length > 30 ? user.name.substr(0, 30) + '...' : user.name }}
             </p>
             <p class="m-0 font14 font500 mutedTextColor">
               {{ user.username }}
