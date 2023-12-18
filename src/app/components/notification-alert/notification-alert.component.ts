@@ -68,6 +68,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
     switch (type) {
       case "REJECT":
+        this.removeFriendRequest();
+        this.notificationService.removeNotification(this.index);
+        break;
       case "IGNORE":
         this.notificationService.removeNotification(this.index);
         break;
@@ -182,6 +185,16 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         });
       }
     })
+  }
+
+  removeFriendRequest() {
+    this.restService.deleteFriend(this.notification.data?.friend_request_id).subscribe((response) => {
+      // this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
+      //   classname: `bg-gray-dark text-white`,
+      //   delay: 4000,
+      // });
+      this.notificationService.removeNotification(this.index);
+    });
   }
   acceptFriendRequest() {
 

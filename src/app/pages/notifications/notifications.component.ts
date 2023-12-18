@@ -61,6 +61,8 @@ export class NotificationsComponent implements OnInit {
 
     switch (type) {
       case "REJECT":
+        this.removeFriendRequest(notification);
+        break;
       case "IGNORE":
         this.deleteNotification(notification);
         break;
@@ -110,13 +112,21 @@ export class NotificationsComponent implements OnInit {
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
   }
   acceptFriendRequest(notification) {
-    this.restService.acceptFriend(notification.data?.friend_id).subscribe((response) => {
+    this.restService.acceptFriend(notification.data?.friend_request_id).subscribe((response) => {
       this.toastService.show(`You are now friends with ${notification.data?.friend_name}`, {
         classname: `bg-gray-dark text-white`,
         delay: 4000,
       });
     }, (error: any)=> {
 
+    });
+  }
+  removeFriendRequest(notification) {
+    this.restService.deleteFriend(notification.data?.friend_request_id).subscribe((response) => {
+      // this.toastService.show(`You are now friends with ${notification.data?.friend_name}`, {
+      //   classname: `bg-gray-dark text-white`,
+      //   delay: 4000,
+      // });
     });
   }
   deleteNotification(notification) {
