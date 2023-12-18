@@ -36,6 +36,7 @@ import { SuccessMessageComponent } from "./success-message/success-message.compo
 import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.component';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
+import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
 
 @NgModule({
   imports: [
@@ -80,6 +81,7 @@ import { InstallPlayGameComponent } from './install-play-game/install-play-game.
     ChatBottomSheetComponent,
     GeneralSettingsComponent,
     InstallPlayGameComponent,
+    NotificationAlertComponent,
   ],
   exports: [
     GameCardComponent,
@@ -105,7 +107,8 @@ import { InstallPlayGameComponent } from './install-play-game/install-play-game.
     SuccessMessageComponent,
     ChatBottomSheetComponent,
     GeneralSettingsComponent,
-    InstallPlayGameComponent
+    InstallPlayGameComponent,
+    NotificationAlertComponent
   ],
 })
 export class ComponentsModule {}

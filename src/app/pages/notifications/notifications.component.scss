@@ -1,0 +1,97 @@
+
+.paddingBottom {
+    padding-bottom: 38px;
+}
+
+.notificationListing {
+    height: 80vh;
+    overflow-y: auto;
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar,
+    &::-webkit-scrollbar-thumb {
+        display: none;
+    }
+}
+
+.notificationCard {
+    border-radius: 10px;
+    background-color: #212123;
+    padding: 15px 5px;
+}
+
+.horizontalDivider {
+    width: 90%;
+    border: 1px solid rgb(219, 219, 219);
+}
+
+.verticalDivider {
+    border: 1px solid #4a4a4a;
+    height: 40%;
+    margin-left: 20px;
+}
+
+.ctaLink {
+    width: 49%;
+    text-align: center;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.notificationTime {
+    font-size: 12px;
+}
+
+.secActContainer {
+    right: 0px;
+    top: 50px;
+    height: auto;
+    width: 130px;
+    border-radius: 10px;
+    background-color: #212123;
+    border: 1px solid #595858;
+    z-index: 1;
+
+    a {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 520px) {
+    .dotContainer {
+        width: unset !important;
+    }
+    .notificationCard {
+        flex-direction: column !important;
+    }
+    .ctaLink {
+        width: 50%;
+        text-align: center;
+    }
+
+    .secActContainer {
+        top: 0px !important;
+    }
+}
+
+.unreadIcon {
+    left: 0px;
+    top: -5px;
+}
+
+.font12 {
+    font-size: 12px !important;
+}
+
+
+.alert-text {
+    color: #FF843F !important;
+}
+.info-text {
+    color: #3AA0FE !important;
+}
+.success-text {
+    color: #36FF78 !important;
+}
+.error-text {
+    color: #FF5151 !important;
+}

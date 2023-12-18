@@ -44,6 +44,7 @@ import { SubscriptionPaymentModel } from "../models/subscriptionPayment.modal";
 import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
 import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
+import { NotificationModel } from "../models/notification.model";
 
 @Injectable({
   providedIn: "root",
@@ -302,22 +303,29 @@ export class RestService {
       );
   }
   requestResetPasswordWithMobile(mobile: string): Observable<void> {
-    return this.http.post(this.r_mix_api + "/accounts/request_reset_password_with_phone", { "phone": mobile })
-    .pipe(
-      map((res)=> {}),
-      catchError(({error})=> {
-        throw error;
+    return this.http
+      .post(this.r_mix_api + "/accounts/request_reset_password_with_phone", {
+        phone: mobile,
       })
-    )
+      .pipe(
+        map((res) => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
   verifyOTPForMobile(mobile: string, otp: string): Observable<void> {
-    return this.http.post(this.r_mix_api + "/accounts/get_password_reset_token", { "phone": mobile, "code": otp })
-    .pipe(
-      map((res: any)=> res.token),
-      catchError(({error})=> {
-        throw error;
+    return this.http
+      .post(this.r_mix_api + "/accounts/get_password_reset_token", {
+        phone: mobile,
+        code: otp,
       })
-    )
+      .pipe(
+        map((res: any) => res.token),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   resetPassword(token: string, password: string): Observable<void> {
@@ -988,7 +996,7 @@ export class RestService {
   getSeriousNotification(): Observable<string | null> {
     return this.http
       .get(this.r_mix_api + "/notification/serious", {
-        params: { partnerId: environment.partner_id, platform: 'web' },
+        params: { partnerId: environment.partner_id, platform: "web" },
       })
       .pipe(
         map((res) => res["text"]),
@@ -1033,7 +1041,6 @@ export class RestService {
     gameId: string,
     store?: PurchaseStore
   ): Observable<GameTermCondition> {
-    
     const formData = new FormData();
     formData.append("game_id", gameId);
     formData.append("store", store.name.replace(/\s/g, "").toLowerCase());
@@ -1220,23 +1227,60 @@ export class RestService {
   }
 
   checkCasualGamingSession() {
-    return this.http.get(
-      this.r_mix_api + "/games/gamezop/is_new_visit"
-      ).pipe(map((res) => res), 
-        catchError(({ error }) => {
+    return this.http.get(this.r_mix_api + "/games/gamezop/is_new_visit").pipe(
+      map((res) => res),
+      catchError(({ error }) => {
         throw error;
-    }))
+      })
+    );
   }
   visitCasulGamingSection() {
     return this.http
-      .post<void>(
-        this.r_mix_api + "/games/gamezop/visit", null
-      )
+      .post<void>(this.r_mix_api + "/games/gamezop/visit", null)
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
       );
+  }
+
+  // Notification API's
+  getAllUserNotifications(page: number, limit: number) {
+    return this.http
+      .get<any>(
+        this.r_mix_api + `/notification/all?page=${page}&limit=${limit}`
+      )
+      .pipe(
+        map((res) => ({
+          notifications: (res.notifications as object[]).map(
+            (d) => new NotificationModel(d)
+          ),
+          total: res.total as number,
+        }))
+      );
+  }
+  markNotificationRead(id: string) {
+    return this.http.put<string>(
+      this.r_mix_api + `/notification/${id}/read`,
+      {}
+    );
+  }
+  markNotificationUnRead(id: string) {
+    return this.http.put<string>(
+      this.r_mix_api + `/notification/${id}/unread`,
+      {}
+    );
+  }
+  markAllNotificationRead() {
+    return this.http.put<void>(this.r_mix_api + `/notification/read_all`, {});
+  }
+  markNotificationsSeen() {
+    return this.http.put<void>(this.r_mix_api + `/notification/seen`, {});
+  }
+  deleteNotification(id: string) {
+    return this.http.delete<void>(
+      this.r_mix_api + `/notification/${id}/delete`
+    );
   }
 }

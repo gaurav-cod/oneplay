@@ -4,10 +4,9 @@ import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
-import { MessagingService } from "src/app/services/messaging.service";
+import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import Swal from "sweetalert2";
 
 @Component({
   selector: "app-admin-layout",
@@ -25,17 +24,16 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
 
-
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
     private readonly partyService: PartyService,
-    private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService
-  ) { }
+    private readonly gameService: GameService,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.initAuth();
@@ -43,7 +41,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.initParties();
     this.setOnline();
     this.initGames();
-    this.initPushNotification();
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
@@ -89,7 +86,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
-
     if (event != "profileClicked") {
       if (this.friendsCollapsed) {
         this.initFriends();
@@ -134,28 +130,15 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.gameService.gameStatus = this.restService.getGameStatus();
   }
 
-  private initPushNotification() {
-    this.messagingService.requestToken();
-    this.messagingService.receiveMessage();
-    this.messagingService.currentMessage.subscribe((message) => {
-      if (message) {
-        Swal.fire({
-          title: message.notification.title,
-          text: message.notification.body,
-          icon: "error",
-        });
-        this.initParties();
-        this.initFriends();
-      }
-    });
-  }
-
   private setOnline() {
     this.restService
       .setOnline()
       .toPromise()
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
+        this.notificationService.setNotificationCount(
+          data.new_notification_count
+        );
       });
   }
 }

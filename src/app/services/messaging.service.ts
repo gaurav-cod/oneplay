@@ -16,7 +16,7 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class MessagingService {
-  currentMessage: BehaviorSubject<MessagePayload | null> = new BehaviorSubject(
+  private _$currentMessage: BehaviorSubject<MessagePayload | null> = new BehaviorSubject(
     null
   );
   messaging: Messaging;
@@ -24,6 +24,10 @@ export class MessagingService {
   constructor(private readonly restService: RestService) {
     const app = initializeApp(environment.firebase);
     this.messaging = getMessaging(app);
+  }
+
+  get currentMessage() {
+    return this._$currentMessage.asObservable();
   }
 
   requestToken() {
@@ -40,18 +44,17 @@ export class MessagingService {
   receiveMessage() {
     onMessage(this.messaging, (payload) => {
       console.log("Message received. ", payload);
-      this.currentMessage.next(payload);
+      this._$currentMessage.next(payload);
     });
   }
 
   async removeToken() {
-    return getToken(this.messaging)
-      .then(async (token) => {
-        await deleteToken(this.messaging);
-        return this.restService.deleteDevice(token).toPromise();
-      })
-      .catch((err) => {
-        console.log("Unable to get permission to notify.", err);
-      });
+    try {
+      const token = await getToken(this.messaging);
+      await deleteToken(this.messaging);
+      await this.restService.deleteDevice(token).toPromise();
+    } catch (err) {
+      console.log("Unable to get permission to notify.", err);
+    }
   }
 }
