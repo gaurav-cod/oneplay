@@ -40,7 +40,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       showActionBtns: false
     }
     this.intervalRef = setTimeout(()=> {
-      this.notificationService.setShowAlertNotification(this.index);
+      this.notificationService.removeNotification(this.index);
     }, 5000);
   }
   ngOnDestroy() {
@@ -53,7 +53,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   @HostListener("mouseleave") OnLeave() {
     clearInterval(this.intervalRef);
     this.intervalRef = setTimeout(()=> {
-      this.notificationService.setShowAlertNotification(this.index);
+      this.notificationService.removeNotification(this.index);
     }, 5000);
   }
 
@@ -75,7 +75,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.setShowAlertNotification(this.index);
         break;
       case "IGNORE":
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "BUY_NOW":
         this.checkoutPageOfPlan();
@@ -84,14 +84,14 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.acceptFriendRequest();
         break;
       case "DOWNLOAD":
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         window.open(this.notification.data?.download_link);
         break;
       case "RENEW":
         this.checkoutPageOfPlan();
         break;
       case "RESET_PASSWORD":
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         this.router.navigate(['/settings/security']);
         break;
       case "RETRY":
@@ -107,11 +107,11 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     switch (this.notification.subType) {
       case "WELCOME_MESSAGE":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "SUBSCRIPTION_EXPIRING":
       case "SUBSCRIPTION_EXPIRED":
@@ -122,7 +122,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "NEW_GAMES_AVAILABLE":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "GAME_UPDATE_AVAILABLE":
         this.router.navigate(['']);
@@ -132,27 +132,27 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "PASSWORD_CHANGE":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "UNUSUAL_ACCOUNT_ACTIVITY":
         this.router.navigate(['/settings/security']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_FAILED":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_SUCCESS":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "FRIEND_REQUEST":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":
         this.router.navigate(['']);
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
       default:
         this.router.navigate(['']);
     }
@@ -179,7 +179,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         } else {
           this.router.navigate(['/settings/subscription']);
         }
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
       }, error: (err) => {
         Swal.fire({
           icon: "error",
@@ -200,8 +200,8 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   acceptFriendRequest() {
 
-    this.restService.acceptFriend(this.notification.data?.friend_request_id).subscribe((response) => {
-      this.notificationService.setShowAlertNotification(this.index);
+    this.restService.acceptFriend(this.notification.data?.friend_id).subscribe((response) => {
+      this.notificationService.removeNotification(this.index);
 
       this.toastService.show(`You are now friends with ${this.notification.data?.friend_name}`, {
         classname: `bg-gray-dark text-white`,
@@ -213,7 +213,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   markRead() {
     this.restService.markNotificationRead(this.notification.notificationId).subscribe({
       next: () => {
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
       }, error: (error) => {
       }
     })
@@ -221,7 +221,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   markUnread() {
     this.restService.markNotificationUnRead(this.notification.notificationId).subscribe({
       next: () => {
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
       }, error: (error) => {
       }
     })

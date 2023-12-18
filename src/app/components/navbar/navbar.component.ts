@@ -35,8 +35,7 @@ import {
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
-import { NotificationModel } from "src/app/models/notification.model";
-import { ToastService } from "src/app/services/toast.service";
+import { MessagePayload } from "firebase/messaging";
 
 @Component({
   selector: "app-navbar",
@@ -50,7 +49,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
-  public notifications = [];
   public hasUnread = false;
 
   private user: UserModel;
@@ -71,9 +69,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private requestsSub: Subscription;
   private unreadSub: Subscription;
   private notificationCountSub: Subscription;
-  private showAlertNotification: Subscription;
+  private notificationsSub: Subscription;
+  private currMsgSub: Subscription;
 
-  notificationData: any = null;
+  notificationData: MessagePayload[] | null = null;
   unseenNotificationCount: number = 0;
 
   @Output() toggleFriends = new EventEmitter();
@@ -225,9 +224,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly messagingService: MessagingService,
     private readonly router: Router,
     private readonly countlyService: CountlyService,
-    private readonly notificationService: NotificationService,
-  ) {
-  }
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -239,7 +237,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.requestsSub?.unsubscribe();
     this.unreadSub?.unsubscribe();
     this.notificationCountSub?.unsubscribe();
-    this.showAlertNotification?.unsubscribe();
+    this.notificationsSub?.unsubscribe();
+    this.currMsgSub?.unsubscribe();
   }
 
   ngOnInit() {
@@ -257,13 +256,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
     );
-    this.notificationCountSub = this.notificationService.notificationCount.subscribe(
-      (counts) => (this.unseenNotificationCount = counts)
-    );
-    this.showAlertNotification = this.notificationService.showAlertNotification.subscribe(
-      (value) => {
-        this.notificationData = this.notificationData.filter((_: any, index)=> index != value);
-      }
+    this.notificationCountSub =
+      this.notificationService.notificationCount.subscribe(
+        (counts) => (this.unseenNotificationCount = counts)
+      );
+    this.notificationsSub = this.notificationService.notifications.subscribe(
+      (n) => (this.notificationData = n)
     );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
@@ -437,11 +435,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    // this.messagingService.removeToken().finally(() => {
-    this.restService.deleteSession(this.authService.sessionKey).subscribe();
-    this.authService.loggedOutByUser = true;
-    this.authService.logout();
-    // });
+    this.messagingService.removeToken().finally(() => {
+      this.restService.deleteSession(this.authService.sessionKey).subscribe();
+      this.authService.loggedOutByUser = true;
+      this.authService.logout();
+    });
   }
 
   LogoutAlert(container) {
@@ -572,19 +570,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         if (response?.length === 0) {
-          this.logDropdownEvent('subscriptionClicked');
-          window.open(environment.domain + '/subscription.html', '_self');
+          this.logDropdownEvent("subscriptionClicked");
+          window.open(environment.domain + "/subscription.html", "_self");
         } else {
-          this.router.navigate(['/settings/subscription']);
+          this.router.navigate(["/settings/subscription"]);
         }
-      }, error: (err) => {
+      },
+      error: (err) => {
         Swal.fire({
           icon: "error",
           title: "Error Code: " + err.code,
           text: err.message,
         });
-      }
-    })
+      },
+    });
     // domain + '/subscription.html'
   }
 
@@ -592,10 +591,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.restService.checkCasualGamingSession().subscribe({
       next: (response: any) => {
         this.showCasualGamingLabel = response.is_new;
-      }, error: () => {
+      },
+      error: () => {
         this.showCasualGamingLabel = false;
-      }
-    })
+      },
+    });
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
@@ -618,18 +618,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   goToNotificationScreen() {
     if (!this.router.url.includes("notifications"))
-      this.router.navigate(['/notifications'], { queryParams: { "previousPage": this.router.url.split("/")[1] } });
+      this.router.navigate(["/notifications"], {
+        queryParams: { previousPage: this.router.url.split("/")[1] },
+      });
   }
 
   private initPushNotification() {
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
-    this.messagingService.currentMessage.subscribe((message) => {
-      console.log(message);
-      if (!this.notificationData)
-        this.notificationData = [];
-      this.notificationData = [...this.notificationData, message];
-
-    });
+    this.currMsgSub = this.messagingService.currentMessage.subscribe(
+      (message) => {
+        this.notificationService.addNotification(message);
+      }
+    );
   }
 }
