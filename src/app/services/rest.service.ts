@@ -120,6 +120,10 @@ export class RestService {
         })
       );
   }
+  
+  createPassword(password: string): void {
+
+  }
 
   updatePassword(old_password: string, password: string): Observable<void> {
     return this.http

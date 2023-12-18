@@ -5,11 +5,11 @@
       <div class="row">
         <div class="col-md-12 mt-2 adjustWidth">
           <label class="font16 font500 offWhiteText mx-1">Email</label>
-          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1" (click)="!emailExist && openEmailModal()">
             <div class="col">
-              <p class="mb-0 font18 font500 text-white">{{ user?.email }}</p>
+              <p class="mb-0 font18 font500" [style.color]="!emailExist ? '#5f5f5f' : '#fff'">{{ (emailExist ? user?.email : 'Add a Email') }}</p>
             </div>
-            <div class="col-auto">
+            <div class="col-auto" *ngIf="emailExist">
               <img *ngIf="allowEmailEdit" (click)="openEmailModal()" src="assets/img/singup-login/Group (1).svg"
                 class="img-fluid cursorPointer" alt="" />
             </div>
@@ -48,15 +48,14 @@
           <label class="font16 font500 offWhiteText mx-1">
             Password
           </label>
-          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
+          <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1 cursorPointer" (click)="openCreatePasswordModal(createPassModal)">
             <div class="col">
-              <p class="mb-0 font18 font500 text-white"></p>
-            </div>
-            <div class="col-auto">
-              <img *ngIf="allowPasswordEdit" (click)="openPasswordModal()" src="assets/img/singup-login/Group (1).svg"
-                class="img-fluid cursorPointer" alt="" />
+              <p class="mb-0 font18 font500" style="color: #5f5f5f;">Add a password to secure your account</p>
             </div>
           </div>
+          <p class="text-white mb-0 mt-1 font500" style="font-size: 12px;">
+            *Password should be atleast 8 characters, 1 UPPERCASE, 1 lowercase, 1 Symbol and 1 number.
+          </p>
         </div>
       </div>
     </form>
@@ -101,6 +100,41 @@
   </div>
 </div>
 
+<ng-template #createPassModal>
+  <div class="modal-content modalBg">
+    <div class="modal-body text-center">
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="closeCreatePassModal()">
+        <i class="fas fa-times-circle font20"></i>
+      </a>
+      <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
+        Create Password
+      </h3>
+      <form role="form">
+        <div class="col-12 mt-4">
+          <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">New Password</label>
+          <input type="password" class="form-control inputBorder font18 font500 text-white"
+            placeholder="Enter your New Password" formControlName="password" />
+          <p class="font16 font500 muteText mb-0" style="text-align: left !important;" [ngClass]="{'errorGradientColor': passwordErrored}">
+            Password should be at least 8 characters, 1 UPPERCASE, 1
+            lowercase, 1 Symbol and 1 number.
+          </p>
+        </div>
+        <div class="col-12 mt-4">
+          <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">Confirm New Password</label>
+          <input type="password" class="form-control inputBorder font18 font500 text-white"
+            placeholder="Re-enter your New Password" formControlName="confirmPassword" />
+          <span *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor">*password does not
+            match</span>
+        </div>
+
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" (click)="createPassword()">
+        Confirm
+      </button>
+      </form>
+    </div>
+  </div>
+</ng-template>
 
 <!-- Enter Security Code -->
 <ng-template #otpScreen>
@@ -150,13 +184,13 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
-        Change Email Address
+        {{ emailExist ? 'Change' : 'Add'}} Email Address
       </h3>
       <!-- <p class="muteText font14 font500 mb-5 px-2 text-center">
         Security code verification is required to make this change.
       </p> -->
       <form role="form">
-        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email"
+        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="Add an Email"
           [formControl]="email" (keyup)="resetValidation()" />
         <span *ngIf="emailErrored; else secondaryEmailErrorMsg" class="font16 font500 errorGradientColor">*invalid email id</span>
         <ng-template #secondaryEmailErrorMsg>
@@ -165,7 +199,7 @@
           </p>
         </ng-template>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          [disabled]="emailErrored" [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : updateEmail()">
+          [disabled]="emailErrored" [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : emailOperation()">
           {{ buttonText }}
         </button>
       </form>

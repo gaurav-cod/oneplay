@@ -56,6 +56,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
   private logoutRef: NgbModalRef;
+  private _createPassModalRef: NgbModalRef;
 
   errorMessage: string;
   errorCode: number;
@@ -93,7 +94,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   showPass = false;
   isPrivate: boolean = false;
-  passwordExist: boolean = false;
+  passwordExist: boolean = true;
+  emailExist: boolean = true;
 
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
@@ -120,6 +122,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._countryCodeSub?.unsubscribe();
+    this._createPassModalRef?.close();
   }
 
   ngOnInit(): void {
@@ -202,6 +205,20 @@ export class SecurityComponent implements OnInit, OnDestroy {
     });
   }
 
+  createPassword() {
+    // this.restService.createPassword().subscribe((response: any)=> {
+        this._createPassModalRef?.close();
+        Swal.fire({
+          icon: "success",
+          text: "Password Created Successfully",
+          showConfirmButton: false,
+          showCancelButton: false,
+        });
+    // }, (error: any)=> {
+      
+    // })
+  }
+
   openEmailModal() {
     this.emailOTP = true;
     this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
@@ -212,20 +229,46 @@ export class SecurityComponent implements OnInit, OnDestroy {
       keyboard: false,
     });
   }
+  closeCreatePassModal() {
+    this._createPassModalRef?.close();
+  }
 
-  updateEmail(): void {
+  emailOperation() {
     this.errorMessage = null;
     if (this.emailErrored) return;
     if (this.user?.email === this.email.value?.trim()) {
       this.errorMessage = "This email address is already in use.";
       return;
     }
+    if (this.emailExist) {
+      this.updateEmail();
+    } else {
+      
+      this.clearErrors();
+      this._changeEmailModalRef.close();
+      Swal.fire({
+        icon: "success",
+        text: "Successfully registered email.", // need to verify
+        showConfirmButton: false,
+        showCancelButton: false,
+      });
+    }
+  }
+
+  updateEmail(): void {
+
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
         this.clearErrors();
         this._changeEmailModalRef.close();
         this.timer(1);
         this.openOTPScreen();
+        Swal.fire({
+          icon: "success",
+          text: "You have successfully changed your email.",
+          showConfirmButton: false,
+          showCancelButton: false,
+        });
       },
       (error) => {
         this.errorCode = error.code;
@@ -328,6 +371,12 @@ export class SecurityComponent implements OnInit, OnDestroy {
         () => {
           this.clearErrors();
           this._changePhoneModalRef.close();
+          Swal.fire({
+            icon: "success",
+            text: "You have successfully changed your email.",
+            showConfirmButton: false,
+            showCancelButton: false,
+          });
           this.timer(1);
           this.openOTPScreen();
         },
@@ -444,6 +493,15 @@ export class SecurityComponent implements OnInit, OnDestroy {
       });
   }
 
+  openCreatePasswordModal(container: ElementRef<HTMLDivElement>,) {
+    this._createPassModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   closeEmailModal() {
     this._changeEmailModalRef?.close();
     this._otpScreenRef?.close();
@@ -463,14 +521,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.phoneForm.reset();
     this.allowPhoneEdit = false;
     this.clearErrors();
-    if (this.isPhone) {
-      Swal.fire({
-        icon: "success",
-        text: "You have successfully changed your phone number.",
-        showConfirmButton: false,
-        showCancelButton: false,
-      });
-    }
+   
     clearTimeout(this.phoneIconHideTimer);
     this.phoneIconHideTimer = setTimeout(() => {
       this.allowPhoneEdit = true;
