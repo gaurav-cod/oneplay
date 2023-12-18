@@ -57,7 +57,8 @@ export class NotificationsComponent implements OnInit {
   
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     
-    this.restService.markNotificationRead(notification.notificationId).toPromise();
+    if (!(type == "ACCEPT" || type == "REJECT"))
+      this.restService.markNotificationRead(notification.notificationId).toPromise();
 
     switch (type) {
       case "REJECT":
@@ -113,6 +114,8 @@ export class NotificationsComponent implements OnInit {
   }
   acceptFriendRequest(notification) {
     this.restService.acceptFriend(notification.data?.friend_request_id).subscribe((response) => {
+      this.userNotificationList = this.userNotificationList.filter((notify: NotificationModel)=> notify.notificationId != notification.notificationId);
+
       this.toastService.show(`You are now friends with ${notification.data?.friend_name}`, {
         classname: `bg-gray-dark text-white`,
         delay: 4000,
@@ -127,6 +130,8 @@ export class NotificationsComponent implements OnInit {
       //   classname: `bg-gray-dark text-white`,
       //   delay: 4000,
       // });
+      this.userNotificationList = this.userNotificationList.filter((notify: NotificationModel)=> notify.notificationId != notification.notificationId);
+      
     });
   }
   deleteNotification(notification) {

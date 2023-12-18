@@ -64,7 +64,8 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
 
-    this.restService.markNotificationRead(this.notification.notificationId).toPromise();
+    if (!(type == "ACCEPT" || type == "REJECT"))
+      this.restService.markNotificationRead(this.notification.notificationId).toPromise();
 
     switch (type) {
       case "REJECT":
