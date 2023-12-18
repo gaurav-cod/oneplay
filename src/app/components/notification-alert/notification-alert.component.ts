@@ -72,7 +72,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     switch (type) {
       case "REJECT":
         this.removeFriendRequest();
-        this.notificationService.setShowAlertNotification(this.index);
+        this.notificationService.removeNotification(this.index);
         break;
       case "IGNORE":
         this.notificationService.removeNotification(this.index);
@@ -196,6 +196,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       //   classname: `bg-gray-dark text-white`,
       //   delay: 4000,
       // });
+      this.notificationService.removeNotification(this.index);
     });
   }
   acceptFriendRequest() {
