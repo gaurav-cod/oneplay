@@ -15,7 +15,7 @@
         <div class="input-group">
           <input type="email" formControlName="email"
             class="form-control p-0 offWhiteColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-            placeholder="example@oneplay.in" />
+            placeholder="example@oneplay.in" (keypress)="onKeyPressEmail($event)"/>
         </div>
       </div>
       <div class="section-divider d-flex align-items-center justify-content-center w-100">
@@ -38,7 +38,7 @@
           </div>
           <input type="number" formControlName="phone"
             class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-            placeholder="Mobile Number" />
+            placeholder="Mobile Number" (keypress)="onKeyPress($event)" />
         </div>
       </div>
       <div class="col-md-12 mt-5">
