@@ -115,7 +115,7 @@
           <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">New Password</label>
           <input type="password" class="form-control inputBorder font18 font500 text-white"
             placeholder="Enter your New Password" formControlName="password" />
-          <p class="font16 font500 muteText mb-0" style="text-align: left !important;" [ngClass]="{'errorGradientColor': passwordErrored}">
+          <p class="font500 muteText mb-0" style="text-align: left !important; font-size: 12px" [ngClass]="{'errorGradientColor': passwordErrored}">
             Password should be at least 8 characters, 1 UPPERCASE, 1
             lowercase, 1 Symbol and 1 number.
           </p>
@@ -199,7 +199,7 @@
           </p>
         </ng-template>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          [disabled]="emailErrored" [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : emailOperation()">
+          [disabled]="emailErrored || email.value?.length === 0" [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : emailOperation()">
           {{ buttonText }}
         </button>
       </form>

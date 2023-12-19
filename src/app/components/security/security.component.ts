@@ -94,8 +94,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   showPass = false;
   isPrivate: boolean = false;
-  passwordExist: boolean = true;
-  emailExist: boolean = true;
+  passwordExist: boolean = false;
+  emailExist: boolean = false;
 
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
@@ -244,6 +244,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       this.updateEmail();
     } else {
       
+      // TODO : Email creation API integration
       this.clearErrors();
       this._changeEmailModalRef.close();
       Swal.fire({
