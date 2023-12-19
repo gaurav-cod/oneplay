@@ -131,4 +131,19 @@ export class ForgotPassComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
+  onKeyPressCheckMobile(event:KeyboardEvent){
+    const charCode=event.charCode;
+    if(charCode<48 || charCode>57){
+      event.preventDefault();
+    }
+  }
+
+  onKeyPressCheckEmail(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-_+@';
+    if (!validChars.includes(String.fromCharCode(charCode))) {
+      event.preventDefault();
+    }
+  }
+
 }
