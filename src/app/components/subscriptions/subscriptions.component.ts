@@ -234,6 +234,9 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     window.location.href = environment.domain + "/subscription.html";
   }
 
+  downloadInvoice(subscription) {
+  }
+
   private addSubCardEvent(
     cta: "renew" | "topUp" | "buyNow",
     sub?: SubscriptionModel

@@ -172,7 +172,7 @@
               <thead>
                 <tr scope="row">
                   <th scope="col" class="pl-0 d-block d-lg-none">Date</th>
-                  <th scope="col" class="pl-0 d-block d-lg-none">Invoice</th>
+                  <th scope="col" class="pl-0">Invoice</th>
                   <th scope="col" class="pl-0 d-none d-lg-block">Date of Purchase</th>
                   <th scope="col">Subscription Type</th>
                   <th scope="col" class="text-center">Price</th>
@@ -184,8 +184,8 @@
               </thead>
               <tbody>
                 <tr *ngFor="let subscription of subscriptions">
-                  <td class="align-middle py-3 pl-0">
-                    <img src="assets/img/setting/download-icon.svg" alt="">
+                  <td class="align-middle py-3 pl-0 text-center cursorPointer">
+                    <img src="assets/img/setting/download-icon.svg" alt="" (click)="downloadInvoice(subscription)">
                   </td>
                   <td class="align-middle py-3 pl-0">
                     {{ subscription.purchasedAt | date : "dd.MM.yyyy" }}
