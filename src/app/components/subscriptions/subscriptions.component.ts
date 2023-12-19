@@ -219,7 +219,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
         }
       } else if (result.isDenied) {
         this.addSubCardEvent("renew");
-        window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+        window.location.href = `${environment.domain}/subscription.html`;
       }
     });
   }
