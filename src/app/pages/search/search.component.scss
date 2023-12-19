@@ -128,3 +128,8 @@
     width: 55% !important;
   }
 }
+
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
+}
