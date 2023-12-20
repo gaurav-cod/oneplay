@@ -33,31 +33,31 @@
                 <!-- <a href="javascript:void(0)" class="font16 font500 offWhiteText">Play Now</a> -->
 
                 <a class="font500 alert-text offWhiteText" href="javascript:void(0)"
-                    *ngIf="notification.CTAs.includes('RENEW')" (click)="navigateByCTA('RENEW', notification)">Renew</a>
+                    *ngIf="notification.CTAs.includes('RENEW')" (click)="navigateByCTA($event, 'RENEW')">Renew</a>
                 <a class="font500 info-text offWhiteText" href="javascript:void(0)"
-                    *ngIf="notification.CTAs.includes('BUY_NOW')" (click)="navigateByCTA('BUY_NOW', notification)">Buy
+                    *ngIf="notification.CTAs.includes('BUY_NOW')" (click)="navigateByCTA($event, 'BUY_NOW')">Buy
                     Now</a>
                 <a class="font500 alert-text offWhiteText" href="javascript:void(0)"
                     *ngIf="notification.CTAs.includes('ACCEPT')"
-                    (click)="navigateByCTA('ACCEPT', notification)">Accept</a>
+                    (click)="navigateByCTA($event, 'ACCEPT')">Accept</a>
                 <a class="font500 alert-text offWhiteText" href="javascript:void(0)"
                     *ngIf="notification.CTAs.includes('RESET_PASSWORD')"
-                    (click)="navigateByCTA('RESET_PASSWORD', notification)">Reset Password</a>
+                    (click)="navigateByCTA($event, 'RESET_PASSWORD')">Reset Password</a>
                 <a class="font500 success-text offWhiteText" href="javascript:void(0)"
                     *ngIf="notification.CTAs.includes('DOWNLOAD')"
-                    (click)="navigateByCTA('DOWNLOAD', notification)">Download</a>
+                    (click)="navigateByCTA($event, 'DOWNLOAD')">Download</a>
                 <a class="font500 error-text offWhiteText" href="javascript:void(0)"
-                    *ngIf="notification.CTAs.includes('RETRY')" (click)="navigateByCTA('RETRY', notification)">Retry</a>
+                    *ngIf="notification.CTAs.includes('RETRY')" (click)="navigateByCTA($event, 'RETRY')">Retry</a>
             </div>
             <div class="footer-right d-flex align-items-center" style="left: 20px">
 
                 <ng-container *ngIf="notification.CTAs.length > 0">
                     <a class="font500 offWhiteText" href="javascript:void(0)"
                         *ngIf="notification.CTAs.includes('IGNORE')"
-                        (click)="navigateByCTA('IGNORE', notification)">Ignore</a>
+                        (click)="navigateByCTA($event, 'IGNORE')">Ignore</a>
                     <a class="font500 offWhiteText" href="javascript:void(0)"
                         *ngIf="notification.CTAs.includes('REJECT')"
-                        (click)="navigateByCTA('REJECT', notification)">Reject</a>
+                        (click)="navigateByCTA($event, 'REJECT')">Reject</a>
                 </ng-container>
                 <div style="left: 30px" class="position-relative" (click)="toggleSecondaryCTA($event)">
                     <a href="javascript:void(0)" class="nav-link p-0 br50" role="button">
@@ -69,10 +69,10 @@
     </div>
     <div class="position-relative secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
         *ngIf="showSecondaryCTA">
-        <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.isNew || !notification.isRead"
+        <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="!notification.isRead"
             (click)="markRead(notification)">Mark as Read</a>
         <a class="mutedTextColor font500 mt-2 mb-1" href="javascript:void(0)"
-            *ngIf="notification.isNew || notification.isRead" (click)="markUnread(notification)">Mark as Unread</a>
+            *ngIf="notification.isRead" (click)="markUnread(notification)">Mark as Unread</a>
         <div class="horizontalDivider my-2" *ngIf="notification.deleteAllowed"></div>
         <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.deleteAllowed"
             (click)="deleteNotification(notification)">Delete</a>

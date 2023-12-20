@@ -81,6 +81,7 @@ export class NotificationsComponent implements OnInit {
         this.acceptFriendRequest(notification);
         break;
       case "DOWNLOAD":
+        notification.isRead = true;
         window.open((notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":

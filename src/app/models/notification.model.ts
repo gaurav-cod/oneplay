@@ -44,7 +44,6 @@ export class NotificationModel {
     | "SUBSCRIPTION_EXPIRED"
     | "DISCOUNT_OFFER"
     | "PASSWORD_CHANGE";
-  readonly isRead: boolean;
   readonly isNew: boolean;
   readonly CTAs: string[];
   readonly deleteAllowed: boolean;
@@ -52,6 +51,8 @@ export class NotificationModel {
   readonly data: FriendInterface | SubscriptionInterface | InvoiceInterface;
   readonly version: number;
   showActionBtns = false;
+  isRead: boolean;
+  
 
   constructor(data: any) {
     this.notificationId = data["notification_id"];

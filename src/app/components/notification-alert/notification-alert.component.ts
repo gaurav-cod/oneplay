@@ -62,7 +62,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     event.stopPropagation();
   }
 
-  navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
+  navigateByCTA(event, type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
 
     if (!(type == "ACCEPT" || type == "REJECT"))
       this.restService.markNotificationRead(this.notification.notificationId).toPromise();
@@ -76,7 +76,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "BUY_NOW":
-        this.checkoutPageOfPlan();
+        this.renewSubscription();
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
@@ -96,11 +96,13 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.checkoutPageOfPlan();
         break;
     }
+    event.stopPropagation();
   }
 
   messageClicked() {
 
-    this.restService.markNotificationRead(this.notification.notificationId).toPromise();
+    if (this.notification.subType !== "FRIEND_REQUEST")
+      this.restService.markNotificationRead(this.notification.notificationId).toPromise();
 
     switch (this.notification.subType) {
       case "WELCOME_MESSAGE":
