@@ -76,7 +76,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "BUY_NOW":
-        this.checkoutPageOfPlan();
+        this.renewSubscription();
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
