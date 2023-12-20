@@ -30,8 +30,9 @@ messaging.onBackgroundMessage(function (payload) {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-messaging.clickedNotification(function (payload) {
-  console.log("Received background message on click", payload);
+self.addEventListener("notificationclick", function (payload) {
+  console.log("Received background message on click 1", payload);
+  const clickedNotification = payload.notification;
   let navigationString = environment.domain;
 
   switch (payload.data?.sub_type) {
@@ -58,5 +59,37 @@ messaging.clickedNotification(function (payload) {
   }
 
   clients.openWindow(navigationString);
-})
+  clickedNotification.close();
+});
+
+
+// messaging.clickedNotification(function (payload) {
+//   console.log("Received background message on click", payload);
+//   let navigationString = environment.domain;
+
+//   switch (payload.data?.sub_type) {
+//     case "SUBSCRIPTION_EXPIRING":
+//     case "SUBSCRIPTION_EXPIRED":
+//     case "LIMITED_TOKEN_REMAIN":
+//       navigationString = environment.domain + "/subscription.html";
+//       break;
+//     case "UNUSUAL_ACCOUNT_ACTIVITY":
+//       navigationString = environment.domain + "/dashboard/settings/security";
+//       break;
+//     case "PAYMENT_FAILED":
+//     case "PAYMENT_SUCCESS":
+//     case "FRIEND_REQUEST":
+//     case "SCHEDULED_MAINTENANCE":
+//     case "WELCOME_MESSAGE":
+//     case "SCHEDULED_MAINTENANCE":
+//     case "NEW_GAMES_AVAILABLE":
+//     case "GAME_UPDATE_AVAILABLE":
+//     case "DISCOUNT_OFFER":
+//     case "PASSWORD_CHANGE":
+//       navigationString = environment.domain + "/dashboard";
+//       break;
+//   }
+
+//   clients.openWindow(navigationString);
+// })
 
