@@ -22,7 +22,7 @@ messaging.onBackgroundMessage(function (payload) {
 
   const notificationTitle = payload.notification.body;
   const notificationOptions = {
-    body: payload.notification.title,
+    body: payload.data.title,
     icon: 'assets/img/brand/brandLogo.svg',
     image: 'assets/img/brand/brandLogo.svg',
   };
