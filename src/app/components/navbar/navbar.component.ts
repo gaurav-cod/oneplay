@@ -250,6 +250,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.isAuthenticated = exists;
       if (exists) {
         this.authService.user = this.restService.getProfile();
+        this.sessionCountForCasualGaming();
       }
     });
     this.initPushNotification();
@@ -329,7 +330,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.sessionCountForCasualGaming();
   }
 
   openSetting() {
