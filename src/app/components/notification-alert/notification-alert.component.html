@@ -1,4 +1,4 @@
-<div class="notification-container position-absolute" [style.top]="20 + 5*index + 'px'" [style.right]="25 + 5*index + 'px'">
+<div class="notification-container" [ngClass]="{'position-absolute': !(isMultiNotificationList && hasNotificationClicked)}" [style.top]="20 + 5*index + 'px'" [style.right]="25 + 5*index + 'px'">
     <div class="position-relatived-flex flex-column offset-md-3 notification-box box-with-shadow" (click)="messageClicked()">
         <div class="notification-content d-flex p-2 justify-between">
             <img src="assets/icons/alert-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
