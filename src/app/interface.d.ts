@@ -58,7 +58,7 @@ export interface TokensUsageDTO {
   used_tokens: number;
   remaining_tokens: number;
   total_daily_tokens: number;
-  used_daily_tokens: number
+  used_daily_tokens: number;
 }
 
 export interface UpdateProfileDTO {
@@ -90,9 +90,9 @@ export interface StartGameRO {
 export interface GameTermCondition {
   code: number;
   data: {
-    tnc: string,
-    url: string,
-    last_updated: string
+    tnc: string;
+    url: string;
+    last_updated: string;
   };
   msg: string;
   status: number;
@@ -114,9 +114,9 @@ export interface GameStatusRO {
 export interface TerminateStreamRO {
   code: number;
   data: {
-    session_duration?: number,
-    play_duration?: number,
-    idle_duration?: number,
+    session_duration?: number;
+    play_duration?: number;
+    idle_duration?: number;
   };
   msg: string;
   status: "success" | "fail";
@@ -191,5 +191,10 @@ export interface CouponResponse {
 
 export interface SetOnlineRO {
   unread_senders: string[];
-  new_notification_count: number
+  new_notification_count: number;
+}
+
+export interface GetLoginUrlRO {
+  url: string;
+  redirect: "soft" | "hard";
 }

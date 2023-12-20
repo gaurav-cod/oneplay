@@ -18,18 +18,8 @@ import { NotificationsComponent } from 'src/app/pages/notifications/notification
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
-    { path: 'home',                 component: HomeComponent },
-    { path: 'home/:filter',         component: HomeComponent },
     { path: 'chat',                 component: ChatComponent },
-    { path: 'store',                component: StoreComponent },
-    { path: 'store/:filter',        component: StoreComponent },
-    { path: 'view/:id',             component: ViewComponent, canDeactivate: [ViewGuard] },
-    { path: 'streams',              component: StreamsComponent },
-    { path: 'streams/:id',          component: StreamComponent },
-    { path: 'library',              component: LibraryComponent },
     { path: 'wishlist',             component: WishlistComponent, canDeactivate: [WishlistGuard] },
-    { path: 'search',               component: SearchComponent },
-    { path: 'search/:tab',          component: SearchComponent },
     { path: 'play',                 component: PlayComponent },
     { path: "quit",                 component: FeedbackComponent },
     { path: "checkout/:id",         component: CheckoutComponent },

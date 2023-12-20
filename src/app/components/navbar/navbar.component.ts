@@ -51,6 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
   public hasUnread = false;
+  public isAuthenticated = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private notificationCountSub: Subscription;
   private notificationsSub: Subscription;
   private currMsgSub: Subscription;
+  private sessionSubscription: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
@@ -240,9 +242,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationCountSub?.unsubscribe();
     this.notificationsSub?.unsubscribe();
     this.currMsgSub?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
   }
 
   ngOnInit() {
+    this.sessionSubscription = this.authService.sessionTokenExists.subscribe((exists) => {
+      this.isAuthenticated = exists;
+      if (exists) {
+        this.authService.user = this.restService.getProfile();
+      }
+    });
     this.initPushNotification();
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
@@ -583,6 +592,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
           title: "Error Code: " + err.code,
           text: err.message,
         });
+      },
+    });
+    // domain + '/subscription.html'
+  }
+
+  
+  goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+          this.logDropdownEvent("subscriptionClicked");
+        if (response.redirect === "soft") {
+          this.router.navigate([response.url]);
+        } else {
+          window.open(response.url, "_self");
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
       },
     });
     // domain + '/subscription.html'

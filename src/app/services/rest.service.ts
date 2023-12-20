@@ -12,6 +12,7 @@ import {
   GameSessionRO,
   GameStatusRO,
   GameTermCondition,
+  GetLoginUrlRO,
   ILocation,
   IPayment,
   LoginDTO,
@@ -53,6 +54,7 @@ export class RestService {
   private readonly client_api = environment.client_api;
   private readonly r_mix_api = environment.render_mix_api + "/v1";
   private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
+  private readonly r_mix_api_3 = environment.render_mix_api + "/v3";
 
   constructor(private readonly http: HttpClient) {}
 
@@ -467,7 +469,12 @@ export class RestService {
   getCurrentSubscription(): Observable<SubscriptionModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/current")
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+      .pipe(
+        map((res) => res.map((d) => new SubscriptionModel(d))),
+        catchError((err) => {
+          throw err.error;
+        })
+      );
   }
 
   getProcessingSubscription(
@@ -1282,5 +1289,18 @@ export class RestService {
     return this.http.delete<void>(
       this.r_mix_api + `/notification/${id}/delete`
     );
+  }
+
+  getLogInURL() {
+    return this.http
+      .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
+        platform: "angular",
+      })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 }
