@@ -14,7 +14,6 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class NotificationsComponent implements OnInit {
   
-  
   userNotificationList: NotificationModel[] = [];
   loading: boolean = false;
 
@@ -123,6 +122,10 @@ export class NotificationsComponent implements OnInit {
 
   toggleNotificationActionBtn(notificationDetail) {
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
+    this.userNotificationList.forEach((notification)=> {
+      if (notification.notificationId != notificationDetail.notificationId)
+        notification.showActionBtns = false;
+    })
   }
   acceptFriendRequest(notification) {
     this.restService.acceptFriend(notification.data?.friend_request_id).subscribe((response) => {
