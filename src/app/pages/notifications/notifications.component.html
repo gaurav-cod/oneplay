@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="row justify-content-center mt-3 notificationListingContainer" *ngIf="!loading; else LoadingScreen">
-        <div class="notificationListing col-md-12 col-lg-11 " *ngIf="userNotificationList.length > 0 && false; else EmptyScreen">
+        <div class="notificationListing col-md-12 col-lg-11 " *ngIf="userNotificationList.length > 0; else EmptyScreen">
 
             <div *ngFor="let notification of userNotificationList; let i = index">
                 <div *ngIf="!isSameDate(i)" class="d-flex w-100 top-0 my-3">
@@ -21,7 +21,7 @@
 
                     <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
                         <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""
-                            *ngIf="!notification.isRead">
+                            *ngIf="notification.isNew">
                         <img src="assets/icons/alert-icon.svg" class="mt-1" height="25" width="25" alt=""
                             *ngIf="notification.type === 'warning'">
                             <img src="assets/icons/question-icon.svg" class="mt-1" height="25" width="25" alt=""
