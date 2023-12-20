@@ -75,7 +75,7 @@ export class NotificationsComponent implements OnInit {
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        this.checkoutPageOfPlan(notification);
+        this.renewSubscription();
         break;
       case "ACCEPT":
         this.acceptFriendRequest(notification);
