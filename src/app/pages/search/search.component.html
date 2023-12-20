@@ -58,6 +58,7 @@
       </h1>
     </div>
 
+    <div *ngIf="tab === 'games' || !tab">
     <p
       *ngIf="games.length !== 0"
       class="mb-1 font16 font500 mutedTextColor mb-md-2"
@@ -168,11 +169,12 @@
                     OPTIMIZED</span>
               </ng-template>
             </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
+    </div>
+  </div>
     <div class="row mt-2">
       <div class="col-12">
         <button
@@ -184,7 +186,7 @@
         </button>
       </div>
     </div>
-
+    <div *ngIf="tab === 'users' || !tab">
     <p *ngIf="users.length !== 0" class="font16 font500 mutedTextColor pt-3">
       <span *ngIf="!!query" class="mb-0"
         ><span *ngIf="!tab || tab === 'users'"
@@ -249,13 +251,14 @@
         </button>
       </div>
 
+    </div>
       <div class="position-relative">
         <ngx-ui-loader
           [fgsColor]="'#c32ead'"
           [loaderId]="'scroll'"
           [hasProgressBar]="false"
         ></ngx-ui-loader>
-      </div>
+    </div>
     </div>
     <div
       *ngIf="games.length === 0 && users.length === 0"
