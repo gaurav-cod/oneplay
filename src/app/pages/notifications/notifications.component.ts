@@ -16,6 +16,7 @@ export class NotificationsComponent implements OnInit {
   
   
   userNotificationList: NotificationModel[] = [];
+  loading: boolean = false;
 
   currentPage: number = 0;
   pageLimit: number = 5;
@@ -41,11 +42,14 @@ export class NotificationsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       this.previousPage = qParam['previousPage'];
     })
+    this.loading = true;
     this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response)=> {
       this.userNotificationList = response.notifications;
       this.loadMoreBtn = this.userNotificationList.length < response.total;
       this.currentPage++;
+      this.loading = false;
     }, (error: any)=> {
+      this.loading = false;
     })
   }
 

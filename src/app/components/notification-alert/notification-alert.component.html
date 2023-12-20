@@ -2,25 +2,25 @@
     <div class="position-relatived-flex flex-column offset-md-3 notification-box box-with-shadow" (click)="messageClicked()">
         <div class="notification-content d-flex p-2 justify-between">
             <img src="assets/icons/alert-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
-                *ngIf="notification?.type === 'alert' || notification?.type === 'warning'">
+                *ngIf="notification?.type === 'warning'">
                 <img src="assets/icons/question-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
                     *ngIf="notification?.type === 'question'">
             <img src="assets/icons/info-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
                 *ngIf="notification?.type === 'information'">
             <img src="assets/icons/error-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
-                *ngIf="notification?.type === 'error'">
+                *ngIf="notification?.type === 'error' || notification?.type === 'alert' ">
             <img src="assets/icons/success-icon.svg" class="mt-1 mr-1" height="25" width="25" alt=""
                 *ngIf="notification?.type === 'success'">
             <div>
                 <div class="d-flex justify-content-between w-100">
                     <span class="text-white font500 font14 mb-1"
-                        [style.width]="notification.description?.length > 0 ? '95%': '100%'">
-                        {{ notification.title }}
+                        [style.width]="(notification.title?.length + notification.description?.length) > 50 ? '95%': '100%'">
+                        {{ (notification.title.length > 50 && !showNotificationContent ? notification.title.substr(0, 50) + '...' : notification.title) }}
                     </span>
                     <img src="assets/img/Vector.svg" height="15" width="15" alt="" class="mt-1 mr-2 cursorPointer"
                         style="transform: rotate(-90deg);" (click)="toggleNotificationContent()"
                         [ngClass]="{'rotate-arrow': showNotificationContent}"
-                        *ngIf="notification.description?.length > 0">
+                        *ngIf="(notification.title?.length + notification.description?.length) > 50">
                 </div>
                 <p class="text-white my-2" style="font-size: 12px;" *ngIf="showNotificationContent">
                     {{ notification.description }}
