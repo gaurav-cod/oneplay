@@ -134,7 +134,7 @@
               >
                 <div class="d-flex align-items-center">
                   <img
-                    [src]="store.name | store"
+                    src="assets/img/store/{{store.slug}}.png"
                     height="25"
                     class="mr-2"
                     [alt]="store.name"
@@ -143,7 +143,7 @@
                   <span class="text-sm">{{ store.name | titlecase }}</span>
                 </div>
                 <a
-                  [href]="store.link"
+                  [href]="game.officialWebsite"
                   target="_blank"
                   class="btn btn-sm activelinear border-0 text-white"
                   >Get</a
