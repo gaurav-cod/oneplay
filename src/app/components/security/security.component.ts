@@ -433,7 +433,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           Swal.fire({
-            title: "Error Code: " + error.code,
+            // title: "Error Code: " + error.code,
             text: error.message,
             icon: "error",
             confirmButtonText: "Ok",
