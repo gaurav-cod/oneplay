@@ -131,4 +131,8 @@ export class ForgotPassComponent implements OnInit {
     this.router.navigate(["/login"]);
   }
 
+  validateMobileNumber(input) {
+    input.target.value = input.target.value.replace(/\D/g, '');
+  }
+
 }

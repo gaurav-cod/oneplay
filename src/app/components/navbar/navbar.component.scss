@@ -24,7 +24,10 @@
     margin-top: 2px;
   }
 }
-
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
+}
 .navbar-nav .nav-link {
   letter-spacing: 0.02em;
   font-size: 16px !important;
