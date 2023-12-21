@@ -92,7 +92,7 @@
                   (click)="buyTopUp(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
-                  Buy Top-up
+                  Top-up
                 </a>
                 <a
                   href="javascript:void(0)"
@@ -102,6 +102,20 @@
                 >
                   Renew
                 </a>
+              </div>
+              <div
+                *ngIf="sub.planType == 'topup'"
+                class="col-auto align-self-center text-right pl-0 pt-lg-4"
+              >
+                <a
+                  href="javascript:void(0)"
+                  
+                  (click)="buyTopUp(sub)"
+                  class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
+                >
+                  Top-up
+                </a>
+    
               </div>
               <div class="col-12">
                 <img src="assets/img/Alarm.svg" class="img-fluid mr-3 align-middle" alt="" />
