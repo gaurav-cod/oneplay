@@ -301,7 +301,9 @@
       <li class="nav-item">
         <div class="row">
           <button
+              *ngIf="!isAuthenticated"
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
+              (click)="goToSignUpPage()"
             >
               Sign In
             </button>
@@ -330,6 +332,7 @@
               href="javascript:void(0)"
               class="nav-link p-0 br50"
               *ngIf="!isAuthenticated"
+              (click)="goToSignUpPage()"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
@@ -499,57 +502,6 @@
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
                 </a>
-                <!-- <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  (click)="switchSearchPrivacy()"
-                >
-                  <img
-                    src="assets/icons/privacy.svg"
-                    class="img-fluid mr-3 privacy"
-                    alt=""
-                  />
-                  <span>Turn {{ isPrivate ? "off" : "on" }} privacy</span>
-                </a>
-                <div class="dropdown-divider borderColor"></div>
-                <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  (click)="deleteSessionData()"
-                >
-                  <img
-                    src="assets/icons/Pie_Chart.svg"
-                    width="16px"
-                    height="16px"
-                    class="img-fluid mr-3 session"
-                    alt=""
-                  />
-                  <span>Delete Session Data</span>
-                </a>
-                <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  [routerLink]="['/tv']"
-                  (click)="logDropdownEvent('tvSignInClicked')"
-                >
-                  <i class="fas fa-tv font14 align-middle"></i>
-                  <span>TV Sign in</span>
-                </a>
-                <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  (click)="LogoutAlert(LogoutModal)"
-                >
-                  <img
-                    src="assets/icons/Logout.svg"
-                    class="img-fluid mr-3 logout"
-                    alt=""
-                  />
-                  <span>Log out</span>
-                </a>
-                <a href="javascript:void(0)" class="dropdown-item btn disabled">
-                  Version <span class="ml-1">{{ appVersion }}</span>
-                </a> -->
               </div>
             </div>
             <div class="dropdown-bug" *ngIf="!isAuthenticated">

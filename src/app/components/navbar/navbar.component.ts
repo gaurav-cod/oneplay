@@ -246,14 +246,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.sessionSubscription = this.authService.sessionTokenExists.subscribe((exists) => {
-      this.isAuthenticated = exists;
-      if (exists) {
-        this.authService.user = this.restService.getProfile();
-        this.sessionCountForCasualGaming();
+    this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+        if (exists) {
+          this.authService.user = this.restService.getProfile();
+          this.sessionCountForCasualGaming();
+          this.initPushNotification();
+          this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
+            (status) => {
+              this.gameStatus = status;
+            }
+          );
+        }
       }
-    });
-    this.initPushNotification();
+    );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
@@ -324,12 +331,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
-      (status) => {
-        this.gameStatus = status;
-      }
-    );
-
   }
 
   openSetting() {
@@ -596,12 +597,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     // domain + '/subscription.html'
   }
-
-  
   goToSignUpPage() {
     this.restService.getLogInURL().subscribe({
       next: (response) => {
-          this.logDropdownEvent("subscriptionClicked");
+        this.logDropdownEvent("subscriptionClicked");
         if (response.redirect === "soft") {
           this.router.navigate([response.url]);
         } else {
