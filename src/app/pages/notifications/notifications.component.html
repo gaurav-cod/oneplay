@@ -83,10 +83,10 @@
                     <div class="position-absolute secActContainer d-flex flex-column justify-content-center p-2 mt-2 mr-2"
                         *ngIf="notification.showActionBtns">
                         <a class="mutedTextColor font500" href="javascript:void(0)"
-                            *ngIf="notification.isNew || !notification.isRead" (click)="markRead(notification)">Mark as
+                            *ngIf="!notification.isRead" (click)="markRead(notification)">Mark as
                             Read</a>
                         <a class="mutedTextColor font500 mt-2 mb-1" href="javascript:void(0)"
-                            *ngIf="notification.isNew || notification.isRead" (click)="markUnread(notification)">Mark as
+                            *ngIf="notification.isRead" (click)="markUnread(notification)">Mark as
                             Unread</a>
                         <div class="horizontalDivider my-2" *ngIf="notification.deleteAllowed"></div>
                         <a class="mutedTextColor font500" href="javascript:void(0)" *ngIf="notification.deleteAllowed"

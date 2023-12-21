@@ -11,6 +11,8 @@ export class NotificationService {
     new BehaviorSubject(null);
   private _$notifications: BehaviorSubject<NotificationModel[] | null> =
     new BehaviorSubject(null);
+  private _$showMultiNotifications: BehaviorSubject<boolean | null> =
+    new BehaviorSubject(null);
 
   get notificationCount() {
     return this._$notificationCount.asObservable();
@@ -40,5 +42,12 @@ export class NotificationService {
     this._$notifications.next(
       this._$notifications.value.filter((_, idx) => idx !== index)
     );
+  }
+
+  get showMultiNotificationList() {
+    return this._$showMultiNotifications.asObservable();
+  }
+  setShowMultiNotificationList(value: boolean) {
+    this._$showMultiNotifications.next(value);
   }
 }

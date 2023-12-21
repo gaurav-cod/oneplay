@@ -354,3 +354,26 @@
 .box-with-shadow {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+
+.notificationList {
+  gap: 5px;
+  right: 0px;
+  top: 5px;
+  z-index: 1;
+
+  @media (max-width: 475px) {
+    right: -65px;
+    top: -20px;
+  }
+}
+
+.notificationListing {
+  @media (min-width: 475px) {
+
+    padding: 8px;
+    background-color: #ffffffcc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+}

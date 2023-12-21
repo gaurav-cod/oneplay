@@ -363,7 +363,7 @@
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
             <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
-              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? (unseenNotificationCount + '+') : unseenNotificationCount}}</div>
+              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? '9+' : unseenNotificationCount}}</div>
             </div>
               <a
                 href="javascript:void(0)"
@@ -380,9 +380,11 @@
                 />
              </a>
             
-             <ng-container *ngFor="let notification of notificationData; let i = index">
-             <app-notification-alert *ngIf="notification" [notification]="notification" [index]="i" ></app-notification-alert>
-            </ng-container>
+             <div class="position-absolute notificationList" [ngClass]="{'notificationListing': showMultiNotificationList}">
+                <ng-container *ngFor="let notification of notificationData; let i = index">
+                  <app-notification-alert *ngIf="notification" [notification]="notification" [index]="i" [isMultiNotificationList]="notificationData.length > 0" [isLast]="notificationData.length === (i+1)" ></app-notification-alert>
+                </ng-container>
+              </div>
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"

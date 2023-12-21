@@ -1,6 +1,6 @@
-import { Component, Host, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessagePayload } from 'firebase/messaging';
+import { Subscription } from 'rxjs';
 import { GameModel } from 'src/app/models/game.model';
 import { FriendInterface, InvoiceInterface, NotificationModel, SubscriptionInterface } from 'src/app/models/notification.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
@@ -20,11 +20,15 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   showNotificationContent: boolean = false;
   showSecondaryCTA: boolean = false;
+  hasNotificationClicked: boolean = false;
 
   @Input() notification: NotificationModel;
   @Input() index: number = 0;
+  @Input() isMultiNotificationList: boolean = false;
+  @Input() isLast: boolean = false;
 
   private intervalRef: NodeJS.Timeout;
+  private _subscription: Subscription;
 
   constructor(
     private readonly router: Router,
@@ -35,13 +39,22 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService
   ) {
   }
+
   ngOnInit(): void {
-    this.intervalRef = setTimeout(()=> {
+
+    if (window.innerWidth > 475) {
+      this._subscription = this.notificationService.showMultiNotificationList.subscribe((value) => {
+        this.hasNotificationClicked = value;
+      })
+    }
+
+    this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
     }, 5000);
   }
   ngOnDestroy() {
     clearInterval(this.intervalRef);
+    this._subscription?.unsubscribe();
   }
 
   @HostListener("mouseover") onHover() {
@@ -49,7 +62,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   @HostListener("mouseleave") OnLeave() {
     clearInterval(this.intervalRef);
-    this.intervalRef = setTimeout(()=> {
+    this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
     }, 5000);
   }
@@ -100,6 +113,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
 
   messageClicked() {
+
+    if (this.isLast && this.index != 0 && window.innerWidth > 475)
+      this.notificationService.setShowMultiNotificationList(true);
 
     if (this.notification.subType !== "FRIEND_REQUEST")
       this.restService.markNotificationRead(this.notification.notificationId).toPromise();
