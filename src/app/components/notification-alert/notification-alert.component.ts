@@ -155,7 +155,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_FAILED":
-        this.router.navigate(['']);
+        this.checkoutPageOfPlan();
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_SUCCESS":
@@ -163,7 +163,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "FRIEND_REQUEST":
-        this.router.navigate(['']);
+        this.router.navigate(['/notifications'], {queryParams: {previousPage: 'settings'}});
         this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":

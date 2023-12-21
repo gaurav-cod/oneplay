@@ -31,9 +31,7 @@ self.addEventListener("notificationclick", function (payload) {
     case "UNUSUAL_ACCOUNT_ACTIVITY":
       navigationString = environment.domain + "/dashboard/settings/security";
       break;
-    case "PAYMENT_FAILED":
     case "PAYMENT_SUCCESS":
-    case "FRIEND_REQUEST":
     case "SCHEDULED_MAINTENANCE":
     case "WELCOME_MESSAGE":
     case "SCHEDULED_MAINTENANCE":
@@ -42,6 +40,18 @@ self.addEventListener("notificationclick", function (payload) {
     case "DISCOUNT_OFFER":
     case "PASSWORD_CHANGE":
       navigationString = environment.domain + "/dashboard";
+      break;
+
+    case "PAYMENT_FAILED":
+      const data = payload.data?.data ? JSON.parse(payload.data.data) : null;
+      if (data)
+        navigationString = environment.domain + `/checkout/${data.subscription_package_id}}`
+
+      else
+        navigationString = environment.domain + "/dashboard";
+      break;
+    case "FRIEND_REQUEST":
+      navigationString = environment.domain + "/dashboard/notifications?previousPage=home"
       break;
   }
 
