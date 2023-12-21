@@ -78,7 +78,7 @@ export class NotificationsComponent implements OnInit {
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        this.renewSubscription();
+        window.open(environment.domain + '/subscription.html', '_self');
         break;
       case "ACCEPT":
         this.acceptFriendRequest(notification);
@@ -88,7 +88,10 @@ export class NotificationsComponent implements OnInit {
         window.open((notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
-        this.checkoutPageOfPlan(notification);
+        if (notification.subType === "SUBSCRIPTION_EXPIRING")
+          this.checkoutPageOfPlan(notification);
+        else
+          this.renewSubscription();
         break;
       case "RESET_PASSWORD":
         this.router.navigate(['/settings/security']);
@@ -105,11 +108,21 @@ export class NotificationsComponent implements OnInit {
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
-        if (response?.length === 0) {
-          window.open(environment.domain + '/subscription.html', '_self');
+        let plan = '';
+        if (response[0].totalTokenOffered <= 60) {
+          plan = '60';
+        } else if (response[0].totalTokenOffered <= 180) {
+          plan = '180';
+        } else if (response[0].totalTokenOffered <= 300) {
+          plan = '300';
+        } else if (response[0].totalTokenOffered <= 600) {
+          plan = '600';
+        } else if (response[0].totalTokenOffered <= 1200) {
+          plan = '1200';
         } else {
-          this.router.navigate(['/settings/subscription']);
+          plan = '10800';
         }
+        window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
       }, error: (err) => {
         Swal.fire({
           icon: "error",
