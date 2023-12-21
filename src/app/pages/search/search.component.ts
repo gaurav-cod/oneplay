@@ -183,7 +183,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   search() {
     const path = ["search"];
-    if (this.tab) {
+    if (this.tab && this.queryControl.value?.length > 0) {
       path.push(this.tab);
     }
     this.router.navigate(path, {
