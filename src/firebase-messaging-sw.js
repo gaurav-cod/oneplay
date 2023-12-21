@@ -11,9 +11,8 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = payload.notification.body;
   const notificationOptions = {
-    body: payload.data.title,
+    body: payload.notification.title,
     icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
-    image: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
