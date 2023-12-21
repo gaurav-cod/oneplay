@@ -67,8 +67,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     }, 5000);
   }
 
-  toggleNotificationContent() {
+  toggleNotificationContent(event) {
     this.showNotificationContent = !this.showNotificationContent;
+    event.stopPropagation();
   }
   toggleSecondaryCTA(event) {
     this.showSecondaryCTA = !this.showSecondaryCTA;
@@ -89,7 +90,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "BUY_NOW":
-        this.renewSubscription();
+        window.open(environment.domain + '/subscription.html', '_self');
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
@@ -99,7 +100,10 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         window.open((this.notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
-        this.checkoutPageOfPlan();
+        if (this.notification.subType === "SUBSCRIPTION_EXPIRING")
+          this.checkoutPageOfPlan();
+        else
+          this.renewSubscription();
         break;
       case "RESET_PASSWORD":
         this.notificationService.removeNotification(this.index);
@@ -131,10 +135,8 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "SUBSCRIPTION_EXPIRING":
       case "SUBSCRIPTION_EXPIRED":
-        this.renewSubscription();
-        break;
       case "LIMITED_TOKEN_REMAIN":
-        this.renewSubscription();
+        this.router.navigate(['/settings/subscription']);
         break;
       case "NEW_GAMES_AVAILABLE":
         this.router.navigate(['']);
@@ -143,8 +145,6 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       case "GAME_UPDATE_AVAILABLE":
         this.router.navigate(['']);
         // this.viewBannerGame(this.notification.data);
-        break;
-      case "DISCOUNT_OFFER":
         break;
       case "PASSWORD_CHANGE":
         this.router.navigate(['']);
@@ -187,7 +187,36 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   checkoutPageOfPlan() {
     this.router.navigate([`/checkout/${(this.notification.data as SubscriptionInterface).subscription_package_id}`]);
   }
+
   renewSubscription() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        let plan = '';
+        if (response[0].totalTokenOffered <= 60) {
+          plan = '60';
+        } else if (response[0].totalTokenOffered <= 180) {
+          plan = '180';
+        } else if (response[0].totalTokenOffered <= 300) {
+          plan = '300';
+        } else if (response[0].totalTokenOffered <= 600) {
+          plan = '600';
+        } else if (response[0].totalTokenOffered <= 1200) {
+          plan = '1200';
+        } else {
+          plan = '10800';
+        }
+        window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
+        this.notificationService.removeNotification(this.index);
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+  }
+  sendToSpecifiPlan() {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         if (response?.length === 0) {
