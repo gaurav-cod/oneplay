@@ -1,6 +1,6 @@
-import { Component, Host, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessagePayload } from 'firebase/messaging';
+import { Subscription } from 'rxjs';
 import { GameModel } from 'src/app/models/game.model';
 import { FriendInterface, InvoiceInterface, NotificationModel, SubscriptionInterface } from 'src/app/models/notification.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
@@ -20,11 +20,15 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   showNotificationContent: boolean = false;
   showSecondaryCTA: boolean = false;
+  hasNotificationClicked: boolean = false;
 
   @Input() notification: NotificationModel;
   @Input() index: number = 0;
+  @Input() isMultiNotificationList: boolean = false;
+  @Input() isLast: boolean = false;
 
   private intervalRef: NodeJS.Timeout;
+  private _subscription: Subscription;
 
   constructor(
     private readonly router: Router,
@@ -35,13 +39,22 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService
   ) {
   }
+
   ngOnInit(): void {
-    this.intervalRef = setTimeout(()=> {
+
+    if (window.innerWidth > 475) {
+      this._subscription = this.notificationService.showMultiNotificationList.subscribe((value) => {
+        this.hasNotificationClicked = value;
+      })
+    }
+
+    this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
     }, 5000);
   }
   ngOnDestroy() {
     clearInterval(this.intervalRef);
+    this._subscription?.unsubscribe();
   }
 
   @HostListener("mouseover") onHover() {
@@ -49,13 +62,14 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   @HostListener("mouseleave") OnLeave() {
     clearInterval(this.intervalRef);
-    this.intervalRef = setTimeout(()=> {
+    this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
     }, 5000);
   }
 
-  toggleNotificationContent() {
+  toggleNotificationContent(event) {
     this.showNotificationContent = !this.showNotificationContent;
+    event.stopPropagation();
   }
   toggleSecondaryCTA(event) {
     this.showSecondaryCTA = !this.showSecondaryCTA;
@@ -76,7 +90,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "BUY_NOW":
-        this.renewSubscription();
+        window.open(environment.domain + '/subscription.html', '_self');
         break;
       case "ACCEPT":
         this.acceptFriendRequest();
@@ -86,7 +100,10 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         window.open((this.notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
-        this.checkoutPageOfPlan();
+        if (this.notification.subType === "SUBSCRIPTION_EXPIRING")
+          this.checkoutPageOfPlan();
+        else
+          this.renewSubscription();
         break;
       case "RESET_PASSWORD":
         this.notificationService.removeNotification(this.index);
@@ -100,6 +117,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
 
   messageClicked() {
+
+    if (this.isLast && this.index != 0 && window.innerWidth > 475)
+      this.notificationService.setShowMultiNotificationList(true);
 
     if (this.notification.subType !== "FRIEND_REQUEST")
       this.restService.markNotificationRead(this.notification.notificationId).toPromise();
@@ -115,10 +135,8 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "SUBSCRIPTION_EXPIRING":
       case "SUBSCRIPTION_EXPIRED":
-        this.renewSubscription();
-        break;
       case "LIMITED_TOKEN_REMAIN":
-        this.renewSubscription();
+        this.router.navigate(['/settings/subscription']);
         break;
       case "NEW_GAMES_AVAILABLE":
         this.router.navigate(['']);
@@ -127,8 +145,6 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       case "GAME_UPDATE_AVAILABLE":
         this.router.navigate(['']);
         // this.viewBannerGame(this.notification.data);
-        break;
-      case "DISCOUNT_OFFER":
         break;
       case "PASSWORD_CHANGE":
         this.router.navigate(['']);
@@ -139,7 +155,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_FAILED":
-        this.router.navigate(['']);
+        this.checkoutPageOfPlan();
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_SUCCESS":
@@ -147,7 +163,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "FRIEND_REQUEST":
-        this.router.navigate(['']);
+        this.router.navigate(['/notifications'], {queryParams: {previousPage: 'settings'}});
         this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":
@@ -171,7 +187,36 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   checkoutPageOfPlan() {
     this.router.navigate([`/checkout/${(this.notification.data as SubscriptionInterface).subscription_package_id}`]);
   }
+
   renewSubscription() {
+    this.restService.getCurrentSubscription().subscribe({
+      next: (response) => {
+        let plan = '';
+        if (response[0].totalTokenOffered <= 60) {
+          plan = '60';
+        } else if (response[0].totalTokenOffered <= 180) {
+          plan = '180';
+        } else if (response[0].totalTokenOffered <= 300) {
+          plan = '300';
+        } else if (response[0].totalTokenOffered <= 600) {
+          plan = '600';
+        } else if (response[0].totalTokenOffered <= 1200) {
+          plan = '1200';
+        } else {
+          plan = '10800';
+        }
+        window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
+        this.notificationService.removeNotification(this.index);
+      }, error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Error Code: " + err.code,
+          text: err.message,
+        });
+      }
+    })
+  }
+  sendToSpecifiPlan() {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         if (response?.length === 0) {

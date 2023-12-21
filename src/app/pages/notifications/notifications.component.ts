@@ -14,8 +14,8 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class NotificationsComponent implements OnInit {
   
-  
   userNotificationList: NotificationModel[] = [];
+  loading: boolean = false;
 
   currentPage: number = 0;
   pageLimit: number = 5;
@@ -41,11 +41,14 @@ export class NotificationsComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       this.previousPage = qParam['previousPage'];
     })
+    this.loading = true;
     this.restService.getAllUserNotifications(this.currentPage, this.pageLimit).subscribe((response)=> {
       this.userNotificationList = response.notifications;
       this.loadMoreBtn = this.userNotificationList.length < response.total;
       this.currentPage++;
+      this.loading = false;
     }, (error: any)=> {
+      this.loading = false;
     })
   }
 
@@ -75,7 +78,7 @@ export class NotificationsComponent implements OnInit {
         this.deleteNotification(notification);
         break;
       case "BUY_NOW":
-        this.renewSubscription();
+        window.open(environment.domain + '/subscription.html', '_self');
         break;
       case "ACCEPT":
         this.acceptFriendRequest(notification);
@@ -85,7 +88,10 @@ export class NotificationsComponent implements OnInit {
         window.open((notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
-        this.checkoutPageOfPlan(notification);
+        if (notification.subType === "SUBSCRIPTION_EXPIRING")
+          this.checkoutPageOfPlan(notification);
+        else
+          this.renewSubscription();
         break;
       case "RESET_PASSWORD":
         this.router.navigate(['/settings/security']);
@@ -102,11 +108,21 @@ export class NotificationsComponent implements OnInit {
   renewSubscription() {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
-        if (response?.length === 0) {
-          window.open(environment.domain + '/subscription.html', '_self');
+        let plan = '';
+        if (response[0].totalTokenOffered <= 60) {
+          plan = '60';
+        } else if (response[0].totalTokenOffered <= 180) {
+          plan = '180';
+        } else if (response[0].totalTokenOffered <= 300) {
+          plan = '300';
+        } else if (response[0].totalTokenOffered <= 600) {
+          plan = '600';
+        } else if (response[0].totalTokenOffered <= 1200) {
+          plan = '1200';
         } else {
-          this.router.navigate(['/settings/subscription']);
+          plan = '10800';
         }
+        window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
       }, error: (err) => {
         Swal.fire({
           icon: "error",
@@ -119,6 +135,10 @@ export class NotificationsComponent implements OnInit {
 
   toggleNotificationActionBtn(notificationDetail) {
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
+    this.userNotificationList.forEach((notification)=> {
+      if (notification.notificationId != notificationDetail.notificationId)
+        notification.showActionBtns = false;
+    })
   }
   acceptFriendRequest(notification) {
     this.restService.acceptFriend(notification.data?.friend_request_id).subscribe((response) => {
