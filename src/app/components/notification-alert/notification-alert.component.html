@@ -18,7 +18,7 @@
                         {{ (notification.title.length > 50 && !showNotificationContent ? notification.title.substr(0, 50) + '...' : notification.title) }}
                     </span>
                     <img src="assets/img/Vector.svg" height="15" width="15" alt="" class="mt-1 mr-2 cursorPointer"
-                        style="transform: rotate(-90deg);" (click)="toggleNotificationContent()"
+                        style="transform: rotate(-90deg);" (click)="toggleNotificationContent($event)"
                         [ngClass]="{'rotate-arrow': showNotificationContent}"
                         *ngIf="(notification.title?.length + notification.description?.length) > 50">
                 </div>
