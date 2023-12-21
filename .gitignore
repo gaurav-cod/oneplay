@@ -43,3 +43,4 @@ build.sh
 .DS_Store
 Thumbs.db
 build.sh
+firebase-config.js
