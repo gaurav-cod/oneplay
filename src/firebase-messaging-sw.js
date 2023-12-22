@@ -12,7 +12,11 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
   const notificationOptions = {
     body: payload?.notification?.title,
-    icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+    // icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+    icon: {
+      url: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+      size: [32, 32] // Specify the desired size of the icon
+    },
     data: payload.data
   };
 
