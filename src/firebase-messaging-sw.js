@@ -9,9 +9,9 @@ firebase.initializeApp(environment.firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  const notificationTitle = payload.notification.body;
+  const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
   const notificationOptions = {
-    body: payload.notification.title,
+    body: payload?.notification?.title,
     icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
     data: payload.data
   };
@@ -23,7 +23,7 @@ self.addEventListener("notificationclick", function (payload) {
   const clickedNotification = payload.notification;
   let navigationString = environment.domain;
 
-  switch (payload.data?.sub_type) {
+  switch (clickedNotification.data?.sub_type) {
     case "SUBSCRIPTION_EXPIRING":
     case "SUBSCRIPTION_EXPIRED":
     case "LIMITED_TOKEN_REMAIN":
@@ -44,7 +44,7 @@ self.addEventListener("notificationclick", function (payload) {
       break;
 
     case "PAYMENT_FAILED":
-      const data = payload.data?.data ? JSON.parse(payload.data.data) : null;
+      const data = clickedNotification.data?.data ? JSON.parse(clickedNotification.data.data) : null;
       if (data)
         navigationString = environment.domain + `/checkout/${data.subscription_package_id}}`
 
