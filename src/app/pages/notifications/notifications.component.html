@@ -71,8 +71,7 @@
                                 *ngIf="notification.CTAs.includes('REJECT')"
                                 (click)="navigateByCTA('REJECT', notification)">Reject</a>
                         </ng-container>
-                        <div style="display: flex; align-items: center;" class="dotContainer"
-                            [style.width]="(notification.CTAs.length > 0 && !notification.isRead) ? '120px' : '80px'">
+                        <div style="display: flex; align-items: center; justify-content: end;" [style.width]="notification.isRead ? '85px' : '125px'" class="dotContainer">
                             <span class="muteText mr-2 notificationTime d-none d-sm-block">{{ notification.createdAt |
                                 date : "hh:mm a"
                                 }}</span>
