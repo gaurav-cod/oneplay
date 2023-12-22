@@ -12,11 +12,11 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
   const notificationOptions = {
     body: payload?.notification?.title,
-    // icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
-    icon: {
-      url: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
-      size: [32, 32] // Specify the desired size of the icon
-    },
+    icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+    // icon: {
+    //   url: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+    //   size: [32, 32] // Specify the desired size of the icon
+    // },
     data: payload.data
   };
 
@@ -28,11 +28,6 @@ self.addEventListener("notificationclick", function (payload) {
   let navigationString = environment.domain;
 
   switch (clickedNotification.data?.sub_type) {
-    case "SUBSCRIPTION_EXPIRING":
-    case "SUBSCRIPTION_EXPIRED":
-    case "LIMITED_TOKEN_REMAIN":
-      navigationString = environment.domain + "/subscription.html";
-      break;
     case "UNUSUAL_ACCOUNT_ACTIVITY":
       navigationString = environment.domain + "/dashboard/settings/security";
       break;
@@ -45,6 +40,12 @@ self.addEventListener("notificationclick", function (payload) {
     case "DISCOUNT_OFFER":
     case "PASSWORD_CHANGE":
       navigationString = environment.domain + "/dashboard";
+      break;
+
+    case "SUBSCRIPTION_EXPIRING":
+    case "LIMITED_TOKEN_REMAIN":
+    case "SUBSCRIPTION_EXPIRED":
+      navigationString = environment.domain + `/dashboard/settings/subscription`;
       break;
 
     case "PAYMENT_FAILED":
