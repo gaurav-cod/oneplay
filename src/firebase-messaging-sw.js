@@ -9,7 +9,7 @@ firebase.initializeApp(environment.firebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  const notificationTitle = payload.notification.body;
+  const notificationTitle = (payload.data ? payload.data.title : payload.notification.body);
   const notificationOptions = {
     body: payload.notification.title,
     icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
