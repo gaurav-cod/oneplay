@@ -271,4 +271,13 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       }
     })
   }
+  deleteNotification() {
+    this.restService.deleteNotification(this.notification.notificationId).subscribe({
+      next: ()=> {
+        this.notificationService.removeNotification(this.index);
+      }, error: ()=> {
+
+      }
+    })
+  }
 }
