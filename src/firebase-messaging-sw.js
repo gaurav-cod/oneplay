@@ -23,7 +23,7 @@ self.addEventListener("notificationclick", function (payload) {
   const clickedNotification = payload.notification;
   let navigationString = environment.domain;
 
-  switch (payload.data?.sub_type) {
+  switch (clickedNotification.data?.sub_type) {
     case "SUBSCRIPTION_EXPIRING":
     case "SUBSCRIPTION_EXPIRED":
     case "LIMITED_TOKEN_REMAIN":
@@ -44,7 +44,7 @@ self.addEventListener("notificationclick", function (payload) {
       break;
 
     case "PAYMENT_FAILED":
-      const data = payload.data?.data ? JSON.parse(payload.data.data) : null;
+      const data = clickedNotification.data?.data ? JSON.parse(clickedNotification.data.data) : null;
       if (data)
         navigationString = environment.domain + `/checkout/${data.subscription_package_id}}`
 
