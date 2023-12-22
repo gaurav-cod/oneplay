@@ -163,7 +163,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "FRIEND_REQUEST":
-        this.router.navigate(['/notifications'], {queryParams: {previousPage: 'settings'}});
+        this.router.navigate(['/notifications'], { queryParams: { previousPage: 'settings' } });
         this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":
@@ -192,18 +192,20 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         let plan = '';
-        if (response[0].totalTokenOffered <= 60) {
-          plan = '60';
-        } else if (response[0].totalTokenOffered <= 180) {
-          plan = '180';
-        } else if (response[0].totalTokenOffered <= 300) {
-          plan = '300';
-        } else if (response[0].totalTokenOffered <= 600) {
-          plan = '600';
-        } else if (response[0].totalTokenOffered <= 1200) {
-          plan = '1200';
-        } else {
-          plan = '10800';
+        if (response.length > 0) {
+          if (response[0].totalTokenOffered <= 60) {
+            plan = '60';
+          } else if (response[0].totalTokenOffered <= 180) {
+            plan = '180';
+          } else if (response[0].totalTokenOffered <= 300) {
+            plan = '300';
+          } else if (response[0].totalTokenOffered <= 600) {
+            plan = '600';
+          } else if (response[0].totalTokenOffered <= 1200) {
+            plan = '1200';
+          } else {
+            plan = '10800';
+          }
         }
         window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
         this.notificationService.removeNotification(this.index);
@@ -273,9 +275,9 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
   deleteNotification() {
     this.restService.deleteNotification(this.notification.notificationId).subscribe({
-      next: ()=> {
+      next: () => {
         this.notificationService.removeNotification(this.index);
-      }, error: ()=> {
+      }, error: () => {
 
       }
     })

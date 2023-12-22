@@ -109,18 +109,20 @@ export class NotificationsComponent implements OnInit {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         let plan = '';
-        if (response[0].totalTokenOffered <= 60) {
-          plan = '60';
-        } else if (response[0].totalTokenOffered <= 180) {
-          plan = '180';
-        } else if (response[0].totalTokenOffered <= 300) {
-          plan = '300';
-        } else if (response[0].totalTokenOffered <= 600) {
-          plan = '600';
-        } else if (response[0].totalTokenOffered <= 1200) {
-          plan = '1200';
-        } else {
-          plan = '10800';
+        if (response.length > 0) {
+          if (response[0].totalTokenOffered <= 60) {
+            plan = '60';
+          } else if (response[0].totalTokenOffered <= 180) {
+            plan = '180';
+          } else if (response[0].totalTokenOffered <= 300) {
+            plan = '300';
+          } else if (response[0].totalTokenOffered <= 600) {
+            plan = '600';
+          } else if (response[0].totalTokenOffered <= 1200) {
+            plan = '1200';
+          } else {
+            plan = '10800';
+          }
         }
         window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
       }, error: (err) => {
