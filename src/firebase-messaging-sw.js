@@ -13,6 +13,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationOptions = {
     body: payload.notification.title,
     icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+    data: payload.data
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

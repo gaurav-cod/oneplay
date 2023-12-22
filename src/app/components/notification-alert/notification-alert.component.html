@@ -17,6 +17,11 @@
                         [style.width]="(notification.title?.length + notification.description?.length) > 50 ? '95%': '100%'">
                         {{ (notification.title.length > 50 && !showNotificationContent ? notification.title.substr(0, 50) + '...' : notification.title) }}
                     </span>
+                    <div style="left: 17px; top: 35px" class="position-relative" (click)="toggleSecondaryCTA($event)" *ngIf="!showNotificationContent">
+                        <a href="javascript:void(0)" class="nav-link p-0 br50" role="button">
+                            <img alt="" width="18px" height="18px" src="assets/img/chat/three-dot.svg" />
+                        </a>
+                    </div>
                     <img src="assets/img/Vector.svg" height="15" width="15" alt="" class="mt-1 mr-2 cursorPointer"
                         style="transform: rotate(-90deg);" (click)="toggleNotificationContent($event)"
                         [ngClass]="{'rotate-arrow': showNotificationContent}"
@@ -28,7 +33,7 @@
                 <span class="mutedTextColor font14 font500">{{ notification.createdAt | date: "hh:mm a" }}</span>
             </div>
         </div>
-        <div class="notification-footer d-flex justify-content-between pb-2">
+        <div class="notification-footer d-flex justify-content-between pb-2" *ngIf="showNotificationContent">
             <div class="footer-left" *ngIf="notification.CTAs?.length > 0">
                 <!-- <a href="javascript:void(0)" class="font16 font500 offWhiteText">Play Now</a> -->
 
@@ -51,7 +56,7 @@
             </div>
             <div class="footer-right d-flex align-items-center" style="left: 20px">
 
-                <ng-container *ngIf="notification.CTAs.length > 0">
+                <ng-container *ngIf="notification.CTAs.length > 0 ">
                     <a class="font500 offWhiteText" href="javascript:void(0)"
                         *ngIf="notification.CTAs.includes('IGNORE')"
                         (click)="navigateByCTA($event, 'IGNORE')">Ignore</a>
