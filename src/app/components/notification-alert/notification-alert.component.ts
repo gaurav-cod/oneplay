@@ -64,7 +64,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalRef);
     this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
-    }, 5000);
+    }, 2000);
   }
 
   toggleNotificationContent(event) {
