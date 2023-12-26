@@ -13,6 +13,7 @@ export interface InvoiceInterface {
   readonly download_link: string;
   readonly payment_id: string;
   readonly subscription_id: string;
+  readonly offered_tokens: number;
 }
 
 export class NotificationModel {
