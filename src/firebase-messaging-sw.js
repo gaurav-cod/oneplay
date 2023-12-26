@@ -51,7 +51,7 @@ self.addEventListener("notificationclick", function (payload) {
     case "PAYMENT_FAILED":
       const data = clickedNotification.data?.data ? JSON.parse(clickedNotification.data.data) : null;
       if (data)
-        navigationString = environment.domain + `/dashboard/checkout/${data.subscription_package_id}}`
+        navigationString = environment.domain + `/dashboard/checkout/${data.subscription_package_id}`
 
       else
         navigationString = environment.domain + "/dashboard";
