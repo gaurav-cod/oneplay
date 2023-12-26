@@ -382,7 +382,7 @@
             
              <div class="position-absolute notificationList" [ngClass]="{'notificationListing': showMultiNotificationList}">
                 <ng-container *ngFor="let notification of notificationData; let i = index">
-                  <app-notification-alert *ngIf="notification" [notification]="notification" [index]="i" [isMultiNotificationList]="notificationData.length > 0" [isLast]="notificationData.length === (i+1)" ></app-notification-alert>
+                  <app-notification-alert *ngIf="notification && i < 4" [notification]="notification" [index]="i" [isMultiNotificationList]="notificationData.length > 0" [isLast]="notificationData.length === (i+1)" ></app-notification-alert>
                 </ng-container>
               </div>
           </div>
