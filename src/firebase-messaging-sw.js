@@ -5,22 +5,65 @@ importScripts("firebase-config.js");
 const environment = self.config;
 firebase.initializeApp(environment.firebaseConfig);
 
+class CustomPushEvent extends Event {
+  constructor(data) {
+    super('push');
+
+    Object.assign(this, data);
+    this.custom = true;
+  }
+}
+
 // Retrieve firebase messaging
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function (payload) {
-  const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
-  const notificationOptions = {
-    body: payload?.notification?.title,
-    icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
-    // icon: {
-    //   url: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
-    //   size: [32, 32] // Specify the desired size of the icon
-    // },
-    data: payload.data
-  };
+// messaging.onBackgroundMessage(function (payload) {
+  
+//   const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
+//   const notificationOptions = {
+//     body: payload?.notification?.title,
+//     icon: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+//     // icon: {
+//     //   url: environment.domain + '/dashboard/assets/img/brand/brandLogo.svg',
+//     //   size: [32, 32] // Specify the desired size of the icon
+//     // },
+//     data: payload.data
+//   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+//   self.registration.showNotification(notificationTitle, notificationOptions);
+// });
+
+self.addEventListener('push', (e) => {
+  console.log(e);
+  // Skip if event is our own custom event
+  if (e.custom) return;
+
+  // Kep old event data to override
+  const oldData = e.data;
+
+  // Create a new event to dispatch, pull values from notification key and put it in data key,
+  // and then remove notification key
+  const newEvent = new CustomPushEvent({
+    data: {
+      ehheh: oldData.json(),
+      json() {
+        const newData = oldData.json();
+        newData.data = {
+          ...newData.data,
+          ...newData.notification,
+        };
+        delete newData.notification;
+        return newData;
+      },
+    },
+    waitUntil: e.waitUntil.bind(e),
+  });
+
+  // Stop event propagation
+  e.stopImmediatePropagation();
+
+  // Dispatch the new wrapped event
+  dispatchEvent(newEvent);
 });
 
 self.addEventListener("notificationclick", function (payload) {
