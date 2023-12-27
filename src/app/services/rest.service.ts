@@ -982,17 +982,6 @@ export class RestService {
       );
   }
 
-  deleteDevice(token: string): Observable<void> {
-    return this.http
-      .delete(this.r_mix_api + "/notification/push/device/" + token)
-      .pipe(
-        map(() => {}),
-        catchError(({ error }) => {
-          throw error;
-        })
-      );
-  }
-
   getSeriousNotification(): Observable<string | null> {
     return this.http
       .get(this.r_mix_api + "/notification/serious", {
