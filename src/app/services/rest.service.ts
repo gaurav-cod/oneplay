@@ -562,7 +562,7 @@ export class RestService {
       .pipe(catchError((error) => {
         Swal.fire({
           title: 'Oops!',
-          text: 'Please enter a valid code.',
+          text: 'Sorry, the code is invalid. Please try again.',
           icon: 'error',
         });
       throw error; 
