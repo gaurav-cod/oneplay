@@ -67,7 +67,7 @@ export class NotificationsComponent implements OnInit {
   
   navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     
-    if (!(type == "ACCEPT" || type == "REJECT"))
+    if (!(type == "ACCEPT" || type == "REJECT" || type == "IGNORE"))
       this.restService.markNotificationRead(notification.notificationId).toPromise();
 
     switch (type) {
@@ -91,7 +91,7 @@ export class NotificationsComponent implements OnInit {
         if (notification.subType === "SUBSCRIPTION_EXPIRING")
           this.checkoutPageOfPlan(notification);
         else
-          this.renewSubscription();
+          this.renewSubscription(notification);
         break;
       case "RESET_PASSWORD":
         this.router.navigate(['/settings/security']);
@@ -105,32 +105,25 @@ export class NotificationsComponent implements OnInit {
   checkoutPageOfPlan(notifiaction) {
     this.router.navigate([`/checkout/${notifiaction.data.subscription_package_id}`]);
   }
-  renewSubscription() {
-    this.restService.getCurrentSubscription().subscribe({
-      next: (response) => {
-        let plan = '';
-        if (response[0].totalTokenOffered <= 60) {
+  renewSubscription(notifiaction) {
+    
+        let plan = '10800';
+        if (notifiaction.data?.offered_tokens <= 60) {
           plan = '60';
-        } else if (response[0].totalTokenOffered <= 180) {
+        } else if (notifiaction.data?.offered_tokens <= 180) {
           plan = '180';
-        } else if (response[0].totalTokenOffered <= 300) {
+        } else if (notifiaction.data?.offered_tokens <= 300) {
           plan = '300';
-        } else if (response[0].totalTokenOffered <= 600) {
+        } else if (notifiaction.data?.offered_tokens <= 600) {
           plan = '600';
-        } else if (response[0].totalTokenOffered <= 1200) {
+        } else if (notifiaction.data?.offered_tokens <= 1200) {
           plan = '1200';
         } else {
           plan = '10800';
         }
+        
         window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
-      }, error: (err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + err.code,
-          text: err.message,
-        });
-      }
-    })
+
   }
 
   toggleNotificationActionBtn(notificationDetail) {

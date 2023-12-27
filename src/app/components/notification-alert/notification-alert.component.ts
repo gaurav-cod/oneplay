@@ -64,7 +64,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     clearInterval(this.intervalRef);
     this.intervalRef = setTimeout(() => {
       this.notificationService.removeNotification(this.index);
-    }, 5000);
+    }, 2000);
   }
 
   toggleNotificationContent(event) {
@@ -78,7 +78,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   navigateByCTA(event, type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
 
-    if (!(type == "ACCEPT" || type == "REJECT"))
+    if (!(type == "ACCEPT" || type == "REJECT" || type == "IGNORE"))
       this.restService.markNotificationRead(this.notification.notificationId).toPromise();
 
     switch (type) {
@@ -155,7 +155,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_FAILED":
-        this.router.navigate(['']);
+        this.checkoutPageOfPlan();
         this.notificationService.removeNotification(this.index);
         break;
       case "PAYMENT_SUCCESS":
@@ -163,7 +163,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         this.notificationService.removeNotification(this.index);
         break;
       case "FRIEND_REQUEST":
-        this.router.navigate(['']);
+        this.router.navigate(['/notifications'], { queryParams: { previousPage: 'settings' } });
         this.notificationService.removeNotification(this.index);
         break;
       case "SCHEDULED_MAINTENANCE":
@@ -189,32 +189,23 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
 
   renewSubscription() {
-    this.restService.getCurrentSubscription().subscribe({
-      next: (response) => {
-        let plan = '';
-        if (response[0].totalTokenOffered <= 60) {
-          plan = '60';
-        } else if (response[0].totalTokenOffered <= 180) {
-          plan = '180';
-        } else if (response[0].totalTokenOffered <= 300) {
-          plan = '300';
-        } else if (response[0].totalTokenOffered <= 600) {
-          plan = '600';
-        } else if (response[0].totalTokenOffered <= 1200) {
-          plan = '1200';
-        } else {
-          plan = '10800';
-        }
-        window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
-        this.notificationService.removeNotification(this.index);
-      }, error: (err) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error Code: " + err.code,
-          text: err.message,
-        });
-      }
-    })
+    let subscription: InvoiceInterface = this.notification.data as InvoiceInterface;
+    let plan = '10800';
+    if (subscription?.offered_tokens <= 60) {
+      plan = '60';
+    } else if (subscription?.offered_tokens <= 180) {
+      plan = '180';
+    } else if (subscription?.offered_tokens <= 300) {
+      plan = '300';
+    } else if (subscription?.offered_tokens <= 600) {
+      plan = '600';
+    } else if (subscription?.offered_tokens <= 1200) {
+      plan = '1200';
+    } else {
+      plan = '10800';
+    }
+
+    window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
   }
   sendToSpecifiPlan() {
     this.restService.getCurrentSubscription().subscribe({
@@ -268,6 +259,15 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
       next: () => {
         this.notificationService.removeNotification(this.index);
       }, error: (error) => {
+      }
+    })
+  }
+  deleteNotification() {
+    this.restService.deleteNotification(this.notification.notificationId).subscribe({
+      next: () => {
+        this.notificationService.removeNotification(this.index);
+      }, error: () => {
+
       }
     })
   }
