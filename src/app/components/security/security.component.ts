@@ -30,6 +30,7 @@ import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 // import { EventEmitter } from "stream";
 import Swal from "sweetalert2";
 import { Router } from "@angular/router";
+import { MessagingService } from "src/app/services/messaging.service";
 
 @Component({
   selector: "app-security",
@@ -107,7 +108,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
     private readonly ngbModal: NgbModal,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly messagingService: MessagingService,
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -558,11 +560,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    // this.messagingService.removeToken().finally(() => {
+    this.messagingService.removeToken();
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.loggedOutByUser = true;
     this.authService.logout();
-    // });
   }
   LogoutAlert(container) {
     this.logDropdownEvent("logOutClicked");
