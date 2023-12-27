@@ -78,7 +78,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
 
   navigateByCTA(event, type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT") {
 
-    if (!(type == "ACCEPT" || type == "REJECT"))
+    if (!(type == "ACCEPT" || type == "REJECT" || type == "IGNORE"))
       this.restService.markNotificationRead(this.notification.notificationId).toPromise();
 
     switch (type) {
@@ -189,7 +189,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
   }
 
   renewSubscription() {
-    let subscription : InvoiceInterface = this.notification.data as InvoiceInterface;
+    let subscription: InvoiceInterface = this.notification.data as InvoiceInterface;
     let plan = '10800';
     if (subscription?.offered_tokens <= 60) {
       plan = '60';
@@ -204,7 +204,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
     } else {
       plan = '10800';
     }
-    
+
     window.open(environment.domain + `/subscription.html?plan=${plan}`, '_self');
   }
   sendToSpecifiPlan() {
