@@ -85,15 +85,18 @@ export class ForgotPassComponent implements OnInit {
         this.resetemail = true;
 
       },
-      (error) =>
-        Swal.fire({
-          title: error.message,
-          imageUrl: "assets/img/swal-icon/Account.svg",
-          confirmButtonText: "Okay",
-        }).then(() => {
-          if (error.code == 429)
-            this.router.navigate(['/login']);
-        })
+      (error) => {
+      Swal.fire({
+        title: error.data.title,
+        text: error.data.message,
+        imageUrl: error.data.icon,
+        imageHeight: '80px',
+        imageWidth: '80px',
+        confirmButtonText: error.data.primary_CTA,
+        cancelButtonText: ( error.data.CTAs?.length > 1 ? error.data.CTAs[1] : null)
+      }).then((response)=> {
+      })
+    }
     );
   }
   forgotPasswordWithMobile() {

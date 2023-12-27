@@ -130,6 +130,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+  
     this.title.setTitle("Signup");
     this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];
@@ -191,28 +192,51 @@ export class RegisterComponent implements OnInit, OnDestroy {
         device: "web",
       })
       .subscribe(
-        () => {
+        (response: any) => {
           this.loading = false;
           this.endSignupEvent();
-          this._successSwalModalRef = this.ngbModal.open(
-            this.successSwalModal,
-            {
-              centered: true,
-              modalDialogClass: "modal-md",
-              scrollable: true,
-              backdrop: "static",
-              keyboard: false,
-            }
-          );
+          let data = response?.data;
+          // this._successSwalModalRef = this.ngbModal.open(
+          //   this.successSwalModal,
+          //   {
+          //     centered: true,
+          //     modalDialogClass: "modal-md",
+          //     scrollable: true,
+          //     backdrop: "static",
+          //     keyboard: false,
+          //   }
+          // );
+          Swal.fire({
+            title: data.title,
+            text: data.message,
+            icon: data.icon,
+            imageHeight: '80px',
+            imageWidth: '80px',
+            confirmButtonText: data.primary_CTA,
+            showCancelButton: data.CTAs?.length > 1,
+            cancelButtonText: ( data.CTAs?.length > 1 ? data.CTAs[1] : null)
+          }).then((response)=> {
+          });
         },
         (error) => {
           this.loading = false;
           Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Try Again",
+            title: error.data.title,
+            text: error.data.message,
+            imageUrl: error.data.icon,
+            imageHeight: '80px',
+            imageWidth: '80px',
+            confirmButtonText: error.data.primary_CTA,
+            showCancelButton: error.data.CTAs?.length > 1,
+            cancelButtonText: ( error.data.CTAs?.length > 1 ? error.data.CTAs[1] : null)
+          }).then((response)=> {
           });
+          // Swal.fire({
+          //   title: "Error Code: " + error.code,
+          //   text: error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Try Again",
+          // });
         }
       );
   }

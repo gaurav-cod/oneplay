@@ -73,14 +73,14 @@ export class RestService {
       );
   }
 
-  signup(data: SignupDTO): Observable<void> {
+  signup(data: SignupDTO) {
     return this.http
       .post(this.r_mix_api + "/accounts/signup", {
         ...data,
         partnerId: environment.partner_id,
       })
       .pipe(
-        map(() => {}),
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })

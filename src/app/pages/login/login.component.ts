@@ -106,13 +106,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           });
         } else {
           Swal.fire({
-            title: (error.data.title ? error.data.title : error.data.messa),
+            title: error.data.title,
             text: error.data.message,
             imageUrl: error.data.icon,
             imageHeight: '80px',
             imageWidth: '80px',
             confirmButtonText: error.data.primary_CTA,
             cancelButtonText: ( error.data.CTAs?.length > 1 ? error.data.CTAs[1] : null)
+          }).then((response)=> {
           });
         }
       }
