@@ -33,7 +33,7 @@ export class ForgotPassComponent implements OnInit {
   }
   get phoneErrored() {
     const control = this.forgotPasswordForm.controls['phone'];
-    return control.touched && control.value.length > 0;
+    return control.touched && control.invalid && control.value;
   }
   get emailErrored() {
     const control = this.forgotPasswordForm.controls["email"];
@@ -41,6 +41,7 @@ export class ForgotPassComponent implements OnInit {
   }
   get checkvalidationValue() {
     return (this.forgotPasswordForm.controls['email'].value ? this.forgotPasswordForm.controls['email'].invalid : false) ||
+      (this.forgotPasswordForm.controls['phone'].value ? this.forgotPasswordForm.controls['phone'].invalid : false) ||
       (!this.forgotPasswordForm.controls['email'].value && !this.forgotPasswordForm.controls['phone'].value);
   }
   get domain() {
