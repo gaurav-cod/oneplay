@@ -146,4 +146,5 @@ export class ForgotPassComponent implements OnInit {
     }
   }
 
+
 }
