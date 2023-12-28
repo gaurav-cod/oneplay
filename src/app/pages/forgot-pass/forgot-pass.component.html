@@ -36,9 +36,9 @@
               </option>
             </select>
           </div>
-          <input type="tel" formControlName="phone"
+          <input type="number" formControlName="phone"
             class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-            placeholder="Mobile Number" pattern="[0-9]" inputmode="numeric" (keyup)="validateMobileNumber($event)" />
+            placeholder="Mobile Number" pattern="[0-9]" (keypress)="onKeyPressCheckMobile($event)"  />
         </div>
       </div>
       <div class="col-md-12 mt-5">
