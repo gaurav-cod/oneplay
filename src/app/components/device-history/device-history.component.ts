@@ -46,32 +46,29 @@ export class DeviceHistoryComponent implements OnInit {
     this.loggingOut = true;
     this.logoutRef.close();
 
-    try {
-      if (this.isActive(this.logoutSession)) {
-        await this.messagingService.removeToken();
-      }
-    } finally {
-      this.restService.deleteSession(this.logoutSession.key).subscribe(
-        () => {
-          this.loggingOut = false;
-          this.sessions = this.sessions.filter(
-            (s) => s.key !== this.logoutSession.key
-          );
-          if (this.isActive(this.logoutSession)) {
-            this.authService.loggedOutByUser = true;
-            this.authService.logout();
-          }
-        },
-        (error) => {
-          this.loggingOut = false;
-            Swal.fire({
-              icon: "error",
-              title: "Error Code: " + error.code,
-              text: error.message,
-            });
-        }
-      );
+    if (this.isActive(this.logoutSession)) {
+      this.messagingService.removeToken();
     }
+    this.restService.deleteSession(this.logoutSession.key).subscribe(
+      () => {
+        this.loggingOut = false;
+        this.sessions = this.sessions.filter(
+          (s) => s.key !== this.logoutSession.key
+        );
+        if (this.isActive(this.logoutSession)) {
+          this.authService.loggedOutByUser = true;
+          this.authService.logout();
+        }
+      },
+      (error) => {
+        this.loggingOut = false;
+          Swal.fire({
+            icon: "error",
+            title: "Error Code: " + error.code,
+            text: error.message,
+          });
+      }
+    );
   }
 
   logoutAll() {
@@ -89,15 +86,14 @@ export class DeviceHistoryComponent implements OnInit {
         }
       })
     ).finally(() => {
-      this.messagingService.removeToken().finally(() => {
-        this.restService
-          .deleteSession(this.authService.sessionKey)
-          .toPromise()
-          .finally(() => {
-            this.loggingOut = false;
-            window.location.href = "/dashboard/login";
-          });
-      });
+      this.messagingService.removeToken();
+      this.restService
+        .deleteSession(this.authService.sessionKey)
+        .toPromise()
+        .finally(() => {
+          this.loggingOut = false;
+          window.location.href = "/dashboard/login";
+        });
     });
   }
 
