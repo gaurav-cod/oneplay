@@ -1329,7 +1329,6 @@ export class ViewComponent implements OnInit, OnDestroy {
         queryParams: {
           payload: this._clientToken,
           session: this.sessionToTerminate,
-          session_token: this.authService.sessionToken,
         }
       })
     } else {
