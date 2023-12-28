@@ -84,18 +84,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
         if (err.message == "Token Expired" || err.message == "Invalid Token") {
           this.resendVerificationLink(err, token);
         } else {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "OK",
-            });
+            this.showError(err);
         }
       }
     );
   }
 
   verify() {
+    debugger;
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {
@@ -121,12 +117,8 @@ export class VerifyComponent implements OnInit, OnDestroy {
           ),
         });
 
-        if (error.message == "Invalid OTP") {
-            Swal.fire({
-              title: "Error Code: " + error.code,
-              text: error.message,
-              icon: "error",
-            });
+        if (error.message == "Sorry, the OTP is invalid. Please try again.") {
+            this.showError(error);
         } else {
           this.resendVerificationLink(error, token);
         }
@@ -188,5 +180,18 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   private goToLogin() {
     this.router.navigate(["/login"]);
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    })
   }
 }

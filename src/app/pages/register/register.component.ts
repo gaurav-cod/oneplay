@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -30,6 +31,8 @@ import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("DiscordLink") discordLink: ElementRef<HTMLDivElement>;
+
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signUpFormSubmitted">;
@@ -195,28 +198,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
         (response: any) => {
           this.loading = false;
           this.endSignupEvent();
-          let data = response?.data;
-          // this._successSwalModalRef = this.ngbModal.open(
-          //   this.successSwalModal,
-          //   {
-          //     centered: true,
-          //     modalDialogClass: "modal-md",
-          //     scrollable: true,
-          //     backdrop: "static",
-          //     keyboard: false,
-          //   }
-          // );
-          Swal.fire({
-            title: data.title,
-            text: data.message,
-            icon: data.icon,
-            imageHeight: '80px',
-            imageWidth: '80px',
-            confirmButtonText: data.primary_CTA,
-            showCancelButton: data.CTAs?.length > 1,
-            cancelButtonText: ( data.CTAs?.length > 1 ? data.CTAs[1] : null)
-          }).then((response)=> {
-          });
+          this._successSwalModalRef = this.ngbModal.open(
+            this.successSwalModal,
+            {
+              centered: true,
+              modalDialogClass: "modal-md",
+              scrollable: true,
+              backdrop: "static",
+              keyboard: false,
+            }
+          );
         },
         (error) => {
           this.loading = false;
@@ -241,7 +232,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           icon: "success",
           text: "Check your email and verify again",
         }).then(() => this.goToLogin());
-      },
+      }, error: (error) => {
+        this.showError(error);
+      }
     });
   }
 
@@ -320,6 +313,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.CTAs?.length > 1,
       cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isDismissed && error.data.CTAs?.includes("Contact Us")) {
+        this.discordLink.nativeElement.click();
+      }
     })
   }
 }

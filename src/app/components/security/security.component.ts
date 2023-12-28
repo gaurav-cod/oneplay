@@ -511,12 +511,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "Try Again",
-            });
+            this.showError(err);
           },
         });
       }
@@ -571,5 +566,22 @@ export class SecurityComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-sm",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isConfirmed && error.data.primary_CTA === "Login") {
+        this.router.navigate(['/login']);
+      }
+    })
   }
 }

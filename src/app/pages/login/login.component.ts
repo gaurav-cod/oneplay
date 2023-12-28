@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
   private _verifySwalModalRef: NgbModalRef;
 
@@ -156,6 +157,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.CTAs?.length > 1,
       cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isDismissed && error.data.CTAs?.includes("Contact Us")) {
+        this.contactUs.nativeElement.click();
+      }
     })
   }
 }

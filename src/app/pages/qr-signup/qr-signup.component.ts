@@ -67,17 +67,19 @@ export class QrSignupComponent implements OnInit {
         },
         error: (err) => {
           this.loaderService.stop();
-          if (err.error.isOnline)
-          Swal.fire({
-            title: "Error Code: " + err.error.code,
-            text: err.error.message,
-            icon: "error",
-            confirmButtonText: "Reload",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.generateCode();
-            }
-          });
+          if (err.error.isOnline) {
+            this.showError(err);
+          // Swal.fire({
+          //   title: "Error Code: " + err.error.code,
+          //   text: err.error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Reload",
+          // }).then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.generateCode();
+          //   }
+          // });
+          }
         },
       });
   }
@@ -108,16 +110,17 @@ export class QrSignupComponent implements OnInit {
           }
         },
         error: (err) => {
-          Swal.fire({
-            title: "Error Code: " + err.code,
-            text: "Timeout!",
-            icon: "error",
-            confirmButtonText: "Reload",
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.generateCode();
-            }
-          });
+          this.showError(err);
+          // Swal.fire({
+          //   title: "Error Code: " + err.code,
+          //   text: "Timeout!",
+          //   icon: "error",
+          //   confirmButtonText: "Reload",
+          // }).then((result) => {
+          //   if (result.isConfirmed) {
+          //     this.generateCode();
+          //   }
+          // });
         },
       });
   }
@@ -129,5 +132,22 @@ export class QrSignupComponent implements OnInit {
     //   channel: "web",
     // });
     this.router.navigate(["/login"]);
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.generateCode();
+      }
+    })
   }
 }
