@@ -220,17 +220,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          Swal.fire({
-            title: error.data.title,
-            text: error.data.message,
-            imageUrl: error.data.icon,
-            imageHeight: '80px',
-            imageWidth: '80px',
-            confirmButtonText: error.data.primary_CTA,
-            showCancelButton: error.data.CTAs?.length > 1,
-            cancelButtonText: ( error.data.CTAs?.length > 1 ? error.data.CTAs[1] : null)
-          }).then((response)=> {
-          });
+          this.showError(error);
           // Swal.fire({
           //   title: "Error Code: " + error.code,
           //   text: error.message,
@@ -318,5 +308,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: "yes",
       referralId: this.registerForm.value.referred_by_id === "" ? "no" : "yes",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    })
   }
 }

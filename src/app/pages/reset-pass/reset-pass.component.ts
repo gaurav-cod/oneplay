@@ -73,12 +73,7 @@ export class ResetPassComponent implements OnInit {
         // }).then(() => this.goToLogin());
       },
       (error) => {
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-        })
+        this.showError(error, true);
       }
     );
   }
@@ -90,6 +85,23 @@ export class ResetPassComponent implements OnInit {
     //   channel: "web",
     // });
     this.router.navigate(["/login"]);
+  }
+
+  showError(error, doActionOnConfirm: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isConfirmed && doActionOnConfirm) {
+        this.router.navigate(['/forgot-password']);
+      }
+    });
   }
 
   get domain() {

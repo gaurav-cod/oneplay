@@ -155,12 +155,24 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.saveProfileLoder = false;
-          Swal.fire({
-            icon: "error",
-            title: "Error Code: " + error.code,
-            text: error.message,
-          });
+        this.showError(error);
       }
     );
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        
+      }
+    });
   }
 }

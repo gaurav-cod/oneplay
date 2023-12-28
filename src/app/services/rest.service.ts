@@ -461,13 +461,17 @@ export class RestService {
       .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
         params: { page, limit },
       })
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))), catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   getCurrentSubscription(): Observable<SubscriptionModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/current")
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))),catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   getProcessingSubscription(
@@ -479,7 +483,9 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/processing",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   getFailedSubscription(
@@ -491,7 +497,9 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/failed",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   hasPreviousPayments(): Observable<boolean> {
@@ -523,19 +531,34 @@ export class RestService {
   getWishlist(): Observable<string[]> {
     return this.http
       .get<string[]>(this.r_mix_api + "/accounts/wishlist")
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   addWishlist(gameId: string): Observable<any> {
     return this.http
       .post(this.r_mix_api + "/accounts/add_to_wishlist/" + gameId, null)
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   removeWishlist(gameId: string): Observable<any> {
     return this.http
       .post(this.r_mix_api + "/accounts/remove_from_wishlist/" + gameId, null)
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   generateQRCode() {

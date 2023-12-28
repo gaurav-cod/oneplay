@@ -105,16 +105,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         } else {
-          Swal.fire({
-            title: error.data.title,
-            text: error.data.message,
-            imageUrl: error.data.icon,
-            imageHeight: '80px',
-            imageWidth: '80px',
-            confirmButtonText: error.data.primary_CTA,
-            cancelButtonText: ( error.data.CTAs?.length > 1 ? error.data.CTAs[1] : null)
-          }).then((response)=> {
-          });
+          this.showError(error);
         }
       }
     );
@@ -154,5 +145,17 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         signInFromPage: "directLink",
       })
     }
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    })
   }
 }

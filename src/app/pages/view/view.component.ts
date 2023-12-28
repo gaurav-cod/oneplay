@@ -355,9 +355,11 @@ export class ViewComponent implements OnInit, OnDestroy {
               });
             }
           },
-          (err) => {
-            if (err.timeout) {
+          (error) => {
+            if (error.timeout) {
               this.router.navigateByUrl("/server-error");
+            } else {
+              this.showError(error);
             }
             this.loaderService.stop();
           }
@@ -562,17 +564,23 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   addToWishlist(): void {
     this.loadingWishlist = true;
-    this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
+    this.restService.addWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
+      this.showSuccess(response);
       this.authService.addToWishlist(this.game.oneplayId);
+    }, (error)=> {
+      this.showError(error);
     });
   }
 
   removeFromWishlist(): void {
     this.loadingWishlist = true;
-    this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
+    this.restService.removeWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
+      this.showSuccess(response);
+    }, (error)=> {
+      this.showError(error);
     });
   }
 
@@ -1375,10 +1383,12 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.selectedStore = store;
       lastValueFrom(
         this.restService.setPreferredStoreForGame(
-          this.game.oneplayId,
+          this.game.oneplayId + "a",
           store.name
         )
-      );
+      ).catch((error)=> {
+        this.showError(error);
+      });
     }
   }
 
@@ -1396,5 +1406,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else if (result.isConfirmed) {
       this.startGame();
     }
+    
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    })
+  }
+  showSuccess(response) {
+    Swal.fire({
+      title: response.data.title,
+      text: response.data.message,
+      imageUrl: response.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: response.data.primary_CTA,
+      showCancelButton: response.data.CTAs?.length > 1,
+      cancelButtonText: ( response.data.CTAs?.indexOf(response.data.primary_CTA) == 0 ? response.data.CTAs[1] : response.data.CTAs[0] )
+    })
   }
 }

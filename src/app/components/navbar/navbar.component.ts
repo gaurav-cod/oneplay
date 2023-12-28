@@ -414,10 +414,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private showError(error) {
     Swal.fire({
-      icon: "error",
-      title: "Error Code: " + error.code,
-      text: error.message,
-    });
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    })
   }
 
   search(value: string) {
