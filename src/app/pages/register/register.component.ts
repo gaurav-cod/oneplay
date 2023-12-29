@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -30,6 +31,8 @@ import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("DiscordLink") discordLink: ElementRef<HTMLDivElement>;
+
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signUpFormSubmitted">;
@@ -130,6 +133,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+  
     this.title.setTitle("Signup");
     this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];
@@ -191,7 +195,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         device: "web",
       })
       .subscribe(
-        () => {
+        (response: any) => {
           this.loading = false;
           this.endSignupEvent();
           this._successSwalModalRef = this.ngbModal.open(
@@ -207,12 +211,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         },
         (error) => {
           this.loading = false;
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+          this.showError(error);
+          // Swal.fire({
+          //   title: "Error Code: " + error.code,
+          //   text: error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Try Again",
+          // });
         }
       );
   }
@@ -227,7 +232,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           icon: "success",
           text: "Check your email and verify again",
         }).then(() => this.goToLogin());
-      },
+      }, error: (error) => {
+        this.showError(error);
+      }
     });
   }
 
@@ -294,5 +301,22 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: "yes",
       referralId: this.registerForm.value.referred_by_id === "" ? "no" : "yes",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isDismissed && error.data.CTAs?.includes("CONTACT")) {
+        this.discordLink.nativeElement.click();
+      }
+    })
   }
 }

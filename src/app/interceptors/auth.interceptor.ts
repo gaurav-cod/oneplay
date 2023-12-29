@@ -84,6 +84,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
+              data: error.error.data,
               message:
                 error.error?.message ||
                 error.error?.msg ||

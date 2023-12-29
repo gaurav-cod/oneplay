@@ -40,6 +40,11 @@
             class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
             placeholder="Mobile Number" (keypress)="onKeyPressCheckMobile($event)"  />
         </div>
+        <div class="row mt-3" *ngIf="errorMessage">
+          <div class="col-auto align-self-center offWhiteText pr-0">
+            <p class="font16 font500 errorGradientColor mb-0">{{ errorMessage }}</p>
+          </div>
+        </div>
       </div>
       <div class="col-md-12 mt-5">
         <input type="button" [disabled]="checkvalidationValue" (click)="submit()"

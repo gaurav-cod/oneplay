@@ -50,6 +50,13 @@
           </span>
         </div>
       </div>
+
+      <div class="mt-3" *ngIf="errorMessage">
+        <div class="col-auto align-self-center offWhiteText pr-0">
+          <p class="font16 font500 errorGradientColor mb-0">{{ errorMessage }}</p>
+        </div>
+      </div>
+
       <div class="col-md-12 mt-5">
         <input type="button" [disabled]="checkvalidationValue" (click)="reset()"
           class="btn btn-block linearGradient border-0 borderRadius10 font16 font500 text-white" value="Submit" />

@@ -18,6 +18,7 @@ import { Subscription, combineLatest } from "rxjs";
 import { SubscriptionPackageModel } from "src/app/models/subscriptionPackage.model";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { ToastService } from "src/app/services/toast.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -52,7 +53,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -77,11 +79,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             ).some((sub) => sub.planType === "base");
           }
         } catch (error) {
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-          });
+          this.showError(error, true);
         }
       }
     });
@@ -260,11 +258,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.stripeElements.create("payment").mount("#stripe-card");
       })
       .catch((error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-        })
+        this.showError(error)
       );
   }
 
@@ -309,11 +303,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         window.loadBillDeskSdk(config);
       })
       .catch((error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-        })
+        this.showError(error)
       );
   }
 
@@ -322,5 +312,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       couponApplied: this.applied_coupon_code ? "yes" : "no",
       paymentOption: this.selected_payment_source,
     });
+  }
+
+  showError(error, doActionOnConfirm: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isConfirmed && doActionOnConfirm)
+        this.router.navigate(['']);
+    })
   }
 }

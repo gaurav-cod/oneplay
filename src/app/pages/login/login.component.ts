@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
   private _verifySwalModalRef: NgbModalRef;
 
@@ -105,12 +106,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         } else {
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+          this.showError(error);
         }
       }
     );
@@ -150,5 +146,21 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         signInFromPage: "directLink",
       })
     }
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      imageHeight: '80px',
+      imageWidth: '80px',
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.CTAs?.length > 1,
+      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isDismissed && error.data.CTAs?.includes("CONTACT")) {
+        this.contactUs.nativeElement.click();
+      }
+    })
   }
 }

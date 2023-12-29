@@ -42,6 +42,8 @@ export class ResetPassComponent implements OnInit {
 
   }
 
+  errorMessage: string;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -65,20 +67,9 @@ export class ResetPassComponent implements OnInit {
     this.restService.resetPassword(token, this.resetForm.value.password).subscribe(
       () => {
         this.resetPasswordSuccessfull = true;
-        // Swal.fire({
-        //   title: "Success",
-        //   text: "Password reset successfully",
-        //   icon: "success",
-        //   confirmButtonText: "OK",
-        // }).then(() => this.goToLogin());
       },
       (error) => {
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-          confirmButtonText: "Try Again",
-        })
+        this.errorMessage = error.message;
       }
     );
   }
