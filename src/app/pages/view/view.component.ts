@@ -1383,7 +1383,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.selectedStore = store;
       lastValueFrom(
         this.restService.setPreferredStoreForGame(
-          this.game.oneplayId + "a",
+          this.game.oneplayId,
           store.name
         )
       ).catch((error)=> {
