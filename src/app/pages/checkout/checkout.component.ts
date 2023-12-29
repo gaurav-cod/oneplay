@@ -178,10 +178,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         .catch((error) => {
           this.applied_coupon_code_value = 0;
           this.coupon_message = error.message;
-          this.toastService.show(this.coupon_message, {
-            classname: `bg-gray-dark text-white`,
-            delay: 4000,
-          });
           this.applied_coupon_code = null;
         });
     }

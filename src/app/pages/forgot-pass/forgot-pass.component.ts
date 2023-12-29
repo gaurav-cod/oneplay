@@ -27,6 +27,7 @@ export class ForgotPassComponent implements OnInit {
   });
 
   resetemail = false;
+  errorMessage: string;
 
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -96,14 +97,19 @@ export class ForgotPassComponent implements OnInit {
       next: () => {
         this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
       }, error: (error) => {
-        Swal.fire({
-          title: error.message,
-          imageUrl: "assets/img/swal-icon/Account.svg",
-          confirmButtonText: "Okay",
-        }).then(() => {
-          if (error.code == 429)
-            this.router.navigate(['/login']);
-        })
+        if (error.code == 429) {
+          this.router.navigate(['/login']);
+        }else {
+          this.errorMessage = error.message;
+        }
+        // Swal.fire({
+        //   title: error.message,
+        //   imageUrl: "assets/img/swal-icon/Account.svg",
+        //   confirmButtonText: "Okay",
+        // }).then(() => {
+        //   if (error.code == 429)
+        //     this.router.navigate(['/login']);
+        // })
       }
     })
   }
@@ -126,6 +132,7 @@ export class ForgotPassComponent implements OnInit {
   }
 
   onKeyPressCheckMobile(event:KeyboardEvent){
+    this.errorMessage = null;
     const charCode=event.charCode;
     if(charCode<48 || charCode>57){
       event.preventDefault();
@@ -150,6 +157,14 @@ export class ForgotPassComponent implements OnInit {
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.CTAs?.length > 1,
       cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        if (error.data.primary_CTA === "SIGN UP") {
+          this.router.navigate(['/register']);
+        } else if (error.data.primary_CTA === "REQUEST") {
+          this.router.navigate(['/forgot-password'])
+        }
+      }
     })
   }
 

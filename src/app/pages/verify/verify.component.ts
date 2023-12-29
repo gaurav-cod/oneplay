@@ -91,7 +91,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   verify() {
-    debugger;
     const token = this.route.snapshot.paramMap.get("token");
     this.restService.verify({ token, otp: this.otp.value }).subscribe({
       next: (token) => {

@@ -290,6 +290,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
@@ -375,6 +376,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
@@ -579,8 +581,24 @@ export class SecurityComponent implements OnInit, OnDestroy {
       showCancelButton: error.data.CTAs?.length > 1,
       cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
     }).then((response)=> {
-      if (response.isConfirmed && error.data.primary_CTA === "Login") {
-        this.router.navigate(['/login']);
+      if (response.isConfirmed) {
+        if (error.data.primary_CTA === "LOGIN") 
+          this.router.navigate(['/login']);
+        else if (error.data.primary_CTA === "REQUEST") {
+          if (this.emailOTP) {
+            if (this.isVerify) {
+              this.resendEmailUpdate();
+            } else {
+              this.resendUpdateEmail();
+            }
+          } else {
+            if (this.isPhone) {
+              this.resendPhoneUpdate();
+            } else {
+              this.resendUpdatePhone();
+            }
+          }
+        }
       }
     })
   }

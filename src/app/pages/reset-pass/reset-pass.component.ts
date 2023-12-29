@@ -42,6 +42,8 @@ export class ResetPassComponent implements OnInit {
 
   }
 
+  errorMessage: string;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -65,15 +67,9 @@ export class ResetPassComponent implements OnInit {
     this.restService.resetPassword(token, this.resetForm.value.password).subscribe(
       () => {
         this.resetPasswordSuccessfull = true;
-        // Swal.fire({
-        //   title: "Success",
-        //   text: "Password reset successfully",
-        //   icon: "success",
-        //   confirmButtonText: "OK",
-        // }).then(() => this.goToLogin());
       },
       (error) => {
-        this.showError(error, true);
+        this.errorMessage = error.message;
       }
     );
   }
@@ -85,23 +81,6 @@ export class ResetPassComponent implements OnInit {
     //   channel: "web",
     // });
     this.router.navigate(["/login"]);
-  }
-
-  showError(error, doActionOnConfirm: boolean = false) {
-    Swal.fire({
-      title: error.data.title,
-      text: error.data.message,
-      imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
-      confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
-    }).then((response)=> {
-      if (response.isConfirmed && doActionOnConfirm) {
-        this.router.navigate(['/forgot-password']);
-      }
-    });
   }
 
   get domain() {
