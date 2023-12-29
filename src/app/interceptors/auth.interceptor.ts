@@ -89,9 +89,9 @@ export class AuthInterceptor implements HttpInterceptor {
             apiEndpoint: error.url,
             userId: this.authService.userIdAndToken.userid,
             method: req.method,
-            headers,
-            body,
-            errorResponse: error.error,
+            headers: JSON.stringify(headers),
+            body: JSON.stringify(body),
+            errorResponse: JSON.stringify(error.error),
           };
 
           if (error.statusText !== "OK") {
