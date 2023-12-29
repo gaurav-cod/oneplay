@@ -25,6 +25,24 @@ export type CountlyEvent = [
   eventData: CountlyEventData | string
 ];
 
+export enum ErrorStack {
+  Timeout = "Timeout",
+  ServerError = "Server is not responding",
+}
+
+export type CountlyHttpError = {
+  stack: ErrorStack;
+  fatal: boolean;
+  data: {
+    apiEndpoint: string;
+    userId: string | null;
+    method: string;
+    headers: any;
+    body: any;
+    errorResponse: any;
+  };
+};
+
 export interface StartEvent<T extends keyof CustomTimedCountlyEvents> {
   key: () => string;
   cancel: () => void;
@@ -53,8 +71,8 @@ export interface CustomCountlyEvents {
     instagramClicked: "yes" | "no";
     twitterClicked: "yes" | "no";
     mediumClicked: "yes" | "no";
-    contentCreatorsClicked: "yes" | "no",
-    businessesClicked: "yes" | "no",
+    contentCreatorsClicked: "yes" | "no";
+    businessesClicked: "yes" | "no";
   };
   menuClick: {
     homeClicked: "yes" | "no";
@@ -81,7 +99,12 @@ export interface CustomCountlyEvents {
   search: {
     keywords: string;
     actionDone: "yes" | "no";
-    actionType: "seeMoreGames" | "seeMoreUsers" | "gameClicked" | "addFriend" | "cancelled";
+    actionType:
+      | "seeMoreGames"
+      | "seeMoreUsers"
+      | "gameClicked"
+      | "addFriend"
+      | "cancelled";
   };
   gameTerminate: {
     gameSessionId: string;
@@ -93,7 +116,7 @@ export interface CustomCountlyEvents {
     sessionDuration: number;
     playDuration: number;
     idleDuration: number;
-  },
+  };
 }
 
 export interface CustomTimedCountlyEvents {

@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import {
   CountlyEventData,
+  CountlyHttpError,
   CountlyUserData,
   CustomCountlyEvents,
   CustomTimedCountlyEvents,
@@ -25,6 +26,10 @@ export class CountlyService {
   }
 
   track_pageview = (url: string): void => Countly.track_pageview(url);
+
+  recordError({ stack, fatal, data }: CountlyHttpError) {
+    Countly.recordError({ stack }, !fatal, data);
+  }
 
   addEvent<T extends keyof CustomCountlyEvents>(
     event: T,
