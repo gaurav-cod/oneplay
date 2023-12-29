@@ -1328,7 +1328,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.router.navigate(['/play'], {
         queryParams: {
           payload: this._clientToken,
-          session: this.sessionToTerminate
+          session: this.sessionToTerminate,
         }
       })
     } else {
