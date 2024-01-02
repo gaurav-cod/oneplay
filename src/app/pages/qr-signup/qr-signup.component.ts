@@ -139,11 +139,9 @@ export class QrSignupComponent implements OnInit {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
     }).then((result) => {
       if (result.isConfirmed) {
         this.generateCode();

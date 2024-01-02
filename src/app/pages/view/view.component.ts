@@ -1413,11 +1413,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
     })
   }
   showSuccess(response) {
@@ -1425,8 +1423,6 @@ export class ViewComponent implements OnInit, OnDestroy {
       title: response.data.title,
       text: response.data.message,
       imageUrl: response.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: response.data.primary_CTA,
       showCancelButton: response.data.CTAs?.length > 1,
       cancelButtonText: ( response.data.CTAs?.indexOf(response.data.primary_CTA) == 0 ? response.data.CTAs[1] : response.data.CTAs[0] )

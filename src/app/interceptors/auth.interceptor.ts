@@ -18,6 +18,7 @@ import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
 import Swal from "sweetalert2";
 import networkImage from "./network-image";
+import { ErrorMessageModel } from "../models/errorMessage.model";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -84,7 +85,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
-              data: error.error.data,
+              data: new ErrorMessageModel(error.error.data),
               message:
                 error.error?.message ||
                 error.error?.msg ||
