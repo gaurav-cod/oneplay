@@ -19,12 +19,17 @@ import { AuthService } from "../services/auth.service";
 import Swal from "sweetalert2";
 import networkImage from "./network-image";
 import { ErrorMessageModel } from "../models/errorMessage.model";
+import { CountlyService } from "../services/countly.service";
+import { CountlyHttpError, ErrorStack } from "../services/countly";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private isInternetPopupOpen = false;
 
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly countlyService: CountlyService
+  ) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     let req = request;
@@ -59,6 +64,37 @@ export class AuthInterceptor implements HttpInterceptor {
           return res;
         }),
         catchError(async (error: HttpErrorResponse) => {
+          const code = Number(error.error?.code) || error.status || 503;
+          let body = null,
+            headers = {};
+          if (req.body instanceof FormData) {
+            req.body.delete("session_token");
+            req.body.delete("password");
+            body = {};
+            req.body.forEach((val, key) => {
+              body[key] = val.toString();
+            });
+            headers["Content-Type"] = "multipart/form-data";
+          } else if (typeof body === "object" && !Array.isArray(body)) {
+            delete req.body["password"];
+            body = JSON.stringify(body);
+            headers["Content-Type"] = "application/json";
+          } else if (!!req.body) {
+            body = req.body;
+          }
+          req.headers.keys().forEach((key) => {
+            headers[key] =
+              key === "session_token" ? "hidden" : req.headers.getAll(key);
+          });
+          const countlyData: CountlyHttpError["data"] = {
+            apiEndpoint: error.url,
+            userId: this.authService.userIdAndToken.userid,
+            method: req.method,
+            headers: JSON.stringify(headers),
+            body: JSON.stringify(body),
+            errorResponse: JSON.stringify(error.error),
+          };
+
           if (error.statusText !== "OK") {
             const isOnline = await this.checkNetwork();
             if (!isOnline && !this.isInternetPopupOpen) {
@@ -71,14 +107,35 @@ export class AuthInterceptor implements HttpInterceptor {
               });
               window.location.reload();
               return this.intercept(req, next);
+            } else if (isOnline) {
+              // log timeout error
+              this.countlyService.recordError({
+                stack: ErrorStack.Timeout,
+                fatal: true,
+                data: countlyData,
+              });
+            }
+          } else {
+            if (error instanceof TimeoutError || code === 408) {
+              // log timeout error
+              this.countlyService.recordError({
+                stack: ErrorStack.Timeout,
+                fatal: true,
+                data: countlyData,
+              });
+            } else if (!error.error?.message && !error.error?.msg) {
+              // log server is not responding error
+              this.countlyService.recordError({
+                stack: ErrorStack.ServerError,
+                fatal: true,
+                data: countlyData,
+              });
             }
           }
 
           if (isRenderMixAPI && error.status === 401) {
             this.authService.logout();
           }
-
-          const code = Number(error.error?.code) || error.status || 503;
 
           throw new HttpErrorResponse({
             status: error.status,

@@ -9,6 +9,7 @@ import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import UAParser from 'ua-parser-js';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-play',
@@ -42,6 +43,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService,
     private readonly route: ActivatedRoute,
+    private readonly authService: AuthService
   ) {}
 
    ngOnDestroy(): void {
@@ -56,7 +58,7 @@ export class PlayComponent implements OnInit, OnDestroy {
     this.session = session;
     this.payload = payload;
 
-    window.location.href = `oneplay:key?${payload}`;
+    window.location.href = `oneplay:key?payload=${payload}&session_token=${this.authService.sessionToken}`;
   }
 
   get link() {
