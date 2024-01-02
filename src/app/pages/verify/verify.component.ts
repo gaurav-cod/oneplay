@@ -78,10 +78,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
         this.countlyService.endEvent("signUpAccountVerification", {
           result: "failure",
           failureReason: mapSignUpAccountVerificationFailureReasons(
-            err.message
+            err?.message
           ),
         });
-        if (err.message == "Token Expired" || err.message == "Invalid Token") {
+        if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
           this.resendVerificationLink(err, token);
         } else {
             this.showError(err);
@@ -116,11 +116,11 @@ export class VerifyComponent implements OnInit, OnDestroy {
           ),
         });
 
-        if (error.message == "Sorry, the OTP is invalid. Please try again.") {
+        // if (error.message == "Sorry, the OTP is invalid. Please try again.") {
             this.showError(error);
-        } else {
-          this.resendVerificationLink(error, token);
-        }
+        // } else {
+        //   this.resendVerificationLink(error, token);
+        // }
       },
     });
   }
@@ -189,6 +189,10 @@ export class VerifyComponent implements OnInit, OnDestroy {
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed && error.data.primary_CTA === "Request") {
+        this.router.navigate(['/forgot-password']);
+      }
     })
   }
 }
