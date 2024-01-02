@@ -40,10 +40,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   applied_coupon_code_value: number = 0;
   selected_payment_source: "stripe" | "billdesk" = null;
   is_upcoming_plan: boolean = false;
+  timer: any;
 
   subscriptionPacakage: SubscriptionPackageModel;
 
   private querySubscriptions: Subscription;
+  private queryCancelSubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
@@ -87,6 +89,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.querySubscriptions?.unsubscribe();
+    this.queryCancelSubscriptions?.unsubscribe();
     this.countlyService.cancelEvent("subscriptionCheckOut");
     this.coupon_code.reset();
     this.applied_coupon_code = null;
@@ -94,6 +97,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.applied_coupon_code_value = 0;
     this.selected_payment_source = null;
     this.is_upcoming_plan = false;
+    clearTimeout(this.timer);
   }
 
   async onPay() {
@@ -128,6 +132,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   closeStripeModal() {
+    clearTimeout(this.timer);
     this.stripeModalRef?.close();
   }
 
@@ -199,6 +204,43 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  private timeoutPaymentIntent(orderId: string, source: "billdesk" | "stripe") {
+    this.timer = setTimeout(() => {
+      clearTimeout(this.timer);
+
+      switch (source) {
+        case "stripe":
+          this.closeStripeModal();
+        case "billdesk":
+          const iframes = document.querySelectorAll("bd-modal");
+
+          iframes.forEach((iframe) => {
+            iframe.parentNode.removeChild(iframe);
+          });
+      }
+
+      try {
+        this.handleCancelation(orderId);
+        Swal.fire({
+          title: "Oops...",
+          text: "Looks like you took a bit too long. Let's refresh and try again.",
+          icon: "error",
+          confirmButtonText: "Okay",
+        }).then(({ isConfirmed }) => {
+          if (isConfirmed) {
+            window.location.reload();
+          }
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+        });
+      }
+    }, 300000); // 5 minutes
+  }
+
   private async handleCancelation(orderId: string) {
     try {
       await this.restService.cancelPayment(orderId).toPromise();
@@ -248,6 +290,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           backdrop: "static",
           keyboard: false,
         });
+
+        this.timeoutPaymentIntent(data.metadata.orderId, 'stripe')
+
         const closeSub = this.stripeModalRef.closed.subscribe(() => {
           this.restService
             .cancelPayment(data.metadata.orderId)
@@ -272,6 +317,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           planId: this.subscriptionPacakage.id,
           orderId: data.orderId,
         };
+
+        this.timeoutPaymentIntent(data.orderId, 'billdesk');
+
         const flowConfig = {
           merchantId: environment.billdesk_key,
           bdOrderId: data.bdOrderId,
