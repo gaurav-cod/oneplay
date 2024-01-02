@@ -228,8 +228,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.openOTPScreen();
       },
       (error) => {
-        this.errorCode = error.code;
-        this.errorMessage = error.message;
+        
+        // this.errorCode = error.code;
+        // this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
@@ -252,8 +254,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
-        this.errorCode = error.code;
-        this.errorMessage = error.message;
+        
+        // this.errorCode = error.code;
+        // this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
