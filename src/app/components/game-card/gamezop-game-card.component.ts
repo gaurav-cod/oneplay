@@ -41,13 +41,7 @@ export class GamezopGameCard implements OnInit {
     ngOnInit(): void { }
   
     onGameClick() {
-      this.countlyService.endEvent("gameLandingView")
-      this.countlyService.startEvent("gameLandingView", {
-        data: { source: getGameLandingViewSource(), trigger: 'card' },
-      });
-    //   this.router.navigate(["view", this.gLink.transform(this.game)], {
-    //     queryParams: this.queryParams,
-    //   });
+      window.open(this.game.url);
     }
   
     onImgError(event) {
@@ -56,43 +50,40 @@ export class GamezopGameCard implements OnInit {
     }
   
     playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    //   if (this.game.video && !this.isMobile && this.game.status === "live") {
-    //     this.timer = setTimeout(() => {
-    //       image.style.opacity = "0";
-    //       this.showSound = true;
-    //       if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
-    //         const video = document.createElement("video");
-    //         gameLink.insertAdjacentElement("afterbegin", video);
-    //         video.classList.add("mask");
-    //         video.src =
-    //           environment.game_assets +
-    //           this.game.oneplayId +
-    //           this.game.trailer_video;
-    //         video.muted = true;
-    //         video.play();
-    //         // circular loader until video is loaded
-    //         this.loaderService.startLoader(this.loaderId);
-    //         video.onloadeddata = () => {
-    //           this.loaderService.stopLoader(this.loaderId);
-    //         };
-    //       }
-    //     }, 1000);
-    //   }
+      if (this.game.gamePreviews && !this.isMobile) {
+        this.timer = setTimeout(() => {
+          image.style.opacity = "0";
+          this.showSound = true;
+          if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
+            const video = document.createElement("video");
+            gameLink.insertAdjacentElement("afterbegin", video);
+            video.classList.add("mask");
+            video.src = this.game.gamePreviews;
+            video.muted = true;
+            video.play();
+            // circular loader until video is loaded
+            this.loaderService.startLoader(this.loaderId);
+            video.onloadeddata = () => {
+              this.loaderService.stopLoader(this.loaderId);
+            };
+          }
+        }, 1000);
+      }
     }
   
     pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
       if (this.timer) {
         clearTimeout(this.timer);
       }
-    //   if (this.game.video && !this.isMobile && this.game.status === "live") {
-    //     image.style.opacity = "1";
-    //     if (gameLink.firstElementChild instanceof HTMLVideoElement) {
-    //       gameLink.removeChild(gameLink.firstElementChild);
-    //     }
-    //     this.showSound = false;
-    //     this.muted = true;
-    //     this.loaderService.stopLoader(this.loaderId);
-    //   }
+      if (this.game.gamePreviews && !this.isMobile) {
+        image.style.opacity = "1";
+        if (gameLink.firstElementChild instanceof HTMLVideoElement) {
+          gameLink.removeChild(gameLink.firstElementChild);
+        }
+        this.showSound = false;
+        this.muted = true;
+        this.loaderService.stopLoader(this.loaderId);
+      }
     }
   
     muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {

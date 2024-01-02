@@ -22,6 +22,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'home',                 component: HomeComponent },
     { path: 'home/:filter',         component: HomeComponent },
     { path: 'gamezop',              component: Gamezop },
+    { path: 'gamezop/:filter',      component: Gamezop },
     { path: 'chat',                 component: ChatComponent },
     { path: 'store',                component: StoreComponent },
     { path: 'store/:filter',        component: StoreComponent },

@@ -1343,7 +1343,7 @@ export class RestService {
         params: { page, limit },
       })
       .pipe(
-        map((res) => res.map((d) => new GamezopModel(d))),
+        map((res: any) => res.games.map((d) => new GamezopModel(d))),
         catchError(({ error }) => {
           throw error;
         })

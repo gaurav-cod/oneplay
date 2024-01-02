@@ -50,9 +50,17 @@ export class Gamezop implements OnInit, OnDestroy {
     this.paramsSubscription?.unsubscribe();
   }
 
-  ngOnInit(): void {
+  async ngOnInit()  {
     this.title.setTitle("Gamezop");
     this.loaderService.start();
+    await this.restService.getGamezopCategory().toPromise().then((response)=> {
+      response.forEach((res)=> {
+        this.queries[res] = {
+           genres: res 
+        }
+      })
+    });
+
     this.paramsSubscription = this.route.params.subscribe({
       next: (params) => {
         this.feedSubscription?.unsubscribe();
@@ -66,7 +74,6 @@ export class Gamezop implements OnInit, OnDestroy {
           this.gameFilterSubscription = this.restService
             .getGamezopFilteredGames(this.queries[query], 0)
             .subscribe((games) => {
-              debugger;
               this.genreGames = games;
             });
         }
@@ -88,15 +95,6 @@ export class Gamezop implements OnInit, OnDestroy {
             }
           );
       },
-    });
-    this.restService.getGamezopCategory().toPromise().then((response)=> {
-      
-      response.forEach((res)=> {
-
-        this.queries[res] = {
-           genres: res 
-        }
-      })
     });
   }
 

@@ -105,9 +105,9 @@
               href="javascript:void(0)"
               class="card bgColor mutedColor"
               [ngClass]="{activeBG: !genreSelected}"
-              [routerLink]="['/home']"
+              [routerLink]="['/gamezop/']"
             >
-              <div class="customBtnPadding bgColor">For You</div>
+              <div class="customBtnPadding bgColor">All</div>
             </a>
           </div>
           <div class="col-auto px-2 tabOptions" *ngFor="let route of routes">
@@ -115,7 +115,7 @@
               href="javascript:void(0)"
               class="card bgColor mutedColor"
               routerLinkActive="activeBG"
-              [routerLink]="['/home/' + route]"
+              [routerLink]="['/gamezop/' + route]"
             >
               <div class="customBtnPadding bgColor">{{ route }}</div>
             </a>
@@ -127,7 +127,14 @@
 
 <div>
   <div class="mb-0">
-    <div>
+    <div *ngIf="genreSelected && genreGames.length > 0">
+      <app-similar-games
+        [title]="genreSelected"
+        [games]="genreGames"
+        [isGamezopList]="true"
+      ></app-similar-games>
+    </div>
+    <div *ngIf="!genreSelected">
       <app-similar-games
         *ngFor="let row of restRows"
         [title]="row.title"
@@ -137,3 +144,5 @@
     </div>
     <div>
 </div>
+
+<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
