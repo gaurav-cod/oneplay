@@ -1,0 +1,44 @@
+<a
+  #gameLink
+  href="javascript:void(0)"
+  class="card card-block border-0 shadow-1 position-relative"
+  (click)="onGameClick()"
+>
+  <div
+    class="mask"
+    style="z-index: 2;"
+    (mouseenter)="playVideo(gameLink, image)"
+    (mouseleave)="pauseVideo(gameLink, image)"
+  >
+    <img
+      #image
+      [ngClass]="{ w290h185: hfw }"
+      class="card-img borderRadius10 loadingBg"
+      [src]="game.assets['cover']"
+      (error)="onImgError($event)"
+      [ngStyle]="{
+        'object-fit': hfw ? 'unset' : 'cover'
+      }"
+      alt=""
+      loading="lazy"
+    />
+    <h4 *ngIf="showTitle" class="game-title">{{ game.name }}</h4>
+    <div
+      *ngIf="showSound"
+      class="mute bg-translucent-darker"
+      [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)"
+    >
+      <em
+        class="fa text-white"
+        [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"
+      ></em>
+    </div>
+    <ngx-ui-loader
+      [fgsColor]="'#c32ead'"
+      [hasProgressBar]="false"
+      [loaderId]="loaderId"
+      [overlayBorderRadius]="'15px'"
+    ></ngx-ui-loader>
+  </div>
+</a>

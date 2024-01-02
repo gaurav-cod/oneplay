@@ -15,11 +15,13 @@ import { WishlistGuard } from 'src/app/guards/wishlist.guard';
 import { CheckoutComponent } from 'src/app/pages/checkout/checkout.component';
 import { ChatComponent } from 'src/app/pages/chat/chat.component';
 import { NotificationsComponent } from 'src/app/pages/notifications/notifications.component';
+import { Gamezop } from 'src/app/pages/home/gamezop.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'settings/:tab',        component: UserProfileComponent },
     { path: 'home',                 component: HomeComponent },
     { path: 'home/:filter',         component: HomeComponent },
+    { path: 'gamezop',              component: Gamezop },
     { path: 'chat',                 component: ChatComponent },
     { path: 'store',                component: StoreComponent },
     { path: 'store/:filter',        component: StoreComponent },

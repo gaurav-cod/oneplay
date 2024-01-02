@@ -1,0 +1,139 @@
+<div
+  class="container-fluid pb-3 mb-lg-0 pb-lg-0"
+  style="padding-left: 0px !important; padding-right: 0px !important"
+>
+    <ngb-carousel
+    id="home-header"
+    [interval]="4000"
+    [pauseOnFocus]="false"
+    [pauseOnHover]="true"
+    [showNavigationArrows]="true"
+    [showNavigationIndicators]="false"
+    *ngIf="!!firstRow"
+    >
+    <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
+        <div class="row mt-2 mt-lg-0">
+          <div class="col p-1 overflow-hidden">
+            <div class="card bgTransparent border-0 height40vh">
+              <div class="row carousel-images">
+                <div class="col-auto p-lg-2 p-1 customWidth">
+                  <div class="card bgTransparent border-0 borderRadius10">
+                    <img
+                      class="card-img borderRadius10 height40vh left-img"
+                      [src]="
+                        firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1].assets['cover']
+                      "
+                      alt="img"
+                    />
+                    <div class="card-img-overlay playnowbtn borderRadius10"></div>
+                  </div>
+                </div>
+                <div class="col-auto p-lg-2 p-1 customWidth1">
+                  <div class="card bgTransparent border-0 borderRadius10">
+                    <img
+                      class="card-img borderRadius10 height40vh center-img"
+                      [src]="game.assets['cover']"
+                      alt="img"
+                    />
+                    <div class="card-img-overlay playnowbtn borderRadius10"></div>
+                  </div>
+                </div>
+                <div class="col-auto p-lg-2 p-1 customWidth">
+                  <div class="card bgTransparent border-0 borderRadius10">
+                    <img
+                      class="card-img borderRadius10 height40vh right-img"
+                      [src]="
+                        firstRow.games[
+                          i === firstRow.games.length - 1 ? 0 : i + 1
+                        ].assets['cover']
+                      "
+                      alt="img"
+                    />
+                    <div class="card-img-overlay playnowbtn borderRadius10"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-img-overlay">
+                <div
+                  class="row height30vh pl-lg-3"
+                  (click)="viewBannerGame(game)"
+                >
+                  <div class="col-auto customWidth borderRadius10">
+                    <div class="row h-100 align-items-center">
+                      <div class="col">
+                        <!-- <img [src]="firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1].textLogo" class="text-logo d-none d-lg-block" alt="" /> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col borderRadius10">
+                    <div class="row h-100 align-items-center">
+                      <div class="col">
+                        <!-- <img [src]="game.textLogo" class="text-logo" alt="" /> -->
+                      </div>
+                    </div>
+                    <div class="position-absolute bottom-0">
+                      <button
+                        (click)="viewBannerGame(game)"
+                        class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
+                      >
+                        Play Now
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-auto customWidth borderRadius10 text-center">
+                    <div class="row h-100 align-items-center">
+                      <div class="col">
+                        <!-- <img [src]="firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1].textLogo" class="text-logo d-none d-lg-block ml-md-3" alt="" /> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-carousel>
+</div>
+
+<div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0 d-none d-md-block">
+    <div class="row justify-content-center pt-2 pb-2">
+      <div class="col-auto">
+        <div class="row justify-content-center scrolltab">
+          <div class="col-auto px-2 tabOptions">
+            <a
+              href="javascript:void(0)"
+              class="card bgColor mutedColor"
+              [ngClass]="{activeBG: !genreSelected}"
+              [routerLink]="['/home']"
+            >
+              <div class="customBtnPadding bgColor">For You</div>
+            </a>
+          </div>
+          <div class="col-auto px-2 tabOptions" *ngFor="let route of routes">
+            <a
+              href="javascript:void(0)"
+              class="card bgColor mutedColor"
+              routerLinkActive="activeBG"
+              [routerLink]="['/home/' + route]"
+            >
+              <div class="customBtnPadding bgColor">{{ route }}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div>
+  <div class="mb-0">
+    <div>
+      <app-similar-games
+        *ngFor="let row of restRows"
+        [title]="row.title"
+        [games]="row.games"
+        [isGamezopList]="true"
+      ></app-similar-games>
+    </div>
+    <div>
+</div>

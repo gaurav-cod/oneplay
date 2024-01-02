@@ -46,6 +46,8 @@ import { GameplayHistoryModel } from "../models/gameplay.model";
 import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
 import { NotificationModel } from "../models/notification.model";
 import Swal from 'sweetalert2';
+import { GamezopFeedModel } from "../models/gamezopFeed.model";
+import { GamezopModel } from "../models/gamezop.model";
 @Injectable({
   providedIn: "root",
 })
@@ -1302,5 +1304,49 @@ export class RestService {
     return this.http.delete<void>(
       this.r_mix_api + `/notification/${id}/delete`
     );
+  }
+
+  // gamezop API
+  getGamezopFeed(params?: any): Observable<GamezopFeedModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/games/gamezop/feeds", { params })
+      .pipe(
+        map((res) => res.map((d) => new GamezopFeedModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getGamezopCategory(params?: any): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/games/gamezop/categories", { params })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getGamezopFilteredGames(
+    query: { [key: string]: string },
+    page: number,
+    limit: number = 12
+  ): Observable<GamezopModel[]> {
+    const data = {
+      order_by: "release_date:desc",
+      ...query,
+    };
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
+        params: { page, limit },
+      })
+      .pipe(
+        map((res) => res.map((d) => new GamezopModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 }
