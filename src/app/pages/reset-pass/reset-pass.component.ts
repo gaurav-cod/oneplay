@@ -69,7 +69,8 @@ export class ResetPassComponent implements OnInit {
         this.resetPasswordSuccessfull = true;
       },
       (error) => {
-        this.errorMessage = error.message;
+        // this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
@@ -85,5 +86,19 @@ export class ResetPassComponent implements OnInit {
 
   get domain() {
     return environment.domain;
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+     }).then((response)=> {
+      if (error.data.primary_CTA === "Request" && response.isConfirmed) {
+        this.router.navigate(['/forgot-password'])
+      }
+     })
   }
 }
