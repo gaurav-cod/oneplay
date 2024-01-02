@@ -240,7 +240,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           icon: "error",
         });
       }
-    }, 5000); // 5 minutes
+    }, 300000); // 5 minutes
   }
 
   private async handleCancelation(orderId: string) {
