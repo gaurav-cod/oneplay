@@ -273,6 +273,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.restService.getGameStatus()
+      .toPromise()
+      .then(data => this.gameService.setGameStatus(data));
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
     this._pageChangeSubscription = combineLatest(
@@ -848,7 +851,9 @@ export class ViewComponent implements OnInit, OnDestroy {
             },
           });
         });
-        this.gameService.gameStatus = this.restService.getGameStatus();
+        this.restService.getGameStatus()
+          .toPromise()
+          .then(data => this.gameService.setGameStatus(data));
         this.stopTerminating();
       },
       (err) => {
@@ -1028,7 +1033,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 3000);
+    this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 10000);
   }
 
   public cancelWaitQueue() {
@@ -1086,7 +1091,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.progress = 100;
       this._clientToken = data.client_token;
       const launchedFrom = this.action === "Play" ? "Play now" : "Resume";
-      lastValueFrom(this.restService.getGameStatus())
+      this.restService.getGameStatus()
+        .toPromise()
         .then((status) => {
           this.stopLoading();
           this.gameStatusSuccess(status);
@@ -1293,7 +1299,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.restService.terminateGame(sessionId).subscribe(
           () => {
             setTimeout(() => {
-              this.gameService.gameStatus = this.restService.getGameStatus();
+              this.restService.getGameStatus()
+                .toPromise()
+                .then(data => this.gameService.setGameStatus(data));
               this.startSession();
             }, 2000);
           },

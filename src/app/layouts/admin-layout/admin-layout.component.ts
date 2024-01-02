@@ -20,7 +20,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   private fiveSecondsTimer: NodeJS.Timer;
   private threeSecondsTimer: NodeJS.Timer;
-  private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
 
@@ -44,17 +43,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
-    }, 5 * 1000);
+    }, 10 * 1000);
 
     this.threeSecondsTimer = setInterval(() => {
       this.setOnline();
     }, 3 * 1000);
-
-    this.routerEventSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.initGames();
-      }
-    });
 
     this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
       if (params.src === "oneplay_app") {
@@ -80,7 +73,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
     clearInterval(this.threeSecondsTimer);
-    this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
     this.userCanGameSubscription.unsubscribe();
   }
@@ -127,7 +119,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initGames() {
-    this.gameService.gameStatus = this.restService.getGameStatus();
+    this.restService
+      .getGameStatus()
+      .toPromise()
+      .then((data) => this.gameService.setGameStatus(data));
   }
 
   private setOnline() {
