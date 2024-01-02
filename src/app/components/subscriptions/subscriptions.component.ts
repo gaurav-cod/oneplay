@@ -235,6 +235,11 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   downloadInvoice(subscription) {
+    this.restService.getPaymentRecipt(subscription.planId).subscribe((response)=> {
+      // TODO: Download Invoice
+    }, (error)=> {
+
+    })
   }
 
   private addSubCardEvent(

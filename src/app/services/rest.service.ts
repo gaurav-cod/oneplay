@@ -503,6 +503,16 @@ export class RestService {
       .pipe(map((res) => res.length > 0));
   }
 
+  getPaymentRecipt(planId: string): Observable<string> {
+    return this.http.get<string>(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`)
+    .pipe(
+      map((res) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
   setOnline(): Observable<SetOnlineRO> {
     return this.http
       .post<SetOnlineRO>(this.r_mix_api + "/accounts/online", null)
