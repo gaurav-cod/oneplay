@@ -43,6 +43,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private referralSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
+  successIcon: string = null;
+  successMessage: string = null;
 
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
@@ -208,16 +210,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
               keyboard: false,
             }
           );
+          this.successIcon = response.data?.icon;
+          this.successMessage = response.data?.message;
         },
         (error) => {
           this.loading = false;
           this.showError(error);
-          // Swal.fire({
-          //   title: "Error Code: " + error.code,
-          //   text: error.message,
-          //   icon: "error",
-          //   confirmButtonText: "Try Again",
-          // });
+         
         }
       );
   }
@@ -308,13 +307,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
-    }).then((response)=> {
-      if (response.isDismissed && error.data.CTAs?.includes("CONTACT")) {
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+     }).then((response)=> {
+      if (response.isDismissed && (error.data.secondary_CTA?.includes("Contact") || error.data.primary_CTA.includes("Contact"))) {
         this.discordLink.nativeElement.click();
       }
     })
