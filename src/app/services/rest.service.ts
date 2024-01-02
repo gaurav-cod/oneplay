@@ -120,10 +120,6 @@ export class RestService {
         })
       );
   }
-  
-  createPassword(password: string): void {
-
-  }
 
   updatePassword(old_password: string, password: string): Observable<void> {
     return this.http
@@ -134,6 +130,17 @@ export class RestService {
           throw error;
         })
       );
+  }
+
+  createPassword(password: string): Observable<void> {
+    return this.http
+    .put(this.r_mix_api_2 + "/accounts/password", { password })
+    .pipe(
+      map(() => {}),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   updateEmail(email: string): Observable<string> {

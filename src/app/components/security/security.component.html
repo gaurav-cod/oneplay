@@ -110,27 +110,36 @@
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
         Create Password
       </h3>
-      <form role="form">
+      <form role="form"[formGroup]="updateSecurity">
         <div class="col-12 mt-4">
           <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">New Password</label>
-          <input type="password" class="form-control inputBorder font18 font500 text-white"
-            placeholder="Enter your New Password" formControlName="password" />
+          <div>
+            <input [type]="passwordInputContainer.showPasswordToText ? 'text' : 'password'" class="form-control inputBorder font18 font500 text-white"
+              placeholder="Enter your New Password" formControlName="password" />
+            <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 45px">
+              <img [src]="(passwordInputContainer.showPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" (click)="passwordInputContainer.showPasswordToText = !passwordInputContainer.showPasswordToText" alt="">
+            </span>
+          </div>
           <p class="font500 muteText mb-0" style="text-align: left !important; font-size: 12px" [ngClass]="{'errorGradientColor': passwordErrored}">
             Password should be at least 8 characters, 1 UPPERCASE, 1
             lowercase, 1 Symbol and 1 number.
           </p>
+          <!-- <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor d-flex text-left">*invalid password</span> -->
         </div>
         <div class="col-12 mt-4">
           <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">Confirm New Password</label>
-          <input type="password" class="form-control inputBorder font18 font500 text-white"
-            placeholder="Re-enter your New Password" formControlName="confirmPassword" />
-          <span *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor">*password does not
+          <div>
+            <input [type]="passwordInputContainer.showConfPasswordToText ? 'text' : 'password'" class="form-control inputBorder font18 font500 text-white"
+              placeholder="Re-enter your New Password" formControlName="confirmPassword" />
+              <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 45px">
+                <img [src]="(passwordInputContainer.showConfPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordInputContainer.showConfPasswordToText = !passwordInputContainer.showConfPasswordToText" class="img-fluid" alt="">
+              </span>
+          </div>
+          <span *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor d-flex text-left">*password does not
             match</span>
         </div>
 
-        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" (click)="createPassword()">
-        Confirm
-      </button>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="createPassword()">Confirm</button>
       </form>
     </div>
   </div>
@@ -186,9 +195,9 @@
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
         {{ emailExist ? 'Change' : 'Add'}} Email Address
       </h3>
-      <!-- <p class="muteText font14 font500 mb-5 px-2 text-center">
+      <p class="muteText font14 font500 px-2 text-center">
         Security code verification is required to make this change.
-      </p> -->
+      </p>
       <form role="form">
         <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="Add an Email"
           [formControl]="email" (keyup)="resetValidation()" />
@@ -219,7 +228,7 @@
         Change Mobile Number
       </h3>
       <p class="muteText font14 font500 mb-5 px-2 text-center">
-        Security code verification is required to make this change.
+        A Security code verification is required to make this change.
       </p>
       <form role="form" [formGroup]="phoneForm">
         <div class="input-group inputBorder">

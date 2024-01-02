@@ -68,6 +68,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.username.setValue(user.username);
       this.name.setValue(user.name);
       this.bio.setValue(user.bio);
+      this.dob.setValue(user.dob);
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
   }
@@ -90,6 +91,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
+      this.bio.value !== (this.currentUserState.dob ?? null) ||
       !!this.photoFile
     );
   }
@@ -156,6 +158,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
     }
+    if (!!this.dob.value) {
+      const year = this.dob.value['year'];
+      const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
+      const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];
+      body.dob = `${year}-${month}-${day}`;
+    }
 
     this.saveProfileLoder = true;
 
@@ -167,6 +175,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           lastName: body.last_name,
           bio: body.bio,
           photo: this.photo as string,
+          dob: body.dob
         });
         Swal.fire({
           icon: "success",

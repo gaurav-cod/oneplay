@@ -59,7 +59,15 @@
                 errorBorder: username.touched && username.invalid,
                 'border-0': username.valid
               }"
+              style="border-radius: 5px;"
             />
+            <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
+              <img
+                class="img-fluid"
+                src="assets/img/singup-login/Group (1).svg"
+                alt=""
+              />
+            </span>
           </div>
           
           <p class="text-white mb-0 mt-1 font500" style="font-size: 12px;">
@@ -76,7 +84,7 @@
           <div class="input-group dateDropdown">
             <input
               class="form-control height52 font18 font500 text-white border-0 borderRadius10 lightBg"
-              formControlName="dob"
+              [formControl]="dob"
               placeholder="DD\MM\YYYY"
               ngbDatepicker
               #d="ngbDatepicker"
@@ -84,11 +92,12 @@
               (dateSelect)="d.toggle()"
               [min]="minDate"
               [max]="maxDate"
+              style="border-radius: 5px;"
             />
             <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
               <img
                 class="img-fluid"
-                src="assets/img/singup-login/fontAwesomeCalender.svg"
+                src="assets/img/singup-login/Calendar.svg"
                 alt=""
               />
             </span>

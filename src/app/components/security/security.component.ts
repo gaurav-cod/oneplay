@@ -97,6 +97,11 @@ export class SecurityComponent implements OnInit, OnDestroy {
   passwordExist: boolean = false;
   emailExist: boolean = false;
 
+  passwordInputContainer = {
+    showPasswordToText: false,
+    showConfPasswordToText: false
+  }
+
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
   private _changePhoneModalRef: NgbModalRef;
@@ -115,6 +120,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.authService.user.subscribe((user) => {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
+      this.emailExist = this.user.email?.length > 0;
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
     });
@@ -180,6 +186,11 @@ export class SecurityComponent implements OnInit, OnDestroy {
       return control.touched && false;
     }
   }
+  get createPasswordErrored() {
+    const newPasswordcontrol = this.updateSecurity.controls["password"];
+    const confPasswordcontrol = this.updateSecurity.controls["confirmPassword"];
+    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value.length == 0 || confPasswordcontrol.value.length == 0);
+  }
 
   timer(minute) {
     let seconds: any = 60;
@@ -206,7 +217,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   createPassword() {
-    // this.restService.createPassword().subscribe((response: any)=> {
+    
+    this.restService.createPassword(this.updateSecurity.value.password).subscribe((response)=> {
         this._createPassModalRef?.close();
         Swal.fire({
           icon: "success",
@@ -214,9 +226,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
           showConfirmButton: false,
           showCancelButton: false,
         });
-    // }, (error: any)=> {
+    }, (error: any)=> {
       
-    // })
+    })
   }
 
   openEmailModal() {
@@ -240,20 +252,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       this.errorMessage = "This email address is already in use.";
       return;
     }
-    if (this.emailExist) {
-      this.updateEmail();
-    } else {
-      
-      // TODO : Email creation API integration
-      this.clearErrors();
-      this._changeEmailModalRef.close();
-      Swal.fire({
-        icon: "success",
-        text: "Successfully registered email.", // need to verify
-        showConfirmButton: false,
-        showCancelButton: false,
-      });
-    }
+    // if (this.emailExist) {
+    this.updateEmail();
+    
   }
 
   updateEmail(): void {
@@ -264,12 +265,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this._changeEmailModalRef.close();
         this.timer(1);
         this.openOTPScreen();
-        Swal.fire({
-          icon: "success",
-          text: "You have successfully changed your email.",
-          showConfirmButton: false,
-          showCancelButton: false,
-        });
       },
       (error) => {
         this.errorCode = error.code;
@@ -372,12 +367,6 @@ export class SecurityComponent implements OnInit, OnDestroy {
         () => {
           this.clearErrors();
           this._changePhoneModalRef.close();
-          Swal.fire({
-            icon: "success",
-            text: "You have successfully changed your email.",
-            showConfirmButton: false,
-            showCancelButton: false,
-          });
           this.timer(1);
           this.openOTPScreen();
         },
@@ -494,7 +483,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       });
   }
 
-  openCreatePasswordModal(container: ElementRef<HTMLDivElement>,) {
+  openCreatePasswordModal(container: ElementRef<HTMLDivElement>) {
     this._createPassModalRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
