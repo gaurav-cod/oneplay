@@ -311,7 +311,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
      }).then((response)=> {
-      if (response.isDismissed && error.data.CTAs?.includes("Contact")) {
+      if (response.isDismissed && (error.data.secondary_CTA?.includes("Contact") || error.data.primary_CTA.includes("Contact"))) {
         this.discordLink.nativeElement.click();
       }
     })

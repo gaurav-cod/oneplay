@@ -165,12 +165,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       text: error.data.message,
       imageUrl: error.data.icon,
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
-    }).then((response)=> {
-      if (response.isConfirmed) {
-        
-      }
-    });
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
   }
 }

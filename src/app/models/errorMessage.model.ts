@@ -21,7 +21,7 @@ export class ErrorMessageModel {
         this.message = json["message"];
         this.icon = json["icon"];
         this.primary_CTA = this.toTitleCase(json["primary_CTA"]);
-        this.secondary_CTA =  this.toTitleCase(json['CTAs'].indexOf(this.primary_CTA) == 0 ? json['CTAs'][1] : json['CTAs'][0]);
-        this.showSecondaryCTA = json["CTAs"] == 2;
+        this.secondary_CTA =  this.toTitleCase(json['CTAs'].indexOf(json["primary_CTA"]) == 0 ? json['CTAs'][1] : json['CTAs'][0]);
+        this.showSecondaryCTA = json["CTAs"].length == 2;
     }
 }
