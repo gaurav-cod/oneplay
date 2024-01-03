@@ -226,7 +226,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         Swal.fire({
           title: "Oops!",
           text: "Looks like you took a bit too long. Let's refresh and try again.",
-          imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Internet.svg',
+          imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Warning.svg',
           confirmButtonText: "Okay",
           allowOutsideClick: false,
           allowEscapeKey: false,
