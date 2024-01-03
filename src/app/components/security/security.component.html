@@ -232,6 +232,9 @@
               match</span>
           </div>
         </div>
+
+        <span *ngIf="errorMessage" class="font16 font500 errorGradientColor">{{errorMessage}}</span>
+
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
           [disabled]="checkvalidationValue" (click)="updatePassword()">
           Confirm

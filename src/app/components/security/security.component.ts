@@ -229,9 +229,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       },
       (error) => {
         
-        // this.errorCode = error.code;
-        // this.errorMessage = error.message;
-        this.showError(error);
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -440,12 +440,15 @@ export class SecurityComponent implements OnInit, OnDestroy {
           });
         },
         error: (error) => {
-          Swal.fire({
-            // title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          this.errorMessage = error.message;
+          this.errorCode = error.code;
+          // this.showError(error);
+          // Swal.fire({
+          //   // title: "Error Code: " + error.code,
+          //   text: error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Ok",
+          // });
         },
       });
   }
