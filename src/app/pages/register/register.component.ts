@@ -21,7 +21,7 @@ import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { phoneValidator } from "src/app/utils/validators.util";
-import { Subscription } from "rxjs";
+import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 
 @Component({
@@ -145,7 +145,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ctrl.disable();
       this.getName(ctrl.value);
     });
-    this.referralSub = ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.referralSub = ctrl.valueChanges .pipe(
+      debounceTime(1000),
+      distinctUntilChanged() 
+    ).subscribe((id) => this.getName(id));
     this.countryCodeSub = this.registerForm.controls[
       "country_code"
     ].valueChanges.subscribe(() =>
@@ -265,7 +268,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
     this.restService.getName(id).subscribe(
       (name) => (this.referralName = name),
-      (error) => (this.referralName = error.message)
+      (error) => (this.showError(error))
     );
   }
 

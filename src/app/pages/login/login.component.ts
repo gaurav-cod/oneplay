@@ -122,7 +122,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           icon: "success",
           text: "Check your email and verify again",
         });
-      },
+      }, 
+      error: () => {
+        this.showError(error);
+      }
     });
   }
 

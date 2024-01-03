@@ -125,7 +125,7 @@ export class OtpVerifyComponent implements OnInit {
         this.errorCode = error.code;
         this.isWrongOTPEntered = true;
         this.verifyOTPError = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     })
   }
@@ -139,6 +139,7 @@ export class OtpVerifyComponent implements OnInit {
         if (error.code == 429) {
           this.isMaxOTPLimitRechead = true;
           this.verifyOTPError = error.message;
+          this.showError(error);
         }
       }
     })

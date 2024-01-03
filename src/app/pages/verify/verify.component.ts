@@ -83,9 +83,8 @@ export class VerifyComponent implements OnInit, OnDestroy {
         });
         if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
           this.resendVerificationLink(err, token);
-        } else {
-            this.showError(err);
         }
+        this.showError(err);
       }
     );
   }
