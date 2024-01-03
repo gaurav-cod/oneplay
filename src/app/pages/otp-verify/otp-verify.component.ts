@@ -139,6 +139,7 @@ export class OtpVerifyComponent implements OnInit {
         if (error.code == 429) {
           this.isMaxOTPLimitRechead = true;
           this.verifyOTPError = error.message;
+          this.showError(error);
         }
       }
     })
