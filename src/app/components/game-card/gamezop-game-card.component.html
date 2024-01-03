@@ -7,8 +7,6 @@
   <div
     class="mask"
     style="z-index: 2;"
-    (mouseenter)="playVideo(gameLink, image)"
-    (mouseleave)="pauseVideo(gameLink, image)"
   >
     <img
       #image
@@ -22,7 +20,6 @@
       alt=""
       loading="lazy"
     />
-    <h4 class="game-gamezop-title truncate-line-clamp">{{ game.name }}</h4>
     <div
       *ngIf="showSound"
       class="mute bg-translucent-darker"
@@ -42,3 +39,4 @@
     ></ngx-ui-loader>
   </div>
 </a>
+<h4 class="game-gamezop-title truncate-line-clamp">{{ game.name }}</h4>

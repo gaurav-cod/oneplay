@@ -79,6 +79,17 @@
     height: 210px !important;
   }
 }
+.scrollGameHeightAdjust {
+  @media (min-width: 1200px) {
+    height: 250px !important;
+  }
+  @media (max-width: 1200px) {
+    height: 240px !important;
+  }
+  @media (max-width: 475px) {
+    height: 210px !important;
+  }
+}
 
 .paddingLeft {
   @media (max-width: 767.9px) {
