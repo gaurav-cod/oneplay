@@ -228,6 +228,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           text: "Looks like you took a bit too long. Let's refresh and try again.",
           imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Internet.svg',
           confirmButtonText: "Okay",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then(({ isConfirmed }) => {
           if (isConfirmed) {
             window.location.reload();
