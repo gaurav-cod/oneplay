@@ -222,9 +222,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       try {
         this.handleCancelation(orderId);
         Swal.fire({
-          title: "Oops...",
+          title: "Oops!",
           text: "Looks like you took a bit too long. Let's refresh and try again.",
-          icon: "error",
+          imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Internet.svg',
           confirmButtonText: "Okay",
         }).then(({ isConfirmed }) => {
           if (isConfirmed) {
