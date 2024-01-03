@@ -255,9 +255,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       },
       (error) => {
         
-        // this.errorCode = error.code;
-        // this.errorMessage = error.message;
-        this.showError(error);
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -294,7 +294,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }
@@ -380,7 +380,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }

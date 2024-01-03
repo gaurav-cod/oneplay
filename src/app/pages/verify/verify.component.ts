@@ -190,7 +190,22 @@ export class VerifyComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed && error.data.primary_CTA === "Request") {
-        this.router.navigate(['/forgot-password']);
+        Swal.fire({
+          title: "Enter your email",
+          input: "email",
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          confirmButtonText: "Proceed",
+          showLoaderOnConfirm: true,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then((result)=> {
+          if (result.isConfirmed) {
+            const email = result.value;
+            
+          }
+        })
       }
     })
   }
