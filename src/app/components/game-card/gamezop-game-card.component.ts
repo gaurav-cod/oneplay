@@ -5,8 +5,6 @@ import { GameModel } from "src/app/models/game.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { CountlyService } from "src/app/services/countly.service";
-import { getGameLandingViewSource } from "src/app/utils/countly.util";
-import { environment } from "src/environments/environment";
 import { v4 } from "uuid";
 
 @Component({
@@ -23,7 +21,6 @@ export class GamezopGameCard implements OnInit {
     timer: NodeJS.Timeout;
     muted = true;
     showSound = false;
-    showTitle = false;
   
     readonly loaderId = v4();
   
@@ -32,13 +29,11 @@ export class GamezopGameCard implements OnInit {
     }
   
     constructor(
-      private readonly router: Router,
-      private readonly gLink: GLinkPipe,
-      private readonly loaderService: NgxUiLoaderService,
-      private readonly countlyService: CountlyService
+      private readonly loaderService: NgxUiLoaderService
     ) {}
   
-    ngOnInit(): void { }
+    ngOnInit(): void {
+    }
   
     onGameClick() {
       window.open(this.game.url);
@@ -46,7 +41,6 @@ export class GamezopGameCard implements OnInit {
   
     onImgError(event) {
       event.target.src = "assets/img/default_bg.webp";
-      this.showTitle = true;
     }
   
     playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {

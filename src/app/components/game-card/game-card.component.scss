@@ -45,6 +45,14 @@
     max-height: 50px;
     overflow: hidden;
   }
+  .game-gamezop-title {
+    width: 100%;
+    color: #ffffff;
+  }
+}
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
 }
 
 @media (max-width: 480px) {
