@@ -67,7 +67,12 @@
             alt="casual gaming"
             *ngIf="showCasualGamingLabel"
           />
-          <a href="https://8129.play.gamezop.com/" class="nav-link p-0 mt-2 pt-1 mr-3"
+          <a 
+              href="javascript:void(0)"
+              routerLinkActive="active"
+              [routerLink]="['/gamezop']"
+              class="nav-link p-0 mt-2 pt-1 mr-3"
+              (click)="headerNavOnClick('gamezopClicked')"
             >Level 1</a
           >
         </li>
