@@ -159,7 +159,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
-      if (response.isDismissed && (error.data.primary_CTA?.includes("Contact") || error.data.secondary_CTA?.includes("Contact"))) {
+      if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
         this.contactUs.nativeElement.click();
       }
     })
