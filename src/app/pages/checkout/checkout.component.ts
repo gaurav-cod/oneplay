@@ -224,10 +224,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       try {
         this.handleCancelation(orderId);
         Swal.fire({
-          title: "Oops...",
+          title: "Oops!",
           text: "Looks like you took a bit too long. Let's refresh and try again.",
-          icon: "error",
+          imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Warning.svg',
           confirmButtonText: "Okay",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
         }).then(({ isConfirmed }) => {
           if (isConfirmed) {
             window.location.reload();
@@ -240,7 +242,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           icon: "error",
         });
       }
-    }, 5000); // 5 minutes
+    }, 300000); // 5 minutes
   }
 
   private async handleCancelation(orderId: string) {
