@@ -103,7 +103,7 @@ export class ForgotPassComponent implements OnInit {
         this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
       }, error: (error) => {
         Swal.fire({
-          title: error.message,
+          text: error.message,
           imageUrl: "assets/img/swal-icon/Account.svg",
           confirmButtonText: "Okay",
         }).then(() => {
