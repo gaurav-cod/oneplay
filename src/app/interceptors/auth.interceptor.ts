@@ -91,7 +91,7 @@ export class AuthInterceptor implements HttpInterceptor {
             method: req.method,
             headers: JSON.stringify(headers),
             body: JSON.stringify(body),
-            errorResponse: JSON.stringify(error.error),
+            errorResponse: JSON.stringify(error.error ?? error),
           };
 
           if (error.statusText !== "OK") {
