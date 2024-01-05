@@ -585,20 +585,15 @@ export class RestService {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
       .pipe(catchError((error) => {
-      this.showError(error.error);
-        throw error;
+        // Swal.fire({
+        //   title: 'Oops!',
+        //   text: 'Sorry, the code is invalid. Please try again.',
+        //   icon: 'error',
+        // });
+      throw error; 
     }));
   }
 
-  showError(error) {
-    Swal.fire({
-      title: error.data.message,
-      imageUrl: error.data.icon,
-      confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.showSecondaryCTA,
-      cancelButtonText: error.data.secondary_CTA
-    })
-  }
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
     return this.http.get<SpeedTestServerRO>(
       this.r_mix_api + "/games/speed-test-server"

@@ -90,7 +90,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.trigger_speed_test = res.trigger_speed_test;
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
-          this.restService.setQRSession(code, res.session_token).subscribe();
+          this.restService.setQRSession(code, res.session_token).subscribe({
+            next: ()=>{},
+            error: (error)=> {
+              this.showError(error);
+            }
+          });
         }
         this.authService.login(res.session_token);
       },
@@ -159,7 +164,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
-      if (response.isDismissed && (error.data.primary_CTA?.includes("Contact") || error.data.secondary_CTA?.includes("Contact"))) {
+      if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
         this.contactUs.nativeElement.click();
       }
     })

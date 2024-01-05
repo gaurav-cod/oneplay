@@ -255,9 +255,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
       },
       (error) => {
         
-        // this.errorCode = error.code;
-        // this.errorMessage = error.message;
-        this.showError(error);
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -294,7 +294,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }
@@ -380,7 +380,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }
@@ -429,6 +429,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this._changePasswordModalRef.close();
+          this.errorMessage = null;
+          this.errorCode = null;
           Swal.fire({
             icon: "success",
             title: "Password Changed!",
@@ -479,6 +481,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   closePasswordModal() {
     this._changePasswordModalRef?.close();
+    this.errorMessage = null;
+    this.errorCode = null;
     this.updateSecurity.reset();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);

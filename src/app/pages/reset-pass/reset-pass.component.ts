@@ -69,8 +69,8 @@ export class ResetPassComponent implements OnInit {
         this.resetPasswordSuccessfull = true;
       },
       (error) => {
-        this.errorMessage = error.message;
-        // this.showError(error);
+        // this.errorMessage = error.message;
+        this.showError(error);
       }
     );
   }
