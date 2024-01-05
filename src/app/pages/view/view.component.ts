@@ -616,12 +616,12 @@ export class ViewComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
               // need to verify the message to show
-              Swal.fire({
-                // title: "Set up on Safari",
-                // text: "Streaming games is not supported in this browser",
-                // icon: "error",
-                confirmButtonText: "Close",
-              });
+              // Swal.fire({
+              //   title: "Set up on Safari",
+              //   text: "Streaming games is not supported in this browser",
+              //   icon: "error",
+              //   confirmButtonText: "Close",
+              // });
             },
           });
 
@@ -1157,6 +1157,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._initializeEvent?.end({ result: "failure" });
     this.stopLoading();
     this.initializationErrored = true;
+    // this.showError(err, true);
     Swal.fire({
       title: err.message + " Error Code: " + err.code,
       imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
@@ -1401,6 +1402,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {
+   
     if (result.dismiss == Swal.DismissReason.cancel) {
       this.reportResponse = response;
       this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
@@ -1416,7 +1418,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
     
   }
-  showError(error) {
+  showError(error, doAction: boolean = false) {
     Swal.fire({
       title: error.data.title,
       text: error.data.message,

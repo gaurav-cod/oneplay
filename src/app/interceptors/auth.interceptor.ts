@@ -29,7 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private readonly authService: AuthService,
     private readonly countlyService: CountlyService
-  ) {}
+  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
     let req = request;
@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
       req = req.clone({
         setHeaders: {
           session_token: this.authService.sessionToken,
-        },
+        }
       });
     }
 
@@ -144,7 +144,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
-              data: new ErrorMessageModel(error.error.data),
+              data: ( error.error.data ? new ErrorMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
               message:
                 error.error?.message ||
                 error.error?.msg ||
