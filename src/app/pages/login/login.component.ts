@@ -40,6 +40,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _verifySwalModalRef: NgbModalRef;
 
+  verifyEmailErrorObj = {
+    title: null,
+    message: null,
+    imageUrl: null,
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -102,7 +108,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       (error) => {
         this.countlyService.endEvent("signIn", { result: 'failure' });
         this.startSignInEvent();
-        if (error.message == "Please verify your email and phone number") {
+        if (error.message?.toLowerCase() == "please verify your email id and phone number.") {
+          this.verifyEmailErrorObj = {
+            title: error.data.title,
+            message: error.data.message,
+            imageUrl: error.data.icon
+          }
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
             centered: true,
             modalDialogClass: "modal-md",
