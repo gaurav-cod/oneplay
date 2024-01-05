@@ -83,8 +83,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
         });
         if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
           this.resendVerificationLink(err, token);
+        } else { 
+          this.showError(err);
         }
-        this.showError(err);
       }
     );
   }
@@ -190,22 +191,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed && error.data.primary_CTA === "Request") {
-        Swal.fire({
-          title: "Enter your email",
-          input: "email",
-          inputAttributes: {
-            autocapitalize: "off",
-          },
-          confirmButtonText: "Proceed",
-          showLoaderOnConfirm: true,
-          allowOutsideClick: false,
-          allowEscapeKey: false,
-        }).then((result)=> {
-          if (result.isConfirmed) {
-            const email = result.value;
-            
-          }
-        })
+        this.resendVerificationLink(error, this.route.snapshot.paramMap.get("token"));
       }
     })
   }
