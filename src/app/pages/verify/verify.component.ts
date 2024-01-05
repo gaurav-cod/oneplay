@@ -81,11 +81,11 @@ export class VerifyComponent implements OnInit, OnDestroy {
             err?.message
           ),
         });
-        if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
-          this.resendVerificationLink(err, token);
-        } else { 
+        // if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
+        //   this.resendVerificationLink(err, token);
+        // } else { 
           this.showError(err);
-        }
+        // }
       }
     );
   }
@@ -163,7 +163,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
                       title: "Check your email and verify again",
                     }).then(() => this.goToLogin());
                   },
-                  error: (error) => this.resendVerificationLink(error, token),
+                  error: (error) => this.showError(error),
                 });
             }
           });
@@ -181,6 +181,39 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.router.navigate(["/login"]);
   }
 
+  private enterPasswordFlow() {
+    Swal.fire({
+      title: "Enter your password",
+      input: "password",
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      confirmButtonText: "Proceed",
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const password = result.value;
+        const [encodedEmail] = atob(this.route.snapshot.paramMap.get("token")).split(":");
+        const email = atob(encodedEmail);
+        Swal.showLoading();
+        this.restService
+          .resendVerificationLink(email, password)
+          .subscribe({
+            next: () => {
+              localStorage.removeItem("otpSent");
+              Swal.fire({
+                icon: "success",
+                title: "Check your email and verify again",
+              }).then(() => this.goToLogin());
+            },
+            error: (error) => this.showError(error),
+          });
+      }
+    })
+  }
+
   showError(error) {
     Swal.fire({
       title: error.data.title,
@@ -191,7 +224,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed && error.data.primary_CTA === "Request") {
-        this.resendVerificationLink(error, this.route.snapshot.paramMap.get("token"));
+        this.enterPasswordFlow();
       }
     })
   }
