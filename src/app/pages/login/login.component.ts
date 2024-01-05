@@ -90,7 +90,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.trigger_speed_test = res.trigger_speed_test;
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
-          this.restService.setQRSession(code, res.session_token).subscribe();
+          this.restService.setQRSession(code, res.session_token).subscribe({
+            next: ()=>{},
+            error: (error)=> {
+              this.showError(error);
+            }
+          });
         }
         this.authService.login(res.session_token);
       },
