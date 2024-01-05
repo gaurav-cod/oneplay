@@ -74,9 +74,9 @@ export class AuthInterceptor implements HttpInterceptor {
               body[key] = val.toString();
             });
             headers["Content-Type"] = "multipart/form-data";
-          } else if (typeof body === "object" && !Array.isArray(body)) {
+          } else if (typeof req.body === "object" && !Array.isArray(req.body)) {
             delete req.body["password"];
-            body = JSON.stringify(body);
+            body = req.body;
             headers["Content-Type"] = "application/json";
           } else if (!!req.body) {
             body = req.body;
@@ -89,9 +89,9 @@ export class AuthInterceptor implements HttpInterceptor {
             apiEndpoint: error.url,
             userId: this.authService.userIdAndToken.userid,
             method: req.method,
-            headers,
-            body,
-            errorResponse: error.error,
+            headers: JSON.stringify(headers),
+            body: JSON.stringify(body),
+            errorResponse: JSON.stringify(error.error),
           };
 
           if (error.statusText !== "OK") {
