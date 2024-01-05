@@ -24,8 +24,8 @@ export class DeviceHistoryComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly messagingService: MessagingService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService
-  ) {}
+    private readonly countlyService: CountlyService,
+  ) { }
 
   ngOnInit(): void {
     this.countlyService.updateEventData("settingsView", {
@@ -62,11 +62,7 @@ export class DeviceHistoryComponent implements OnInit {
       },
       (error) => {
         this.loggingOut = false;
-          Swal.fire({
-            icon: "error",
-            title: "Error Code: " + error.code,
-            text: error.message,
-          });
+        this.showError(error);
       }
     );
   }
@@ -103,5 +99,20 @@ export class DeviceHistoryComponent implements OnInit {
       centered: true,
       modalDialogClass: "modal-sm",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response) => {
+      if (response.isConfirmed && error.data.primary_CTA?.includes("Login")) {
+        window.location.href = "/dashboard/login";
+      }
+    })
   }
 }
