@@ -56,6 +56,7 @@ export const XCountlySUM = "XCountlySUM";
 export interface CustomCountlyEvents {
   websiteFooterView: {
     homeClicked: "yes" | "no";
+    gamezopClicked: "yes" | "no";
     aboutUsClicked: "yes" | "no";
     careerClicked: "yes" | "no";
     plansPricingClicked: "yes" | "no";
@@ -76,6 +77,7 @@ export interface CustomCountlyEvents {
   };
   menuClick: {
     homeClicked: "yes" | "no";
+    gamezopClicked: "yes" | "no";
     gamesClicked: "yes" | "no";
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
@@ -190,6 +192,7 @@ export interface CustomTimedCountlyEvents {
     source:
       | "myLibrary"
       | "homePage"
+      | "gamezop"
       | "searchPage"
       | "gamesPage"
       | "detailsPage"

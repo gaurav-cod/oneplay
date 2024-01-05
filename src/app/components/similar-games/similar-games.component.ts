@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, ViewChild, AfterViewInit } from "@angular/core";
 import { GameModel } from "src/app/models/game.model";
+import { GamezopModel } from "src/app/models/gamezop.model";
 
 @Component({
   selector: "app-similar-games",
@@ -8,10 +9,9 @@ import { GameModel } from "src/app/models/game.model";
 })
 export class SimilarGamesComponent implements AfterViewInit {
   @Input() title: string;
-  @Input() games: GameModel[];
+  @Input() games: GameModel[] | GamezopModel[];
   @Input() isInstallAndPlayList: boolean = false;
-
-  // @Input() isInstallPlay: boolean = false;
+  @Input() isGamezopList: boolean = false;
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
@@ -26,13 +26,16 @@ export class SimilarGamesComponent implements AfterViewInit {
 
   // get unique games
   get _games() {
-    return this.games.filter((game, index, self) => {
-      return index === self.findIndex((t) => t.oneplayId === game.oneplayId);
+    if (!this.isGamezopList) {
+      return (this.games as GameModel[]).filter((game, index, self) => {
+          return index === self.findIndex((t) => (t as GameModel).oneplayId === (game as GameModel).oneplayId);
+      });
+    } else {
+      return (this.games as GamezopModel[]).filter((game, index, self) => {
+        return index === self.findIndex((t) => (t as GamezopModel).code === (game as GamezopModel).code);
     });
+    }
   }
-  // get isInstallPlayDesktop() {
-  //   return window.innerWidth > 1200 && this.isInstallPlay;
-  // }
 
   scrollRight() {
     const container = this.containerRef.nativeElement;

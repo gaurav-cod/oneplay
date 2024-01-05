@@ -37,6 +37,7 @@ import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
 import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
+import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
   ],
   declarations: [
     GameCardComponent,
+    GamezopGameCard,
     FooterComponent,
     NavbarComponent,
     ConsoleComponent,
@@ -82,9 +84,11 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
     GeneralSettingsComponent,
     InstallPlayGameComponent,
     NotificationAlertComponent,
+    
   ],
   exports: [
     GameCardComponent,
+    GamezopGameCard,
     FooterComponent,
     NavbarComponent,
     ConsoleComponent,
