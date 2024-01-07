@@ -44,6 +44,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
   changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
+  // close all poups when component is destroyed
+  isComponentDestroyed: boolean = false;
+
   buttonText: string = "Continue";
   isVerify: boolean = true;
   isPhone: boolean = true;
@@ -120,7 +123,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.isComponentDestroyed = true;
     this._countryCodeSub?.unsubscribe();
+    this._otpScreenRef?.close();
+    this._changePasswordModalRef?.close();
+    this._changeEmailModalRef?.close();
+    this._changePhoneModalRef?.close();
+    this.logoutRef?.close();
+    Swal.close();
   }
 
   ngOnInit(): void {

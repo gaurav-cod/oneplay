@@ -36,8 +36,8 @@
                   <p class="customTableText mb-0 mt-1">{{gameplay.device.device}}</p>
                 </td>
                 <td class="align-middle py-3">
-                  {{ gameplay.location.city }}
-                  <p class="customTableText mb-0 mt-1">{{ gameplay.location.country }}</p>
+                  {{ gameplay.location_info?.city }}
+                  <p class="customTableText mb-0 mt-1">{{ gameplay.location_info?.country }}</p>
                 </td>
                 <td class="align-middle py-3">
                   {{gameplay.startTime | date : 'hh:mm a'}}
