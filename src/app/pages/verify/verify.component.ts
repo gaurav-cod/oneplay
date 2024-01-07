@@ -223,9 +223,12 @@ export class VerifyComponent implements OnInit, OnDestroy {
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
-      if (response.isConfirmed && error.data.primary_CTA === "Request") {
-        this.enterPasswordFlow();
-      }
+      if (response.isConfirmed) {
+        if ( error.data.primary_CTA === "Request")
+          this.enterPasswordFlow();
+        else 
+          this.router.navigate(['/register']);
+      } 
     })
   }
 }

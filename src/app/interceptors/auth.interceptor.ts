@@ -18,7 +18,7 @@ import { environment } from "src/environments/environment";
 import { AuthService } from "../services/auth.service";
 import Swal from "sweetalert2";
 import networkImage from "./network-image";
-import { ErrorMessageModel } from "../models/errorMessage.model";
+import { TransformMessageModel } from "../models/tansformMessage.model";
 import { CountlyService } from "../services/countly.service";
 import { CountlyHttpError, ErrorStack } from "../services/countly";
 
@@ -144,7 +144,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
-              data: ( error.error.data ? new ErrorMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
+              data: ( error.error.data ? new TransformMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
               message:
                 error.error?.message ||
                 error.error?.msg ||

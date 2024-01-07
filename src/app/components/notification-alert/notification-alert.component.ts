@@ -97,7 +97,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "DOWNLOAD":
         this.notificationService.removeNotification(this.index);
-        window.open((this.notification.data as InvoiceInterface)?.download_link);
+        this.downloadInvoice((this.notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
         if (this.notification.subType === "SUBSCRIPTION_EXPIRING")
@@ -223,6 +223,18 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
           text: err.message,
         });
       }
+    })
+  }
+
+  downloadInvoice(downloadLink: string) {
+    this.restService.downloadPDF(downloadLink).subscribe((response)=> {
+      window.open(downloadLink, "_self");
+    }, (error)=> {
+      Swal.fire({
+        imageUrl: "assets/img/swal-icon/Group.svg",
+        text: "Oops! There was an issue generating the invoice.",
+        confirmButtonText: "Okay"
+      });
     })
   }
 

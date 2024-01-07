@@ -39,6 +39,7 @@ import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
+import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -569,7 +570,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.loadingWishlist = true;
     this.restService.addWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
-      this.showSuccess(response);
+      this.showSuccess(new TransformMessageModel(response.data));
       this.authService.addToWishlist(this.game.oneplayId);
     }, (error)=> {
       this.showError(error);
@@ -581,7 +582,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.restService.removeWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
-      this.showSuccess(response);
+      this.showSuccess(new TransformMessageModel(response.data));
     }, (error)=> {
       this.showError(error);
     });
@@ -1430,12 +1431,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
   showSuccess(response) {
     Swal.fire({
-      title: response.data.title,
-      text: response.data.message,
-      imageUrl: response.data.icon,
-      confirmButtonText: response.data.primary_CTA,
-      showCancelButton: response.data.CTAs?.length > 1,
-      cancelButtonText: ( response.data.CTAs?.indexOf(response.data.primary_CTA) == 0 ? response.data.CTAs[1] : response.data.CTAs[0] )
+      title: response.title,
+      text: response.message,
+      imageUrl: response.icon,
+      confirmButtonText: response.primary_CTA,
+      showCancelButton: response.showSecondaryCTA,
+      cancelButtonText: response.secondary_CTA
     })
   }
 }

@@ -1,4 +1,4 @@
-export class ErrorMessageModel {
+export class TransformMessageModel {
     readonly title: string;
     readonly message: string;
     readonly icon: string;
@@ -20,7 +20,8 @@ export class ErrorMessageModel {
       }).join(' ');
     }
 
-    constructor(json, isClientSideError, message) {
+    constructor(json, isClientSideError: boolean = false, message = "") {
+      debugger;
         if (isClientSideError) {
           this.title = json["title"];
           this.message = message;

@@ -89,7 +89,7 @@
 
 <!-- Enter Security Code -->
 <ng-template #otpScreen>
-  <div class="modal-content modalBg">
+  <div class="modal-content modalBg" *ngIf="!isComponentDestroyed">
     <div class="modal-body text-center">
       <div *ngIf="emailOTP">
         <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
