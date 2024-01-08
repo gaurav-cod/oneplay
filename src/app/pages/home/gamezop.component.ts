@@ -3,8 +3,6 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
-import { GameModel } from "src/app/models/game.model";
-import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -24,9 +22,7 @@ export class Gamezop implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly router: Router,
-    private readonly restService: RestService,
-    private readonly gLink: GLinkPipe,
-    private readonly countlyService: CountlyService,
+    private readonly restService: RestService
   ) { }
 
   private queries = {};
@@ -82,7 +78,6 @@ export class Gamezop implements OnInit, OnDestroy {
           .subscribe((res) => {
             const feeds = res.filter((f) => f.games.length > 0);
             this.firstRow = feeds.filter((f) => f.type === 'header')[0];
-            // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
             this.restRows = feeds.filter((f) => f.type === 'rail');
             document.body.click();
             this.loaderService.stop();
