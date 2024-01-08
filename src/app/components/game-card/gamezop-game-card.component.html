@@ -12,7 +12,7 @@
       #image
       [ngClass]="{ w290h185: hfw }"
       class="card-img borderRadius10 loadingBg"
-      [src]="game.assets['cover']"
+      [src]="game.assets['square']"
       (error)="onImgError($event)"
       [ngStyle]="{
         'object-fit': hfw ? 'unset' : 'cover'
