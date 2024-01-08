@@ -83,8 +83,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
         });
         if (
           [
-            "the verification link is invalid. please request new one.", 
-            "sorry, the otp is invalid. please try again."
+            "the verification link is invalid. please request a new one.", 
+            "sorry, the otp is invalid. please try again.",
+            "sorry, it looks like your verification link has expired. please request a new one."
           ].includes(err?.message?.toLowerCase())) {
           this.resendVerificationLink(err, token);
         } else { 
