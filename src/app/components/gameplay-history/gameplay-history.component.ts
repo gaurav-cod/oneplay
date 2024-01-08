@@ -14,15 +14,18 @@ export class GameplayHistoryComponent implements OnInit {
   readonly pagelimit = 20;
   loadMoreBtn: boolean = false;
   loading = true;
+  showLoadingScreen: boolean = false;
 
   constructor(private readonly restService: RestService) {}
 
   ngOnInit(): void {
+    this.showLoadingScreen = true;
     this.restService.getGameplayHistory(1, this.pagelimit).subscribe((data) => {
       this.loadMoreBtn = data.length === this.pagelimit;
       this.gamePlaysessions = data;
       this.currentPage++;
       this.loading = false;
+      this.showLoadingScreen = false;
     });
   }
 
