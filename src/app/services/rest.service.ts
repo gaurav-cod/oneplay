@@ -584,12 +584,7 @@ export class RestService {
   setQRSession(code: string, token: string) {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
-      .pipe(catchError((error) => {
-        // Swal.fire({
-        //   title: 'Oops!',
-        //   text: 'Sorry, the code is invalid. Please try again.',
-        //   icon: 'error',
-        // });
+      .pipe(catchError(({error}) => {
       throw error; 
     }));
   }

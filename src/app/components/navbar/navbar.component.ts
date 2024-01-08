@@ -412,17 +412,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private showError(error) {
-    Swal.fire({
-      title: error.data.title,
-      text: error.data.message,
-      imageUrl: error.data.icon,
-      confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.showSecondaryCTA,
-      cancelButtonText: error.data.secondary_CTA
-    })
-  }
-
   search(value: string) {
     this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
@@ -613,7 +602,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
-    // this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
@@ -634,37 +622,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
 
-    // this.notificationData = [];
-    // this.notificationData.push(new NotificationModel({
-    //   "data": {
-    //     "subscription_id": "006aee81-7843-4381-baf1-1528a6bf6e8e",
-    //     "download_link": "https://rendermix.oneream.com/v1/accounts/payment/88e14f8b-01a8-44fc-9c3b-f9c38e526ff7/receipt",
-    //     "payment_id": "88e14f8b-01a8-44fc-9c3b-f9c38e526ff7"
-    //   },
-    //   "is_new": false,
-    //   "description": "Testing",
-    //   "created_at": 1703070951003,
-    //   "notification_id": "c92c5148-aa49-44f3-ba17-23c1f7b70bdd",
-    //   "title": "Your subscription payment of 899 was successful. Here's your payment receipt for reference.",
-    //   "type": "success",
-    //   "version": 1,
-    //   "deleted_at": null,
-    //   "is_read": true,
-    //   "delete_allowed": true,
-    //   "updated_at": 1703077140183,
-    //   "user_id": "9d2100b9-7304-43bd-acdd-c13f461a0810",
-    //   "sub_type": "PAYMENT_SUCCESS",
-    //   "CTAs": [
-    //     "DOWNLOAD",
-    //     "IGNORE"
-    //   ]
-    // }))
-
     this.currMsgSub = this.messagingService.currentMessage.subscribe(
       (message) => {
         this.notificationService.addNotification(message);
       }
     );
+  }
+
+  private showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
   }
  
 }
