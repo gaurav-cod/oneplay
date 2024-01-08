@@ -36,6 +36,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signUpFormSubmitted">;
+  private _deviceType: "WEB" | "TIZEN" = "WEB";
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
@@ -139,6 +140,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.title.setTitle("Signup");
     this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];
+    this.route.params.subscribe((param)=> {
+      if (!param["device"] || param["device"] != 'tizen') return;
+      this._deviceType = "TIZEN";
+    })
     this.route.queryParams.subscribe((params) => {
       if (!params["ref"]) return;
       ctrl.setValue(params["ref"]);
@@ -197,7 +202,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         referred_by_id: this.registerForm.value.referred_by_id,
         phone:
           this.registerForm.value.country_code + this.registerForm.value.phone,
-        device: "web",
+        device: (this._deviceType === "TIZEN" ? "tizen" : "web") ,
       })
       .subscribe(
         (response: any) => {
