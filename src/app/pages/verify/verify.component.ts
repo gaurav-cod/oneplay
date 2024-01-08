@@ -81,11 +81,15 @@ export class VerifyComponent implements OnInit, OnDestroy {
             err?.message
           ),
         });
-        // if (err?.message == "Token Expired" || err?.message == "Invalid Token") {
-        //   this.resendVerificationLink(err, token);
-        // } else { 
+        if (
+          [
+            "the verification link is invalid. please request new one.", 
+            "sorry, the otp is invalid. please try again."
+          ].includes(err?.message?.toLowerCase())) {
+          this.resendVerificationLink(err, token);
+        } else { 
           this.showError(err);
-        // }
+        }
       }
     );
   }
@@ -116,21 +120,22 @@ export class VerifyComponent implements OnInit, OnDestroy {
           ),
         });
 
-        // if (error.message == "Sorry, the OTP is invalid. Please try again.") {
+        if (error.message == "Sorry, the OTP is invalid. Please try again.") {
             this.showError(error);
-        // } else {
-        //   this.resendVerificationLink(error, token);
-        // }
+        } else {
+          this.resendVerificationLink(error, token);
+        }
       },
     });
   }
 
   private resendVerificationLink(error: any, token: string) {
+   
       Swal.fire({
-        title: "Error Code: " + error.code,
-        text: error.message,
-        icon: "error",
-        confirmButtonText: "Resend Verification Link",
+        title: error.data.title,
+        text: error.data.message,
+        imageUrl: error.data.icon,
+        confirmButtonText: "Request",
         cancelButtonText: "Report Issue",
         showCancelButton: true,
         allowEscapeKey: false,
@@ -163,7 +168,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
                       title: "Check your email and verify again",
                     }).then(() => this.goToLogin());
                   },
-                  error: (error) => this.showError(error),
+                  error: (error) => this.resendVerificationLink(error, token),
                 });
             }
           });
@@ -181,39 +186,6 @@ export class VerifyComponent implements OnInit, OnDestroy {
     this.router.navigate(["/login"]);
   }
 
-  private enterPasswordFlow() {
-    Swal.fire({
-      title: "Enter your password",
-      input: "password",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      confirmButtonText: "Proceed",
-      showLoaderOnConfirm: true,
-      allowOutsideClick: false,
-      allowEscapeKey: false,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const password = result.value;
-        const [encodedEmail] = atob(this.route.snapshot.paramMap.get("token")).split(":");
-        const email = atob(encodedEmail);
-        Swal.showLoading();
-        this.restService
-          .resendVerificationLink(email, password)
-          .subscribe({
-            next: () => {
-              localStorage.removeItem("otpSent");
-              Swal.fire({
-                icon: "success",
-                title: "Check your email and verify again",
-              }).then(() => this.goToLogin());
-            },
-            error: (error) => this.showError(error),
-          });
-      }
-    })
-  }
-
   showError(error) {
     Swal.fire({
       title: error.data.title,
@@ -224,9 +196,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed) {
-        if ( error.data.primary_CTA === "Request")
-          this.enterPasswordFlow();
-        else 
+        if ( error.data.primary_CTA.toLowerCase().replace(" ","") === "sigup")
           this.router.navigate(['/register']);
       } 
     })
