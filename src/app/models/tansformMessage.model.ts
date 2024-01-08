@@ -21,7 +21,6 @@ export class TransformMessageModel {
     }
 
     constructor(json, isClientSideError: boolean = false, message = "") {
-      debugger;
         if (isClientSideError) {
           this.title = json["title"];
           this.message = message;

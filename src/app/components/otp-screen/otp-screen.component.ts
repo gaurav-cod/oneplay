@@ -28,6 +28,7 @@ export class OtpScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() display: any;
   @Input() errorMessage: string;
   @Input() errorCode: number;
+  @Input() showIndicator: boolean = true;
 
   @Output() verfiyEmail = new EventEmitter<string>();
   @Output() resendUpdateEmail = new EventEmitter();
@@ -71,6 +72,8 @@ export class OtpScreenComponent implements OnInit, OnDestroy, AfterViewInit {
     this.emailCodeTimer = setTimeout(() => {
       this.expritedToken = true;
     }, 300000); // 5 minutes (5 * 60,000 milliseconds)
+    if (!this.showIndicator)
+      this.formInput = [...this.formInput.slice(0, 3), ...this.formInput.slice(4)];
   }
 
   ngOnDestroy(): void {
