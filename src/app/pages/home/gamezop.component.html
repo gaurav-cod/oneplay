@@ -2,6 +2,13 @@
   class="container-fluid pb-3 mb-lg-0 pb-lg-0"
   style="padding-left: 0px !important; padding-right: 0px !important"
 >
+    <h2 class="container-fluid text-white">
+      <img src="assets/img/chat/left-arrow.svg" alt="" class="mr-4 cursorPointer" (click)="goBack()">
+      <span>Level 1</span>
+    </h2>
+    <div class="d-sm-block d-md-none d-lg-none">
+      <ng-container *ngTemplateOutlet="FilterChip"></ng-container>
+    </div>
     <ngb-carousel
     id="home-header"
     [interval]="4000"
@@ -14,12 +21,12 @@
     <ng-template *ngFor="let game of firstRow.games; index as i" ngbSlide>
         <div class="row mt-2 mt-lg-0">
           <div class="col p-1 overflow-hidden">
-            <div class="card bgTransparent border-0 height40vh">
+            <div class="card bgTransparent border-0 heightGamezop">
               <div class="row carousel-images">
                 <div class="col-auto p-lg-2 p-1 customWidth">
                   <div class="card bgTransparent border-0 borderRadius10">
                     <img
-                      class="card-img borderRadius10 height40vh left-img"
+                      class="card-img borderRadius10 heightGamezop left-img"
                       [src]="
                         firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1].assets['wall']
                       "
@@ -31,7 +38,7 @@
                 <div class="col-auto p-lg-2 p-1 customWidth1">
                   <div class="card bgTransparent border-0 borderRadius10">
                     <img
-                      class="card-img borderRadius10 height40vh center-img"
+                      class="card-img borderRadius10 heightGamezop center-img"
                       [src]="game.assets['wall']"
                       alt="img"
                     />
@@ -41,7 +48,7 @@
                 <div class="col-auto p-lg-2 p-1 customWidth">
                   <div class="card bgTransparent border-0 borderRadius10">
                     <img
-                      class="card-img borderRadius10 height40vh right-img"
+                      class="card-img borderRadius10 heightGamezop right-img"
                       [src]="
                         firstRow.games[
                           i === firstRow.games.length - 1 ? 0 : i + 1
@@ -71,7 +78,7 @@
                         <!-- <img [src]="game.textLogo" class="text-logo" alt="" /> -->
                       </div>
                     </div>
-                    <div class="position-absolute bottom-0">
+                    <div class="position-absolute" style="bottom: 25px">
                       <button
                         (click)="viewBannerGame(game)"
                         class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
@@ -96,7 +103,32 @@
     </ngb-carousel>
 </div>
 
-<div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0 d-none d-md-block">
+<div class="d-none d-md-block">
+  <ng-container *ngTemplateOutlet="FilterChip"></ng-container>
+</div>
+
+<div>
+  <div class="mb-0">
+    <div *ngIf="genreSelected && genreGames.length > 0">
+      <app-similar-games
+        [title]="genreSelected"
+        [games]="genreGames"
+        [isGamezopList]="true"
+      ></app-similar-games>
+    </div>
+    <div *ngIf="!genreSelected">
+      <app-similar-games
+        *ngFor="let row of restRows"
+        [title]="row.title"
+        [games]="row.games"
+        [isGamezopList]="true"
+      ></app-similar-games>
+    </div>
+    <div>
+</div>
+
+<ng-template #FilterChip>
+  <div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0">
     <div class="row justify-content-center pt-2 pb-2">
       <div class="col-auto">
         <div class="row justify-content-center scrolltab">
@@ -124,25 +156,6 @@
       </div>
     </div>
 </div>
-
-<div>
-  <div class="mb-0">
-    <div *ngIf="genreSelected && genreGames.length > 0">
-      <app-similar-games
-        [title]="genreSelected"
-        [games]="genreGames"
-        [isGamezopList]="true"
-      ></app-similar-games>
-    </div>
-    <div *ngIf="!genreSelected">
-      <app-similar-games
-        *ngFor="let row of restRows"
-        [title]="row.title"
-        [games]="row.games"
-        [isGamezopList]="true"
-      ></app-similar-games>
-    </div>
-    <div>
-</div>
+</ng-template>
 
 <ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>

@@ -94,6 +94,15 @@
     height: 190px;
   }
 }
+.heightGamezop {
+  height: 50vh;
+  @media (min-width: 481px) and (max-width: 1280.9px) {
+    height: 260px !important;
+  }
+  @media (max-width: 480px) {
+    height: 170px !important;
+  }
+}
 
 .height30vh {
   height: 46vh;
