@@ -592,7 +592,7 @@ export class RestService {
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
     return this.http.get<SpeedTestServerRO>(
       this.r_mix_api + "/games/speed-test-server"
-    );
+    ).pipe(map((res)=> res), catchError(({error})=> {throw error}));
   }
 
   sendSpeedTestDLPacket(url: string, packetSize: number) {
