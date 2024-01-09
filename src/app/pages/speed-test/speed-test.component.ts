@@ -212,47 +212,52 @@ export class SpeedTestComponent implements OnInit {
       .then((v) => (this.currentLocation = v)).catch((error)=> {
         this.showError(error);
       });
-    const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    const recommended_download_in_mbps = res.recommended_download / 1000;
-    const recommended_upload_in_mbps = res.recommended_upload / 1000;
-    this.recommendations.Latency.text = `Latency of ${res.recommended_latency} ms`;
-    this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
-    this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
-    this.state = "Latency";
-    await new Promise<void>((res) => setTimeout(() => res(), 2000));
-    await this.runPing(res.ping);
-    if (this.currentLatency > res.recommended_latency) {
-      this.recommendations.Latency.enabled = true;
-      this.updateRecommendations();
-    }
-    this.state = "Download";
-    await new Promise<void>((res) => setTimeout(() => res(), 1000));
-    await this.runDL(res.download);
-    if (this.currentDownload < recommended_download_in_mbps) {
-      this.recommendations.Download.enabled = true;
-      this.updateRecommendations();
-    }
-    this.state = "Upload";
-    await new Promise<void>((res) => setTimeout(() => res(), 1000));
-    await this.runUL(res.upload);
-    if (this.currentUpload < recommended_upload_in_mbps) {
-      this.recommendations.Upload.enabled = true;
-      this.updateRecommendations();
-    }
-    const recs = Object.entries(this.recommendations).filter(
-      (entry) => entry[1].enabled
-    );
-    if (recs.length) {
-      if (recs.length === 1 && this.recommendations.Latency.enabled) {
-        this.finalMessage = this.messages.stutter;
-      } else {
-        this.finalMessage = this.messages.not_optimal;
+      try {
+        const res = await this.restService.getNearestSpeedTestServer().toPromise();
+     
+        const recommended_download_in_mbps = res.recommended_download / 1000;
+        const recommended_upload_in_mbps = res.recommended_upload / 1000;
+        this.recommendations.Latency.text = `Latency of ${res.recommended_latency} ms`;
+        this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
+        this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
+        this.state = "Latency";
+        await new Promise<void>((res) => setTimeout(() => res(), 2000));
+        await this.runPing(res.ping);
+        if (this.currentLatency > res.recommended_latency) {
+          this.recommendations.Latency.enabled = true;
+          this.updateRecommendations();
+        }
+        this.state = "Download";
+        await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        await this.runDL(res.download);
+        if (this.currentDownload < recommended_download_in_mbps) {
+          this.recommendations.Download.enabled = true;
+          this.updateRecommendations();
+        }
+        this.state = "Upload";
+        await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        await this.runUL(res.upload);
+        if (this.currentUpload < recommended_upload_in_mbps) {
+          this.recommendations.Upload.enabled = true;
+          this.updateRecommendations();
+        }
+        const recs = Object.entries(this.recommendations).filter(
+          (entry) => entry[1].enabled
+        );
+        if (recs.length) {
+          if (recs.length === 1 && this.recommendations.Latency.enabled) {
+            this.finalMessage = this.messages.stutter;
+          } else {
+            this.finalMessage = this.messages.not_optimal;
+          }
+        } else {
+          this.finalMessage = this.messages.optimal;
+        }
+        this.progressValue = "660 1000";
+        this.testCompleted = true;
+      } catch(error) {
+        this.showError(error);
       }
-    } else {
-      this.finalMessage = this.messages.optimal;
-    }
-    this.progressValue = "660 1000";
-    this.testCompleted = true;
   }
 
   runPing(url: string) {
