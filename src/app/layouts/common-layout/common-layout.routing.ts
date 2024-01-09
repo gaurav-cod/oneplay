@@ -11,6 +11,6 @@ export const CommonLayoutRoutes: Routes = [
   { path: "server-error", component: ServerErrorComponent },
   { path: "install", component: InstallComponent, canActivate: [InstallGuard] },
   { path: "speed-test", component: SpeedTestComponent },
-  { path: 'gamezop',              component: Gamezop },
-  { path: 'gamezop/:filter',      component: Gamezop }
+  { path: 'casual-games',              component: Gamezop },
+  { path: 'casual-games/:filter',      component: Gamezop }
 ];
