@@ -6,7 +6,6 @@ import { Subscription } from "rxjs";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
-import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -59,7 +58,7 @@ export class Gamezop implements OnInit, OnDestroy {
     await this.restService.getGamezopCategory().toPromise().then((response)=> {
       response.forEach((res)=> {
         this.queries[res] = {
-           genres: res 
+          categories: res 
         }
       })
     });
