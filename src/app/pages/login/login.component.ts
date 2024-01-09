@@ -129,6 +129,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resendVerificationLink(error: any, token: string) {
+    
     const email = this.loginForm.value.id;
     const password = this.loginForm.value.password;
     this.restService.resendVerificationLink(email, password).subscribe({
@@ -139,7 +140,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           text: "Check your email and verify again",
         });
       }, 
-      error: () => {
+      error: (error) => {
         this.showError(error);
       }
     });
