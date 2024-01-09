@@ -141,6 +141,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
   // private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
+  private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
+
   constructor(
     private readonly location: Location,
     private readonly restService: RestService,
@@ -737,6 +739,12 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
       }
+    }, (error)=> {
+        if (this._gameErrorHandling.clientTokenCount) {
+          this._gameErrorHandling.clientTokenCount--;
+        } else {
+          this.showError(error);
+        }
     });
   }
 
@@ -1013,15 +1021,20 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.endGamePlayStartEvent("wait");
       this.waitQueue(err.message);
     } else {
-      this.endGamePlayStartEvent("failure");
-      this.stopLoading();
-      Swal.fire({
-        title: "Alert!",
-        text: err.message,
-        imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Okay",
-      });
+      if (this._gameErrorHandling.sessionCount) {
+        this._gameErrorHandling.sessionCount--;
+        this.startSession();
+      } else {
+        this.endGamePlayStartEvent("failure");
+        this.stopLoading();
+        Swal.fire({
+          title: "Alert!",
+          text: err.message,
+          imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
+          customClass: "swalPaddingTop",
+          confirmButtonText: "Okay",
+        });
+      }
     }
   }
 
