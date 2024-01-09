@@ -4,6 +4,7 @@ import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
+import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -26,40 +27,37 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly partyService: PartyService,
     private readonly restService: RestService,
     private readonly gameService: GameService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-    this.sessionSubscription = this.authService.sessionTokenExists.subscribe((exists) => {
-      this.isAuthenticated = exists;
-      if (exists) {
-        this.authService.user = this.restService.getProfile();
-        this.gameService.gameStatus = this.restService.getGameStatus();
-        this.setOnline();
-
-        if (this.timer) {
-          clearInterval(this.timer);
-        }
-
-        this.timer = setInterval(() => {
-          this.gameService.gameStatus = this.restService.getGameStatus();
-        }, 5 * 60 * 1000);
-
-        if (this.threeSecondsTimer) {
-          clearInterval(this.threeSecondsTimer);
-        }
-
-        this.threeSecondsTimer = setInterval(() => {
+    this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+        if (exists) {
+          this.authService.user = this.restService.getProfile();
+          this.setGamingStatus();
           this.setOnline();
-        }, 3 * 1000);
 
-        this.router.events.subscribe((event) => {
-          if (event instanceof NavigationEnd) {
-            this.gameService.gameStatus = this.restService.getGameStatus();
+          if (this.timer) {
+            clearInterval(this.timer);
           }
-        });
+
+          this.timer = setInterval(() => {
+            this.setGamingStatus()
+          }, 10 * 1000);
+
+          if (this.threeSecondsTimer) {
+            clearInterval(this.threeSecondsTimer);
+          }
+
+          this.threeSecondsTimer = setInterval(() => {
+            this.setOnline();
+          }, 3 * 1000);
+        }
       }
-    });
+    );
   }
 
   ngOnDestroy(): void {
@@ -69,7 +67,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
-
     if (event != "profileClicked") {
       if (this.friendsCollapsed) {
         this.initFriends();
@@ -80,6 +77,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     } else {
       this.friendsCollapsed = true;
     }
+  }
+
+  private setGamingStatus() {
+    this.restService
+      .getGameStatus()
+      .toPromise()
+      .then((data) => this.gameService.setGameStatus(data));
   }
 
   private initFriends() {
@@ -108,6 +112,9 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
+        this.notificationService.setNotificationCount(
+          data.new_notification_count
+        );
       });
   }
 }

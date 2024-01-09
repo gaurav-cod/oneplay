@@ -34,6 +34,9 @@ import {
   getGameLandingViewSource,
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
+import { NotificationService } from "src/app/services/notification.service";
+import { MessagePayload } from "firebase/messaging";
+import { NotificationModel } from "src/app/models/notification.model";
 
 @Component({
   selector: "app-navbar",
@@ -47,7 +50,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public results: GameModel[] = [];
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
-  public notifications = [];
   public hasUnread = false;
 
   private user: UserModel;
@@ -67,6 +69,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private pendingsSub: Subscription;
   private requestsSub: Subscription;
   private unreadSub: Subscription;
+  private notificationCountSub: Subscription;
+  private notificationsSub: Subscription;
+  private currMsgSub: Subscription;
+  private multiNotificationSub: Subscription;
+
+  notificationData: NotificationModel[] | null = null;
+  unseenNotificationCount: number = 0;
+  showMultiNotificationList: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -216,7 +226,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly notificationService: NotificationService
   ) { }
 
   ngOnDestroy(): void {
@@ -228,9 +239,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.pendingsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
     this.unreadSub?.unsubscribe();
+    this.notificationCountSub?.unsubscribe();
+    this.notificationsSub?.unsubscribe();
+    this.currMsgSub?.unsubscribe();
+    this.multiNotificationSub?.unsubscribe();
   }
 
   ngOnInit() {
+    this.initPushNotification();
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
@@ -244,6 +260,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
     );
+    this.notificationCountSub =
+      this.notificationService.notificationCount.subscribe(
+        (counts) => (this.unseenNotificationCount = counts)
+      );
+    this.notificationsSub = this.notificationService.notifications.subscribe(
+      (n) => (this.notificationData = n)
+    );
+    this.multiNotificationSub = this.notificationService.showMultiNotificationList.subscribe((value)=> this.showMultiNotificationList = value);
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -388,14 +412,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private showError(error) {
-    Swal.fire({
-      icon: "error",
-      title: "Error Code: " + error.code,
-      text: error.message,
-    });
-  }
-
   search(value: string) {
     this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
@@ -416,11 +432,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    // this.messagingService.removeToken().finally(() => {
+    this.messagingService.removeToken();
     this.restService.deleteSession(this.authService.sessionKey).subscribe();
     this.authService.loggedOutByUser = true;
     this.authService.logout();
-    // });
   }
 
   LogoutAlert(container) {
@@ -551,19 +566,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.restService.getCurrentSubscription().subscribe({
       next: (response) => {
         if (response?.length === 0) {
-          this.logDropdownEvent('subscriptionClicked');
-          window.open(environment.domain + '/subscription.html', '_self');
+          this.logDropdownEvent("subscriptionClicked");
+          window.open(environment.domain + "/subscription.html", "_self");
         } else {
-          this.router.navigate(['/settings/subscription']);
+          this.router.navigate(["/settings/subscription"]);
         }
-      }, error: (err) => {
+      },
+      error: (err) => {
         Swal.fire({
           icon: "error",
           title: "Error Code: " + err.code,
           text: err.message,
         });
-      }
-    })
+      },
+    });
     // domain + '/subscription.html'
   }
 
@@ -571,10 +587,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.restService.checkCasualGamingSession().subscribe({
       next: (response: any) => {
         this.showCasualGamingLabel = response.is_new;
-      }, error: () => {
+      },
+      error: () => {
         this.showCasualGamingLabel = false;
-      }
-    })
+      },
+    });
   }
 
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
@@ -585,7 +602,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
-    // this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
@@ -594,4 +610,34 @@ export class NavbarComponent implements OnInit, OnDestroy {
       [item]: "yes",
     });
   }
+
+  goToNotificationScreen() {
+    if (!this.router.url.includes("notifications"))
+      this.router.navigate(["/notifications"], {
+        queryParams: { previousPage: this.router.url.split("/")[1] },
+      });
+  }
+
+  private initPushNotification() {
+    this.messagingService.requestToken();
+    this.messagingService.receiveMessage();
+
+    this.currMsgSub = this.messagingService.currentMessage.subscribe(
+      (message) => {
+        this.notificationService.addNotification(message);
+      }
+    );
+  }
+
+  private showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
+  }
+ 
 }

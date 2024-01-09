@@ -29,6 +29,8 @@ import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { WishlistGuard } from "src/app/guards/wishlist.guard";
 import { CheckoutComponent } from "src/app/pages/checkout/checkout.component";
 import { ChatComponent } from "src/app/pages/chat/chat.component";
+import { NotificationsComponent } from "src/app/pages/notifications/notifications.component";
+import { Gamezop } from "src/app/pages/home/gamezop.component";
 
 @NgModule({
   imports: [
@@ -49,6 +51,7 @@ import { ChatComponent } from "src/app/pages/chat/chat.component";
     UserProfileComponent,
     IconsComponent,
     HomeComponent,
+    Gamezop,
     StoreComponent,
     ViewComponent,
     StreamsComponent,
@@ -60,6 +63,7 @@ import { ChatComponent } from "src/app/pages/chat/chat.component";
     FeedbackComponent,
     CheckoutComponent,
     ChatComponent,
+    NotificationsComponent,
   ],
   providers: [ViewGuard, WishlistGuard],
 })

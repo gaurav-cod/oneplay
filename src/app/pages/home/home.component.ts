@@ -133,14 +133,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
-  private async shouldShowInstallPlayTag() {
-    let payload = {
-      
-    }
-   
-
-  }
-
   viewBannerGame(game: GameModel) {
     this.countlyService.startEvent("gameLandingView", {
       data: { source: 'homePage', trigger: 'banner' },

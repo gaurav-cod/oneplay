@@ -67,7 +67,12 @@
             alt="casual gaming"
             *ngIf="showCasualGamingLabel"
           />
-          <a href="https://8129.play.gamezop.com/" class="nav-link p-0 mt-2 pt-1 mr-3"
+          <a 
+              href="javascript:void(0)"
+              routerLinkActive="active"
+              [routerLink]="['/gamezop']"
+              class="nav-link p-0 mt-2 pt-1 mr-3"
+              (click)="headerNavOnClick('gamezopClicked')"
             >Level 1</a
           >
         </li>
@@ -361,6 +366,32 @@
             </a>
           </div>
           <div
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
+            <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
+              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? '9+' : unseenNotificationCount}}</div>
+            </div>
+              <a
+                href="javascript:void(0)"
+                class="nav-link p-0 br50"
+                role="button"
+                (click)="goToNotificationScreen()"
+              >
+                <img
+                  alt=""
+                  width="25px"
+                  height="25px"
+                  class="rounded-circle profileImgCover"
+                  src="assets/icons/notification-icon.svg"
+                />
+             </a>
+            
+             <div class="position-absolute notificationList" [ngClass]="{'notificationListing': showMultiNotificationList}">
+                <ng-container *ngFor="let notification of notificationData; let i = index">
+                  <app-notification-alert *ngIf="notification && i < 4" [notification]="notification" [index]="i" [isMultiNotificationList]="notificationData.length > 0" [isLast]="notificationData.length === (i+1)" ></app-notification-alert>
+                </ng-container>
+              </div>
+          </div>
+          <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
             placement="bottom-right"
@@ -562,6 +593,7 @@
     </div>
   </div>
 </ng-template>
+
 
 <ng-template #TermsAndConditions let-d="dismiss">
   <div class="modal-content position-relative modalBorderGradient">

@@ -16,7 +16,7 @@
         (input)="jump($event, i)"
         (keydown)="jumpPrev($event, i)"
       />
-      <div class="col-auto p-1" *ngIf="input === 'indicator'">
+      <div class="col-auto p-1" *ngIf="input === 'indicator' && showIndicator">
         <div class="w70h61 border-bottom-0 font500 mutedColor p-0">-</div>
       </div>
     </div>

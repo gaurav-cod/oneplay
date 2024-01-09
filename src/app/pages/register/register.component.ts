@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -20,7 +21,7 @@ import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { phoneValidator } from "src/app/utils/validators.util";
-import { Subscription } from "rxjs";
+import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 
 @Component({
@@ -30,9 +31,12 @@ import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild("successSwalModal") successSwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("DiscordLink") discordLink: ElementRef<HTMLDivElement>;
+
 
   private _successSwalModalRef: NgbModalRef;
   private _signupEvent: StartEvent<"signUpFormSubmitted">;
+  private _deviceType: "WEB" | "TIZEN" = "WEB";
 
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
   referralName = "";
@@ -40,6 +44,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private referralSub: Subscription;
 
   nonFunctionalRegion: boolean = null;
+  successIcon: string = null;
+  successMessage: string = null;
 
   registerForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
@@ -130,16 +136,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+  
     this.title.setTitle("Signup");
     this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];
+    this.route.params.subscribe((param)=> {
+      if (!param["device"] || param["device"] != 'tizen') return;
+      this._deviceType = "TIZEN";
+    })
     this.route.queryParams.subscribe((params) => {
       if (!params["ref"]) return;
       ctrl.setValue(params["ref"]);
       ctrl.disable();
       this.getName(ctrl.value);
     });
-    this.referralSub = ctrl.valueChanges.subscribe((id) => this.getName(id));
+    this.referralSub = ctrl.valueChanges .pipe(
+      debounceTime(1000),
+      distinctUntilChanged() 
+    ).subscribe((id) => this.getName(id));
     this.countryCodeSub = this.registerForm.controls[
       "country_code"
     ].valueChanges.subscribe(() =>
@@ -188,10 +202,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         referred_by_id: this.registerForm.value.referred_by_id,
         phone:
           this.registerForm.value.country_code + this.registerForm.value.phone,
-        device: "web",
+        device: (this._deviceType === "TIZEN" ? "tizen" : "web") ,
       })
       .subscribe(
-        () => {
+        (response: any) => {
           this.loading = false;
           this.endSignupEvent();
           this._successSwalModalRef = this.ngbModal.open(
@@ -204,15 +218,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
               keyboard: false,
             }
           );
+          this.successIcon = response.data?.icon;
+          this.successMessage = response.data?.message;
         },
         (error) => {
           this.loading = false;
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+          this.showError(error);
+         
         }
       );
   }
@@ -227,7 +239,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           icon: "success",
           text: "Check your email and verify again",
         }).then(() => this.goToLogin());
-      },
+      }, error: (error) => {
+        this.showError(error);
+      }
     });
   }
 
@@ -259,7 +273,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
     this.restService.getName(id).subscribe(
       (name) => (this.referralName = name),
-      (error) => (this.referralName = error.message)
+      (error) => (this.showError(error))
     );
   }
 
@@ -294,5 +308,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
       password: "yes",
       referralId: this.registerForm.value.referred_by_id === "" ? "no" : "yes",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+     }).then((response)=> {
+      if (response.isDismissed && (error.data.secondary_CTA?.includes("Contact") || error.data.primary_CTA.includes("Contact"))) {
+        this.discordLink.nativeElement.click();
+      }
+    })
   }
 }

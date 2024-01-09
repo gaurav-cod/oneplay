@@ -120,12 +120,13 @@ export class QrVerifyComponent implements OnInit, AfterViewInit {
         },
         error: (err) => {
           this.loading = false;
-          if (err.error.isOnline)
-            Swal.fire({
-              title: "Error Code: " + err.error.code,
-              text: err.error.message,
-              icon: "error",
-            });
+          this.showError(err);
+          // if (err.error.isOnline)
+          //   Swal.fire({
+          //     title: "Error Code: " + err.error.code,
+          //     text: err.error.message,
+          //     icon: "error",
+          //   });
         },
       });
     } else {
@@ -184,5 +185,15 @@ export class QrVerifyComponent implements OnInit, AfterViewInit {
       })
       this.rows._results[7].nativeElement.focus();
     }
+  }
+  private showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+     })
   }
 }

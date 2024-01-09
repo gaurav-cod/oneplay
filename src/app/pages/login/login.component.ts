@@ -36,8 +36,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild("emailId") emailId: ElementRef<HTMLInputElement>;
   @ViewChild("verifySwalModal") verifySwalModal: ElementRef<HTMLDivElement>;
+  @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
   private _verifySwalModalRef: NgbModalRef;
+
+  verifyEmailErrorObj = {
+    title: null,
+    message: null,
+    imageUrl: null,
+  }
 
   constructor(
     private readonly restService: RestService,
@@ -89,14 +96,24 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.trigger_speed_test = res.trigger_speed_test;
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
-          this.restService.setQRSession(code, res.session_token).subscribe();
+          this.restService.setQRSession(code, res.session_token).subscribe({
+            next: ()=>{},
+            error: (error)=> {
+              this.showError(error);
+            }
+          });
         }
         this.authService.login(res.session_token);
       },
       (error) => {
         this.countlyService.endEvent("signIn", { result: 'failure' });
         this.startSignInEvent();
-        if (error.message == "Please verify your email and phone number") {
+        if (error.message?.toLowerCase() == "please verify your email id and phone number.") {
+          this.verifyEmailErrorObj = {
+            title: error.data.title,
+            message: error.data.message,
+            imageUrl: error.data.icon
+          }
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
             centered: true,
             modalDialogClass: "modal-md",
@@ -105,12 +122,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         } else {
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Try Again",
-          });
+          this.showError(error);
         }
       }
     );
@@ -126,7 +138,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           icon: "success",
           text: "Check your email and verify again",
         });
-      },
+      }, 
+      error: () => {
+        this.showError(error);
+      }
     });
   }
 
@@ -150,5 +165,19 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         signInFromPage: "directLink",
       })
     }
+  }
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
+        this.contactUs.nativeElement.click();
+      }
+    })
   }
 }

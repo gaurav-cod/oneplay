@@ -18,6 +18,7 @@ import { Subscription, combineLatest } from "rxjs";
 import { SubscriptionPackageModel } from "src/app/models/subscriptionPackage.model";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { ToastService } from "src/app/services/toast.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
@@ -39,10 +40,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   applied_coupon_code_value: number = 0;
   selected_payment_source: "stripe" | "billdesk" = null;
   is_upcoming_plan: boolean = false;
+  timer: any;
 
   subscriptionPacakage: SubscriptionPackageModel;
 
   private querySubscriptions: Subscription;
+  private queryCancelSubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
   private stripeIntent: Stripe;
   private stripeElements: StripeElements;
@@ -52,7 +55,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly restService: RestService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -77,11 +81,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             ).some((sub) => sub.planType === "base");
           }
         } catch (error) {
-          Swal.fire({
-            title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-          });
+          this.showError(error, true);
         }
       }
     });
@@ -89,6 +89,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.querySubscriptions?.unsubscribe();
+    this.queryCancelSubscriptions?.unsubscribe();
     this.countlyService.cancelEvent("subscriptionCheckOut");
     this.coupon_code.reset();
     this.applied_coupon_code = null;
@@ -96,6 +97,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.applied_coupon_code_value = 0;
     this.selected_payment_source = null;
     this.is_upcoming_plan = false;
+    clearTimeout(this.timer);
   }
 
   async onPay() {
@@ -130,6 +132,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   closeStripeModal() {
+    clearTimeout(this.timer);
     this.stripeModalRef?.close();
   }
 
@@ -201,6 +204,45 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
 
+  private timeoutPaymentIntent(orderId: string, source: "billdesk" | "stripe") {
+    this.timer = setTimeout(() => {
+      clearTimeout(this.timer);
+
+      switch (source) {
+        case "stripe":
+          this.closeStripeModal();
+        case "billdesk":
+          const iframes = document.querySelectorAll("bd-modal");
+
+          iframes.forEach((iframe) => {
+            iframe.parentNode.removeChild(iframe);
+          });
+      }
+
+      try {
+        this.handleCancelation(orderId);
+        Swal.fire({
+          title: "Oops!",
+          text: "Looks like you took a bit too long. Let's refresh and try again.",
+          imageUrl: environment.domain + '/dashboard/assets/img/swal-icon/Warning.svg',
+          confirmButtonText: "Okay",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+        }).then(({ isConfirmed }) => {
+          if (isConfirmed) {
+            window.location.reload();
+          }
+        });
+      } catch (error) {
+        Swal.fire({
+          title: "Error Code: " + error.code,
+          text: error.message,
+          icon: "error",
+        });
+      }
+    }, 300000); // 5 minutes
+  }
+
   private async handleCancelation(orderId: string) {
     try {
       await this.restService.cancelPayment(orderId).toPromise();
@@ -250,6 +292,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           backdrop: "static",
           keyboard: false,
         });
+
+        this.timeoutPaymentIntent(data.metadata.orderId, 'stripe')
+
         const closeSub = this.stripeModalRef.closed.subscribe(() => {
           this.restService
             .cancelPayment(data.metadata.orderId)
@@ -260,11 +305,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.stripeElements.create("payment").mount("#stripe-card");
       })
       .catch((error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-        })
+        this.showError(error)
       );
   }
 
@@ -278,6 +319,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           planId: this.subscriptionPacakage.id,
           orderId: data.orderId,
         };
+
+        this.timeoutPaymentIntent(data.orderId, 'billdesk');
+
         const flowConfig = {
           merchantId: environment.billdesk_key,
           bdOrderId: data.bdOrderId,
@@ -309,11 +353,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         window.loadBillDeskSdk(config);
       })
       .catch((error) =>
-        Swal.fire({
-          title: "Error Code: " + error.code,
-          text: error.message,
-          icon: "error",
-        })
+        this.showError(error)
       );
   }
 
@@ -322,5 +362,19 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       couponApplied: this.applied_coupon_code ? "yes" : "no",
       paymentOption: this.selected_payment_source,
     });
+  }
+
+  showError(error, doActionOnConfirm: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed && doActionOnConfirm)
+        this.router.navigate(['']);
+    })
   }
 }

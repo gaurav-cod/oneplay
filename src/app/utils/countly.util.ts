@@ -86,6 +86,7 @@ export const genDefaultWebsiteFooterViewSegments =
   (): CustomCountlyEvents["websiteFooterView"] => {
     return {
       homeClicked: "no",
+      gamezopClicked: "no",
       aboutUsClicked: "no",
       careerClicked: "no",
       plansPricingClicked: "no",
@@ -127,6 +128,7 @@ export const genDefaultMenuClickSegments =
   (): CustomCountlyEvents["menuClick"] => {
     return {
       homeClicked: "no",
+      gamezopClicked: "no",
       gamesClicked: "no",
       streamsClicked: "no",
       searchClicked: "no",

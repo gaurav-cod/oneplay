@@ -4,10 +4,9 @@ import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
-import { MessagingService } from "src/app/services/messaging.service";
+import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import Swal from "sweetalert2";
 
 @Component({
   selector: "app-admin-layout",
@@ -21,21 +20,19 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
 
   private fiveSecondsTimer: NodeJS.Timer;
   private threeSecondsTimer: NodeJS.Timer;
-  private routerEventSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
-
 
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
     private readonly partyService: PartyService,
-    private readonly messagingService: MessagingService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
-    private readonly gameService: GameService
-  ) { }
+    private readonly gameService: GameService,
+    private readonly notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     this.initAuth();
@@ -43,21 +40,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.initParties();
     this.setOnline();
     this.initGames();
-    this.initPushNotification();
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
-    }, 5 * 1000);
+    }, 10 * 1000);
 
     this.threeSecondsTimer = setInterval(() => {
       this.setOnline();
     }, 3 * 1000);
-
-    this.routerEventSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.initGames();
-      }
-    });
 
     this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
       if (params.src === "oneplay_app") {
@@ -83,13 +73,11 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
     clearInterval(this.threeSecondsTimer);
-    this.routerEventSubscription.unsubscribe();
     this.queryParamSubscription.unsubscribe();
     this.userCanGameSubscription.unsubscribe();
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
-
     if (event != "profileClicked") {
       if (this.friendsCollapsed) {
         this.initFriends();
@@ -131,23 +119,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   private initGames() {
-    this.gameService.gameStatus = this.restService.getGameStatus();
-  }
-
-  private initPushNotification() {
-    this.messagingService.requestToken();
-    this.messagingService.receiveMessage();
-    this.messagingService.currentMessage.subscribe((message) => {
-      if (message) {
-        Swal.fire({
-          title: message.notification.title,
-          text: message.notification.body,
-          icon: "error",
-        });
-        this.initParties();
-        this.initFriends();
-      }
-    });
+    this.restService
+      .getGameStatus()
+      .toPromise()
+      .then((data) => this.gameService.setGameStatus(data));
   }
 
   private setOnline() {
@@ -156,6 +131,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       .toPromise()
       .then((data) => {
         this.friendsService.setUnreadSenders(data.unread_senders);
+        this.notificationService.setNotificationCount(
+          data.new_notification_count
+        );
       });
   }
 }

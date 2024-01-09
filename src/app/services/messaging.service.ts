@@ -16,7 +16,7 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class MessagingService {
-  currentMessage: BehaviorSubject<MessagePayload | null> = new BehaviorSubject(
+  private _$currentMessage: BehaviorSubject<MessagePayload | null> = new BehaviorSubject(
     null
   );
   messaging: Messaging;
@@ -26,10 +26,14 @@ export class MessagingService {
     this.messaging = getMessaging(app);
   }
 
+  get currentMessage() {
+    return this._$currentMessage.asObservable();
+  }
+
   requestToken() {
     getToken(this.messaging)
       .then((token) => {
-        console.log("Token received. ", token);
+        // console.log("Token received. ", token);
         this.restService.addDevice(token).toPromise();
       })
       .catch((err) => {
@@ -40,18 +44,15 @@ export class MessagingService {
   receiveMessage() {
     onMessage(this.messaging, (payload) => {
       console.log("Message received. ", payload);
-      this.currentMessage.next(payload);
+      this._$currentMessage.next(payload);
     });
   }
 
   async removeToken() {
-    return getToken(this.messaging)
-      .then(async (token) => {
-        await deleteToken(this.messaging);
-        return this.restService.deleteDevice(token).toPromise();
-      })
-      .catch((err) => {
-        console.log("Unable to get permission to notify.", err);
-      });
+    try {
+      await deleteToken(this.messaging);
+    } catch (err) {
+      console.log("Unable to get permission to notify.", err);
+    }
   }
 }

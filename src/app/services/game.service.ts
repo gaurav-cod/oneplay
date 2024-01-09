@@ -13,7 +13,7 @@ export class GameService {
     return this._$gameStatus.asObservable();
   }
 
-  set gameStatus(value: Observable<GameStatusRO | null>) {
-    value.subscribe((data) => this._$gameStatus.next(data));
+  setGameStatus(value: GameStatusRO | null) {
+    this._$gameStatus.next(value);
   }
 }

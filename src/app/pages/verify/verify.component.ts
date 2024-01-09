@@ -78,18 +78,18 @@ export class VerifyComponent implements OnInit, OnDestroy {
         this.countlyService.endEvent("signUpAccountVerification", {
           result: "failure",
           failureReason: mapSignUpAccountVerificationFailureReasons(
-            err.message
+            err?.message
           ),
         });
-        if (err.message == "Token Expired" || err.message == "Invalid Token") {
+        if (
+          [
+            "the verification link is invalid. please request a new one.", 
+            "sorry, the otp is invalid. please try again.",
+            "sorry, it looks like your verification link has expired. please request a new one."
+          ].includes(err?.message?.toLowerCase())) {
           this.resendVerificationLink(err, token);
-        } else {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "OK",
-            });
+        } else { 
+          this.showError(err);
         }
       }
     );
@@ -121,12 +121,8 @@ export class VerifyComponent implements OnInit, OnDestroy {
           ),
         });
 
-        if (error.message == "Invalid OTP") {
-            Swal.fire({
-              title: "Error Code: " + error.code,
-              text: error.message,
-              icon: "error",
-            });
+        if (error.message == "Sorry, the OTP is invalid. Please try again.") {
+            this.showError(error);
         } else {
           this.resendVerificationLink(error, token);
         }
@@ -135,11 +131,12 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   private resendVerificationLink(error: any, token: string) {
+   
       Swal.fire({
-        title: "Error Code: " + error.code,
-        text: error.message,
-        icon: "error",
-        confirmButtonText: "Resend Verification Link",
+        title: error.data.title,
+        text: error.data.message,
+        imageUrl: error.data.icon,
+        confirmButtonText: "Request",
         cancelButtonText: "Report Issue",
         showCancelButton: true,
         allowEscapeKey: false,
@@ -188,5 +185,21 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   private goToLogin() {
     this.router.navigate(["/login"]);
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        if ( error.data.primary_CTA.toLowerCase().replace(" ","") === "sigup")
+          this.router.navigate(['/register']);
+      } 
+    })
   }
 }
