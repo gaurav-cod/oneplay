@@ -44,6 +44,9 @@ export class SecurityComponent implements OnInit, OnDestroy {
   changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
 
+  // close all poups when component is destroyed
+  isComponentDestroyed: boolean = false;
+
   buttonText: string = "Continue";
   isVerify: boolean = true;
   isPhone: boolean = true;
@@ -120,7 +123,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.isComponentDestroyed = true;
     this._countryCodeSub?.unsubscribe();
+    this._otpScreenRef?.close();
+    this._changePasswordModalRef?.close();
+    this._changeEmailModalRef?.close();
+    this._changePhoneModalRef?.close();
+    this.logoutRef?.close();
+    Swal.close();
   }
 
   ngOnInit(): void {
@@ -228,8 +238,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.openOTPScreen();
       },
       (error) => {
+        
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -252,8 +264,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
+        
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -290,7 +304,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }
@@ -376,7 +390,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     );
   }
@@ -425,6 +439,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this._changePasswordModalRef.close();
+          this.errorMessage = null;
+          this.errorCode = null;
           Swal.fire({
             icon: "success",
             title: "Password Changed!",
@@ -436,12 +452,15 @@ export class SecurityComponent implements OnInit, OnDestroy {
           });
         },
         error: (error) => {
-          Swal.fire({
-            // title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          this.errorMessage = error.message;
+          this.errorCode = error.code;
+          // this.showError(error);
+          // Swal.fire({
+          //   // title: "Error Code: " + error.code,
+          //   text: error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Ok",
+          // });
         },
       });
   }
@@ -472,6 +491,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   closePasswordModal() {
     this._changePasswordModalRef?.close();
+    this.errorMessage = null;
+    this.errorCode = null;
     this.updateSecurity.reset();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);
@@ -575,16 +596,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed) {
-        if (error.data.primary_CTA === "LOGIN") 
+        if (error.data.primary_CTA === "Login") 
           this.router.navigate(['/login']);
-        else if (error.data.primary_CTA === "REQUEST") {
+        else if (error.data.primary_CTA === "Request") {
           if (this.emailOTP) {
             if (this.isVerify) {
               this.resendEmailUpdate();

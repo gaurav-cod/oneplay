@@ -11,6 +11,7 @@ import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.componen
 export const AuthLayoutRoutes: Routes = [
     { path: 'login',                    component: LoginComponent },
     { path: 'register',                 component: RegisterComponent },
+    { path: 'register/:device',         component: RegisterComponent },
     { path: 'verify/:token',            component: VerifyComponent },
     { path: 'forgot-password',          component: ForgotPassComponent },
     { path: 'otp-verify',               component: OtpVerifyComponent },

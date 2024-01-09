@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { of } from "rxjs/internal/observable/of";
@@ -584,16 +584,10 @@ export class RestService {
   setQRSession(code: string, token: string) {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
-      .pipe(catchError((error) => {
-        Swal.fire({
-          title: 'Oops!',
-          text: 'Sorry, the code is invalid. Please try again.',
-          icon: 'error',
-        });
+      .pipe(catchError(({error}) => {
       throw error; 
     }));
   }
-
 
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
     return this.http.get<SpeedTestServerRO>(
@@ -1348,5 +1342,15 @@ export class RestService {
           throw error;
         })
       );
+  }
+
+  downloadPDF(pdfLink: string): Observable<Blob> {
+    const header  = new HttpHeaders({
+      'Content-Type': 'application/pdf'
+    })
+    return this.http.get(pdfLink, {
+      responseType: 'blob',
+      headers: header,
+    })
   }
 }

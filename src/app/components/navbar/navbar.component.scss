@@ -26,6 +26,8 @@
 }
 .truncate-line-clamp {
   -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   white-space: wrap !important;
 }
 .navbar-nav .nav-link {

@@ -13,7 +13,7 @@ export interface SignupDTO {
   phone: string;
   password: string;
   gender: "male" | "female" | "other" | "unknown";
-  device: "web" | "mobile";
+  device: "web" | "mobile" | "tizen";
   referred_by_id?: string;
 }
 

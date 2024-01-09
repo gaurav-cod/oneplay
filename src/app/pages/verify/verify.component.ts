@@ -78,13 +78,18 @@ export class VerifyComponent implements OnInit, OnDestroy {
         this.countlyService.endEvent("signUpAccountVerification", {
           result: "failure",
           failureReason: mapSignUpAccountVerificationFailureReasons(
-            err.message
+            err?.message
           ),
         });
-        if (err.message == "Token Expired" || err.message == "Invalid Token") {
+        if (
+          [
+            "the verification link is invalid. please request a new one.", 
+            "sorry, the otp is invalid. please try again.",
+            "sorry, it looks like your verification link has expired. please request a new one."
+          ].includes(err?.message?.toLowerCase())) {
           this.resendVerificationLink(err, token);
-        } else {
-            this.showError(err);
+        } else { 
+          this.showError(err);
         }
       }
     );
@@ -126,11 +131,12 @@ export class VerifyComponent implements OnInit, OnDestroy {
   }
 
   private resendVerificationLink(error: any, token: string) {
+   
       Swal.fire({
-        title: "Error Code: " + error.code,
-        text: error.message,
-        icon: "error",
-        confirmButtonText: "Resend Verification Link",
+        title: error.data.title,
+        text: error.data.message,
+        imageUrl: error.data.icon,
+        confirmButtonText: "Request",
         cancelButtonText: "Report Issue",
         showCancelButton: true,
         allowEscapeKey: false,
@@ -186,11 +192,14 @@ export class VerifyComponent implements OnInit, OnDestroy {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        if ( error.data.primary_CTA.toLowerCase().replace(" ","") === "sigup")
+          this.router.navigate(['/register']);
+      } 
     })
   }
 }

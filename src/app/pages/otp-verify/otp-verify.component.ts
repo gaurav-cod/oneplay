@@ -125,7 +125,7 @@ export class OtpVerifyComponent implements OnInit {
         this.errorCode = error.code;
         this.isWrongOTPEntered = true;
         this.verifyOTPError = error.message;
-        this.showError(error);
+        // this.showError(error);
       }
     })
   }
@@ -139,6 +139,7 @@ export class OtpVerifyComponent implements OnInit {
         if (error.code == 429) {
           this.isMaxOTPLimitRechead = true;
           this.verifyOTPError = error.message;
+          this.showError(error);
         }
       }
     })
@@ -172,11 +173,9 @@ export class OtpVerifyComponent implements OnInit {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
     })
   }
 }

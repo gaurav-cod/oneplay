@@ -103,14 +103,16 @@
     <div class="modal-body p-4 p-lg-5 text-center">
       <div class="text-center">
         <img
-          src="assets/img/singup-login/error.svg"
+          [src]="verifyEmailErrorObj.imageUrl"
           class="img-fluid wh70"
           alt=""
+          height="90"
+          width="90"
         />
       </div>
-      <h1 class="text-white font20 font600 mb-4 mt-4">Warning</h1>
+      <h1 class="text-white font20 font600 mb-4 mt-4">{{verifyEmailErrorObj.title}}</h1>
       <p class="font16 font500 muteText">
-        Please check your email to confirm your email id
+        {{ verifyEmailErrorObj.message }}
       </p>
       <p class="font16 font500 muteText">
         Didn’t get mail?
@@ -124,7 +126,7 @@
       <a
         class="btn btn-block customLinearGradient border-0 font18 borderRadius10 font500 text-white"
         (click)="d('Close')"
-        >OK</a
+        >Okay</a
       >
     </div>
   </div>

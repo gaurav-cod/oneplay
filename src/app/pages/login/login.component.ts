@@ -40,6 +40,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _verifySwalModalRef: NgbModalRef;
 
+  verifyEmailErrorObj = {
+    title: null,
+    message: null,
+    imageUrl: null,
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -90,14 +96,24 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
         this.authService.trigger_speed_test = res.trigger_speed_test;
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
-          this.restService.setQRSession(code, res.session_token).subscribe();
+          this.restService.setQRSession(code, res.session_token).subscribe({
+            next: ()=>{},
+            error: (error)=> {
+              this.showError(error);
+            }
+          });
         }
         this.authService.login(res.session_token);
       },
       (error) => {
         this.countlyService.endEvent("signIn", { result: 'failure' });
         this.startSignInEvent();
-        if (error.message == "Please verify your email and phone number") {
+        if (error.message?.toLowerCase() == "please verify your email id and phone number.") {
+          this.verifyEmailErrorObj = {
+            title: error.data.title,
+            message: error.data.message,
+            imageUrl: error.data.icon
+          }
           this._verifySwalModalRef = this.ngbModal.open(this.verifySwalModal, {
             centered: true,
             modalDialogClass: "modal-md",
@@ -122,7 +138,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           icon: "success",
           text: "Check your email and verify again",
         });
-      },
+      }, 
+      error: () => {
+        this.showError(error);
+      }
     });
   }
 
@@ -152,13 +171,11 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       title: error.data.title,
       text: error.data.message,
       imageUrl: error.data.icon,
-      imageHeight: '80px',
-      imageWidth: '80px',
       confirmButtonText: error.data.primary_CTA,
-      showCancelButton: error.data.CTAs?.length > 1,
-      cancelButtonText: ( error.data.CTAs?.indexOf(error.data.primary_CTA) == 0 ? error.data.CTAs[1] : error.data.CTAs[0] )
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
-      if (response.isDismissed && error.data.CTAs?.includes("CONTACT")) {
+      if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
         this.contactUs.nativeElement.click();
       }
     })

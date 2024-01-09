@@ -85,7 +85,7 @@ export class NotificationsComponent implements OnInit {
         break;
       case "DOWNLOAD":
         notification.isRead = true;
-        window.open((notification.data as InvoiceInterface)?.download_link);
+        this.downloadInvoice((notification.data as InvoiceInterface)?.download_link);
         break;
       case "RENEW":
         if (notification.subType === "SUBSCRIPTION_EXPIRING")
@@ -100,6 +100,18 @@ export class NotificationsComponent implements OnInit {
         this.checkoutPageOfPlan(notification);
         break;
     }
+  }
+
+  downloadInvoice(downloadLink: string) {
+    this.restService.downloadPDF(downloadLink).subscribe((response)=> {
+      window.open(downloadLink, "_self");
+    }, (error)=> {
+      Swal.fire({
+        imageUrl: "assets/img/swal-icon/Group.svg",
+        text: "Oops! There was an issue generating the invoice.",
+        confirmButtonText: "Okay"
+      });
+    })
   }
 
   checkoutPageOfPlan(notifiaction) {
