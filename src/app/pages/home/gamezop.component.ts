@@ -25,11 +25,11 @@ export class Gamezop implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly router: Router,
     private readonly restService: RestService,
-    private readonly gLink: GLinkPipe,
-    private readonly countlyService: CountlyService,
+    private readonly activatedRoute: ActivatedRoute
   ) { }
 
   private queries = {};
+  private previousPage: string = "home";
 
   firstRow: GamezopFeedModel;
   restRows: GamezopFeedModel[] = [];
@@ -53,6 +53,11 @@ export class Gamezop implements OnInit, OnDestroy {
   async ngOnInit()  {
     this.title.setTitle("Gamezop");
     this.loaderService.start();
+    this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam['prevPage']) {
+        this.previousPage = this.getPreviousPage(qParam['prevPage']);
+      }
+    })
     await this.restService.getGamezopCategory().toPromise().then((response)=> {
       response.forEach((res)=> {
         this.queries[res] = {
@@ -98,8 +103,29 @@ export class Gamezop implements OnInit, OnDestroy {
     });
   }
 
+  private getPreviousPage(page) {
+    switch(page) {
+      case "store":
+        return "/store";
+      case "streams":
+        return "/streams";
+      case "wishlist":
+        return "/wishlist";
+      case "settings":
+        return "/settings/profile"
+      case "search":
+        return "/search"
+      default: 
+        return "/home";
+    }
+  }
+
   viewBannerGame(game: GamezopModel) {
     window.open(game.url);
+  }
+
+  goBack() {
+    this.router.navigate([this.previousPage]);
   }
 
   get routes() {
