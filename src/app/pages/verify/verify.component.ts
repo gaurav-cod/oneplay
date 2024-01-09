@@ -132,6 +132,18 @@ export class VerifyComponent implements OnInit, OnDestroy {
 
   private resendVerificationLink(error: any, token: string) {
    
+      if (["the username and password do not match. please try again."].includes(error.data.message?.toLowerCase())) {
+        Swal.fire({
+          title: error.data.title,
+          text: error.data.message,
+          imageUrl: error.data.icon,
+          confirmButtonText: error.data.primary_CTA,
+          showCancelButton: error.data.showSecondaryCTA,
+          cancelButtonText: error.data.secondary_CTA
+        })
+        return;
+      }
+
       Swal.fire({
         title: error.data.title,
         text: error.data.message,
