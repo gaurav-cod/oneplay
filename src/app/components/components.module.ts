@@ -38,7 +38,7 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
 import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
 import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
 import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
-import { DirectivesModule } from "../directives/directives.module";
+import { ImageLoadingComponent } from './image-loading/image-loading.component';
 
 @NgModule({
   imports: [
@@ -56,7 +56,6 @@ import { DirectivesModule } from "../directives/directives.module";
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
-    DirectivesModule,
   ],
   declarations: [
     GameCardComponent,
@@ -86,7 +85,7 @@ import { DirectivesModule } from "../directives/directives.module";
     GeneralSettingsComponent,
     InstallPlayGameComponent,
     NotificationAlertComponent,
-    
+    ImageLoadingComponent,
   ],
   exports: [
     GameCardComponent,
@@ -115,6 +114,7 @@ import { DirectivesModule } from "../directives/directives.module";
     GeneralSettingsComponent,
     InstallPlayGameComponent,
     NotificationAlertComponent,
+    ImageLoadingComponent,
   ],
 })
 export class ComponentsModule {}

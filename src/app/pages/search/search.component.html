@@ -96,7 +96,7 @@
                 height="80"
                 alt=""
               />
-              <canvas appBlurhash [image]="image2" [hash]="game.textBgHash" class="mask"></canvas>
+              <image-loading [image]="image2" [hash]="game.textBgHash" />
               <div class="card-img-overlay p-0">
                 <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
                   FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
@@ -146,7 +146,7 @@
                 height="80"
                 alt=""
               />
-              <canvas appBlurhash [image]="image" [hash]="game.iapSearchHash" class="mask"></canvas>
+              <image-loading [image]="image" [hash]="game.iapSearchHash" />
             </div>
            
             <div class="d-flex mt-1">

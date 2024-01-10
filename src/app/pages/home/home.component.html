@@ -27,15 +27,13 @@
                     "
                     alt="img"
                   />
-                  <!-- <canvas
-                    appBlurhash
-                    class="mask"
+                  <image-loading
                     [image]="bannerImg1"
                     [hash]="
                       firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
                         .bgHash
                     "
-                  ></canvas> -->
+                  />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
               </div>
@@ -47,12 +45,7 @@
                     [src]="game.bgImage"
                     alt="img"
                   />
-                  <!-- <canvas
-                    appBlurhash
-                    class="mask"
-                    [image]="bannerImg2"
-                    [hash]="game.bgHash"
-                  ></canvas> -->
+                  <image-loading [image]="bannerImg2" [hash]="game.bgHash" />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
               </div>
@@ -68,16 +61,14 @@
                     "
                     alt="img"
                   />
-                  <!-- <canvas
-                    appBlurhash
-                    class="mask"
+                  <image-loading
                     [image]="bannerImg1"
                     [hash]="
                       firstRow.games[
                         i === firstRow.games.length - 1 ? 0 : i + 1
                       ].bgHash
                     "
-                  ></canvas> -->
+                  />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
               </div>
@@ -144,7 +135,10 @@
 <div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0 d-none d-md-block">
   <div class="row justify-content-center pt-2 pb-2">
     <div class="col-auto">
-      <div class="row justify-content-center scrolltab">
+      <div
+        *ngIf="allGamesLength > 0"
+        class="row justify-content-center scrolltab"
+      >
         <div class="col-auto px-2 tabOptions">
           <a
             href="javascript:void(0)"
@@ -187,7 +181,7 @@
     </div> -->
     <div>
       <app-similar-games
-        *ngIf="library.length != 0"
+        *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
         [title]="'My Library'"
         [games]="library"
       ></app-similar-games>

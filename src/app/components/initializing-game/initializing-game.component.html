@@ -10,7 +10,7 @@
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
-          <canvas appBlurhash [image]="image" [hash]="game.isInstallAndPlay ? game.iapBgHash : game.bgHash" class="mask"></canvas>
+          <image-loading [image]="image" [hash]="game.isInstallAndPlay ? game.iapBgHash : game.bgHash"/>
           <div
             class="card-img-overlay h-100"
           >

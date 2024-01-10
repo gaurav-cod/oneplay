@@ -26,7 +26,7 @@
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
-          <canvas appBlurhash [image]="bgBannerImg" [hash]="bgBannerHash" class="mask"></canvas>
+          <image-loading [image]="bgBannerImg" [hash]="bgBannerHash" />
           <div
             class="card-img-overlay p-lg-4 pl-lg-5 borderRadius10"
             [ngClass]="{'cardOverlay': !game.isInstallAndPlay}"
