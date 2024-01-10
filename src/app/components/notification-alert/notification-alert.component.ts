@@ -107,7 +107,7 @@ export class NotificationAlertComponent implements OnInit, OnDestroy {
         break;
       case "RESET_PASSWORD":
         this.notificationService.removeNotification(this.index);
-        this.router.navigate(['/settings/security']);
+        this.router.navigate(['/settings/security'], {queryParams: {dialogType: 'RESET_PASS'}});
         break;
       case "RETRY":
         this.checkoutPageOfPlan();

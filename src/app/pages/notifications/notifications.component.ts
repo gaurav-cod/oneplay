@@ -94,7 +94,7 @@ export class NotificationsComponent implements OnInit {
           this.renewSubscription(notification);
         break;
       case "RESET_PASSWORD":
-        this.router.navigate(['/settings/security']);
+        this.router.navigate(['/settings/security'], {queryParams: {dialogType: 'RESET_PASS'}});
         break;
       case "RETRY":
         this.checkoutPageOfPlan(notification);

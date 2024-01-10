@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -29,7 +30,7 @@ import { phoneValidator } from "src/app/utils/validators.util";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 // import { EventEmitter } from "stream";
 import Swal from "sweetalert2";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessagingService } from "src/app/services/messaging.service";
 
 @Component({
@@ -37,7 +38,7 @@ import { MessagingService } from "src/app/services/messaging.service";
   templateUrl: "./security.component.html",
   styleUrls: ["./security.component.scss"],
 })
-export class SecurityComponent implements OnInit, OnDestroy {
+export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("changeEmailModal") changeEmailModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePhoneModal") changePhoneModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePasswordModal")
@@ -113,6 +114,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     private readonly ngbModal: NgbModal,
     private readonly router: Router,
     private readonly messagingService: MessagingService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -120,6 +122,14 @@ export class SecurityComponent implements OnInit, OnDestroy {
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam['dialogType'] == "RESET_PASS") {
+        this.openPasswordModal();
+      }
+    })
   }
 
   ngOnDestroy(): void {
