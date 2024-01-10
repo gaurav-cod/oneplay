@@ -1,11 +1,17 @@
 import { PurchaseStore } from "../interface";
 
+export interface ImageHash {
+  blurhash: string;
+  max_height: number;
+  max_width: number;
+}
+
 export enum status {
-    LIVE = 'live',
-    NOT_OPTIMIZED = 'not_optimized',
-    COMING_SOON = 'coming_soon',
-    MAINTENANCE = 'maintenance',
-    UPDATING = 'updating'
+  LIVE = "live",
+  NOT_OPTIMIZED = "not_optimized",
+  COMING_SOON = "coming_soon",
+  MAINTENANCE = "maintenance",
+  UPDATING = "updating",
 }
 export class GameModel {
   readonly id: number;
@@ -42,7 +48,17 @@ export class GameModel {
   readonly preferredStore: string;
   readonly warningMessage: string;
   readonly isInstallAndPlay: boolean;
-  
+
+  readonly backgroundImageBlurhash: ImageHash | null;
+  readonly posterImageBlurhash: ImageHash | null;
+  readonly textBackgroundImageBlurhash: ImageHash | null;
+  readonly textLogoBlurhash: ImageHash | null;
+  readonly iapDetailsBlurhash: ImageHash | null;
+  readonly iapLoadingBlurHash: ImageHash | null;
+  readonly iapRailBlurhash: ImageHash | null;
+  readonly iapSearchBlurhash: ImageHash | null;
+  readonly defaultBlurHash = "KID[^H=^4o~pW-9Gg4M|IU";
+
   readonly installPlaySearchImg: string;
   readonly installPlayRailImg: string;
   readonly installPlayLoadingImg: string;
@@ -85,11 +101,69 @@ export class GameModel {
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
+
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];
     this.installPlayRailImg = json["install_and_play_rail_image"];
     this.installPlayLoadingImg = json["install_and_play_loading_image"];
-    this.installPlayDetailImgMob = json["install_and_play_details_image_android"];
-    this.installPlayDetailImgTab = json["install_and_play_details_image_tablet"];
+    this.installPlayDetailImgMob =
+      json["install_and_play_details_image_android"];
+    this.installPlayDetailImgTab =
+      json["install_and_play_details_image_tablet"];
+
+    this.backgroundImageBlurhash = JSON.parse(
+      json["background_image_blurhash"] ?? "null"
+    );
+    this.posterImageBlurhash = JSON.parse(
+      json["poster_image_blurhash"] ?? "null"
+    );
+    this.textLogoBlurhash = JSON.parse(json["text_logo_blurhash"] ?? "null");
+    this.textBackgroundImageBlurhash = JSON.parse(
+      json["text_background_image_blurhash"] ?? "null"
+    );
+    this.iapDetailsBlurhash = JSON.parse(
+      json["install_and_play_details_blurhash"] ?? "null"
+    );
+    this.iapLoadingBlurHash = JSON.parse(
+      json["install_and_play_loading_blurhash"] ?? "null"
+    );
+    this.iapRailBlurhash = JSON.parse(
+      json["install_and_play_rail_blurhash"] ?? "null"
+    );
+    this.iapSearchBlurhash = JSON.parse(
+      json["install_and_play_search_blurhash"] ?? "null"
+    );
+  }
+
+  get bgHash() {
+    return this.backgroundImageBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get posterHash() {
+    return this.posterImageBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get textLogoHash() {
+    return this.textLogoBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get textBgHash() {
+    return this.textBackgroundImageBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get iapBgHash() {
+    return this.iapDetailsBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get iapLoadingHash() {
+    return this.iapLoadingBlurHash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get iapRailHash() {
+    return this.iapRailBlurhash?.blurhash ?? this.defaultBlurHash;
+  }
+
+  get iapSearchHash() {
+    return this.iapSearchBlurhash?.blurhash ?? this.defaultBlurHash;
   }
 }

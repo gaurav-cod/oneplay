@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
+import { Subscription } from "rxjs";
 import { GameModel } from "src/app/models/game.model";
 import { RestService } from "src/app/services/rest.service";
 import { environment } from "src/environments/environment";
@@ -11,21 +12,17 @@ import { environment } from "src/environments/environment";
   templateUrl: "./store.component.html",
   styleUrls: ["./store.component.scss"],
 })
-export class StoreComponent implements OnInit {
+export class StoreComponent implements OnInit, OnDestroy {
   games: GameModel[] = [];
   heading: string = "All Games";
   currentPage = 0;
-  pagelimit = 24;
+  pagelimit = 12;
   isLoading = false;
   canLoadMore = true;
   genreSelected: string = "";
   isInstallPlayList: boolean = false;
 
   private queries = {
-    // "All Games": {
-    //   label: "common",
-    //   value: {},
-    // },
     "Best of 2022": {
       label: "common",
       value: {
@@ -38,33 +35,15 @@ export class StoreComponent implements OnInit {
         release_date: "2020-12-31T18:30:00.000Z#2021-12-31T18:30:00.000Z",
       },
     },
-
-    // "Top 20": {
-    //   label: "common",
-    //   value: {
-    //     play_time: "10",
-    //     order_by: "play_time:desc",
-    //   },
-    // },
     "Free Games": {
       label: "common",
       value: {
         is_free: "true",
       },
     },
-    // Steam: {
-    //   label: "store",
-    //   value: {
-    //     stores: "Steam",
-    //   },
-    // },
-    // "Epic Games": {
-    //   label: "store",
-    //   value: {
-    //     stores: "Epic Games",
-    //   },
-    // },
   };
+
+  private paramsSub: Subscription;
 
   get routes() {
     return Object.keys(this.queries);
@@ -100,22 +79,22 @@ export class StoreComponent implements OnInit {
     private readonly loaderService: NgxUiLoaderService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
-  ) { }
+  ) {}
 
   async ngOnInit() {
-
-    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+    const response = await this.restService
+      .getFilteredGames({ install_and_play: "true" }, 0, 5)
+      .toPromise();
     if (response.length >= 1) {
       this.queries["Install & Play"] = {
-        "label": "common",
+        label: "common",
         value: {
-          "install_and_play": "true"
-        }
-      }
+          install_and_play: "true",
+        },
+      };
     }
-      
 
-    this.route.params.subscribe({
+    this.paramsSub = this.route.params.subscribe({
       next: (params) => {
         this.heading = params.filter || "All Games";
         const query = params.filter;
@@ -131,45 +110,61 @@ export class StoreComponent implements OnInit {
       },
     });
 
-    this.restService.getTopGenres(3).subscribe((genres) => {
-      genres.forEach((genre) => {
-        this.queries[genre] = {
-          label: "genre",
-          value: {
-            genres: genre,
-          },
-        };
+    this.restService
+      .getTopGenres(3)
+      .toPromise()
+      .then((genres) => {
+        genres.forEach((genre) => {
+          this.queries[genre] = {
+            label: "genre",
+            value: {
+              genres: genre,
+            },
+          };
+        });
       });
-    });
-    this.restService.getTopDevelopers(3).subscribe((developers) => {
-      developers.forEach((developer) => {
-        this.queries[developer] = {
-          label: "developer",
-          value: {
-            developer: developer,
-          },
-        };
+    this.restService
+      .getTopDevelopers(3)
+      .toPromise()
+      .then((developers) => {
+        developers.forEach((developer) => {
+          this.queries[developer] = {
+            label: "developer",
+            value: {
+              developer: developer,
+            },
+          };
+        });
       });
-    });
-    this.restService.getTopPublishers(3).subscribe((publishers) => {
-      publishers.forEach((publisher) => {
-        this.queries[publisher] = {
-          label: "publisher",
-          value: {
-            publisher: publisher,
-          },
-        };
+    this.restService
+      .getTopPublishers(3)
+      .toPromise()
+      .then((publishers) => {
+        publishers.forEach((publisher) => {
+          this.queries[publisher] = {
+            label: "publisher",
+            value: {
+              publisher: publisher,
+            },
+          };
+        });
       });
-    });
-    this.restService.getGameStores().subscribe((stores) => {
-      stores.forEach((store) => {
-        this.queries[store.name] = {
-          label: "store",
-          value: { stores: store.name },
-        };
+    this.restService
+      .getGameStores()
+      .toPromise()
+      .then((stores) => {
+        stores.forEach((store) => {
+          this.queries[store.name] = {
+            label: "store",
+            value: { stores: store.name },
+          };
+        });
       });
-    });
-    // this.shouldShowInstallPlayTag();
+  }
+
+  ngOnDestroy(): void {
+    this.games = [];
+    this.paramsSub?.unsubscribe();
   }
 
   onScroll() {
@@ -183,6 +178,7 @@ export class StoreComponent implements OnInit {
   }
 
   private async loadGames() {
+    this.games = [];
     this.startLoading(0);
     const query = this.queries[this.heading];
     if (!query) {
@@ -191,30 +187,29 @@ export class StoreComponent implements OnInit {
     }
     this.restService
       .getFilteredGames(this.queries[this.heading]?.value, 0, this.pagelimit)
-      .subscribe(
-        (games) => {
-          this.games = games;
-          this.isInstallPlayList = games.every((game)=> game.isInstallAndPlay);
+      .toPromise()
+      .then((games) => {
+        this.games = games;
+        this.isInstallPlayList = games.every((game) => game.isInstallAndPlay);
 
-          if (games.length < this.pagelimit) {
-            this.canLoadMore = false;
-          }
-          this.stopLoading(0);
-        },
-        (error) => {
-          this.stopLoading(0);
-          if (error.timeout) {
-            this.router.navigateByUrl("/server-error");
-          }
+        if (games.length < this.pagelimit) {
+          this.canLoadMore = false;
         }
-      );
+        this.stopLoading(0);
+      })
+      .catch((error) => {
+        this.stopLoading(0);
+        if (error.timeout) {
+          this.router.navigateByUrl("/server-error");
+        }
+      });
   }
 
   // private shouldShowInstallPlayTag() {
   //   let payload = {
   //     "install_and_play": "true"
   //   }
-    
+
   // }
 
   private loadMore() {
@@ -228,23 +223,22 @@ export class StoreComponent implements OnInit {
         this.currentPage + 1,
         this.pagelimit
       )
-      .subscribe(
-        (games) => {
-          this.games = [...this.games, ...games];
-          if (games.length < this.pagelimit) {
-            this.canLoadMore = false;
-          }
-          if (this.heading === "Top 20" && this.games.length > 20) {
-            this.games = this.games.slice(0, 20);
-            this.canLoadMore = false;
-          }
-          this.stopLoading(this.currentPage + 1);
-          this.currentPage++;
-        },
-        (error) => {
-          this.stopLoading(this.currentPage + 1);
+      .toPromise()
+      .then((games) => {
+        this.games = [...this.games, ...games];
+        if (games.length < this.pagelimit) {
+          this.canLoadMore = false;
         }
-      );
+        if (this.heading === "Top 20" && this.games.length > 20) {
+          this.games = this.games.slice(0, 20);
+          this.canLoadMore = false;
+        }
+        this.stopLoading(this.currentPage + 1);
+        this.currentPage++;
+      })
+      .catch((error) => {
+        this.stopLoading(this.currentPage + 1);
+      });
   }
 
   private startLoading(page: number) {

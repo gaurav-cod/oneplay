@@ -1,5 +1,13 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from "@angular/core";
 import { Router } from "@angular/router";
+import { decode, isBlurhashValid } from "blurhash";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -14,16 +22,21 @@ import { v4 } from "uuid";
   styleUrls: ["./game-card.component.scss"],
   providers: [GLinkPipe],
 })
-export class GameCardComponent implements OnInit {
+export class GameCardComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
-  @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" | "LIBRARY" = "HOME";
+  @Input("calledFrom") calledFrom:
+    | "HOME"
+    | "STORE_INSTALL_PLAY"
+    | "STORE_OTHER"
+    | "LIBRARY" = "HOME";
 
   timer: NodeJS.Timeout;
   muted = true;
   showSound = false;
   showTitle = false;
+  imageLoaded = false;
 
   readonly loaderId = v4();
 
@@ -38,12 +51,10 @@ export class GameCardComponent implements OnInit {
     private readonly countlyService: CountlyService
   ) {}
 
-  ngOnInit(): void { }
-
   onGameClick() {
-    this.countlyService.endEvent("gameLandingView")
+    this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
-      data: { source: getGameLandingViewSource(), trigger: 'card' },
+      data: { source: getGameLandingViewSource(), trigger: "card" },
     });
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,

@@ -38,6 +38,7 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
 import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
 import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
 import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
+import { DirectivesModule } from "../directives/directives.module";
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
+    DirectivesModule,
   ],
   declarations: [
     GameCardComponent,
@@ -112,7 +114,7 @@ import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
     ChatBottomSheetComponent,
     GeneralSettingsComponent,
     InstallPlayGameComponent,
-    NotificationAlertComponent
+    NotificationAlertComponent,
   ],
 })
 export class ComponentsModule {}

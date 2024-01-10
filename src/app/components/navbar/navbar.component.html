@@ -119,6 +119,7 @@
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
+                      #image2
                       [src]="game.textBgImage"
                       (error)="onImgError($event)"
                       class="br6"
@@ -126,6 +127,7 @@
                       height="80"
                       alt=""
                     />
+                    <canvas appBlurhash [image]="image2" [hash]="game.textBgHash" class="mask"></canvas>
                     <div class="card-img-overlay p-0">
                       <span
                         *ngIf="game.isFree && game.status !== 'coming_soon'"
@@ -186,6 +188,7 @@
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
+                      #image
                       [src]="game.installPlaySearchImg"
                       (error)="onImgError($event)"
                       class="br6"
@@ -194,6 +197,7 @@
                       alt=""
                       style="object-fit: contain;"
                     />
+                    <canvas appBlurhash [image]="image" [hash]="game.iapSearchHash" class="mask"></canvas>
                   </div>
                  
                   <div class="d-flex mt-1">

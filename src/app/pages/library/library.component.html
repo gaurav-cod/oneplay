@@ -26,11 +26,12 @@
         class="card card-block border-0"
       >
         <img
+          #image
           class="card-img img-fluid w-100"
-          [src]="(game.isInstallAndPlay ? game.installPlayRailImg : game.bgImage)"
-          
+          [src]="(game.isInstallAndPlay ? game.installPlayRailImg : game.textBgImage)"
           alt=""
         />
+        <canvas appBlurhash [image]="image" [hash]="game.isInstallAndPlay ? game.iapRailHash : game.textBgHash" class="mask"></canvas>
         <div class="mask bg-darker opacity-4"></div>
         <h5 class="position-absolute left-3 bottom-1 text-white">
           {{ game.title }}

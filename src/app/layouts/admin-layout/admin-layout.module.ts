@@ -31,6 +31,7 @@ import { CheckoutComponent } from "src/app/pages/checkout/checkout.component";
 import { ChatComponent } from "src/app/pages/chat/chat.component";
 import { NotificationsComponent } from "src/app/pages/notifications/notifications.component";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
+import { DirectivesModule } from "src/app/directives/directives.module";
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { Gamezop } from "src/app/pages/home/gamezop.component";
     NgxUiLoaderModule,
     InfiniteScrollModule,
     ScrollingModule,
+    DirectivesModule,
   ],
   declarations: [
     UserProfileComponent,
