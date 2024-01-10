@@ -16,7 +16,7 @@ export class StoreComponent implements OnInit, OnDestroy {
   games: GameModel[] = [];
   heading: string = "All Games";
   currentPage = 0;
-  pagelimit = 12;
+  pagelimit = 24;
   isLoading = false;
   canLoadMore = true;
   genreSelected: string = "";
