@@ -32,7 +32,7 @@ export class TransformMessageModel {
           this.title = json["title"];
           this.message = json["message"];
           this.icon = json["icon"];
-          this.primary_CTA = this.toTitleCase(json["primary_CTA"] ? json["primary_CTA"] : json["CTAs"]?.[0]);
+          this.primary_CTA = this.toTitleCase(json["primary_CTA"] ? json["primary_CTA"] : (json["CTAs"]?.length > 0 ? json["CTAs"]?.[0] : "Okay"));
           this.secondary_CTA =  this.toTitleCase((json['CTAs']?.indexOf(json["primary_CTA"]) == 0 && json["CTAs"]?.length > 1) ? json['CTAs']?.[1] : json['CTAs']?.[0]);
           this.showSecondaryCTA = json["CTAs"]?.length == 2;
         }
