@@ -138,7 +138,8 @@ export class OtpVerifyComponent implements OnInit {
       }, error: (error) => {
         if (error.code == 429) {
           this.isMaxOTPLimitRechead = true;
-          this.verifyOTPError = error.message;
+          this.verifyOTPError = null;
+          // this.verifyOTPError = error.message;
           this.showError(error);
         }
       }
@@ -176,6 +177,8 @@ export class OtpVerifyComponent implements OnInit {
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.showSecondaryCTA,
       cancelButtonText: error.data.secondary_CTA
+    }).then(()=> {
+      this.verifyOTPError = error.message;
     })
   }
 }

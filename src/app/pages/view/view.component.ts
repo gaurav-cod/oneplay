@@ -715,7 +715,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         swalConf.html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
         } else if ((data.total_daily_tokens - data.used_daily_tokens) <= 0){ 
         showSwal = true;
-        swalConf.html = "You have consumed your daily gameplay limit quota of " + (Math.round(data.total_daily_tokens / 60)) + " hrs. See you again tomorrow!";
+        swalConf.html = "Alert! You have reached your daily gameplay limit of "+ (Math.round(data.total_daily_tokens / 60)) + " hours. See you again tomorrow!";
         swalConf.title = "Alert!";
         swalConf.imageUrl = `assets/img/error/time_limit 1.svg`;
         swalConf.confirmButtonText = "Okay";
