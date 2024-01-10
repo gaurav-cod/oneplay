@@ -611,7 +611,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate(["/login"]);
       },
     });
-    // domain + '/subscription.html'
   }
 
   sessionCountForCasualGaming() {

@@ -1,0 +1,180 @@
+@media (max-width: 548px) {
+    .font20 {
+      font-size: 14px !important;
+      line-height: 24px !important;
+    }
+  
+    .margintop20 {
+      margin-top: 20px !important;
+    }
+  
+    .textCenterCustom {
+      text-align: center;
+    }
+  
+    .font18 {
+      font-size: 16px;
+      line-height: 26px;
+    }
+  
+    .textLabel {
+      margin-left: -20px;
+      top: -0px !important;
+      color: #959595;
+    }
+  }
+  
+  .footerWhiteColor {
+    color: #E1E1E1;
+  }
+  
+  .borderBottom {
+    border-bottom: 1px solid #3E4246;
+  }
+  
+  .offWhiteColor {
+    color: #959595 !important;
+  }
+  
+  .offWhiteColor:hover {
+    color: #959595 !important;
+  }
+  
+  .font18 {
+    font-size: 18px;
+    line-height: 30px;
+  }
+  
+  .font500 {
+    font-weight: 500 !important
+  }
+  
+  .font20 {
+    font-size: 20px;
+    line-height: 34px;
+    @media (max-width: 805px) {
+      font-size: 16px;
+      line-height: 26px;
+    }
+    @media (max-width: 1370px) {
+      font-size: 18px;
+      line-height: 28px;
+    } 
+  }
+  
+  .removeFocus:focus {
+    box-shadow: none;
+  }
+  
+  .font16 {
+    font-size: 16px !important;
+    line-height: 26px !important;
+    @media (max-width: 500px) {
+      font-size: 14px;
+      line-height: 21px;
+    }
+  }
+  
+  .customOffWhite {
+    color: #DCDCDC !important;
+  }
+  
+  .borderRadius10 {
+    border-radius: 10px;
+  }
+  
+  .bgTransparent {
+    background-color: transparent;
+  }
+  
+  .inputFocus:focus {
+    background-color: transparent;
+    box-shadow: none;
+    color: #8898aa !important;
+  }
+  
+  .inputFocus::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #8898aa !important;
+    opacity: 0.5; /* Firefox */
+  }
+  
+  .inputFocus:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #8898aa !important;
+  }
+  
+  .inputFocus::-ms-input-placeholder { /* Microsoft Edge */
+    color: #8898aa !important;
+  }
+  
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover, 
+  input:-webkit-autofill:focus, 
+  input:-webkit-autofill:active  {
+    transition: background-color 5000s;
+    -webkit-text-fill-color: #959595 !important;
+  }
+  
+  ::placeholder {
+    color: #DCDCDC !important;
+    opacity: 1; /* Firefox */
+  }
+  
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: #DCDCDC !important;
+  }
+  
+  ::-ms-input-placeholder { /* Microsoft Edge */
+   color: #DCDCDC !important;
+  }
+  
+  .inputBorder {
+    border: 2px solid #434343;
+  }
+  
+  .border-bottomInput {
+    border-bottom: 2px solid #434343 !important;
+  }
+  
+  .borderRadius0 {
+    border-radius: 0px !important;
+  }
+  
+  .font30 {
+    font-size: 30px;
+    line-height: 40px;
+    letter-spacing: 0.02em;
+    @media (max-width: 991.9px) {
+      font-size: 24px;
+      line-height: 34px;
+    }
+  }
+  
+  .purpleGradient {
+    background: linear-gradient(349.3deg, #A83AFE 0%, #6E59FE 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  input:-internal-autofill-selected {
+    background-color: transparent !important;
+  }
+  
+  .font800 {
+    font-weight: 800 !important;
+  }
+  
+  .textLabel {
+    margin-left: -20px;
+    top: -3px !important;
+    color: #959595;
+    @media (max-width: 1368px) {
+      top: -0px !important;
+    }
+  }
+  
+  @media (max-width: 1200.9px) {
+    .hideInSmallScreen {
+      display: none;
+    }
+  }

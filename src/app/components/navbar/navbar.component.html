@@ -302,7 +302,7 @@
         <div class="row">
           <button
               *ngIf="!isAuthenticated"
-              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
+              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block"
               (click)="goToSignUpPage()"
             >
               Sign In
@@ -336,7 +336,7 @@
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
-                <img src="assets/img/navbar/guest-chat-icon.svg" alt="" />
+                <img src="assets/img/navbar/guest-chat-icon.svg" height="30" alt="" />
               </span>
             </a>
           </div>
@@ -434,7 +434,6 @@
                 height="36px"
                 class="rounded-circle profileImgCover"
                 [src]="photo || 'assets/img/guestUser.svg'"
-                (error)="onUserError($event)"
               />
             </a>
             <div class="dropdown-bug" *ngIf="isAuthenticated">
@@ -514,24 +513,16 @@
                   class="dropdown-item"
                   (click)="goToSignUpPage()"
                 >
-                  <i class="ni ni-credit-card font14 align-middle"></i>
+                  <img src="assets/img/navbar/login-btn.svg" height="20" width="20" />
                   <span class="align-middle">Sign In/Sign Up</span>
                 </a>
                 <a
                   [href]="domain + '/subscription.html'"
                   class="dropdown-item"
                 >
-                  <i class="ni ni-credit-card font14 align-middle"></i>
+                <img src="assets/img/navbar/subscribe.svg" height="20" width="20" />
                   <span class="align-middle">Subscribe</span>
                 </a>
-                <!-- <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  (click)="open(share)"
-                >
-                  <i class="fa fa-user-plus font14 align-middle" aria-hidden="true"></i>
-                  <span class="align-middle">Refer</span>
-                </a>  -->
 
                 <a
                   (click)="logDropdownEvent('speedTestClicked')"
@@ -540,7 +531,7 @@
                   [routerLink]="['speed-test']"
                   class="dropdown-item"
                 >
-                  <i class="fas fa-tachometer-alt font14 align-middle"></i>
+                <img src="assets/img/navbar/speed-test.svg" height="20" width="20" />
                   <span class="align-middle">Speed Test</span>
                 </a>
               </div>

@@ -14,10 +14,11 @@ import { LibraryComponent } from "src/app/pages/library/library.component";
 import { SearchComponent } from "@ctrl/ngx-emoji-mart";
 
 export const CommonLayoutRoutes: Routes = [
-  { path: "error", component: ErrorComponent },
-  { path: "server-error", component: ServerErrorComponent },
-  { path: "install", component: InstallComponent, canActivate: [InstallGuard] },
-  { path: "speed-test", component: SpeedTestComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: "error",                component: ErrorComponent },
+  { path: "server-error",         component: ServerErrorComponent },
+  { path: "install",              component: InstallComponent, canActivate: [InstallGuard] },
+  { path: "speed-test",           component: SpeedTestComponent },
   { path: 'home',                 component: HomeComponent },
   { path: 'home/:filter',         component: HomeComponent },
   { path: 'store',                component: StoreComponent },

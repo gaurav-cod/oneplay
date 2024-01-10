@@ -1,0 +1,52 @@
+<form [formGroup]="authenticateForm" (submit)="login()" role="form" class="row">
+    <div class="col-12 text-center">
+        <div class="col-md-12 mb-3 mt-4">
+          <h1 class="text-white font30 font800 mb-0 textCenterCustom">
+            Signin / Signup
+          </h1>
+        </div>
+    </div>
+    <div class="col-md-12 mt-6">
+        <label class="font16 font500 customOffWhite mb-0">Phone</label
+            ><span
+              *ngIf="phoneErrored"
+              class="font16 font500 errorGradientColor float-right"
+              >*invalid phone number</span
+            >
+            <div class="input-group border-bottomInput borderRadius0">
+              <div class="input-group-append borderRadius0">
+                <select
+                  class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
+                  formControlName="country_code"
+                >
+                  <option *ngFor="let code of countryCodes" [value]="code">
+                    {{ code }}
+                  </option>
+                </select>
+              </div>
+              <input
+                type="tel"
+                formControlName="phone"
+                class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+                placeholder="9999999999"
+              />
+            </div>
+    </div>
+    <div class="col-md-12 mt-4">
+        <label class="font16 font500 customOffWhite">Password</label>
+        <div class="input-group">
+          <input
+            type="password"
+            formControlName="password"
+            class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+            name="password"
+            #passwordField
+          />
+          <span
+            class="bgTransparent fixedIcon offWhiteColor font16 font500"
+            >
+            <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
+          </span>
+        </div>
+    </div>  
+</form>
