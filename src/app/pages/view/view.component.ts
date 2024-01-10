@@ -141,6 +141,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
   // private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
+  private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
+
   constructor(
     private readonly location: Location,
     private readonly restService: RestService,
@@ -737,6 +739,12 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
       }
+    }, (error)=> {
+        // if (this._gameErrorHandling.clientTokenCount) {
+        //   this._gameErrorHandling.clientTokenCount--;
+        // } else {
+        //   this.showError(error);
+        // }
     });
   }
 
@@ -1013,15 +1021,20 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.endGamePlayStartEvent("wait");
       this.waitQueue(err.message);
     } else {
-      this.endGamePlayStartEvent("failure");
-      this.stopLoading();
-      Swal.fire({
-        title: "Alert!",
-        text: err.message,
-        imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Okay",
-      });
+      if (this._gameErrorHandling.sessionCount) {
+        this._gameErrorHandling.sessionCount--;
+        this.startSession();
+      } else {
+        this.endGamePlayStartEvent("failure");
+        this.stopLoading();
+        Swal.fire({
+          title: "Alert!",
+          text: err.message,
+          imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
+          customClass: "swalPaddingTop",
+          confirmButtonText: "Okay",
+        });
+      }
     }
   }
 
@@ -1086,7 +1099,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             sessionId,
             millis
           ),
-        error: (err) => this.startGameWithClientTokenFailed(err),
+        error: (err) => this.startGameWithClientTokenFailed(err, sessionId),
       });
   }
 
@@ -1154,25 +1167,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private startGameWithClientTokenFailed(err: any) {
+  private startGameWithClientTokenFailed(err: any, sessionId: string) {
     // this._initializeEvent?.end({ result: "failure" });
-    this.stopLoading();
-    this.initializationErrored = true;
-    // this.showError(err, true);
-    Swal.fire({
-      title: err.message + " Error Code: " + err.code,
-      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-      customClass: "swalPaddingTop",
-      confirmButtonText: "Try Again",
-      showCancelButton: true,
-      cancelButtonText: "Report",
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-    }).then((res) => {
+    if (this._gameErrorHandling.clientTokenCount) {
+      this._gameErrorHandling.clientTokenCount--;
+      this.startGameWithClientToken(sessionId);
+    } else {
       this.stopLoading();
-      this.initializationErrored = false;
-      this.reportErrorOrTryAgain(res, err);
-    });
+      this.initializationErrored = true;
+      // this.showError(err, true);
+      Swal.fire({
+        title: err.message + " Error Code: " + err.code,
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Try Again",
+        showCancelButton: true,
+        cancelButtonText: "Report",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then((res) => {
+        this.stopLoading();
+        this.initializationErrored = false;
+        this.reportErrorOrTryAgain(res, err);
+      });
+    }
   }
 
   startGameWithWebRTCToken(millis = 0): void {
@@ -1256,19 +1274,24 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startGameWithWebRTCTokenFailed(err: any) {
-    this.loaderService.stop();
-    Swal.fire({
-      title: "Error Code: " + err.code,
-      text: err.message,
-      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-      customClass: "swalPaddingTop",
-      confirmButtonText: "Try Again",
-      showCancelButton: true,
-    }).then((res) => {
-      if (res.isConfirmed) {
-        this.startGameWithWebRTCToken();
-      }
-    });
+    if (this._gameErrorHandling.clientTokenCount) {
+      this._gameErrorHandling.clientTokenCount--;
+      this.startGameWithWebRTCToken();
+    } else {
+      this.loaderService.stop();
+      Swal.fire({
+        title: "Error Code: " + err.code,
+        text: err.message,
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Try Again",
+        showCancelButton: true,
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.startGameWithWebRTCToken();
+        }
+      });
+    }
   }
 
   reportError() {
