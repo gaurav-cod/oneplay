@@ -67,7 +67,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   initializationPage = false;
   initializationErrored = false;
   waring_message_display: boolean = true;
-  bgBannerImage: string;
 
   similarGames: GameModel[] = [];
 
@@ -300,7 +299,6 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "description", content: game.description },
             ]);
 
-            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? ( window.innerWidth < 1200 ? game.installPlayDetailImgTab : game.installPlayDetailImg) : game.installPlayDetailImgMob) : game.bgImage);
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
                 (store) => store.name === game.preferredStore
@@ -412,6 +410,24 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       $event.returnValue = true;
     }
+  }
+
+  get bgBannerImage(): string {
+    return !!this.game 
+      ? (this.game.isInstallAndPlay 
+        ? (window.innerWidth > 475 
+          ? ( window.innerWidth < 1200 
+            ? this.game.installPlayDetailImgTab
+            : this.game.installPlayDetailImg) 
+          : this.game.installPlayDetailImgMob) 
+        : this.game.bgImage)
+      : null;
+  }
+
+  get bgBannerHash(): string {
+    return !!this.game
+      ? (this.game.isInstallAndPlay ? this.game.iapBgHash : this.game.bgHash)
+      : null;
   }
 
   get isInWishlist(): boolean {

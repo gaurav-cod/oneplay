@@ -55,6 +55,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     return window.innerWidth > 768;
   }
 
+  get allGamesLength(): number {
+    return [...this.restRows, ...this.genreGames].length;
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,

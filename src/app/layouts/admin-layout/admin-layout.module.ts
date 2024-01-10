@@ -30,6 +30,7 @@ import { WishlistGuard } from "src/app/guards/wishlist.guard";
 import { CheckoutComponent } from "src/app/pages/checkout/checkout.component";
 import { ChatComponent } from "src/app/pages/chat/chat.component";
 import { NotificationsComponent } from "src/app/pages/notifications/notifications.component";
+import { DirectivesModule } from "src/app/directives/directives.module";
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { NotificationsComponent } from "src/app/pages/notifications/notification
     NgxUiLoaderModule,
     InfiniteScrollModule,
     ScrollingModule,
+    DirectivesModule,
   ],
   declarations: [
     UserProfileComponent,

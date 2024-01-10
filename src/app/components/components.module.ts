@@ -37,6 +37,7 @@ import { ChatBottomSheetComponent } from './chat-bottom-sheet/chat-bottom-sheet.
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { InstallPlayGameComponent } from './install-play-game/install-play-game.component';
 import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
+import { DirectivesModule } from "../directives/directives.module";
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
+    DirectivesModule,
   ],
   declarations: [
     GameCardComponent,
@@ -108,7 +110,7 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
     ChatBottomSheetComponent,
     GeneralSettingsComponent,
     InstallPlayGameComponent,
-    NotificationAlertComponent
+    NotificationAlertComponent,
   ],
 })
 export class ComponentsModule {}

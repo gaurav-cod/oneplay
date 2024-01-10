@@ -4,18 +4,36 @@
 >
   <div class="h-100">
     <img
+      #image
       class="card-img"
-      [src]="( game.isInstallAndPlay ? game.installPlayRailImg : game.textBgImage)"
+      [src]="game.isInstallAndPlay ? game.installPlayRailImg : game.textBgImage"
       (error)="onImgError($event)"
       alt=""
     />
-    <h4 *ngIf="showTitle && !game.isInstallAndPlay" class="game-title">{{ game.title }}</h4>
-    <h4 class="w-100 game-title truncate-line-clamp" *ngIf="game.isInstallAndPlay">{{ game.title }}</h4>
+    <canvas
+      appBlurhash
+      [image]="image"
+      [hash]="game.isInstallAndPlay ? game.iapRailHash : game.textBgHash"
+      class="mask"
+    ></canvas>
+    <h4 *ngIf="showTitle && !game.isInstallAndPlay" class="game-title">
+      {{ game.title }}
+    </h4>
+    <h4
+      class="w-100 game-title truncate-line-clamp"
+      *ngIf="game.isInstallAndPlay"
+    >
+      {{ game.title }}
+    </h4>
   </div>
   <div class="card-img-overlay p-1" (click)="onclick()">
     <div class="row">
       <div class="col-auto">
-        <span *ngIf="game.isFree" class="freeTag px-2 ml-1 free tagText top--1 position-relative">FREE</span>
+        <span
+          *ngIf="game.isFree"
+          class="freeTag px-2 ml-1 free tagText top--1 position-relative"
+          >FREE</span
+        >
       </div>
       <div class="col text-right increateZIndex">
         <label class="checkbox-control">
