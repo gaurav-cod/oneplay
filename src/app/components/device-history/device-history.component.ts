@@ -24,8 +24,8 @@ export class DeviceHistoryComponent implements OnInit {
     private readonly authService: AuthService,
     private readonly messagingService: MessagingService,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService
-  ) {}
+    private readonly countlyService: CountlyService,
+  ) { }
 
   ngOnInit(): void {
     this.countlyService.updateEventData("settingsView", {
@@ -46,32 +46,25 @@ export class DeviceHistoryComponent implements OnInit {
     this.loggingOut = true;
     this.logoutRef.close();
 
-    try {
-      if (this.isActive(this.logoutSession)) {
-        await this.messagingService.removeToken();
-      }
-    } finally {
-      this.restService.deleteSession(this.logoutSession.key).subscribe(
-        () => {
-          this.loggingOut = false;
-          this.sessions = this.sessions.filter(
-            (s) => s.key !== this.logoutSession.key
-          );
-          if (this.isActive(this.logoutSession)) {
-            this.authService.loggedOutByUser = true;
-            this.authService.logout();
-          }
-        },
-        (error) => {
-          this.loggingOut = false;
-            Swal.fire({
-              icon: "error",
-              title: "Error Code: " + error.code,
-              text: error.message,
-            });
-        }
-      );
+    if (this.isActive(this.logoutSession)) {
+      this.messagingService.removeToken();
     }
+    this.restService.deleteSession(this.logoutSession.key).subscribe(
+      () => {
+        this.loggingOut = false;
+        this.sessions = this.sessions.filter(
+          (s) => s.key !== this.logoutSession.key
+        );
+        if (this.isActive(this.logoutSession)) {
+          this.authService.loggedOutByUser = true;
+          this.authService.logout();
+        }
+      },
+      (error) => {
+        this.loggingOut = false;
+        this.showError(error);
+      }
+    );
   }
 
   logoutAll() {
@@ -89,15 +82,14 @@ export class DeviceHistoryComponent implements OnInit {
         }
       })
     ).finally(() => {
-      this.messagingService.removeToken().finally(() => {
-        this.restService
-          .deleteSession(this.authService.sessionKey)
-          .toPromise()
-          .finally(() => {
-            this.loggingOut = false;
-            window.location.href = "/dashboard/login";
-          });
-      });
+      this.messagingService.removeToken();
+      this.restService
+        .deleteSession(this.authService.sessionKey)
+        .toPromise()
+        .finally(() => {
+          this.loggingOut = false;
+          window.location.href = "/dashboard/login";
+        });
     });
   }
 
@@ -107,5 +99,20 @@ export class DeviceHistoryComponent implements OnInit {
       centered: true,
       modalDialogClass: "modal-sm",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response) => {
+      if (response.isConfirmed && error.data.primary_CTA?.includes("Login")) {
+        window.location.href = "/dashboard/login";
+      }
+    })
   }
 }

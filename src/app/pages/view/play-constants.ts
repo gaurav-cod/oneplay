@@ -26,6 +26,12 @@ export class PlayConstants {
     Elite: 3840,
   };
 
+  static readonly GAMEPLAY_ERROR_REPLAY = {
+    clientTokenCount: 2,
+    sessionCount: 2,
+    startGameCount: 2
+  }
+
   static readonly FPS = [30, 60, 90, 120];
 
   static readonly DEFAULT_FPS = 60;

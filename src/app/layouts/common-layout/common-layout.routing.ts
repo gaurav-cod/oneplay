@@ -12,6 +12,7 @@ import { StreamsComponent } from "src/app/pages/streams/streams.component";
 import { StreamComponent } from "src/app/pages/stream/stream.component";
 import { LibraryComponent } from "src/app/pages/library/library.component";
 import { SearchComponent } from "@ctrl/ngx-emoji-mart";
+import { Gamezop } from "src/app/pages/home/gamezop.component";
 
 export const CommonLayoutRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -28,5 +29,7 @@ export const CommonLayoutRoutes: Routes = [
   { path: 'streams/:id',          component: StreamComponent },
   { path: 'search',               component: SearchComponent },
   { path: 'search/:tab',          component: SearchComponent },
+  { path: 'casual-games',              component: Gamezop },
+  { path: 'casual-games/:filter',      component: Gamezop }
 
 ];

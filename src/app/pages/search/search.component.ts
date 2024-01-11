@@ -174,16 +174,18 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.searchSub = this.restService
-      .search("", 0, 12)
-      .subscribe((response) => {
-        this.games = response.results;
-      });
+    if ((this.tab !== "games" && this.tab !== "users")) {
+      this.searchSub = this.restService
+        .search("", 0, 12)
+        .subscribe((response) => {
+          this.games = response.results;
+        });
+    }
   }
 
   search() {
     const path = ["search"];
-    if (this.tab) {
+    if (this.tab && this.queryControl.value?.length > 0) {
       path.push(this.tab);
     }
     this.router.navigate(path, {

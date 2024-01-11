@@ -5,6 +5,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { RestService } from "src/app/services/rest.service";
 import { throttle_to_latest as throttle } from "src/app/utils/throttle.util";
 import { v4 } from "uuid";
+import Swal from "sweetalert2";
 
 type State = "Latency" | "Download" | "Upload";
 
@@ -208,48 +209,55 @@ export class SpeedTestComponent implements OnInit {
     this.restService
       .getCurrentLocation()
       .toPromise()
-      .then((v) => (this.currentLocation = v));
-    const res = await this.restService.getNearestSpeedTestServer().toPromise();
-    const recommended_download_in_mbps = res.recommended_download / 1000;
-    const recommended_upload_in_mbps = res.recommended_upload / 1000;
-    this.recommendations.Latency.text = `Latency of ${res.recommended_latency} ms`;
-    this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
-    this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
-    this.state = "Latency";
-    await new Promise<void>((res) => setTimeout(() => res(), 2000));
-    await this.runPing(res.ping);
-    if (this.currentLatency > res.recommended_latency) {
-      this.recommendations.Latency.enabled = true;
-      this.updateRecommendations();
-    }
-    this.state = "Download";
-    await new Promise<void>((res) => setTimeout(() => res(), 1000));
-    await this.runDL(res.download);
-    if (this.currentDownload < recommended_download_in_mbps) {
-      this.recommendations.Download.enabled = true;
-      this.updateRecommendations();
-    }
-    this.state = "Upload";
-    await new Promise<void>((res) => setTimeout(() => res(), 1000));
-    await this.runUL(res.upload);
-    if (this.currentUpload < recommended_upload_in_mbps) {
-      this.recommendations.Upload.enabled = true;
-      this.updateRecommendations();
-    }
-    const recs = Object.entries(this.recommendations).filter(
-      (entry) => entry[1].enabled
-    );
-    if (recs.length) {
-      if (recs.length === 1 && this.recommendations.Latency.enabled) {
-        this.finalMessage = this.messages.stutter;
-      } else {
-        this.finalMessage = this.messages.not_optimal;
+      .then((v) => (this.currentLocation = v)).catch((error)=> {
+        this.showError(error);
+      });
+      try {
+        const res = await this.restService.getNearestSpeedTestServer().toPromise();
+     
+        const recommended_download_in_mbps = res.recommended_download / 1000;
+        const recommended_upload_in_mbps = res.recommended_upload / 1000;
+        this.recommendations.Latency.text = `Latency of ${res.recommended_latency} ms`;
+        this.recommendations.Download.text = `Download Speed of ${recommended_download_in_mbps} mbps`;
+        this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
+        this.state = "Latency";
+        await new Promise<void>((res) => setTimeout(() => res(), 2000));
+        await this.runPing(res.ping);
+        if (this.currentLatency > res.recommended_latency) {
+          this.recommendations.Latency.enabled = true;
+          this.updateRecommendations();
+        }
+        this.state = "Download";
+        await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        await this.runDL(res.download);
+        if (this.currentDownload < recommended_download_in_mbps) {
+          this.recommendations.Download.enabled = true;
+          this.updateRecommendations();
+        }
+        this.state = "Upload";
+        await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        await this.runUL(res.upload);
+        if (this.currentUpload < recommended_upload_in_mbps) {
+          this.recommendations.Upload.enabled = true;
+          this.updateRecommendations();
+        }
+        const recs = Object.entries(this.recommendations).filter(
+          (entry) => entry[1].enabled
+        );
+        if (recs.length) {
+          if (recs.length === 1 && this.recommendations.Latency.enabled) {
+            this.finalMessage = this.messages.stutter;
+          } else {
+            this.finalMessage = this.messages.not_optimal;
+          }
+        } else {
+          this.finalMessage = this.messages.optimal;
+        }
+        this.progressValue = "660 1000";
+        this.testCompleted = true;
+      } catch(error) {
+        this.showError(error);
       }
-    } else {
-      this.finalMessage = this.messages.optimal;
-    }
-    this.progressValue = "660 1000";
-    this.testCompleted = true;
   }
 
   runPing(url: string) {
@@ -392,5 +400,16 @@ export class SpeedTestComponent implements OnInit {
     const cp =
       (count / (this.pingCount + this.dlReqCount + this.ulReqCount)) * 100;
     this._TsetProgressValue(`${Math.floor(cp * 6.6)} 1000`);
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
   }
 }

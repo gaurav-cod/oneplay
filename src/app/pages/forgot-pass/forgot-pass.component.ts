@@ -27,6 +27,7 @@ export class ForgotPassComponent implements OnInit {
   });
 
   resetemail = false;
+  errorMessage: string;
 
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -85,15 +86,9 @@ export class ForgotPassComponent implements OnInit {
         this.resetemail = true;
 
       },
-      (error) =>
-        Swal.fire({
-          title: error.message,
-          imageUrl: "assets/img/swal-icon/Account.svg",
-          confirmButtonText: "Okay",
-        }).then(() => {
-          if (error.code == 429)
-            this.router.navigate(['/login']);
-        })
+      (error) => {
+        this.showError(error);
+    }
     );
   }
   forgotPasswordWithMobile() {
@@ -102,14 +97,19 @@ export class ForgotPassComponent implements OnInit {
       next: () => {
         this.router.navigate(['/otp-verify'], { queryParams: { mobile: phone } });
       }, error: (error) => {
-        Swal.fire({
-          title: error.message,
-          imageUrl: "assets/img/swal-icon/Account.svg",
-          confirmButtonText: "Okay",
-        }).then(() => {
-          if (error.code == 429)
-            this.router.navigate(['/login']);
-        })
+        if (error.code == 429) {
+          this.router.navigate(['/login']);
+        }else {
+          this.errorMessage = error.message;
+        }
+        // Swal.fire({
+        //   title: error.message,
+        //   imageUrl: "assets/img/swal-icon/Account.svg",
+        //   confirmButtonText: "Okay",
+        // }).then(() => {
+        //   if (error.code == 429)
+        //     this.router.navigate(['/login']);
+        // })
       }
     })
   }
@@ -132,6 +132,7 @@ export class ForgotPassComponent implements OnInit {
   }
 
   onKeyPressCheckMobile(event:KeyboardEvent){
+    this.errorMessage = null;
     const charCode=event.charCode;
     if(charCode<48 || charCode>57){
       event.preventDefault();
@@ -144,6 +145,25 @@ export class ForgotPassComponent implements OnInit {
     if (!validChars.includes(String.fromCharCode(charCode))) {
       event.preventDefault();
     }
+  }
+
+  showError(error) {
+    Swal.fire({ 
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        if (error.data.primary_CTA === "Sign Up") {
+          this.router.navigate(['/register']);
+        } else if (error.data.primary_CTA === "Request") {
+          this.router.navigate(['/forgot-password'])
+        }
+      }
+    })
   }
 
 }

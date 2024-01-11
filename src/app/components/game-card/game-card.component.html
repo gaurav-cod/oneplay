@@ -16,13 +16,14 @@
       [ngClass]="{ w290h185: hfw }"
       class="card-img borderRadius10 loadingBg"
       [src]="game.textBgImage"
-      (error)="onImgError($event)"
       [ngStyle]="{
-        'object-fit': hfw ? 'unset' : 'cover'
+        'object-fit': hfw ? 'unset' : 'cover',
       }"
       alt=""
       loading="lazy"
+      (error)="onImgError($event)"
     />
+    <image-loading [hash]="game.textBgHash" [image]="image"></image-loading>
     <h4 *ngIf="showTitle" class="game-title">{{ game.title }}</h4>
     <div
       *ngIf="showSound"

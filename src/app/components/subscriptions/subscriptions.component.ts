@@ -132,7 +132,10 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     this.resetData("success");
     this.restService
       .getSubscriptions(0, this.pagelimit)
-      .subscribe((s) => (this.subscriptions = s));
+      .subscribe((s) => (this.subscriptions = s),
+      (error)=> {
+        this.showError(error);
+      });
   }
 
   loadMore() {
@@ -147,6 +150,8 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
         if (s.length < 5) {
           this.loadMoreBtn = false;
         }
+      }, (error)=> {
+       this.showError(error);
       });
   }
 
@@ -154,7 +159,10 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     this.resetData("processing");
     this.restService
       .getProcessingSubscription(0, this.pagelimit)
-      .subscribe((s) => (this.subscriptions = s));
+      .subscribe((s) => (this.subscriptions = s),
+      (error)=> {
+        this.showError(error);
+      });
   }
 
   processignLoadMore() {
@@ -169,6 +177,8 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
         if (s.length < 5) {
           this.loadMoreBtn = false;
         }
+      }, (error)=> {
+       this.showError(error);
       });
   }
 
@@ -191,6 +201,8 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
         if (s.length < 5) {
           this.loadMoreBtn = false;
         }
+      }, (error)=> {
+       this.showError(error);
       });
   }
 
@@ -274,5 +286,16 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     let sub_date = new Date(date);
     sub_date.setDate(sub_date.getDate() - 2); //Two day less;
     return sub_date < new Date();
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
   }
 }

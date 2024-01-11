@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -29,7 +30,7 @@ import { phoneValidator } from "src/app/utils/validators.util";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
 // import { EventEmitter } from "stream";
 import Swal from "sweetalert2";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { MessagingService } from "src/app/services/messaging.service";
 
 @Component({
@@ -37,12 +38,15 @@ import { MessagingService } from "src/app/services/messaging.service";
   templateUrl: "./security.component.html",
   styleUrls: ["./security.component.scss"],
 })
-export class SecurityComponent implements OnInit, OnDestroy {
+export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("changeEmailModal") changeEmailModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePhoneModal") changePhoneModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePasswordModal")
   changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
+
+  // close all poups when component is destroyed
+  isComponentDestroyed: boolean = false;
 
   buttonText: string = "Continue";
   isVerify: boolean = true;
@@ -110,6 +114,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
     private readonly ngbModal: NgbModal,
     private readonly router: Router,
     private readonly messagingService: MessagingService,
+    private readonly activatedRoute: ActivatedRoute
   ) {
     this.authService.user.subscribe((user) => {
       this.user = user;
@@ -119,8 +124,23 @@ export class SecurityComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam['dialogType'] == "RESET_PASS") {
+        this.openPasswordModal();
+      }
+    })
+  }
+
   ngOnDestroy(): void {
+    this.isComponentDestroyed = true;
     this._countryCodeSub?.unsubscribe();
+    this._otpScreenRef?.close();
+    this._changePasswordModalRef?.close();
+    this._changeEmailModalRef?.close();
+    this._changePhoneModalRef?.close();
+    this.logoutRef?.close();
+    Swal.close();
   }
 
   ngOnInit(): void {
@@ -228,8 +248,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.openOTPScreen();
       },
       (error) => {
+        
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -252,8 +274,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
         this.timer(1);
       },
       (error) => {
+        
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -290,6 +314,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -375,6 +400,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
       (error) => {
         this.errorCode = error.code;
         this.errorMessage = error.message;
+        // this.showError(error);
       }
     );
   }
@@ -423,6 +449,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this._changePasswordModalRef.close();
+          this.errorMessage = null;
+          this.errorCode = null;
           Swal.fire({
             icon: "success",
             title: "Password Changed!",
@@ -434,12 +462,15 @@ export class SecurityComponent implements OnInit, OnDestroy {
           });
         },
         error: (error) => {
-          Swal.fire({
-            // title: "Error Code: " + error.code,
-            text: error.message,
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
+          this.errorMessage = error.message;
+          this.errorCode = error.code;
+          // this.showError(error);
+          // Swal.fire({
+          //   // title: "Error Code: " + error.code,
+          //   text: error.message,
+          //   icon: "error",
+          //   confirmButtonText: "Ok",
+          // });
         },
       });
   }
@@ -470,6 +501,8 @@ export class SecurityComponent implements OnInit, OnDestroy {
 
   closePasswordModal() {
     this._changePasswordModalRef?.close();
+    this.errorMessage = null;
+    this.errorCode = null;
     this.updateSecurity.reset();
     this.allowPasswordEdit = false;
     clearTimeout(this.passwordIconHideTimer);
@@ -511,12 +544,7 @@ export class SecurityComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
-            Swal.fire({
-              title: "Error Code: " + err.code,
-              text: err.message,
-              icon: "error",
-              confirmButtonText: "Try Again",
-            });
+            this.showError(err);
           },
         });
       }
@@ -560,11 +588,10 @@ export class SecurityComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    this.messagingService.removeToken().finally(() => {
-      this.restService.deleteSession(this.authService.sessionKey).subscribe();
-      this.authService.loggedOutByUser = true;
-      this.authService.logout();
-    });
+    this.messagingService.removeToken();
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
+    this.authService.loggedOutByUser = true;
+    this.authService.logout();
   }
   LogoutAlert(container) {
     this.logDropdownEvent("logOutClicked");
@@ -572,5 +599,36 @@ export class SecurityComponent implements OnInit, OnDestroy {
       centered: true,
       modalDialogClass: "modal-sm",
     });
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed) {
+        if (error.data.primary_CTA === "Login") 
+          this.router.navigate(['/login']);
+        else if (error.data.primary_CTA === "Request") {
+          if (this.emailOTP) {
+            if (this.isVerify) {
+              this.resendEmailUpdate();
+            } else {
+              this.resendUpdateEmail();
+            }
+          } else {
+            if (this.isPhone) {
+              this.resendPhoneUpdate();
+            } else {
+              this.resendUpdatePhone();
+            }
+          }
+        }
+      }
+    })
   }
 }

@@ -67,7 +67,12 @@
             alt="casual gaming"
             *ngIf="showCasualGamingLabel"
           />
-          <a href="https://8129.play.gamezop.com/" class="nav-link p-0 mt-2 pt-1 mr-3"
+          <a 
+              href="javascript:void(0)"
+              routerLinkActive="active"
+              [routerLink]="['/casual-games']"
+              class="nav-link p-0 mt-2 pt-1 mr-3"
+              (click)="headerNavOnClick('gamezopClicked')"
             >Level 1</a
           >
         </li>
@@ -114,6 +119,7 @@
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
+                      #image2
                       [src]="game.textBgImage"
                       (error)="onImgError($event)"
                       class="br6"
@@ -121,6 +127,7 @@
                       height="80"
                       alt=""
                     />
+                    <image-loading [image]="image2" [hash]="game.textBgHash" />
                     <div class="card-img-overlay p-0">
                       <span
                         *ngIf="game.isFree && game.status !== 'coming_soon'"
@@ -181,6 +188,7 @@
                 <div class="col-auto align-self-center pr-0">
                   <div class="card border-0 bg-dark">
                     <img
+                      #image
                       [src]="game.installPlaySearchImg"
                       (error)="onImgError($event)"
                       class="br6"
@@ -189,6 +197,7 @@
                       alt=""
                       style="object-fit: contain;"
                     />
+                    <image-loading [image]="image" [hash]="game.iapSearchHash" />
                   </div>
                  
                   <div class="d-flex mt-1">
@@ -385,7 +394,7 @@
             *ngIf="isAuthenticated"
             >
             <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
-              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? (unseenNotificationCount + '+') : unseenNotificationCount}}</div>
+              <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? '9+' : unseenNotificationCount}}</div>
             </div>
               <a
                 href="javascript:void(0)"
@@ -402,9 +411,11 @@
                 />
              </a>
             
-             <ng-container *ngFor="let notification of notificationData; let i = index">
-             <app-notification-alert *ngIf="notification" [notification]="notification" [index]="i" ></app-notification-alert>
-            </ng-container>
+             <div class="position-absolute notificationList" [ngClass]="{'notificationListing': showMultiNotificationList}">
+                <ng-container *ngFor="let notification of notificationData; let i = index">
+                  <app-notification-alert *ngIf="notification && i < 4" [notification]="notification" [index]="i" [isMultiNotificationList]="notificationData.length > 0" [isLast]="notificationData.length === (i+1)" ></app-notification-alert>
+                </ng-container>
+              </div>
           </div>
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"

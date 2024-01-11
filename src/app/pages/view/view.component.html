@@ -19,12 +19,14 @@
       <div class="col-md-12 position-relative">
         <div class="card border-0 bgTransparent borderRadius10">
           <img
+            #bgBannerImg
             class="card-img height80 borderRadius10 bgImage"
             style="object-fit: cover; object-position: top"
             [src]="bgBannerImage"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
+          <image-loading [image]="bgBannerImg" [hash]="bgBannerHash" />
           <div
             class="card-img-overlay p-lg-4 pl-lg-5 borderRadius10"
             [ngClass]="{'cardOverlay': !game.isInstallAndPlay}"
@@ -1253,4 +1255,4 @@
   </div>
 </ng-template>
 
-<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+<ngx-ui-loader *ngIf="!game" [fgsColor]="'#c32ead'"></ngx-ui-loader>

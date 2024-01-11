@@ -140,4 +140,4 @@
   </div>
 </div>
 
-<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+<ngx-ui-loader *ngIf="games.length === 0" [fgsColor]="'#c32ead'"></ngx-ui-loader>

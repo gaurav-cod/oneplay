@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "5.6.0",
+  appVersion: "5.8.0",
   production: true,
   cookie_domain: "oneream.com",
   domain: "https://www.oneream.com",

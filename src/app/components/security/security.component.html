@@ -89,7 +89,7 @@
 
 <!-- Enter Security Code -->
 <ng-template #otpScreen>
-  <div class="modal-content modalBg">
+  <div class="modal-content modalBg" *ngIf="!isComponentDestroyed">
     <div class="modal-body text-center">
       <div *ngIf="emailOTP">
         <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
@@ -99,13 +99,13 @@
         <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
             'Security code has been sent to your mobile number and previous email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
-          [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
+          [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
         <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify Your New Email Address'" [otpSubHeading]="
             'Please enter the code sent to your new email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
-          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
+          [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
       </div>
       <div *ngIf="!emailOTP">
         <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
@@ -116,12 +116,12 @@
             'Security code has been sent to your previous mobile number and email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
-          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
+          [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
         <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify Your New Phone Number'" [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display"
-          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
+          [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
       </div>
     </div>
   </div>
@@ -232,6 +232,9 @@
               match</span>
           </div>
         </div>
+
+        <span *ngIf="errorMessage" class="font16 font500 errorGradientColor">{{errorMessage}}</span>
+
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
           [disabled]="checkvalidationValue" (click)="updatePassword()">
           Confirm

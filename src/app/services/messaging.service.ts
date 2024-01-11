@@ -33,7 +33,7 @@ export class MessagingService {
   requestToken() {
     getToken(this.messaging)
       .then((token) => {
-        console.log("Token received. ", token);
+        // console.log("Token received. ", token);
         this.restService.addDevice(token).toPromise();
       })
       .catch((err) => {
@@ -50,9 +50,7 @@ export class MessagingService {
 
   async removeToken() {
     try {
-      const token = await getToken(this.messaging);
       await deleteToken(this.messaging);
-      await this.restService.deleteDevice(token).toPromise();
     } catch (err) {
       console.log("Unable to get permission to notify.", err);
     }

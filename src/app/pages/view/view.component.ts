@@ -39,6 +39,7 @@ import { PlayConstants } from "./play-constants";
 import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
+import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -67,7 +68,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   initializationPage = false;
   initializationErrored = false;
   waring_message_display: boolean = true;
-  bgBannerImage: string;
 
   similarGames: GameModel[] = [];
 
@@ -139,6 +139,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _settingsEvent: StartEvent<"gamePlay - Settings Page View">;
   // private _advanceSettingsEvent: StartEvent<"gamePlay - AdvanceSettings">;
   // private _initializeEvent: StartEvent<"gamePlay - Initilization">;
+
+  private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
 
   constructor(
     private readonly location: Location,
@@ -273,6 +275,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.restService.getGameStatus()
+      .toPromise()
+      .then(data => this.gameService.setGameStatus(data));
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
     this._pageChangeSubscription = combineLatest(
@@ -300,7 +305,6 @@ export class ViewComponent implements OnInit, OnDestroy {
               { name: "description", content: game.description },
             ]);
 
-            this.bgBannerImage = (game.isInstallAndPlay ? (window.innerWidth > 475 ? ( window.innerWidth < 1200 ? game.installPlayDetailImgTab : game.installPlayDetailImg) : game.installPlayDetailImgMob) : game.bgImage);
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
                 (store) => store.name === game.preferredStore
@@ -355,9 +359,11 @@ export class ViewComponent implements OnInit, OnDestroy {
               });
             }
           },
-          (err) => {
-            if (err.timeout) {
+          (error) => {
+            if (error.timeout) {
               this.router.navigateByUrl("/server-error");
+            } else {
+              this.showError(error);
             }
             this.loaderService.stop();
           }
@@ -412,6 +418,24 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       $event.returnValue = true;
     }
+  }
+
+  get bgBannerImage(): string {
+    return !!this.game 
+      ? (this.game.isInstallAndPlay 
+        ? (window.innerWidth > 475 
+          ? ( window.innerWidth < 1200 
+            ? this.game.installPlayDetailImgTab
+            : this.game.installPlayDetailImg) 
+          : this.game.installPlayDetailImgMob) 
+        : this.game.bgImage)
+      : null;
+  }
+
+  get bgBannerHash(): string {
+    return !!this.game
+      ? (this.game.isInstallAndPlay ? this.game.iapBgHash : this.game.bgHash)
+      : null;
   }
 
   get isInWishlist(): boolean {
@@ -562,17 +586,23 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   addToWishlist(): void {
     this.loadingWishlist = true;
-    this.restService.addWishlist(this.game.oneplayId).subscribe(() => {
+    this.restService.addWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
+      this.showSuccess(new TransformMessageModel(response.data));
       this.authService.addToWishlist(this.game.oneplayId);
+    }, (error)=> {
+      this.showError(error);
     });
   }
 
   removeFromWishlist(): void {
     this.loadingWishlist = true;
-    this.restService.removeWishlist(this.game.oneplayId).subscribe(() => {
+    this.restService.removeWishlist(this.game.oneplayId).subscribe((response) => {
       this.loadingWishlist = false;
       this.authService.removeFromWishlist(this.game.oneplayId);
+      this.showSuccess(new TransformMessageModel(response.data));
+    }, (error)=> {
+      this.showError(error);
     });
   }
 
@@ -605,12 +635,12 @@ export class ViewComponent implements OnInit, OnDestroy {
             },
             error: (err) => {
               // need to verify the message to show
-              Swal.fire({
-                // title: "Set up on Safari",
-                // text: "Streaming games is not supported in this browser",
-                // icon: "error",
-                confirmButtonText: "Close",
-              });
+              // Swal.fire({
+              //   title: "Set up on Safari",
+              //   text: "Streaming games is not supported in this browser",
+              //   icon: "error",
+              //   confirmButtonText: "Close",
+              // });
             },
           });
 
@@ -703,7 +733,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         swalConf.html = `Minimum 10 mins required for gameplay. Renew your subscription now!`;
         } else if ((data.total_daily_tokens - data.used_daily_tokens) <= 0){ 
         showSwal = true;
-        swalConf.html = "You have consumed your daily gameplay limit quota of " + (Math.round(data.total_daily_tokens / 60)) + " hrs. See you again tomorrow!";
+        swalConf.html = "You have reached your daily gameplay limit of "+ (Math.round(data.total_daily_tokens / 60)) + " hours. See you again tomorrow!";
         swalConf.title = "Alert!";
         swalConf.imageUrl = `assets/img/error/time_limit 1.svg`;
         swalConf.confirmButtonText = "Okay";
@@ -725,6 +755,12 @@ export class ViewComponent implements OnInit, OnDestroy {
           }
         });
       }
+    }, (error)=> {
+        // if (this._gameErrorHandling.clientTokenCount) {
+        //   this._gameErrorHandling.clientTokenCount--;
+        // } else {
+        //   this.showError(error);
+        // }
     });
   }
 
@@ -848,7 +884,9 @@ export class ViewComponent implements OnInit, OnDestroy {
             },
           });
         });
-        this.gameService.gameStatus = this.restService.getGameStatus();
+        this.restService.getGameStatus()
+          .toPromise()
+          .then(data => this.gameService.setGameStatus(data));
         this.stopTerminating();
       },
       (err) => {
@@ -999,15 +1037,20 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.endGamePlayStartEvent("wait");
       this.waitQueue(err.message);
     } else {
-      this.endGamePlayStartEvent("failure");
-      this.stopLoading();
-      Swal.fire({
-        title: "Alert!",
-        text: err.message,
-        imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
-        customClass: "swalPaddingTop",
-        confirmButtonText: "Okay",
-      });
+      if (this._gameErrorHandling.sessionCount) {
+        this._gameErrorHandling.sessionCount--;
+        this.startSession();
+      } else {
+        this.endGamePlayStartEvent("failure");
+        this.stopLoading();
+        Swal.fire({
+          title: "Alert!",
+          text: err.message,
+          imageUrl: `assets/img/${err.code == 610 ? 'error/time_limit 1' : 'swal-icon/Gaming-issue'}.svg`,
+          customClass: "swalPaddingTop",
+          confirmButtonText: "Okay",
+        });
+      }
     }
   }
 
@@ -1028,7 +1071,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       });
     }
 
-    this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 3000);
+    this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 10000);
   }
 
   public cancelWaitQueue() {
@@ -1072,7 +1115,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             sessionId,
             millis
           ),
-        error: (err) => this.startGameWithClientTokenFailed(err),
+        error: (err) => this.startGameWithClientTokenFailed(err, sessionId),
       });
   }
 
@@ -1086,7 +1129,8 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.progress = 100;
       this._clientToken = data.client_token;
       const launchedFrom = this.action === "Play" ? "Play now" : "Resume";
-      lastValueFrom(this.restService.getGameStatus())
+      this.restService.getGameStatus()
+        .toPromise()
         .then((status) => {
           this.stopLoading();
           this.gameStatusSuccess(status);
@@ -1139,24 +1183,30 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private startGameWithClientTokenFailed(err: any) {
+  private startGameWithClientTokenFailed(err: any, sessionId: string) {
     // this._initializeEvent?.end({ result: "failure" });
-    this.stopLoading();
-    this.initializationErrored = true;
-    Swal.fire({
-      title: err.message + " Error Code: " + err.code,
-      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-      customClass: "swalPaddingTop",
-      confirmButtonText: "Try Again",
-      showCancelButton: true,
-      cancelButtonText: "Report",
-      allowEscapeKey: false,
-      allowOutsideClick: false,
-    }).then((res) => {
+    if (this._gameErrorHandling.clientTokenCount) {
+      this._gameErrorHandling.clientTokenCount--;
+      this.startGameWithClientToken(sessionId);
+    } else {
       this.stopLoading();
-      this.initializationErrored = false;
-      this.reportErrorOrTryAgain(res, err);
-    });
+      this.initializationErrored = true;
+      // this.showError(err, true);
+      Swal.fire({
+        title: err.message + " Error Code: " + err.code,
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Try Again",
+        showCancelButton: true,
+        cancelButtonText: "Report",
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+      }).then((res) => {
+        this.stopLoading();
+        this.initializationErrored = false;
+        this.reportErrorOrTryAgain(res, err);
+      });
+    }
   }
 
   startGameWithWebRTCToken(millis = 0): void {
@@ -1240,19 +1290,24 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private startGameWithWebRTCTokenFailed(err: any) {
-    this.loaderService.stop();
-    Swal.fire({
-      title: "Error Code: " + err.code,
-      text: err.message,
-      imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
-      customClass: "swalPaddingTop",
-      confirmButtonText: "Try Again",
-      showCancelButton: true,
-    }).then((res) => {
-      if (res.isConfirmed) {
-        this.startGameWithWebRTCToken();
-      }
-    });
+    if (this._gameErrorHandling.clientTokenCount) {
+      this._gameErrorHandling.clientTokenCount--;
+      this.startGameWithWebRTCToken();
+    } else {
+      this.loaderService.stop();
+      Swal.fire({
+        title: "Error Code: " + err.code,
+        text: err.message,
+        imageUrl: "assets/img/swal-icon/Game-Terminated.svg",
+        customClass: "swalPaddingTop",
+        confirmButtonText: "Try Again",
+        showCancelButton: true,
+      }).then((res) => {
+        if (res.isConfirmed) {
+          this.startGameWithWebRTCToken();
+        }
+      });
+    }
   }
 
   reportError() {
@@ -1293,7 +1348,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.restService.terminateGame(sessionId).subscribe(
           () => {
             setTimeout(() => {
-              this.gameService.gameStatus = this.restService.getGameStatus();
+              this.restService.getGameStatus()
+                .toPromise()
+                .then(data => this.gameService.setGameStatus(data));
               this.startSession();
             }, 2000);
           },
@@ -1328,7 +1385,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.router.navigate(['/play'], {
         queryParams: {
           payload: this._clientToken,
-          session: this.sessionToTerminate
+          session: this.sessionToTerminate,
         }
       })
     } else {
@@ -1378,11 +1435,14 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.game.oneplayId,
           store.name
         )
-      );
+      ).catch((error)=> {
+        this.showError(error);
+      });
     }
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {
+   
     if (result.dismiss == Swal.DismissReason.cancel) {
       this.reportResponse = response;
       this._reportErrorModalRef = this.ngbModal.open(this.reportErrorModal, {
@@ -1396,5 +1456,26 @@ export class ViewComponent implements OnInit, OnDestroy {
     } else if (result.isConfirmed) {
       this.startGame();
     }
+    
+  }
+  showError(error, doAction: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
+  }
+  showSuccess(response) {
+    Swal.fire({
+      title: response.title,
+      text: response.message,
+      imageUrl: response.icon,
+      confirmButtonText: response.primary_CTA,
+      showCancelButton: response.showSecondaryCTA,
+      cancelButtonText: response.secondary_CTA
+    })
   }
 }

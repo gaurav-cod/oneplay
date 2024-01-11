@@ -74,9 +74,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private notificationsSub: Subscription;
   private currMsgSub: Subscription;
   private sessionSubscription: Subscription;
+  private multiNotificationSub: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
+  showMultiNotificationList: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -228,7 +230,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -243,6 +245,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationsSub?.unsubscribe();
     this.currMsgSub?.unsubscribe();
     this.sessionSubscription?.unsubscribe();
+    this.multiNotificationSub?.unsubscribe();
   }
 
   ngOnInit() {
@@ -281,6 +284,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationsSub = this.notificationService.notifications.subscribe(
       (n) => (this.notificationData = n)
     );
+    this.multiNotificationSub = this.notificationService.showMultiNotificationList.subscribe((value)=> this.showMultiNotificationList = value);
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -418,14 +422,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  private showError(error) {
-    Swal.fire({
-      icon: "error",
-      title: "Error Code: " + error.code,
-      text: error.message,
-    });
-  }
-
   search(value: string) {
     this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
@@ -446,11 +442,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.logDropdownEvent("logOutConfirmClicked");
     // wait for countly to send the req before deleting the session
     await new Promise((r) => setTimeout(r, 500));
-    this.messagingService.removeToken().finally(() => {
-      this.restService.deleteSession(this.authService.sessionKey).subscribe();
-      this.authService.loggedOutByUser = true;
-      this.authService.logout();
-    });
+    this.messagingService.removeToken();
+    this.restService.deleteSession(this.authService.sessionKey).subscribe();
+    this.authService.loggedOutByUser = true;
+    this.authService.logout();
   }
 
   LogoutAlert(container) {
@@ -632,7 +627,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
     });
-    // this.router.navigate(['settings/profile']);
   }
 
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
@@ -652,10 +646,23 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private initPushNotification() {
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
+
     this.currMsgSub = this.messagingService.currentMessage.subscribe(
       (message) => {
         this.notificationService.addNotification(message);
       }
     );
   }
+
+  private showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
+  }
+ 
 }

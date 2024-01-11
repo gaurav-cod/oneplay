@@ -713,6 +713,11 @@ input[type="checkbox"] {
 
 .swal2-popup {
   background-color: #212123 !important;
+  padding-top: 1.25rem !important;
+  @media (max-width: 475px) {
+    position: relative;
+    top: -25px; 
+  }
 }
 
 .swal2-icon.swal2-error.swal2-icon-show, .swal2-icon.swal2-warning.swal2-icon-show {
@@ -756,7 +761,7 @@ input[type="checkbox"] {
 }
 
 .swal2-popup {
-  width: 28rem !important;
+  width: 25rem !important;
   border-radius: 16px !important;
 }
 
@@ -883,6 +888,7 @@ select option {
 
 .swal2-image {
   margin: 1em auto 1em !important;
+  height: 80px !important;
 }
 
 @media (max-width: 1200px) {

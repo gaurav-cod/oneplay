@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, map, catchError } from "rxjs";
 import { of } from "rxjs/internal/observable/of";
@@ -46,7 +46,9 @@ import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
 import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
 import { NotificationModel } from "../models/notification.model";
-
+import Swal from 'sweetalert2';
+import { GamezopFeedModel } from "../models/gamezopFeed.model";
+import { GamezopModel } from "../models/gamezop.model";
 @Injectable({
   providedIn: "root",
 })
@@ -75,14 +77,14 @@ export class RestService {
       );
   }
 
-  signup(data: SignupDTO): Observable<void> {
+  signup(data: SignupDTO) {
     return this.http
       .post(this.r_mix_api + "/accounts/signup", {
         ...data,
         partnerId: environment.partner_id,
       })
       .pipe(
-        map(() => {}),
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
@@ -463,7 +465,9 @@ export class RestService {
       .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
         params: { page, limit },
       })
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))), catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   getCurrentSubscription(): Observable<SubscriptionModel[]> {
@@ -486,7 +490,9 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/processing",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   getFailedSubscription(
@@ -498,7 +504,9 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/failed",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))));
+      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
+        throw error;
+      }));
   }
 
   hasPreviousPayments(): Observable<boolean> {
@@ -530,19 +538,34 @@ export class RestService {
   getWishlist(): Observable<string[]> {
     return this.http
       .get<string[]>(this.r_mix_api + "/accounts/wishlist")
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   addWishlist(gameId: string): Observable<any> {
     return this.http
       .post(this.r_mix_api + "/accounts/add_to_wishlist/" + gameId, null)
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   removeWishlist(gameId: string): Observable<any> {
     return this.http
       .post(this.r_mix_api + "/accounts/remove_from_wishlist/" + gameId, null)
-      .pipe();
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   generateQRCode() {
@@ -566,13 +589,15 @@ export class RestService {
   setQRSession(code: string, token: string) {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
-      .pipe();
+      .pipe(catchError(({error}) => {
+      throw error; 
+    }));
   }
 
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
     return this.http.get<SpeedTestServerRO>(
       this.r_mix_api + "/games/speed-test-server"
-    );
+    ).pipe(map((res)=> res), catchError(({error})=> {throw error}));
   }
 
   sendSpeedTestDLPacket(url: string, packetSize: number) {
@@ -989,17 +1014,6 @@ export class RestService {
       );
   }
 
-  deleteDevice(token: string): Observable<void> {
-    return this.http
-      .delete(this.r_mix_api + "/notification/push/device/" + token)
-      .pipe(
-        map(() => {}),
-        catchError(({ error }) => {
-          throw error;
-        })
-      );
-  }
-
   getSeriousNotification(): Observable<string | null> {
     return this.http
       .get(this.r_mix_api + "/notification/serious", {
@@ -1296,11 +1310,58 @@ export class RestService {
       .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
         platform: "angular",
       })
+    }
+  // gamezop API
+  getGamezopFeed(params?: any): Observable<GamezopFeedModel[]> {
+    return this.http
+      .get<any[]>(this.r_mix_api + "/games/gamezop/feeds", { params })
+      .pipe(
+        map((res) => res.map((d) => new GamezopFeedModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getGamezopCategory(params?: any): Observable<string[]> {
+    return this.http
+      .get<string[]>(this.r_mix_api + "/games/gamezop/categories", { params })
       .pipe(
         map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
       );
+  }
+
+  getGamezopFilteredGames(
+    query: { [key: string]: string },
+    page: number,
+    limit: number = 12
+  ): Observable<GamezopModel[]> {
+    const data = {
+      order_by: "release_date:desc",
+      ...query,
+    };
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
+        params: { page, limit },
+      })
+      .pipe(
+        map((res: any) => res.games.map((d) => new GamezopModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  downloadPDF(pdfLink: string): Observable<Blob> {
+    const header  = new HttpHeaders({
+      'Content-Type': 'application/pdf'
+    })
+    return this.http.get(pdfLink, {
+      responseType: 'blob',
+      headers: header,
+    })
   }
 }

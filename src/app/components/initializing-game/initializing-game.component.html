@@ -2,13 +2,15 @@
     <div class="row">
       <div class="col-12 p-0">
         <div class="card border-0">
-        <img
+          <img
+            #image
             class="card-img img-fluid"
             style="object-fit: cover; object-position: top; height: 100vh"
             [src]="(game.isInstallAndPlay ? game.installPlayLoadingImg : game.bgImage)"
             (error)="$event.target.src = 'assets/img/default_bg.webp'"
             alt="Card image"
           />
+          <image-loading [image]="image" [hash]="game.isInstallAndPlay ? game.iapBgHash : game.bgHash"/>
           <div
             class="card-img-overlay h-100"
           >

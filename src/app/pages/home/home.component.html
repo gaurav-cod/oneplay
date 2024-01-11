@@ -19,6 +19,7 @@
               <div class="col-auto p-lg-2 p-1 customWidth">
                 <div class="card bgTransparent border-0 borderRadius10">
                   <img
+                    #bannerImg1
                     class="card-img borderRadius10 height40vh left-img"
                     [src]="
                       firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
@@ -26,22 +27,32 @@
                     "
                     alt="img"
                   />
+                  <image-loading
+                    [image]="bannerImg1"
+                    [hash]="
+                      firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1]
+                        .bgHash
+                    "
+                  />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
               </div>
               <div class="col-auto p-lg-2 p-1 customWidth1">
                 <div class="card bgTransparent border-0 borderRadius10">
                   <img
+                    #bannerImg2
                     class="card-img borderRadius10 height40vh center-img"
                     [src]="game.bgImage"
                     alt="img"
                   />
+                  <image-loading [image]="bannerImg2" [hash]="game.bgHash" />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
               </div>
               <div class="col-auto p-lg-2 p-1 customWidth">
                 <div class="card bgTransparent border-0 borderRadius10">
                   <img
+                    #bannerImg3
                     class="card-img borderRadius10 height40vh right-img"
                     [src]="
                       firstRow.games[
@@ -49,6 +60,14 @@
                       ].bgImage
                     "
                     alt="img"
+                  />
+                  <image-loading
+                    [image]="bannerImg1"
+                    [hash]="
+                      firstRow.games[
+                        i === firstRow.games.length - 1 ? 0 : i + 1
+                      ].bgHash
+                    "
                   />
                   <div class="card-img-overlay playnowbtn borderRadius10"></div>
                 </div>
@@ -62,7 +81,15 @@
                 <div class="col-auto customWidth borderRadius10">
                   <div class="row h-100 align-items-center">
                     <div class="col">
-                      <img [src]="firstRow.games[i < 1 ? firstRow.games.length - 1 : i - 1].textLogo" class="text-logo d-none d-lg-block" alt="" />
+                      <img
+                        [src]="
+                          firstRow.games[
+                            i < 1 ? firstRow.games.length - 1 : i - 1
+                          ].textLogo
+                        "
+                        class="text-logo d-none d-lg-block"
+                        alt=""
+                      />
                     </div>
                   </div>
                 </div>
@@ -84,7 +111,15 @@
                 <div class="col-auto customWidth borderRadius10 text-center">
                   <div class="row h-100 align-items-center">
                     <div class="col">
-                      <img [src]="firstRow.games[i === firstRow.games.length - 1 ? 0 : i + 1].textLogo" class="text-logo d-none d-lg-block ml-md-3" alt="" />
+                      <img
+                        [src]="
+                          firstRow.games[
+                            i === firstRow.games.length - 1 ? 0 : i + 1
+                          ].textLogo
+                        "
+                        class="text-logo d-none d-lg-block ml-md-3"
+                        alt=""
+                      />
                     </div>
                   </div>
                 </div>
@@ -100,12 +135,15 @@
 <div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0 d-none d-md-block">
   <div class="row justify-content-center pt-2 pb-2">
     <div class="col-auto">
-      <div class="row justify-content-center scrolltab">
+      <div
+        *ngIf="allGamesLength > 0"
+        class="row justify-content-center scrolltab"
+      >
         <div class="col-auto px-2 tabOptions">
           <a
             href="javascript:void(0)"
             class="card bgColor mutedColor"
-            [ngClass]="{activeBG: !genreSelected}"
+            [ngClass]="{ activeBG: !genreSelected }"
             [routerLink]="['/home']"
           >
             <div class="customBtnPadding bgColor">For You</div>
@@ -143,7 +181,7 @@
     </div> -->
     <div>
       <app-similar-games
-        *ngIf="library.length != 0"
+        *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
         [title]="'My Library'"
         [games]="library"
       ></app-similar-games>
@@ -159,4 +197,7 @@
   </div>
 </div>
 
-<ngx-ui-loader [fgsColor]="'#c32ead'"></ngx-ui-loader>
+<ngx-ui-loader
+  *ngIf="allGamesLength === 0"
+  [fgsColor]="'#c32ead'"
+></ngx-ui-loader>

@@ -26,6 +26,8 @@
 }
 .truncate-line-clamp {
   -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
   white-space: wrap !important;
 }
 .navbar-nav .nav-link {
@@ -357,4 +359,26 @@
 
 .GradientBtnPadding {
   padding: 10px 20px !important;
+}
+.notificationList {
+  gap: 5px;
+  right: 0px;
+  top: 5px;
+  z-index: 1;
+
+  @media (max-width: 475px) {
+    right: -65px;
+    top: -20px;
+  }
+}
+
+.notificationListing {
+  @media (min-width: 475px) {
+
+    padding: 8px;
+    background-color: #ffffffcc;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+  }
 }
