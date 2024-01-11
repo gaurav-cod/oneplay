@@ -143,13 +143,17 @@ export class VerifyComponent implements OnInit, OnDestroy {
         })
         return;
       }
+      const isReportIssueCTA = [
+        "the verification link is invalid. please request a new one.", 
+        "sorry, it looks like your verification link has expired. please request a new one."
+      ].includes(error.data.message?.toLowerCase());
 
       Swal.fire({
         title: error.data.title,
         text: error.data.message,
         imageUrl: error.data.icon,
         confirmButtonText: "Request",
-        cancelButtonText: "Report Issue",
+        cancelButtonText: isReportIssueCTA ? "Okay" : "Report Issue",
         showCancelButton: true,
         allowEscapeKey: false,
         allowOutsideClick: false,
@@ -186,7 +190,9 @@ export class VerifyComponent implements OnInit, OnDestroy {
             }
           });
         } else {
-          window.location.href = `${this.domain}/contact.html`;
+          if (!isReportIssueCTA) { 
+            window.location.href = `${this.domain}/contact.html`;
+          }
         }
       });
   }
