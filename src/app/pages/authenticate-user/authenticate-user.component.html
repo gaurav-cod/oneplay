@@ -1,12 +1,12 @@
 <form [formGroup]="authenticateForm" (submit)="login()" role="form" class="row">
-    <div class="col-12 text-center">
+    <div class="col-12 text-center mt-4">
         <div class="col-md-12 mb-3 mt-4">
           <h1 class="text-white font30 font800 mb-0 textCenterCustom">
             Signin / Signup
           </h1>
         </div>
     </div>
-    <div class="col-md-12 mt-6">
+    <div class="col-md-12 mt-4">
         <label class="font16 font500 customOffWhite mb-0">Phone</label
             ><span
               *ngIf="phoneErrored"
@@ -28,16 +28,17 @@
                 type="tel"
                 formControlName="phone"
                 class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-                placeholder="9999999999"
+                placeholder="Enter your Phone Number"
               />
             </div>
     </div>
-    <div class="col-md-12 mt-4">
+    <div class="col-md-12 mt-4" *ngIf="doesUserhavePassword">
         <label class="font16 font500 customOffWhite">Password</label>
         <div class="input-group">
           <input
             type="password"
             formControlName="password"
+            placeholder="Enter Your Password"
             class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
             name="password"
             #passwordField
@@ -48,5 +49,51 @@
             <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
           </span>
         </div>
-    </div>  
+    </div> 
+    <div class="d-flex justify-content-center mt-4 w-100" *ngIf="!doesUserhavePassword">
+      <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
+    </div>
+    <div class="d-flex justify-content-center mt-4 w-100">
+      <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+    </div>
+    <div class="container d-flex justify-content-between w-100 mt-5" *ngIf="!doesUserhavePassword">
+      <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline">Continue as guest</a>
+    </div> 
+    <div class="container d-flex justify-content-between w-100 mt-5" *ngIf="doesUserhavePassword">
+      <a href="javascript:void(0)" class="font500 text-gray text-underline">Get OTP</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
+    </div> 
+
+    <p class="font14 font500 offWhiteColor mt-6">
+      By continuing you agree to Oneplay's
+      <span class="purpleGradient"><a href="javascript:void(0)">Terms & Conditions</a></span>
+      and
+      <span class="purpleGradient"><a href="javascript:void(0)">Privacy Policy</a></span>
+    </p>
 </form>
+
+<ng-template #ReferralCodeModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1" (click)="closeReferralDialog()">
+        <i class="fas fa-times-circle font20"></i>
+      </a>
+      <h3 class="text-white font16 font700 mb-4 mt-3 text-center">
+        Referral Code
+      </h3>
+      
+      <div class="input-group border-bottomInput borderRadius0">
+        <input
+          type="tel"
+          class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+          placeholder="Add your referral code here"
+        />
+      </div>
+      <div class="d-flex justify-content-center mt-4 w-100">
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
