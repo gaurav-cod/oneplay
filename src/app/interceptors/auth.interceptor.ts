@@ -76,7 +76,9 @@ export class AuthInterceptor implements HttpInterceptor {
             });
             headers["Content-Type"] = "multipart/form-data";
           } else if (typeof req.body === "object" && !Array.isArray(req.body)) {
-            delete req.body["password"];
+            if (req.body) {
+              delete req.body["password"];
+            }
             body = req.body;
             headers["Content-Type"] = "application/json";
           } else if (!!req.body) {
