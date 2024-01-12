@@ -24,6 +24,7 @@ import {
   TerminateStreamRO,
   TokensUsageDTO,
   UpdateProfileDTO,
+  UserProfileRegisterDTO,
   VerifySignupDTO,
   WebPlayTokenRO,
 } from "../interface";
@@ -1317,6 +1318,14 @@ export class RestService {
         platform: "angular",
       })
     }
+
+  getLoginOTP(userRegistration: UserProfileRegisterDTO) {
+    return this.http
+      .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
+        (map((res) => res), catchError(({ error }) => {
+          throw error;
+        })))
+  }
   // gamezop API
   getGamezopFeed(params?: any): Observable<GamezopFeedModel[]> {
     return this.http

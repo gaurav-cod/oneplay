@@ -1,83 +1,120 @@
-<form [formGroup]="authenticateForm" (submit)="login()" role="form" class="row">
-    <div class="col-12 text-center mt-4">
-        <div class="col-md-12 mb-3 mt-4">
-          <h1 class="text-white font30 font800 mb-0 textCenterCustom">
-            Signin / Signup
-          </h1>
+<section [ngSwitch]="screenOnDisplay">
+  <section *ngSwitchCase="'REGISTER_LOGIN'">
+    <form [formGroup]="authenticateForm" (submit)="login()" role="form" class="row">
+        <div class="col-12 text-center mt-4">
+            <div class="col-md-12 mb-3 mt-4">
+              <h1 class="text-white font30 font800 mb-0 textCenterCustom">
+                Signin / Signup
+              </h1>
+            </div>
         </div>
-    </div>
-    <div class="col-md-12 mt-5">
-        <label class="font16 font500 customOffWhite mb-0">Phone</label
-            ><span
-              *ngIf="phoneErrored"
-              class="font16 font500 errorGradientColor float-right"
-              >*invalid phone number</span
-            >
-            <div class="input-group border-bottomInput borderRadius0">
-              <div class="input-group-append borderRadius0">
-                <select
-                  class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
-                  formControlName="country_code"
+        <div class="col-md-12 mt-5">
+            <label class="font16 font500 customOffWhite mb-0">Phone</label
+                ><span
+                  *ngIf="phoneErrored"
+                  class="font16 font500 errorGradientColor float-right"
+                  >*invalid phone number</span
                 >
-                  <option *ngFor="let code of countryCodes" [value]="code">
-                    {{ code }}
-                  </option>
-                </select>
+                <div class="input-group border-bottomInput borderRadius0">
+                  <div class="input-group-append borderRadius0">
+                    <select
+                      class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
+                      formControlName="country_code"
+                    >
+                      <option *ngFor="let code of countryCodes" [value]="code">
+                        {{ code }}
+                      </option>
+                    </select>
+                  </div>
+                  <input
+                    type="tel"
+                    formControlName="phone"
+                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+                    placeholder="Enter your Phone Number"
+                  />
+                </div>
+        </div>
+        <ng-container *ngIf="allowPasswordInput">
+          <div class="col-md-12 mt-4">
+              <label class="font16 font500 customOffWhite">Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  formControlName="password"
+                  placeholder="Enter Your Password"
+                  class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+                  name="password"
+                  #passwordField
+                />
+                <span
+                  class="bgTransparent fixedIcon offWhiteColor font16 font500"
+                  >
+                  <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
+                </span>
               </div>
+          </div> 
+          
+          <div class="container d-flex justify-content-between w-100 mt-5">
+            <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="getOTP()">Get OTP</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
+          </div>
+          
+          <div class="d-flex justify-content-center mt-4 w-100">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+          </div> 
+        </ng-container>
+        <ng-container  *ngIf="!allowPasswordInput">
+          <div class="d-flex justify-content-center mt-4 w-100">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
+          </div>
+          <div class="container d-flex justify-content-between w-100 mt-5">
+            <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline" routerLink="/home">Continue as guest</a>
+          </div> 
+        </ng-container>
+    </form>
+  </section>
+  <section *ngSwitchCase="'OTP'">
+    <form [formGroup]="otpForm" role="form" class="row">
+      <div class="col-12 text-center mt-4">
+          <div class="col-md-12 mb-3 mt-4">
+            <h1 class="text-white font30 font800 mb-0 textCenterCustom">
+              Enter OTP Sent to <br> {{ mobile }}
+            </h1>
+          </div>
+          <div class="mt-6 row justify-content-center">
+            <div
+              class="col-auto p-1 otpInput"
+              *ngFor="let input of formInput; index as i"
+            >
               <input
-                type="tel"
-                formControlName="phone"
-                class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
-                placeholder="Enter your Phone Number"
+                #formRow
+                type="text"
+                formControlName="{{ input }}"
+                class="form-control otpInputField p-1"
+                maxlength="1"
+                (input)="jump($event, i)"
+                (keydown)="jumpPrev($event, i)"
               />
             </div>
-    </div>
-    <ng-container *ngIf="allowPasswordInput">
-      <div class="col-md-12 mt-4">
-          <label class="font16 font500 customOffWhite">Password</label>
-          <div class="input-group">
-            <input
-              type="password"
-              formControlName="password"
-              placeholder="Enter Your Password"
-              class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-              name="password"
-              #passwordField
-            />
-            <span
-              class="bgTransparent fixedIcon offWhiteColor font16 font500"
-              >
-              <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
-            </span>
           </div>
-      </div> 
-      
-      <div class="container d-flex justify-content-between w-100 mt-5">
-        <a href="javascript:void(0)" class="font500 text-gray text-underline">Get OTP</a>
-        <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
+          
+          <p class="mt-2 redErrorGradientColor text-center font500" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
-      
-      <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
-      </div> 
-    </ng-container>
-    <ng-container  *ngIf="!allowPasswordInput">
-      <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
-      </div>
-      <div class="container d-flex justify-content-between w-100 mt-5">
-        <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
-        <a href="javascript:void(0)" class="font500 text-gray text-underline" routerLink="/home">Continue as guest</a>
-      </div> 
-    </ng-container>
-
-    <p class="font14 font500 offWhiteColor mt-6">
-      By continuing you agree to Oneplay's
-      <span class="purpleGradient"><a href="javascript:void(0)">Terms & Conditions</a></span>
-      and
-      <span class="purpleGradient"><a href="javascript:void(0)">Privacy Policy</a></span>
-    </p>
-</form>
+    </form>
+    <div class="d-flex flex-column text-center w-100 mt-3">
+      <a href="javascript:void(0)" class="font500 text-gray text-underline">Resend OTP</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline mt-3">Change Phone Number</a>
+    </div>
+  </section>
+  
+  <p class="font14 font500 offWhiteColor mt-6">
+    By continuing you agree to Oneplay's
+    <span class="purpleGradient"><a href="javascript:void(0)">Terms & Conditions</a></span>
+    and
+    <span class="purpleGradient"><a href="javascript:void(0)">Privacy Policy</a></span>
+  </p>
+</section>
 
 <ng-template #ReferralCodeModal let-d="dismiss">
   <div class="modal-content modalBg">
@@ -94,10 +131,13 @@
           type="tel"
           class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
           placeholder="Add your referral code here"
+          [formControl]="referal_code"
         />
       </div>
+      <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referal Code</p>
+      <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">*referred by nick</p>
       <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" [disabled]="referralErroredBtn">Continue</button>
       </div>
     </div>
   </div>

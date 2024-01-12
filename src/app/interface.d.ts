@@ -198,3 +198,10 @@ export interface GetLoginUrlRO {
   url: string;
   redirect: "soft" | "hard";
 }
+
+export interface UserProfileRegisterDTO {
+  phone: string;
+  device: string;
+  idempotent_key: string;
+  referral_code: string;
+}
