@@ -32,38 +32,44 @@
               />
             </div>
     </div>
-    <div class="col-md-12 mt-4" *ngIf="doesUserhavePassword">
-        <label class="font16 font500 customOffWhite">Password</label>
-        <div class="input-group">
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="Enter Your Password"
-            class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
-            name="password"
-            #passwordField
-          />
-          <span
-            class="bgTransparent fixedIcon offWhiteColor font16 font500"
-            >
-            <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
-          </span>
-        </div>
-    </div> 
-    <div class="d-flex justify-content-center mt-4 w-100" *ngIf="!doesUserhavePassword">
-      <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
-    </div>
-    <div class="d-flex justify-content-center mt-4 w-100">
-      <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
-    </div>
-    <div class="container d-flex justify-content-between w-100 mt-5" *ngIf="!doesUserhavePassword">
-      <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline">Continue as guest</a>
-    </div> 
-    <div class="container d-flex justify-content-between w-100 mt-5" *ngIf="doesUserhavePassword">
-      <a href="javascript:void(0)" class="font500 text-gray text-underline">Get OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
-    </div> 
+    <ng-container *ngIf="allowPasswordInput">
+      <div class="col-md-12 mt-4">
+          <label class="font16 font500 customOffWhite">Password</label>
+          <div class="input-group">
+            <input
+              type="password"
+              formControlName="password"
+              placeholder="Enter Your Password"
+              class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+              name="password"
+              #passwordField
+            />
+            <span
+              class="bgTransparent fixedIcon offWhiteColor font16 font500"
+              >
+              <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
+            </span>
+          </div>
+      </div> 
+      
+      <div class="container d-flex justify-content-between w-100 mt-5">
+        <a href="javascript:void(0)" class="font500 text-gray text-underline">Get OTP</a>
+        <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
+      </div>
+      
+      <div class="d-flex justify-content-center mt-4 w-100">
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+      </div> 
+    </ng-container>
+    <ng-container  *ngIf="!allowPasswordInput">
+      <div class="d-flex justify-content-center mt-4 w-100">
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
+      </div>
+      <div class="container d-flex justify-content-between w-100 mt-5">
+        <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
+        <a href="javascript:void(0)" class="font500 text-gray text-underline" routerLink="/home">Continue as guest</a>
+      </div> 
+    </ng-container>
 
     <p class="font14 font500 offWhiteColor mt-6">
       By continuing you agree to Oneplay's

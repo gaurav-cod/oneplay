@@ -17,7 +17,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     private readonly ngbModal: NgbModal,
   ) {}
 
-  doesUserhavePassword: boolean = true;
+  private _isPasswordFlow: boolean = false;
+  private _doesUserhavePassword: boolean = false;
 
   authenticateForm = new UntypedFormGroup({
     country_code: new UntypedFormControl("+91", [Validators.required]),
@@ -28,6 +29,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     password: new UntypedFormControl("", Validators.required),
   });
 
+  get allowPasswordInput() {
+    return this._isPasswordFlow && this._doesUserhavePassword;
+  }
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
