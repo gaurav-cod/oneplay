@@ -91,6 +91,12 @@ export class RestService {
       );
   }
 
+  // ! Should not be POST method should be PUT
+  isPhoneRegistred(phone: string) {
+    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone })
+            .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
+  }
+
   getName(id: string): Observable<string> {
     return this.http
       .get<string>(this.r_mix_api + "/accounts/" + id + "/name")
