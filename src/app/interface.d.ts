@@ -199,9 +199,10 @@ export interface GetLoginUrlRO {
   redirect: "soft" | "hard";
 }
 
-export interface UserProfileRegisterDTO {
+export interface UserAuthDTO {
   phone: string;
   device: string;
   idempotent_key: string;
-  referral_code: string;
+  otp?: string;
+  referral_code?: string;
 }

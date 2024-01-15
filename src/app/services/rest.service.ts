@@ -24,7 +24,7 @@ import {
   TerminateStreamRO,
   TokensUsageDTO,
   UpdateProfileDTO,
-  UserProfileRegisterDTO,
+  UserAuthDTO,
   VerifySignupDTO,
   WebPlayTokenRO,
 } from "../interface";
@@ -90,12 +90,6 @@ export class RestService {
           throw error;
         })
       );
-  }
-
-  // ! Should not be POST method should be PUT
-  isPhoneRegistred(phone: string) {
-    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone })
-            .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
   }
 
   getName(id: string): Observable<string> {
@@ -1312,20 +1306,6 @@ export class RestService {
     );
   }
 
-  getLogInURL() {
-    return this.http
-      .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
-        platform: "angular",
-      })
-    }
-
-  getLoginOTP(userRegistration: UserProfileRegisterDTO) {
-    return this.http
-      .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
-        (map((res) => res), catchError(({ error }) => {
-          throw error;
-        })))
-  }
   // gamezop API
   getGamezopFeed(params?: any): Observable<GamezopFeedModel[]> {
     return this.http
@@ -1378,5 +1358,43 @@ export class RestService {
       responseType: 'blob',
       headers: header,
     })
+  }
+
+  // * V3 Guest User Login API
+
+  // ? Should not be POST method should be PUT
+  isPhoneRegistred(phone: string) {
+    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone })
+            .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
+  }
+  getLogInURL() {
+    return this.http
+      .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
+        platform: "angular",
+      })
+    }
+
+  getLoginOTP(userRegistration: UserAuthDTO) {
+    return this.http
+      .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
+        (map((res) => res), catchError(({ error }) => {
+          throw error;
+        })))
+  }
+
+  resendOTP(userRegistration: UserAuthDTO) {
+    return this.http
+    .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
+      (map((res) => res), catchError(({ error }) => {
+        throw error;
+      })))
+  }
+
+  verifyOTP(userRegistration: UserAuthDTO) {
+    return this.http
+    .post<boolean>(this.r_mix_api_3 + "/accounts/login_with_otp", userRegistration).pipe(
+      (map((res) => res), catchError(({ error }) => {
+        throw error;
+      })))
   }
 }

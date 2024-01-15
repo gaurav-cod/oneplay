@@ -118,7 +118,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     })
   }
   verifyOTP() {
-    
+    const controls = this.otpForm.controls;
+    const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
+    const payload = {
+      "phone": this.authenticateForm["phone"].value,
+      "otp": code,
+      "device": "web",
+      "idempotent_key": "uuid"
+    }
+    this.restService.verifyOTP(payload).subscribe({
+      next: (response) => {
+      }, error: () => {
+
+      }
+    })
   }
   jump(event: any, index: number) {
     const input = event.target as HTMLInputElement;
