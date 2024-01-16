@@ -57,11 +57,11 @@
           
           <div class="container d-flex justify-content-between w-100 mt-5">
             <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="getOTP()">Get OTP</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline">Change Phone Number</a>
+            <!-- <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a> -->
           </div>
           
           <div class="d-flex justify-content-center mt-4 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Continue</button>
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" (click)="loginWithPassword()">Continue</button>
           </div> 
         </ng-container>
         <ng-container  *ngIf="!allowPasswordInput">
@@ -104,12 +104,12 @@
       </div>
     </form>
     <div class="d-flex flex-column text-center w-100 mt-3">
-      <a href="javascript:void(0)" class="font500 text-gray text-underline">Resend OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline mt-3">Change Phone Number</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="resendOTP()">Resend OTP</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline mt-3"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
     </div>
   </section>
   
-  <p class="font14 font500 offWhiteColor mt-6">
+  <p class="font14 font500 offWhiteColor position-fixed bottom-0">
     By continuing you agree to Oneplay's
     <span class="purpleGradient"><a href="javascript:void(0)">Terms & Conditions</a></span>
     and

@@ -2,10 +2,12 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChildren } from '@angular
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { randomUUID } from 'crypto';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { RestService } from 'src/app/services/rest.service';
 import { phoneValidator } from 'src/app/utils/validators.util';
 import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
+import { v4 } from "uuid";
 
 @Component({
   selector: 'app-authenticate-user',
@@ -27,6 +29,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
   private referralName: string | null = null;
+  private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
 
   formInput = ["one", "two", "three", "four"];
@@ -115,17 +118,30 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   getOTP() {
     const payload = {
-      "phone": this.authenticateForm["phone"].value,
+      "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
-      "idempotent_key": "uuid",
-      "referral_code": (this.isUserRegisted ? this.referal_code.value : null)
+      "idempotent_key": this.idempotentKey,
+      "referral_code": (this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
         if (response)
         this.screenOnDisplay = "OTP";
       }, error: (error) => {
-
+      }
+    })
+  }
+  resendOTP() {
+    const payload = {
+      "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
+      "device": "web",
+      "idempotent_key": this.idempotentKey,
+    }
+    this.restService.resendOTP(payload).subscribe({
+      next: (response) => {
+        
+      }, error: (error) => {
+        this.errorMessage = error.message;
       }
     })
   }
@@ -133,7 +149,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
     const payload = {
-      "phone": this.authenticateForm["phone"].value,
+      "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
       "device": "web",
       "idempotent_key": "uuid"
@@ -142,6 +158,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response) => {
       }, error: () => {
 
+      }
+    })
+  }
+  loginWithPassword() {
+    const payload = {
+      "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
+      "device": "web",
+      "password": this.authenticateForm.controls["password"].value,
+    }
+    this.restService.loginWithPassword(payload).subscribe({
+      next: (response)=> {
+
+      }, error: (error)=> {
+        
       }
     })
   }
@@ -171,5 +201,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   login() {
 
+  }
+  changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
+    this.screenOnDisplay = screenOnDisplay;
+    this._doesUserhavePassword = false;
+    this.isUserRegisted = false;
+    this.referal_code = null;
   }
 }

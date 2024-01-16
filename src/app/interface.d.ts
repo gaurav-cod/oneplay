@@ -202,7 +202,8 @@ export interface GetLoginUrlRO {
 export interface UserAuthDTO {
   phone: string;
   device: string;
-  idempotent_key: string;
+  password?: string;
+  idempotent_key?: string;
   otp?: string;
   referral_code?: string;
 }

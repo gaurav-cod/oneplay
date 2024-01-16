@@ -1385,7 +1385,7 @@ export class RestService {
   resendOTP(userRegistration: UserAuthDTO) {
     return this.http
     .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
-      (map((res) => res), catchError(({ error }) => {
+      (map((res: any) => res.success), catchError(({ error }) => {
         throw error;
       })))
   }
@@ -1396,5 +1396,10 @@ export class RestService {
       (map((res) => res), catchError(({ error }) => {
         throw error;
       })))
+  }
+  loginWithPassword(userRegistration: UserAuthDTO) {
+    return this.http.post<boolean>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
+      (map((res: any) => res.success), catchError((error) => { throw error }))
+    )
   }
 }
