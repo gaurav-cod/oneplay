@@ -180,7 +180,7 @@
   }
 
   .otpInputField {
-    width: 50px;
+    width: 70px;
     height: 40px;
     margin-right: 10px;
     font-weight: 600;
@@ -204,4 +204,15 @@ input[type = "number"] {
   appearance: textfield !important;
   -moz-appearance: textfield !important;
   -webkit-appearance: textfield !important;
+}
+.toast-message {
+  background-color: #3f3e3e;
+  padding: 10px 15px;
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  position: relative;
+  top: 15px;
+  margin-top: 50px;
 }

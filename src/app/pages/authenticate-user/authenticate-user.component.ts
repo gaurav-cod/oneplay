@@ -21,6 +21,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
+  otpTimer: number = 60;
+
   constructor(
     private readonly ngbModal: NgbModal,
     private readonly restService: RestService,
@@ -83,6 +85,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -135,8 +138,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
-        if (response)
-        this.screenOnDisplay = "OTP";
+        if (response) {
+          this.screenOnDisplay = "OTP";
+      
+          this.otpForm.controls['four'].valueChanges.subscribe(()=> {
+            this.verifyOTP();
+          })
+        }
       }, error: (error) => {
       }
     })
@@ -162,10 +170,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
       "device": "web",
-      "idempotent_key": "uuid"
+      "idempotent_key": this.idempotentKey
     }
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
+        this.router.navigate(['/home']);
       }, error: (error) => {
         this.showError(error);
       }
