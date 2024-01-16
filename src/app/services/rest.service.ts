@@ -1420,7 +1420,7 @@ export class RestService {
   }
   loginWithPassword(userRegistration: UserAuthDTO) {
     return this.http.post<boolean>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
-      (map((res: any) => res.success), catchError((error) => { throw error }))
+      (map((res: any) => res.success), catchError(({error}) => { throw error }))
     )
   }
 }
