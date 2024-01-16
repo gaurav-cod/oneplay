@@ -61,6 +61,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
   private logoutRef: NgbModalRef;
+  private _createPassModalRef: NgbModalRef;
 
   errorMessage: string;
   errorCode: number;
@@ -98,6 +99,13 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showPass = false;
   isPrivate: boolean = false;
+  passwordExist: boolean = false;
+  emailExist: boolean = false;
+
+  passwordInputContainer = {
+    showPasswordToText: false,
+    showConfPasswordToText: false
+  }
 
   user: UserModel;
   private _changeEmailModalRef: NgbModalRef;
@@ -119,6 +127,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.authService.user.subscribe((user) => {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
+      this.emailExist = this.user.email?.length > 0;
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
     });
@@ -144,6 +153,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+   
     this.countlyService.updateEventData("settingsView", {
       logInSecurityViewed: "yes",
     });
@@ -174,7 +184,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get phoneErrored() {
     const control = this.phoneForm.controls["phone"];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.value?.length > 0;
   }
 
   get emailErrored() {
@@ -196,6 +206,11 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       return control.touched && false;
     }
+  }
+  get createPasswordErrored() {
+    const newPasswordcontrol = this.updateSecurity.controls["password"];
+    const confPasswordcontrol = this.updateSecurity.controls["confirmPassword"];
+    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value.length == 0 || confPasswordcontrol.value.length == 0);
   }
 
   timer(minute) {
@@ -222,6 +237,21 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  createPassword() {
+    
+    this.restService.createPassword(this.updateSecurity.value.password).subscribe((response)=> {
+        this._createPassModalRef?.close();
+        Swal.fire({
+          icon: "success",
+          text: "Password Created Successfully",
+          showConfirmButton: false,
+          showCancelButton: false,
+        });
+    }, (error: any)=> {
+      
+    })
+  }
+
   openEmailModal() {
     this.emailOTP = true;
     this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
@@ -232,14 +262,24 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       keyboard: false,
     });
   }
+  closeCreatePassModal() {
+    this._createPassModalRef?.close();
+  }
 
-  updateEmail(): void {
+  emailOperation() {
     this.errorMessage = null;
     if (this.emailErrored) return;
     if (this.user?.email === this.email.value?.trim()) {
       this.errorMessage = "This email address is already in use.";
       return;
     }
+    // if (this.emailExist) {
+    this.updateEmail();
+    
+  }
+
+  updateEmail(): void {
+
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
         this.clearErrors();
@@ -475,12 +515,22 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  openCreatePasswordModal(container: ElementRef<HTMLDivElement>) {
+    this._createPassModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   closeEmailModal() {
     this._changeEmailModalRef?.close();
     this._otpScreenRef?.close();
     this.email.reset();
     this.allowEmailEdit = false;
     this.clearErrors();
+    
     clearTimeout(this.emailIconHideTimer);
     this.emailIconHideTimer = setTimeout(() => {
       this.allowEmailEdit = true;
@@ -493,6 +543,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.phoneForm.reset();
     this.allowPhoneEdit = false;
     this.clearErrors();
+   
     clearTimeout(this.phoneIconHideTimer);
     this.phoneIconHideTimer = setTimeout(() => {
       this.allowPhoneEdit = true;

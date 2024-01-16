@@ -40,10 +40,16 @@ export class AuthInterceptor implements HttpInterceptor {
       formData.append("user_id", userid);
       formData.append("session_token", token);
     } else if (req.urlWithParams.startsWith(environment.render_mix_api)) {
+      const headers = {};
+      const { sessionToken } = this.authService;
+      headers["x-partner-id"] = environment.partner_id;
+      
+      if (sessionToken) {
+        headers["session_token"] = sessionToken;
+      }
+      
       req = req.clone({
-        setHeaders: {
-          session_token: this.authService.sessionToken,
-        }
+        setHeaders: headers,
       });
     }
 

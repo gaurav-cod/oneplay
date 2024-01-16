@@ -11,9 +11,6 @@ import { IconsComponent } from "../../pages/icons/icons.component";
 import { UserProfileComponent } from "../../pages/user-profile/user-profile.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ComponentsModule } from "src/app/components/components.module";
-import { HomeComponent } from "src/app/pages/home/home.component";
-import { StoreComponent } from "src/app/pages/store/store.component";
-import { ViewComponent } from "src/app/pages/view/view.component";
 import { StreamsComponent } from "src/app/pages/streams/streams.component";
 import { StreamComponent } from "src/app/pages/stream/stream.component";
 import { LibraryComponent } from "src/app/pages/library/library.component";
@@ -24,13 +21,11 @@ import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { PlayComponent } from 'src/app/pages/play/play.component';
-import { ViewGuard } from "src/app/guards/view.guard";
 import { FeedbackComponent } from "src/app/pages/feedback/feedback.component";
 import { WishlistGuard } from "src/app/guards/wishlist.guard";
 import { CheckoutComponent } from "src/app/pages/checkout/checkout.component";
 import { ChatComponent } from "src/app/pages/chat/chat.component";
 import { NotificationsComponent } from "src/app/pages/notifications/notifications.component";
-import { Gamezop } from "src/app/pages/home/gamezop.component";
 
 @NgModule({
   imports: [
@@ -50,10 +45,6 @@ import { Gamezop } from "src/app/pages/home/gamezop.component";
   declarations: [
     UserProfileComponent,
     IconsComponent,
-    HomeComponent,
-    Gamezop,
-    StoreComponent,
-    ViewComponent,
     StreamsComponent,
     StreamComponent,
     LibraryComponent,
@@ -65,6 +56,6 @@ import { Gamezop } from "src/app/pages/home/gamezop.component";
     ChatComponent,
     NotificationsComponent,
   ],
-  providers: [ViewGuard, WishlistGuard],
+  providers: [WishlistGuard],
 })
 export class AdminLayoutModule {}

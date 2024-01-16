@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
@@ -28,6 +29,23 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     Validators.maxLength(300),
   ]);
 
+  dob = new UntypedFormControl(undefined, [Validators.required]);
+
+  private dateToNgbDate = (date: Date): NgbDateStruct => ({
+    year: date.getUTCFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  });
+
+  private dateMinusYears = (date: Date, count: number): Date => {
+    date.setUTCFullYear(date.getUTCFullYear() - count);
+    return date;
+  };
+
+  
+  minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
+  maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
+
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
   private userSubscription: Subscription;
@@ -50,7 +68,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.username.setValue(user.username);
       this.name.setValue(user.name);
       this.bio.setValue(user.bio);
-      this.photo = user.photo;
+      this.dob.setValue(user.dob);
+      this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
   }
 
@@ -72,8 +91,14 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
+      this.bio.value !== (this.currentUserState.dob ?? null) ||
       !!this.photoFile
     );
+  }
+
+  get dateOfBirthErrored() {
+    const control = this.dob;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   onUpdateInput(key: keyof CustomTimedCountlyEvents["settingsView"]) {
@@ -133,6 +158,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
     }
+    if (!!this.dob.value) {
+      const year = this.dob.value['year'];
+      const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
+      const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];
+      body.dob = `${year}-${month}-${day}`;
+    }
 
     this.saveProfileLoder = true;
 
@@ -144,6 +175,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           lastName: body.last_name,
           bio: body.bio,
           photo: this.photo as string,
+          dob: body.dob
         });
         Swal.fire({
           icon: "success",

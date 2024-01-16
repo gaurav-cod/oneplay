@@ -14,6 +14,12 @@ import { ServerErrorComponent } from "src/app/pages/server-error/server-error.co
 import { InstallGuard } from "src/app/guards/install.guard";
 import { InstallComponent } from "src/app/pages/install/install.component";
 import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.component";
+import { ViewGuard } from "src/app/guards/view.guard";
+import { HomeComponent } from "src/app/pages/home/home.component";
+import { StoreComponent } from "src/app/pages/store/store.component";
+import { ViewComponent } from "src/app/pages/view/view.component";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { Gamezop } from "src/app/pages/home/gamezop.component";
 
 @NgModule({
   imports: [
@@ -27,13 +33,18 @@ import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.componen
     ComponentsModule,
     PipesModule,
     NgxUiLoaderModule,
+    InfiniteScrollModule,
   ],
   declarations: [
     ErrorComponent,
+    HomeComponent,
+    Gamezop,
     ServerErrorComponent,
     InstallComponent,
     SpeedTestComponent,
+    StoreComponent,
+    ViewComponent,
   ],
-  providers: [InstallGuard],
+  providers: [InstallGuard, ViewGuard],
 })
 export class CommonLayoutModule {}

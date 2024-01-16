@@ -39,6 +39,7 @@ import { InstallPlayGameComponent } from './install-play-game/install-play-game.
 import { NotificationAlertComponent } from './notification-alert/notification-alert.component';
 import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
 import { ImageLoadingComponent } from './image-loading/image-loading.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @NgModule({
   imports: [
@@ -86,6 +87,7 @@ import { ImageLoadingComponent } from './image-loading/image-loading.component';
     InstallPlayGameComponent,
     NotificationAlertComponent,
     ImageLoadingComponent,
+    UserInfoComponent,
   ],
   exports: [
     GameCardComponent,

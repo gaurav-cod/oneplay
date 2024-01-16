@@ -51,6 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public uResults: UserModel[] = [];
   public gameStatus: GameStatusRO | null = null;
   public hasUnread = false;
+  public isAuthenticated = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -72,6 +73,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private notificationCountSub: Subscription;
   private notificationsSub: Subscription;
   private currMsgSub: Subscription;
+  private sessionSubscription: Subscription;
   private multiNotificationSub: Subscription;
 
   notificationData: NotificationModel[] | null = null;
@@ -242,11 +244,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationCountSub?.unsubscribe();
     this.notificationsSub?.unsubscribe();
     this.currMsgSub?.unsubscribe();
+    this.sessionSubscription?.unsubscribe();
     this.multiNotificationSub?.unsubscribe();
   }
 
   ngOnInit() {
-    this.initPushNotification();
+    this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+        if (exists) {
+          this.authService.user = this.restService.getProfile();
+          this.sessionCountForCasualGaming();
+          this.initPushNotification();
+          this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
+            (status) => {
+              this.gameStatus = status;
+            }
+          );
+        }
+      }
+    );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
@@ -318,13 +335,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
-      (status) => {
-        this.gameStatus = status;
-      }
-    );
-
-    this.sessionCountForCasualGaming();
   }
 
   openSetting() {
@@ -581,6 +591,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
       },
     });
     // domain + '/subscription.html'
+  }
+  goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+        this.logDropdownEvent("subscriptionClicked");
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
+        } else {
+          window.open(response.url);
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
+      },
+    });
   }
 
   sessionCountForCasualGaming() {

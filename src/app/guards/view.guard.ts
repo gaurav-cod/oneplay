@@ -12,7 +12,10 @@ export class ViewGuard implements CanDeactivate<ViewComponent> {
     if (component.startingGame) {
       return false;
     }
+    if (this.authService.sessionToken) {
+      return this.authService.wishlist.pipe(map((w) => !!w && w.length > 0)) ;
+    } 
+    return true;
 
-    return this.authService.wishlist.pipe(map((w) => !!w && w.length > 0));
   }
 }

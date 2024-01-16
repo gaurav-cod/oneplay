@@ -12,6 +12,7 @@ import {
   GameSessionRO,
   GameStatusRO,
   GameTermCondition,
+  GetLoginUrlRO,
   ILocation,
   IPayment,
   LoginDTO,
@@ -23,6 +24,7 @@ import {
   TerminateStreamRO,
   TokensUsageDTO,
   UpdateProfileDTO,
+  UserAuthDTO,
   VerifySignupDTO,
   WebPlayTokenRO,
 } from "../interface";
@@ -55,6 +57,7 @@ export class RestService {
   private readonly client_api = environment.client_api;
   private readonly r_mix_api = environment.render_mix_api + "/v1";
   private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
+  private readonly r_mix_api_3 = environment.render_mix_api + "/v3";
 
   constructor(private readonly http: HttpClient) {}
 
@@ -133,6 +136,17 @@ export class RestService {
           throw error;
         })
       );
+  }
+
+  createPassword(password: string): Observable<void> {
+    return this.http
+    .put(this.r_mix_api_2 + "/accounts/password", { password })
+    .pipe(
+      map(() => {}),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   updateEmail(email: string): Observable<string> {
@@ -471,9 +485,12 @@ export class RestService {
   getCurrentSubscription(): Observable<SubscriptionModel[]> {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/current")
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))),catchError(({ error }) => {
-        throw error;
-      }));
+      .pipe(
+        map((res) => res.map((d) => new SubscriptionModel(d))),
+        catchError((err) => {
+          throw err.error;
+        })
+      );
   }
 
   getProcessingSubscription(
@@ -508,6 +525,16 @@ export class RestService {
     return this.http
       .get<any[]>(this.r_mix_api + "/accounts/subscription/payment-history/all")
       .pipe(map((res) => res.length > 0));
+  }
+
+  getPaymentRecipt(planId: string): Observable<string> {
+    return this.http.get<string>(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`)
+    .pipe(
+      map((res) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   setOnline(): Observable<SetOnlineRO> {
@@ -1352,5 +1379,48 @@ export class RestService {
       responseType: 'blob',
       headers: header,
     })
+  }
+
+  // * V3 Guest User Login API
+
+  // ? Should not be POST method should be PUT
+  isPhoneRegistred(phone: string, device: "web" | "tizen") {
+    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone, device: device })
+            .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
+  }
+  getLogInURL() {
+    return this.http
+      .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
+        platform: "angular",
+      })
+    }
+
+  getLoginOTP(userRegistration: UserAuthDTO) {
+    return this.http
+      .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
+        (map((res: any) => res.success), catchError(({ error }) => {
+          throw error;
+        })))
+  }
+
+  resendOTP(userRegistration: UserAuthDTO) {
+    return this.http
+    .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
+      (map((res: any) => res.success), catchError(({ error }) => {
+        throw error;
+      })))
+  }
+
+  verifyOTP(userRegistration: UserAuthDTO) {
+    return this.http
+    .post<boolean>(this.r_mix_api_3 + "/accounts/login_with_otp", userRegistration).pipe(
+      (map((res) => res), catchError(({ error }) => {
+        throw error;
+      })))
+  }
+  loginWithPassword(userRegistration: UserAuthDTO) {
+    return this.http.post<boolean>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
+      (map((res: any) => res.success), catchError((error) => { throw error }))
+    )
   }
 }

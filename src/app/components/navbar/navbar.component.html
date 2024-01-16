@@ -309,6 +309,13 @@
     <ul class="navbar-nav pl-md-4 pl-lg-0">
       <li class="nav-item">
         <div class="row">
+          <button
+              *ngIf="!isAuthenticated"
+              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block"
+              (click)="goToSignUpPage()"
+            >
+              Sign In
+            </button>
           <div
             class="col-auto align-self-center pl-0 d-none d-lg-inline hideIcon"
           >
@@ -316,6 +323,7 @@
               href="javascript:void(0)"
               class="nav-link p-0 br50"
               (click)="toggleFriendsList()"
+              *ngIf="isAuthenticated"
             >
               <img
                 *ngIf="hasUnread"
@@ -324,14 +332,26 @@
                 style="right: 12px; z-index: 1"
                 alt=""
               />
-              <span class="nav-chat">
+              <span class="nav-chat" >
                 <!-- <i class="fas fa-user-friends"></i> -->
                 <img src="assets/img/navbar/chat-icon.svg" alt="" />
+              </span>
+            </a>
+            <a
+              href="javascript:void(0)"
+              class="nav-link p-0 br50"
+              *ngIf="!isAuthenticated"
+              (click)="goToSignUpPage()"
+            >
+              <span class="" >
+                <!-- <i class="fas fa-user-friends"></i> -->
+                <img src="assets/img/navbar/guest-chat-icon.svg" height="30" alt="" />
               </span>
             </a>
           </div>
           <div
             class="col-auto align-self-center pl-0 d-none d-lg-inline hideIcon"
+            *ngIf="isAuthenticated"
           >
             <a
               href="javascript:void(0)"
@@ -370,7 +390,9 @@
             </a>
           </div>
           <div
-            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative">
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible position-relative"
+            *ngIf="isAuthenticated"
+            >
             <div class="notification-container-container text-center font800 p-1" *ngIf="unseenNotificationCount > 0">
               <div class="new-notification-count text-white">{{unseenNotificationCount > 9 ? '9+' : unseenNotificationCount}}</div>
             </div>
@@ -409,14 +431,23 @@
             >
               <img
                 alt=""
+                *ngIf="isAuthenticated"
                 width="36px"
                 height="36px"
                 class="rounded-circle profileImgCover"
                 [src]="photo || 'assets/img/defaultUser.svg'"
                 (error)="onUserError($event)"
               />
+              <img
+                alt=""
+                *ngIf="!isAuthenticated"
+                width="36px"
+                height="36px"
+                class="rounded-circle profileImgCover"
+                [src]="photo || 'assets/img/guestUser.svg'"
+              />
             </a>
-            <div class="dropdown-bug">
+            <div class="dropdown-bug" *ngIf="isAuthenticated">
               <div
                 class="dropdown-menu-arrow menudropdown dropdown-menu-right"
                 ngbDropdownMenu
@@ -481,57 +512,39 @@
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
                 </a>
-                <!-- <a
-                  href="javascript:void(0)"
-                  class="dropdown-item"
-                  (click)="switchSearchPrivacy()"
-                >
-                  <img
-                    src="assets/icons/privacy.svg"
-                    class="img-fluid mr-3 privacy"
-                    alt=""
-                  />
-                  <span>Turn {{ isPrivate ? "off" : "on" }} privacy</span>
-                </a>
-                <div class="dropdown-divider borderColor"></div>
+              </div>
+            </div>
+            <div class="dropdown-bug" *ngIf="!isAuthenticated">
+              <div
+                class="dropdown-menu-arrow menudropdown dropdown-menu-right"
+                ngbDropdownMenu
+              >
                 <a
                   href="javascript:void(0)"
                   class="dropdown-item"
-                  (click)="deleteSessionData()"
+                  (click)="goToSignUpPage()"
                 >
-                  <img
-                    src="assets/icons/Pie_Chart.svg"
-                    width="16px"
-                    height="16px"
-                    class="img-fluid mr-3 session"
-                    alt=""
-                  />
-                  <span>Delete Session Data</span>
+                  <img src="assets/img/navbar/login-btn.svg" height="20" width="20" />
+                  <span class="align-middle">Sign In/Sign Up</span>
                 </a>
                 <a
-                  href="javascript:void(0)"
+                  [href]="domain + '/subscription.html'"
                   class="dropdown-item"
-                  [routerLink]="['/tv']"
-                  (click)="logDropdownEvent('tvSignInClicked')"
                 >
-                  <i class="fas fa-tv font14 align-middle"></i>
-                  <span>TV Sign in</span>
+                <img src="assets/img/navbar/subscribe.svg" height="20" width="20" />
+                  <span class="align-middle">Subscribe</span>
                 </a>
+
                 <a
+                  (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
+                  routerLinkActive="active"
+                  [routerLink]="['speed-test']"
                   class="dropdown-item"
-                  (click)="LogoutAlert(LogoutModal)"
                 >
-                  <img
-                    src="assets/icons/Logout.svg"
-                    class="img-fluid mr-3 logout"
-                    alt=""
-                  />
-                  <span>Log out</span>
+                <img src="assets/img/navbar/speed-test.svg" height="20" width="20" />
+                  <span class="align-middle">Speed Test</span>
                 </a>
-                <a href="javascript:void(0)" class="dropdown-item btn disabled">
-                  Version <span class="ml-1">{{ appVersion }}</span>
-                </a> -->
               </div>
             </div>
           </div>

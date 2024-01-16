@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
+import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -68,6 +70,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gLink: GLinkPipe,
     private readonly countlyService: CountlyService,
+    private readonly ngbModal: NgbModal,
   ) {}
 
   ngOnDestroy(): void {
@@ -79,6 +82,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+
+    // this.ngbModal.open(UserInfoComponent, {
+    //   centered: true,
+    //   modalDialogClass: "modal-md",
+    //   backdrop: "static",
+    //   keyboard: false,
+    // });
+
     this.title.setTitle("Home");
     this.loaderService.start();
     

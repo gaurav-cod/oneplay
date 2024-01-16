@@ -16,6 +16,7 @@ import { StartgamingSignupComponent } from 'src/app/pages/startgaming-signup/sta
 import { NonFunctionalRegionComponent } from 'src/app/components/non-functional-region/non-functional-region.component';
 import { OtpVerifyComponent } from 'src/app/pages/otp-verify/otp-verify.component';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { AuthenticateUserComponent } from 'src/app/pages/authenticate-user/authenticate-user.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
   ],
   declarations: [
     LoginComponent,
+    AuthenticateUserComponent,
     RegisterComponent,
     VerifyComponent,
     ForgotPassComponent,
