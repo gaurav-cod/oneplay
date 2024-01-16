@@ -10,7 +10,6 @@ import { ViewComponent } from "src/app/pages/view/view.component";
 import { ViewGuard } from "src/app/guards/view.guard";
 import { StreamsComponent } from "src/app/pages/streams/streams.component";
 import { StreamComponent } from "src/app/pages/stream/stream.component";
-import { LibraryComponent } from "src/app/pages/library/library.component";
 import { SearchComponent } from "@ctrl/ngx-emoji-mart";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
 
