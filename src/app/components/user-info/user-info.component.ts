@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-user-info',
@@ -15,4 +16,22 @@ export class UserInfoComponent {
     fullname: new FormControl(undefined),
     confirmPassword: new FormControl(undefined)
   });
+  private dateToNgbDate = (date: Date): NgbDateStruct => ({
+    year: date.getUTCFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  });
+
+  private dateMinusYears = (date: Date, count: number): Date => {
+    date.setUTCFullYear(date.getUTCFullYear() - count);
+    return date;
+  };
+
+  
+  minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
+  maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
+  get dateOfBirthErrored() {
+    const control = this.userInfo.controls["dob"];
+    return (control.touched || control.dirty) && control.invalid;
+  }
 }

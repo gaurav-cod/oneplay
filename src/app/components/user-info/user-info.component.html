@@ -12,9 +12,33 @@
       </h5>
       
     </div>
-    <div class="dots-list">
-        
-    </div>
+    <form [formGroup]="userInfo">
+        <div class="col-md-12 mt-4">
+          <label class="font16 font500 offWhiteText">Date Of Birth</label
+          ><span
+            class="font16 font500 errorGradientColor float-right"
+            *ngIf="dateOfBirthErrored"
+            >*invalid Date of Birth</span
+          >
+          <div class="input-group dateDropdown">
+            <input
+              class="form-control height52 font18 font500 text-white border-0 borderRadius10 lightBg border-bottom"
+              formControlName="dob"
+              placeholder="DD\MM\YYYY"
+              ngbDatepicker
+              #d="ngbDatepicker"
+              (click)="d.toggle()"
+              (dateSelect)="d.toggle()"
+              [min]="minDate"
+              [max]="maxDate"
+              style="border-radius: 5px;"
+            />
+          </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+          <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding mt-2 text-center">Next</button>
+        </div>
+    </form>
     <div class="modal-footer w-100 justify-content-between">
         <a href="javascript.void(0)" rel="noopener noreferrer" class="font500 text-gray">Remind me later</a>
         <a href="javascript.void(0)" rel="noopener noreferrer" class="font500 text-gray">Skip</a>
