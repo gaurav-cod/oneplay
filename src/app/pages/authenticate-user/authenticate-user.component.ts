@@ -15,7 +15,7 @@ import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
 export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   private _referralModal: NgbModalRef; 
-  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "OTP";
+  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
 
   constructor(
@@ -27,6 +27,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
   private referralName: string | null = null;
+  public  isUserRegisted: boolean = false;
 
   formInput = ["one", "two", "three", "four"];
   @ViewChildren("formRow") rows: any;
@@ -77,10 +78,22 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.authenticateForm.controls["phone"].valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
-    ).subscribe((phone)=> this.mobile = phone)
+    ).subscribe((phone)=> this.getUserInfoByPhone(phone))
   }
   ngOnDestroy(): void {
     
+  }
+
+  private getUserInfoByPhone(phone) {
+    this.restService.isPhoneRegistred(phone, "web").subscribe({
+      next: (response: any)=> {
+        this._doesUserhavePassword = response.has_password;
+        this._isPasswordFlow = response.has_password;
+        this.isUserRegisted = response.is_registered;
+      }, error: (error: any)=> {
+
+      }
+    })
   }
 
   openReferralModal(container: ElementRef<HTMLDivElement>) {
@@ -105,13 +118,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       "phone": this.authenticateForm["phone"].value,
       "device": "web",
       "idempotent_key": "uuid",
-      "referral_code": this.referal_code.value
+      "referral_code": (this.isUserRegisted ? this.referal_code.value : null)
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
-        if (response) {
-          
-        }
+        if (response)
+        this.screenOnDisplay = "OTP";
       }, error: (error) => {
 
       }

@@ -199,3 +199,9 @@
         height: 30px;
     }
 }
+
+input[type = "number"] {
+  appearance: textfield !important;
+  -moz-appearance: textfield !important;
+  -webkit-appearance: textfield !important;
+}

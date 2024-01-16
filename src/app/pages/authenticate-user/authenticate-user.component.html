@@ -27,7 +27,8 @@
                     </select>
                   </div>
                   <input
-                    type="tel"
+                    type="number"
+                    inputmode="numeric"
                     formControlName="phone"
                     class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
                     placeholder="Enter your Phone Number"
@@ -65,7 +66,7 @@
         </ng-container>
         <ng-container  *ngIf="!allowPasswordInput">
           <div class="d-flex justify-content-center mt-4 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding">Get OTP</button>
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" [disabled]="phoneErrored" (click)="getOTP()">Get OTP</button>
           </div>
           <div class="container d-flex justify-content-between w-100 mt-5">
             <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
@@ -135,7 +136,7 @@
         />
       </div>
       <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referal Code</p>
-      <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">*referred by nick</p>
+      <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">{{referralName}}</p>
       <div class="d-flex justify-content-center mt-4 w-100">
         <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" [disabled]="referralErroredBtn">Continue</button>
       </div>

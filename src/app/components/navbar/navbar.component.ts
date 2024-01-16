@@ -596,10 +596,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.restService.getLogInURL().subscribe({
       next: (response) => {
         this.logDropdownEvent("subscriptionClicked");
-        if (response.redirect === "soft") {
-          this.router.navigate([response.url]);
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
         } else {
-          window.open(response.url, "_self");
+          window.open(response.url);
         }
       },
       error: () => {

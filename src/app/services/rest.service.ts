@@ -1363,8 +1363,8 @@ export class RestService {
   // * V3 Guest User Login API
 
   // ? Should not be POST method should be PUT
-  isPhoneRegistred(phone: string) {
-    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone })
+  isPhoneRegistred(phone: string, device: "web" | "tizen") {
+    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone, device: device })
             .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
   }
   getLogInURL() {
@@ -1377,7 +1377,7 @@ export class RestService {
   getLoginOTP(userRegistration: UserAuthDTO) {
     return this.http
       .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
-        (map((res) => res), catchError(({ error }) => {
+        (map((res: any) => res.success), catchError(({ error }) => {
           throw error;
         })))
   }
