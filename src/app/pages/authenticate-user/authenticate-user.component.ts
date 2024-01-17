@@ -63,7 +63,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.dirty;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -72,16 +72,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     const control = this.referal_code;
     return !this.referralName && control.dirty && control.touched && control.value?.length > 0;
   }
-  get referralErroredBtn() {
-    const control = this.referal_code;
-    return (!this.referralName && control.dirty && control.touched) || control.value?.length == 0;
-  }
+  
   get passwordErrored() {
     const control = this.authenticateForm.controls["password"];
-    return control.touched && control.invalid;
+    return (control.value.length > 0 ? control.touched && control.invalid : true);
   }
   get loginPasswordErrored() {
-    return this.phoneErrored && this.passwordErrored;
+    return this.phoneErrored || this.passwordErrored;
   }
 
   ngOnInit() {
