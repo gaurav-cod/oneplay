@@ -74,7 +74,7 @@
         </li>
       </ul>
     </div>
-    <form class="d-flex mb-4 mb-lg-0" (submit)="sendMessage()">
+    <form class="d-flex mb-4 mb-lg-0" (submit)="sendMessage()" *ngIf="isAuthenticated">
       <input
         type="text"
         class="form-control bg-transparent mr-2"
