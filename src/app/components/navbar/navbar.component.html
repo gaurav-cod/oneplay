@@ -1,3 +1,4 @@
+<!-- <div class="overlay"></div> -->
 <nav
   class="navbar navbar-expand-lg navbar-dark sticky-top navbarBg xsborderBottom"
   id="navbar-main"
@@ -311,7 +312,7 @@
         <div class="row">
           <button
               *ngIf="!isAuthenticated"
-              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block"
+              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block mr-4"
               (click)="goToSignUpPage()"
             >
               Sign In
@@ -339,13 +340,13 @@
             </a>
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 mr-2"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage()"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
-                <img src="assets/img/navbar/guest-chat-icon.svg" height="30" alt="" />
+                <img src="assets/img/navbar/guest-chat-icon.svg" height="40" alt="" />
               </span>
             </a>
           </div>
@@ -429,15 +430,21 @@
               (click)="headerNavOnClick('profileClicked')"
               ngbDropdownToggle
             >
+            <div class="position-relative overlayTop" *ngIf="isAuthenticated">
+              <ng-container>
+                <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
+                <img src="assets/img/navbar/arrow.svg" class="position-absolute" style="right: 45px; top: 15px;" alt="">
+                <div class="toast-message">You can modify the profile details in the settings.</div>
+              </ng-container>
               <img
                 alt=""
-                *ngIf="isAuthenticated"
                 width="36px"
                 height="36px"
                 class="rounded-circle profileImgCover"
                 [src]="photo || 'assets/img/defaultUser.svg'"
                 (error)="onUserError($event)"
               />
+            </div>
               <img
                 alt=""
                 *ngIf="!isAuthenticated"

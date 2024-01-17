@@ -83,12 +83,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    // this.ngbModal.open(UserInfoComponent, {
+    // const modalRef = this.ngbModal.open(UserInfoComponent, {
     //   centered: true,
     //   modalDialogClass: "modal-md",
     //   backdrop: "static",
     //   keyboard: false,
     // });
+    // const userInfoComponentInstance = modalRef.componentInstance as UserInfoComponent;
+    // userInfoComponentInstance.ngbModalRef = modalRef;
 
     this.title.setTitle("Home");
     this.loaderService.start();

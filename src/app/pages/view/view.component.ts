@@ -141,6 +141,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   // private _initializeEvent: StartEvent<"gamePlay - Initilization">;
 
   private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
+  private isUserLogedIn: boolean = false;
 
   constructor(
     private readonly location: Location,
@@ -195,6 +196,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         bitRate: val,
       })
     })
+
+    this.authService.sessionTokenExists.subscribe((response)=> {
+      this.isUserLogedIn = response;
+    });
 
     this.authService.wishlist.subscribe(
       (wishlist) => (this.wishlist = (wishlist ?? []))
@@ -275,9 +280,11 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.restService.getGameStatus()
-      .toPromise()
-      .then(data => this.gameService.setGameStatus(data));
+    if (this.isUserLogedIn) {
+      this.restService.getGameStatus()
+        .toPromise()
+        .then(data => this.gameService.setGameStatus(data));
+    }
     const paramsObservable = this.route.params.pipe();
     const queryParamsObservable = this.route.queryParams.pipe();
     this._pageChangeSubscription = combineLatest(
@@ -664,6 +671,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
 
+    if (!this.isUserLogedIn) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     const uagent = new UAParser();
     this.countlyService.endEvent("gameLandingView")
     this.countlyService.startEvent("gamePlayStart", {
@@ -673,7 +685,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (
       uagent.getOS().name === "iOS" &&
       MediaQueries.isInBrowser &&
-      !skipCheckResume
+    !skipCheckResume
     ) {
       if (/safari/i.test(uagent.getBrowser().name)) {
         this.router.navigateByUrl("/install");

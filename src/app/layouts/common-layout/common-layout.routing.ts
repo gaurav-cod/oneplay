@@ -10,8 +10,8 @@ import { ViewComponent } from "src/app/pages/view/view.component";
 import { ViewGuard } from "src/app/guards/view.guard";
 import { StreamsComponent } from "src/app/pages/streams/streams.component";
 import { StreamComponent } from "src/app/pages/stream/stream.component";
-import { SearchComponent } from "@ctrl/ngx-emoji-mart";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
+import { SearchComponent } from "src/app/pages/search/search.component";
 
 export const CommonLayoutRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { randomUUID } from 'crypto';
+import Swal from "sweetalert2";
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { RestService } from 'src/app/services/rest.service';
 import { phoneValidator } from 'src/app/utils/validators.util';
@@ -19,6 +19,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private _referralModal: NgbModalRef; 
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
+  @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
+
+  otpTimer: number = 60;
 
   constructor(
     private readonly ngbModal: NgbModal,
@@ -42,6 +45,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   });
 
   mobile: string | null = null;
+  isValidPhoneNumber: boolean = false;
 
   authenticateForm = new UntypedFormGroup({
     country_code: new UntypedFormControl("+91", [Validators.required]),
@@ -72,8 +76,16 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     const control = this.referal_code;
     return (!this.referralName && control.dirty && control.touched) || control.value?.length == 0;
   }
+  get passwordErrored() {
+    const control = this.authenticateForm.controls["password"];
+    return control.touched && control.invalid;
+  }
+  get loginPasswordErrored() {
+    return this.phoneErrored && this.passwordErrored;
+  }
 
   ngOnInit() {
+
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -81,7 +93,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.authenticateForm.controls["phone"].valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
-    ).subscribe((phone)=> this.getUserInfoByPhone(phone))
+    ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)))
   }
   ngOnDestroy(): void {
     
@@ -93,8 +105,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this._doesUserhavePassword = response.has_password;
         this._isPasswordFlow = response.has_password;
         this.isUserRegisted = response.is_registered;
+        this.isValidPhoneNumber = true;
       }, error: (error: any)=> {
-
+        this.isValidPhoneNumber = false;
       }
     })
   }
@@ -125,8 +138,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
-        if (response)
-        this.screenOnDisplay = "OTP";
+        if (response) {
+          this.screenOnDisplay = "OTP";
+      
+          this.otpForm.controls['four'].valueChanges.subscribe(()=> {
+            this.verifyOTP();
+          })
+        }
       }, error: (error) => {
       }
     })
@@ -152,12 +170,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
       "device": "web",
-      "idempotent_key": "uuid"
+      "idempotent_key": this.idempotentKey
     }
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
-      }, error: () => {
-
+        this.router.navigate(['/home']);
+      }, error: (error) => {
+        this.showError(error);
       }
     })
   }
@@ -171,7 +190,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response)=> {
 
       }, error: (error)=> {
-        
+        this.showError(error);
       }
     })
   }
@@ -207,5 +226,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
     this.referal_code = null;
+  }
+
+  showError(error) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    }).then((response)=> {
+      if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
+        this.contactUs.nativeElement.click();
+      }
+    })
   }
 }

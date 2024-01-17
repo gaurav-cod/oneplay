@@ -1,4 +1,28 @@
-.border-bottom {
+
+input {
+    background: transparent !important;
     border-radius: 0px !important;
+    border: none;
     border-bottom: 1px solid lightgray !important;
+    font-size: 18px !important;
+    width: 95% !important;
+}
+label {
+    margin-bottom: 0px !important;
+}
+h5 {
+    line-height: 32px;
+}
+.input-group {
+    width: 95% !important;
+}
+.dot {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: lightgray;
+    margin-right: 5px;
+}
+.dot-scaled {
+    scale: 1.5;
 }

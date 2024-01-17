@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="col-md-12 mt-5">
-            <label class="font16 font500 customOffWhite mb-0">Phone</label
+            <label class="font18 font500 customOffWhite mb-0">Phone</label
                 ><span
                   *ngIf="phoneErrored"
                   class="font16 font500 errorGradientColor float-right"
@@ -18,7 +18,7 @@
                 <div class="input-group border-bottomInput borderRadius0">
                   <div class="input-group-append borderRadius0">
                     <select
-                      class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font16 font500 border-0 selectBg"
+                      class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font18 font500 border-0 selectBg"
                       formControlName="country_code"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
@@ -30,47 +30,47 @@
                     type="number"
                     inputmode="numeric"
                     formControlName="phone"
-                    class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+                    class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
                     placeholder="Enter your Phone Number"
                   />
                 </div>
         </div>
         <ng-container *ngIf="allowPasswordInput">
           <div class="col-md-12 mt-4">
-              <label class="font16 font500 customOffWhite">Password</label>
+              <label class="font18 font500 customOffWhite">Password</label>
               <div class="input-group">
                 <input
                   type="password"
                   formControlName="password"
                   placeholder="Enter Your Password"
-                  class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font16 font500 border-0 borderRadius0 border-bottomInput"
+                  class="form-control p-0 offWhiteColor mutedColor bgTransparent inputFocus font18 font500 border-0 borderRadius0 border-bottomInput"
                   name="password"
                   #passwordField
                 />
                 <span
-                  class="bgTransparent fixedIcon offWhiteColor font16 font500"
-                  >
+                  class="bgTransparent fixedIcon offWhiteColor font16 font500">
                   <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
                 </span>
               </div>
           </div> 
           
           <div class="container d-flex justify-content-between w-100 mt-5">
-            <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="getOTP()">Get OTP</a>
-            <!-- <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a> -->
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="getOTP()">Get OTP</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
           </div>
           
-          <div class="d-flex justify-content-center mt-4 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" (click)="loginWithPassword()">Continue</button>
+          <div class="d-flex justify-content-center mt-5 w-100">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" (click)="loginWithPassword()" [disabled]="loginPasswordErrored">Continue</button>
           </div> 
         </ng-container>
         <ng-container  *ngIf="!allowPasswordInput">
-          <div class="d-flex justify-content-center mt-4 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" [disabled]="phoneErrored" (click)="getOTP()">Get OTP</button>
+          <div class="d-flex justify-content-center mt-5 w-100">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18" [disabled]="phoneErrored && !isValidPhoneNumber" (click)="getOTP()">Get OTP</button>
           </div>
           <div class="container d-flex justify-content-between w-100 mt-5">
-            <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="openReferralModal(ReferralCodeModal)">Have a Referral Code?</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline" routerLink="/home">Continue as guest</a>
+            <span class="font500 text-gray text-underline font18" *ngIf="referralName">Referal added</span>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName">Have a Referral Code?</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" routerLink="/home">Continue as guest</a>
           </div> 
         </ng-container>
     </form>
@@ -83,6 +83,7 @@
               Enter OTP Sent to <br> {{ mobile }}
             </h1>
           </div>
+          <div class="toast-message">OTP has been sent to your phone number</div>
           <div class="mt-6 row justify-content-center">
             <div
               class="col-auto p-1 otpInput"
@@ -100,21 +101,16 @@
             </div>
           </div>
           
-          <p class="mt-2 redErrorGradientColor text-center font500" *ngIf="errorMessage">{{ errorMessage }}</p>
+          <p class="mt-2 redErrorGradientColor text-center font600 font18" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
     </form>
-    <div class="d-flex flex-column text-center w-100 mt-3">
-      <a href="javascript:void(0)" class="font500 text-gray text-underline" (click)="resendOTP()">Resend OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline mt-3"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+    <div class="d-flex flex-column text-center w-100 mt-5">
+      <span class="font500 text-gray font18" *ngIf="otpTimer">Resend OTP in {{ otpTimer }} Seconds</span>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="resendOTP()" *ngIf="!otpTimer">Resend OTP</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
     </div>
   </section>
   
-  <p class="font14 font500 offWhiteColor position-fixed bottom-0">
-    By continuing you agree to Oneplay's
-    <span class="purpleGradient"><a href="javascript:void(0)">Terms & Conditions</a></span>
-    and
-    <span class="purpleGradient"><a href="javascript:void(0)">Privacy Policy</a></span>
-  </p>
 </section>
 
 <ng-template #ReferralCodeModal let-d="dismiss">
@@ -130,7 +126,7 @@
       <div class="input-group border-bottomInput borderRadius0">
         <input
           type="tel"
-          class="form-control p-0 mutedColor bgTransparent inputFocus font16 font500 border-0"
+          class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
           placeholder="Add your referral code here"
           [formControl]="referal_code"
         />
@@ -143,4 +139,4 @@
     </div>
   </div>
 </ng-template>
-
+<a href="mailto:support@oneplay.in" style="visibility: hidden;" #ContactUs></a>
