@@ -2034,6 +2034,11 @@
   resolved "https://registry.npmjs.org/@scarf/scarf/-/scarf-1.1.1.tgz"
   integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
 
+"@scarf/scarf@^1.1.1":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.3.0.tgz#f8c75560d0dace4452dee1e31995e6396e61f3ee"
+  integrity sha512-lHKK8M5CTcpFj2hZDB3wIjb0KAbEOgDmiJGDv1WBRfQgRm/a8/XMEkG/N1iM01xgbUDsPQwi42D+dFo1XPAKew==
+
 "@schematics/angular@15.2.8":
   version "15.2.8"
   resolved "https://registry.npmjs.org/@schematics/angular/-/angular-15.2.8.tgz"
@@ -5763,12 +5768,13 @@ ngx-infinite-scroll@^10.0.1:
     "@scarf/scarf" "^1.1.0"
     opencollective-postinstall "^2.0.2"
 
-ngx-sharebuttons@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.npmjs.org/ngx-sharebuttons/-/ngx-sharebuttons-8.0.0.tgz"
-  integrity sha512-X/janRE4HBr3/ZZvsRF5go0rFDhIAquftDj1cHYzwweNa7vh2L9v2/tP+n9DzCtAUlHL7qXHPpwO9ON8+SBcIA==
+ngx-lottie@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-lottie/-/ngx-lottie-10.0.0.tgz#5061975b31638b1ab7e153c2f13073edcb6a8b68"
+  integrity sha512-8a0ufv13+o1cLR25SQ4N731rxD9nIA7F1jyo3l/jbUlRnrlcF5heFqWyTYnRf4BG0LQ4URuybN/nr+xbGT1W9Q==
   dependencies:
-    tslib "^1.10.0"
+    "@scarf/scarf" "^1.1.1"
+    tslib "^2.3.0"
 
 ngx-ui-loader@^11.0.0:
   version "11.0.0"

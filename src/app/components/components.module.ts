@@ -16,8 +16,6 @@ import { FriendsModule } from "./friends/friends.module";
 import { SubscriptionsComponent } from "./subscriptions/subscriptions.component";
 import { PurchaseHistoryComponent } from "./purchase-history/purchase-history.component";
 import { BottomNavComponent } from "./bottom-nav/bottom-nav.component";
-import { ShareButtonsModule } from "ngx-sharebuttons/buttons";
-import { ShareIconsModule } from "ngx-sharebuttons/icons";
 import { AuthNavbarComponent } from "./auth-navbar/auth-navbar.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { GameCardComponent } from "./game-card/game-card.component";
@@ -52,8 +50,6 @@ import { UserInfoComponent } from './user-info/user-info.component';
     ReactiveFormsModule,
     PipesModule,
     FriendsModule,
-    ShareButtonsModule,
-    ShareIconsModule,
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
