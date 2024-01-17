@@ -312,7 +312,7 @@
         <div class="row">
           <button
               *ngIf="!isAuthenticated"
-              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block"
+              class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding d-none d-sm-block mr-4"
               (click)="goToSignUpPage()"
             >
               Sign In
@@ -340,13 +340,13 @@
             </a>
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 mr-2"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage()"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
-                <img src="assets/img/navbar/guest-chat-icon.svg" height="30" alt="" />
+                <img src="assets/img/navbar/guest-chat-icon.svg" height="40" alt="" />
               </span>
             </a>
           </div>
