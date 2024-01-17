@@ -852,8 +852,8 @@ input:-webkit-autofill:active {
   text-fill-color: transparent;
 }
 .errorBorderColor {
-  border-image: linear-gradient(270deg, #FF0C0C -1.64%, #FF630C 100%);
-  border-image-slice: 1;
+  border-image: linear-gradient(270deg, #FF0C0C -1.64%, #FF630C 100%) !important;
+  border-image-slice: 1 !important;
 }
 
 .errorBorder {

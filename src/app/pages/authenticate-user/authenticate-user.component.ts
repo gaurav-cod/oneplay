@@ -34,6 +34,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private referralName: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
+  resendOTPClicked: boolean = false;
 
   formInput = ["one", "two", "three", "four"];
   @ViewChildren("formRow") rows: any;
@@ -83,6 +84,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    this.displayTimer();
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -137,7 +139,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response)=> {
         if (response) {
           this.screenOnDisplay = "OTP";
-      
+          this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
             this.verifyOTP();
           })
@@ -154,7 +156,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
-        
+        this.resendOTPClicked = true;
+        this.displayTimer();
       }, error: (error) => {
         this.errorMessage = error.message;
       }
@@ -215,9 +218,22 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       }
     }
   }
-  login() {
-
+  private displayTimer() {
+    this.otpTimer = 60;
+    this.timer();
   }
+  private timer(minutes: number = 1) {
+    let seconds: any = this.otpTimer;
+    const timer = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.otpTimer = Number(`${prefix}${seconds}`);
+      if (seconds == 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  }
+  
   changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
