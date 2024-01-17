@@ -672,7 +672,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   ) {
 
     if (!this.isUserLogedIn) {
-      this.router.navigate(['/login']);
+      this.goToSignUpPage();
       return;
     }
 
@@ -1451,6 +1451,21 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.showError(error);
       });
     }
+  }
+
+  private goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
+        } else {
+          window.open(response.url);
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
+      },
+    });
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

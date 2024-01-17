@@ -65,9 +65,9 @@
         </ng-container>
         <ng-container  *ngIf="!allowPasswordInput">
           <div class="d-flex justify-content-center mt-5 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18" [disabled]="phoneErrored && !isValidPhoneNumber" (click)="getOTP()">Get OTP</button>
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="phoneErrored && !isValidPhoneNumber" (click)="getOTP()">Get OTP</button>
           </div>
-          <div class="container d-flex justify-content-between w-100 mt-5">
+          <div class="container d-flex justify-content-between w-100 mt-5 linksContainer">
             <span class="font500 text-gray text-underline font18" *ngIf="referralName">Referal added</span>
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName">Have a Referral Code?</a>
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18" routerLink="/home">Continue as guest</a>
