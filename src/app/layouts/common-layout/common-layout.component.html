@@ -22,7 +22,6 @@
     <router-outlet></router-outlet>
   </div>
   <app-bottom-nav
-    *ngIf="isAuthenticated"
     (toggleFriends)="toggleFriendsCollapsed()"
   ></app-bottom-nav>
 </div>
