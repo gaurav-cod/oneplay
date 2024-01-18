@@ -48,6 +48,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   private requestsSub: Subscription;
   private paramsSub: Subscription;
   private searchSub: Subscription;
+  private _sessionSubscription: Subscription;
+
+  isAuthenticated: boolean = false;
 
   get actions(): {
     [key in "add" | "accept" | "decline" | "cancel" | "wait" | "none"]: {
@@ -123,9 +126,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.requestsSub?.unsubscribe();
     this.paramsSub?.unsubscribe();
     this.searchSub?.unsubscribe();
+    this._sessionSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
+    this._sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+      }
+    );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)

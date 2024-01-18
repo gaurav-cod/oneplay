@@ -54,8 +54,10 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   downloadAlert: boolean = true;
 
   private routerSub: Subscription;
+  private _sessionSubscription: Subscription;
 
   showCasualGamingLabel: boolean = false;
+  isAuthenticated: boolean = false;
 
   constructor(
     private readonly messagingService: MessagingService,
@@ -81,6 +83,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.gameStatusSubscription.unsubscribe();
     this.unreadSub?.unsubscribe();
     this.routerSub?.unsubscribe();
+    this._sessionSubscription?.unsubscribe();
   }
 
   viewGame() {
@@ -138,6 +141,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+      }
+    );
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
     );

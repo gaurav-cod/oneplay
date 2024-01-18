@@ -53,7 +53,9 @@
             'text-white': t !== tab
           }"
         >
-          {{ t | titlecase }}
+          <ng-container *ngIf="t == 'users' ? isAuthenticated : true">
+            {{ t | titlecase }}
+          </ng-container>
         </a>
       </h1>
     </div>

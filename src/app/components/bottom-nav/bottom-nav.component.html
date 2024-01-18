@@ -130,9 +130,20 @@
       </a>
       <a
         href="javascript:void(0)"
+        class="nav-link p-0 br50 mr-2"
+        *ngIf="!isAuthenticated"
+        (click)="goToSignUpPage()"
+      >
+        <span class="" >
+          <img src="assets/img/navbar/guest-chat-icon.svg" height="40" alt="" />
+        </span>
+      </a>
+      <a
+        href="javascript:void(0)"
         class="navbar-nav text-center"
         routerLinkActive="active"
         [routerLink]="['/chat']"
+        *ngIf="isAuthenticated"
       >
         <div class="iconContainer position-relative">
           <img src="assets/img/navbar/chat-icon.svg" alt="chat" *ngIf="selectedBottomNav !== 'CHAT'" />
