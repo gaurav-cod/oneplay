@@ -7,6 +7,11 @@
 @import "../node_modules//@ctrl/ngx-emoji-mart/picker.css";
 
 @font-face {
+  font-family: "ModernWarfare";
+  src: url(assets/fonts/ModernWarfair/modern-warfare.ttf);
+}
+
+@font-face {
   font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Regular.ttf);
 }
@@ -839,6 +844,13 @@ input:-webkit-autofill:active {
 }
 .redErrorGradientColor {
   background: linear-gradient(270deg, #FF0C0C -1.64%, #FF630C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.blueColorGradient {
+  background: linear-gradient(270deg, #3AA0FE -1.64%, #59FEF4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

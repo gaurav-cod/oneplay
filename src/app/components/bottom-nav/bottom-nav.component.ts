@@ -180,6 +180,21 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
+        } else {
+          window.open(response.url);
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
+      },
+    });
+  }
+
   TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,

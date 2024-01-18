@@ -130,13 +130,14 @@
       </a>
       <a
         href="javascript:void(0)"
-        class="nav-link p-0 br50 mr-2"
+        class="navbar-nav text-center"
         *ngIf="!isAuthenticated"
         (click)="goToSignUpPage()"
       >
-        <span class="" >
-          <img src="assets/img/navbar/guest-chat-icon.svg" height="40" alt="" />
-        </span>
+        <img src="assets/img/navbar/guest-chat-icon.svg" alt="" 
+          width="30px"
+          height="30px" />
+        <span class="font14 font500 navigation-text text-gray">Chat</span>
       </a>
       <a
         href="javascript:void(0)"
