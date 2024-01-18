@@ -96,7 +96,23 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.authenticateForm.controls["phone"].valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
-    ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)))
+    ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
+
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (contryCodeCurrencyMapping[res.currency]) {
+          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.currency]);
+        }
+        if (res.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
+      },
+    });
   }
   ngOnDestroy(): void {
     
