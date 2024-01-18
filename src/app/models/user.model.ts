@@ -21,6 +21,7 @@ export class UserModel {
   readonly partnerId: string;
   readonly dob: string;
   readonly gender: Gender;
+  readonly hasPassword: boolean;
 
   constructor(json: { [key: string]: any }) {
     this.id = json["user_id"];
@@ -39,6 +40,7 @@ export class UserModel {
     this.partnerId = json["partner_id"];
     this.gender = json["gender"];
     this.dob = json["dob"];
+    this.hasPassword = json["has_password"];
   }
 
   copyWith(data: Partial<UserModel>) {
@@ -57,7 +59,8 @@ export class UserModel {
       profile_image: data.photo ?? this.photo,
       search_privacy: data.searchPrivacy ?? this.searchPrivacy,
       partner_id: this.partnerId,
-      dob: this.dob
+      dob: this.dob,
+      hasPassword: this.hasPassword
     });
   }
 
@@ -81,7 +84,8 @@ export class UserModel {
       profile_image: this.photo,
       search_privacy: this.searchPrivacy,
       partner_id: this.partnerId,
-      dob: this.dob
+      dob: this.dob,
+      hasPassword: this.hasPassword
     };
   }
 }

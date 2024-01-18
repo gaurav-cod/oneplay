@@ -140,7 +140,7 @@ export class RestService {
 
   createPassword(password: string): Observable<void> {
     return this.http
-    .put(this.r_mix_api_2 + "/accounts/password", { password })
+    .put(this.r_mix_api_3 + "/accounts/password", { password })
     .pipe(
       map(() => {}),
       catchError(({ error }) => {
@@ -1413,13 +1413,13 @@ export class RestService {
 
   verifyOTP(userRegistration: UserAuthDTO) {
     return this.http
-    .post<boolean>(this.r_mix_api_3 + "/accounts/login_with_otp", userRegistration).pipe(
+    .post<any>(this.r_mix_api_3 + "/accounts/login_with_otp", userRegistration).pipe(
       (map((res) => res), catchError(({ error }) => {
         throw error;
       })))
   }
   loginWithPassword(userRegistration: UserAuthDTO) {
-    return this.http.post<boolean>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
+    return this.http.post<any>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
       (map((res: any) => res.success), catchError(({error}) => { throw error }))
     )
   }
