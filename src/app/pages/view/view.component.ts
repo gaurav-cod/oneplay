@@ -6,6 +6,7 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
+  ContentChild,
 } from "@angular/core";
 import {
   UntypedFormControl,
@@ -14,7 +15,7 @@ import {
 } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateStruct, NgbDatepicker, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { combineLatest, lastValueFrom, merge, Subscription } from "rxjs";
 import {
@@ -54,6 +55,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
   @ViewChild("macDownloadModal") macDownloadModal: ElementRef<HTMLDivElement>;
+
+  @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -132,6 +135,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _reportErrorModalRef: NgbModalRef;
   private _waitQueueModalRef: NgbModalRef;
   private _launchModalCloseTimeout: NodeJS.Timeout;
+  private _userInfoContainerRef: NgbModalRef;
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
@@ -142,6 +146,8 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
   private isUserLogedIn: boolean = false;
+
+  @ViewChild("UserInfoContainer") userInfoContainer;
 
   constructor(
     private readonly location: Location,
@@ -276,10 +282,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
     this._macDownloadModalRef?.close();
+    this._userInfoContainerRef?.close();
     Swal.close();
   }
 
+
   ngOnInit(): void {
+    
     if (this.isUserLogedIn) {
       this.restService.getGameStatus()
         .toPromise()
@@ -418,6 +427,26 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private hideWarning(event: Event) {
     this.waring_message_display = true;
+  }
+
+  private dateToNgbDate = (date: Date): NgbDateStruct => ({
+    year: date.getUTCFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  });
+
+  private dateMinusYears = (date: Date, count: number): Date => {
+    date.setUTCFullYear(date.getUTCFullYear() - count);
+    return date;
+  };
+
+  dob = new UntypedFormControl(undefined, [Validators.required]);
+  minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
+  maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
+  
+  get dateOfBirthErrored() {
+    const control = this.dob;
+    return (control.touched || control.dirty) && control.invalid;
   }
 
   @HostListener("window:beforeunload", ["$event"])
@@ -953,6 +982,18 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGame(): void {
+
+    // !Need to check condition
+    // if (this.user.dob) {
+    //   this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
+    //     centered: true,
+    //     modalDialogClass: "modal-md",
+    //     backdrop: "static",
+    //     keyboard: false,
+    //   });
+    // return
+    // }
+
     if (this.startingGame) {
       return;
     }
@@ -1453,6 +1494,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  closeUserInfoContainer() {
+    this._userInfoContainerRef?.close();
+  }
+
   private goToSignUpPage() {
     this.restService.getLogInURL().subscribe({
       next: (response) => {
@@ -1466,6 +1511,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.router.navigate(["/login"]);
       },
     });
+  }
+  confirm() {
+
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

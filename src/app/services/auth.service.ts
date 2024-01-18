@@ -22,6 +22,8 @@ export class AuthService {
   private readonly _$triggerWishlist: BehaviorSubject<boolean> =
     new BehaviorSubject(false);
 
+  private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
 
@@ -47,6 +49,13 @@ export class AuthService {
   setWishlist(list: string[]) {
     this._$wishlist.next(list);
     this._$triggerWishlist.next(list.length < 1);
+  }
+
+  get profileOverlay() {
+    return this._$triggerProfileOverlay.asObservable();
+  }
+  setProfileOverlay(value: boolean) {
+    this._$triggerProfileOverlay.next(value);
   }
 
   get sessionTokenExists() {

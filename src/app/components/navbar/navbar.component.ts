@@ -75,10 +75,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private currMsgSub: Subscription;
   private sessionSubscription: Subscription;
   private multiNotificationSub: Subscription;
+  private _profileOverlaySub: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
+
+  showOverlayProfile: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -246,9 +249,20 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.currMsgSub?.unsubscribe();
     this.sessionSubscription?.unsubscribe();
     this.multiNotificationSub?.unsubscribe();
+    this._profileOverlaySub?.unsubscribe();
   }
 
   ngOnInit() {
+
+    this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
+      this.showOverlayProfile = data;
+      if (this.showOverlayProfile) {
+        setTimeout(()=> {
+          this.authService.setProfileOverlay(false);
+        }, 5000);
+      }
+    })
+
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       (exists) => {
         this.isAuthenticated = exists;

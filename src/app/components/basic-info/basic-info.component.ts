@@ -136,11 +136,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.countlyService.updateEventData("settingsView", {
       updateProfileClicked: "yes",
     });
-    const body: UpdateProfileDTO = {};
+    const body: any = {};
     if (!!this.username.value) {
       body.username = this.username.value;
     }
-    if (!!this.name.value) {
+    if (!!this.name.value && this.name.value?.replaceAll(" ", "")?.length > 0) {
       const [first_name, ...rest] = this.name.value.trim().split(" ");
       const last_name = rest.join(" ") || "";
       body.first_name = first_name;
@@ -150,7 +150,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         body.last_name = "";
       }
     }
-    if (!!this.bio.value) {
+    if (!!this.bio.value && this.bio.value?.length > 0) {
       body.bio = this.bio.value;
     } else {
       body.bio = "";
@@ -158,7 +158,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
     }
-    if (!!this.dob.value) {
+    if (!!this.dob.value && this.dob.value["day"]) {
       const year = this.dob.value['year'];
       const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
       const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];

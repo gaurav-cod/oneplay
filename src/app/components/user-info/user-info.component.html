@@ -59,7 +59,7 @@
           <label class="font16 font500 offWhiteText">Customize Username</label>
           <div class="row pb-2">
             <div class="col-12 mt-2">
-              <input type="password" class="form-control inputBorder font18 font500"
+              <input type="text" class="form-control inputBorder font18 font500"
                 placeholder="Enter a unique password" formControlName="password" />
               <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor">*invalid username</span>
             </div>
@@ -87,7 +87,7 @@
       </div>
     </form>
     <div class="modal-footer w-100 justify-content-between">
-        <a href="javascript.void(0)" rel="noopener noreferrer" class="font500 text-gray" (click)="close()">Remind me later</a>
-        <a href="javascript.void(0)" rel="noopener noreferrer" class="font500 text-gray" (click)="goToNext()">Skip</a>
+        <a href="javascript:void(0)" rel="noopener noreferrer" class="font500 text-gray" (click)="close()">Remind me later</a>
+        <a href="javascript:void(0)" rel="noopener noreferrer" class="font500 text-gray" (click)="goToNext()">Skip</a>
     </div>
   </div>
