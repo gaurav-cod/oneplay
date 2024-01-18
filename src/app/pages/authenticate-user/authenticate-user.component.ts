@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from "sweetalert2";
 import { debounceTime, distinctUntilChanged } from 'rxjs';
@@ -8,6 +8,8 @@ import { RestService } from 'src/app/services/rest.service';
 import { phoneValidator } from 'src/app/utils/validators.util';
 import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
 import { v4 } from "uuid";
+import { CountlyService } from 'src/app/services/countly.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -26,7 +28,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   constructor(
     private readonly ngbModal: NgbModal,
     private readonly restService: RestService,
-    private readonly router: Router
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly countlyService: CountlyService,
+    private readonly authService: AuthService,
   ) {}
 
   private _isPasswordFlow: boolean = false;
@@ -84,7 +89,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.displayTimer();
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -174,9 +178,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
+        this.userLoginSetup(response);
         this.router.navigate(['/home']);
       }, error: (error) => {
-        this.showError(error);
+        this.userLoginFailure(error);
       }
     })
   }
@@ -188,9 +193,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.loginWithPassword(payload).subscribe({
       next: (response)=> {
-
+        this.userLoginSetup(response);
+        this.router.navigate(['/home']);
       }, error: (error)=> {
-        this.showError(error);
+        this.userLoginFailure(error);
       }
     })
   }
@@ -218,6 +224,25 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       }
     }
   }
+  private userLoginSetup(response: any) {
+    this.countlyService.endEvent("signIn", { result: 'success'});
+        this.startSignInEvent();
+        this.authService.trigger_speed_test = response.trigger_speed_test;
+        const code: string = this.route.snapshot.queryParams["code"];
+        if (!!code && /\d{4}-\d{4}/.exec(code)) {
+          this.restService.setQRSession(code, response.session_token).subscribe({
+            next: ()=>{},
+            error: (error)=> {
+              this.showError(error);
+            }
+          });
+        }
+        this.authService.login(response.session_token);
+  }
+  private userLoginFailure(error: any) {
+    this.countlyService.endEvent("signIn", { result: 'failure' });    
+    this.showError(error);
+  }
   private displayTimer() {
     this.otpTimer = 60;
     this.timer();
@@ -239,6 +264,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
     this.referal_code = null;
+  }
+  private startSignInEvent() {
+    this.countlyService.startEvent("signIn", { discardOldData: false });
+    const segments = this.countlyService.getEventData("signIn");
+    if (!segments.signInFromPage) {
+      this.countlyService.updateEventData("signIn", {
+        signInFromPage: "directLink",
+      })
+    }
   }
 
   showError(error) {
