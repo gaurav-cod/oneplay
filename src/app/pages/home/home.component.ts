@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
 import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
@@ -11,7 +11,6 @@ import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
-import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 
 @Component({
@@ -28,11 +27,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   genreGames: GameModel[] = [];
   genreSelected: string = '';
 
+  username: string | null = null;
+  firstSignUpMsgTimer: number | null = null;
+
   private wishlist: string[] = [];
   private wishlistSubscription: Subscription;
   private feedSubscription: Subscription;
   private gameFilterSubscription: Subscription;
   private paramsSubscription: Subscription;
+  private _qParamsSubscription: Subscription;
+  private _userInfoRef: NgbModalRef;
+
+  private messageTimer: NodeJS.Timer;
 
   private queries = {
     "Free to Play": {
@@ -70,7 +76,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gLink: GLinkPipe,
     private readonly countlyService: CountlyService,
-    private readonly ngbModal: NgbModal,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnDestroy(): void {
@@ -78,19 +84,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.feedSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
+    this._qParamsSubscription?.unsubscribe();
+    clearInterval(this.messageTimer);
     Swal.close();
   }
 
   async ngOnInit() {
-
-    // const modalRef = this.ngbModal.open(UserInfoComponent, {
-    //   centered: true,
-    //   modalDialogClass: "modal-md",
-    //   backdrop: "static",
-    //   keyboard: false,
-    // });
-    // const userInfoComponentInstance = modalRef.componentInstance as UserInfoComponent;
-    // userInfoComponentInstance.ngbModalRef = modalRef;
 
     this.title.setTitle("Home");
     this.loaderService.start();
@@ -139,6 +138,25 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       },
     });
+
+    this._qParamsSubscription = this.route.queryParams.subscribe((qParam: any)=> {
+      if (qParam["username"]) {
+        this.username = qParam["username"];
+        this.firstSignUpMsgTimer = 5;
+        this.messageTimer = setInterval(()=> {
+          this.firstSignUpMsgTimer--;
+          if (this.firstSignUpMsgTimer == 0) {
+            clearInterval(this.messageTimer);
+            this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+              centered: true,
+              modalDialogClass: "modal-md",
+              backdrop: "static",
+              keyboard: false,
+            });
+          }
+        }, 1000);
+      }
+    })
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
       if (ids) {

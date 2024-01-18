@@ -181,7 +181,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
         this.userLoginSetup(response);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home'], {queryParams: {username: response.new_user}});
       }, error: (error) => {
         this.userLoginFailure(error);
       }

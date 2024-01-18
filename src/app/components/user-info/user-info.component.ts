@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { UpdateProfileDTO } from 'src/app/interface';
+import { AuthService } from 'src/app/services/auth.service';
+import { RestService } from 'src/app/services/rest.service';
 
 @Component({
   selector: 'app-user-info',
@@ -8,12 +11,15 @@ import { NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./user-info.component.scss']
 })
 export class UserInfoComponent implements OnInit {
+  userInfoComponentInstance: UserInfoComponent;
 
   constructor(
+    private activeModal: NgbActiveModal,
+    private readonly restService: RestService,
+    private authService: AuthService
   ) {}
   ngOnInit(): void {
   }
-  ngbModalRef: NgbModalRef;
 
   get fullNameErrored() {
     const controls = this.userInfo.controls["fullname"];
@@ -56,10 +62,50 @@ export class UserInfoComponent implements OnInit {
       "FULLNAME" : null
     }
   }
+
+  saveChanges(): void {
+    
+    const body: UpdateProfileDTO = {};
+    if (!!this.userInfo.controls["username"].value) {
+      body.username = this.userInfo.controls["username"].value;
+    }
+    if (!!this.userInfo.controls["fullname"].value) {
+      const [first_name, ...rest] = this.userInfo.controls["fullname"].value.trim().split(" ");
+      const last_name = rest.join(" ") || "";
+      body.first_name = first_name;
+      if (!!last_name) {
+        body.last_name = last_name;
+      } else {
+        body.last_name = "";
+      }
+    }
+  
+    if (!!this.userInfo.controls["dob"].value) {
+      const year = this.userInfo.controls["dob"].value['year'];
+      const month = this.userInfo.controls["dob"].value['month'] < 10 ? "0" + this.userInfo.controls["dob"].value['month'] : this.userInfo.controls["dob"].value['month'];
+      const day = this.userInfo.controls["dob"].value['day'] < 10 ? "0" + this.userInfo.controls["dob"].value['day'] : this.userInfo.controls["dob"].value['day'];
+      body.dob = `${year}-${month}-${day}`;
+    }
+    
+    this.restService.updateProfile(body).subscribe(
+      (data) => {
+        this.authService.updateProfile({
+          username: body.username,
+          firstName: body.first_name,
+          lastName: body.last_name,
+          dob: body.dob
+        });
+      },
+      (error) => {
+      }
+    );
+  }
+
   goToNext() {
     this.screenType = this.getNextPage()[this.screenType];
+    this.saveChanges();
   }
   close() {
-    this.ngbModalRef?.close();
+    this.activeModal?.close();
   }
 }
