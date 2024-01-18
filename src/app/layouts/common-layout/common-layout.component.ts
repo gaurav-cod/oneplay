@@ -20,6 +20,9 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
+  private userCanGameSubscription: Subscription;
+
+  showOnboardingPopup: boolean = false;
 
   constructor(
     private readonly authService: AuthService,
@@ -55,6 +58,21 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
           this.threeSecondsTimer = setInterval(() => {
             this.setOnline();
           }, 3 * 1000);
+
+          this.userCanGameSubscription = this.authService.userCanGame.subscribe(
+            (u) => {
+              if (u) {
+                this.showOnboardingPopup = true;
+              } else if (u === false) {
+                this.router.navigate(["/start-gaming"], { replaceUrl: true });
+              }
+            }
+          );
+
+          this.restService
+          .getWishlist()
+          .toPromise()
+          .then((list) => this.authService.setWishlist(list));
         }
       }
     );
@@ -62,6 +80,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
+    this.userCanGameSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }
