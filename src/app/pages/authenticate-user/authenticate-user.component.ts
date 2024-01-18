@@ -143,12 +143,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response)=> {
         if (response) {
           this.screenOnDisplay = "OTP";
+          this.mobile = this.authenticateForm.controls["phone"].value;
           this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
             this.verifyOTP();
           })
         }
       }, error: (error) => {
+        this.showError(error);
       }
     })
   }
