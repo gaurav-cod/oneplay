@@ -140,7 +140,7 @@ export class RestService {
 
   createPassword(password: string): Observable<void> {
     return this.http
-    .put(this.r_mix_api_2 + "/accounts/password", { password })
+    .put(this.r_mix_api_3 + "/accounts/password", { password })
     .pipe(
       map(() => {}),
       catchError(({ error }) => {

@@ -128,6 +128,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
       this.emailExist = this.user.email?.length > 0;
+      this.passwordExist = this.user.hasPassword;
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
     });
