@@ -1,4 +1,4 @@
-<!-- <div class="overlay"></div> -->
+<div class="overlay" *ngIf="showOverlayProfile"></div>
 <nav
   class="navbar navbar-expand-lg navbar-dark sticky-top navbarBg xsborderBottom"
   id="navbar-main"
@@ -431,7 +431,7 @@
               ngbDropdownToggle
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
-                <ng-container *ngIf="false">
+                <ng-container *ngIf="showOverlayProfile">
                   <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
                   <img src="assets/img/navbar/arrow.svg" class="position-absolute" style="right: 45px; top: 15px;" alt="">
                   <div class="toast-message">You can modify the profile details in the settings.</div>

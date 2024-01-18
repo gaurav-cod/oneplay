@@ -5,6 +5,10 @@ import { UpdateProfileDTO } from 'src/app/interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 
+enum SCREEN_TYPE {
+  "DOB" = "DOB", "PASSWORD" = "PASSWORD", "USERNAME" = "USERNAME", "FULLNAME" = "FULLNAME"
+}
+
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
@@ -14,9 +18,9 @@ export class UserInfoComponent implements OnInit {
   userInfoComponentInstance: UserInfoComponent;
 
   constructor(
-    private activeModal: NgbActiveModal,
+    private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
-    private authService: AuthService
+    private readonly authService: AuthService
   ) {}
   ngOnInit(): void {
   }
@@ -52,14 +56,13 @@ export class UserInfoComponent implements OnInit {
     return (control.touched || control.dirty) && control.invalid;
   }
 
-  screenType: "DOB" | "PASSWORD" | "USERNAME" | "FULLNAME" = "DOB";
+  screenType: SCREEN_TYPE = SCREEN_TYPE.DOB;
   screenList = ["DOB", "PASSWORD", "USERNAME", "FULLNAME"];
   getNextPage() {
     return {
       "DOB" : "PASSWORD",
       "PASSWORD" : "USERNAME",
-      "USERNAME" : "FULLNAME",
-      "FULLNAME" : null
+      "USERNAME" : "FULLNAME"
     }
   }
 
@@ -102,8 +105,13 @@ export class UserInfoComponent implements OnInit {
   }
 
   goToNext() {
-    this.screenType = this.getNextPage()[this.screenType];
     this.saveChanges();
+    if (this.screenType == SCREEN_TYPE.FULLNAME) {
+      this.authService.setProfileOverlay(true);
+      this.activeModal?.close();
+    } else {
+      this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
+    }
   }
   close() {
     this.activeModal?.close();
