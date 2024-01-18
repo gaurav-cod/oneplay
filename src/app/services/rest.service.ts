@@ -118,7 +118,7 @@ export class RestService {
       formData.append(key, data[key]);
     });
     return this.http
-      .put<object>(this.r_mix_api_3 + "/accounts/profile", formData)
+      .put<object>(this.r_mix_api + "/accounts/profile", formData)
       .pipe(
         map((res) => new UserModel(res)),
         catchError(({ error }) => {
@@ -140,7 +140,7 @@ export class RestService {
 
   createPassword(password: string): Observable<void> {
     return this.http
-    .put(this.r_mix_api_3 + "/accounts/password", { password })
+    .put(this.r_mix_api + "/accounts/password", { password })
     .pipe(
       map(() => {}),
       catchError(({ error }) => {
