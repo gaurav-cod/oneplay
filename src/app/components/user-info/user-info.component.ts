@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { UpdateProfileDTO } from 'src/app/interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -16,6 +17,7 @@ enum SCREEN_TYPE {
 })
 export class UserInfoComponent implements OnInit {
   userInfoComponentInstance: UserInfoComponent;
+  errorMessage: string | null = null;
 
   constructor(
     private readonly activeModal: NgbActiveModal,
@@ -23,6 +25,13 @@ export class UserInfoComponent implements OnInit {
     private readonly authService: AuthService
   ) {}
   ngOnInit(): void {
+    this.authService.user.toPromise().then((data)=> {
+      this.userInfo.controls["username"].setValue(data.username);
+    })
+    this.userInfo.controls["confirmPassword"].valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged() 
+    ).subscribe((data) => this.errorMessage = (data != this.userInfo.controls["password"].value ? "Password & Confirm Password do not match" : null));
   }
 
   get fullNameErrored() {
@@ -54,6 +63,11 @@ export class UserInfoComponent implements OnInit {
   get dateOfBirthErrored() {
     const control = this.userInfo.controls["dob"];
     return (control.touched || control.dirty) && control.invalid;
+  }
+
+  get isButtonDisabled() {
+    const control = this.userInfo.controls[String(this.screenType).toLowerCase()];
+    return ((control.touched || control.dirty) && control.invalid) || !control.value;
   }
 
   screenType: SCREEN_TYPE = SCREEN_TYPE.DOB;
@@ -92,6 +106,7 @@ export class UserInfoComponent implements OnInit {
     
     this.restService.updateProfile(body).subscribe(
       (data) => {
+        this.goToNext();
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
@@ -100,12 +115,13 @@ export class UserInfoComponent implements OnInit {
         });
       },
       (error) => {
+        this.errorMessage = error.message;
       }
     );
   }
 
   goToNext() {
-    this.saveChanges();
+    this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
       this.authService.setProfileOverlay(true);
       this.activeModal?.close();
