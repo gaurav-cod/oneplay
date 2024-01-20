@@ -180,7 +180,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get oldPasswordErrored() {
     const control = this.updateSecurity.controls["oldPassword"];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.value?.length > 0;
   }
 
   get phoneErrored() {
@@ -194,7 +194,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get passwordErrored() {
     const control = this.updateSecurity.controls["password"];
-    return control.touched && control.invalid;
+    return control.touched && control.invalid && control.value?.length > 0;
   }
 
   get confirmPasswordErrored() {
@@ -242,6 +242,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     
     this.restService.createPassword(this.updateSecurity.value.password).subscribe((response)=> {
         this._createPassModalRef?.close();
+        this.updateSecurity.controls["password"].setValue(null);
+        this.updateSecurity.controls["confirmPassword"].setValue(null);
+        this.errorMessage = null;
         Swal.fire({
           icon: "success",
           text: "Password Created Successfully",
@@ -265,6 +268,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   closeCreatePassModal() {
     this._createPassModalRef?.close();
+    this.errorMessage = null;
+    this.updateSecurity.controls["password"].setValue(null);
+    this.updateSecurity.controls["confirmPassword"].setValue(null);
   }
 
   emailOperation() {

@@ -1294,6 +1294,10 @@
           style="border-radius: 5px;"
         />
       </div>
+
+      <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0 mt-2">
+        {{ errorMessage }}
+      </p>
     </div>
     <div class="w-100 d-flex justify-content-center mt-2 mb-4">
       <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding mt-2 text-center" (click)="confirm()" [disabled]="dateOfBirthErrored || dob.value?.length == 0">Confirm</button>

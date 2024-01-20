@@ -11,6 +11,7 @@ import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { ToastService } from "src/app/services/toast.service";
 import Swal from "sweetalert2";
 
 @Component({
@@ -76,7 +77,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gLink: GLinkPipe,
     private readonly countlyService: CountlyService,
-    private readonly ngbModal: NgbModal
+    private readonly ngbModal: NgbModal,
+    private readonly toastService: ToastService
   ) {}
 
   ngOnDestroy(): void {
@@ -85,6 +87,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     this._qParamsSubscription?.unsubscribe();
+    this._userInfoRef?.close();
     clearInterval(this.messageTimer);
     Swal.close();
   }
@@ -147,14 +150,26 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.firstSignUpMsgTimer--;
           if (this.firstSignUpMsgTimer == 0) {
             clearInterval(this.messageTimer);
-            this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-              centered: true,
-              modalDialogClass: "modal-md",
-              backdrop: "static",
-              keyboard: false,
-            });
+            this.authService.user.subscribe((data)=> {
+              if (data.dob) {
+                this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+                  centered: true,
+                  modalDialogClass: "modal-md",
+                  backdrop: "static",
+                  keyboard: false,
+                });
+              }
+            })
           }
         }, 1000);
+      } else {
+        this.authService.user.subscribe((user)=> {
+          this.username  = user.username;
+          this.toastService.show("Welcome back " + this.username, {
+            classname: `bg-gray-dark text-white`,
+            delay: 4000,
+          });
+        });
       }
     })
 

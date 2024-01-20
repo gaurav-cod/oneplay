@@ -63,8 +63,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             (u) => {
               if (u) {
                 this.showOnboardingPopup = true;
-              } else if (u === false) {
-                this.router.navigate(["/start-gaming"], { replaceUrl: true });
               }
             }
           );

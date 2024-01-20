@@ -192,6 +192,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     );
   }
   showError(error) {
+    if (!error.data.icon) {
+      error.data.icon = "assets/img/swal-icon/Account.svg";
+    }
     Swal.fire({
       title: error.data.title,
       text: error.data.message,

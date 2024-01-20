@@ -250,7 +250,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     this.restService.getPaymentRecipt(subscription.planId).subscribe((response)=> {
       // TODO: Download Invoice
     }, (error)=> {
-
+      this.showError(error);
     })
   }
 

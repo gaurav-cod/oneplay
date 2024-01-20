@@ -199,7 +199,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.userLoginSetup(response);
         this.router.navigate(['/home'], {queryParams: {username: response.new_user}});
       }, error: (error) => {
-        this.userLoginFailure(error);
+        if (["invalid otp"].includes(error.message?.toLowerCase())) {
+          this.errorMessage = error.message;
+        } else {
+          this.userLoginFailure(error);
+        }
       }
     })
   }

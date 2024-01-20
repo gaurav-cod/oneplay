@@ -151,7 +151,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       discardOldData: true,
       data: { signUpFromPage: 'signIn' }
     });
-    this.router.navigate(["/register"]);
+    this.router.navigate(["/login"]);
   }
 
   get domain() {
