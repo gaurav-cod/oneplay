@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
+import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -22,6 +24,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private threeSecondsTimer: NodeJS.Timer;
   private queryParamSubscription: Subscription;
   private userCanGameSubscription: Subscription;
+  private _userInfoRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
@@ -31,7 +34,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly gameService: GameService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +68,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         if (u) {
           this.showOnboardingPopup = true;
         } else if (u === false) {
-          this.router.navigate(["/start-gaming"], { replaceUrl: true });
+          this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            backdrop: "static",
+            keyboard: false,
+          });
         }
       }
     );
@@ -73,6 +82,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
     clearInterval(this.threeSecondsTimer);
+    this._userInfoRef?.close();
     this.queryParamSubscription.unsubscribe();
     this.userCanGameSubscription.unsubscribe();
   }

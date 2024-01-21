@@ -92,6 +92,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   selectedStore: PurchaseStore;
 
   gameMetaDetails: any;
+  errorMessage: string | null = null;
 
   showSettings = new UntypedFormControl();
 
@@ -103,6 +104,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     stream_codec: new UntypedFormControl("auto"),
     video_decoder_selection: new UntypedFormControl("auto"),
   });
+  dob = new UntypedFormControl("");
 
   reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)] });
 
@@ -440,7 +442,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     return date;
   };
 
-  dob = new UntypedFormControl(undefined, [Validators.required]);
   minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
   maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
   
@@ -981,18 +982,17 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsModalRef?.dismiss();
   }
 
-  startGame(): void {
+  startGame(isDOBPresent: boolean = false): void {
 
-    // !Need to check condition
-    // if (this.user.dob) {
-    //   this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
-    //     centered: true,
-    //     modalDialogClass: "modal-md",
-    //     backdrop: "static",
-    //     keyboard: false,
-    //   });
-    // return
-    // }
+    if (this.user.dob && !isDOBPresent) {
+      this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
+        centered: true,
+        modalDialogClass: "modal-md",
+        backdrop: "static",
+        keyboard: false,
+      });
+      return
+    }
 
     if (this.startingGame) {
       return;
@@ -1513,7 +1513,25 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
   confirm() {
-
+    let body: string = "";
+    if (!!this.dob.value) {
+      const year = this.dob.value['year'];
+      const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
+      const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];
+      body = `${year}-${month}-${day}`;
+    }
+    this.restService.updateProfile({dob: body}).subscribe(
+      (data) => {
+        this.authService.updateProfile({
+          dob: body
+        });
+        this._userInfoContainerRef?.close();
+        this.startGame(true);
+      },
+      (error) => {
+        this.errorMessage = error.message;
+      }
+    );
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

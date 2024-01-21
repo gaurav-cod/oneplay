@@ -216,7 +216,7 @@ export class VerifyComponent implements OnInit, OnDestroy {
     }).then((response)=> {
       if (response.isConfirmed) {
         if ( error.data.primary_CTA.toLowerCase().replace(" ","") === "sigup")
-          this.router.navigate(['/register']);
+          this.router.navigate(['/login']);
       } 
     })
   }

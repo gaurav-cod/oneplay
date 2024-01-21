@@ -82,7 +82,7 @@ export class UserInfoComponent implements OnInit {
 
   saveChanges(): void {
     
-    const body: UpdateProfileDTO = {};
+    const body: any = {};
     if (!!this.userInfo.controls["username"].value) {
       body.username = this.userInfo.controls["username"].value;
     }
