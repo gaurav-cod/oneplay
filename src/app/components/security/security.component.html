@@ -108,7 +108,7 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
-        Create Password
+        {{ token ? 'Reset Your' : 'Create' }} Password
       </h3>
       <form role="form" [formGroup]="updateSecurity">
         <div class="col-12 mt-4">
@@ -139,7 +139,7 @@
             match</span>
         </div>
 
-        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="createPassword()">Confirm</button>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="token ? resetPassword() : createPassword()">{{ token ? 'Submit' : 'Confirm' }}</button>
       </form>
     </div>
   </div>
@@ -300,6 +300,64 @@
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
           [disabled]="checkvalidationValue" (click)="updatePassword()">
           Confirm
+        </button>
+        <a href="javascript:void(0)" class="font500 text-gray font18 mt-4 hoverGradient mt-1 d-flex justify-content-center" (click)="openForgotPassword(forgotPasswordModal)">Forgot Password?</a>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #forgotPasswordOtpScreen>
+  <div class="modal-content modalBg" *ngIf="!isComponentDestroyed">
+    <div class="modal-body text-center">
+        <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+          (click)="closeForgoutPasswordOTP()">
+          <i class="fas fa-times-circle font20"></i>
+        </a>
+        <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
+            'Security code has been sent to your mobile number'
+          " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verifyForgotPasswordOTP($event)"
+          [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendUpdatePassword()" [display]="display"
+          [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeForgoutPasswordOTP()"></app-otp-screen>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #forgotPasswordModal let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body">
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1"
+        (click)="closeForgotPasswordModal()">
+        <i class="fas fa-times-circle font20"></i>
+      </a>
+      <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
+        Forgot Password
+      </h3>
+      <p class="muteText font14 font500 mb-5 px-2 text-center">
+        Enter the Phone number linked to your account
+      </p>
+      <form role="form" [formGroup]="phoneForm">
+        <div class="input-group inputBorder">
+          <div class="input-group-append bgTransparent">
+            <select class="select-form bgTransparent height52 inputFocus border-0 font18 font500 text-white"
+              formControlName="country_code">
+              <option *ngFor="let code of countryCodes" [value]="code" class="text-white">
+                {{ code }}
+              </option>
+            </select>
+          </div>
+          <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
+            placeholder="New Phone Number" formControlName="phone" (keyup)="resetValidation()" />
+        </div>
+        <span *ngIf="phoneErrored; else secondaryPhoneErrorMsg" class="font16 font500 errorGradientColor">*invalid mobile number</span>
+        <ng-template #secondaryPhoneErrorMsg>
+          <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0">
+            *{{ errorMessage }}
+          </p>
+        </ng-template>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4"
+          [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeForgotPasswordModal() : sendOTPForgotPassword(forgotPasswordOtpScreen)">
+          Next
         </button>
       </form>
     </div>

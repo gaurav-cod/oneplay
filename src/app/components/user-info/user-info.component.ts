@@ -25,9 +25,9 @@ export class UserInfoComponent implements OnInit {
     private readonly authService: AuthService
   ) {}
   ngOnInit(): void {
-    this.authService.user.toPromise().then((data)=> {
-      this.userInfo.controls["username"].setValue(data.username);
-    })
+    // this.authService.user.toPromise().then((data)=> {
+    //   this.userInfo.controls["username"].setValue(data.username);
+    // })
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged() 

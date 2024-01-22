@@ -67,13 +67,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       (u) => {
         if (u) {
           this.showOnboardingPopup = true;
-        } else if (u === false) {
-          this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-            centered: true,
-            modalDialogClass: "modal-md",
-            backdrop: "static",
-            keyboard: false,
-          });
         }
       }
     );

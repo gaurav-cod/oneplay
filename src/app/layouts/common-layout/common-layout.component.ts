@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { Subscription } from "rxjs";
+import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
 import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
+import { ToastService } from "src/app/services/toast.service";
 
 @Component({
   selector: "app-common-layout",
@@ -21,6 +23,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
   private userCanGameSubscription: Subscription;
+  private userDetails: UserModel | null = null;
 
   showOnboardingPopup: boolean = false;
 
@@ -30,13 +33,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly partyService: PartyService,
     private readonly restService: RestService,
     private readonly gameService: GameService,
-    private readonly router: Router,
+    private readonly toastService: ToastService,
     private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
-      (exists) => {
+      async (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
           this.authService.user = this.restService.getProfile();

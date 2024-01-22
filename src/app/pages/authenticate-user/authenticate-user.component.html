@@ -133,7 +133,7 @@
         />
       </div>
       <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referal Code</p>
-      <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">{{referralName}}</p>
+      <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">*referred by {{referralName}}</p>
       <div class="d-flex justify-content-center mt-4 w-100">
         <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName">Continue</button>
       </div>

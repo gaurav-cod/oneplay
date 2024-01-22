@@ -96,7 +96,7 @@ export class RestService {
     return this.http
       .get<string>(this.r_mix_api + "/accounts/" + id + "/name")
       .pipe(
-        map((res) => res),
+        map((res: any) => res.username),
         catchError(({ error }) => {
           throw error;
         })
