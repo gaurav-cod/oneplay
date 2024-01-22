@@ -201,15 +201,17 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
         this.userLoginSetup(response);
-        this.router.navigate(['/home'], {queryParams: {username: response.new_user}});
         
-        if (!response.new_user) {
-          this.toastService.show("Welcome back " + response.new_user, {
-            classname: `bg-gray-dark text-white`,
-            delay: 4000,
-          });
+        if (response.new_user) {
+          localStorage.setItem("username", response.new_user);
+          this.authService.setDefaultUsernameGiven(true);
+        }
+        else {
+          this.authService.setUserInfoRemindLater(response.remind_later);
+          this.authService.setUserLogginFlow(true);
         }
 
+        this.router.navigate(['/home']);
       }, error: (error) => {
         if (["invalid otp"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
@@ -228,11 +230,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.loginWithPassword(payload).subscribe({
       next: (response)=> {
         this.userLoginSetup(response);
+        this.authService.setUserLogginFlow(true);
+        this.authService.setUserInfoRemindLater(response.remind_later);
         this.router.navigate(['/home']);
-        this.toastService.show("Welcome back " + response.username, {
-          classname: `bg-gray-dark text-white`,
-          delay: 4000,
-        });
       }, error: (error)=> {
         this.userLoginFailure(error);
       }

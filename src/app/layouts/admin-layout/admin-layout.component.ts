@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
-import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -18,12 +17,10 @@ import { RestService } from "src/app/services/rest.service";
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
-  showOnboardingPopup = false;
 
   private fiveSecondsTimer: NodeJS.Timer;
   private threeSecondsTimer: NodeJS.Timer;
   private queryParamSubscription: Subscription;
-  private userCanGameSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
 
   constructor(
@@ -62,14 +59,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         this.isApp = false;
       }
     });
-
-    this.userCanGameSubscription = this.authService.userCanGame.subscribe(
-      (u) => {
-        if (u) {
-          this.showOnboardingPopup = true;
-        }
-      }
-    );
   }
 
   ngOnDestroy(): void {
@@ -77,7 +66,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     clearInterval(this.threeSecondsTimer);
     this._userInfoRef?.close();
     this.queryParamSubscription.unsubscribe();
-    this.userCanGameSubscription.unsubscribe();
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {

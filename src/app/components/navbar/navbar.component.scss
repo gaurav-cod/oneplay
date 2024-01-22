@@ -404,3 +404,25 @@
   align-items: center;
   z-index: 100;
 }
+
+.username-message {
+  padding: 15px;
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+  position: absolute;
+  width: 300px;
+  right: 195px;
+  top: 40px;
+  z-index: 1000;
+  .arrow-right {
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-left: 20px solid black;
+    border-bottom: 10px solid transparent;
+    right: -15px;
+    top: 30px;
+  }
+}

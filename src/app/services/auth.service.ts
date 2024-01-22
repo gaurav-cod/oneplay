@@ -24,6 +24,11 @@ export class AuthService {
 
   private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private isUserLogginFlow: boolean = false;
+  private loggedInUsername: string | null = null;
+  private remindLaterForUserInfo: boolean = false;
+  private isDeafultUsernameGiven: boolean = false;
+
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
 
@@ -32,6 +37,34 @@ export class AuthService {
     if (sessionToken) {
       this._$sessionToken.next(sessionToken);
     }
+  }
+
+  get getUserLogginFlow() {
+    return this.isUserLogginFlow;
+  }
+  setUserLogginFlow(value: boolean) {
+    this.isUserLogginFlow = value;
+  }
+
+  get userInfoForRemindLater() {
+    return this.remindLaterForUserInfo;
+  }
+  setUserInfoRemindLater(value: boolean) {
+    this.remindLaterForUserInfo = value;
+  }
+
+  get defaultUsernameGiven() {
+    return this.isDeafultUsernameGiven;
+  }
+  setDefaultUsernameGiven(value: boolean) {
+    this.isDeafultUsernameGiven = value;
+  }
+
+  get getLoggedInUserName() {
+    return this.loggedInUsername;
+  }
+  setLoggedInUserName(value: string) {
+    this.loggedInUsername = value;
   }
 
   get user() {
@@ -68,14 +101,13 @@ export class AuthService {
     return Cookies.get("op_session_token") || "";
   }
 
-  get userCanGame() {
-    return this._$user.asObservable().pipe<boolean | undefined>(
-      map((user) => {
-        if (!user) return undefined;
-        return !!user.username && !!user.age;
-      })
-    );
-  }
+  // get userCanGame() {
+  //   return this._$user.asObservable().pipe<boolean | undefined>(
+  //     map((user) => {
+  //       return !!user;
+  //     })
+  //   );
+  // }
 
   get userIdAndToken() {
     if (this.sessionToken) {

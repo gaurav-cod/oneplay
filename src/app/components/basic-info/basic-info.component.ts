@@ -68,7 +68,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.username.setValue(user.username);
       this.name.setValue(user.name);
       this.bio.setValue(user.bio);
-      this.dob.setValue(user.dob);
+      this.dob.setValue(this.dateToNgbDate(new Date(user.dob)));
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
   }
@@ -169,6 +169,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
     this.restService.updateProfile(body).subscribe(
       (data) => {
+        
+        if (body.username) {
+          this.authService.setDefaultUsernameGiven(false);
+        }
+
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
