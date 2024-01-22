@@ -10,6 +10,7 @@ import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
 import { v4 } from "uuid";
 import { CountlyService } from 'src/app/services/countly.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -32,6 +33,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly countlyService: CountlyService,
     private readonly authService: AuthService,
+    private readonly toastService: ToastService
   ) {}
 
   private _isPasswordFlow: boolean = false;
@@ -198,6 +200,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.userLoginSetup(response);
         this.router.navigate(['/home'], {queryParams: {username: response.new_user}});
+        
+        if (!response.new_user) {
+          this.toastService.show("Welcome back " + response.new_user, {
+            classname: `bg-gray-dark text-white`,
+            delay: 4000,
+          });
+        }
+
       }, error: (error) => {
         if (["invalid otp"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
@@ -217,6 +227,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response)=> {
         this.userLoginSetup(response);
         this.router.navigate(['/home']);
+        this.toastService.show("Welcome back " + response.username, {
+          classname: `bg-gray-dark text-white`,
+          delay: 4000,
+        });
       }, error: (error)=> {
         this.userLoginFailure(error);
       }

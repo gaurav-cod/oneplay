@@ -442,9 +442,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.keyword = res.keyword;
       this.keywordHash = res.keywordHash;
     });
-    this.restService
-      .searchUsers(value, 0, 3)
-      .subscribe((users) => (this.uResults = users));
+    if (!!this.user) {
+      this.restService
+        .searchUsers(value, 0, 3)
+        .subscribe((users) => (this.uResults = users));
+    }
   }
 
   toggleFriendsList() {

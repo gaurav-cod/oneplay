@@ -7,6 +7,7 @@ import { Subscription } from "rxjs";
 import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
+import { UserModel } from "src/app/models/user.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
@@ -31,12 +32,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   username: string | null = null;
   firstSignUpMsgTimer: number | null = null;
 
+  private userDetails: UserModel | null = null;
   private wishlist: string[] = [];
   private wishlistSubscription: Subscription;
   private feedSubscription: Subscription;
   private gameFilterSubscription: Subscription;
   private paramsSubscription: Subscription;
   private _qParamsSubscription: Subscription;
+  private _userSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
 
   private messageTimer: NodeJS.Timer;
@@ -87,6 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     this._qParamsSubscription?.unsubscribe();
+    this._userSubscription?.unsubscribe();
     this._userInfoRef?.close();
     clearInterval(this.messageTimer);
     Swal.close();
@@ -137,9 +141,10 @@ export class HomeComponent implements OnInit, OnDestroy {
               }
             }
           );
-          
-
       },
+    });
+    this._userSubscription = this.authService.user.subscribe((user) => {
+      this.userDetails = user;
     });
 
     this._qParamsSubscription = this.route.queryParams.subscribe((qParam: any)=> {
@@ -150,8 +155,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.firstSignUpMsgTimer--;
           if (this.firstSignUpMsgTimer == 0) {
             clearInterval(this.messageTimer);
-            this.authService.user.subscribe((data)=> {
-              if (data.dob) {
+              if (!!this.userDetails) {
                 this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
                   centered: true,
                   modalDialogClass: "modal-md",
@@ -159,17 +163,8 @@ export class HomeComponent implements OnInit, OnDestroy {
                   keyboard: false,
                 });
               }
-            })
           }
         }, 1000);
-      } else {
-        this.authService.user.subscribe((user)=> {
-          this.username  = user.username;
-          this.toastService.show("Welcome back " + this.username, {
-            classname: `bg-gray-dark text-white`,
-            delay: 4000,
-          });
-        });
       }
     })
 

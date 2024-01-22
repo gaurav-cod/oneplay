@@ -171,7 +171,8 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadGames();
             break;
           case "users":
-            this.loadUsers();
+            if (!!this.user)
+              this.loadUsers();
             break;
           default:
             if (this.query == "") {
