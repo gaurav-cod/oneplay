@@ -68,8 +68,11 @@
           </div>
           <div class="container d-flex justify-content-between w-100 mt-5 linksContainer" *ngIf="!isUserRegisted">
             
-            <span class="font500 text-gray text-underline font18" *ngIf="referralName">Referal added</span>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName">Have a Referral Code?</a>
+            <span class="font500 text-gray font18 d-flex align-items-center" *ngIf="referralName && isReferralAdded">
+              <img src="assets/img/refer/check.svg" alt="" class="mr-2">
+              <span>Referral added</span>
+            </span>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName || !isReferralAdded">Have a Referral Code?</a>
           
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" routerLink="/home">Continue as guest</a>
           </div> 
@@ -132,10 +135,10 @@
           [formControl]="referal_code"
         />
       </div>
-      <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referal Code</p>
+      <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referral Code</p>
       <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">*referred by {{referralName}}</p>
       <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName">Continue</button>
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName" (click)="closeReferralDialog()">Continue</button>
       </div>
     </div>
   </div>

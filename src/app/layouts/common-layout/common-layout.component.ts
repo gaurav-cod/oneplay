@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
@@ -18,11 +18,13 @@ import { ToastService } from "src/app/services/toast.service";
 export class CommonLayoutComponent implements OnInit, OnDestroy {
   public isAuthenticated = false;
   public friendsCollapsed = true;
+  public stopOverflow: boolean = false;
 
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
   private userCanGameSubscription: Subscription;
+  private _qParamsSubscription: Subscription;
   private userDetails: UserModel | null = null;
 
   showOnboardingPopup: boolean = false;
@@ -34,10 +36,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly gameService: GameService,
     private readonly toastService: ToastService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+
+
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       async (exists) => {
         this.isAuthenticated = exists;
@@ -82,6 +87,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
     this.userCanGameSubscription?.unsubscribe();
+    this._qParamsSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }

@@ -42,6 +42,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
   resendOTPClicked: boolean = false;
+  isReferralAdded: boolean = false;
 
   formInput = ["one", "two", "three", "four"];
   @ViewChildren("formRow") rows: any;
@@ -142,6 +143,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     });
   }
   closeReferralDialog() {
+    this.isReferralAdded = !!this.referralName;
     this._referralModal?.close();
   }
   getUserByReferalCode(code: string) {

@@ -25,7 +25,7 @@
     <p *ngIf="endJourney" class="font16 font500 cancelgradientText mt-3 pb-3">
       *{{ errorMessage }}
     </p>
-    <p *ngIf="!endJourney" class="font16 font500 muteText mt-3 pb-5 mb-0">
+    <p *ngIf="!endJourney" class="font16 font500 muteText mt-3 pb-5 mb-0 d-flex justify-content-between">
       <span *ngIf="errorMessage"><span class="cancelgradientText">*{{ errorMessage }}</span></span>
       <span class="float-left" *ngIf="!errorMessage">Didn’t Receive Code?</span>
       <button
