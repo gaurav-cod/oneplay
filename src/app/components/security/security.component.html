@@ -159,7 +159,7 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify Your New Email Address'" [otpSubHeading]="
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="
             'Please enter the code sent to your new email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
@@ -175,7 +175,7 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
           [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify Your New Phone Number'" [otpSubHeading]="
+        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Phone Number'" [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display"
@@ -199,7 +199,7 @@
         Security code verification is required to make this change.
       </p>
       <form role="form">
-        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="Add an Email"
+        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email Address"
           [formControl]="email" (keyup)="resetValidation()" />
         <span *ngIf="emailErrored; else secondaryEmailErrorMsg" class="font16 font500 errorGradientColor">*invalid email id</span>
         <ng-template #secondaryEmailErrorMsg>
@@ -347,7 +347,7 @@
             </select>
           </div>
           <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
-            placeholder="New Phone Number" formControlName="phone" (keyup)="resetValidation()" />
+            placeholder="Enter mobile number" formControlName="phone" (keyup)="resetValidation()" />
         </div>
         <span *ngIf="phoneErrored; else secondaryPhoneErrorMsg" class="font16 font500 errorGradientColor">*invalid mobile number</span>
         <ng-template #secondaryPhoneErrorMsg>
