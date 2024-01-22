@@ -41,6 +41,7 @@ import { MessagingService } from "src/app/services/messaging.service";
 export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("changeEmailModal") changeEmailModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePhoneModal") changePhoneModal: ElementRef<HTMLDivElement>;
+  @ViewChild("createPassModal") createPasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("changePasswordModal")
   changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
@@ -57,12 +58,16 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   allowEmailEdit: boolean = true;
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
+
+  private resetPasswordToken: string | null = null;
+
   private emailIconHideTimer: NodeJS.Timeout;
   private phoneIconHideTimer: NodeJS.Timeout;
   private passwordIconHideTimer: NodeJS.Timeout;
   private logoutRef: NgbModalRef;
   private _createPassModalRef: NgbModalRef;
   private _forgotPasswordModalRef: NgbModalRef;
+  private _forgotPasswordOTPScreen: NgbModalRef;
 
   errorMessage: string;
   errorCode: number;
@@ -153,6 +158,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this._changePhoneModalRef?.close();
     this.logoutRef?.close();
     this._forgotPasswordModalRef?.close();
+    this._forgotPasswordOTPScreen?.close();
     Swal.close();
   }
 
@@ -527,12 +533,20 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
     this._forgotPasswordModalRef?.close();
-    this.ngbModal.open(container, {
-      centered: true,
-      modalDialogClass: "modal-sm",
-      backdrop: "static",
-      keyboard: false,
-    });
+      const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
+      this.restService.requestResetPasswordWithMobile(phone).subscribe({
+        next: () => {
+          this.timer(1);
+          this._forgotPasswordOTPScreen = this.ngbModal.open(container, {
+            centered: true,
+            modalDialogClass: "modal-sm",
+            backdrop: "static",
+            keyboard: false,
+          });
+        }, error: (error) => {
+            this.errorMessage = error.message;
+        }
+      })
   }
 
   openCreatePasswordModal(container: ElementRef<HTMLDivElement>) {
@@ -663,14 +677,54 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  verifyForgotPasswordOTP() {
+  verifyForgotPasswordOTP(code: string) {
+    const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
+    this.restService.verifyOTPForMobile(phone, code).subscribe({
+      next: (token: any) => {
+        this.resetPasswordToken = token;
+        this._forgotPasswordOTPScreen?.close();
+        this._createPassModalRef = this.ngbModal.open(this.createPasswordModal, {
+          centered: true,
+          modalDialogClass: "modal-sm",
+          backdrop: "static",
+          keyboard: false,
+        });
+      }, error: (error: any) => {
 
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
+        // this.isWrongOTPEntered = true;
+        // this.verifyOTPError = error.message;
+      }
+    })
+  }
+  resetPassword() {
+    this.restService.verify({ token: this.resetPasswordToken , otp: this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value }).subscribe({
+      next: (token) => {
+        Swal.fire({
+          title: "Password Changed",
+          text: "You've successfully changed your password. Happy Gaming!",
+          icon: "success",
+          confirmButtonText: "Continue",
+          allowEscapeKey: false,
+        })
+      },
+      error: async (error) => {
+      },
+    });
   }
   closeForgoutPasswordOTP() {
-
+    this._forgotPasswordOTPScreen?.close();
   }
   resendUpdatePassword() {
-
+    const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
+    this.restService.requestResetPasswordWithMobile(phone).subscribe({
+      next: (response: any) => {
+      }, error: (error) => {
+        if (error.code == 429) {
+        }
+      }
+    })
   }
 
   tvSignInClicked() {

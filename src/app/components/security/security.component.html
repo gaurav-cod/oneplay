@@ -108,7 +108,7 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
-        Create Password
+        {{ token ? 'Reset Your' : 'Create' }} Password
       </h3>
       <form role="form" [formGroup]="updateSecurity">
         <div class="col-12 mt-4">
@@ -139,7 +139,7 @@
             match</span>
         </div>
 
-        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="createPassword()">Confirm</button>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="token ? resetPassword() : createPassword()">{{ token ? 'Submit' : 'Confirm' }}</button>
       </form>
     </div>
   </div>
