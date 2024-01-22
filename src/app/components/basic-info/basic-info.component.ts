@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
@@ -191,6 +191,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   showError(error) {
     if (!error.data.icon) {
       error.data.icon = "assets/img/swal-icon/Account.svg";

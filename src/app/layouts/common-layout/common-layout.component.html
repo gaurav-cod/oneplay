@@ -1,4 +1,7 @@
-<div class="main-content">
+<div class="main-content"
+  [style.overflow]="stopOverflow ? 'hidden' : 'auto'"
+  [style.height]="stopOverflow ? '100vh' : ''"
+>
   <app-chat-bottom-sheet
     *ngIf="isAuthenticated"
     [isCollapsed]="friendsCollapsed"

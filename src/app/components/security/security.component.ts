@@ -251,6 +251,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     
     this.restService.createPassword(this.updateSecurity.value.password).subscribe((response)=> {
         this._createPassModalRef?.close();
+        this.resetPasswordToken = null;
         this.updateSecurity.controls["password"].setValue(null);
         this.updateSecurity.controls["confirmPassword"].setValue(null);
         this.errorMessage = null;
@@ -278,6 +279,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   closeCreatePassModal() {
     this._createPassModalRef?.close();
     this.errorMessage = null;
+    this.resetPasswordToken = null;
     this.updateSecurity.controls["password"].setValue(null);
     this.updateSecurity.controls["confirmPassword"].setValue(null);
   }
@@ -544,7 +546,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         }, error: (error) => {
-            this.errorMessage = error.message;
+            this.showError(error);
         }
       })
   }
@@ -710,6 +712,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         })
       },
       error: async (error) => {
+        this.resetPasswordToken = null;
       },
     });
   }
@@ -720,11 +723,15 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
     this.restService.requestResetPasswordWithMobile(phone).subscribe({
       next: (response: any) => {
+
       }, error: (error) => {
         if (error.code == 429) {
         }
       }
     })
+  }
+  resetValidation() {
+
   }
 
   tvSignInClicked() {
