@@ -44,7 +44,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild("changePasswordModal")
   changePasswordModal: ElementRef<HTMLDivElement>;
   @ViewChild("otpScreen") otpScreen: ElementRef<HTMLDivElement>;
-
+  
   // close all poups when component is destroyed
   isComponentDestroyed: boolean = false;
 
@@ -62,6 +62,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   private passwordIconHideTimer: NodeJS.Timeout;
   private logoutRef: NgbModalRef;
   private _createPassModalRef: NgbModalRef;
+  private _forgotPasswordModalRef: NgbModalRef;
 
   errorMessage: string;
   errorCode: number;
@@ -135,6 +136,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam['dialogType'] == "RESET_PASS") {
         this.openPasswordModal();
@@ -150,6 +152,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this._changeEmailModalRef?.close();
     this._changePhoneModalRef?.close();
     this.logoutRef?.close();
+    this._forgotPasswordModalRef?.close();
     Swal.close();
   }
 
@@ -522,13 +525,37 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
+    this._forgotPasswordModalRef?.close();
+    this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+
   openCreatePasswordModal(container: ElementRef<HTMLDivElement>) {
+    
     this._createPassModalRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
       backdrop: "static",
       keyboard: false,
     });
+  }
+
+  openForgotPassword(container: ElementRef<HTMLDivElement>) {
+    this._changePasswordModalRef?.close();
+    this._forgotPasswordModalRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-sm",
+      backdrop: "static",
+      keyboard: false,
+    });
+  }
+  closeForgotPasswordModal() {
+    this._forgotPasswordModalRef?.close();
   }
 
   closeEmailModal() {
@@ -634,6 +661,16 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       },
     });
+  }
+
+  verifyForgotPasswordOTP() {
+
+  }
+  closeForgoutPasswordOTP() {
+
+  }
+  resendUpdatePassword() {
+
   }
 
   tvSignInClicked() {
