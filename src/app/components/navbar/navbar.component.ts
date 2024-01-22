@@ -52,6 +52,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public gameStatus: GameStatusRO | null = null;
   public hasUnread = false;
   public isAuthenticated = false;
+  public showInitialUserMessage: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -642,6 +643,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
     // this.isMenuCollapsed = true;
 
+    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven;
+    setTimeout(()=> {
+      this.showInitialUserMessage = false;
+    }, 2000);
     this.toggleFriends.emit("profileClicked");
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),

@@ -258,6 +258,23 @@
     top: -80px;
     font-size: 38px;
   }
+
+  @media screen and (max-width: 475px) {
+    img {
+      width: 90% !important;
+    }
+    .imgTxtContainer {
+      right: 18px !important;
+    }
+    span {
+      line-height: 18px !important;
+      font-size: 12px !important;
+    }
+    .heading {
+      top: -50px !important;
+      font-size: 22px !important;
+    }
+  }
 }
 .initalText {
   z-index: 1;

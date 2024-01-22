@@ -23,9 +23,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
-  private userCanGameSubscription: Subscription;
   private _qParamsSubscription: Subscription;
-  private userDetails: UserModel | null = null;
 
   showOnboardingPopup: boolean = false;
 
@@ -67,13 +65,15 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             this.setOnline();
           }, 3 * 1000);
 
-          this.userCanGameSubscription = this.authService.userCanGame.subscribe(
-            (u) => {
-              if (u) {
-                this.showOnboardingPopup = true;
-              }
-            }
-          );
+          if (this.authService.getUserLogginFlow) {
+            this.restService.getProfile().toPromise().then((response)=> {
+              this.toastService.show("Welcome back " + response.username, {
+                classname: `bg-gray-dark text-white`,
+                delay: 4000,
+              });
+            })
+          }
+          this.showOnboardingPopup = true;
 
           this.restService
           .getWishlist()
@@ -86,7 +86,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
-    this.userCanGameSubscription?.unsubscribe();
     this._qParamsSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);

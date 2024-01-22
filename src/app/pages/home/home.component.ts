@@ -147,26 +147,35 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userDetails = user;
     });
 
-    this._qParamsSubscription = this.route.queryParams.subscribe((qParam: any)=> {
-      if (qParam["username"]) {
-        this.username = qParam["username"];
-        this.firstSignUpMsgTimer = 5;
-        this.messageTimer = setInterval(()=> {
-          this.firstSignUpMsgTimer--;
-          if (this.firstSignUpMsgTimer == 0) {
-            clearInterval(this.messageTimer);
-              if (!!this.userDetails) {
-                this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-                  centered: true,
-                  modalDialogClass: "modal-md",
-                  backdrop: "static",
-                  keyboard: false,
-                });
-              }
-          }
-        }, 500);
-      }
-    })
+    this.username = localStorage.getItem("username");
+    if (this.username || this.authService.userInfoForRemindLater) {
+      localStorage.removeItem("username");
+      this.firstSignUpMsgTimer = 5;
+      this.messageTimer = setInterval(()=> {
+        this.firstSignUpMsgTimer--;
+        if (this.firstSignUpMsgTimer == 0) {
+          clearInterval(this.messageTimer);
+            if (!!this.userDetails) {
+              this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+                centered: true,
+                modalDialogClass: "modal-md",
+                backdrop: "static",
+                keyboard: false,
+              });
+            }
+        }
+      }, 500);
+    }
+    // else {
+    //   if (!this.userDetails.dob || !this.userDetails.hasPassword || !this.userDetails.username || !this.userDetails.firstName) {
+    //     this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+    //       centered: true,
+    //       modalDialogClass: "modal-md",
+    //       backdrop: "static",
+    //       keyboard: false,
+    //     });
+    //   }
+    // }
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
       if (ids) {

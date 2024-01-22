@@ -19,15 +19,16 @@ export class UserInfoComponent implements OnInit {
   userInfoComponentInstance: UserInfoComponent;
   errorMessage: string | null = null;
 
+  showSuccessMessage: boolean = false;
+  atleastOneFieldUpdated: boolean = false;
+
   constructor(
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
     private readonly authService: AuthService
   ) {}
   ngOnInit(): void {
-    // this.authService.user.toPromise().then((data)=> {
-    //   this.userInfo.controls["username"].setValue(data.username);
-    // })
+   
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged() 
@@ -36,13 +37,19 @@ export class UserInfoComponent implements OnInit {
 
   get fullNameErrored() {
     const controls = this.userInfo.controls["fullname"];
-    return controls.value?.length > 5;
+    return controls.value?.length > 25;
+  }
+  get passwordErrored() {
+    const control = this.userInfo.controls["password"];
+    return control.touched && control.invalid;
   }
 
   userInfo = new UntypedFormGroup({
     dob: new FormControl(undefined, [Validators.required]),
     username: new FormControl(undefined),
-    password: new FormControl(undefined),
+    password: new FormControl(undefined,[
+      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+    ]),
     fullname: new FormControl(undefined),
     confirmPassword: new FormControl(undefined)
   });
@@ -67,7 +74,12 @@ export class UserInfoComponent implements OnInit {
 
   get isButtonDisabled() {
     const control = this.userInfo.controls[String(this.screenType).toLowerCase()];
-    return ((control.touched || control.dirty) && control.invalid) || !control.value;
+    let   isInValid = false;
+    if (this.screenType == "PASSWORD") {
+      const control_1 = this.userInfo.controls["confirmPassword"];
+      isInValid = ((control_1.touched || control_1.dirty) && control_1.invalid) || !control_1.value || (control.value != control_1.value)
+    } 
+    return ((control.touched || control.dirty) && control.invalid) || !control.value || isInValid;
   }
 
   screenType: SCREEN_TYPE = SCREEN_TYPE.DOB;
@@ -78,6 +90,12 @@ export class UserInfoComponent implements OnInit {
       "PASSWORD" : "USERNAME",
       "USERNAME" : "FULLNAME"
     }
+  }
+
+  remindLater() {
+    this.restService.setRemindLater().subscribe((response)=> {
+      this.activeModal?.close();
+    })
   }
 
   saveChanges(): void {
@@ -107,6 +125,12 @@ export class UserInfoComponent implements OnInit {
     this.restService.updateProfile(body).subscribe(
       (data) => {
         this.goToNext();
+
+        if (this.screenType == "USERNAME") {
+          this.authService.setDefaultUsernameGiven(false);
+        }
+
+        this.atleastOneFieldUpdated = true;
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
@@ -119,12 +143,19 @@ export class UserInfoComponent implements OnInit {
       }
     );
   }
+  enterUserName(event) {
+    this.errorMessage = null;
+  }
 
-  goToNext() {
+  goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
       this.authService.setProfileOverlay(true);
-      this.activeModal?.close();
+      if (this.atleastOneFieldUpdated) {
+        this.showSuccessMessage = true;
+      } else {
+        this.close();
+      }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
