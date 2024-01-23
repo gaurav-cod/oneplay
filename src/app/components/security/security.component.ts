@@ -163,7 +163,6 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-   
     this.countlyService.updateEventData("settingsView", {
       logInSecurityViewed: "yes",
     });
@@ -471,6 +470,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         Swal.fire({
           icon: "success",
           text: "You have successfully changed your phone number.",
+          showConfirmButton: false
         });
         this.authService.updateProfile({
           phone: Object.values(this.phoneForm.value).join(""),

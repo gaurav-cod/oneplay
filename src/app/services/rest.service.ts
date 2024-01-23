@@ -96,11 +96,22 @@ export class RestService {
     return this.http
       .get<string>(this.r_mix_api + "/accounts/" + id + "/name")
       .pipe(
-        map((res: any) => res.username),
+        map((res) => res),
         catchError(({ error }) => {
           throw error;
         })
       );
+  }
+
+  getReferalName(id: string) {
+    return this.http
+    .post<any>(this.r_mix_api_3 + "/accounts/check_referral_code", {referral_code: id})
+    .pipe(
+      map((res: any) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   getProfile(): Observable<UserModel> {
