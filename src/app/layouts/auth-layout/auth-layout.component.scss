@@ -11,15 +11,12 @@
 }
 
 .height100vh {
-  height: 100vh;
+  height: calc(100vh - 35px);
   align-items: center;
   overflow-y: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none;
-  @media (max-width: 992px) {
-    height: calc(100vh - 65px) !important;
-
-  }
+  
   @media (max-width: 475px) {
     padding-top: 0px !important;
     align-items: unset !important;
@@ -84,4 +81,9 @@
   padding: 15px;
   line-height: 30px;
   text-align: center;
+  margin-top: auto;
+   @media screen and (min-width: 1200px) {
+      position: absolute !important;
+      bottom: -30px;
+   }
 }
