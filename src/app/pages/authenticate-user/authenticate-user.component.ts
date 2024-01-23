@@ -101,7 +101,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       distinctUntilChanged() 
     ).subscribe((id) => this.getUserByReferalCode(id));
     this.authenticateForm.controls["phone"].valueChanges.pipe(
-      debounceTime(500),
+      debounceTime(1000),
       distinctUntilChanged() 
     ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
 
