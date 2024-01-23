@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
 import { UntypedFormControl } from "@angular/forms";
@@ -77,6 +77,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private sessionSubscription: Subscription;
   private multiNotificationSub: Subscription;
   private _profileOverlaySub: Subscription;
+  private _qParamSubscription: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
@@ -232,6 +233,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
   ) { }
@@ -251,9 +253,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.sessionSubscription?.unsubscribe();
     this.multiNotificationSub?.unsubscribe();
     this._profileOverlaySub?.unsubscribe();
+    this._qParamSubscription?.unsubscribe();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    
+    // get Initial user info
+    const response = await this.restService.getProfile().toPromise();
+    this.user = response;
 
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
       this.showOverlayProfile = data;
@@ -264,6 +271,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }, 3000);
       }
     })
+
+    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
+        this.authService.setProfileOverlay(true);
+        this.router.navigate([], {queryParams: { overlay: "null" }, replaceUrl: true, queryParamsHandling: "merge"});
+      }
+    })
+
+    this.userSub = this.authService.user.subscribe((u) => (this.user = u));
 
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       (exists) => {
@@ -280,7 +296,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
     );

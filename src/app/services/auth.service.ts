@@ -1,17 +1,21 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, Observable } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, map, Observable, Subscription } from "rxjs";
 import { UserModel } from "../models/user.model";
 import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
 import * as moment from "moment";
+import { Router } from "@angular/router";
 
 declare const Countly: any;
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private readonly _$user: BehaviorSubject<UserModel | null> =
+    new BehaviorSubject(null);
+
+  private readonly _$triggerUserInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject(null);
 
   private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject([]);
@@ -26,19 +30,46 @@ export class AuthService {
 
   private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private _timerIntervalRef: NodeJS.Timer;
+
+  private timerToShowUserInfo: number = 60;
+
   private isUserLogginFlow: boolean = false;
   private loggedInUsername: string | null = null;
+  // temporary varibles
   private remindLaterForUserInfo: boolean = false;
   private isDeafultUsernameGiven: boolean = false;
 
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
 
-  constructor() {
+  constructor(
+    private readonly router: Router
+  ) {
     const sessionToken = Cookies.get("op_session_token");
     if (sessionToken) {
       this._$sessionToken.next(sessionToken);
     }
+  }
+  ngOnDestroy() {
+    clearInterval(this._timerIntervalRef);
+  }
+
+  startTimerToShowUserInfo() {
+    this._timerIntervalRef = setInterval(()=> {
+      this.timerToShowUserInfo--;
+      if (this.timerToShowUserInfo === 0) {
+        clearInterval(this._timerIntervalRef);
+
+        if (!(this.router.url.includes("/checkout") || this.router.url.includes("/subscription"))) {
+          // now show modal after 60s completed
+          this.setUserInfoModal(true);
+        }
+      }
+    }, 1000);
+  }
+  get getTimerToShowUserInfo() {
+    return this.timerToShowUserInfo;
   }
 
   get getUserLogginFlow() {
@@ -91,6 +122,13 @@ export class AuthService {
   }
   setProfileOverlay(value: boolean) {
     this._$triggerProfileOverlay.next(value);
+  }
+
+  get userInfoModal() {
+    return this._$triggerUserInfoModal.asObservable();
+  }
+  setUserInfoModal(value: boolean) {
+    this._$triggerUserInfoModal.next(value);
   }
 
   get triggerInitialModal() {

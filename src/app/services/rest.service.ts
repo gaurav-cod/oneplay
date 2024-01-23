@@ -538,14 +538,14 @@ export class RestService {
       .pipe(map((res) => res.length > 0));
   }
 
-  getPaymentRecipt(planId: string): Observable<string> {
-    return this.http.get<string>(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`)
-    .pipe(
-      map((res) => res),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+  getPaymentRecipt(planId: string) {
+    const header  = new HttpHeaders({
+      'Content-Type': 'application/pdf'
+    })
+    return this.http.get(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`, {
+      responseType: 'blob',
+      headers: header,
+    })
   }
 
   setOnline(): Observable<SetOnlineRO> {

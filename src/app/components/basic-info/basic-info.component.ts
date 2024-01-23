@@ -48,6 +48,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
+
+  showInitialUserMessage: boolean = false;
+
   private userSubscription: Subscription;
   private currentUserState: UserModel;
   private user: UserModel;
@@ -71,6 +74,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.dob.setValue((user.dob ? this.dateToNgbDate(new Date(user.dob)) : ""));
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
+
+    // show initial message only in mobile screen
+    this.showInitialUserMessage = this.authService.defaultUsernameGiven && window.innerWidth < 475;
+    setTimeout(()=> {
+      this.showInitialUserMessage = false;
+    }, 3000);
   }
   focusElement(element: any) {
     if (element)

@@ -229,6 +229,10 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.query.reset();
     this.searchText = "";
     this.triggerSpeedTest();
+
+    // only on first time login i.e. account creation
+    if (this.authService.defaultUsernameGiven)
+      this.authService.startTimerToShowUserInfo();
   }
 
   public async closeonboardingGame() {

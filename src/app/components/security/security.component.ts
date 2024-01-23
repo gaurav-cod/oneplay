@@ -59,7 +59,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   allowPhoneEdit: boolean = true;
   allowPasswordEdit: boolean = true;
 
-  private resetPasswordToken: string | null = null;
+  public resetPasswordToken: string | null = null;
 
   private emailIconHideTimer: NodeJS.Timeout;
   private phoneIconHideTimer: NodeJS.Timeout;
@@ -176,7 +176,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   get checkvalidationValue() {
     if (
       this.updateSecurity.value.oldPassword &&
-      this.updateSecurity.value.password.length &&
+      this.updateSecurity.value.password?.length &&
       this.updateSecurity.value.password ===
       this.updateSecurity.value.confirmPassword
     ) {
@@ -219,7 +219,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   get createPasswordErrored() {
     const newPasswordcontrol = this.updateSecurity.controls["password"];
     const confPasswordcontrol = this.updateSecurity.controls["confirmPassword"];
-    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value.length == 0 || confPasswordcontrol.value.length == 0);
+    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value?.length == 0 || confPasswordcontrol.value?.length == 0);
   }
 
   timer(minute) {
@@ -248,12 +248,15 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   createPassword() {
     
+    this.errorMessage = null;
     this.restService.createPassword(this.updateSecurity.value.password).subscribe((response)=> {
         this._createPassModalRef?.close();
         this.resetPasswordToken = null;
         this.updateSecurity.controls["password"].setValue(null);
         this.updateSecurity.controls["confirmPassword"].setValue(null);
         this.errorMessage = null;
+        this.passwordExist = true;
+        this.user
         Swal.fire({
           icon: "success",
           text: "Password Created Successfully",
@@ -261,12 +264,13 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           showCancelButton: false,
         });
     }, (error: any)=> {
-      
+      this.errorMessage = error.message;
     })
   }
 
   openEmailModal() {
     this.emailOTP = true;
+    this.errorMessage = null;
     this._changeEmailModalRef = this.ngbModal.open(this.changeEmailModal, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -297,6 +301,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateEmail(): void {
 
+    this.errorMessage = null;
+    this.errorCode = null;
     this.restService.updateEmail(this.email.value).subscribe(
       () => {
         this.clearErrors();
@@ -314,6 +320,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resendEmailUpdate() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this.restService.resendEmailRequestUpdate().subscribe(
       () => {
         this.timer(1);
@@ -324,8 +332,13 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
   }
+  resetValidation() {
+    
+  }
 
   resendUpdateEmail() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this.restService.resendUpdateEmail().subscribe(
       () => {
         this.timer(1);
@@ -340,6 +353,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   verfiyEmail(data: string) {
+    this.errorCode = null;
+    this.errorMessage = null;
     this.restService.verifyEmailUpdate(data).subscribe(
       () => {
         this.clearErrors();
@@ -357,6 +372,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   confirmEmail(data: string) {
+    this.errorCode = null;
+    this.errorMessage = null;
     this.restService.confirmEmailUpdate(data).subscribe(
       () => {
         this.clearErrors();
@@ -378,6 +395,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openPhoneModal() {
     this.emailOTP = false;
+    this.errorCode = null;
+    this.errorMessage = null;
     this._changePhoneModalRef = this.ngbModal.open(this.changePhoneModal, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -398,6 +417,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updatePhone(): void {
     this.errorMessage = null;
+    this.errorCode = null;
     if (this.phoneErrored) return;
     const phoneNumber = (this.phoneForm.value.country_code + this.phoneForm.value.phone).trim();
     if (this.user.phone === phoneNumber) {
@@ -485,6 +505,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openPasswordModal() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this._changePasswordModalRef = this.ngbModal.open(
       this.changePasswordModal,
       {
@@ -515,6 +537,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
             text: "You have successfully changed your password.",
           });
           this.updateSecurity.reset();
+          // this.passwordExist = true;
           this.countlyService.updateEventData("settingsView", {
             passwordChanged: "yes",
           });
@@ -535,6 +558,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
     this._forgotPasswordModalRef?.close();
+    this.errorCode = null;
+    this.errorMessage = null;
       const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
       this.restService.requestResetPasswordWithMobile(phone).subscribe({
         next: () => {
@@ -546,13 +571,16 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
             keyboard: false,
           });
         }, error: (error) => {
-            this.showError(error);
+            // this.showError(error);
+            this.errorMessage = error.message;
+            this.errorCode = error.code;
         }
       })
   }
 
   openCreatePasswordModal(container: ElementRef<HTMLDivElement>) {
-    
+    this.errorCode = null;
+    this.errorMessage = null;
     this._createPassModalRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-md",
@@ -563,6 +591,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openForgotPassword(container: ElementRef<HTMLDivElement>) {
     this._changePasswordModalRef?.close();
+    this.errorCode = null;
+    this.errorMessage = null;
     this._forgotPasswordModalRef = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -571,10 +601,14 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   closeForgotPasswordModal() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this._forgotPasswordModalRef?.close();
   }
 
   closeEmailModal() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this._changeEmailModalRef?.close();
     this._otpScreenRef?.close();
     this.email.reset();
@@ -588,6 +622,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   closePhoneModal() {
+    this.errorCode = null;
+    this.errorMessage = null;
     this._changePhoneModalRef?.close();
     this._otpScreenRef?.close();
     this.phoneForm.reset();
@@ -680,6 +716,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   verifyForgotPasswordOTP(code: string) {
+    
+    this.errorCode = null;
+    this.errorMessage = null;
     const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
     this.restService.verifyOTPForMobile(phone, code).subscribe({
       next: (token: any) => {
@@ -701,8 +740,16 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
   resetPassword() {
-    this.restService.verify({ token: this.resetPasswordToken , otp: this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value }).subscribe({
-      next: (token) => {
+    
+    this.errorCode = null;
+    this.errorMessage = null;
+    this.restService.resetPassword(this.resetPasswordToken, this.updateSecurity.controls["password"].value).subscribe(
+      () => {
+        this._createPassModalRef?.close();
+        this.resetPasswordToken = null;
+        this.updateSecurity.controls["password"].setValue(null);
+        this.updateSecurity.controls["confirmPassword"].setValue(null);
+        this.errorMessage = null;
         Swal.fire({
           title: "Password Changed",
           text: "You've successfully changed your password. Happy Gaming!",
@@ -711,27 +758,28 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           allowEscapeKey: false,
         })
       },
-      error: async (error) => {
+      (error) => {
+        this.errorMessage = error.message;
+        this.errorCode = error?.code;
+        // this.showError(error);
         this.resetPasswordToken = null;
-      },
-    });
+      });
   }
   closeForgoutPasswordOTP() {
     this._forgotPasswordOTPScreen?.close();
   }
   resendUpdatePassword() {
+    this.errorMessage = null;
+    this.errorCode = null;
     const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
     this.restService.requestResetPasswordWithMobile(phone).subscribe({
       next: (response: any) => {
 
       }, error: (error) => {
-        if (error.code == 429) {
-        }
+        this.errorMessage = error.errorMessage;
+        this.errorCode = error.code;
       }
     })
-  }
-  resetValidation() {
-
   }
 
   tvSignInClicked() {

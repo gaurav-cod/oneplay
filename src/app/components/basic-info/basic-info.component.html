@@ -33,6 +33,10 @@
       </div>
       <div class="row">
         <div class="col-md-12 mt-2">
+          <div class="username-message" *ngIf="showInitialUserMessage">
+            <span>We've assigned you a default username, modify it in Settings.</span>
+            <div class="arrow-right"></div>
+          </div>
           <label class="font16 font500 offWhiteText">
             Username
             <!-- <i
