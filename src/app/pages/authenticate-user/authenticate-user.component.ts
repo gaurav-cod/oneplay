@@ -86,6 +86,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     const control = this.authenticateForm.controls["password"];
     return (control.value.length > 0 ? control.touched && control.invalid : true);
   }
+  get showPasswordBtn() {
+    return this.authenticateForm.controls["password"].value?.length > 0;
+  }
+
   get loginPasswordErrored() {
     return this.phoneErrored || this.passwordErrored;
   }
