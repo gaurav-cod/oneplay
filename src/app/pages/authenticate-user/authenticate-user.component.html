@@ -67,7 +67,7 @@
             <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="isValidPhoneNumber ? phoneErrored : true" (click)="getOTP()">Get OTP</button>
           </div>
           <ng-template #showGuestLogin>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline m-auto font18 hoverGradient guestLinkText" routerLink="/home">Continue as guest</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline m-auto font18 hoverGradient guestLinkText" routerLink="/home">Continue as Guest</a>
           </ng-template>
           <div class="container d-flex justify-content-between w-100 mt-5 linksContainer" *ngIf="isValidPhoneNumber && !isUserRegisted">
             
@@ -76,8 +76,7 @@
               <span>Referral added</span>
             </span>
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName || !isReferralAdded">Have a Referral Code?</a>
-          
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" routerLink="/home">Continue as guest</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" routerLink="/home">Continue as Guest</a>
           </div> 
         </ng-container>
     </form>

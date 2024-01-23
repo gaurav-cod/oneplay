@@ -97,7 +97,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       distinctUntilChanged() 
     ).subscribe((id) => this.getUserByReferalCode(id));
     this.authenticateForm.controls["phone"].valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(500),
       distinctUntilChanged() 
     ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
 
@@ -130,6 +130,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.isValidPhoneNumber = true;
       }, error: (error: any)=> {
         this.isValidPhoneNumber = false;
+        this._isPasswordFlow = false;
+        this.isUserRegisted = false;
+        this._doesUserhavePassword = false;
       }
     })
   }
@@ -166,6 +169,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
           this.mobile = this.authenticateForm.controls["phone"].value;
           this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
+            this.errorMessage = null;
             this.verifyOTP();
           })
         }
@@ -183,6 +187,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
         this.resendOTPClicked = true;
+        this.errorMessage = null;
         this.displayTimer();
       }, error: (error) => {
         this.errorMessage = error.message;

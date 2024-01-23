@@ -1425,12 +1425,12 @@ export class RestService {
   }
 
   setRemindLater() {
-    return this.http.post<void>(this.r_mix_api_3 + "/v3/accounts/set_remind_later", null).pipe(
+    return this.http.post<void>(this.r_mix_api_3 + "/accounts/set_remind_later", null).pipe(
       map((res: any) => res))
   }
 
   delteRemindLater() {
-    return this.http.post<void>(this.r_mix_api_3 + "/v3/accounts/delete_remind_later", null).pipe(
+    return this.http.post<void>(this.r_mix_api_3 + "/accounts/delete_remind_later", null).pipe(
       map((res: any) => res))
   }
 }
