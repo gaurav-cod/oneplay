@@ -60,8 +60,9 @@
                 'border-0': username.valid
               }"
               style="border-radius: 5px;"
+              #usernameField
             />
-            <span class="bgTransparent fixedIcon offWhiteColor font16 font500">
+            <span (click)="focusElement(usernameField)" class="bgTransparent fixedIcon offWhiteColor font16 font500">
               <img
                 class="img-fluid"
                 src="assets/img/singup-login/Group (1).svg"

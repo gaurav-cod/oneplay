@@ -19,11 +19,14 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   public isAuthenticated = false;
   public friendsCollapsed = true;
   public stopOverflow: boolean = false;
+  public username: string | null = null;
 
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
   private _qParamsSubscription: Subscription;
+
+  public showWelcomeMessage: boolean = false;
 
   showOnboardingPopup: boolean = false;
 
@@ -67,10 +70,15 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
           if (this.authService.getUserLogginFlow) {
             this.restService.getProfile().toPromise().then((response)=> {
-              this.toastService.show("Welcome back " + response.username, {
-                classname: `bg-gray-dark text-white`,
-                delay: 4000,
-              });
+              
+              this.username = response.username;
+              // Nested timeout to remove lag when program first loads
+              setTimeout(()=> {
+                this.showWelcomeMessage = true;
+                setTimeout(()=> {
+                  this.showWelcomeMessage = false;
+                }, 2000);
+              }, 4000)
             })
           }
           this.showOnboardingPopup = true;
