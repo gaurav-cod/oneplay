@@ -196,10 +196,10 @@
         {{ emailExist ? 'Change' : 'Add'}} Email Address
       </h3>
       <p class="muteText font14 font500 px-2 text-center">
-        Security code verification is required to make this change.
+        {{ emailExist ? 'Security code verification is required to make this change.' : 'Security code verification is required to verify your email address.'}}
       </p>
       <form role="form">
-        <input type="email" class="form-control inputBorder font18 font500 text-white" placeholder="New Email Address"
+        <input type="email" class="form-control inputBorder font18 font500 text-white" [placeholder]="emailExist ? 'Enter your Email' : 'New Email Address'"
           [formControl]="email" (keyup)="resetValidation()" />
         <span *ngIf="emailErrored; else secondaryEmailErrorMsg" class="font16 font500 errorGradientColor">*invalid email id</span>
         <ng-template #secondaryEmailErrorMsg>

@@ -147,35 +147,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userDetails = user;
     });
 
-    this.username = localStorage.getItem("username");
+    this.username = localStorage.getItem("is_new_user");
     if (this.username || this.authService.userInfoForRemindLater) {
-      localStorage.removeItem("username");
+      localStorage.removeItem("is_new_user");
       this.firstSignUpMsgTimer = 5;
       this.messageTimer = setInterval(()=> {
         this.firstSignUpMsgTimer--;
         if (this.firstSignUpMsgTimer == 0) {
           clearInterval(this.messageTimer);
-            if (!!this.userDetails) {
-              this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-                centered: true,
-                modalDialogClass: "modal-md",
-                backdrop: "static",
-                keyboard: false,
-              });
-            }
+          if (!!this.userDetails) {
+            this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
+              centered: true,
+              modalDialogClass: "modal-md",
+              backdrop: "static",
+              keyboard: false,
+            });
+          }
         }
       }, 500);
     }
-    // else {
-    //   if (!this.userDetails.dob || !this.userDetails.hasPassword || !this.userDetails.username || !this.userDetails.firstName) {
-    //     this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-    //       centered: true,
-    //       modalDialogClass: "modal-md",
-    //       backdrop: "static",
-    //       keyboard: false,
-    //     });
-    //   }
-    // }
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
       if (ids) {

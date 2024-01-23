@@ -24,6 +24,8 @@ export class AuthService {
 
   private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   private isUserLogginFlow: boolean = false;
   private loggedInUsername: string | null = null;
   private remindLaterForUserInfo: boolean = false;
@@ -89,6 +91,13 @@ export class AuthService {
   }
   setProfileOverlay(value: boolean) {
     this._$triggerProfileOverlay.next(value);
+  }
+
+  get triggerInitialModal() {
+    return this._$triggerInitialModal.asObservable();
+  }
+  setTriggerInitialModal(value: boolean) {
+    this._$triggerInitialModal.next(value);
   }
 
   get sessionTokenExists() {
