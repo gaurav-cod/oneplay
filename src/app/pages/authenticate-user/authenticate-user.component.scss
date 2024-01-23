@@ -194,8 +194,12 @@
     border-left: none;
     border-right: none;
     border-radius: 0px !important;
-    @media (max-width: 380px) {
+    @media screen and (max-width: 380px) {
         width: 30px;
+        height: 30px;
+    }
+    @media (min-width: 381px) and (max-width: 475px) {
+        width: 55px;
         height: 30px;
     }
 }

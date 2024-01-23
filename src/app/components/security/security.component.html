@@ -347,7 +347,7 @@
             </select>
           </div>
           <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
-            placeholder="Enter mobile number" formControlName="phone" (keyup)="resetValidation()" />
+            placeholder="Mobile Number" formControlName="phone" (keyup)="resetValidation()" />
         </div>
         <span *ngIf="phoneErrored; else secondaryPhoneErrorMsg" class="font16 font500 errorGradientColor">*invalid mobile number</span>
         <ng-template #secondaryPhoneErrorMsg>

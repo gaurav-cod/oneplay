@@ -2,6 +2,7 @@
   [style.overflow]="stopOverflow ? 'hidden' : 'auto'"
   [style.height]="stopOverflow ? '100vh' : ''"
 >
+  <div class="welcome-message bg-gray-dark font500" *ngIf="showWelcomeMessage">Welcome back {{ username }}</div>
   <app-chat-bottom-sheet
     *ngIf="isAuthenticated"
     [isCollapsed]="friendsCollapsed"

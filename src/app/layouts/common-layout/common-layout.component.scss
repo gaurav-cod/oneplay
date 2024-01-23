@@ -10,3 +10,12 @@
         display: none;
     }
 }
+.welcome-message {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    position: absolute;
+    z-index: 1000;
+    top: 25%;
+    left: 50%;
+}

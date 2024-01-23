@@ -72,6 +72,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
   }
+  focusElement(element: any) {
+    if (element)
+      element.focus();
+  }
 
   ngOnDestroy(): void {
     this.userSubscription?.unsubscribe();
