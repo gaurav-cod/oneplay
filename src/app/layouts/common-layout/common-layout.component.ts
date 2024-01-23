@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
+import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -26,6 +28,10 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private sessionSubscription: Subscription;
   private _qParamsSubscription: Subscription;
   private _triggerInitialModalSubscription: Subscription;
+  private _userInfoRef: NgbModalRef;
+  private _userInfoSubscription: Subscription;
+
+  private clickCountForOverlay: number = 0;
 
   public showWelcomeMessage: boolean = false;
 
@@ -39,11 +45,22 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly toastService: ToastService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly ngbModal: NgbModal,
   ) {}
 
-  ngOnInit(): void {
+  @HostListener('click', ['$event'])
+  handleClick(event: Event) {
+    if (this.authService.defaultUsernameGiven || this.authService.userInfoForRemindLater) {
+      this.clickCountForOverlay++;
+      // trigger on first three clicks
+      if (this.clickCountForOverlay == 3) {
+        this.authService.setUserInfoModal(true);
+      }
+    }
+  }
 
+  ngOnInit(): void {
 
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       async (exists) => {
@@ -69,6 +86,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             this.setOnline();
           }, 3 * 1000);
 
+          console.log("userlogin", this.authService.getUserLogginFlow);
           if (this.authService.getUserLogginFlow) {
             this.restService.getProfile().toPromise().then((response)=> {
               
@@ -83,7 +101,18 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             })
           }
 
-          if (localStorage.getItem("is_new_user")) {
+          this._userInfoSubscription = this.authService.userInfoModal.subscribe((value)=> {
+            if (value) {
+              this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
+                centered: true,
+                modalDialogClass: "modal-md",
+                backdrop: "static",
+                keyboard: false,
+              });
+            }
+          })
+
+          if (this.authService.defaultUsernameGiven) {
             this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
               this.showOnboardingPopup = value;
             })
@@ -104,6 +133,8 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this.sessionSubscription?.unsubscribe();
     this._qParamsSubscription?.unsubscribe();
     this._triggerInitialModalSubscription?.unsubscribe();
+    this._userInfoSubscription?.unsubscribe();
+    this._userInfoRef?.close();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }

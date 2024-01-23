@@ -176,7 +176,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   get checkvalidationValue() {
     if (
       this.updateSecurity.value.oldPassword &&
-      this.updateSecurity.value.password.length &&
+      this.updateSecurity.value.password?.length &&
       this.updateSecurity.value.password ===
       this.updateSecurity.value.confirmPassword
     ) {
@@ -219,7 +219,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   get createPasswordErrored() {
     const newPasswordcontrol = this.updateSecurity.controls["password"];
     const confPasswordcontrol = this.updateSecurity.controls["confirmPassword"];
-    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value.length == 0 || confPasswordcontrol.value.length == 0);
+    return (this.passwordErrored || this.confirmPasswordErrored) || (newPasswordcontrol.value?.length == 0 || confPasswordcontrol.value?.length == 0);
   }
 
   timer(minute) {
@@ -331,6 +331,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.errorMessage = error.message;
       }
     );
+  }
+  resetValidation() {
+    
   }
 
   resendUpdateEmail() {

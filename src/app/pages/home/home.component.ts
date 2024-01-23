@@ -148,21 +148,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.username = localStorage.getItem("is_new_user");
-    if (this.username || this.authService.userInfoForRemindLater) {
+    if (this.username) {
       localStorage.removeItem("is_new_user");
       this.firstSignUpMsgTimer = 5;
       this.messageTimer = setInterval(()=> {
         this.firstSignUpMsgTimer--;
         if (this.firstSignUpMsgTimer == 0) {
+          this.authService.setTriggerInitialModal(true);
           clearInterval(this.messageTimer);
-          if (!!this.userDetails) {
-            this._userInfoRef = this.ngbModal.open(UserInfoComponent, {
-              centered: true,
-              modalDialogClass: "modal-md",
-              backdrop: "static",
-              keyboard: false,
-            });
-          }
         }
       }, 500);
     }

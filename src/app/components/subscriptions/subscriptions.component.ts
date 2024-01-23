@@ -247,8 +247,16 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   downloadInvoice(subscription) {
-    this.restService.getPaymentRecipt(subscription.planId).subscribe((response)=> {
+    this.restService.getPaymentRecipt(subscription.id).subscribe((response)=> {
       // TODO: Download Invoice
+      const blob = new Blob([response], { type: 'application/pdf' });
+
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'downloaded.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }, (error)=> {
       this.showError(error);
     })
