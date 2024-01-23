@@ -59,7 +59,7 @@ export class UserModel {
       profile_image: data.photo ?? this.photo,
       search_privacy: data.searchPrivacy ?? this.searchPrivacy,
       partner_id: this.partnerId,
-      dob: this.dob,
+      dob: data.dob,
       hasPassword: this.hasPassword
     });
   }

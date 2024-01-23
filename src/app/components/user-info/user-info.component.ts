@@ -16,7 +16,6 @@ enum SCREEN_TYPE {
   styleUrls: ['./user-info.component.scss']
 })
 export class UserInfoComponent implements OnInit {
-  userInfoComponentInstance: UserInfoComponent;
   errorMessage: string | null = null;
 
   showSuccessMessage: boolean = false;
@@ -27,8 +26,19 @@ export class UserInfoComponent implements OnInit {
     private readonly restService: RestService,
     private readonly authService: AuthService
   ) {}
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
    
+    const response = await this.restService.getProfile().toPromise();
+    const controls = this.userInfo.controls;
+    if (response.dob) {
+      controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
+      this.screenType = SCREEN_TYPE.FULLNAME;
+    } 
+    if (response.firstName) {
+      controls["fullname"].setValue(response.firstName + response.lastName);
+      this.screenType = SCREEN_TYPE.PASSWORD;
+    }
+
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged() 
