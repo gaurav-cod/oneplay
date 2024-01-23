@@ -155,8 +155,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   getUserByReferalCode(code: string) {
     this.referralName = null;
-    this.restService.getName(code).subscribe(
-      (name) => (this.referralName = name)
+    this.restService.getReferalName(code).subscribe((response) =>{
+        if (response.available)
+          this.referralName = response.message;
+        else
+          this.referralName = null;
+      }
     );
   }
   getOTP() {
