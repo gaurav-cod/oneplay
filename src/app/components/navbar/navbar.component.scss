@@ -391,6 +391,15 @@
   color: white;
   top: 100px;
   right: 0px;
+  @media screen and (max-width: 475px) {
+    font-size: 12px !important;
+    top: 77px !important;
+  }
+}
+.toast-arrow {
+  @media screen and (max-width: 475px) {
+    height: 60px !important;
+  }
 }
 .overlay {
   position: fixed;

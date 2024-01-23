@@ -140,7 +140,7 @@
           </span>
         </div>
 
-        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" (click)="resetPasswordToken ? resetPassword() : createPassword()">{{ resetPasswordToken ? 'Submit' : 'Confirm' }}</button>
+        <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4" [disabled]="createPasswordErrored" [ngClass]="{'button-disabled': createPasswordErrored}" (click)="resetPasswordToken ? resetPassword() : createPassword()">{{ resetPasswordToken ? 'Submit' : 'Confirm' }}</button>
       </form>
     </div>
   </div>
@@ -209,7 +209,7 @@
           </p>
         </ng-template>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
-          [disabled]="emailErrored || email.value?.length === 0" [ngClass]="{ mutedBg: endJourney }" (click)="endJourney ? closeEmailModal() : emailOperation()">
+          [disabled]="emailErrored || email.value?.length === 0" [ngClass]="{ mutedBg: endJourney, 'button-disabled': emailErrored || email.value?.length === 0}" (click)="endJourney ? closeEmailModal() : emailOperation()">
           {{ buttonText }}
         </button>
       </form>
@@ -299,7 +299,7 @@
         <span *ngIf="errorMessage" class="font16 font500 errorGradientColor">{{errorMessage}}</span>
 
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
-          [disabled]="checkvalidationValue" (click)="updatePassword()">
+          [disabled]="checkvalidationValue" [ngClass]="{'button-disabled': checkvalidationValue}" (click)="updatePassword()">
           Confirm
         </button>
         <a href="javascript:void(0)" class="font500 text-gray font18 mt-4 hoverGradient mt-1 d-flex justify-content-center" (click)="openForgotPassword(forgotPasswordModal)">Forgot Password?</a>

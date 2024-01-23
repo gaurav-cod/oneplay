@@ -433,7 +433,7 @@
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
                 <ng-container *ngIf="showOverlayProfile">
                   <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
-                  <img src="assets/img/navbar/arrow.svg" class="position-absolute" style="right: 45px; top: 15px;" alt="">
+                  <img src="assets/img/navbar/arrow.svg" class="position-absolute toast-arrow" style="right: 45px; top: 15px;" alt="">
                   <div class="toast-message">You can modify the profile details in the settings.</div>
                 </ng-container>
                 <img
@@ -562,10 +562,10 @@
               </div>
             </div>
           </div>
-          <!-- <div class="username-message" *ngIf="showInitialUserMessage">
+          <div class="username-message" *ngIf="showInitialUserMessage">
             <span>We've assigned you a default username, modify it in Settings.</span>
             <div class="arrow-right"></div>
-          </div> -->
+          </div>
         </div>
       </li>
     </ul>
