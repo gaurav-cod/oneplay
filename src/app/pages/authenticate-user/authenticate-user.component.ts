@@ -222,7 +222,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
         this.router.navigate(['/home']);
       }, error: (error) => {
-        if (["invalid otp"].includes(error.message?.toLowerCase())) {
+        if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
         } else {
           this.userLoginFailure(error);
