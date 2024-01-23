@@ -70,7 +70,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           title: popups[swal].title,
           text: popups[swal].body,
         }).then(() => {
-          window.location.href = "/dashboard/settings/subscription";
+          window.location.href = "/dashboard/settings/subscription?overlay=true";
         });
       } catch {}
     }

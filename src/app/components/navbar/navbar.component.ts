@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
 import { UntypedFormControl } from "@angular/forms";
@@ -232,6 +232,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
   ) { }
@@ -253,8 +254,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._profileOverlaySub?.unsubscribe();
   }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    
+    // get Initial user info
+    const response = await this.restService.getProfile().toPromise();
+    this.user = response;
+      
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
       this.showOverlayProfile = data;
       if (this.showOverlayProfile) {
@@ -262,6 +267,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.authService.setProfileOverlay(false);
           this.authService.setTriggerInitialModal(true);
         }, 3000);
+      }
+    })
+    this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam["overlay"] && !this.user.dob) {
+        this.authService.setProfileOverlay(true);
       }
     })
 
@@ -280,6 +290,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     );
+
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
