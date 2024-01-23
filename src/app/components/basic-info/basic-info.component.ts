@@ -68,7 +68,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.username.setValue(user.username);
       this.name.setValue(user.name);
       this.bio.setValue(user.bio);
-      this.dob.setValue(this.dateToNgbDate(new Date(user.dob)));
+      this.dob.setValue((user.dob ? this.dateToNgbDate(new Date(user.dob)) : ""));
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
   }

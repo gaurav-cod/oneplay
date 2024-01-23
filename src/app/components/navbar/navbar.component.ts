@@ -260,6 +260,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       if (this.showOverlayProfile) {
         setTimeout(()=> {
           this.authService.setProfileOverlay(false);
+          this.authService.setTriggerInitialModal(true);
         }, 3000);
       }
     })

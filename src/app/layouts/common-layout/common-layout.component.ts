@@ -25,6 +25,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
   private _qParamsSubscription: Subscription;
+  private _triggerInitialModalSubscription: Subscription;
 
   public showWelcomeMessage: boolean = false;
 
@@ -81,7 +82,14 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
               }, 4000)
             })
           }
-          this.showOnboardingPopup = true;
+
+          if (localStorage.getItem("is_new_user")) {
+            this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
+              this.showOnboardingPopup = value;
+            })
+          } else {
+            this.showOnboardingPopup = true;
+          }
 
           this.restService
           .getWishlist()
@@ -95,6 +103,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
     this._qParamsSubscription?.unsubscribe();
+    this._triggerInitialModalSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }

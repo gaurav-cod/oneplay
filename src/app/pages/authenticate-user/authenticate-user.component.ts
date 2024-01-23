@@ -212,7 +212,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.userLoginSetup(response);
         
         if (response.new_user) {
-          localStorage.setItem("username", response.new_user);
+          localStorage.setItem("is_new_user", response.new_user);
           this.authService.setDefaultUsernameGiven(true);
         }
         else {
