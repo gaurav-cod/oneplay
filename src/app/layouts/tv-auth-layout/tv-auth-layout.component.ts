@@ -9,12 +9,15 @@ import { Router } from '@angular/router';
 })
 export class TvAuthLayoutComponent implements OnInit {
 
+  public currentUrl: string | null = null;
+
   constructor(
     private readonly router: Router,
     // private readonly countlyService: CountlyService,
   ) { }
 
   ngOnInit(): void {
+    this.currentUrl = this.router.url;
   }
 
   goToLogin() {

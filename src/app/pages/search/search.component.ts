@@ -133,30 +133,31 @@ export class SearchComponent implements OnInit, OnDestroy {
     this._sessionSubscription = this.authService.sessionTokenExists.subscribe(
       (exists) => {
         this.isAuthenticated = exists;
+        this.friendsSub = this.friendsService.friends.subscribe(
+          (f) => (this.acceptedFriends = f)
+        );
+        this.pendingsSub = this.friendsService.pendings.subscribe(
+          (f) => (this.pendingFriends = f)
+        );
+        this.requestsSub = this.friendsService.requests.subscribe(
+          (f) => (this.friendRequests = f)
+        );
+        this.restService
+          .getAllFriends()
+          .toPromise()
+          .then((friends) => this.friendsService.setFriends(friends));
+        this.restService
+          .getPendingSentRequests()
+          .toPromise()
+          .then((pendings) => this.friendsService.setPendings(pendings));
+        this.restService
+          .getPendingReceivedRequests()
+          .toPromise()
+          .then((requests) => this.friendsService.setRequests(requests));
       }
     );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
-    this.friendsSub = this.friendsService.friends.subscribe(
-      (f) => (this.acceptedFriends = f)
-    );
-    this.pendingsSub = this.friendsService.pendings.subscribe(
-      (f) => (this.pendingFriends = f)
-    );
-    this.requestsSub = this.friendsService.requests.subscribe(
-      (f) => (this.friendRequests = f)
-    );
-    this.restService
-      .getAllFriends()
-      .toPromise()
-      .then((friends) => this.friendsService.setFriends(friends));
-    this.restService
-      .getPendingSentRequests()
-      .toPromise()
-      .then((pendings) => this.friendsService.setPendings(pendings));
-    this.restService
-      .getPendingReceivedRequests()
-      .toPromise()
-      .then((requests) => this.friendsService.setRequests(requests));
+    
     this.paramsSub = this.route.params.subscribe((params) => {
       this.route.queryParams.subscribe((query) => {
         this.tab = params.tab;
@@ -178,7 +179,11 @@ export class SearchComponent implements OnInit, OnDestroy {
             if (this.query == "") {
               this.loadGames();
             } else {
+              if (!this.isAuthenticated) {
+                this.loadGames();
+              } else {
               this.laodGamesAndUsers();
+              }
             }
             break;
         }

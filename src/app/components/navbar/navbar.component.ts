@@ -285,10 +285,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     );
+    
 
     // get Initial user info
-    const response = await this.restService.getProfile().toPromise();
-    this.user = response;
+    try {
+      const response = await this.restService.getProfile().toPromise();
+      this.user = response;
+    } catch {
+      
+    }
     this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
         this.authService.setProfileOverlay(true);
@@ -453,7 +458,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  search(value: string) {
+  search(value: string) { 
     this.restService.search(value, 0, 3).subscribe((res) => {
       this.results = res.results;
       this.keyword = res.keyword;

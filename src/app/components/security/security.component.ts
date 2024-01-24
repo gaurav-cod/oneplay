@@ -256,6 +256,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateSecurity.controls["confirmPassword"].setValue(null);
         this.errorMessage = null;
         this.passwordExist = true;
+        this.authService.updateProfile({ hasPassword: true });
         this.user
         Swal.fire({
           icon: "success",
@@ -378,9 +379,11 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       () => {
         this.clearErrors();
         this._otpScreenRef.close();
+        this.emailExist = true;
         Swal.fire({
           icon: "success",
-          text: "You have successfully changed your email.",
+          text: (this.emailExist ? "You have successfully changed your email." : "Email verified successfully."),
+          showConfirmButton: false
         });
         this.authService.updateProfile({ email: this.email.value });
         this.email.reset();
