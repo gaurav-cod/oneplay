@@ -53,6 +53,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   private userSubscription: Subscription;
   private currentUserState: UserModel;
+  private isFirstTimeEntering: boolean = true;
   private user: UserModel;
   private photoFile: File;
 
@@ -76,7 +77,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     });
 
     // show initial message only in mobile screen
-    this.showInitialUserMessage = this.authService.defaultUsernameGiven && window.innerWidth < 475;
+    this.showInitialUserMessage = this.authService.defaultUsernameGiven && window.innerWidth < 475 && this.isFirstTimeEntering;
+    if (this.isFirstTimeEntering)
+      this.isFirstTimeEntering = false;
     setTimeout(()=> {
       this.showInitialUserMessage = false;
     }, 3000);

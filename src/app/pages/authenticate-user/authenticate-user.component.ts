@@ -21,6 +21,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
+  private _timerRef: NodeJS.Timer;
 
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
@@ -134,6 +135,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
+    clearInterval(this._timerRef);
     this._qParamSubscription?.unsubscribe();
   }
 
@@ -320,12 +322,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   private timer(minutes: number = 1) {
     let seconds: any = this.otpTimer;
-    const timer = setInterval(() => {
+    this._timerRef = setInterval(() => {
       seconds--;
       const prefix = seconds < 10 ? "0" : "";
       this.otpTimer = Number(`${prefix}${seconds}`);
       if (seconds == 0) {
-        clearInterval(timer);
+        clearInterval(this._timerRef);
       }
     }, 1000);
   }

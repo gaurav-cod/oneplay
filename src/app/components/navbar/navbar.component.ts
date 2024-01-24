@@ -59,6 +59,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private dontClose = false;
   private keyword = "";
   private keywordHash = "";
+  private isProfileFirstClicked: boolean = true;
   private logoutRef: NgbModalRef;
 
   private focusSubscription: Subscription;
@@ -663,7 +664,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // this.isMenuCollapsed = true;
 
     // show only in desktop or table
-    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven && canShowInitialMsg && window.innerWidth > 475;
+    this.showInitialUserMessage = this.isAuthenticated && 
+                                  this.authService.defaultUsernameGiven && 
+                                  canShowInitialMsg && 
+                                  window.innerWidth > 475 && 
+                                  this.isProfileFirstClicked;
+    if (this.isProfileFirstClicked)
+      this.isProfileFirstClicked = false;
     setTimeout(()=> {
       this.showInitialUserMessage = false;
     }, 2000);
