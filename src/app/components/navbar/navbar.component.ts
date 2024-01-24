@@ -257,10 +257,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    
-    // get Initial user info
-    const response = await this.restService.getProfile().toPromise();
-    this.user = response;
 
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
       this.showOverlayProfile = data;
@@ -269,13 +265,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
           this.authService.setProfileOverlay(false);
           this.authService.setTriggerInitialModal(true);
         }, 3000);
-      }
-    })
-
-    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
-      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
-        this.authService.setProfileOverlay(true);
-        this.router.navigate([], {queryParams: { overlay: "null" }, replaceUrl: true, queryParamsHandling: "merge"});
       }
     })
 
@@ -296,6 +285,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    // get Initial user info
+    const response = await this.restService.getProfile().toPromise();
+    this.user = response;
+    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
+        this.authService.setProfileOverlay(true);
+        this.router.navigate([], {queryParams: { overlay: "null" }, replaceUrl: true, queryParamsHandling: "merge"});
+      }
+    })
+
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
     );
@@ -656,10 +656,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
   }
 
-  headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
+  headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"], canShowInitialMsg: boolean = false): void {
     // this.isMenuCollapsed = true;
 
-    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven;
+    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven && canShowInitialMsg;
     setTimeout(()=> {
       this.showInitialUserMessage = false;
     }, 2000);
