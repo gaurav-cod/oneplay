@@ -81,7 +81,7 @@
               <div class="col-12 mt-2">
                 <input type="text" class="form-control inputBorder font18 font500"
                   placeholder="Please enter your full name" formControlName="fullname" />
-                <span *ngIf="fullNameErrored || errorMessage" class="font16 font500 redErrorGradientColor">{{ errorMessage ? errorMessage : '*character limit exceeded'}}</span>
+                <span *ngIf="fullNameErrored || errorMessage" class="font16 font500 redErrorGradientColor">*{{ errorMessage ? errorMessage : 'character limit exceeded'}}</span>
               </div>
             </div>
           </div>

@@ -28,16 +28,14 @@ export class UserInfoComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
    
-    // const response = await this.restService.getProfile().toPromise();
-    // const controls = this.userInfo.controls;
-    // if (response.dob) {
-    //   controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
-    //   this.screenType = SCREEN_TYPE.FULLNAME;
-    // } 
-    // if (response.firstName) {
-    //   controls["fullname"].setValue(response.firstName + response.lastName);
-    //   this.screenType = SCREEN_TYPE.PASSWORD;
-    // }
+    const response = await this.restService.getProfile().toPromise();
+    const controls = this.userInfo.controls;
+    if (response.dob) {
+      controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
+    } 
+    if (response.firstName) {
+      controls["fullname"].setValue(response.firstName + response.lastName);
+    }
 
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
@@ -131,13 +129,13 @@ export class UserInfoComponent implements OnInit {
       const day = this.userInfo.controls["dob"].value['day'] < 10 ? "0" + this.userInfo.controls["dob"].value['day'] : this.userInfo.controls["dob"].value['day'];
       body.dob = `${year}-${month}-${day}`;
     }
-    
     this.restService.updateProfile(body).subscribe(
       (data) => {
         this.goToNext();
 
         if (this.screenType == "USERNAME") {
           this.authService.setDefaultUsernameGiven(false);
+          this.updatePassword();
         }
 
         this.atleastOneFieldUpdated = true;
@@ -146,13 +144,21 @@ export class UserInfoComponent implements OnInit {
           firstName: body.first_name,
           lastName: body.last_name,
           dob: body.dob,
-          hasPassword: this.screenType == "PASSWORD"  // if coming from USERNAME then password is added
         });
       },
       (error) => {
         this.errorMessage = error.message;
       }
     );
+  }
+
+  updatePassword() {
+    this.restService.createPassword(this.userInfo.controls["password"].value).subscribe((response)=> {
+      this.authService.updateProfile({ hasPassword: this.screenType === "USERNAME" })
+      this.errorMessage = null;
+    }, (error: any)=> {
+      this.errorMessage = error.message;
+    })
   }
   enterUserName(event) {
     this.errorMessage = null;

@@ -62,6 +62,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   progress: number = 0;
   isReadMore = true;
 
+  showOnboardingPopup: boolean = false;
+
   game: GameModel;
   playing: string = "";
   showAllVideos = false;
@@ -132,6 +134,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _getGamesByDeveloperSub: Subscription;
   private _getGamesByGenreSub: Subscription;
   private _getSimilarGamesSub: Subscription;
+  private _triggerPlayGameRef: Subscription;
   private _getVideosSub: Subscription;
   private _getLiveVideosSub: Subscription;
   private _reportErrorModalRef: NgbModalRef;
@@ -280,6 +283,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._getSimilarGamesSub?.unsubscribe();
     this._getVideosSub?.unsubscribe();
     this._getLiveVideosSub?.unsubscribe();
+    this._triggerPlayGameRef?.unsubscribe();
     // this._settingsEvent?.cancel();
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
@@ -700,6 +704,16 @@ export class ViewComponent implements OnInit, OnDestroy {
     skipCheckResume = false,
     termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
+
+     if (localStorage.getItem("#onboardingUser") !== "true") {
+      this.showOnboardingPopup = true;
+      localStorage.setItem("#canOpenOnboarding", "true");
+      this._triggerPlayGameRef = this.authService.triggerPlayGame.subscribe((value)=> {
+        if (value)
+          this.playGame(container, skipCheckResume, termConditionModal);
+      })
+      return;
+    }
 
     if (!this.isUserLogedIn) {
       this.goToSignUpPage();
