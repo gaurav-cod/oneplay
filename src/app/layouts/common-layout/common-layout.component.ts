@@ -113,7 +113,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
           this._userInfoSubscription = this.authService.userInfoModal.subscribe((value)=> {
             if (value) {
-              if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-gaming") || this.router.url.includes("subscription") || this.router.url.includes("speed-test")))
+              if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-games") || this.router.url.includes("subscription") || this.router.url.includes("speed-test")))
               this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
                 centered: true,
                 modalDialogClass: "modal-md",

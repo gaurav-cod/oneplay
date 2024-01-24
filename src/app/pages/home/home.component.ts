@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
-import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { UserModel } from "src/app/models/user.model";
