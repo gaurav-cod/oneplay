@@ -688,6 +688,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initPushNotification() {
+    
+    if (this.currMsgSub) {
+      return;
+    }
+
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
 
