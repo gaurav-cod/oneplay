@@ -164,7 +164,7 @@ export class UserInfoComponent implements OnInit {
     })
   }
   enterUserName(event) {
-    this.errorMessage = event.target?.value?.length > 15 ? "username must be shorter than or equal to 16 characters" : null;
+    this.errorMessage = event.target?.value?.length > 16 ? "username must be shorter than or equal to 16 characters" : null;
   }
 
   goToNext(isSkipped: boolean = false) {
