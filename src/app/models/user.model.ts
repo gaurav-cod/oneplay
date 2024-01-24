@@ -60,7 +60,7 @@ export class UserModel {
       search_privacy: data.searchPrivacy ?? this.searchPrivacy,
       partner_id: this.partnerId,
       dob: data.dob ? data.dob : "",
-      hasPassword: this.hasPassword
+      hasPassword: data?.hasPassword ? data.hasPassword : this.hasPassword
     });
   }
 
