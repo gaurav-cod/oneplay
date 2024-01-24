@@ -662,7 +662,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"], canShowInitialMsg: boolean = false): void {
     // this.isMenuCollapsed = true;
 
-    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven && canShowInitialMsg;
+    // show only in desktop or table
+    this.showInitialUserMessage = this.isAuthenticated && this.authService.defaultUsernameGiven && canShowInitialMsg && window.innerWidth > 475;
     setTimeout(()=> {
       this.showInitialUserMessage = false;
     }, 2000);

@@ -228,9 +228,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         if (response.new_user) {
           localStorage.setItem("is_new_user", response.new_user);
           this.authService.setDefaultUsernameGiven(true);
+          this.authService.setDefaultUsername(response.profile.username);
         }
         else {
-          this.authService.setUserInfoRemindLater(response.remind_later);
+          this.authService.setUserInfoRemindLater(response.update_profile);
           this.authService.setUserLogginFlow(true);
         }
 
@@ -254,7 +255,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       next: (response)=> {
         this.userLoginSetup(response);
         this.authService.setUserLogginFlow(true);
-        this.authService.setUserInfoRemindLater(response.remind_later);
+        this.authService.setUserInfoRemindLater(response.update_profile);
+        this.authService.setDefaultUsername(response.profile.username);
         this.router.navigate(['/home']);
       }, error: (error)=> {
         this.userLoginFailure(error);
@@ -268,7 +270,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         input.value.length === input.maxLength &&
         index < this.formInput.length
       ) {
-        this.rows._results[index + 1].nativeElement.focus();
+        this.rows._results[index + 1]?.nativeElement.focus();
       }
     } else {
       input.value = "";
@@ -279,7 +281,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
    
     if (event.key === "Backspace" || event.key === "Delete") {
       const input = event.target as HTMLInputElement;
-      if (input.value.length === 0 && index > 0) {
+      if (input.value.length === 0 && index > 0 && this.rows._results[index - 1]?.nativeElement) {
         this.rows._results[index - 1].nativeElement.focus();
         this.rows._results[index - 1].nativeElement.value = "";
       }
@@ -346,7 +348,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
-        this.contactUs.nativeElement.click();
+        this.contactUs?.nativeElement.click();
       }
     })
   }
