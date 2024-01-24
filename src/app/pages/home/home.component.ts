@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
+import { LottieAnimationComponent } from "src/app/components/lottie-animation/lottie-animation.component";
 import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
@@ -83,7 +84,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    // const modalRef = this.ngbModal.open(UserInfoComponent, {
+    // const modalRef = this.ngbModal.open(LottieAnimationComponent, {
     //   centered: true,
     //   modalDialogClass: "modal-md",
     //   backdrop: "static",

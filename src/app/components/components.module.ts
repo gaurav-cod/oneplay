@@ -38,6 +38,16 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
 import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
 import { ImageLoadingComponent } from './image-loading/image-loading.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { LottieAnimationComponent } from './lottie-animation/lottie-animation.component';
+
+import { LottieModule } from "ngx-lottie";
+import player from "lottie-web";
+
+// Note we need a separate function as it's required
+// by the AOT compiler.
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   imports: [
@@ -53,6 +63,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   declarations: [
     GameCardComponent,
@@ -84,6 +95,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     NotificationAlertComponent,
     ImageLoadingComponent,
     UserInfoComponent,
+    LottieAnimationComponent,
   ],
   exports: [
     GameCardComponent,
