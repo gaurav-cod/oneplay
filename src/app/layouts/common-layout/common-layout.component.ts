@@ -97,7 +97,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
                 setTimeout(()=> {
                   this.showWelcomeMessage = false;
                 }, 4000);
-              }, 2000)
+              }, 500)
             })
           }
 
