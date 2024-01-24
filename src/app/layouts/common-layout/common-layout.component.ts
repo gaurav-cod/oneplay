@@ -10,7 +10,6 @@ import { GameService } from "src/app/services/game.service";
 import { NotificationService } from "src/app/services/notification.service";
 import { PartyService } from "src/app/services/party.service";
 import { RestService } from "src/app/services/rest.service";
-import { ToastService } from "src/app/services/toast.service";
 
 @Component({
   selector: "app-common-layout",
