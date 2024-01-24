@@ -74,6 +74,7 @@ export class AuthInterceptor implements HttpInterceptor {
           let body = null,
             headers = {};
           if (req.body instanceof FormData) {
+            console.log("logout", req.body);
             req.body.delete("session_token");
             req.body.delete("password");
             body = {};

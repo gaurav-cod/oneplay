@@ -44,9 +44,8 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly partyService: PartyService,
     private readonly restService: RestService,
     private readonly gameService: GameService,
-    private readonly toastService: ToastService,
     private readonly notificationService: NotificationService,
-    private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly ngbModal: NgbModal,
   ) {}
 
@@ -115,6 +114,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
           this._userInfoSubscription = this.authService.userInfoModal.subscribe((value)=> {
             if (value) {
+              if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-gaming") || this.router.url.includes("subscription")))
               this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
                 centered: true,
                 modalDialogClass: "modal-md",

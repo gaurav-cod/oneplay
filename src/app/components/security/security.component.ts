@@ -130,10 +130,11 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly messagingService: MessagingService,
     private readonly activatedRoute: ActivatedRoute
   ) {
-    this.authService.user.subscribe((user) => {
+     this.authService.user.subscribe((user) => {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
       this.emailExist = this.user.email?.length > 0;
+      
       this.passwordExist = this.user.hasPassword;
       // this.phone.setValue(user.phone);
       // this.email.setValue(user.email);
@@ -385,7 +386,8 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           text: (this.emailExist ? "You have successfully changed your email." : "Email verified successfully."),
           showConfirmButton: false
         });
-        this.authService.updateProfile({ email: this.email.value });
+        
+        this.authService.updateProfile({ email: this.email.value, hasPassword: this.passwordExist });
         this.email.reset();
       },
       (error) => {

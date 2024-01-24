@@ -39,6 +39,7 @@ export class AuthService implements OnDestroy {
   // temporary varibles
   private remindLaterForUserInfo: boolean = false;
   private isDeafultUsernameGiven: boolean = false;
+  private defaultUsername: string | null = null;
 
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
@@ -61,7 +62,7 @@ export class AuthService implements OnDestroy {
       if (this.timerToShowUserInfo === 0) {
         clearInterval(this._timerIntervalRef);
 
-        if (!(this.router.url.includes("/checkout") || this.router.url.includes("/subscription"))) {
+        if (!(this.router.url.includes("checkout") || this.router.url.includes("subscription") || this.router.url.includes("casual-gaming"))) {
           // now show modal after 60s completed
           this.setUserInfoModal(true);
         }
@@ -91,6 +92,13 @@ export class AuthService implements OnDestroy {
   }
   setDefaultUsernameGiven(value: boolean) {
     this.isDeafultUsernameGiven = value;
+  }
+
+  get getDefaultUsername() {
+    return this.defaultUsername;
+  }
+  setDefaultUsername(username: string) {
+    this.defaultUsername = username;
   }
 
   get getLoggedInUserName() {

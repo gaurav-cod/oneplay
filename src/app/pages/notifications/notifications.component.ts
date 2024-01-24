@@ -66,7 +66,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   notificationAction(notification: any) {
-    // debugger;
+    // 
     // if (this.notification.subType !== "FRIEND_REQUEST")
     //   this.restService.markNotificationRead(this.notification.notificationId).toPromise();
 

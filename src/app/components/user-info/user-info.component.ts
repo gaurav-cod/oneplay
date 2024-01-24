@@ -28,26 +28,26 @@ export class UserInfoComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
    
-    const response = await this.restService.getProfile().toPromise();
-    const controls = this.userInfo.controls;
-    if (response.dob) {
-      controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
-      this.screenType = SCREEN_TYPE.FULLNAME;
-    } 
-    if (response.firstName) {
-      controls["fullname"].setValue(response.firstName + response.lastName);
-      this.screenType = SCREEN_TYPE.PASSWORD;
-    }
+    // const response = await this.restService.getProfile().toPromise();
+    // const controls = this.userInfo.controls;
+    // if (response.dob) {
+    //   controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
+    //   this.screenType = SCREEN_TYPE.FULLNAME;
+    // } 
+    // if (response.firstName) {
+    //   controls["fullname"].setValue(response.firstName + response.lastName);
+    //   this.screenType = SCREEN_TYPE.PASSWORD;
+    // }
 
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
       distinctUntilChanged() 
-    ).subscribe((data) => this.errorMessage = (data != this.userInfo.controls["password"].value ? "Password & Confirm Password do not match" : null));
+    ).subscribe((data) => this.errorMessage = (data != this.userInfo.controls["password"].value ? "Password does not match" : null));
   }
 
   get fullNameErrored() {
     const controls = this.userInfo.controls["fullname"];
-    return controls.value?.length > 25;
+    return controls.value?.length > 255;
   }
   get passwordErrored() {
     const control = this.userInfo.controls["password"];
