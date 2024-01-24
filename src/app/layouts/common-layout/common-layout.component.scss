@@ -18,6 +18,8 @@
     z-index: 1000;
     top: 21%;
     left: 45%;
+    box-shadow: -6px -3px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 12px;
     @media screen and (max-width: 475px) {
         left: 33% !important;
     }
