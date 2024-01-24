@@ -3,7 +3,7 @@ import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from "sweetalert2";
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { RestService } from 'src/app/services/rest.service';
 import { phoneValidator } from 'src/app/utils/validators.util';
 import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
@@ -20,6 +20,8 @@ import { ToastService } from 'src/app/services/toast.service';
 export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   private _referralModal: NgbModalRef; 
+  private _qParamSubscription: Subscription;
+
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
@@ -33,7 +35,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly countlyService: CountlyService,
     private readonly authService: AuthService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
 
   private _isPasswordFlow: boolean = false;
@@ -105,6 +108,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       distinctUntilChanged() 
     ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
 
+    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam["ref"]) {
+        this.getUserByReferalCode(qParam["ref"]);
+        this.router.navigate([], {queryParams: {ref: null}});
+      }
+    })
+
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
@@ -122,7 +132,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    
+    this._qParamSubscription?.unsubscribe();
   }
 
   private getUserInfoByPhone(phone) {

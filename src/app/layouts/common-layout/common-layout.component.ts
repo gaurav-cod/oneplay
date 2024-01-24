@@ -25,6 +25,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
+  private messageTimerRef: NodeJS.Timer;
   private sessionSubscription: Subscription;
   private _qParamsSubscription: Subscription;
   private _triggerInitialModalSubscription: Subscription;
@@ -51,7 +52,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   handleClick(event: Event) {
-    if (this.authService.defaultUsernameGiven || this.authService.userInfoForRemindLater) {
+    if (localStorage.getItem("is_new_user") || this.authService.userInfoForRemindLater) {
       this.clickCountForOverlay++;
       // trigger on first three clicks
       if (this.clickCountForOverlay == 3) {
@@ -86,7 +87,18 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             this.setOnline();
           }, 3 * 1000);
 
-          console.log("userlogin", this.authService.getUserLogginFlow);
+          if (localStorage.getItem("is_new_user")) {
+            let timer: number = 5;
+            this.stopOverflow = true;
+            this.messageTimerRef = setInterval(()=> {
+              timer--;
+              if (timer == 0) {
+                this.stopOverflow = false;
+                clearInterval(this.messageTimerRef);
+              }
+            }, 500);
+          }
+
           if (this.authService.getUserLogginFlow) {
             this.restService.getProfile().toPromise().then((response)=> {
               
@@ -137,6 +149,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this._userInfoRef?.close();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
+    clearInterval(this.messageTimerRef);
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
