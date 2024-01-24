@@ -68,7 +68,7 @@
               <div class="col-12 mt-2">
                 <input type="text" class="form-control inputBorder font18 font500" [ngClass]="{'errorBorderColor': errorMessage}"
                   placeholder="Enter a username" formControlName="username" (keydown)="enterUserName($event)" />
-                <span *ngIf="errorMessage" class="font16 font500 redErrorGradientColor">{{errorMessage}}</span>
+                <span *ngIf="errorMessage" class="font16 font500 redErrorGradientColor">*{{errorMessage}}</span>
               </div>
               <p class="font16 font500 muteText mb-0 container mt-2" *ngIf="!errorMessage">
                 *Minimum 3, Maximum 15 characters, Must start with a letter. Special characters and spaces are not allowed.

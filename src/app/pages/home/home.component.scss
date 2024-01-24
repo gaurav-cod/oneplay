@@ -243,6 +243,7 @@
   }
 }
 .startContainer {
+
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -255,24 +256,67 @@
   .heading {
     position: relative;
     font-family: "ModernWarfare";
-    top: -80px;
+    top: -40px;
     font-size: 38px;
   }
-
-  @media screen and (max-width: 475px) {
+  @media screen and (min-width: 780px) {
+    top: -10px;
+    .heading {
+      top: -40px;
+    }
+    .initalText {
+      font-size: 20px !important;
+    }
+  }
+  @media screen and (min-width: 700px) and (max-width: 780px) {
+    top: 0px !important;
     img {
       width: 90% !important;
     }
-    .imgTxtContainer {
-      right: 18px !important;
+    .heading {
+      position: relative;
+      font-family: "ModernWarfare";
+      top: -40px;
+      font-size: 38px;
     }
-    span {
-      line-height: 18px !important;
-      font-size: 12px !important;
+    .initalText {
+      font-size: 20px !important;
+    }
+  }
+  @media screen and (min-width: 400px) and (max-width: 779px) {
+    top: 0px !important;
+    img {
+      width: 90% !important;
     }
     .heading {
-      top: -50px !important;
-      font-size: 22px !important;
+      position: relative;
+      font-family: "ModernWarfare";
+      top: -20px !important;
+      font-size: 24px;
+    }
+    .initalText {
+      font-size: 14px !important;
+      line-height: 20px !important;
+      width: 72% !important;
+    }
+  }
+  @media screen and (max-width: 400px) {
+    top: 0px !important;
+    img {
+      width: 90% !important;
+      top: -25px !important;
+    }
+    .heading {
+      position: relative;
+      font-family: "ModernWarfare";
+      top: -20px !important;
+      font-size: 20px;
+    }
+    .initalText {
+      font-size: 12px !important;
+      line-height: 16px !important;
+      width: 75% !important;
+      margin-top: 0px !important;
     }
   }
 }
