@@ -161,7 +161,6 @@ export class UserInfoComponent implements OnInit {
   goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
-      this.authService.setProfileOverlay(true);
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
       } else {
@@ -171,7 +170,9 @@ export class UserInfoComponent implements OnInit {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
-  close() {
+  close(showProfile: boolean = false) {
+    if (showProfile)
+      this.authService.setProfileOverlay(true);
     this.activeModal?.close();
   }
 }
