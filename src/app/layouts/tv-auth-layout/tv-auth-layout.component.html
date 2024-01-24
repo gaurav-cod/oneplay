@@ -1,4 +1,4 @@
-<div class="container-fluid fontFamilyPoppins h100 align-items-center tvQRBg">
+<div class="container-fluid fontFamilyPoppins h100 align-items-center tvQRBg" [ngClass]="{'background-image': currentUrl.includes('tv'), 'linear-gradient': !currentUrl.includes('tv')}">
     <div class="row text-right py-2 p-lg-3">
         <div class="col-lg-12">
             <a href="javascript:void(0)" (click)="goToLogin()">
