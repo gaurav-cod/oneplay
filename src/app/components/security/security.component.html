@@ -156,7 +156,7 @@
           <i class="fas fa-times-circle font20"></i>
         </a>
         <app-otp-screen *ngIf="isVerify" [otpHeading]="'Enter Security Code'" [otpSubHeading]="
-            'Security code has been sent to your mobile number and previous email address.'
+            emailExist ? 'Security code has been sent to your mobile number and previous email address.' : 'Security code has been sent to your mobile number and email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>

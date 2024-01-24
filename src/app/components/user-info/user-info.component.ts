@@ -145,7 +145,8 @@ export class UserInfoComponent implements OnInit {
           username: body.username,
           firstName: body.first_name,
           lastName: body.last_name,
-          dob: body.dob
+          dob: body.dob,
+          hasPassword: this.screenType == "USERNAME" // if coming from USERNAME then password is added
         });
       },
       (error) => {

@@ -25,7 +25,6 @@ import { FriendsService } from "src/app/services/friends.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { CustomCountlyEvents } from "src/app/services/countly";
 import {
@@ -35,8 +34,7 @@ import {
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
-import { MessagePayload } from "firebase/messaging";
-import { NotificationModel } from "src/app/models/notification.model";
+import { FriendInterface, NotificationModel } from "src/app/models/notification.model";
 
 @Component({
   selector: "app-navbar",
@@ -690,6 +688,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initPushNotification() {
+    
+    if (this.currMsgSub) {
+      return;
+    }
+
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
 

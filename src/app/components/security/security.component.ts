@@ -560,13 +560,13 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
-    this._forgotPasswordModalRef?.close();
     this.errorCode = null;
     this.errorMessage = null;
       const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
       this.restService.requestResetPasswordWithMobile(phone).subscribe({
         next: () => {
           this.timer(1);
+          this._forgotPasswordModalRef?.close();
           this._forgotPasswordOTPScreen = this.ngbModal.open(container, {
             centered: true,
             modalDialogClass: "modal-sm",

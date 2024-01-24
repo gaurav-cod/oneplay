@@ -17,7 +17,7 @@
                         [style.width]="(notification.title?.length + notification.description?.length) > 50 ? '95%': '100%'">
                         {{ (notification.title.length > 50 && !showNotificationContent ? notification.title.substr(0, 50) + '...' : notification.title) }}
                     </span>
-                    <div style="left: 17px; top: 35px" class="position-relative" (click)="toggleSecondaryCTA($event)" *ngIf="!showNotificationContent">
+                    <div style="top: 35px" [style.left]="(notification.title?.length + notification.description?.length) <= 50 ? '0px' : '17px'" class="position-relative" (click)="toggleSecondaryCTA($event)" *ngIf="!showNotificationContent">
                         <a href="javascript:void(0)" class="nav-link p-0 br50" role="button">
                             <img alt="" width="18px" height="18px" src="assets/img/chat/three-dot.svg" />
                         </a>
