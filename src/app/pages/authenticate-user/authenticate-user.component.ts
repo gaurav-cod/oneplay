@@ -21,6 +21,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
+  private _timerRef: NodeJS.Timer;
 
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
@@ -42,6 +43,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
   private referralName: string | null = null;
+  private redirectURL: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
   resendOTPClicked: boolean = false;
@@ -109,6 +111,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
 
     this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      this.redirectURL = qParam["redirectUrl"];
       if (qParam["ref"]) {
         this.getUserByReferalCode(qParam["ref"]);
         this.router.navigate([], {queryParams: {ref: null}});
@@ -132,6 +135,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy(): void {
+    clearInterval(this._timerRef);
     this._qParamSubscription?.unsubscribe();
   }
 
@@ -235,7 +239,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
           this.authService.setUserLogginFlow(true);
         }
 
-        this.router.navigate(['/home']);
+        if (this.redirectURL)
+          this.router.navigate([`/home/${this.redirectURL}`]);
+        else 
+          this.router.navigate(['/home']);
       }, error: (error) => {
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
@@ -257,7 +264,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.authService.setUserLogginFlow(true);
         this.authService.setUserInfoRemindLater(response.update_profile);
         this.authService.setDefaultUsername(response.profile.username);
-        this.router.navigate(['/home']);
+        if (this.redirectURL)
+          this.router.navigate([`/home/${this.redirectURL}`]);
+        else 
+          this.router.navigate(['/home']);
       }, error: (error)=> {
         this.userLoginFailure(error);
       }
@@ -312,12 +322,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   private timer(minutes: number = 1) {
     let seconds: any = this.otpTimer;
-    const timer = setInterval(() => {
+    this._timerRef = setInterval(() => {
       seconds--;
       const prefix = seconds < 10 ? "0" : "";
       this.otpTimer = Number(`${prefix}${seconds}`);
       if (seconds == 0) {
-        clearInterval(timer);
+        clearInterval(this._timerRef);
       }
     }, 1000);
   }

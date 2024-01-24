@@ -58,7 +58,7 @@ export class UserInfoComponent implements OnInit {
     dob: new FormControl(undefined, [Validators.required]),
     username: new FormControl(undefined),
     password: new FormControl(undefined,[
-      Validators.pattern(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/)
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     ]),
     fullname: new FormControl(undefined),
     confirmPassword: new FormControl(undefined)
@@ -146,7 +146,7 @@ export class UserInfoComponent implements OnInit {
           firstName: body.first_name,
           lastName: body.last_name,
           dob: body.dob,
-          hasPassword: this.screenType == "USERNAME" // if coming from USERNAME then password is added
+          hasPassword: this.screenType == "PASSWORD"  // if coming from USERNAME then password is added
         });
       },
       (error) => {
@@ -161,7 +161,6 @@ export class UserInfoComponent implements OnInit {
   goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
-      this.authService.setProfileOverlay(true);
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
       } else {
@@ -171,7 +170,9 @@ export class UserInfoComponent implements OnInit {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
-  close() {
+  close(showProfile: boolean = false) {
+    if (showProfile)
+      this.authService.setProfileOverlay(true);
     this.activeModal?.close();
   }
 }
