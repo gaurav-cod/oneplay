@@ -30,6 +30,8 @@ export class AuthService implements OnDestroy {
 
   private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   private _timerIntervalRef: NodeJS.Timer;
 
   private timerToShowUserInfo: number = 60;
@@ -123,6 +125,14 @@ export class AuthService implements OnDestroy {
   setWishlist(list: string[]) {
     this._$wishlist.next(list);
     this._$triggerWishlist.next(list.length < 1);
+  }
+
+
+  get triggerPlayGame() {
+    return this._$triggerPlayGame.asObservable();
+  }
+  setTriggerPlayGame(value: boolean) {
+    this._$triggerPlayGame.next(value);
   }
 
   get profileOverlay() {

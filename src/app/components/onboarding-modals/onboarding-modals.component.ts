@@ -57,23 +57,29 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   async ngAfterViewInit() {
-    if (localStorage.getItem("#onboardingUser") !== "true") {
-      this.onboardingUser();
-      localStorage.setItem("#closeonboardingGame", "true");
-    }
-
-    this.wishlistSubscription = zip([
-      this.authService.wishlist,
-      this.authService.triggerWishlist,
-    ]).subscribe(([wishlist, triggered]) => {
-      if (triggered) {
-        this.wishlist = wishlist;
-        this.selectGame();
+    if (localStorage.getItem("#canOpenOnboarding")) {
+      if (localStorage.getItem("#onboardingUser") !== "true") {
+        this.onboardingUser();
+        localStorage.setItem("#closeonboardingGame", "true");
       }
-    });
 
-    this.detectiOsDevice();
-    this.detectVPN();
+      localStorage.removeItem("#canOpenOnboarding");
+    } else {
+
+      this.wishlistSubscription = zip([
+        this.authService.wishlist,
+        this.authService.triggerWishlist,
+      ]).subscribe(([wishlist, triggered]) => {
+        if (triggered) {
+          this.wishlist = wishlist;
+          this.selectGame();
+        }
+      });
+
+      this.detectiOsDevice();
+      this.detectVPN();
+      this.triggerSpeedTest();
+    }
   }
 
   private detectVPN() {
@@ -238,8 +244,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   public async closeonboardingGame() {
     this._showTnC = false;
     localStorage.setItem("#onboardingUser", "true");
+    this.authService.setTriggerPlayGame(true);
     this._onboardingUserRef.close();
-    this.triggerSpeedTest();
   }
 
   public isChecked(game: GameModel) {
