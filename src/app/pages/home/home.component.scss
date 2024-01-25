@@ -260,13 +260,21 @@
     font-size: 38px;
     z-index: 1;
   }
+
+.initalText {
+  z-index: 1;
+  width: 75%;
+  margin-left: 12%;
+  margin-top: 10px;
+  line-height: 30px;
+}
   @media screen and (min-width: 780px) {
     top: 40px;
     .heading {
       top: -80px;
     }
     .initalText {
-      font-size: 20px !important;
+      font-size: 18px !important;
     }
   }
   @media screen and (min-width: 700px) and (max-width: 780px) {
@@ -314,11 +322,11 @@
       margin-top: 8px !important;
     }
   }
-}
-.initalText {
-  z-index: 1;
-  width: 75%;
-  margin-left: 15%;
-  margin-top: 10px;
-  line-height: 30px;
+  @media screen  and (min-width: 330px) and (max-width: 410px) {
+    .initalText {
+      margin-top: 2px !important;
+      width: 80% !important;
+      font-size: 10px !important;
+    }
+  }
 }

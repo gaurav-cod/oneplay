@@ -77,12 +77,13 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     });
 
     // show initial message only in mobile screen
-    this.showInitialUserMessage = this.authService.defaultUsernameGiven && window.innerWidth < 475 && this.isFirstTimeEntering;
-    if (this.isFirstTimeEntering)
-      this.isFirstTimeEntering = false;
-    setTimeout(()=> {
-      this.showInitialUserMessage = false;
-    }, 3000);
+    this.showInitialUserMessage = localStorage.getItem("showTooltipInfo") && window.innerWidth < 475;
+    if (this.showInitialUserMessage) {
+      localStorage.removeItem("showTooltipInfo");
+      setTimeout(()=> {
+        this.showInitialUserMessage = false;
+      }, 3000);
+    }
   }
   focusElement(element: any) {
     if (element)
@@ -109,12 +110,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
-      this.dob.value ?
+      (this.dob.value ?
       (
         this.dob.value["day"] !== (date["day"] ?? null) ||
         this.dob.value["month"] !== (date["month"] ?? null) ||
         this.dob.value["year"] !== (date["year"] ?? null)
-      ) : false ||
+      ) : false) ||
       !!this.photoFile
     );
   }
@@ -194,7 +195,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       (data) => {
         
         if (body.username) {
-          this.authService.setDefaultUsernameGiven(false);
+          localStorage.setItem("username", body.username);
         }
 
         this.authService.updateProfile({

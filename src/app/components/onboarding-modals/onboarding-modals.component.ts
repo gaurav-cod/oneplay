@@ -249,8 +249,10 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.searchText = "";
     this.triggerSpeedTest();
 
+    localStorage.removeItem("showAddToLibrary");
+
     // only on first time login i.e. account creation
-    if (this.authService.defaultUsernameGiven)
+    if (localStorage.getItem("showUserInfoModal"))
       this.authService.startTimerToShowUserInfo();
   }
 

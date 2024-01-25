@@ -146,7 +146,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userDetails = user;
     });
 
-    this.username = this.authService.getDefaultUsername;
+    this.username = localStorage.getItem("username");
     if (localStorage.getItem("is_new_user")) {
       localStorage.removeItem("is_new_user");
       this.firstSignUpMsgTimer = 5;

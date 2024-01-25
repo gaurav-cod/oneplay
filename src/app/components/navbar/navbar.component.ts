@@ -666,15 +666,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     // show only in desktop or table
     this.showInitialUserMessage = this.isAuthenticated && 
-                                  this.authService.defaultUsernameGiven && 
+                                  localStorage.getItem("showTooltipInfo") && 
                                   canShowInitialMsg && 
-                                  window.innerWidth > 475 && 
-                                  this.isProfileFirstClicked;
-    if (this.isProfileFirstClicked)
-      this.isProfileFirstClicked = false;
-    setTimeout(()=> {
-      this.showInitialUserMessage = false;
-    }, 2000);
+                                  window.innerWidth > 475;
+                                  
+
+    if (this.showInitialUserMessage) {
+      localStorage.removeItem("showTooltipInfo");
+      setTimeout(()=> {
+        this.showInitialUserMessage = false;
+      }, 2000);
+    }
     this.toggleFriends.emit("profileClicked");
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
