@@ -240,7 +240,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         }
 
         if (this.redirectURL)
-          this.router.navigate([`/dashboard/${this.redirectURL}`]);
+          this.router.navigate([this.redirectURL]);
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
@@ -264,8 +264,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.authService.setUserLogginFlow(true);
         this.authService.setUserInfoRemindLater(response.update_profile);
         this.authService.setDefaultUsername(response.profile.username);
-        if (this.redirectURL)
-          this.router.navigate([`/dashbaord/${this.redirectURL}`]);
+        if (this.redirectURL) {
+          this.router.navigate([this.redirectURL]);
+        }
         else 
           this.router.navigate(['/home']);
       }, error: (error)=> {

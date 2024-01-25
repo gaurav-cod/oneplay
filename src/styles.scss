@@ -856,6 +856,13 @@ input:-webkit-autofill:active {
   background-clip: text;
   text-fill-color: transparent;
 }
+.purpleGradientColor:hover {
+  background: linear-gradient(270deg, #0575E6 -1.64%, #FF0CF5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
 .hoverGradient:hover {
   background: linear-gradient(270deg, #3AA0FE -1.64%, #59FEF4 100%);
   -webkit-background-clip: text;

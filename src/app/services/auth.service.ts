@@ -64,7 +64,7 @@ export class AuthService implements OnDestroy {
       if (this.timerToShowUserInfo === 0) {
         clearInterval(this._timerIntervalRef);
 
-        if (!(this.router.url.includes("checkout") || this.router.url.includes("subscription") || this.router.url.includes("casual-gaming") || this.router.url.includes("speed-test"))) {
+        if (!(this.router.url.includes("checkout") || this.router.url.includes("subscription") || this.router.url.includes("casual-games") || this.router.url.includes("speed-test"))) {
           // now show modal after 60s completed
           this.setUserInfoModal(true);
         }
