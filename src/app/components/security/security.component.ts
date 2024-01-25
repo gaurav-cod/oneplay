@@ -540,6 +540,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
             icon: "success",
             title: "Password Changed!",
             text: "You have successfully changed your password.",
+            showConfirmButton: false
           });
           this.updateSecurity.reset();
           // this.passwordExist = true;

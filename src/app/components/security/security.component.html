@@ -272,25 +272,25 @@
       <form role="form" [formGroup]="updateSecurity">
         <div class="row pb-2">
           <div class="col-12 mt-4">
-            <label class="font16 font500 offWhiteText">Current Password</label>
+            <label class="font16 font500 offWhiteText">Old Password</label>
             <input type="password" class="form-control inputBorder font18 font500 text-white"
-              placeholder="Enter your current Password" formControlName="oldPassword" />
+              placeholder="Enter your Old Password" formControlName="oldPassword" />
             <span *ngIf="oldPasswordErrored" class="font16 font500 errorGradientColor">*Invalid password</span>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">New Password</label>
             <input type="password" class="form-control inputBorder font18 font500 text-white"
               placeholder="Enter your New Password" formControlName="password" />
-            <p class="font16 font500 muteText mb-0">
-              Password should be at least 8 characters, 1 UPPERCASE, 1
-              lowercase, 1 Symbol and 1 number.
-            </p>
             <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor">*invalid password</span>
           </div>
           <div class="col-12 mt-4">
             <label class="font16 font500 offWhiteText">Confirm New Password</label>
             <input type="password" class="form-control inputBorder font18 font500 text-white"
               placeholder="Re-enter your New Password" formControlName="confirmPassword" />
+              <p class="font16 font500 muteText mb-0">
+                Password should be at least 8 characters, 1 UPPERCASE, 1
+                lowercase, 1 Symbol and 1 number.
+              </p>
             <span *ngIf="confirmPasswordErrored" class="font16 font500 errorGradientColor">*password does not
               match</span>
           </div>
@@ -299,7 +299,7 @@
         <span *ngIf="errorMessage" class="font16 font500 errorGradientColor">{{errorMessage}}</span>
 
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
-          [disabled]="checkvalidationValue" [ngClass]="{'button-disabled': checkvalidationValue}" (click)="updatePassword()">
+          [disabled]="checkvalidationValue" [ngClass]="{'button-disabled': checkvalidationValue}" style="width: 100%; border-radius: 3px !important;" (click)="updatePassword()">
           Confirm
         </button>
         <a href="javascript:void(0)" class="font500 text-gray font18 mt-4 hoverGradient mt-1 d-flex justify-content-center" (click)="openForgotPassword(forgotPasswordModal)">Forgot Password?</a>

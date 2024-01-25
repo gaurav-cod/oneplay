@@ -99,15 +99,18 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get isValid() {
-    return this.name.valid && this.username.valid && this.bio.valid;
+    return this.username.valid && this.bio.valid;
   }
 
   get isChanged() {
+    const date = this.dateToNgbDate(new Date(this.currentUserState.dob));
     return (
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
-      this.bio.value !== (this.currentUserState.dob ?? null) ||
+      this.dob.value["day"] !== (date["day"] ?? null) ||
+      this.dob.value["month"] !== (date["month"] ?? null) ||
+      this.dob.value["year"] !== (date["year"] ?? null) ||
       !!this.photoFile
     );
   }

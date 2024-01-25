@@ -111,10 +111,6 @@
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText">Full Name</label
           ><span
-            *ngIf="name.touched && name.invalid"
-            class="font16 font500 errorGradientColor float-right"
-            >*invalid name</span
-          ><span
           *ngIf="name.value?.length > 255"
           class="font16 font500 errorGradientColor float-right"
           >*Character limit exceeded</span
@@ -157,6 +153,7 @@
             [disabled]="saveProfileLoder || !isValid || !isChanged || name.value?.length > 255"
             class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
             value="Update Profile"
+            [ngClass]="{'button-disabled': !isValid || !isChanged}"
           />
         </div>
       </div>
