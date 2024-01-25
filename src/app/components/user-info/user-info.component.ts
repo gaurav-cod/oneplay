@@ -28,6 +28,7 @@ export class UserInfoComponent implements OnInit {
   ) {}
   async ngOnInit(): Promise<void> {
    
+    localStorage.removeItem("showUserInfoModal");
     const response = await this.restService.getProfile().toPromise();
     const controls = this.userInfo.controls;
     if (response.dob) {
@@ -137,7 +138,7 @@ export class UserInfoComponent implements OnInit {
         this.goToNext();
 
         if (this.screenType == "USERNAME") {
-          this.authService.setDefaultUsernameGiven(false);
+          localStorage.setItem("username", body.username);
           this.updatePassword();
         }
 
@@ -170,9 +171,11 @@ export class UserInfoComponent implements OnInit {
   goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
-      if (this.atleastOneFieldUpdated) 
+      if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
-      this.close();
+      } else {
+        this.activeModal?.close();
+      }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }

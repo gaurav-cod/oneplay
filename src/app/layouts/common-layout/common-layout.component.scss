@@ -27,5 +27,11 @@
     z-index: 1000;
     box-shadow: -6px -3px 8px rgba(0, 0, 0, 0.1);
     position: relative;
-    top: 65px;
+    top: 118px;
+    @media screen and (min-width: 475px) and (max-width: 1200px) {
+        top: -45px !important;
+    }
+    @media screen and (max-width: 475px) {
+        top: 60px !important; 
+    }
 }

@@ -61,17 +61,12 @@ export class AuthService implements OnDestroy {
   startTimerToShowUserInfo() {
     this._timerIntervalRef = setInterval(()=> {
       this.timerToShowUserInfo--;
-      if (this.timerToShowUserInfo === 0) {
+      if (!localStorage.getItem("showUserInfoModal")) {
         clearInterval(this._timerIntervalRef);
-
-        // if (!(this.router.url.includes("checkout") || this.router.url.includes("subscription") || this.router.url.includes("casual-games") || this.router.url.includes("speed-test"))) {
-          // now show modal after 60s completed
+      }
+      else if (this.timerToShowUserInfo === 0) {
+        clearInterval(this._timerIntervalRef);
           this.setUserInfoModal(true);
-        // } else {
-        //   this._openUserInfoModal = setInterval(()=> {
-        //     this.setUserInfoModal(true);
-        //   }, 1000);
-        // }
       }
     }, 1000);
   }
@@ -91,20 +86,6 @@ export class AuthService implements OnDestroy {
   }
   setUserInfoRemindLater(value: boolean) {
     this.remindLaterForUserInfo = value;
-  }
-
-  get defaultUsernameGiven() {
-    return this.isDeafultUsernameGiven;
-  }
-  setDefaultUsernameGiven(value: boolean) {
-    this.isDeafultUsernameGiven = value;
-  }
-
-  get getDefaultUsername() {
-    return this.defaultUsername;
-  }
-  setDefaultUsername(username: string) {
-    this.defaultUsername = username;
   }
 
   get getLoggedInUserName() {

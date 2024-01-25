@@ -229,13 +229,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         
         if (response.new_user) {
           localStorage.setItem("is_new_user", response.new_user);
-          this.authService.setDefaultUsernameGiven(true);
-          this.authService.setDefaultUsername(response.profile.username);
+          localStorage.setItem("showUserInfoModal", "true");
+          localStorage.setItem("showTooltipInfo", "true");
+          localStorage.setItem("showAddToLibrary", "true");
         }
         else {
-          this.authService.setUserInfoRemindLater(response.update_profile);
-          this.authService.setUserLogginFlow(true);
+          localStorage.setItem("showUserInfoModal", response.update_profile);
+          localStorage.setItem("showWelcomBackMsg", "true");
         }
+        localStorage.setItem("username", response.profile.username);
 
         if (this.redirectURL)
           this.router.navigate([this.redirectURL]);
@@ -259,9 +261,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.loginWithPassword(payload).subscribe({
       next: (response)=> {
         this.userLoginSetup(response);
-        this.authService.setUserLogginFlow(true);
-        this.authService.setUserInfoRemindLater(response.update_profile);
-        this.authService.setDefaultUsername(response.profile.username);
+        localStorage.setItem("showWelcomBackMsg", "true");
+        localStorage.setItem("showUserInfoModal", response.update_profile);
+        localStorage.setItem("username", response.profile.username);
         if (this.redirectURL) {
           this.router.navigate([this.redirectURL]);
         }

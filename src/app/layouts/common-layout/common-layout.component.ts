@@ -51,11 +51,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   handleClick(event: Event) {
-    if (localStorage.getItem("is_new_user") || this.authService.userInfoForRemindLater) {
-      this.clickCountForOverlay++;
-      // trigger on first three clicks
-      if (this.clickCountForOverlay == 3) {
-        this.authService.setUserInfoModal(true);
+    if (localStorage.getItem("showUserInfoModal")) {
+      if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-games") || this.router.url.includes("subscription") || this.router.url.includes("speed-test"))) {
+        this.clickCountForOverlay++;
+        // trigger on first three clicks
+        if (this.clickCountForOverlay == 3) {
+          this.authService.setUserInfoModal(true);
+        }
       }
     }
   }
@@ -98,7 +100,8 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             }, 500);
           }
 
-          if (this.authService.getUserLogginFlow) {
+          if (localStorage.getItem("showWelcomBackMsg")) {
+            localStorage.removeItem("showWelcomBackMsg");
             this.restService.getProfile().toPromise().then((response)=> {
               
               this.username = response.username;
@@ -113,7 +116,8 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
           }
 
           this._userInfoSubscription = this.authService.userInfoModal.subscribe((value)=> {
-            if (value) {
+           
+            if (value && localStorage.getItem("showUserInfoModal") && !localStorage.getItem("showAddToLibrary")) {
               if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-games") || this.router.url.includes("subscription") || this.router.url.includes("speed-test"))) {
                 clearInterval(this._openUserInfoModal);
                 this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
@@ -131,7 +135,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             }
           })
 
-          if (this.authService.defaultUsernameGiven) {
+          if (localStorage.getItem("showAddToLibrary")) {
             this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
               this.showOnboardingPopup = value;
             })
