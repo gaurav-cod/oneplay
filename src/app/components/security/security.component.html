@@ -299,7 +299,7 @@
         <span *ngIf="errorMessage" class="font16 font500 errorGradientColor">{{errorMessage}}</span>
 
         <button class="btn btn-block customLinearGradient text-white customBorder0 borderRadiusCustom mt-4"
-          [disabled]="checkvalidationValue" [ngClass]="{'button-disabled': checkvalidationValue}" (click)="updatePassword()">
+          [disabled]="checkvalidationValue" [ngClass]="{'button-disabled': checkvalidationValue}" style="width: 100%; border-radius: 3px !important;" (click)="updatePassword()">
           Confirm
         </button>
         <a href="javascript:void(0)" class="font500 text-gray font18 mt-4 hoverGradient mt-1 d-flex justify-content-center" (click)="openForgotPassword(forgotPasswordModal)">Forgot Password?</a>
