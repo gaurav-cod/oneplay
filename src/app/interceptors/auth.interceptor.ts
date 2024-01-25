@@ -151,7 +151,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
-              data: ( error.error.data ? new TransformMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
+              data: ( error.error?.data ? new TransformMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
               message:
                 error.error?.message ||
                 error.error?.msg ||

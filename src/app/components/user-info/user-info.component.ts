@@ -170,11 +170,9 @@ export class UserInfoComponent implements OnInit {
   goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
-      if (this.atleastOneFieldUpdated) {
+      if (this.atleastOneFieldUpdated) 
         this.showSuccessMessage = true;
-      } else {
-        this.close();
-      }
+      this.close();
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
