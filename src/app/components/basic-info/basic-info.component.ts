@@ -109,9 +109,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
-      this.dob.value["day"] !== (date["day"] ?? null) ||
-      this.dob.value["month"] !== (date["month"] ?? null) ||
-      this.dob.value["year"] !== (date["year"] ?? null) ||
+      this.dob.value ?
+      (
+        this.dob.value["day"] !== (date["day"] ?? null) ||
+        this.dob.value["month"] !== (date["month"] ?? null) ||
+        this.dob.value["year"] !== (date["year"] ?? null)
+      ) : false ||
       !!this.photoFile
     );
   }
