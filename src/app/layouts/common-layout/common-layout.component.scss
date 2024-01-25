@@ -10,17 +10,22 @@
         display: none;
     }
 }
+.welcome-message-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .welcome-message {
     padding: 10px 20px;
     color: white;
     border-radius: 20px;
-    position: absolute;
     z-index: 1000;
-    top: 21%;
-    left: 45%;
     box-shadow: -6px -3px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 12px;
-    @media screen and (max-width: 475px) {
-        left: 33% !important;
-    }
+    position: relative;
+    top: 65px;
 }

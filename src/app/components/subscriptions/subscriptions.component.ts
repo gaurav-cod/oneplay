@@ -247,6 +247,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   downloadInvoice(subscription) {
+    
     this.restService.getPaymentRecipt(subscription.id).subscribe((response)=> {
       // TODO: Download Invoice
       const blob = new Blob([response], { type: 'application/pdf' });
@@ -258,7 +259,11 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
         link.click();
         document.body.removeChild(link);
     }, (error)=> {
-      this.showError(error);
+      Swal.fire({
+        text: "Oops! There was an issue generating the invoice.",
+        imageUrl: "assets/img/swal-icon/Group.svg",
+        confirmButtonText: "Okay"
+      })
     })
   }
 
