@@ -997,15 +997,14 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGame(isDOBPresent: boolean = false): void {
-
-    if (this.user.dob && !isDOBPresent) {
+    if (!this.user.dob && !isDOBPresent) {
       this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
         centered: true,
         modalDialogClass: "modal-md",
         backdrop: "static",
         keyboard: false,
       });
-      return
+      return;
     }
 
     if (this.startingGame) {

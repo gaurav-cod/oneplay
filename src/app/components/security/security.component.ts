@@ -707,6 +707,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           icon: "success",
           title: "Success",
           text: `Successfully turned ${privacy ? "on" : "off"} search privacy.`,
+          confirmButtonText: "Okay"
         });
       },
       error: (err) => {

@@ -149,6 +149,9 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
     clearInterval(this.messageTimerRef);
+
+    // reset temp variable
+    this.showWelcomeMessage = false;
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
