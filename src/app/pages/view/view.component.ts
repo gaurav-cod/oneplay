@@ -705,7 +705,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
 
-     if (localStorage.getItem("#onboardingUser") !== "true") {
+     if (localStorage.getItem("#onboardingUser") !== "true" && this.user) {
       this.showOnboardingPopup = true;
       localStorage.setItem("#canOpenOnboarding", "true");
       this._triggerPlayGameRef = this.authService.triggerPlayGame.subscribe((value)=> {

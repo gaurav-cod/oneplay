@@ -30,6 +30,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private _triggerInitialModalSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
   private _userInfoSubscription: Subscription;
+  private _openUserInfoModal: NodeJS.Timer;
 
   private clickCountForOverlay: number = 0;
 
@@ -113,13 +114,20 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
           this._userInfoSubscription = this.authService.userInfoModal.subscribe((value)=> {
             if (value) {
-              if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-games") || this.router.url.includes("subscription") || this.router.url.includes("speed-test")))
-              this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
-                centered: true,
-                modalDialogClass: "modal-md",
-                backdrop: "static",
-                keyboard: false,
-              });
+              if (!(this.router.url.includes("checkout") || this.router.url.includes("casual-games") || this.router.url.includes("subscription") || this.router.url.includes("speed-test"))) {
+                clearInterval(this._openUserInfoModal);
+                this._userInfoRef =  this.ngbModal.open(UserInfoComponent, {
+                  centered: true,
+                  modalDialogClass: "modal-md",
+                  backdrop: "static",
+                  keyboard: false,
+                });
+              } else {
+                clearInterval(this._openUserInfoModal);
+                this._openUserInfoModal = setInterval(()=> {
+                  this.authService.setUserInfoModal(true);
+                }, 1000);
+              }
             }
           })
 
