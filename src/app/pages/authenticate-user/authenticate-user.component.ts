@@ -325,7 +325,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       seconds--;
       const prefix = seconds < 10 ? "0" : "";
       this.otpTimer = Number(`${prefix}${seconds}`);
-      if (seconds == 0) {
+      if (seconds == 0 || this.screenOnDisplay == "REGISTER_LOGIN") {
         clearInterval(timeRef);
       }
     }, 1000);
@@ -336,6 +336,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
     this.referal_code = null;
+    this.errorMessage = null;
   }
   private startSignInEvent() {
     this.countlyService.startEvent("signIn", { discardOldData: false });

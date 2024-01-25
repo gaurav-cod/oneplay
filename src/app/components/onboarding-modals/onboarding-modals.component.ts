@@ -39,6 +39,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   selectedGames: GameModel[] = [];
   wishlist: string[] = [];
 
+  private runOnceCode: boolean = true;
+
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
@@ -57,6 +59,9 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   async ngAfterViewInit() {
+    this.detectiOsDevice();
+    this.detectVPN();
+    
     if (localStorage.getItem("#canOpenOnboarding")) {
       if (localStorage.getItem("#onboardingUser") !== "true") {
         this.onboardingUser();
@@ -66,18 +71,6 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
       localStorage.removeItem("#canOpenOnboarding");
     } else {
 
-      this.wishlistSubscription = zip([
-        this.authService.wishlist,
-        this.authService.triggerWishlist,
-      ]).subscribe(([wishlist, triggered]) => {
-        if (triggered) {
-          this.wishlist = wishlist;
-          this.selectGame();
-        }
-      });
-
-      this.detectiOsDevice();
-      this.detectVPN();
       this.triggerSpeedTest();
     }
   }
@@ -91,7 +84,11 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
             modalDialogClass: "modal-sm",
             scrollable: true,
           });
+        } else {
+          this.showLibraryPopup();
         }
+      }, error: (error)=>{
+        this.showLibraryPopup();
       },
     });
   }
@@ -110,6 +107,22 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   cancelVPNAlert() {
     this._VPNAlertRef.close();
+    this.showLibraryPopup();
+  }
+
+  private showLibraryPopup() {
+    if (this.runOnceCode) {
+      this.runOnceCode = false;
+      this.wishlistSubscription = zip([
+        this.authService.wishlist,
+        this.authService.triggerWishlist,
+      ]).subscribe(([wishlist, triggered]) => {
+        if (triggered) {
+          this.wishlist = wishlist;
+          this.selectGame();
+        }
+      });
+    }
   }
 
   canceliOsAlert() {
