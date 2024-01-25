@@ -596,6 +596,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           icon: "success",
           title: "Success",
           text: `Successfully turned ${privacy ? "on" : "off"} search privacy.`,
+          confirmButtonText: "Okay"
         });
       },
       error: (err) => {
