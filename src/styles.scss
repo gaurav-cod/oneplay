@@ -638,6 +638,9 @@ input:-webkit-autofill:active {
    padding: 0rem 0.5rem; 
   }
 }
+.button-disabled {
+  background: #595959 !important;
+}
 
 .gradientText {
   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
