@@ -104,6 +104,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   get isChanged() {
     const date = this.dateToNgbDate(new Date(this.currentUserState.dob));
+    this.bio.setValue(this.bio.value ? this.bio.value : "");
     return (
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
