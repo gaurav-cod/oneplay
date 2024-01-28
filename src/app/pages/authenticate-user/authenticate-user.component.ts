@@ -17,7 +17,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './authenticate-user.component.html',
   styleUrls: ['./authenticate-user.component.scss']
 })
-export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AuthenticateUserComponent implements OnInit, OnDestroy {
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
@@ -133,13 +133,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  ngAfterViewInit(): void {
-    this.rows._results[0]?.nativeElement.addEventListener("paste", (e) => {
-      this.handlePaste(e)
-    }
-    );
-  }
-
   ngOnDestroy(): void {
     this._qParamSubscription?.unsubscribe();
     this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
@@ -195,7 +188,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
         if (response) {
-          this.screenOnDisplay = "OTP";
+          this.changeScreen("OTP");
           this.mobile = this.authenticateForm.controls["phone"].value;
           this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
@@ -272,7 +265,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       next: (response)=> {
         this.userLoginSetup(response);
         localStorage.setItem("showWelcomBackMsg", "true");
-        localStorage.setItem("showUserInfoModal", response.update_profile);
+        if (response.update_profile)
+          localStorage.setItem("showUserInfoModal", "true");
         localStorage.setItem("username", response.profile.username);
         if (this.redirectURL) {
           this.router.navigate([this.redirectURL]);
@@ -343,8 +337,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       }
     }, 1000);
   }
+  guestFlow() {
+    this.router.navigate(['/home']);
+  }
   
   changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
+    if (screenOnDisplay === "OTP") {
+      this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
+          this.handlePaste(e)
+      );
+    } else {
+      this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+        this.handlePaste(e)
+      );
+    }
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;

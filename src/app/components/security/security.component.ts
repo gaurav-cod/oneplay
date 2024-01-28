@@ -133,7 +133,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
      this.authService.user.subscribe((user) => {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
-      this.emailExist = this.user.email?.length > 0;
+      this.emailExist = this.user?.email?.length > 0;
       
       this.passwordExist = this.user.hasPassword;
       // this.phone.setValue(user.phone);
@@ -598,6 +598,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openForgotPassword(container: ElementRef<HTMLDivElement>) {
     this._changePasswordModalRef?.close();
+    this.resetPasswordToken = null;
     this.errorCode = null;
     this.errorMessage = null;
     this._forgotPasswordModalRef = this.ngbModal.open(container, {
@@ -770,7 +771,6 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.errorMessage = error.message;
         this.errorCode = error?.code;
         // this.showError(error);
-        this.resetPasswordToken = null;
       });
   }
   closeForgoutPasswordOTP() {

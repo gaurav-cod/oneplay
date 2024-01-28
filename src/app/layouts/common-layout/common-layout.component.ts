@@ -30,11 +30,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private _triggerInitialModalSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
   private _userInfoSubscription: Subscription;
+  private queryParamSubscription: Subscription;
   private _openUserInfoModal: NodeJS.Timer;
 
   private clickCountForOverlay: number = 0;
 
   public showWelcomeMessage: boolean = false;
+  public isApp: boolean = localStorage.getItem("src") === "oneplay_app";;
 
   showOnboardingPopup: boolean = false;
 
@@ -46,6 +48,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly ngbModal: NgbModal,
   ) {}
 
@@ -63,6 +66,16 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((params) => {
+      if (params.src === "oneplay_app") {
+        localStorage.setItem("src", "oneplay_app");
+        this.isApp = true;
+      } else if (localStorage.getItem("src") === "oneplay_app") {
+        localStorage.removeItem("src");
+        this.isApp = false;
+      }
+    });
 
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       async (exists) => {
@@ -157,6 +170,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this._qParamsSubscription?.unsubscribe();
     this._triggerInitialModalSubscription?.unsubscribe();
     this._userInfoSubscription?.unsubscribe();
+    this.queryParamSubscription?.unsubscribe();
     this._userInfoRef?.close();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
