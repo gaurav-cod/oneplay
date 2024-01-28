@@ -380,12 +380,13 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
       () => {
         this.clearErrors();
         this._otpScreenRef.close();
-        this.emailExist = true;
         Swal.fire({
           icon: "success",
-          text: (this.emailExist ? "You have successfully changed your email." : "Email verified successfully."),
+          text: (this.emailExist ? "You have successfully changed your email." : "You have successfully added your email."),
           showConfirmButton: false
         });
+
+        this.emailExist = true;
         
         this.authService.updateProfile({ email: this.email.value, hasPassword: this.passwordExist });
         this.email.reset();

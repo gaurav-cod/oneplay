@@ -7,6 +7,7 @@ import {
   OnDestroy,
   HostListener,
   ContentChild,
+  AfterViewInit,
 } from "@angular/core";
 import {
   UntypedFormControl,
@@ -452,6 +453,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   get dateOfBirthErrored() {
     const control = this.dob;
     return (control.touched || control.dirty) && control.invalid;
+  }
+  get dobBtnDisabled() {
+    const control = this.dob;
+    return control.value ? ((control.touched || control.dirty) && control.invalid) : true;
   }
 
   @HostListener("window:beforeunload", ["$event"])

@@ -16,6 +16,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
   games: GameModel[] = [];
   private wishlistSubscription: Subscription;
   selectedGames: GameModel[] = [];
+  showOnboardingPopup: boolean = false;
 
   constructor(
     private readonly restService: RestService,
@@ -39,6 +40,8 @@ export class WishlistComponent implements OnInit, OnDestroy {
   } 
 
   selectGame() {
+    localStorage.setItem("showAddToLibrary", "true");
+    this.showOnboardingPopup = true;
     this.authService.openWishlist();
   }
 }

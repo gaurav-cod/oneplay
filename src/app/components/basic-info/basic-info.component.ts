@@ -210,6 +210,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           icon: "success",
           title: "Updated Profile",
           text: "Saved Changes!",
+          confirmButtonText: "Okay"
         });
         this.photoFile = null;
         this.saveProfileLoder = false;

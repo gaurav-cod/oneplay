@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +17,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './authenticate-user.component.html',
   styleUrls: ['./authenticate-user.component.scss']
 })
-export class AuthenticateUserComponent implements OnInit, OnDestroy {
+export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
@@ -116,7 +116,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         this.router.navigate([], {queryParams: {ref: null}});
       }
     })
-
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
         if (contryCodeCurrencyMapping[res.currency]) {
@@ -133,8 +132,19 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  ngAfterViewInit(): void {
+    this.rows._results[0]?.nativeElement.addEventListener("paste", (e) => {
+      this.handlePaste(e)
+    }
+    );
+  }
+
   ngOnDestroy(): void {
     this._qParamSubscription?.unsubscribe();
+    this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
   }
 
   private getUserInfoByPhone(phone) {
@@ -267,8 +277,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         if (this.redirectURL) {
           this.router.navigate([this.redirectURL]);
         }
-        else 
+        else {
           this.router.navigate(['/home']);
+        }
       }, error: (error)=> {
         this.userLoginFailure(error);
       }
@@ -340,6 +351,21 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.referal_code = null;
     this.errorMessage = null;
   }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{4}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.otpForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[3]?.nativeElement.focus();
+    }
+  }
+
   private startSignInEvent() {
     this.countlyService.startEvent("signIn", { discardOldData: false });
     const segments = this.countlyService.getEventData("signIn");
