@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { NavigationEnd, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -16,10 +16,12 @@ import { RestService } from "src/app/services/rest.service";
 export class CommonLayoutComponent implements OnInit, OnDestroy {
   public isAuthenticated = false;
   public friendsCollapsed = true;
+  public isApp: boolean = true;
 
   private timer: any;
   private threeSecondsTimer: NodeJS.Timer;
   private sessionSubscription: Subscription;
+  private queryParamSubscription: Subscription;
 
   constructor(
     private readonly authService: AuthService,
@@ -28,10 +30,22 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly restService: RestService,
     private readonly gameService: GameService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((params) => {
+      if (params.src === "oneplay_app") {
+        localStorage.setItem("src", "oneplay_app");
+        this.isApp = true;
+      } else if (localStorage.getItem("src") === "oneplay_app") {
+        localStorage.removeItem("src");
+        this.isApp = false;
+      }
+    });
+
+
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       (exists) => {
         this.isAuthenticated = exists;
@@ -62,6 +76,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sessionSubscription?.unsubscribe();
+    this.queryParamSubscription?.unsubscribe();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
   }
