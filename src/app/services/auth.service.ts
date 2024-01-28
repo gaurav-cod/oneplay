@@ -32,6 +32,8 @@ export class AuthService implements OnDestroy {
 
   private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+  private isNotificationAlreadySubscribed: boolean = false;
+
   private _timerIntervalRef: NodeJS.Timer;
 
   private timerToShowUserInfo: number = 60;
@@ -110,6 +112,14 @@ export class AuthService implements OnDestroy {
   setWishlist(list: string[]) {
     this._$wishlist.next(list);
     this._$triggerWishlist.next(list.length < 1);
+  }
+
+
+  get notificationAlreadySubscribed() {
+    return this.isNotificationAlreadySubscribed;
+  }
+  setIsNotificationSubscribed(value: boolean) {
+    this.isNotificationAlreadySubscribed = value;
   }
 
 

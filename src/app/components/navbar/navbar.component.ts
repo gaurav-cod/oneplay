@@ -256,7 +256,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
       this.showOverlayProfile = data;
       if (this.showOverlayProfile) {
@@ -700,13 +699,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   private initPushNotification() {
     
-    if (this.currMsgSub) {
+    if (this.authService.notificationAlreadySubscribed) {
       return;
     }
+    
 
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
-
+    this.authService.setIsNotificationSubscribed(true);
     this.currMsgSub = this.messagingService.currentMessage.subscribe(
       (message) => {
         this.notificationService.addNotification(message);

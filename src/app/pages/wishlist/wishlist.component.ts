@@ -39,6 +39,7 @@ export class WishlistComponent implements OnInit, OnDestroy {
   } 
 
   selectGame() {
+    localStorage.setItem("showAddToLibrary", "true");
     this.authService.openWishlist();
   }
 }

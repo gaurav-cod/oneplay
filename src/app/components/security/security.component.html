@@ -160,8 +160,8 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="
-            'Please enter the code sent to your new email address.'
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify Email Address'" [otpSubHeading]="
+            'Please enter the code sent to your email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
           [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
