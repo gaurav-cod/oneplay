@@ -134,7 +134,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngAfterViewInit(): void {
-    this.rows._results[0].nativeElement.addEventListener("paste", (e) => {
+    this.rows._results[0]?.nativeElement.addEventListener("paste", (e) => {
       this.handlePaste(e)
     }
     );
@@ -142,7 +142,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnDestroy(): void {
     this._qParamSubscription?.unsubscribe();
-    this.rows._results[0].nativeElement.removeEventListener("paste", (e) =>
+    this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
       this.handlePaste(e)
     );
   }
@@ -362,7 +362,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       digits.forEach((digit, i) => {
         Object.values(this.otpForm.controls)[i].setValue(digit);
       })
-      this.rows._results[3].nativeElement.focus();
+      this.rows._results[3]?.nativeElement.focus();
     }
   }
 
