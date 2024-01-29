@@ -566,6 +566,12 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
     this.errorCode = null;
     this.errorMessage = null;
+
+    if (String(this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value) != this.user.phone) {
+      this.errorMessage = "invalid mobile number";
+      return;
+    }
+
       const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
       this.restService.requestResetPasswordWithMobile(phone).subscribe({
         next: () => {
