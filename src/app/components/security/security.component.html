@@ -7,7 +7,7 @@
           <label class="font16 font500 offWhiteText mx-1">Email</label>
           <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1" (click)="!emailExist && openEmailModal()">
             <div class="col">
-              <p class="mb-0 font18 font500" [style.color]="!emailExist ? '#5f5f5f' : '#fff'">{{ (emailExist ? user?.email : 'Add a Email') }}</p>
+              <p class="mb-0 font18 font500" [style.color]="!emailExist ? '#5f5f5f' : '#fff'">{{ (emailExist ? user?.email : 'Add Email Address') }}</p>
             </div>
             <div class="col-auto" *ngIf="emailExist">
               <img *ngIf="allowEmailEdit" (click)="openEmailModal()" src="assets/img/singup-login/Group (1).svg"
