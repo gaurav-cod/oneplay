@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
 
-  showOverlayProfile: boolean = true;
+  showOverlayProfile: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
