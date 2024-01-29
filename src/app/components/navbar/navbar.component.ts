@@ -257,7 +257,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
-      this.showOverlayProfile = true;
+      this.showOverlayProfile = data;
       if (this.showOverlayProfile) {
         setTimeout(()=> {
           this.authService.setProfileOverlay(false);
