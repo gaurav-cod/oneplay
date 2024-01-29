@@ -781,8 +781,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.restService.requestResetPasswordWithMobile(phone).subscribe({
       next: (response: any) => {
 
+        this.timer(1);
       }, error: (error) => {
-        this.errorMessage = error.errorMessage;
+        this.errorMessage = error.message;
         this.errorCode = error.code;
       }
     })
