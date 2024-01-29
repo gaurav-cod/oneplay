@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
 
-  showOverlayProfile: boolean = false;
+  showOverlayProfile: boolean = true;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -257,7 +257,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this._profileOverlaySub = this.authService.profileOverlay.subscribe((data)=> {
-      this.showOverlayProfile = data;
+      this.showOverlayProfile = true;
       if (this.showOverlayProfile) {
         setTimeout(()=> {
           this.authService.setProfileOverlay(false);

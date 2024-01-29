@@ -411,7 +411,7 @@
   display: block;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .username-message {
@@ -439,4 +439,10 @@
   .dropdownmenu-unauth {
     margin-top: 20px !important;
   }
+}
+
+.overlayContainer {
+  z-index: 1000;
+  top: 21px;
+  left: -50px;
 }
