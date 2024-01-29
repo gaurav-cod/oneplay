@@ -108,13 +108,16 @@
       }
     
       &::-webkit-scrollbar {
-        width: 8px;
+        width: 2px;
         background-color: transparent;
+      }
+      &::-webkit-scrollbar:horizontal {
+        height: 8px;
       }
     
       &::-webkit-scrollbar-thumb {
         border-radius: 6px;
         -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-        background-color: #959595;
+        background-color: #DCDCDC;
       }
 }
