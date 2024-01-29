@@ -17,7 +17,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './authenticate-user.component.html',
   styleUrls: ['./authenticate-user.component.scss']
 })
-export class AuthenticateUserComponent implements OnInit, OnDestroy {
+export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
@@ -38,6 +38,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService,
     private readonly activatedRoute: ActivatedRoute
   ) {}
+
+  ngAfterViewInit(): void {
+    
+  }
 
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
@@ -342,20 +346,24 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   }
   
   changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
-    if (screenOnDisplay === "OTP") {
-      this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
-          this.handlePaste(e)
-      );
-    } else {
-      this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
-        this.handlePaste(e)
-      );
-    }
+
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
     this.referal_code = null;
     this.errorMessage = null;
+    if (screenOnDisplay === "OTP") {
+      setTimeout(()=> {
+
+        this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
+          this.handlePaste(e)
+        );
+      }, 500);
+    } else {
+      this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+        this.handlePaste(e)
+      );
+    }
   }
 
   private handlePaste(event: ClipboardEvent) {
