@@ -17,6 +17,8 @@ export class AppComponent implements OnInit, OnDestroy {
   title = "Oneplay Dashboard";
   seriousNotification: string | null = null;
 
+  private isLoggedIn: boolean = false;
+
   private gamepadMessageSubscription: Subscription;
   private isLoggedInUserSub: Subscription;
 
@@ -33,17 +35,17 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     navEvents.subscribe((event: NavigationEnd) => {
       window.scrollTo(0, 0);
-      countlyService.track_pageview(event.urlAfterRedirects);
+      this.countlyService.track_pageview(event.urlAfterRedirects);
     });
   }
 
   ngOnInit() {
-    
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Make your API call here after every navigation
         this.getSeriousNotification();
+        if (this.isLoggedIn) this.updateUser();
       });
 
     this.gamepadMessageSubscription = this.gamepadService.message.subscribe(
@@ -60,7 +62,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.isLoggedInUserSub = this.authService.sessionTokenExists.subscribe(
       (exists) => {
+        this.isLoggedIn = exists;
         if (exists) {
+          this.updateUser();
           this.restService
             .visitCasulGamingSection()
             .toPromise()
@@ -90,5 +94,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.restService.getSeriousNotification().subscribe((data) => {
       this.seriousNotification = data;
     });
+  }
+
+  private updateUser() {
+    this.restService
+      .getProfile()
+      .toPromise()
+      .then((u) => this.authService.setUser(u))
+      .catch(() => {});
   }
 }
