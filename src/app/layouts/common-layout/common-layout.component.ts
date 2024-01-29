@@ -81,7 +81,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       async (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
-          this.authService.user = this.restService.getProfile();
           this.setGamingStatus();
           this.setOnline();
 
