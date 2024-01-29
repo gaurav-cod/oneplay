@@ -239,6 +239,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
           localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showTooltipInfo", "true");
           localStorage.setItem("showAddToLibrary", "true");
+          localStorage.removeItem("canShowProfileOverlay");
         }
         else {
           if (response.update_profile)
