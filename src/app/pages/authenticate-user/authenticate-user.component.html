@@ -59,7 +59,7 @@
 
           <div class="container d-flex justify-content-between w-100 mt-5">
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="getOTP()">Get OTP</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
           </div>
           
         </ng-container>
@@ -114,7 +114,7 @@
     <div class="d-flex flex-column text-center w-100 mt-5">
       <span class="font500 text-gray font18" *ngIf="otpTimer">Resend OTP in {{ otpTimer }} Seconds</span>
       <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="resendOTP()" *ngIf="!otpTimer">Resend OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4 hoverGradient"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4 hoverGradient"(click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
     </div>
   </section>
   
