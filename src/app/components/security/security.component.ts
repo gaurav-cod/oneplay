@@ -427,7 +427,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.phoneErrored) return;
     const phoneNumber = (this.phoneForm.value.country_code + this.phoneForm.value.phone).trim();
     if (this.user.phone === phoneNumber) {
-      this.errorMessage = "This phone number is already in use.";
+      this.errorMessage = "This mobile number is already in use.";
       return;
     }
     this.restService
@@ -495,7 +495,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this._otpScreenRef.close();
         Swal.fire({
           icon: "success",
-          text: "You have successfully changed your phone number.",
+          text: "You have successfully changed your mobile number.",
           showConfirmButton: false
         });
         this.authService.updateProfile({
