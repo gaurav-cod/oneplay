@@ -28,7 +28,7 @@ export class AuthService implements OnDestroy {
 
   private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
