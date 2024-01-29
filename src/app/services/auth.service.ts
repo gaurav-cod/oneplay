@@ -101,8 +101,8 @@ export class AuthService implements OnDestroy {
     return this._$user.asObservable();
   }
 
-  set user(userObservable: Observable<UserModel>) {
-    userObservable.subscribe((user) => this._$user.next(user));
+  setUser(user: UserModel) {
+    this._$user.next(user);
   }
 
   get wishlist() {
