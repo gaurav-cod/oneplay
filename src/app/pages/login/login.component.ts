@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       (error) => {
         this.countlyService.endEvent("signIn", { result: 'failure' });
         this.startSignInEvent();
-        if (error.message?.toLowerCase() == "please verify your email id and phone number.") {
+        if (error.message?.toLowerCase() == "please verify your email id and mobile number.") {
           this.verifyEmailErrorObj = {
             title: error.data.title,
             message: error.data.message,

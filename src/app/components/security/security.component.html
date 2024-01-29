@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="col-md-12 mt-4 adjustWidth">
-          <label class="font16 font500 offWhiteText mx-1">Phone number</label>
+          <label class="font16 font500 offWhiteText mx-1">Mobile number</label>
           <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
             <div class="col">
               <p class="mb-0 font18 font500 text-white">{{ user?.phone }}</p>
@@ -242,7 +242,7 @@
             </select>
           </div>
           <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
-            placeholder="New Phone Number" formControlName="phone" (keyup)="resetValidation()" />
+            placeholder="New Mobile Number" formControlName="phone" (keyup)="resetValidation()" />
         </div>
         <span *ngIf="phoneErrored; else secondaryPhoneErrorMsg" class="font16 font500 errorGradientColor">*invalid mobile number</span>
         <ng-template #secondaryPhoneErrorMsg>
