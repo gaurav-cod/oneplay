@@ -176,7 +176,7 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
           [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Phone Number'" [otpSubHeading]="
+        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Mobile Number'" [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display"

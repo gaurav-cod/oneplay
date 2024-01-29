@@ -539,7 +539,6 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           this.errorCode = null;
           Swal.fire({
             icon: "success",
-            title: "Password Changed!",
             text: "You have successfully changed your password.",
             showConfirmButton: false
           });
@@ -760,8 +759,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateSecurity.controls["confirmPassword"].setValue(null);
         this.errorMessage = null;
         Swal.fire({
-          title: "Password Changed",
-          text: "You've successfully changed your password. Happy Gaming!",
+          text: "You have successfully changed your password. Happy Gaming!",
           icon: "success",
           confirmButtonText: "Continue",
           allowEscapeKey: false,
