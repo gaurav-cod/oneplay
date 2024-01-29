@@ -241,7 +241,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
           localStorage.setItem("showAddToLibrary", "true");
         }
         else {
-          localStorage.setItem("showUserInfoModal", response.update_profile);
+          if (response.update_profile)
+            localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showWelcomBackMsg", "true");
         }
         localStorage.setItem("username", response.profile.username);
@@ -310,7 +311,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private userLoginSetup(response: any) {
     this.countlyService.endEvent("signIn", { result: 'success'});
         this.startSignInEvent();
-        this.authService.trigger_speed_test = response.trigger_speed_test;
+        setTimeout(()=> {
+          this.authService.trigger_speed_test = response.trigger_speed_test;
+        }, 5000);
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, response.session_token).subscribe({

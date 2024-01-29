@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { UpdateProfileDTO } from 'src/app/interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 
@@ -25,15 +24,15 @@ export class UserInfoComponent implements OnInit {
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
     private readonly authService: AuthService
-  ) {}
+  ) { }
   async ngOnInit(): Promise<void> {
-   
+
     localStorage.removeItem("showUserInfoModal");
     const response = await this.restService.getProfile().toPromise();
     const controls = this.userInfo.controls;
     if (response.dob) {
       controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
-    } 
+    }
     if (response.firstName) {
       controls["fullname"].setValue(response.firstName + response.lastName);
     }
@@ -43,7 +42,7 @@ export class UserInfoComponent implements OnInit {
 
     this.userInfo.controls["confirmPassword"].valueChanges.pipe(
       debounceTime(500),
-      distinctUntilChanged() 
+      distinctUntilChanged()
     ).subscribe((data) => this.errorMessage = (data != this.userInfo.controls["password"].value ? "Password does not match" : null));
   }
 
@@ -59,7 +58,7 @@ export class UserInfoComponent implements OnInit {
   userInfo = new UntypedFormGroup({
     dob: new FormControl(undefined, [Validators.required]),
     username: new FormControl(undefined),
-    password: new FormControl(undefined,[
+    password: new FormControl(undefined, [
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     ]),
     fullname: new FormControl(undefined),
@@ -76,7 +75,7 @@ export class UserInfoComponent implements OnInit {
     return date;
   };
 
-  
+
   minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
   maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
   get dateOfBirthErrored() {
@@ -86,11 +85,11 @@ export class UserInfoComponent implements OnInit {
 
   get isButtonDisabled() {
     const control = this.userInfo.controls[String(this.screenType).toLowerCase()];
-    let   isInValid = false;
+    let isInValid = false;
     if (this.screenType == "PASSWORD") {
       const control_1 = this.userInfo.controls["confirmPassword"];
       isInValid = ((control_1.touched || control_1.dirty) && control_1.invalid) || !control_1.value || (control.value != control_1.value)
-    } 
+    }
     return ((control.touched || control.dirty) && control.invalid) || !control.value || isInValid;
   }
 
@@ -98,20 +97,23 @@ export class UserInfoComponent implements OnInit {
   screenList = ["DOB", "PASSWORD", "USERNAME", "FULLNAME"];
   getNextPage() {
     return {
-      "DOB" : "PASSWORD",
-      "PASSWORD" : "USERNAME",
-      "USERNAME" : "FULLNAME"
+      "DOB": "PASSWORD",
+      "PASSWORD": "USERNAME",
+      "USERNAME": "FULLNAME"
     }
   }
 
   remindLater() {
-    this.restService.setRemindLater().subscribe((response)=> {
-      this.activeModal?.close();
+    this.restService.setRemindLater().subscribe((response) => {
+      this.close();
     })
+  }
+  async deleteRemindLater() {
+    await this.restService.delteRemindLater().toPromise();
   }
 
   saveChanges(): void {
-    
+
     const body: any = {};
     if (!!this.userInfo.controls["username"].value) {
       body.username = this.userInfo.controls["username"].value;
@@ -126,7 +128,7 @@ export class UserInfoComponent implements OnInit {
         body.last_name = "";
       }
     }
-  
+
     if (!!this.userInfo.controls["dob"].value) {
       const year = this.userInfo.controls["dob"].value['year'];
       const month = this.userInfo.controls["dob"].value['month'] < 10 ? "0" + this.userInfo.controls["dob"].value['month'] : this.userInfo.controls["dob"].value['month'];
@@ -157,10 +159,10 @@ export class UserInfoComponent implements OnInit {
   }
 
   updatePassword() {
-    this.restService.createPassword(this.userInfo.controls["password"].value).subscribe((response)=> {
+    this.restService.createPassword(this.userInfo.controls["password"].value).subscribe((response) => {
       this.authService.updateProfile({ hasPassword: this.screenType === "USERNAME" })
       this.errorMessage = null;
-    }, (error: any)=> {
+    }, (error: any) => {
       this.errorMessage = error.message;
     })
   }
@@ -174,15 +176,24 @@ export class UserInfoComponent implements OnInit {
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
       } else {
-        this.activeModal?.close();
+        this.close();
       }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
-  close(showProfile: boolean = false) {
-    if (showProfile)
-      this.authService.setProfileOverlay(true);
+  close(removeRemindLater: boolean = false) {
+
+    if (removeRemindLater) {
+      this.deleteRemindLater();
+    }
+
+    if (!localStorage.getItem("canShowProfileOverlay")) {
+      localStorage.setItem("canShowProfileOverlay", "true");
+      setTimeout(() => {
+        this.authService.setProfileOverlay(true);
+      }, 2000);
+    }
     this.activeModal?.close();
   }
 }

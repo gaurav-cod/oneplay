@@ -110,7 +110,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
                 this.stopOverflow = false;
                 clearInterval(this.messageTimerRef);
               }
-            }, 500);
+            }, 2000);
           }
 
           if (localStorage.getItem("showWelcomBackMsg")) {
@@ -148,12 +148,12 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             }
           })
 
-          if (localStorage.getItem("showAddToLibrary")) {
-            this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
-              this.showOnboardingPopup = value;
-            })
+          if (localStorage.getItem("is_new_user")) {
+            setTimeout(()=> {
+              this.showOnboardingDelay();
+            }, 5000); 
           } else {
-            this.showOnboardingPopup = true;
+            this.showOnboardingDelay();
           }
 
           this.restService
@@ -178,6 +178,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
     // reset temp variable
     this.showWelcomeMessage = false;
+    this.stopOverflow = false;
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
@@ -190,6 +191,16 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       this.friendsCollapsed = !this.friendsCollapsed;
     } else {
       this.friendsCollapsed = true;
+    }
+  }
+
+  private showOnboardingDelay() {
+    if (localStorage.getItem("showAddToLibrary")) {
+      this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
+        this.showOnboardingPopup = value;
+      })
+    } else {
+      this.showOnboardingPopup = true;
     }
   }
 
