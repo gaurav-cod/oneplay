@@ -40,12 +40,12 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
     private readonly authService: AuthService
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     localStorage.removeItem("showUserInfoModal");
 
-    this.userSub = this.authService.user.subscribe((response) => {
+    this.restService.getProfile().toPromise().then((response) => {
       const controls = this.userInfo.controls;
       if (response.dob) {
         controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
@@ -62,10 +62,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe(
         (data) =>
-          (this.errorMessage =
-            data != this.userInfo.controls["password"].value
-              ? "Password does not match"
-              : null)
+        (this.errorMessage =
+          data != this.userInfo.controls["password"].value
+            ? "Password does not match"
+            : null)
       );
   }
 
@@ -146,11 +146,15 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
   remindLater() {
     this.restService.setRemindLater().subscribe((response) => {
-      this.activeModal?.close();
-    });
+      this.close();
+    })
+  }
+  async deleteRemindLater() {
+    await this.restService.delteRemindLater().toPromise();
   }
 
   saveChanges(): void {
+
     const body: any = {};
     if (!!this.userInfo.controls["username"].value) {
       body.username = this.userInfo.controls["username"].value;
@@ -231,14 +235,23 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
       } else {
-        this.activeModal?.close();
+        this.close();
       }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
-  close(showProfile: boolean = false) {
-    if (showProfile) this.authService.setProfileOverlay(true);
+  close(removeRemindLater: boolean = false) {
+
+    if (removeRemindLater) {
+      this.deleteRemindLater();
+    }
+    if (!localStorage.getItem("canShowProfileOverlay")) {
+      localStorage.setItem("canShowProfileOverlay", "true");
+      setTimeout(() => {
+        this.authService.setProfileOverlay(true);
+      }, 2000);
+    }
     this.activeModal?.close();
   }
 }
