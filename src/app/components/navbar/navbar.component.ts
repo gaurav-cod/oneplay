@@ -273,7 +273,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
       (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
-          this.authService.user = this.restService.getProfile();
           this.sessionCountForCasualGaming();
           this.initPushNotification();
           this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
@@ -287,12 +286,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     
 
     // get Initial user info
-    try {
-      const response = await this.restService.getProfile().toPromise();
-      this.user = response;
-    } catch {
-      
-    }
     this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
         this.authService.setProfileOverlay(true);
