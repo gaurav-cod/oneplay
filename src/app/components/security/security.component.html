@@ -210,7 +210,7 @@
         </ng-template>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
           [disabled]="emailErrored || email.value?.length === 0" [ngClass]="{ mutedBg: endJourney, 'button-disabled': emailErrored || email.value?.length === 0}" (click)="endJourney ? closeEmailModal() : emailOperation()">
-          {{ buttonText }}
+          {{ !emailExist ? "Confirm" : buttonText }}
         </button>
       </form>
     </div>
