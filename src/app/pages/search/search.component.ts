@@ -214,6 +214,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: "gameClicked",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.countlyService.endEvent("searchResultsViewMoreGames", {
       keywords: this.query,
@@ -236,6 +237,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: tab === "games" ? "seeMoreGames" : "seeMoreUsers",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
@@ -465,6 +467,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: "addFriend",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.endSearchEventOnFriendAction(friend);
     const record = [

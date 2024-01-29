@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 
 @Component({
@@ -22,7 +23,8 @@ export class Gamezop implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly router: Router,
     private readonly restService: RestService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly countlyService: CountlyService
   ) { }
 
   private queries = {};
@@ -45,10 +47,14 @@ export class Gamezop implements OnInit, OnDestroy {
     this.feedSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
+    
+    this.countlyService.endEvent("Level1View");
   }
 
   async ngOnInit()  {
     this.title.setTitle("Gamezop");
+
+    this.countlyService.startEvent("Level1View");
     this.loaderService.start();
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam['prevPage']) {
@@ -76,6 +82,7 @@ export class Gamezop implements OnInit, OnDestroy {
           this.gameFilterSubscription = this.restService
             .getGamezopFilteredGames(this.queries[query], 0)
             .subscribe((games) => {
+              this.countlyEvent("filterClicked", query);
               this.genreGames = games;
             });
         }
@@ -117,6 +124,7 @@ export class Gamezop implements OnInit, OnDestroy {
   }
 
   viewBannerGame(game: GamezopModel) {
+    this.countlyEvent("bannerClicked", game.name);
     window.open(game.url);
   }
 
@@ -126,6 +134,10 @@ export class Gamezop implements OnInit, OnDestroy {
 
   get routes() {
     return Object.keys(this.queries);
+  }
+
+  private countlyEvent(key: string, value: string) {
+    this.countlyService.updateEventData("Level1View", { [key]: [value] })
   }
 
 }

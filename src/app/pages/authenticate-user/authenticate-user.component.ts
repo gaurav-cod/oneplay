@@ -100,6 +100,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnInit() {
 
+    this.countlyService.startEvent("signIn");
+
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -141,6 +143,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnDestroy(): void {
+    this.countlyService.endEvent("signIn");
     this._qParamSubscription?.unsubscribe();
     this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
       this.handlePaste(e)
@@ -164,6 +167,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   openReferralModal(container: ElementRef<HTMLDivElement>) {
+    this.countlyEvent("ReferralIdClicked", "yes");
     this._referralModal = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -186,6 +190,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
   getOTP() {
+
+    if (this._isPasswordFlow)
+    this.countlyEvent("passwordGetOtpClicked", "yes");
+
+    this.countlyEvent("getOtpClicked", "yes");
+    this.countlyEvent("ReferralIdEntered", (this.isUserRegisted && this.referal_code?.value) ? "yes" : "no");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
@@ -216,6 +226,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
+        this.countlyEvent("resendOtpClicked", "yes");
         this.resendOTPClicked = true;
         this.errorMessage = null;
         this.displayTimer();
@@ -225,6 +236,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     })
   }
   verifyOTP() {
+    this.countlyEvent("optEntered", "yes");
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
     const payload = {
@@ -254,15 +266,19 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
+        this.countlyEvent("otpFailure", "yes");
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
+          this.countlyEvent("otpFailureReason", "invalid");
         } else {
           this.userLoginFailure(error);
+          this.countlyEvent("otpFailureReason", "expired");
         }
       }
     })
   }
   loginWithPassword() {
+    this.countlyEvent("passwordEntered", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
@@ -281,6 +297,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
           this.router.navigate(['/home']);
         }
       }, error: (error)=> {
+        
+        this.countlyEvent("passwordfailed", "yes");
         this.userLoginFailure(error);
       }
     })
@@ -310,7 +328,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
   private userLoginSetup(response: any) {
-    this.countlyService.endEvent("signIn", { result: 'success'});
+    this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
         this.startSignInEvent();
         this.authService.trigger_speed_test = response.trigger_speed_test;
         const code: string = this.route.snapshot.queryParams["code"];
@@ -325,7 +343,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this.authService.login(response.session_token);
   }
   private userLoginFailure(error: any) {
-    this.countlyService.endEvent("signIn", { result: 'failure' });    
+    this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });    
     this.showError(error);
   }
   private displayTimer() {
@@ -350,6 +368,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.isUserRegisted = false;
     this.referal_code = null;
     this.errorMessage = null;
+    if (screenOnDisplay == "REGISTER_LOGIN")
+      this.countlyEvent("changePhoneNumber", "yes");
   }
 
   private handlePaste(event: ClipboardEvent) {
@@ -374,6 +394,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         signInFromPage: "directLink",
       })
     }
+  }
+
+  private countlyEvent(key: string, value: string) {
+    this.countlyService.endEvent("signIn", { [key]: [value]});
   }
 
   showError(error) {

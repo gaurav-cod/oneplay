@@ -177,6 +177,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: "gameClicked",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
@@ -442,6 +443,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: "addFriend",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     const record = [
       ...this.acceptedFriends,
@@ -535,6 +537,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "no",
       actionType: "cancelled",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.focus.next(false);
   }
@@ -560,6 +563,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: tab === "games" ? "seeMoreGames" : "seeMoreUsers",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
@@ -679,6 +683,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.toggleFriends.emit("profileClicked");
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
+      "userType": this.isAuthenticated ? "registered" : "guest",
       [item]: "yes",
     });
   }

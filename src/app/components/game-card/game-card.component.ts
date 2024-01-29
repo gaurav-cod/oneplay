@@ -56,6 +56,10 @@ export class GameCardComponent {
     this.countlyService.startEvent("gameLandingView", {
       data: { source: getGameLandingViewSource(), trigger: "card" },
     });
+
+    const countylyObj = this.calledFrom === "LIBRARY" ? { myLibraryClicked: this.game.title } : { railClicked: this.game.title };
+    this.countlyService.updateEventData("homeView", countylyObj );
+
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
     });

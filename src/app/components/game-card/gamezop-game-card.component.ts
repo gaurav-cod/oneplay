@@ -29,13 +29,15 @@ export class GamezopGameCard implements OnInit {
     }
   
     constructor(
-      private readonly loaderService: NgxUiLoaderService
+      private readonly loaderService: NgxUiLoaderService,
+      private readonly countlyService: CountlyService
     ) {}
   
     ngOnInit(): void {
     }
   
     onGameClick() {
+      this.countlyService.updateEventData("Level1View", { "railClicked": this.game.name });
       window.open(this.game.url);
     }
   
