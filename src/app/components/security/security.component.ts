@@ -49,6 +49,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   // close all poups when component is destroyed
   isComponentDestroyed: boolean = false;
 
+  buttonEmailChangeText: string = "Confirm";
   buttonText: string = "Continue";
   isVerify: boolean = true;
   isPhone: boolean = true;
