@@ -174,6 +174,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         body.last_name = "";
       }
     }
+    else
+    {
+      body.first_name = "";
+      body.last_name = "";
+    }
     if (!!this.bio.value && this.bio.value?.length > 0) {
       body.bio = this.bio.value;
     } else {
