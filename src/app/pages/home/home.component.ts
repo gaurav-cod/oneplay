@@ -12,6 +12,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { ToastService } from "src/app/services/toast.service";
+import { getDefaultHomePageEvents } from "src/app/utils/countly.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -170,6 +171,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   viewBannerGame(game: GameModel) {
+    
+    this.countlyService.addEvent("homeView", {
+      ...getDefaultHomePageEvents(),
+      "bannerClicked": game.title,
+    });
     this.countlyService.startEvent("gameLandingView", {
       data: { source: 'homePage', trigger: 'banner' },
       discardOldData: true,

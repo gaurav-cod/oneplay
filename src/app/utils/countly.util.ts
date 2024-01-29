@@ -82,6 +82,19 @@ export const mapSignUpAccountVerificationFailureReasons = (
   }
 };
 
+export const getDefaultHomePageEvents = (): CustomCountlyEvents["homeView"] => {
+  return {
+    bannerClicked: "no",
+    railClicked: "no",
+    myLibraryClicked: "no",
+    filterClicked: "no",
+    filterGameClicked: "no",
+    channel: "web",
+    partner: "onePlay",
+    userType: "guest"
+  }
+}
+
 export const genDefaultWebsiteFooterViewSegments =
   (): CustomCountlyEvents["websiteFooterView"] => {
     return {

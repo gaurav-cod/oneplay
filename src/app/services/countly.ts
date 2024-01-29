@@ -119,6 +119,16 @@ export interface CustomCountlyEvents {
     playDuration: number;
     idleDuration: number;
   };
+  homeView: {
+    bannerClicked: string | "no";
+    railClicked: string | "no";
+    myLibraryClicked: string | "no";
+    filterClicked: string | "no";
+    filterGameClicked: string | "no";
+    channel: "web" | "mobile" | "androidTv";
+    partner: string;
+    userType: "guest" | "registered";
+  }
 }
 
 export interface CustomTimedCountlyEvents {
