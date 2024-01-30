@@ -137,7 +137,7 @@ export const genDefaultMenuClickSegments =
       searchClicked: "no",
       gameStatusClicked: "no",
       profileClicked: "no",
-      userType: "guest",
+      userType: Cookies.get("op_session_token") ? "registered" : "guest",
       level1Clicked: "no"
     };
   };
