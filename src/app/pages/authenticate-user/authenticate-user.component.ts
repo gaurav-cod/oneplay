@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
 import { LoginOtpRO, LoginRO } from 'src/app/interface';
 import { UserModel } from 'src/app/models/user.model';
+import { CustomTimedCountlyEvents } from 'src/app/services/countly';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -107,7 +108,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnInit() {
 
-    this.countlyService.startEvent("signIn", { data: getDefaultSignInSegments() });
+    this.startSignInEvent();
+
 
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
@@ -242,7 +244,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     })
   }
   verifyOTP() {
-    this.countlyEvent("optEntered", "yes");
+    this.countlyEvent("otpEntered", "yes");
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
     const payload = {
@@ -338,7 +340,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
   private userLoginSetup(response: LoginRO & {profile: UserModel}) {
     this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
-    this.startSignInEvent();
     setTimeout(()=> {
       this.authService.trigger_speed_test = response.trigger_speed_test;
     }, 5000);
@@ -417,6 +418,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   private startSignInEvent() {
     this.countlyService.startEvent("signIn", { discardOldData: false });
+    this.countlyService.updateEventData("signIn", getDefaultSignInSegments())
     const segments = this.countlyService.getEventData("signIn");
     if (!segments.signInFromPage) {
       this.countlyService.updateEventData("signIn", {
@@ -425,7 +427,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
-  private countlyEvent(key: string, value: string) {
+  private countlyEvent(key: keyof CustomTimedCountlyEvents["signIn"], value: string) {
     this.countlyService.endEvent("signIn", { [key]: value});
   }
 

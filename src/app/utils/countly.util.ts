@@ -155,9 +155,6 @@ export const getDefaultHomeClickSegments = (): CustomTimedCountlyEvents["homeVie
 
 export const getDefaultSignInSegments = (): CustomTimedCountlyEvents["signIn"] => {
   return {
-    channel: "web",
-    partner: environment.partner_name,
-    signInFromPage: "home",
     phoneNumberEntered: "no",
     getOtpClicked: "no",
     guestLoginClicked: "no",

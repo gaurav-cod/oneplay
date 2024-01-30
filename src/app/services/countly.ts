@@ -211,15 +211,13 @@ export interface CustomTimedCountlyEvents {
     ReferralIdClicked: "yes" | "no";
     otpEntered: "yes" | "no";
     otpFailure: "yes" | "no";
-    otpFailureReson?: "expired" | "invalid";
+    otpFailureReason?: "expired" | "invalid";
     resendOtpClicked: "yes" | "no";
     changePhoneNumber: "yes" | "no";
     passwordRequired: "yes" | "no";
     passwordEntered: "yes" | "no";
     passwordfailed: "yes" | "no";
     passwordGetOtpClicked: "yes" | "no";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string;
   };
   guestProfile: {
     SignInClicked: "yes" | "no";
