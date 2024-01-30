@@ -22,7 +22,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
 
-  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "OTP";
+  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
