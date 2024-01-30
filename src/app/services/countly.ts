@@ -264,8 +264,6 @@ export interface CustomTimedCountlyEvents {
     friendClicked: "yes" | "no";
     unfriendClicked: "yes" | "no";
     messageSent: "yes" | "no";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string;
   };
   subscriptionCardClick: {
     source: "settingsPage" | "subscriptionPage" | "guestProfile";
