@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -50,6 +50,12 @@ export class Gamezop implements OnInit, OnDestroy {
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     
+    this.countlyService.endEvent("Level1View");
+  }
+
+  @HostListener("window:unload", ["$event"])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
     this.countlyService.endEvent("Level1View");
   }
 

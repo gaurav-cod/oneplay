@@ -221,8 +221,6 @@ export const getDefaultLevel1ViewEvents =
       railClicked: "no",
       filterClicked: "no",
       filterGameClicked: "no",
-      channel: "web",
-      partner: environment.partner_name,
       userType: Cookies.get("op_session_token") ? "registered" : "guest",
     };
   };
