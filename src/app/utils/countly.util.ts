@@ -216,8 +216,6 @@ export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["details
       SignInClicked: "no",
       subscribeClicked: "no",
       speedTestClicked: "no",
-      channel: "web",
-      partner: environment.partner_name
     }
   }
   export const getDefaultLevel1ViewEvents = (): CustomTimedCountlyEvents["Level1View"] => {

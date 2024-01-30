@@ -225,8 +225,6 @@ export interface CustomTimedCountlyEvents {
     SignInClicked: "yes" | "no";
     subscribeClicked: "yes" | "no";
     speedTestClicked: "yes" | "no";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string
   };
   detailsPopUp: {
     dateOfBirth?: "success" | "skip" | "later" | "close";
