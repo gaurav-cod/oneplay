@@ -12,7 +12,7 @@ import { CountlyService } from 'src/app/services/countly.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
-import { LoginOtpRO, LoginRO } from 'src/app/interface';
+import { LoginOtpRO, LoginRO } from 'src/app/interface.d';
 import { UserModel } from 'src/app/models/user.model';
 import { CustomTimedCountlyEvents } from 'src/app/services/countly';
 
