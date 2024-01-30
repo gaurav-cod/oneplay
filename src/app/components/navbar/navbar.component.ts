@@ -286,7 +286,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     // get Initial user info
     this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
-      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user.dob) {
+      debugger;
+      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user?.dob) {
         this.authService.setProfileOverlay(true);
         this.router.navigate([], {queryParams: { overlay: "null" }, replaceUrl: true, queryParamsHandling: "merge"});
       }

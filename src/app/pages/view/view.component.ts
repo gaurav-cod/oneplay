@@ -56,6 +56,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
   @ViewChild("macDownloadModal") macDownloadModal: ElementRef<HTMLDivElement>;
+  @ViewChild("termsConditionModal") termsConditionModal: ElementRef<HTMLDivElement>;
 
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
@@ -801,12 +802,22 @@ export class ViewComponent implements OnInit, OnDestroy {
         swalConf.showCancelButton = false;
         onConfirm = () => {};
       } else {
-        if (this.game.isInstallAndPlay && this.action === "Play") {
-          this.installAndPlaySession(termConditionModal);
-        } else if (this.showSettings.value || this.game.isInstallAndPlay) {
-          this.gamePlaySettingModal(container);
+        if (!this.user.dob) {
+          this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            backdrop: "static",
+            keyboard: false,
+          });
+          return;
         } else {
-          this.startGame();
+          if (this.game.isInstallAndPlay && this.action === "Play") {
+            this.installAndPlaySession(termConditionModal);
+          } else if (this.showSettings.value || this.game.isInstallAndPlay) {
+            this.gamePlaySettingModal(container);
+          } else {
+            this.startGame();
+          }
         }
       }
       if (showSwal) {
@@ -1002,15 +1013,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   startGame(isDOBPresent: boolean = false): void {
-    if (!this.user.dob && !isDOBPresent) {
-      this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
-        centered: true,
-        modalDialogClass: "modal-md",
-        backdrop: "static",
-        keyboard: false,
-      });
-      return;
-    }
 
     if (this.startingGame) {
       return;
@@ -1544,7 +1546,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           dob: body
         });
         this._userInfoContainerRef?.close();
-        this.startGame(true);
+        this.playGame(this.settingsModal, false, this.termsConditionModal);
       },
       (error) => {
         this.errorMessage = error.message;
