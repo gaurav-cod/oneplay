@@ -26,13 +26,13 @@
                     inputmode="numeric"
                     formControlName="phone"
                     class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
-                    placeholder="Enter your Phone Number"
+                    placeholder="Enter your Mobile Number"
                   />
                 </div>
                 <span
                   [style.visibility]="phoneErrored ? 'visible' : 'hidden'"
                   class="font18 mt-2 font500 redErrorGradientColor float-left"
-                  >*invalid phone number</span>
+                  >*invalid mobile number</span>
         </div>
         <ng-container *ngIf="allowPasswordInput">
           <div class="col-md-12 mt-4">
@@ -59,7 +59,7 @@
 
           <div class="container d-flex justify-content-between w-100 mt-5">
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="getOTP()">Get OTP</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
           </div>
           
         </ng-container>
@@ -68,7 +68,7 @@
             <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="isValidPhoneNumber ? phoneErrored : true" (click)="getOTP()">Get OTP</button>
           </div>
           <ng-template #showGuestLogin>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline m-auto font18 hoverGradient guestLinkText" routerLink="/home">Continue as Guest</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline m-auto font18 hoverGradient guestLinkText" (click)="guestFlow()">Continue as Guest</a>
           </ng-template>
           <div class="container d-flex justify-content-between w-100 mt-5 linksContainer" *ngIf="isValidPhoneNumber && !isUserRegisted">
             
@@ -77,7 +77,7 @@
               <span>Referral added</span>
             </span>
             <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName || !isReferralAdded">Have a Referral Code?</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" routerLink="/home">Continue as Guest</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" (click)="guestFlow()">Continue as Guest</a>
           </div> 
         </ng-container>
     </form>
@@ -90,7 +90,7 @@
               Enter OTP Sent to <br> {{ mobile }}
             </h1>
           </div>
-          <div class="toast-message" *ngIf="resendOTPClicked">OTP has been sent to your phone number</div>
+          <div class="toast-message" *ngIf="resendOTPClicked">OTP has been sent to your mobile number</div>
           <div class="mt-6 row justify-content-center">
             <div
               class="col-auto p-1 otpInput"
@@ -114,7 +114,7 @@
     <div class="d-flex flex-column text-center w-100 mt-5">
       <span class="font500 text-gray font18" *ngIf="otpTimer">Resend OTP in {{ otpTimer }} Seconds</span>
       <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="resendOTP()" *ngIf="!otpTimer">Resend OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4 hoverGradient"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4 hoverGradient"(click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
     </div>
   </section>
   

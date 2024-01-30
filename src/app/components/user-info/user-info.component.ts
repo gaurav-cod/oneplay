@@ -1,21 +1,32 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { NgbActiveModal, NgbDateStruct, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { UpdateProfileDTO } from 'src/app/interface';
-import { AuthService } from 'src/app/services/auth.service';
-import { CustomTimedCountlyEvents } from 'src/app/services/countly';
-import { CountlyService } from 'src/app/services/countly.service';
-import { RestService } from 'src/app/services/rest.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+  FormControl,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
+import {
+  NgbActiveModal,
+  NgbDateStruct,
+  NgbModalRef,
+} from "@ng-bootstrap/ng-bootstrap";
+import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
+import { UpdateProfileDTO } from "src/app/interface";
+import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
+import { RestService } from "src/app/services/rest.service";
 
 enum SCREEN_TYPE {
-  "DOB" = "DOB", "PASSWORD" = "PASSWORD", "USERNAME" = "USERNAME", "FULLNAME" = "FULLNAME"
+  "DOB" = "DOB",
+  "PASSWORD" = "PASSWORD",
+  "USERNAME" = "USERNAME",
+  "FULLNAME" = "FULLNAME",
 }
 
 @Component({
-  selector: 'app-user-info',
-  templateUrl: './user-info.component.html',
-  styleUrls: ['./user-info.component.scss']
+  selector: "app-user-info",
+  templateUrl: "./user-info.component.html",
+  styleUrls: ["./user-info.component.scss"],
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
@@ -23,36 +34,51 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   showSuccessMessage: boolean = false;
   atleastOneFieldUpdated: boolean = false;
 
+  private userSub: Subscription;
+  private confirmPassSub: Subscription;
+
   constructor(
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
-    private readonly authService: AuthService,
     private readonly countlyService: CountlyService,
-  ) {}
+    private readonly authService: AuthService
+  ) { }
+
   async ngOnInit(): Promise<void> {
-   
     localStorage.removeItem("showUserInfoModal");
-    const response = await this.restService.getProfile().toPromise();
-    const controls = this.userInfo.controls;
-    if (response.dob) {
-      controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
-    } 
-    if (response.firstName) {
-      controls["fullname"].setValue(response.firstName + response.lastName);
-    }
-    if (response.username) {
-      controls["username"].setValue(response.username);
-    }
 
-    this.countlyService.startEvent("detailsPopUp");
+    this.restService.getProfile().toPromise().then((response) => {
+      const controls = this.userInfo.controls;
+      if (response.dob) {
+        controls["dob"].setValue(this.dateToNgbDate(new Date(response.dob)));
+      }
+      if (response.firstName) {
+        controls["fullname"].setValue(response.firstName + response.lastName);
+      }
+      if (response.username) {
+        controls["username"].setValue(response.username);
+      }
+    });
 
-    this.userInfo.controls["confirmPassword"].valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged() 
-    ).subscribe((data) => this.errorMessage = (data != this.userInfo.controls["password"].value ? "Password does not match" : null));
+    this.confirmPassSub = this.userInfo.controls["confirmPassword"].valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe(
+        (data) =>
+        (this.errorMessage =
+          data != this.userInfo.controls["password"].value
+            ? "Password does not match"
+            : null)
+      );
   }
+
   ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+    this.confirmPassSub?.unsubscribe();
+    this.userInfo.reset();
     this.countlyService.endEvent("detailsPopUp");
+    this.errorMessage = null;
+    this.showSuccessMessage = false;
+    this.atleastOneFieldUpdated = false;
   }
 
   get fullNameErrored() {
@@ -67,11 +93,13 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   userInfo = new UntypedFormGroup({
     dob: new FormControl(undefined, [Validators.required]),
     username: new FormControl(undefined),
-    password: new FormControl(undefined,[
-      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    password: new FormControl(undefined, [
+      Validators.pattern(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+      ),
     ]),
     fullname: new FormControl(undefined),
-    confirmPassword: new FormControl(undefined)
+    confirmPassword: new FormControl(undefined),
   });
   private dateToNgbDate = (date: Date): NgbDateStruct => ({
     year: date.getUTCFullYear(),
@@ -101,40 +129,53 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   get isButtonDisabled() {
-    const control = this.userInfo.controls[String(this.screenType).toLowerCase()];
-    let   isInValid = false;
+    const control =
+      this.userInfo.controls[String(this.screenType).toLowerCase()];
+    let isInValid = false;
     if (this.screenType == "PASSWORD") {
       const control_1 = this.userInfo.controls["confirmPassword"];
-      isInValid = ((control_1.touched || control_1.dirty) && control_1.invalid) || !control_1.value || (control.value != control_1.value)
-    } 
-    return ((control.touched || control.dirty) && control.invalid) || !control.value || isInValid;
+      isInValid =
+        ((control_1.touched || control_1.dirty) && control_1.invalid) ||
+        !control_1.value ||
+        control.value != control_1.value;
+    }
+    return (
+      ((control.touched || control.dirty) && control.invalid) ||
+      !control.value ||
+      isInValid
+    );
   }
 
   screenType: SCREEN_TYPE = SCREEN_TYPE.DOB;
   screenList = ["DOB", "PASSWORD", "USERNAME", "FULLNAME"];
   getNextPage() {
     return {
-      "DOB" : "PASSWORD",
-      "PASSWORD" : "USERNAME",
-      "USERNAME" : "FULLNAME"
-    }
+      DOB: "PASSWORD",
+      PASSWORD: "USERNAME",
+      USERNAME: "FULLNAME",
+    };
   }
 
   remindLater() {
     this.restService.setRemindLater().subscribe((response)=> {
-      this.activeModal?.close();
+      this.close();
       this.countlyEvent(this.screenType, "later");
     })
   }
+  async deleteRemindLater() {
+    await this.restService.delteRemindLater().toPromise();
+  }
 
   saveChanges(): void {
-    
+
     const body: any = {};
     if (!!this.userInfo.controls["username"].value) {
       body.username = this.userInfo.controls["username"].value;
     }
     if (!!this.userInfo.controls["fullname"].value) {
-      const [first_name, ...rest] = this.userInfo.controls["fullname"].value.trim().split(" ");
+      const [first_name, ...rest] = this.userInfo.controls["fullname"].value
+        .trim()
+        .split(" ");
       const last_name = rest.join(" ") || "";
       body.first_name = first_name;
       if (!!last_name) {
@@ -143,11 +184,17 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         body.last_name = "";
       }
     }
-  
+
     if (!!this.userInfo.controls["dob"].value) {
-      const year = this.userInfo.controls["dob"].value['year'];
-      const month = this.userInfo.controls["dob"].value['month'] < 10 ? "0" + this.userInfo.controls["dob"].value['month'] : this.userInfo.controls["dob"].value['month'];
-      const day = this.userInfo.controls["dob"].value['day'] < 10 ? "0" + this.userInfo.controls["dob"].value['day'] : this.userInfo.controls["dob"].value['day'];
+      const year = this.userInfo.controls["dob"].value["year"];
+      const month =
+        this.userInfo.controls["dob"].value["month"] < 10
+          ? "0" + this.userInfo.controls["dob"].value["month"]
+          : this.userInfo.controls["dob"].value["month"];
+      const day =
+        this.userInfo.controls["dob"].value["day"] < 10
+          ? "0" + this.userInfo.controls["dob"].value["day"]
+          : this.userInfo.controls["dob"].value["day"];
       body.dob = `${year}-${month}-${day}`;
     }
     this.restService.updateProfile(body).subscribe(
@@ -175,15 +222,25 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   updatePassword() {
-    this.restService.createPassword(this.userInfo.controls["password"].value).subscribe((response)=> {
-      this.authService.updateProfile({ hasPassword: this.screenType === "USERNAME" })
-      this.errorMessage = null;
-    }, (error: any)=> {
-      this.errorMessage = error.message;
-    })
+    this.restService
+      .createPassword(this.userInfo.controls["password"].value)
+      .subscribe(
+        (response) => {
+          this.authService.updateProfile({
+            hasPassword: this.screenType === "USERNAME",
+          });
+          this.errorMessage = null;
+        },
+        (error: any) => {
+          this.errorMessage = error.message;
+        }
+      );
   }
   enterUserName(event) {
-    this.errorMessage = event.target?.value?.length > 16 ? "username must be shorter than or equal to 16 characters" : null;
+    this.errorMessage =
+      event.target?.value?.length > 16
+        ? "username must be shorter than or equal to 16 characters"
+        : null;
   }
 
   goToNext(isSkipped: boolean = false) {
@@ -197,17 +254,25 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
       } else {
-        this.activeModal?.close();
+        this.close();
       }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
-  close(showProfile: boolean = false) {
-    if (showProfile)
-      this.authService.setProfileOverlay(true);
-      this.countlyEvent(this.screenType, "close");
+  close(removeRemindLater: boolean = false) {
+
+    if (removeRemindLater) {
+      this.deleteRemindLater();
+    }
+    if (!localStorage.getItem("canShowProfileOverlay")) {
+      localStorage.setItem("canShowProfileOverlay", "true");
+      setTimeout(() => {
+        this.authService.setProfileOverlay(true);
+      }, 2000);
+    }
     this.activeModal?.close();
+    this.countlyEvent(this.screenType, "close");
   }
 
   private countlyEvent(key: string, value: string) {

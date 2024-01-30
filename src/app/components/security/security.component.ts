@@ -49,6 +49,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   // close all poups when component is destroyed
   isComponentDestroyed: boolean = false;
 
+  buttonEmailChangeText: string = "Confirm";
   buttonText: string = "Continue";
   isVerify: boolean = true;
   isPhone: boolean = true;
@@ -133,7 +134,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
      this.authService.user.subscribe((user) => {
       this.user = user;
       this.isPrivate = this.user?.searchPrivacy;
-      this.emailExist = this.user.email?.length > 0;
+      this.emailExist = this.user?.email?.length > 0;
       
       this.passwordExist = this.user.hasPassword;
       // this.phone.setValue(user.phone);
@@ -427,7 +428,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.phoneErrored) return;
     const phoneNumber = (this.phoneForm.value.country_code + this.phoneForm.value.phone).trim();
     if (this.user.phone === phoneNumber) {
-      this.errorMessage = "This phone number is already in use.";
+      this.errorMessage = "This mobile number is already in use.";
       return;
     }
     this.restService
@@ -495,7 +496,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this._otpScreenRef.close();
         Swal.fire({
           icon: "success",
-          text: "You have successfully changed your phone number.",
+          text: "You have successfully changed your mobile number.",
           showConfirmButton: false
         });
         this.authService.updateProfile({
@@ -539,7 +540,6 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
           this.errorCode = null;
           Swal.fire({
             icon: "success",
-            title: "Password Changed!",
             text: "You have successfully changed your password.",
             showConfirmButton: false
           });
@@ -566,6 +566,12 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   sendOTPForgotPassword(container: ElementRef<HTMLDivElement>) {
     this.errorCode = null;
     this.errorMessage = null;
+
+    if (String(this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value) != this.user.phone) {
+      this.errorMessage = "invalid mobile number";
+      return;
+    }
+
       const phone = this.phoneForm.controls['country_code'].value + this.phoneForm.controls['phone'].value;
       this.restService.requestResetPasswordWithMobile(phone).subscribe({
         next: () => {
@@ -598,6 +604,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openForgotPassword(container: ElementRef<HTMLDivElement>) {
     this._changePasswordModalRef?.close();
+    this.resetPasswordToken = null;
     this.errorCode = null;
     this.errorMessage = null;
     this._forgotPasswordModalRef = this.ngbModal.open(container, {
@@ -759,8 +766,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.updateSecurity.controls["confirmPassword"].setValue(null);
         this.errorMessage = null;
         Swal.fire({
-          title: "Password Changed",
-          text: "You've successfully changed your password. Happy Gaming!",
+          text: "You have successfully changed your password. Happy Gaming!",
           icon: "success",
           confirmButtonText: "Continue",
           allowEscapeKey: false,
@@ -770,7 +776,6 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.errorMessage = error.message;
         this.errorCode = error?.code;
         // this.showError(error);
-        this.resetPasswordToken = null;
       });
   }
   closeForgoutPasswordOTP() {
@@ -783,8 +788,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.restService.requestResetPasswordWithMobile(phone).subscribe({
       next: (response: any) => {
 
+        this.timer(1);
       }, error: (error) => {
-        this.errorMessage = error.errorMessage;
+        this.errorMessage = error.message;
         this.errorCode = error.code;
       }
     })

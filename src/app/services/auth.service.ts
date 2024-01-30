@@ -28,7 +28,7 @@ export class AuthService implements OnDestroy {
 
   private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -101,8 +101,8 @@ export class AuthService implements OnDestroy {
     return this._$user.asObservable();
   }
 
-  set user(userObservable: Observable<UserModel>) {
-    userObservable.subscribe((user) => this._$user.next(user));
+  setUser(user: UserModel) {
+    this._$user.next(user);
   }
 
   get wishlist() {

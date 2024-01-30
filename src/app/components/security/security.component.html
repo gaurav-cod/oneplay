@@ -7,7 +7,7 @@
           <label class="font16 font500 offWhiteText mx-1">Email</label>
           <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1" (click)="!emailExist && openEmailModal()">
             <div class="col">
-              <p class="mb-0 font18 font500" [style.color]="!emailExist ? '#5f5f5f' : '#fff'">{{ (emailExist ? user?.email : 'Add a Email') }}</p>
+              <p class="mb-0 font18 font500" [style.color]="!emailExist ? '#5f5f5f' : '#fff'">{{ (emailExist ? user?.email : 'Add Email Address') }}</p>
             </div>
             <div class="col-auto" *ngIf="emailExist">
               <img *ngIf="allowEmailEdit" (click)="openEmailModal()" src="assets/img/singup-login/Group (1).svg"
@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="col-md-12 mt-4 adjustWidth">
-          <label class="font16 font500 offWhiteText mx-1">Phone number</label>
+          <label class="font16 font500 offWhiteText mx-1">Mobile number</label>
           <div class="row height52 align-items-center border-0 lightBg borderRadius6 mx-1">
             <div class="col">
               <p class="mb-0 font18 font500 text-white">{{ user?.phone }}</p>
@@ -160,8 +160,8 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify Email Address'" [otpSubHeading]="
-            'Please enter the code sent to your email address.'
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="
+            'Please enter the code sent to your new email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
           [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
@@ -176,7 +176,7 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendPhoneUpdate()" [display]="display"
           [errorMessage]="errorMessage" [showIndicator]="false" [errorCode]="errorCode" (closePopUp)="closePhoneModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Phone Number'" [otpSubHeading]="
+        <app-otp-screen *ngIf="!isPhone" [otpHeading]="'Verify New Mobile Number'" [otpSubHeading]="
             'Please enter the code sent to your new mobile number.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmPhone($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdatePhone()" [display]="display"
@@ -210,7 +210,7 @@
         </ng-template>
         <button class="btn btn-block customLinearGradient text-white customBorder0 mt-4 borderRadiusCustom"
           [disabled]="emailErrored || email.value?.length === 0" [ngClass]="{ mutedBg: endJourney, 'button-disabled': emailErrored || email.value?.length === 0}" (click)="endJourney ? closeEmailModal() : emailOperation()">
-          {{ buttonText }}
+          {{ buttonEmailChangeText }}
         </button>
       </form>
     </div>
@@ -226,7 +226,7 @@
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font24 font700 mb-4 mt-3 text-center">
-        Change Phone Number
+        Change Mobile Number
       </h3>
       <p class="muteText font14 font500 mb-5 px-2 text-center">
         A Security code verification is required to make this change.
@@ -242,7 +242,7 @@
             </select>
           </div>
           <input type="tel" class="form-control bgTransparent height52 font18 font500 text-white border-0"
-            placeholder="New Phone Number" formControlName="phone" (keyup)="resetValidation()" />
+            placeholder="New Mobile Number" formControlName="phone" (keyup)="resetValidation()" />
         </div>
         <span *ngIf="phoneErrored; else secondaryPhoneErrorMsg" class="font16 font500 errorGradientColor">*invalid mobile number</span>
         <ng-template #secondaryPhoneErrorMsg>

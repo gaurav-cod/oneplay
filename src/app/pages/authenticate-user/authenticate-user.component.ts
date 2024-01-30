@@ -40,6 +40,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     private readonly activatedRoute: ActivatedRoute
   ) {}
 
+  ngAfterViewInit(): void {
+    
+  }
+
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
   private referralName: string | null = null;
@@ -136,13 +140,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
 
-  ngAfterViewInit(): void {
-    this.rows._results[0]?.nativeElement.addEventListener("paste", (e) => {
-      this.handlePaste(e)
-    }
-    );
-  }
-
   ngOnDestroy(): void {
     this.countlyService.endEvent("signIn");
     this._qParamSubscription?.unsubscribe();
@@ -206,7 +203,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
         if (response) {
-          this.screenOnDisplay = "OTP";
+          this.changeScreen("OTP");
           this.mobile = this.authenticateForm.controls["phone"].value;
           this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
@@ -255,9 +252,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
           localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showTooltipInfo", "true");
           localStorage.setItem("showAddToLibrary", "true");
+          localStorage.removeItem("canShowProfileOverlay");
         }
         else {
-          localStorage.setItem("showUserInfoModal", response.update_profile);
+          if (response.update_profile)
+            localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showWelcomBackMsg", "true");
         }
         localStorage.setItem("username", response.profile.username);
@@ -289,7 +288,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       next: (response)=> {
         this.userLoginSetup(response);
         localStorage.setItem("showWelcomBackMsg", "true");
-        localStorage.setItem("showUserInfoModal", response.update_profile);
+        if (response.update_profile)
+          localStorage.setItem("showUserInfoModal", "true");
         localStorage.setItem("username", response.profile.username);
         if (this.redirectURL) {
           this.router.navigate([this.redirectURL]);
@@ -331,7 +331,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private userLoginSetup(response: any) {
     this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
         this.startSignInEvent();
-        this.authService.trigger_speed_test = response.trigger_speed_test;
+        setTimeout(()=> {
+          this.authService.trigger_speed_test = response.trigger_speed_test;
+        }, 5000);
         const code: string = this.route.snapshot.queryParams["code"];
         if (!!code && /\d{4}-\d{4}/.exec(code)) {
           this.restService.setQRSession(code, response.session_token).subscribe({
@@ -362,8 +364,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       }
     }, 1000);
   }
+  guestFlow() {
+    this.router.navigate(['/home']);
+  }
   
   changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
+
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
@@ -371,6 +377,18 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.errorMessage = null;
     if (screenOnDisplay == "REGISTER_LOGIN")
       this.countlyEvent("changePhoneNumber", "yes");
+    if (screenOnDisplay === "OTP") {
+      setTimeout(()=> {
+
+        this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
+          this.handlePaste(e)
+        );
+      }, 500);
+    } else {
+      this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+        this.handlePaste(e)
+      );
+    }
   }
 
   private handlePaste(event: ClipboardEvent) {
