@@ -231,8 +231,6 @@ export interface CustomTimedCountlyEvents {
     password?: "success" | "skip" | "later" | "close";
     userName?: "success" | "skip" | "later" | "close";
     fullName?: "success" | "skip" | "later" | "close";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string
   };
   gameLandingView: {
     gameId: string;

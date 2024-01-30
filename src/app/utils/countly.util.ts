@@ -123,7 +123,7 @@ export const genDefaultSettingsViewSegments =
       passwordChanged: "no",
       deviceHistoryViewed: "no",
       logoutFromAllClicked: "no",
-      dateOfBirthChanged: "no"
+      dateOfBirthChanged: "no",
     };
   };
 
@@ -138,41 +138,43 @@ export const genDefaultMenuClickSegments =
       gameStatusClicked: "no",
       profileClicked: "no",
       userType: Cookies.get("op_session_token") ? "registered" : "guest",
-      level1Clicked: "no"
+      level1Clicked: "no",
     };
   };
 
-export const getDefaultHomeClickSegments = (): CustomTimedCountlyEvents["homeView"] => {
-  return {
-    bannerClicked: "no",
-    railClicked: "no",
-    myLibraryClicked: "no",
-    filterClicked: "no",
-    filterGameClicked: "no",
-    userType: Cookies.get("op_session_token") ? "registered" : "guest"
-  }
-}
+export const getDefaultHomeClickSegments =
+  (): CustomTimedCountlyEvents["homeView"] => {
+    return {
+      bannerClicked: "no",
+      railClicked: "no",
+      myLibraryClicked: "no",
+      filterClicked: "no",
+      filterGameClicked: "no",
+      userType: Cookies.get("op_session_token") ? "registered" : "guest",
+    };
+  };
 
-export const getDefaultSignInSegments = (): CustomTimedCountlyEvents["signIn"] => {
-  return {
-    channel: "web",
-    partner: environment.partner_name,
-    signInFromPage: "home",
-    phoneNumberEntered: "no",
-    getOtpClicked: "no",
-    guestLoginClicked: "no",
-    ReferralIdClicked: "no",
-    ReferralIdEntered: "no",
-    otpEntered: "no",
-    otpFailure: "no",
-    resendOtpClicked: "no",
-    changePhoneNumber: "no",
-    passwordRequired: "no",
-    passwordEntered: "no",
-    passwordfailed: "no",
-    passwordGetOtpClicked: "no"
-  }
-}
+export const getDefaultSignInSegments =
+  (): CustomTimedCountlyEvents["signIn"] => {
+    return {
+      channel: "web",
+      partner: environment.partner_name,
+      signInFromPage: "home",
+      phoneNumberEntered: "no",
+      getOtpClicked: "no",
+      guestLoginClicked: "no",
+      ReferralIdClicked: "no",
+      ReferralIdEntered: "no",
+      otpEntered: "no",
+      otpFailure: "no",
+      resendOtpClicked: "no",
+      changePhoneNumber: "no",
+      passwordRequired: "no",
+      passwordEntered: "no",
+      passwordfailed: "no",
+      passwordGetOtpClicked: "no",
+    };
+  };
 
 export const genDefaultMenuDropdownClickSegments =
   (): CustomCountlyEvents["menuDropdownClick"] => {
@@ -189,10 +191,9 @@ export const genDefaultMenuDropdownClickSegments =
       tvSignInClicked: "no",
       logOutClicked: "no",
       logOutConfirmClicked: "no",
-      dateOfBirthChanged: "no"
+      dateOfBirthChanged: "no",
     };
   };
-
 
 export const getDefaultChatEvents = (): CustomTimedCountlyEvents["chat"] => {
   return {
@@ -200,25 +201,21 @@ export const getDefaultChatEvents = (): CustomTimedCountlyEvents["chat"] => {
     unfriendClicked: "no",
     messageSent: "no",
     channel: "web",
-    partner: environment.partner_name
-  }
-}
+    partner: environment.partner_name,
+  };
+};
 
-export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["detailsPopUp"] => {
-  return {
-    channel: "web",
-    partner: environment.partner_name
-  }
-}
-
-  export const getDefaultGuestProfileEvents = (): CustomTimedCountlyEvents["guestProfile"] => {
+export const getDefaultGuestProfileEvents =
+  (): CustomTimedCountlyEvents["guestProfile"] => {
     return {
       SignInClicked: "no",
       subscribeClicked: "no",
       speedTestClicked: "no",
-    }
-  }
-  export const getDefaultLevel1ViewEvents = (): CustomTimedCountlyEvents["Level1View"] => {
+    };
+  };
+
+export const getDefaultLevel1ViewEvents =
+  (): CustomTimedCountlyEvents["Level1View"] => {
     return {
       bannerClicked: "no",
       railClicked: "no",
@@ -226,9 +223,9 @@ export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["details
       filterGameClicked: "no",
       channel: "web",
       partner: environment.partner_name,
-      userType: Cookies.get("op_session_token") ? "registered" : "guest"
-    }
-  }
+      userType: Cookies.get("op_session_token") ? "registered" : "guest",
+    };
+  };
 
 // export const getDefaultSignInClicked = (): CustomTimedCountlyEvents["signIn"] => {
 //   return {
