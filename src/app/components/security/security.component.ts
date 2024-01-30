@@ -69,6 +69,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
   private _createPassModalRef: NgbModalRef;
   private _forgotPasswordModalRef: NgbModalRef;
   private _forgotPasswordOTPScreen: NgbModalRef;
+  private _timerRef: NodeJS.Timer;
 
   errorMessage: string;
   errorCode: number;
@@ -161,6 +162,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logoutRef?.close();
     this._forgotPasswordModalRef?.close();
     this._forgotPasswordOTPScreen?.close();
+    clearInterval(this._timerRef);
     Swal.close();
   }
 
@@ -226,14 +228,16 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
 
   timer(minute) {
     let seconds: any = 60;
-    const timer = setInterval(() => {
+    this.display = `${seconds}`;
+    clearInterval(this._timerRef);
+    this._timerRef = setInterval(() => {
       seconds--;
       const prefix = seconds < 10 ? "0" : "";
       this.display = `${prefix}${seconds}`;
       this.remainingTimer = true;
       if (seconds == 0) {
         this.remainingTimer = false;
-        clearInterval(timer);
+        clearInterval(this._timerRef);
       }
     }, 1000);
   }
