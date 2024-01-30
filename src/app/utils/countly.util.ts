@@ -3,6 +3,7 @@ import {
   CustomCountlyEvents,
   CustomTimedCountlyEvents,
 } from "../services/countly";
+import { environment } from "src/environments/environment";
 
 export const getGameLandingViewSource =
   (): CustomTimedCountlyEvents["gameLandingView"]["source"] => {
@@ -148,8 +149,29 @@ export const getDefaultHomeClickSegments = (): CustomTimedCountlyEvents["homeVie
     filterClicked: "no",
     filterGameClicked: "no",
     channel: "web",
-    partner: "no",
-    userType: "guest"
+    partner: environment.partner_name,
+    userType: localStorage.getItem("username") ? "registered" : "guest"
+  }
+}
+
+export const getDefaultSignInSegments = (): CustomTimedCountlyEvents["signIn"] => {
+  return {
+    channel: "web",
+    partner: environment.partner_name,
+    signInFromPage: "home",
+    phoneNumberEntered: "no",
+    getOtpClicked: "no",
+    guestLoginClicked: "no",
+    ReferralIdClicked: "no",
+    ReferralIdEntered: "no",
+    otpEntered: "no",
+    otpFailure: "no",
+    resendOtpClicked: "no",
+    changePhoneNumber: "no",
+    passwordRequired: "no",
+    passwordEntered: "no",
+    passwordfailed: "no",
+    passwordGetOtpClicked: "no"
   }
 }
 

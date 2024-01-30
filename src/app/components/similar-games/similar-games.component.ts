@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, ViewChild, AfterViewInit } from "@angular/core";
 import { GameModel } from "src/app/models/game.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-similar-games",
@@ -18,22 +19,29 @@ export class SimilarGamesComponent implements AfterViewInit {
   showRightArrow = false;
   showLeftArrow = false;
 
-  constructor() {}
+  constructor(
+    private readonly countlyService: CountlyService
+  ) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.updateArrows(), 100)
+  }
+
+  gameClicked(event) {
+    let key = this.title == "My Library" ? "myLibraryClicked" : "railClicked";
+    this.countlyService.updateEventData("homeView", { [key] : [event] })
   }
 
   // get unique games
   get _games() {
     if (!this.isGamezopList) {
       return (this.games as GameModel[]).filter((game, index, self) => {
-          return index === self.findIndex((t) => (t as GameModel).oneplayId === (game as GameModel).oneplayId);
+        return index === self.findIndex((t) => (t as GameModel).oneplayId === (game as GameModel).oneplayId);
       });
     } else {
       return (this.games as GamezopModel[]).filter((game, index, self) => {
         return index === self.findIndex((t) => (t as GamezopModel).code === (game as GamezopModel).code);
-    });
+      });
     }
   }
 

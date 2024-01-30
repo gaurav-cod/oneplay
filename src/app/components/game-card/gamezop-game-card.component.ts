@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { GameModel } from "src/app/models/game.model";
@@ -17,6 +17,8 @@ export class GamezopGameCard implements OnInit {
     @Input("game") game: GamezopModel;
     @Input("queryParams") queryParams?: any;
     @Input("hasFixedWidth") hfw: boolean = false;
+    
+    @Output("gameClick") gameClick = new EventEmitter();
   
     timer: NodeJS.Timeout;
     muted = true;
@@ -37,7 +39,7 @@ export class GamezopGameCard implements OnInit {
     }
   
     onGameClick() {
-      this.countlyService.updateEventData("Level1View", { "railClicked": this.game.name });
+      this.gameClick.emit(this.game.name);
       window.open(this.game.url);
     }
   

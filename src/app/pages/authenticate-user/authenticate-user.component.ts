@@ -11,6 +11,7 @@ import { v4 } from "uuid";
 import { CountlyService } from 'src/app/services/countly.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -100,7 +101,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   ngOnInit() {
 
-    this.countlyService.startEvent("signIn");
+    this.countlyService.startEvent("signIn", { data: getDefaultSignInSegments() });
 
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),

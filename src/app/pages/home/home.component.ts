@@ -151,7 +151,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this._userSubscription = this.authService.user.subscribe((user) => {
       this.userDetails = user;
-      this.countlyService.updateEventData("homeView", { userType: this.userDetails ? "registered" : "guest" });
     });
 
     this.username = localStorage.getItem("username");

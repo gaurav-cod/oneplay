@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from "@angular/core";
 import { Router } from "@angular/router";
@@ -32,6 +34,8 @@ export class GameCardComponent {
     | "STORE_OTHER"
     | "LIBRARY" = "HOME";
 
+  @Output("gameClick") gameClick = new EventEmitter();
+
   timer: NodeJS.Timeout;
   muted = true;
   showSound = false;
@@ -56,10 +60,7 @@ export class GameCardComponent {
     this.countlyService.startEvent("gameLandingView", {
       data: { source: getGameLandingViewSource(), trigger: "card" },
     });
-
-    const countylyObj = this.calledFrom === "LIBRARY" ? { myLibraryClicked: this.game.title } : { railClicked: this.game.title };
-    this.countlyService.updateEventData("homeView", countylyObj );
-
+    this.gameClick.emit(this.game.title);
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
     });

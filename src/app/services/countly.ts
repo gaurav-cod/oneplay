@@ -191,8 +191,8 @@ export interface CustomTimedCountlyEvents {
     failureReason: "invalidOtp" | "invalidToken" | "tokenExpired";
   };
   signIn: {
-    result: "success" | "failure";
-    signInFromPage:
+    result?: "success" | "failure";
+    signInFromPage?:
       | "websiteHeader"
       | "directLink"
       | "signUp"
@@ -211,13 +211,15 @@ export interface CustomTimedCountlyEvents {
     ReferralIdClicked: "yes" | "no";
     otpEntered: "yes" | "no";
     otpFailure: "yes" | "no";
-    otpFailureReson: "expired" | "invalid";
+    otpFailureReson?: "expired" | "invalid";
     resendOtpClicked: "yes" | "no";
     changePhoneNumber: "yes" | "no";
     passwordRequired: "yes" | "no";
     passwordEntered: "yes" | "no";
     passwordfailed: "yes" | "no";
     passwordGetOtpClicked: "yes" | "no";
+    channel: "web" | "mobile" | "androidTv";
+    partner: string;
   };
   guestProfile: {
     SignInClicked: "yes" | "no";
