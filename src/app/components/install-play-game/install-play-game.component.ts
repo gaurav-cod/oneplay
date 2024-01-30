@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { GameModel } from 'src/app/models/game.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
@@ -18,6 +18,8 @@ export class InstallPlayGameComponent {
   @Input('calledFrom') calledFrom: "HOME" | "STORE_INSTALL_PLAY" | "STORE_OTHER" | "LIBRARY" = "HOME";
   @Input("isInstallAndPlayList") isInstallAndPlayList: boolean = false;
 
+  @Output("gameClick") gameClick = new EventEmitter();
+  
   get isMobile() {
     return window.innerWidth < 768;
   }
@@ -36,6 +38,8 @@ export class InstallPlayGameComponent {
     this.countlyService.startEvent("gameLandingView", {
       data: { source: getGameLandingViewSource(), trigger: 'card' },
     });
+    
+    this.gameClick.emit(this.game.title);
     this.router.navigate(["view", this.gLink.transform(this.game)], {
       queryParams: this.queryParams,
     });

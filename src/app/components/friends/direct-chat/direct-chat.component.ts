@@ -22,6 +22,7 @@ import { RestService } from "src/app/services/rest.service";
 import * as moment from "moment";
 import { EmojiEvent } from "@ctrl/ngx-emoji-mart/ngx-emoji";
 import { UNSUPPORTED_EMOJIS } from "src/app/variables/unsupported-emojis";
+import { CountlyService } from "src/app/services/countly.service";
 
 @Component({
   selector: "app-direct-chat",
@@ -52,7 +53,8 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
     private readonly chatService: ChatService,
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly countlyService: CountlyService
   ) {
     this.userSub = this.authService.user.subscribe(
       (user) => (this.user = user)
@@ -163,6 +165,7 @@ export class DirectChatComponent implements OnInit, OnDestroy, AfterViewInit {
   sendMessage() {
     this.showEmoji = false;
     if (this.message.valid) {
+      this.countlyService.updateEventData("chat", { "messageSent": "yes" });
       this.chatService.sendMessage(this.message.value, this.friend.user_id);
       this.message.reset();
     }
