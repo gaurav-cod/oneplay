@@ -138,7 +138,7 @@ export class Gamezop implements OnInit, OnDestroy {
   }
 
   private countlyEvent(key: string, value: string) {
-    this.countlyService.updateEventData("Level1View", { [key]: [value] })
+    this.countlyService.updateEventData("Level1View", { [key]: value })
   }
 
 }

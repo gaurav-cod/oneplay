@@ -281,6 +281,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   private countlyEvent(key: string, value: string) {
-    this.countlyService.updateEventData("detailsPopUp", { [key]: [value] });
+    this.countlyService.updateEventData("detailsPopUp", { [key]: value });
   }
 }

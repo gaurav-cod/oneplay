@@ -189,11 +189,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
   getOTP() {
 
-    if (this._isPasswordFlow)
-    this.countlyEvent("passwordGetOtpClicked", "yes");
-
+    if (this._isPasswordFlow) {
+      this.countlyEvent("passwordGetOtpClicked", "yes");
+    }
     this.countlyEvent("getOtpClicked", "yes");
     this.countlyEvent("ReferralIdEntered", (this.isUserRegisted && this.referal_code?.value) ? "yes" : "no");
+
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
@@ -247,6 +248,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       next: (response) => {
         this.userLoginSetup(response);
         
+        this.countlyEvent("otpEntered", "yes");
+
         if (response.new_user) {
           localStorage.setItem("is_new_user", response.new_user);
           localStorage.setItem("showUserInfoModal", "true");
@@ -330,20 +333,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
   private userLoginSetup(response: any) {
     this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
-        this.startSignInEvent();
-        setTimeout(()=> {
-          this.authService.trigger_speed_test = response.trigger_speed_test;
-        }, 5000);
-        const code: string = this.route.snapshot.queryParams["code"];
-        if (!!code && /\d{4}-\d{4}/.exec(code)) {
-          this.restService.setQRSession(code, response.session_token).subscribe({
-            next: ()=>{},
-            error: (error)=> {
-              this.showError(error);
-            }
-          });
+    this.startSignInEvent();
+    setTimeout(()=> {
+      this.authService.trigger_speed_test = response.trigger_speed_test;
+    }, 5000);
+    const code: string = this.route.snapshot.queryParams["code"];
+    if (!!code && /\d{4}-\d{4}/.exec(code)) {
+      this.restService.setQRSession(code, response.session_token).subscribe({
+        next: ()=>{},
+        error: (error)=> {
+          this.showError(error);
         }
-        this.authService.login(response.session_token);
+      });
+    }
+    this.authService.login(response.session_token);
   }
   private userLoginFailure(error: any) {
     this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });    
@@ -365,6 +368,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }, 1000);
   }
   guestFlow() {
+    this.countlyEvent("guestLoginClicked", "yes");
     this.router.navigate(['/home']);
   }
   
@@ -416,7 +420,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private countlyEvent(key: string, value: string) {
-    this.countlyService.endEvent("signIn", { [key]: [value]});
+    this.countlyService.endEvent("signIn", { [key]: value});
   }
 
   showError(error) {
