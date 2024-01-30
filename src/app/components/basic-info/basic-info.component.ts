@@ -32,9 +32,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   dob = new UntypedFormControl(undefined, [Validators.required]);
 
   private dateToNgbDate = (date: Date): NgbDateStruct => ({
-    year: date.getUTCFullYear(),
-    month: date.getMonth() + 1,
     day: date.getDate(),
+    month: date.getMonth() + 1,
+    year: date.getUTCFullYear()
   });
 
   private dateMinusYears = (date: Date, count: number): Date => {
