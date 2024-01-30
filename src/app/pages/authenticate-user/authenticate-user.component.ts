@@ -12,6 +12,8 @@ import { CountlyService } from 'src/app/services/countly.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
+import { LoginOtpRO, LoginRO } from 'src/app/interface';
+import { UserModel } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -256,7 +258,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this.countlyEvent("otpEntered", "yes");
 
         if (response.new_user) {
-          localStorage.setItem("is_new_user", response.new_user);
+          localStorage.setItem("is_new_user", String(response.new_user));
           localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showTooltipInfo", "true");
           localStorage.setItem("showAddToLibrary", "true");
@@ -267,7 +269,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
             localStorage.setItem("showUserInfoModal", "true");
           localStorage.setItem("showWelcomBackMsg", "true");
         }
-        localStorage.setItem("username", response.profile.username);
 
         if (this.redirectURL)
           this.router.navigate([this.redirectURL]);
@@ -298,7 +299,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         localStorage.setItem("showWelcomBackMsg", "true");
         if (response.update_profile)
           localStorage.setItem("showUserInfoModal", "true");
-        localStorage.setItem("username", response.profile.username);
         if (this.redirectURL) {
           this.router.navigate([this.redirectURL]);
         }
@@ -336,7 +336,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       }
     }
   }
-  private userLoginSetup(response: any) {
+  private userLoginSetup(response: LoginRO & {profile: UserModel}) {
     this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
     this.startSignInEvent();
     setTimeout(()=> {
@@ -352,6 +352,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       });
     }
     this.authService.login(response.session_token);
+    this.authService.setUser(response.profile);
   }
   private userLoginFailure(error: any) {
     this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });    

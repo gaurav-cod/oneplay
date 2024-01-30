@@ -344,8 +344,6 @@ export interface CustomTimedCountlyEvents {
     myLibraryClicked: string;
     filterClicked: string;
     filterGameClicked: string;
-    channel: "web" | "mobile" | "androidTv"
-    partner: string
     userType: "guest" | "registered"
   };
 }

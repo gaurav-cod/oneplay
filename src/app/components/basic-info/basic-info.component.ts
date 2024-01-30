@@ -203,10 +203,6 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           this.countlyService.updateEventData("settingsView", { "dateOfBirthChanged": "yes" })
         }
 
-        if (body.username) {
-          localStorage.setItem("username", body.username);
-        }
-
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,

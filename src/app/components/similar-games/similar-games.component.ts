@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter } from "@angular/core";
 import { GameModel } from "src/app/models/game.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { CountlyService } from "src/app/services/countly.service";
@@ -14,6 +14,8 @@ export class SimilarGamesComponent implements AfterViewInit {
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
 
+  @Output() gameClick = new EventEmitter<string>();
+
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
   showRightArrow = false;
@@ -27,9 +29,8 @@ export class SimilarGamesComponent implements AfterViewInit {
     setTimeout(() => this.updateArrows(), 100)
   }
 
-  gameClicked(event) {
-    let key = this.title == "My Library" ? "myLibraryClicked" : "railClicked";
-    this.countlyService.updateEventData((this.isGamezopList ? "Level1View" : "homeView"), { [key] : this.title + ", " + event })
+  gameClicked(event: string) {
+    this.gameClick.emit(event);
   }
 
   // get unique games

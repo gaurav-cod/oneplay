@@ -208,7 +208,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         this.goToNext();
 
         if (this.screenType == "USERNAME") {
-          localStorage.setItem("username", body.username);
           this.updatePassword();
         }
 

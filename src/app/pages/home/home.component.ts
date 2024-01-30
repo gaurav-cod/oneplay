@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   genreGames: GameModel[] = [];
   genreSelected: string = '';
 
-  username: string | null = null;
   firstSignUpMsgTimer: number | null = null;
 
   private userDetails: UserModel | null = null;
@@ -71,6 +70,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     return [...this.restRows, ...this.genreGames].length;
   }
 
+  get username(): string | null {
+    return this.userDetails?.username;
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -97,6 +100,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     Swal.close();
   }
 
+  @HostListener('window:unload', ['$event'])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
+    this.countlyService.endEvent("homeView");
+  }
+
   async ngOnInit() {
 
     this.title.setTitle("Home");
@@ -104,6 +113,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.countlyService.startEvent("homeView", {
       data: getDefaultHomeClickSegments(),
+      discardOldData: true,
     });
 
     const response = await this.restService.getFilteredGames({ "install_and_play": "true" }, 0, 5).toPromise();
@@ -153,7 +163,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.userDetails = user;
     });
 
-    this.username = localStorage.getItem("username");
     if (localStorage.getItem("is_new_user")) {
       localStorage.removeItem("is_new_user");
       this.firstSignUpMsgTimer = 5;

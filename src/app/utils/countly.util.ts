@@ -4,6 +4,7 @@ import {
   CustomTimedCountlyEvents,
 } from "../services/countly";
 import { environment } from "src/environments/environment";
+import Cookies from "js-cookie";
 
 export const getGameLandingViewSource =
   (): CustomTimedCountlyEvents["gameLandingView"]["source"] => {
@@ -148,9 +149,7 @@ export const getDefaultHomeClickSegments = (): CustomTimedCountlyEvents["homeVie
     myLibraryClicked: "no",
     filterClicked: "no",
     filterGameClicked: "no",
-    channel: "web",
-    partner: environment.partner_name,
-    userType: localStorage.getItem("username") ? "registered" : "guest"
+    userType: Cookies.get("op_session_token") ? "registered" : "guest"
   }
 }
 
@@ -229,7 +228,7 @@ export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["details
       filterGameClicked: "no",
       channel: "web",
       partner: environment.partner_name,
-      userType: localStorage.getItem("username") ? "registered" : "guest"
+      userType: Cookies.get("op_session_token") ? "registered" : "guest"
     }
   }
 
