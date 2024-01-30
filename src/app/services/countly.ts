@@ -229,10 +229,10 @@ export interface CustomTimedCountlyEvents {
     partner: string
   };
   detailsPopUp: {
-    dateOfBirth: "success" | "skip" | "later" | "close";
-    password: "success" | "skip" | "later" | "close";
-    userName: "success" | "skip" | "later" | "close";
-    fullName: "success" | "skip" | "later" | "close";
+    dateOfBirth?: "success" | "skip" | "later" | "close";
+    password?: "success" | "skip" | "later" | "close";
+    userName?: "success" | "skip" | "later" | "close";
+    fullName?: "success" | "skip" | "later" | "close";
     channel: "web" | "mobile" | "androidTv";
     partner: string
   };

@@ -26,10 +26,11 @@ import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
 import { CountlyService } from "src/app/services/countly.service";
-import { CustomCountlyEvents } from "src/app/services/countly";
+import { CustomCountlyEvents, CustomTimedCountlyEvents } from "src/app/services/countly";
 import {
   genDefaultMenuClickSegments,
   genDefaultMenuDropdownClickSegments,
+  getDefaultGuestProfileEvents,
   getGameLandingViewSource,
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
@@ -254,6 +255,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.multiNotificationSub?.unsubscribe();
     this._profileOverlaySub?.unsubscribe();
     this._qParamSubscription?.unsubscribe();
+    this.countlyService.endEvent("guestProfile");
   }
 
   async ngOnInit() {
@@ -564,6 +566,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         data: {
           keywords: this.query.value,
           gameCardClicked: "no",
+          userType: this.isAuthenticated ? "registered" : "guest"
         },
       });
     } else if (tab === "users") {
@@ -629,7 +632,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   goToSignUpPage() {
     this.restService.getLogInURL().subscribe({
       next: (response) => {
-        this.logDropdownEvent("subscriptionClicked");
+        this.logDropdownEventGuest("SignInClicked");
         if (response.url === "self") {
           this.router.navigate(["/login"]);
         } else {
@@ -673,7 +676,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.showInitialUserMessage = false;
       }, 2000);
     }
-    this.toggleFriends.emit("profileClicked");
+    if (this.isAuthenticated) {
+      this.toggleFriends.emit("profileClicked");
+    } else {
+      
+      this.countlyService.startEvent("guestProfile", { data: getDefaultGuestProfileEvents() });
+    }
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       "userType": this.isAuthenticated ? "registered" : "guest",
@@ -684,6 +692,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   logDropdownEvent(item: keyof CustomCountlyEvents["menuDropdownClick"]): void {
     this.countlyService.addEvent("menuDropdownClick", {
       ...genDefaultMenuDropdownClickSegments(),
+      [item]: "yes",
+    });
+  }
+  logDropdownEventGuest(item: keyof CustomTimedCountlyEvents["guestProfile"]): void {
+    this.countlyService.updateEventData("guestProfile", {
+      ...getDefaultGuestProfileEvents(),
       [item]: "yes",
     });
   }

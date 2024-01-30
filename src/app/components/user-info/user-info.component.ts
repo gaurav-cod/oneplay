@@ -15,6 +15,9 @@ import { UpdateProfileDTO } from "src/app/interface";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import {
+  getDefaultDetailPopupEvents
+} from "src/app/utils/countly.util";
 
 enum SCREEN_TYPE {
   "DOB" = "DOB",
@@ -69,6 +72,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
             ? "Password does not match"
             : null)
       );
+
+    this.countlyService.startEvent("detailsPopUp", { data: getDefaultDetailPopupEvents() })
   }
 
   ngOnDestroy(): void {
@@ -271,8 +276,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         this.authService.setProfileOverlay(true);
       }, 2000);
     }
-    this.activeModal?.close();
     this.countlyEvent(this.screenType, "close");
+    this.activeModal?.close();
   }
 
   private countlyEvent(key: string, value: string) {

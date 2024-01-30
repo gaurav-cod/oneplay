@@ -552,6 +552,7 @@
                   <span class="align-middle">Sign In/Sign Up</span>
                 </a>
                 <a
+                  (click)="logDropdownEventGuest('subscribeClicked')"
                   [href]="domain + '/subscription.html'"
                   class="dropdown-item"
                 >
@@ -560,7 +561,7 @@
                 </a>
 
                 <a
-                  (click)="logDropdownEvent('speedTestClicked')"
+                  (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
                   [routerLink]="['speed-test']"

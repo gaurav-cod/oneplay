@@ -195,35 +195,43 @@ export const genDefaultMenuDropdownClickSegments =
   };
 
 
-// export const getDefaultChatEvents = (): CustomTimedCountlyEvents["chat"] => {
-//   return {
-//     friendClicked: "no",
-//     unfriendClicked: "no",
-//     messageSent: "no",
-//     channel: "web",
-//     partner: "onePlay"
-//   }
-// }
+export const getDefaultChatEvents = (): CustomTimedCountlyEvents["chat"] => {
+  return {
+    friendClicked: "no",
+    unfriendClicked: "no",
+    messageSent: "no",
+    channel: "web",
+    partner: environment.partner_name
+  }
+}
 
-// export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["detailsPopUp"] => {
-//   return {
-//     dateOfBirth: "success",
-//     password: "success",
-//     userName: "success",
-//     fullName: "success",
-//     channel: "web",
-//     partner: "onePlay"
-//   }
-// }
+export const getDefaultDetailPopupEvents = (): CustomTimedCountlyEvents["detailsPopUp"] => {
+  return {
+    channel: "web",
+    partner: environment.partner_name
+  }
+}
 
-  // export const getDefaultGuestProfileEvents = (): CustomTimedCountlyEvents["guestProfile"] => {
-  //   return {
-  //     SignInClicked: "no",
-  //     subscribeClicked: "no",
-  //     speedTestClicked: "no",
-  //     channel: "web"
-  //   }
-  // }
+  export const getDefaultGuestProfileEvents = (): CustomTimedCountlyEvents["guestProfile"] => {
+    return {
+      SignInClicked: "no",
+      subscribeClicked: "no",
+      speedTestClicked: "no",
+      channel: "web",
+      partner: environment.partner_name
+    }
+  }
+  export const getDefaultLevel1ViewEvents = (): CustomTimedCountlyEvents["Level1View"] => {
+    return {
+      bannerClicked: "no",
+      railClicked: "no",
+      filterClicked: "no",
+      filterGameClicked: "no",
+      channel: "web",
+      partner: environment.partner_name,
+      userType: localStorage.getItem("username") ? "registered" : "guest"
+    }
+  }
 
 // export const getDefaultSignInClicked = (): CustomTimedCountlyEvents["signIn"] => {
 //   return {

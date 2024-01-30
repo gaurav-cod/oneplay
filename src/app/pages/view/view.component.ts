@@ -379,6 +379,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                   gameGenre: game.genreMappings.join(', '),
                   source: "directLink",
                   trigger: "card",
+                  userType: this.user ? "registered" : "guest"
                 }
               });
             }

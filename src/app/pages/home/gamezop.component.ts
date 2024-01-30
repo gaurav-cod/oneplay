@@ -8,6 +8,7 @@ import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { getDefaultLevel1ViewEvents } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-gamezop",
@@ -54,7 +55,7 @@ export class Gamezop implements OnInit, OnDestroy {
   async ngOnInit()  {
     this.title.setTitle("Gamezop");
 
-    this.countlyService.startEvent("Level1View");
+    this.countlyService.startEvent("Level1View", { data: getDefaultLevel1ViewEvents() });
     this.loaderService.start();
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam['prevPage']) {
