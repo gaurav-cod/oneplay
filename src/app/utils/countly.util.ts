@@ -197,8 +197,6 @@ export const getDefaultChatEvents = (): CustomTimedCountlyEvents["chat"] => {
     friendClicked: "no",
     unfriendClicked: "no",
     messageSent: "no",
-    channel: "web",
-    partner: environment.partner_name,
   };
 };
 
