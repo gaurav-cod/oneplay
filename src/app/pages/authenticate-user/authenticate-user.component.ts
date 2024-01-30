@@ -22,7 +22,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
 
-  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
+  screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "OTP";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
 
@@ -80,7 +80,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.touched && control.invalid && control.dirty;
+    return control.touched && control.invalid && control.dirty && control.value?.length > 0;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -357,6 +357,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.referal_code = null;
     this.errorMessage = null;
     if (screenOnDisplay === "OTP") {
+      // reset otp
+      Object.keys(this.otpForm.controls).forEach((key)=> {
+        this.otpForm.controls[key].setValue("");
+      })
       setTimeout(()=> {
 
         this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
@@ -364,6 +368,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         );
       }, 500);
     } else {
+      this.authenticateForm.controls["phone"].setValue("");
+      this.errorMessage = null;
       this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
         this.handlePaste(e)
       );
