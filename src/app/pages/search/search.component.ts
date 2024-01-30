@@ -245,6 +245,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         data: {
           keywords: this.query,
           gameCardClicked: "no",
+          userType: this.isAuthenticated ? "registered" : "guest"
         },
       });
     } else {

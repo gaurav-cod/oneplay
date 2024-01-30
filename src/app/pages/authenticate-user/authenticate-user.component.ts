@@ -155,6 +155,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this._isPasswordFlow = response.has_password;
         this.isUserRegisted = response.is_registered;
         this.isValidPhoneNumber = true;
+
+        if (this._isPasswordFlow) {
+          this.countlyEvent("passwordRequired", "yes");
+        }
+
       }, error: (error: any)=> {
         this.isValidPhoneNumber = false;
         this._isPasswordFlow = false;

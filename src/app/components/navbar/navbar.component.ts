@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -16,7 +17,7 @@ import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdown, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -43,7 +44,7 @@ import { FriendInterface, NotificationModel } from "src/app/models/notification.
   styleUrls: ["./navbar.component.scss"],
   providers: [GLinkPipe],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public query = new UntypedFormControl("");
   public results: GameModel[] = [];
@@ -78,6 +79,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private multiNotificationSub: Subscription;
   private _profileOverlaySub: Subscription;
   private _qParamSubscription: Subscription;
+  private _guestDropdownSub: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
@@ -255,7 +257,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.multiNotificationSub?.unsubscribe();
     this._profileOverlaySub?.unsubscribe();
     this._qParamSubscription?.unsubscribe();
+    this._guestDropdownSub?.unsubscribe();
     this.countlyService.endEvent("guestProfile");
+  }
+
+  @ViewChild('guestDropDown') guestDropDown: NgbDropdown;
+  ngAfterViewInit() {
+    this._guestDropdownSub = this.guestDropDown.openChange.asObservable().subscribe((dropdownData: boolean)=> {
+      if (dropdownData)
+        this.countlyService.startEvent("guestProfile", { data: getDefaultGuestProfileEvents() });
+      else
+        this.countlyService.endEvent("guestProfile");
+    })
   }
 
   async ngOnInit() {
@@ -678,9 +691,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
     if (this.isAuthenticated) {
       this.toggleFriends.emit("profileClicked");
-    } else {
-      
-      this.countlyService.startEvent("guestProfile", { data: getDefaultGuestProfileEvents() });
     }
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),

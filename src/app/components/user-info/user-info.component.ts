@@ -11,7 +11,6 @@ import {
   NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
-import { UpdateProfileDTO } from "src/app/interface";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
@@ -73,7 +72,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
             : null)
       );
 
-    this.countlyService.startEvent("detailsPopUp", { data: getDefaultDetailPopupEvents() })
+    this.countlyService.startEvent("detailsPopUp");
   }
 
   ngOnDestroy(): void {
@@ -117,13 +116,14 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     return date;
   };
 
-  private countlyKey = () => {
-    return {
+  private countlyKey = (key: string) => {
+    const keys = {
       "DOB": "dateOfBirth", 
       "PASSWORD": "password", 
       "USERNAME": "username", 
       "FULLNAME": "fullname"
     }
+    return keys[key];
   }
   
   minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
@@ -204,9 +204,9 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     }
     this.restService.updateProfile(body).subscribe(
       (data) => {
+        this.countlyEvent(this.countlyKey(this.screenType), "success");
         this.goToNext();
 
-        this.countlyEvent(this.countlyKey()[this.screenType], "success");
         if (this.screenType == "USERNAME") {
           localStorage.setItem("username", body.username);
           this.updatePassword();
