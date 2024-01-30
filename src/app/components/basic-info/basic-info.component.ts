@@ -194,6 +194,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.restService.updateProfile(body).subscribe(
       (data) => {
         
+        if (body.dob) {
+          this.countlyService.updateEventData("settingsView", { "dateOfBirthChanged": "yes" })
+        }
+
         if (body.username) {
           localStorage.setItem("username", body.username);
         }

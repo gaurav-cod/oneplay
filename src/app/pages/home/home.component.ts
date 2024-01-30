@@ -151,7 +151,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
     this._userSubscription = this.authService.user.subscribe((user) => {
       this.userDetails = user;
-      debugger;
       this.countlyService.updateEventData("homeView", { userType: this.userDetails ? "registered" : "guest" });
     });
 
@@ -180,7 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   viewBannerGame(game: GameModel) {
     this.countlyService.startEvent("gameLandingView", {
-      data: { source: 'homePage', trigger: 'banner' },
+      data: { source: 'homePageBanner', trigger: 'banner' },
       discardOldData: true,
     });
     this.countlyService.updateEventData("homeView", { bannerClicked: game.title })
