@@ -724,7 +724,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
-      userType: this.isAuthenticated ? "registered" : "guest",
       [item]: "yes",
     });
   }

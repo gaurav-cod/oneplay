@@ -14,9 +14,6 @@ import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
-import {
-  getDefaultDetailPopupEvents
-} from "src/app/utils/countly.util";
 
 enum SCREEN_TYPE {
   "DOB" = "DOB",

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -6,6 +6,7 @@ import { Subscription } from "rxjs";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { getDefaultLevel1ViewEvents } from "src/app/utils/countly.util";
@@ -49,6 +50,12 @@ export class Gamezop implements OnInit, OnDestroy {
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
     
+    this.countlyService.endEvent("Level1View");
+  }
+
+  @HostListener("window:unload", ["$event"])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
     this.countlyService.endEvent("Level1View");
   }
 
@@ -137,7 +144,7 @@ export class Gamezop implements OnInit, OnDestroy {
     return Object.keys(this.queries);
   }
 
-  private countlyEvent(key: string, value: string) {
+  countlyEvent(key: keyof CustomTimedCountlyEvents['Level1View'], value: string) {
     this.countlyService.updateEventData("Level1View", { [key]: value })
   }
 

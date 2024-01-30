@@ -166,8 +166,6 @@ export interface CustomTimedCountlyEvents {
     railClicked: string;
     filterClicked: string;
     filterGameClicked: string;
-    channel: "web" | "mobile" | "androidTv";
-    partner: string;
     userType: "guest" | "registered"
   };
   signUpFormSubmitted: {
@@ -223,16 +221,12 @@ export interface CustomTimedCountlyEvents {
     SignInClicked: "yes" | "no";
     subscribeClicked: "yes" | "no";
     speedTestClicked: "yes" | "no";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string
   };
   detailsPopUp: {
     dateOfBirth?: "success" | "skip" | "later" | "close";
     password?: "success" | "skip" | "later" | "close";
     userName?: "success" | "skip" | "later" | "close";
     fullName?: "success" | "skip" | "later" | "close";
-    channel: "web" | "mobile" | "androidTv";
-    partner: string
   };
   gameLandingView: {
     gameId: string;
