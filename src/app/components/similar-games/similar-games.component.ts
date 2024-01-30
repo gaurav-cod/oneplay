@@ -29,7 +29,7 @@ export class SimilarGamesComponent implements AfterViewInit {
 
   gameClicked(event) {
     let key = this.title == "My Library" ? "myLibraryClicked" : "railClicked";
-    this.countlyService.updateEventData("homeView", { [key] : [event] })
+    this.countlyService.updateEventData("homeView", { [key] : event })
   }
 
   // get unique games
