@@ -69,6 +69,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           icon: "success",
           title: popups[swal].title,
           text: popups[swal].body,
+          confirmButtonText: "Okay"
         }).then(() => {
           window.location.href = "/dashboard/settings/subscription?overlay=true";
         });
