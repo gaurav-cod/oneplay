@@ -137,7 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.gameFilterSubscription = this.restService
             .getFilteredGames(this.queries[query], 0)
             .subscribe((games) => {
-              this.updateHoveView('filterClicked', query);
+              this.updateHomeView('filterClicked', query);
               this.genreGames = games;
             });
         }
@@ -188,15 +188,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   viewBannerGame(game: GameModel) {
     
-    this.countlyService.addEvent("homeView", {
-      ...getDefaultHomePageEvents(),
-      "bannerClicked": game.title,
-    });
     this.countlyService.startEvent("gameLandingView", {
       data: { source: "homePageBanner", trigger: "banner" },
       discardOldData: true,
     });
-    this.updateHoveView('bannerClicked', game.title);
+    this.updateHomeView('bannerClicked', game.title);
     this.router.navigate(["view", this.gLink.transform(game)]);
   }
 
@@ -224,7 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return games.every((game) => game.isInstallAndPlay);
   }
 
-  updateHoveView(
+  updateHomeView(
     key: keyof CustomTimedCountlyEvents["homeView"],
     value: string
   ) {

@@ -1505,8 +1505,11 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   selectStore(store: PurchaseStore) {
+
     if (!this.selectedStore || this.selectedStore.name !== store.name) {
       this.selectedStore = store;
+      if (!this.user)
+        return;
       lastValueFrom(
         this.restService.setPreferredStoreForGame(
           this.game.oneplayId,

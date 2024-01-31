@@ -671,7 +671,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
           window.open(response.url);
         }
       },
-      error: () => {
+      error: (error) => {
+        if (error?.error?.code == 307) {
+          this.authService.setIsNonFunctionalRegion(true);
+        } 
         this.router.navigate(["/login"]);
       },
     });

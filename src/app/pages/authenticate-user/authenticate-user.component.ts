@@ -31,6 +31,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   private _deviceType: "web" | "tizen" = "web";
 
+  public nonFunctionalRegion: boolean = false;
+
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
@@ -115,6 +117,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.startSignInEvent();
 
+    this.nonFunctionalRegion = this.authService.isNonFunctionalRegion;
+
     this._referalSubscription = this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -133,7 +137,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       this.redirectURL = qParam["redirectUrl"];
       if (qParam["ref"]) {
         this.getUserByReferalCode(qParam["ref"]);
-        this.router.navigate([], {queryParams: {ref: null}});
+        // this.router.navigate([], {queryParams: {ref: null}});
       }
     })
     this.restService.getCurrentLocation().subscribe({

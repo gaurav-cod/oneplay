@@ -1,3 +1,4 @@
+<app-non-functional-region *ngIf="nonFunctionalRegion == true"></app-non-functional-region>
 <section [ngSwitch]="screenOnDisplay">
   <section *ngSwitchCase="'REGISTER_LOGIN'">
     <form [formGroup]="authenticateForm" role="form" class="row">
