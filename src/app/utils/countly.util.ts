@@ -131,7 +131,6 @@ export const genDefaultMenuClickSegments =
   (): CustomCountlyEvents["menuClick"] => {
     return {
       homeClicked: "no",
-      gamezopClicked: "no",
       gamesClicked: "no",
       streamsClicked: "no",
       searchClicked: "no",

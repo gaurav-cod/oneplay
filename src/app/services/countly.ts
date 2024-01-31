@@ -77,7 +77,6 @@ export interface CustomCountlyEvents {
   };
   menuClick: {
     homeClicked: "yes" | "no";
-    gamezopClicked: "yes" | "no";
     gamesClicked: "yes" | "no";
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
