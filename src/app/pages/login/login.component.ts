@@ -161,13 +161,17 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   private startSignInEvent() {
     this.countlyService.startEvent("signIn", { discardOldData: false });
     const segments = this.countlyService.getEventData("signIn");
+    const redirectUrl: string = this.route.snapshot.queryParams["redirectUrl"];
+    
+    
     if (!segments.signInFromPage) {
       this.countlyService.updateEventData("signIn", {
-        signInFromPage: "directLink",
+        signInFromPage: /checkout/.exec(redirectUrl) ? "subscriptionPage" : "directLink" ,
       })
     }
   }
   showError(error) {
+    this.countlyService.endEvent("signIn")
     Swal.fire({
       title: error.data.title,
       text: error.data.message,

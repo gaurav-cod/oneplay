@@ -16,6 +16,8 @@ import {
   ILocation,
   IPayment,
   LoginDTO,
+  LoginOtpRO,
+  LoginRO,
   PurchaseStore,
   SetOnlineRO,
   SignupDTO,
@@ -47,7 +49,7 @@ import { UAParser } from "ua-parser-js";
 import { GameplayHistoryModel } from "../models/gameplay.model";
 import { SubscriptionPackageModel } from "../models/subscriptionPackage.model";
 import { NotificationModel } from "../models/notification.model";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { GamezopFeedModel } from "../models/gamezopFeed.model";
 import { GamezopModel } from "../models/gamezop.model";
 @Injectable({
@@ -105,13 +107,15 @@ export class RestService {
 
   getReferalName(id: string) {
     return this.http
-    .post<any>(this.r_mix_api_3 + "/accounts/check_referral_code", {referral_code: id})
-    .pipe(
-      map((res: any) => res),
-      catchError(({ error }) => {
-        throw error;
+      .post<any>(this.r_mix_api_3 + "/accounts/check_referral_code", {
+        referral_code: id,
       })
-    );
+      .pipe(
+        map((res: any) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getProfile(): Observable<UserModel> {
@@ -151,13 +155,13 @@ export class RestService {
 
   createPassword(password: string): Observable<void> {
     return this.http
-    .put(this.r_mix_api + "/accounts/password", { password })
-    .pipe(
-      map(() => {}),
-      catchError(({ error }) => {
-        throw error;
-      })
-    );
+      .put(this.r_mix_api + "/accounts/password", { password })
+      .pipe(
+        map(() => {}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   updateEmail(email: string): Observable<string> {
@@ -488,9 +492,12 @@ export class RestService {
       .get<any[]>(this.r_mix_api + "/accounts/subscription/all", {
         params: { page, limit },
       })
-      .pipe(map((res) => res.map((d) => new SubscriptionModel(d))), catchError(({ error }) => {
-        throw error;
-      }));
+      .pipe(
+        map((res) => res.map((d) => new SubscriptionModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getCurrentSubscription(): Observable<SubscriptionModel[]> {
@@ -513,9 +520,12 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/processing",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
-        throw error;
-      }));
+      .pipe(
+        map((res) => res.map((d) => new SubscriptionPaymentModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getFailedSubscription(
@@ -527,9 +537,12 @@ export class RestService {
         this.r_mix_api + "/accounts/subscription/payment-history/failed",
         { params: { page, limit } }
       )
-      .pipe(map((res) => res.map((d) => new SubscriptionPaymentModel(d))),catchError(({ error }) => {
-        throw error;
-      }));
+      .pipe(
+        map((res) => res.map((d) => new SubscriptionPaymentModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   hasPreviousPayments(): Observable<boolean> {
@@ -539,17 +552,26 @@ export class RestService {
   }
 
   checkIfPaymentReciptDownload(planId: string) {
-    return this.http.get(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`).pipe(catchError((({ error })=> {throw error;})))
+    return this.http
+      .get(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`)
+      .pipe(
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getPaymentRecipt(planId: string) {
-    const header  = new HttpHeaders({
-      'Content-Type': 'application/pdf'
-    })
-    return this.http.get(this.r_mix_api + `/subscriptions/payment/${planId}/receipt`, {
-      responseType: 'blob',
-      headers: header,
-    })
+    const header = new HttpHeaders({
+      "Content-Type": "application/pdf",
+    });
+    return this.http.get(
+      this.r_mix_api + `/subscriptions/payment/${planId}/receipt`,
+      {
+        responseType: "blob",
+        headers: header,
+      }
+    );
   }
 
   setOnline(): Observable<SetOnlineRO> {
@@ -573,14 +595,12 @@ export class RestService {
   }
 
   getWishlist(): Observable<string[]> {
-    return this.http
-      .get<string[]>(this.r_mix_api + "/accounts/wishlist")
-      .pipe(
-        map((res) => res),
-        catchError(({ error }) => {
-          throw error;
-        })
-      );
+    return this.http.get<string[]>(this.r_mix_api + "/accounts/wishlist").pipe(
+      map((res) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 
   addWishlist(gameId: string): Observable<any> {
@@ -626,15 +646,22 @@ export class RestService {
   setQRSession(code: string, token: string) {
     return this.http
       .post(this.r_mix_api + "/accounts/qr/verify_code", { code, token })
-      .pipe(catchError(({error}) => {
-      throw error; 
-    }));
+      .pipe(
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getNearestSpeedTestServer(): Observable<SpeedTestServerRO> {
-    return this.http.get<SpeedTestServerRO>(
-      this.r_mix_api + "/games/speed-test-server"
-    ).pipe(map((res)=> res), catchError(({error})=> {throw error}));
+    return this.http
+      .get<SpeedTestServerRO>(this.r_mix_api + "/games/speed-test-server")
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   sendSpeedTestDLPacket(url: string, packetSize: number) {
@@ -1387,65 +1414,107 @@ export class RestService {
   }
 
   downloadPDF(pdfLink: string): Observable<Blob> {
-    const header  = new HttpHeaders({
-      'Content-Type': 'application/pdf'
-    })
+    const header = new HttpHeaders({
+      "Content-Type": "application/pdf",
+    });
     return this.http.get(pdfLink, {
-      responseType: 'blob',
+      responseType: "blob",
       headers: header,
-    })
+    });
   }
 
   // * V3 Guest User Login API
 
   // ? Should not be POST method should be PUT
   isPhoneRegistred(phone: string, device: "web" | "tizen") {
-    return this.http.post(this.r_mix_api_3 +  "/accounts/check_phone_number", { phone: phone, device: device })
-            .pipe(map((res)=> res), catchError((({ error }) => {throw error})));
+    return this.http
+      .post(this.r_mix_api_3 + "/accounts/check_phone_number", {
+        phone: phone,
+        device: device,
+      })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
   getLogInURL() {
-    return this.http
-      .post<GetLoginUrlRO>(this.r_mix_api_3 + "/accounts/get_login_url", {
+    return this.http.post<GetLoginUrlRO>(
+      this.r_mix_api_3 + "/accounts/get_login_url",
+      {
         platform: "angular",
-      })
-    }
+      }
+    );
+  }
 
   getLoginOTP(userRegistration: UserAuthDTO) {
     return this.http
-      .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
-        (map((res: any) => res.success), catchError(({ error }) => {
+      .post<boolean>(
+        this.r_mix_api_3 + "/accounts/get_login_otp",
+        userRegistration
+      )
+      .pipe(
+        (map((res: any) => res.success),
+        catchError(({ error }) => {
           throw error;
-        })))
+        }))
+      );
   }
 
   resendOTP(userRegistration: UserAuthDTO) {
     return this.http
-    .post<boolean>(this.r_mix_api_3 + "/accounts/get_login_otp", userRegistration).pipe(
-      (map((res: any) => res.success), catchError(({ error }) => {
-        throw error;
-      })))
+      .post<boolean>(
+        this.r_mix_api_3 + "/accounts/get_login_otp",
+        userRegistration
+      )
+      .pipe(
+        (map((res: any) => res.success),
+        catchError(({ error }) => {
+          throw error;
+        }))
+      );
   }
 
   verifyOTP(userRegistration: UserAuthDTO) {
     return this.http
-    .post<any>(this.r_mix_api_3 + "/accounts/login_with_otp", userRegistration).pipe(
-      (map((res) => res), catchError(({ error }) => {
-        throw error;
-      })))
+      .post<LoginOtpRO>(
+        this.r_mix_api_3 + "/accounts/login_with_otp",
+        userRegistration
+      )
+      .pipe(
+        map((res) => ({
+          ...res,
+          profile: new UserModel(res.profile),
+        })),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
   loginWithPassword(userRegistration: UserAuthDTO) {
-    return this.http.post<any>(this.r_mix_api_3 + "/accounts/login", userRegistration).pipe(
-      (map((res: any) => res.success), catchError(({error}) => { throw error }))
-    )
+    return this.http
+      .post<LoginRO>(this.r_mix_api_3 + "/accounts/login", userRegistration)
+      .pipe(
+        map((res) => ({
+          ...res,
+          profile: new UserModel(res.profile),
+        })),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   setRemindLater() {
-    return this.http.post<void>(this.r_mix_api_3 + "/accounts/set_remind_later", null).pipe(
-      map((res: any) => res))
+    return this.http
+      .post<void>(this.r_mix_api_3 + "/accounts/set_remind_later", null)
+      .pipe(map((res: any) => res));
   }
 
   delteRemindLater() {
-    return this.http.post<void>(this.r_mix_api_3 + "/accounts/delete_remind_later", null).pipe(
-      map((res: any) => res))
+    return this.http
+      .post<void>(this.r_mix_api_3 + "/accounts/delete_remind_later", null)
+      .pipe(map((res: any) => res));
   }
 }
