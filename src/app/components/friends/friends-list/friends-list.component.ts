@@ -11,6 +11,7 @@ import {
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { FriendModel } from "src/app/models/friend.model";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 import { memoize } from "src/app/utils/memoize.util";
@@ -31,10 +32,12 @@ export class FriendsListComponent implements OnInit, OnDestroy {
   constructor(
     private readonly ngbModal: NgbModal,
     private readonly restService: RestService,
-    private readonly friendsService: FriendsService
+    private readonly friendsService: FriendsService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnInit(): void {
+    
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.unreadSenders = ids)
     );
@@ -68,6 +71,7 @@ export class FriendsListComponent implements OnInit, OnDestroy {
   }
 
   unfriend(friend: FriendModel, c) {
+    this.countlyService.updateEventData("chat", { "unfriendClicked": "yes" });
     this.restService
       .deleteFriend(friend.id)
       .subscribe(() => this.friendsService.deleteFriend(friend));

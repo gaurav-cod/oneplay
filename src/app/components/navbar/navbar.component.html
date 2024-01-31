@@ -1,4 +1,18 @@
 <div class="overlay" *ngIf="showOverlayProfile"></div>
+
+<div class="position-relative overlayContainer" *ngIf="showOverlayProfile">
+  <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
+  <img src="assets/img/navbar/arrow.svg" class="position-absolute toast-arrow" style="right: 45px; top: 15px;" alt="">
+  <div class="toast-message">You can modify the profile details in the settings.</div>
+  <img
+    alt=""
+    width="36px"
+    height="36px"
+    class="rounded-circle position-absolute right-0"
+    [src]="photo || 'assets/img/defaultUser.svg'"
+    (error)="onUserError($event)"
+  />
+</div>
 <nav
   class="navbar navbar-expand-lg navbar-dark sticky-top navbarBg xsborderBottom"
   id="navbar-main"
@@ -73,7 +87,7 @@
               routerLinkActive="active"
               [routerLink]="['/casual-games']"
               class="nav-link p-0 mt-2 pt-1 mr-3"
-              (click)="headerNavOnClick('gamezopClicked')"
+              (click)="headerNavOnClick('level1Clicked')"
             >Level 1</a
           >
         </li>
@@ -313,7 +327,7 @@
           <button
               *ngIf="!isAuthenticated"
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mr-lg-4"
-              (click)="goToSignUpPage()"
+              (click)="goToSignUpPage('websiteHeader')"
             >
               Sign In
           </button>
@@ -342,7 +356,7 @@
               href="javascript:void(0)"
               class="nav-link p-0 br50 mr-2"
               *ngIf="!isAuthenticated"
-              (click)="goToSignUpPage()"
+              (click)="goToSignUpPage('chat')"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
@@ -421,6 +435,7 @@
           <div
             class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
             ngbDropdown
+            #guestDropDown="ngbDropdown"
             placement="bottom-right"
           >
             <a
@@ -431,12 +446,8 @@
               ngbDropdownToggle
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
-                <ng-container *ngIf="showOverlayProfile">
-                  <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
-                  <img src="assets/img/navbar/arrow.svg" class="position-absolute toast-arrow" style="right: 45px; top: 15px;" alt="">
-                  <div class="toast-message">You can modify the profile details in the settings.</div>
-                </ng-container>
                 <img
+                  [style.visibility]="showOverlayProfile ? 'hidden' : 'visible'"
                   alt=""
                   width="36px"
                   height="36px"
@@ -536,12 +547,13 @@
                 <a
                   href="javascript:void(0)"
                   class="dropdown-item"
-                  (click)="goToSignUpPage()"
+                  (click)="goToSignUpPage('megaMenu')"
                 >
                   <img src="assets/img/navbar/login-btn.svg" height="20" width="20" />
                   <span class="align-middle">Sign In/Sign Up</span>
                 </a>
                 <a
+                  (click)="logDropdownEventGuest('subscribeClicked')"
                   [href]="domain + '/subscription.html'"
                   class="dropdown-item"
                 >
@@ -550,7 +562,7 @@
                 </a>
 
                 <a
-                  (click)="logDropdownEvent('speedTestClicked')"
+                  (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
                   [routerLink]="['speed-test']"

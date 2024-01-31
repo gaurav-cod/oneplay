@@ -10,12 +10,12 @@
         <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList }" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
             <ng-container *ngIf="!isGamezopList">
-              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay"></app-game-card>
+              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
               <app-install-play-game [game]="game" [hasFixedWidth]="true"
-                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList"></app-install-play-game>
+                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>
             <ng-container *ngIf="isGamezopList">
-              <app-gamezop-game-card [game]="game"></app-gamezop-game-card>
+              <app-gamezop-game-card [game]="game" (gameClick)="gameClicked($event)"></app-gamezop-game-card>
             </ng-container>
           </div>
         </div>

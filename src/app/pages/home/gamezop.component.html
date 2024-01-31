@@ -114,6 +114,7 @@
           [title]="genreSelected"
           [games]="genreGames"
           [isGamezopList]="true"
+          (gameClick)="countlyEvent('filterGameClicked', $event)"
         ></app-similar-games>
       </div>
       <div *ngIf="!genreSelected">
@@ -122,6 +123,7 @@
           [title]="row.title"
           [games]="row.games"
           [isGamezopList]="true"
+          (gameClick)="countlyEvent('railClicked', row.title + ',' + $event)"
         ></app-similar-games>
       </div>
     <div>

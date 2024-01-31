@@ -59,6 +59,7 @@ export class SpeedTestComponent implements OnInit {
     this.progressValue = v;
   }, this.throttleTime);
   private subs: Subscription[] = [];
+  private componentActive: boolean;
 
   pingCount = 150;
   pingPacketsSent = [];
@@ -93,6 +94,7 @@ export class SpeedTestComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.componentActive = true;
     this.title.setTitle("Speed Test");
     if (this.authService.trigger_speed_test) {
       this.authService.trigger_speed_test = false;
@@ -101,6 +103,7 @@ export class SpeedTestComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.componentActive = false;
     this.subs.forEach((sub) => sub.unsubscribe());
   }
 
@@ -213,6 +216,7 @@ export class SpeedTestComponent implements OnInit {
         this.showError(error);
       });
       try {
+        if (!this.componentActive) return;
         const res = await this.restService.getNearestSpeedTestServer().toPromise();
      
         const recommended_download_in_mbps = res.recommended_download / 1000;
@@ -222,6 +226,7 @@ export class SpeedTestComponent implements OnInit {
         this.recommendations.Upload.text = `Upload Speed of ${recommended_upload_in_mbps} mbps`;
         this.state = "Latency";
         await new Promise<void>((res) => setTimeout(() => res(), 2000));
+        if (!this.componentActive) return;
         await this.runPing(res.ping);
         if (this.currentLatency > res.recommended_latency) {
           this.recommendations.Latency.enabled = true;
@@ -229,6 +234,7 @@ export class SpeedTestComponent implements OnInit {
         }
         this.state = "Download";
         await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        if (!this.componentActive) return;
         await this.runDL(res.download);
         if (this.currentDownload < recommended_download_in_mbps) {
           this.recommendations.Download.enabled = true;
@@ -236,6 +242,7 @@ export class SpeedTestComponent implements OnInit {
         }
         this.state = "Upload";
         await new Promise<void>((res) => setTimeout(() => res(), 1000));
+        if (!this.componentActive) return;
         await this.runUL(res.upload);
         if (this.currentUpload < recommended_upload_in_mbps) {
           this.recommendations.Upload.enabled = true;
@@ -272,6 +279,7 @@ export class SpeedTestComponent implements OnInit {
         ws.send(JSON.stringify({ id: 0, action: "ping" }));
       };
       ws.onmessage = (e) => {
+        if (!this.componentActive) return resolve(false);
         if (typeof e.data === "string") {
           const data = JSON.parse(e.data);
           this.pingPacketsRecieved[+data.id] = +new Date();
@@ -300,6 +308,7 @@ export class SpeedTestComponent implements OnInit {
       let dlstart = Date.now();
       this.currentDownload = 0;
       for (let i = 1; i <= this.dlReqCount; i++) {
+        if (!this.componentActive) return resolve(false);
         this.subs.push(this.restService.sendSpeedTestDLPacket(
           url + `?nocache=${v4()}`,
           this.dlPacketsSize,
@@ -334,6 +343,7 @@ export class SpeedTestComponent implements OnInit {
       let ulstart = Date.now();
       this.currentUpload = 0;
       for (let i = 1; i <= this.ulReqCount; i++) {
+        if (!this.componentActive) return resolve(false);
         this.subs.push(this.restService.sendSpeedTestULPacket(
           url + `?nocache=${v4()}`, i.toString(),
           this.makePacket(i, this.ulPacketsSize),

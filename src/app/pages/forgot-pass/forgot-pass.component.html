@@ -5,7 +5,7 @@
         Forgot Password
       </h1>
       <p class="font20 font500 text-center offWhiteColor">
-        Enter the email address or phone number linked to your account
+        Enter the email address or mobile number linked to your account
       </p>
     </div>
     <form [formGroup]="forgotPasswordForm" role="form" autocomplete="off" class="form-container col-md-12 mt-3">
@@ -24,8 +24,8 @@
         <div class="right-divider border"></div>
       </div>
       <div class="col-md-12 mt-4 mobile-container">
-        <label class="font16 font500 customOffWhite">Phone Number</label>
-        <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor float-right">*invalid phone number</span>
+        <label class="font16 font500 customOffWhite">Mobile Number</label>
+        <span *ngIf="phoneErrored" class="font16 font500 errorGradientColor float-right">*invalid mobile number</span>
         <div class="input-group border-bottomInput borderRadius0">
           <div class="input-group-append borderRadius0">
             <select

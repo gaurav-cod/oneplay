@@ -174,6 +174,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         body.last_name = "";
       }
     }
+    else
+    {
+      body.first_name = "";
+      body.last_name = "";
+    }
     if (!!this.bio.value && this.bio.value?.length > 0) {
       body.bio = this.bio.value;
     } else {
@@ -194,8 +199,8 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.restService.updateProfile(body).subscribe(
       (data) => {
         
-        if (body.username) {
-          localStorage.setItem("username", body.username);
+        if (body.dob) {
+          this.countlyService.updateEventData("settingsView", { "dateOfBirthChanged": "yes" })
         }
 
         this.authService.updateProfile({

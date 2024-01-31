@@ -30,11 +30,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private _triggerInitialModalSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
   private _userInfoSubscription: Subscription;
+  private queryParamSubscription: Subscription;
   private _openUserInfoModal: NodeJS.Timer;
 
   private clickCountForOverlay: number = 0;
 
   public showWelcomeMessage: boolean = false;
+  public isApp: boolean = localStorage.getItem("src") === "oneplay_app";;
 
   showOnboardingPopup: boolean = false;
 
@@ -46,6 +48,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly gameService: GameService,
     private readonly notificationService: NotificationService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly ngbModal: NgbModal,
   ) {}
 
@@ -64,11 +67,20 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+    this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((params) => {
+      if (params.src === "oneplay_app") {
+        localStorage.setItem("src", "oneplay_app");
+        this.isApp = true;
+      } else if (localStorage.getItem("src") === "oneplay_app") {
+        localStorage.removeItem("src");
+        this.isApp = false;
+      }
+    });
+
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       async (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
-          this.authService.user = this.restService.getProfile();
           this.setGamingStatus();
           this.setOnline();
 
@@ -97,7 +109,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
                 this.stopOverflow = false;
                 clearInterval(this.messageTimerRef);
               }
-            }, 500);
+            }, 2000);
           }
 
           if (localStorage.getItem("showWelcomBackMsg")) {
@@ -135,12 +147,12 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
             }
           })
 
-          if (localStorage.getItem("showAddToLibrary")) {
-            this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
-              this.showOnboardingPopup = value;
-            })
+          if (localStorage.getItem("is_new_user")) {
+            setTimeout(()=> {
+              this.showOnboardingDelay();
+            }, 5000); 
           } else {
-            this.showOnboardingPopup = true;
+            this.showOnboardingDelay();
           }
 
           this.restService
@@ -157,6 +169,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this._qParamsSubscription?.unsubscribe();
     this._triggerInitialModalSubscription?.unsubscribe();
     this._userInfoSubscription?.unsubscribe();
+    this.queryParamSubscription?.unsubscribe();
     this._userInfoRef?.close();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);
@@ -164,6 +177,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
 
     // reset temp variable
     this.showWelcomeMessage = false;
+    this.stopOverflow = false;
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
@@ -176,6 +190,16 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
       this.friendsCollapsed = !this.friendsCollapsed;
     } else {
       this.friendsCollapsed = true;
+    }
+  }
+
+  private showOnboardingDelay() {
+    if (localStorage.getItem("showAddToLibrary")) {
+      this._triggerInitialModalSubscription = this.authService.triggerInitialModal.subscribe((value)=> {
+        this.showOnboardingPopup = value;
+      })
+    } else {
+      this.showOnboardingPopup = true;
     }
   }
 

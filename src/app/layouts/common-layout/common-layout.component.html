@@ -28,9 +28,14 @@
   >
     <router-outlet></router-outlet>
   </div>
+
+<div class="container-fluid"  *ngIf="!isApp">
+  <div class="height130">
+    <app-footer></app-footer>
+  </div>
+</div>
   <app-bottom-nav
     (toggleFriends)="toggleFriendsCollapsed()"
   ></app-bottom-nav>
 </div>
-
 <app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>

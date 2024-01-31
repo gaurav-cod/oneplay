@@ -207,3 +207,14 @@ export interface UserAuthDTO {
   otp?: string;
   referral_code?: string;
 }
+
+export interface LoginRO {
+  session_token: string;
+  trigger_speed_test: boolean;
+  update_profile: boolean;
+  profile: object;
+}
+
+export interface LoginOtpRO extends LoginRO {
+  new_user: boolean;
+}

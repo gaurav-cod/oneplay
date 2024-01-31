@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
@@ -9,10 +9,12 @@ import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { UserModel } from "src/app/models/user.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
 import { AuthService } from "src/app/services/auth.service";
+import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { ToastService } from "src/app/services/toast.service";
 import { getDefaultHomePageEvents } from "src/app/utils/countly.util";
+import { getDefaultHomeClickSegments } from "src/app/utils/countly.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -27,9 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   loadingWishlist = false;
   library: GameModel[] = [];
   genreGames: GameModel[] = [];
-  genreSelected: string = '';
+  genreSelected: string = "";
 
-  username: string | null = null;
   firstSignUpMsgTimer: number | null = null;
 
   private userDetails: UserModel | null = null;
@@ -71,6 +72,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     return [...this.restRows, ...this.genreGames].length;
   }
 
+  get username(): string | null {
+    return this.userDetails?.username;
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -85,6 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.countlyService.endEvent("homeView");
     this.wishlistSubscription?.unsubscribe();
     this.feedSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
@@ -96,15 +102,27 @@ export class HomeComponent implements OnInit, OnDestroy {
     Swal.close();
   }
 
-  async ngOnInit() {
+  @HostListener("window:unload", ["$event"])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
+    this.countlyService.endEvent("homeView");
+  }
 
+  async ngOnInit() {
     this.title.setTitle("Home");
     this.loaderService.start();
-    
-    const response = await this.restService.getFilteredGames({"install_and_play": "true"}, 0, 5).toPromise();
+
+    this.countlyService.startEvent("homeView", {
+      data: getDefaultHomeClickSegments(),
+      discardOldData: true,
+    });
+
+    const response = await this.restService
+      .getFilteredGames({ install_and_play: "true" }, 0, 5)
+      .toPromise();
     if (response.length === 5) {
       this.queries["Install & Play"] = {
-        "install_and_play": "true"
+        install_and_play: "true",
       };
     }
     this.paramsSubscription = this.route.params.subscribe({
@@ -113,51 +131,49 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.gameFilterSubscription?.unsubscribe();
         const query = params.filter;
         if (!query) {
-          this.genreSelected = '';
+          this.genreSelected = "";
         } else {
-             
           this.genreSelected = query;
           this.gameFilterSubscription = this.restService
-          .getFilteredGames(this.queries[query], 0)
-          .subscribe((games) => {
-            this.genreGames = games;
-          });
+            .getFilteredGames(this.queries[query], 0)
+            .subscribe((games) => {
+              this.updateHoveView('filterClicked', query);
+              this.genreGames = games;
+            });
         }
-        this.feedSubscription = this.restService
-          .getHomeFeed()
-          .subscribe((res) => {
-              const feeds = res.filter((f) => f.games.length > 0);
-              this.firstRow = feeds.filter((f) => f.type === 'header')[0];
-              // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
-              this.restRows = feeds.filter((f) => f.type === 'rail');
+        this.feedSubscription = this.restService.getHomeFeed().subscribe(
+          (res) => {
+            const feeds = res.filter((f) => f.games.length > 0);
+            this.firstRow = feeds.filter((f) => f.type === "header")[0];
+            // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
+            this.restRows = feeds.filter((f) => f.type === "rail");
 
-              document.body.click();
-              this.loaderService.stop();
-            },
-            (error) => {
-              this.loaderService.stop();
-              if(error.timeout) {
-                this.router.navigateByUrl('/server-error')
-              }
+            document.body.click();
+            this.loaderService.stop();
+          },
+          (error) => {
+            this.loaderService.stop();
+            if (error.timeout) {
+              this.router.navigateByUrl("/server-error");
             }
-          );
+          }
+        );
       },
     });
     this._userSubscription = this.authService.user.subscribe((user) => {
       this.userDetails = user;
     });
 
-    this.username = localStorage.getItem("username");
     if (localStorage.getItem("is_new_user")) {
       localStorage.removeItem("is_new_user");
       this.firstSignUpMsgTimer = 5;
-      this.messageTimer = setInterval(()=> {
+      this.messageTimer = setInterval(() => {
         this.firstSignUpMsgTimer--;
         if (this.firstSignUpMsgTimer == 0) {
           this.authService.setTriggerInitialModal(true);
           clearInterval(this.messageTimer);
         }
-      }, 500);
+      }, 5000);
     }
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
@@ -166,7 +182,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.restService
           .getWishlistGames(ids)
           .subscribe((games) => (this.library = games));
-      } 
+      }
     });
   }
 
@@ -177,10 +193,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       "bannerClicked": game.title,
     });
     this.countlyService.startEvent("gameLandingView", {
-      data: { source: 'homePage', trigger: 'banner' },
+      data: { source: "homePageBanner", trigger: "banner" },
       discardOldData: true,
     });
-    this.router.navigate(['view', this.gLink.transform(game)]);
+    this.updateHoveView('bannerClicked', game.title);
+    this.router.navigate(["view", this.gLink.transform(game)]);
   }
 
   isInWishlist(game: GameModel): boolean {
@@ -204,7 +221,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   isInstallPlayList(games: GameModel[]) {
-   
-    return games.every((game)=> game.isInstallAndPlay);
+    return games.every((game) => game.isInstallAndPlay);
+  }
+
+  updateHoveView(
+    key: keyof CustomTimedCountlyEvents["homeView"],
+    value: string
+  ) {
+    this.countlyService.updateEventData("homeView", { [key]: value });
   }
 }

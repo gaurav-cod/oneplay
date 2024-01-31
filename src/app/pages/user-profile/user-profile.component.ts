@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
+
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
@@ -62,6 +63,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.countlyService.endEvent("settingsView");
     this.paramSubscription?.unsubscribe();
     this.userSubscription?.unsubscribe();
+  }
+
+  @HostListener("window:unload", ["$event"])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
+    this.countlyService.endEvent("settingsView");
   }
 
   // redirectToSpeedTest() {

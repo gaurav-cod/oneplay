@@ -368,6 +368,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                 gameId: game.oneplayId,
                 gameTitle: game.title,
                 gameGenre: game.genreMappings.join(', '),
+                userType: this.user ? "registered" : "guest"
               });
             } else {
               this.countlyService.startEvent("gameLandingView", {
@@ -378,6 +379,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                   gameGenre: game.genreMappings.join(', '),
                   source: "directLink",
                   trigger: "card",
+                  userType: this.user ? "registered" : "guest"
                 }
               });
             }
