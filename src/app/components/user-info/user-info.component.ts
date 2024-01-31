@@ -7,13 +7,15 @@ import {
 } from "@angular/forms";
 import {
   NgbActiveModal,
+  NgbDateParserFormatter,
   NgbDateStruct,
   NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
-import { UpdateProfileDTO } from "src/app/interface";
 import { AuthService } from "src/app/services/auth.service";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 
 enum SCREEN_TYPE {
   "DOB" = "DOB",
@@ -26,6 +28,7 @@ enum SCREEN_TYPE {
   selector: "app-user-info",
   templateUrl: "./user-info.component.html",
   styleUrls: ["./user-info.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
@@ -39,6 +42,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   constructor(
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
+    private readonly countlyService: CountlyService,
     private readonly authService: AuthService
   ) { }
 
@@ -67,12 +71,15 @@ export class UserInfoComponent implements OnInit, OnDestroy {
             ? "Password does not match"
             : null)
       );
+
+    this.countlyService.startEvent("detailsPopUp");
   }
 
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
     this.confirmPassSub?.unsubscribe();
     this.userInfo.reset();
+    this.countlyService.endEvent("detailsPopUp");
     this.errorMessage = null;
     this.showSuccessMessage = false;
     this.atleastOneFieldUpdated = false;
@@ -109,6 +116,16 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     return date;
   };
 
+  private countlyKey = (key: string) => {
+    const keys = {
+      "DOB": "dateOfBirth", 
+      "PASSWORD": "password", 
+      "USERNAME": "username", 
+      "FULLNAME": "fullname"
+    }
+    return keys[key];
+  }
+  
   minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
   maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
   get dateOfBirthErrored() {
@@ -145,8 +162,9 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   remindLater() {
-    this.restService.setRemindLater().subscribe((response) => {
+    this.restService.setRemindLater().subscribe((response)=> {
       this.close();
+      this.countlyEvent(this.screenType, "later");
     })
   }
   async deleteRemindLater() {
@@ -186,10 +204,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     }
     this.restService.updateProfile(body).subscribe(
       (data) => {
+        this.countlyEvent(this.countlyKey(this.screenType), "success");
         this.goToNext();
 
         if (this.screenType == "USERNAME") {
-          localStorage.setItem("username", body.username);
           this.updatePassword();
         }
 
@@ -231,6 +249,11 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
   goToNext(isSkipped: boolean = false) {
     this.errorMessage = null;
+
+    if (isSkipped) {
+      this.countlyEvent(this.screenType, "skip");
+    }
+
     if (this.screenType == SCREEN_TYPE.FULLNAME) {
       if (this.atleastOneFieldUpdated) {
         this.showSuccessMessage = true;
@@ -252,6 +275,11 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         this.authService.setProfileOverlay(true);
       }, 2000);
     }
+    this.countlyEvent(this.screenType, "close");
     this.activeModal?.close();
+  }
+
+  private countlyEvent(key: string, value: string) {
+    this.countlyService.updateEventData("detailsPopUp", { [key]: value });
   }
 }

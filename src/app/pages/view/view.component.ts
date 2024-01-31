@@ -16,7 +16,7 @@ import {
 } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgbDateStruct, NgbDatepicker, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateParserFormatter, NgbDateStruct, NgbDatepicker, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { combineLatest, lastValueFrom, merge, Subscription } from "rxjs";
 import {
@@ -42,12 +42,14 @@ import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
 import { TransformMessageModel } from "src/app/models/tansformMessage.model";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
   selector: "app-view",
   templateUrl: "./view.component.html",
   styleUrls: ["./view.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class ViewComponent implements OnInit, OnDestroy {
   // @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
@@ -369,6 +371,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                 gameId: game.oneplayId,
                 gameTitle: game.title,
                 gameGenre: game.genreMappings.join(', '),
+                userType: this.user ? "registered" : "guest"
               });
             } else {
               this.countlyService.startEvent("gameLandingView", {
@@ -379,6 +382,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                   gameGenre: game.genreMappings.join(', '),
                   source: "directLink",
                   trigger: "card",
+                  userType: this.user ? "registered" : "guest"
                 }
               });
             }

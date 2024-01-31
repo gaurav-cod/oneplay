@@ -177,6 +177,7 @@
       <app-similar-games
         [title]="genreSelected"
         [games]="genreGames"
+        (gameClick)="updateHomeView('filterGameClicked', $event)"
       ></app-similar-games>
     </div>
     <!-- <div>
@@ -191,6 +192,7 @@
         *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
         [title]="'My Library'"
         [games]="library"
+        (gameClick)="updateHomeView('myLibraryClicked', $event)"
       ></app-similar-games>
     </div>
     <ng-container *ngIf="!genreSelected">
@@ -199,6 +201,7 @@
         [title]="row.title"
         [games]="row.games"
         [isInstallAndPlayList]="isInstallPlayList(row.games)"
+        (gameClick)="updateHomeView('railClicked', row.title + ',' + $event)"
       ></app-similar-games>
     </ng-container>
   </div>
