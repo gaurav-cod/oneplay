@@ -101,7 +101,6 @@ export const genDefaultWebsiteFooterViewSegments =
   (): CustomCountlyEvents["websiteFooterView"] => {
     return {
       homeClicked: "no",
-      gamezopClicked: "no",
       aboutUsClicked: "no",
       careerClicked: "no",
       plansPricingClicked: "no",
@@ -144,7 +143,6 @@ export const genDefaultMenuClickSegments =
   (): CustomCountlyEvents["menuClick"] => {
     return {
       homeClicked: "no",
-      gamezopClicked: "no",
       gamesClicked: "no",
       streamsClicked: "no",
       searchClicked: "no",
@@ -180,7 +178,7 @@ export const getDefaultSignInSegments =
       resendOtpClicked: "no",
       changePhoneNumber: "no",
       passwordRequired: "no",
-      passwordEntered: "no",
+      passwordEnterd: "no",
       passwordfailed: "no",
       passwordGetOtpClicked: "no"
     };
@@ -245,7 +243,7 @@ export const getDefaultLevel1ViewEvents =
 //     resendOtpClicked: "no",
 //     changePhoneNumber: "no",
 //     passwordRequired: "no",
-//     passwordEntered: "no",
+//     passwordEnterd: "no",
 //     passwordfailed: "no",
 //     passwordGetOtpClicked: "no"
 //   }

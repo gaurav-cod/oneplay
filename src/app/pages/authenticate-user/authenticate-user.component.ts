@@ -280,16 +280,16 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this.countlyEvent("otpFailure", "yes");
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
-          this.countlyEvent("otpFailureReason", "invalid");
+          this.countlyEvent("otpFailureReson", "invalid");
         } else {
           this.userLoginFailure(error);
-          this.countlyEvent("otpFailureReason", "expired");
+          this.countlyEvent("otpFailureReson", "expired");
         }
       }
     })
   }
   loginWithPassword() {
-    this.countlyEvent("passwordEntered", "yes");
+    this.countlyEvent("passwordEnterd", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
