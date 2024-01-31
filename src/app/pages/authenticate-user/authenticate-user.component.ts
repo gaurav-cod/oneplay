@@ -110,7 +110,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.startSignInEvent();
 
-
     this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -247,6 +246,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.countlyEvent("otpEntered", "yes");
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
+
+    // if code in not valid don't call API
+    if (code.length != 4)
+      return;
+
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
