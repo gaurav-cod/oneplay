@@ -168,8 +168,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       keyboard: false,
     });
   }
-  closeReferralDialog() {
-    this.isReferralAdded = !!this.referralName;
+  closeReferralDialog(isReferalAdded: boolean = false) {
+    this.isReferralAdded = !!this.referralName && isReferalAdded;
     this._referralModal?.close();
   }
   getUserByReferalCode(code: string) {

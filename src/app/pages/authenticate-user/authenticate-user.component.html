@@ -123,7 +123,7 @@
 <ng-template #ReferralCodeModal let-d="dismiss">
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
-      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1" (click)="closeReferralDialog()">
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1" (click)="closeReferralDialog(false)">
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font16 font700 mb-4 mt-3 text-center">
@@ -141,7 +141,7 @@
       <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referral Code</p>
       <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">{{referralName}}</p>
       <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName" (click)="closeReferralDialog()">Continue</button>
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName" (click)="closeReferralDialog(true)">Continue</button>
       </div>
     </div>
   </div>
