@@ -560,6 +560,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         data: {
           keywords: this.query.value,
           gameCardClicked: "no",
+          userType: this.isAuthenticated ? "registered" : "guest"
         },
       });
     } else if (tab === "users") {

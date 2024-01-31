@@ -226,6 +226,7 @@ export interface CustomTimedCountlyEvents {
     gameCardClicked: "yes" | "no";
     gameId: string;
     gameTitle: string;
+    userType: "guest" | "registered"
   };
   searchResultsViewMoreUsers: {
     keywords: string;
