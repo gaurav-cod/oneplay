@@ -172,7 +172,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.authService.setTriggerInitialModal(true);
           clearInterval(this.messageTimer);
         }
-      }, 5000);
+      }, 3000);
     }
 
     this.wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
