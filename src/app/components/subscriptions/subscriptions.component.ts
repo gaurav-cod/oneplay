@@ -72,10 +72,10 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           confirmButtonText: "Okay"
         }).then(() => {
           if (!localStorage.getItem("planPurchaseProfileOverlay")) {
+            localStorage.setItem("planPurchaseProfileOverlay", "true");
             window.location.href = "/dashboard/settings/subscription?overlay=true";
           }
           else {
-            localStorage.setItem("planPurchaseProfileOverlay", "true");
             window.location.href = "/dashboard/settings/subscription";
           }
         });

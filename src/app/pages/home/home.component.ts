@@ -13,6 +13,7 @@ import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 import { ToastService } from "src/app/services/toast.service";
+import { getDefaultHomePageEvents } from "src/app/utils/countly.util";
 import { getDefaultHomeClickSegments } from "src/app/utils/countly.util";
 import Swal from "sweetalert2";
 
@@ -136,7 +137,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.gameFilterSubscription = this.restService
             .getFilteredGames(this.queries[query], 0)
             .subscribe((games) => {
-              this.updateHoveView('filterClicked', query);
+              this.updateHomeView('filterClicked', query);
               this.genreGames = games;
             });
         }
@@ -186,11 +187,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   viewBannerGame(game: GameModel) {
+    
     this.countlyService.startEvent("gameLandingView", {
       data: { source: "homePageBanner", trigger: "banner" },
       discardOldData: true,
     });
-    this.updateHoveView('bannerClicked', game.title);
+    this.updateHomeView('bannerClicked', game.title);
     this.router.navigate(["view", this.gLink.transform(game)]);
   }
 
@@ -218,7 +220,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return games.every((game) => game.isInstallAndPlay);
   }
 
-  updateHoveView(
+  updateHomeView(
     key: keyof CustomTimedCountlyEvents["homeView"],
     value: string
   ) {

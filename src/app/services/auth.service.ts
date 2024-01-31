@@ -42,8 +42,7 @@ export class AuthService implements OnDestroy {
   private loggedInUsername: string | null = null;
   // temporary varibles
   private remindLaterForUserInfo: boolean = false;
-  private isDeafultUsernameGiven: boolean = false;
-  private defaultUsername: string | null = null;
+  private nonFunctionalRegion: boolean = false;
 
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
@@ -122,6 +121,12 @@ export class AuthService implements OnDestroy {
     this.isNotificationAlreadySubscribed = value;
   }
 
+  get isNonFunctionalRegion() {
+    return this.nonFunctionalRegion;
+  }
+  setIsNonFunctionalRegion(value: boolean) {
+    this.nonFunctionalRegion = value;
+  }
 
   get triggerPlayGame() {
     return this._$triggerPlayGame.asObservable();

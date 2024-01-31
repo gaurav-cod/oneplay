@@ -31,6 +31,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   private _deviceType: "web" | "tizen" = "web";
 
+  public nonFunctionalRegion: boolean = false;
+
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
@@ -115,6 +117,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.startSignInEvent();
 
+    this.nonFunctionalRegion = this.authService.isNonFunctionalRegion;
+
     this._referalSubscription = this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
@@ -133,7 +137,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       this.redirectURL = qParam["redirectUrl"];
       if (qParam["ref"]) {
         this.getUserByReferalCode(qParam["ref"]);
-        this.router.navigate([], {queryParams: {ref: null}});
+        // this.router.navigate([], {queryParams: {ref: null}});
       }
     })
     this.restService.getCurrentLocation().subscribe({
@@ -195,8 +199,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       keyboard: false,
     });
   }
-  closeReferralDialog() {
-    this.isReferralAdded = !!this.referralName;
+  closeReferralDialog(isReferalAdded: boolean = false) {
+    this.isReferralAdded = !!this.referralName && isReferalAdded;
     this._referralModal?.close();
   }
   getUserByReferalCode(code: string) {
@@ -298,16 +302,16 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this.countlyEvent("otpFailure", "yes");
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
           this.errorMessage = error.message;
-          this.countlyEvent("otpFailureReason", "invalid");
+          this.countlyEvent("otpFailureReson", "invalid");
         } else {
           this.userLoginFailure(error);
-          this.countlyEvent("otpFailureReason", "expired");
+          this.countlyEvent("otpFailureReson", "expired");
         }
       }
     })
   }
   loginWithPassword() {
-    this.countlyEvent("passwordEntered", "yes");
+    this.countlyEvent("passwordEnterd", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",

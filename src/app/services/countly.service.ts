@@ -52,7 +52,6 @@ export class CountlyService {
       discardOldData = false,
     }: { discardOldData?: boolean; data?: Partial<CustomTimedCountlyEvents[T]> } = {}
   ): StartEvent<T> {
-    // todo: handle merge old data?
     localStorage.setItem(this.keyOfKey(event), `${+new Date()}`);
     if (discardOldData || data && (!localStorage.getItem(this.keyOfKey(event + this.data_postfix))))
       localStorage.setItem(
