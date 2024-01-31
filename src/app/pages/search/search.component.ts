@@ -142,18 +142,21 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.requestsSub = this.friendsService.requests.subscribe(
           (f) => (this.friendRequests = f)
         );
-        this.restService
-          .getAllFriends()
-          .toPromise()
-          .then((friends) => this.friendsService.setFriends(friends));
-        this.restService
-          .getPendingSentRequests()
-          .toPromise()
-          .then((pendings) => this.friendsService.setPendings(pendings));
-        this.restService
-          .getPendingReceivedRequests()
-          .toPromise()
-          .then((requests) => this.friendsService.setRequests(requests));
+        if (exists) {
+          this.restService
+            .getAllFriends()
+            .toPromise()
+            .then((friends) => this.friendsService.setFriends(friends));
+          this.restService
+            .getPendingSentRequests()
+            .toPromise()
+            .then((pendings) => this.friendsService.setPendings(pendings));
+          this.restService
+            .getPendingReceivedRequests()
+            .toPromise()
+            .then((requests) => this.friendsService.setRequests(requests));
+        }
+        
       }
     );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));

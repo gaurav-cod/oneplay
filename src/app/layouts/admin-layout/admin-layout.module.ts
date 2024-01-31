@@ -14,7 +14,6 @@ import { ComponentsModule } from "src/app/components/components.module";
 import { StreamsComponent } from "src/app/pages/streams/streams.component";
 import { StreamComponent } from "src/app/pages/stream/stream.component";
 import { LibraryComponent } from "src/app/pages/library/library.component";
-import { SearchComponent } from "src/app/pages/search/search.component";
 import { PipesModule } from "src/app/pipes/pipes.module";
 import { WishlistComponent } from "src/app/pages/wishlist/wishlist.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
@@ -48,7 +47,6 @@ import { NotificationsComponent } from "src/app/pages/notifications/notification
     StreamsComponent,
     StreamComponent,
     LibraryComponent,
-    SearchComponent,
     WishlistComponent,
     PlayComponent,
     FeedbackComponent,
