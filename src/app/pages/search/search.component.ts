@@ -221,7 +221,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       gameCardClicked: "yes",
       gameId: game.oneplayId,
       gameTitle: game.title,
-    });
+      userType: this.isAuthenticated ? "registered" : "guest"
+     });
     this.countlyService.startEvent("gameLandingView", {
       discardOldData: true,
       data: { source: getGameLandingViewSource(), trigger: "card" },

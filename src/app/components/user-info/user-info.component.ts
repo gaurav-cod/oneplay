@@ -7,6 +7,7 @@ import {
 } from "@angular/forms";
 import {
   NgbActiveModal,
+  NgbDateParserFormatter,
   NgbDateStruct,
   NgbModalRef,
 } from "@ng-bootstrap/ng-bootstrap";
@@ -14,6 +15,7 @@ import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 
 enum SCREEN_TYPE {
   "DOB" = "DOB",
@@ -26,6 +28,7 @@ enum SCREEN_TYPE {
   selector: "app-user-info",
   templateUrl: "./user-info.component.html",
   styleUrls: ["./user-info.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;

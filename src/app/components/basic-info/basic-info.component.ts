@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
@@ -9,12 +9,14 @@ import { AuthService } from "src/app/services/auth.service";
 import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 import Swal from "sweetalert2";
 
 @Component({
   selector: "app-basic-info",
   templateUrl: "./basic-info.component.html",
   styleUrls: ["./basic-info.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
   username = new UntypedFormControl("", [Validators.required]);
@@ -32,9 +34,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   dob = new UntypedFormControl(undefined, [Validators.required]);
 
   private dateToNgbDate = (date: Date): NgbDateStruct => ({
-    year: date.getUTCFullYear(),
-    month: date.getMonth() + 1,
     day: date.getDate(),
+    month: date.getMonth() + 1,
+    year: date.getUTCFullYear()
   });
 
   private dateMinusYears = (date: Date, count: number): Date => {

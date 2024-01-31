@@ -25,6 +25,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
   private _referralModal: NgbModalRef; 
   private _qParamSubscription: Subscription;
+  private _referalSubscription: Subscription;
+  private _phoneSubcription: Subscription;
+  private _routerParamSubscription: Subscription;
+
+  private _deviceType: "web" | "tizen" = "web";
 
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
@@ -84,7 +89,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.touched && control.invalid && control.dirty;
+    return control.touched && control.invalid && control.dirty && control.value?.length > 0;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -110,15 +115,19 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.startSignInEvent();
 
-
-    this.referal_code.valueChanges.pipe(
+    this._referalSubscription = this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
     ).subscribe((id) => this.getUserByReferalCode(id));
-    this.authenticateForm.controls["phone"].valueChanges.pipe(
+    this._phoneSubcription = this.authenticateForm.controls["phone"].valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
     ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
+
+     this._routerParamSubscription = this.route.params.subscribe((param)=> {
+      if (!param["device"] || param["device"] != 'tizen') return;
+      this._deviceType = "tizen";
+    })
 
     this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
       this.redirectURL = qParam["redirectUrl"];
@@ -147,6 +156,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   ngOnDestroy(): void {
     this.countlyService.endEvent("signIn");
     this._qParamSubscription?.unsubscribe();
+    this._phoneSubcription?.unsubscribe();
+    this._referalSubscription?.unsubscribe();
+    this._routerParamSubscription?.unsubscribe();
+
     this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
       this.handlePaste(e)
     );
@@ -182,8 +195,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       keyboard: false,
     });
   }
-  closeReferralDialog() {
-    this.isReferralAdded = !!this.referralName;
+  closeReferralDialog(isReferalAdded: boolean = false) {
+    this.isReferralAdded = !!this.referralName && isReferalAdded;
     this._referralModal?.close();
   }
   getUserByReferalCode(code: string) {
@@ -247,10 +260,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.countlyEvent("otpEntered", "yes");
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
+
+    // if code in not valid don't call API
+    if (code.length != 4)
+      return;
+
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey
     }
     this.restService.verifyOTP(payload).subscribe({
@@ -389,6 +407,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     if (screenOnDisplay == "REGISTER_LOGIN")
       this.countlyEvent("changePhoneNumber", "yes");
     if (screenOnDisplay === "OTP") {
+      // reset otp
+      Object.keys(this.otpForm.controls).forEach((key)=> {
+        this.otpForm.controls[key].setValue("");
+      })
       setTimeout(()=> {
 
         this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
@@ -396,6 +418,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         );
       }, 500);
     } else {
+      this.authenticateForm.controls["phone"].setValue("");
+      this.errorMessage = null;
       this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
         this.handlePaste(e)
       );

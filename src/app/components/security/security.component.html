@@ -117,14 +117,14 @@
             <input [type]="passwordInputContainer.showPasswordToText ? 'text' : 'password'" class="form-control inputBorder font18 font500 text-white"
               placeholder="Enter a new password" formControlName="password" />
             <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 45px">
-              <img [src]="(passwordInputContainer.showPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" (click)="passwordInputContainer.showPasswordToText = !passwordInputContainer.showPasswordToText" alt="">
+              <img [src]="(!passwordInputContainer.showPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" (click)="passwordInputContainer.showPasswordToText = !passwordInputContainer.showPasswordToText" alt="">
             </span>
           </div>
-          <p class="font500 muteText mb-0" style="text-align: left !important; font-size: 12px" [ngClass]="{'errorGradientColor': passwordErrored}">
+          <p class="font500 muteText mb-0" style="text-align: left !important; font-size: 12px">
             Password should be at least 8 characters, 1 UPPERCASE, 1
             lowercase, 1 Symbol and 1 number.
           </p>
-          <!-- <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor d-flex text-left">*invalid password</span> -->
+          <span *ngIf="passwordErrored" class="font16 font500 errorGradientColor d-flex text-left">*invalid password</span>
         </div>
         <div class="col-12 mt-4">
           <label class="font16 font500 offWhiteText w-100" style="text-align: left !important;">Confirm New Password</label>
@@ -132,7 +132,7 @@
             <input [type]="passwordInputContainer.showConfPasswordToText ? 'text' : 'password'" class="form-control inputBorder font18 font500 text-white"
               placeholder="Re-enter your new password" formControlName="confirmPassword" />
               <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 45px">
-                <img [src]="(passwordInputContainer.showConfPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordInputContainer.showConfPasswordToText = !passwordInputContainer.showConfPasswordToText" class="img-fluid" alt="">
+                <img [src]="(!passwordInputContainer.showConfPasswordToText)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordInputContainer.showConfPasswordToText = !passwordInputContainer.showConfPasswordToText" class="img-fluid" alt="">
               </span>
           </div>
           <span *ngIf="confirmPasswordErrored || errorMessage" class="font16 font500 errorGradientColor d-flex text-left">
@@ -160,7 +160,7 @@
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="verfiyEmail($event)"
           [remainingTimer]="remainingTimer" [showIndicator]="false" (resendUpdateEmail)="resendEmailUpdate()" [display]="display"
           [errorMessage]="errorMessage" [errorCode]="errorCode" (closePopUp)="closeEmailModal()"></app-otp-screen>
-        <app-otp-screen *ngIf="!isVerify" [otpHeading]="'Verify New Email Address'" [otpSubHeading]="
+        <app-otp-screen *ngIf="!isVerify" [otpHeading]="emailExist ? 'Verify New Email Address' : 'Verify Email Address'" [otpSubHeading]="
             'Please enter the code sent to your new email address.'
           " [buttonText]="buttonText" [codeForm]="codeForm" (verfiyEmail)="confirmEmail($event)"
           [remainingTimer]="remainingTimer" (resendUpdateEmail)="resendUpdateEmail()" [display]="display"
