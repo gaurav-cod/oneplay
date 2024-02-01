@@ -1531,7 +1531,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         if (response.url === "self") {
           this.router.navigate(["/login"]);
         } else {
-          window.open(response.url);
+          window.open(`${response.url}?partner=${response.partner_id}`, '_self');
         }
       },
       error: () => {

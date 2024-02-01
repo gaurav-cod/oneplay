@@ -15,6 +15,7 @@ import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
 import { LoginOtpRO, LoginRO } from 'src/app/interface.d';
 import { UserModel } from 'src/app/models/user.model';
 import { CustomTimedCountlyEvents } from 'src/app/services/countly';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-authenticate-user',
@@ -114,6 +115,16 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    const partnerId = this.route.snapshot.queryParams['partner'];
+    if (!partnerId) {
+      this.restService.getLogInURL().toPromise().catch((error) => {
+        if (error?.error?.code == 307) {
+          this.authService.setIsNonFunctionalRegion(true);
+        }
+      });
+    } else {
+      environment.partner_id = partnerId;
+    }
 
     this.startSignInEvent();
 

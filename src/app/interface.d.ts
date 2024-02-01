@@ -196,7 +196,7 @@ export interface SetOnlineRO {
 
 export interface GetLoginUrlRO {
   url: string;
-  redirect: "soft" | "hard";
+  partner_id: string;
 }
 
 export interface UserAuthDTO {
