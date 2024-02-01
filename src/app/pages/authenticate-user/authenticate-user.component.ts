@@ -181,8 +181,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   private getUserInfoByPhone(phone) {
+    const control = this.authenticateForm.controls["phone"];
     this.restService.isPhoneRegistred(phone, "web").subscribe({
       next: (response: any)=> {
+        control.setErrors(null)
         this._doesUserhavePassword = response.has_password;
         this._isPasswordFlow = response.has_password;
         this.isUserRegisted = response.is_registered;
@@ -197,6 +199,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         this._isPasswordFlow = false;
         this.isUserRegisted = false;
         this._doesUserhavePassword = false;
+        control.setErrors({ inValidNumber: { value: control.value } })
       }
     })
   }
