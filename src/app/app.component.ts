@@ -7,6 +7,7 @@ import { ToastService } from "./services/toast.service";
 import { CountlyService } from "./services/countly.service";
 import Swal from "sweetalert2";
 import { AuthService } from "./services/auth.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = "Oneplay Dashboard";
   seriousNotification: string | null = null;
 
+  initialized: boolean = false;
   private isLoggedIn: boolean = false;
 
   private gamepadMessageSubscription: Subscription;
@@ -40,6 +42,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.authService.sessionToken) {
+      this.initialized = true;
+    } else {
+      this.restService
+        .getLogInURL()
+        .toPromise()
+        .then(({ partner_id }) => {
+          environment.partner_id = partner_id;
+          this.initialized = true;
+        })
+        .catch(() => {
+          this.initialized = true;
+        });
+    }
+
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
