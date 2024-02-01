@@ -367,7 +367,7 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
         this.clearErrors();
         this._otpScreenRef.close();
         this.isVerify = false;
-        this.buttonText = "Confirm";
+        this.buttonText = "Continue";
         this.openOTPScreen();
         this.timer(1);
       },

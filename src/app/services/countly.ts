@@ -56,7 +56,6 @@ export const XCountlySUM = "XCountlySUM";
 export interface CustomCountlyEvents {
   websiteFooterView: {
     homeClicked: "yes" | "no";
-    gamezopClicked: "yes" | "no";
     aboutUsClicked: "yes" | "no";
     careerClicked: "yes" | "no";
     plansPricingClicked: "yes" | "no";
@@ -77,7 +76,6 @@ export interface CustomCountlyEvents {
   };
   menuClick: {
     homeClicked: "yes" | "no";
-    gamezopClicked: "yes" | "no";
     gamesClicked: "yes" | "no";
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
@@ -123,6 +121,16 @@ export interface CustomCountlyEvents {
     playDuration: number;
     idleDuration: number;
   };
+  homeView: {
+    bannerClicked: string | "no";
+    railClicked: string | "no";
+    myLibraryClicked: string | "no";
+    filterClicked: string | "no";
+    filterGameClicked: string | "no";
+    channel: "web" | "mobile" | "androidTv";
+    partner: string;
+    userType: "guest" | "registered";
+  }
 }
 
 export interface CustomTimedCountlyEvents {
@@ -209,11 +217,11 @@ export interface CustomTimedCountlyEvents {
     ReferralIdClicked: "yes" | "no";
     otpEntered: "yes" | "no";
     otpFailure: "yes" | "no";
-    otpFailureReason?: "expired" | "invalid";
+    otpFailureReson?: "expired" | "invalid";
     resendOtpClicked: "yes" | "no";
     changePhoneNumber: "yes" | "no";
     passwordRequired: "yes" | "no";
-    passwordEntered: "yes" | "no";
+    passwordEnterd: "yes" | "no";
     passwordfailed: "yes" | "no";
     passwordGetOtpClicked: "yes" | "no";
   };
