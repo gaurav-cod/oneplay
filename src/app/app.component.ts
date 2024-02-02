@@ -110,7 +110,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private getSeriousNotification() {
     this.restService.getSeriousNotification().subscribe((data) => {
       this.seriousNotification = data;
-      this.authService.setSeriousNotificationPresent(true);
+      if (data)
+        this.authService.setSeriousNotificationPresent(true);
     });
   }
 

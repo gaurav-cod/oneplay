@@ -72,7 +72,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.currentUserState = user;
       this.username.setValue(user.username);
-      this.name.setValue(user.name);
+      this.name.setValue(user.name ? user.name : "");
       this.bio.setValue(user.bio);
       this.dob.setValue((user.dob ? this.dateToNgbDate(new Date(user.dob)) : ""));
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
