@@ -92,7 +92,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.invalid && control.dirty;
+    return control.invalid && control.dirty && control.value;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
