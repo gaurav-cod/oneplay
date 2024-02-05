@@ -1,4 +1,5 @@
-import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GameModel } from "src/app/models/game.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { CountlyService } from "src/app/services/countly.service";
@@ -8,7 +9,7 @@ import { CountlyService } from "src/app/services/countly.service";
   templateUrl: "./similar-games.component.html",
   styleUrls: ["./similar-games.component.scss"],
 })
-export class SimilarGamesComponent implements AfterViewInit {
+export class SimilarGamesComponent implements OnInit, AfterViewInit {
   @Input() title: string;
   @Input() games: GameModel[] | GamezopModel[];
   @Input() isInstallAndPlayList: boolean = false;
@@ -21,12 +22,19 @@ export class SimilarGamesComponent implements AfterViewInit {
   showRightArrow = false;
   showLeftArrow = false;
 
+  public isFilterApplied: boolean = false;
+
   constructor(
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly countlyService: CountlyService
   ) { }
 
   ngAfterViewInit(): void {
     setTimeout(() => this.updateArrows(), 100)
+  }
+  ngOnInit(): void {
+    this.isFilterApplied  = this.activatedRoute.snapshot.params['filter'] != null;
   }
 
   gameClicked(event: string) {

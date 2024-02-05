@@ -87,7 +87,15 @@
     height: 240px !important;
   }
   @media (max-width: 475px) {
-    height: 210px !important;
+    height: auto !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 10px;
+    .gameCard {
+      height: 185px !important;
+      width: 180px !important;
+      margin-bottom: 15px !important;
+    }
   }
 }
 
