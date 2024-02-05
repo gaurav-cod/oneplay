@@ -62,6 +62,8 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
+  public isWarningMessageView: boolean = false;
+
   initialized: string = "Please wait...";
   progress: number = 0;
   isReadMore = true;

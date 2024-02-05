@@ -275,7 +275,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container">
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container" [ngClass]="{'blink': !isWarningMessageView, 'full-opcaity': isWarningMessageView}" (click)="isWarningMessageView = !isWarningMessageView">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"

@@ -861,3 +861,23 @@ live {
   font-size: 18px !important;
   width: 95% !important;
 }
+
+.blink {
+  animation: blinkingAnimation 2s linear infinite; 
+}
+.full-opcaity {
+  opacity: 1 !important;
+}
+@keyframes blinkingAnimation { 
+  0% { 
+      opacity: 0; 
+  } 
+
+  50% { 
+      opacity: 1; 
+  } 
+
+  100% { 
+      opacity: 0; 
+  } 
+}
