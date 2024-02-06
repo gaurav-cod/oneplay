@@ -473,6 +473,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener("window:click", ["$event"])
+  click($event: any) {
+    if (this.isWarningMessageView)
+      this.isWarningMessageView = false;
+  }
+
   get bgBannerImage(): string {
     return !!this.game 
       ? (this.game.isInstallAndPlay 
@@ -1151,6 +1157,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 10000);
+  }
+
+  public toggleWarningMessage(event) {
+    this.isWarningMessageView = !this.isWarningMessageView;
+    event.stopPropagation();
   }
 
   public cancelWaitQueue() {
