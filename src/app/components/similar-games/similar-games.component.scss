@@ -87,6 +87,12 @@
     height: 240px !important;
   }
   @media (max-width: 475px) {
+    height: 210px !important;
+  }
+   
+}
+.newGamezopAjustedHeight {
+  @media (max-width: 475px) {
     height: auto !important;
     display: flex !important;
     flex-wrap: wrap !important;
