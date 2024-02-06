@@ -161,9 +161,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.countryCode]) {
           this.registerForm.controls["country_code"].setValue(
-            contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.countryCode]
           );
           this.nonFunctionalRegion = false;
         } else {

@@ -153,8 +153,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     })
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
-          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.currency]);
+        if (contryCodeCurrencyMapping[res.countryCode]) {
+          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.countryCode]);
         }
         if (res.hosting) {
           Swal.fire({
