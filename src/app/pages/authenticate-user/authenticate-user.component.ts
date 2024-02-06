@@ -92,7 +92,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.invalid && control.dirty;
+    return control.invalid && control.dirty && control.value;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -313,12 +313,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
+        this.userLoginFailure(error);
         this.countlyEvent("otpFailure", "yes");
+        this.errorMessage = error.message;
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
-          this.errorMessage = error.message;
+          
           this.countlyEvent("otpFailureReson", "invalid");
         } else {
-          this.userLoginFailure(error);
           this.countlyEvent("otpFailureReson", "expired");
         }
       }
