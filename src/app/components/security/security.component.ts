@@ -417,9 +417,9 @@ export class SecurityComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.countryCode]) {
           this.phoneForm.controls["country_code"].setValue(
-            contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.countryCode]
           );
         }
       },
