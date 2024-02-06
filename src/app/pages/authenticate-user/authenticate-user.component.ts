@@ -155,8 +155,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     })
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
-          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.currency]);
+        if (contryCodeCurrencyMapping[res.countryCode]) {
+          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.countryCode]);
         }
         if (res.hosting) {
           Swal.fire({
@@ -319,12 +319,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
+        this.userLoginFailure(error);
         this.countlyEvent("otpFailure", "yes");
+        this.errorMessage = error.message;
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
-          this.errorMessage = error.message;
+          
           this.countlyEvent("otpFailureReson", "invalid");
         } else {
-          this.userLoginFailure(error);
           this.countlyEvent("otpFailureReson", "expired");
         }
       }

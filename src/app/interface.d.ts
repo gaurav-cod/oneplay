@@ -149,6 +149,7 @@ export interface ILocation {
   as: string;
   asname: string;
   city: string;
+  countryCode: string;
   continent: string;
   country: string;
   currency: string;
