@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,13 +10,21 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthNavbarComponent implements OnInit {
   public isCollapsed = true;
+  public seriousNotificationPresent: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private readonly router: Router,
+    private readonly authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.router.events.subscribe((event) => {
       this.isCollapsed = true;
     });
+    setTimeout(()=> {
+
+      this.seriousNotificationPresent = this.authService.seriousNotificationPresent;
+    }, 500);
   }
 
   logoGuard(e) {

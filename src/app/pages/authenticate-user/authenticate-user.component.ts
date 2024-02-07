@@ -117,7 +117,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   ngOnInit() {
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
-      this.restService.getLogInURL().toPromise().catch((error) => {
+      this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
+        environment.partner_id = partner_id;
+      }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
         }
@@ -220,10 +222,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   getUserByReferalCode(code: string) {
     this.referralName = null;
     this.restService.getReferalName(code).subscribe((response) =>{
-        if (response.available)
+        if (response.available) {
           this.referralName = response.message;
-        else
+          this.isReferralAdded = true;
+        }
+        else {
           this.referralName = null;
+          this.isReferralAdded = false;
+        }
       }
     );
   }

@@ -43,6 +43,7 @@ export class AuthService implements OnDestroy {
   // temporary varibles
   private remindLaterForUserInfo: boolean = false;
   private nonFunctionalRegion: boolean = false;
+  private isSeriousNotificationPresent: boolean = false;
 
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
@@ -71,6 +72,14 @@ export class AuthService implements OnDestroy {
       }
     }, 1000);
   }
+
+  get seriousNotificationPresent() {
+    return this.isSeriousNotificationPresent;
+  }
+  setSeriousNotificationPresent(value: boolean) {
+    this.isSeriousNotificationPresent = value;
+  }
+
   get getTimerToShowUserInfo() {
     return this.timerToShowUserInfo;
   }
