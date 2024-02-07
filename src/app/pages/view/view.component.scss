@@ -861,3 +861,26 @@ live {
   font-size: 18px !important;
   width: 95% !important;
 }
+.height65 {
+  height: 65px !important;
+}
+
+.streamContainer {
+  
+}
+.streamConfigBtn {
+  width: 100%;
+  border-radius: 3px;
+  padding: 12px;
+  border: none;
+  color: white;
+}
+.btnGradient {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+}
+.streams > div {
+  background-color: #151515 !important;
+}
+.streamsInput input {
+  background-color: #151515 !important;
+}

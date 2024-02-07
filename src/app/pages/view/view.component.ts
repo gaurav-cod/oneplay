@@ -43,7 +43,15 @@ import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
 import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
+import { platform } from "os";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
+
+interface StreamConfiguration {
+  platform: string;
+  isKeyAvailable: boolean;
+  isClicked: boolean;
+  icon: string;
+}
 
 @Component({
   selector: "app-view",
@@ -100,6 +108,27 @@ export class ViewComponent implements OnInit, OnDestroy {
   gameMetaDetails: any;
   errorMessage: string | null = null;
 
+  streamConfig: StreamConfiguration[] = [
+    {
+      platform: "Youtube",
+      isClicked: false,
+      isKeyAvailable: false,
+      icon: "youtube.svg"
+    },
+    {
+      platform: "Twitch",
+      isClicked: false,
+      isKeyAvailable: false,
+      icon: "twitch.svg"
+    },
+    {
+      platform: "Custom",
+      isClicked: false,
+      isKeyAvailable: false,
+      icon: "add-stream.svg"
+    },
+  ];
+
   showSettings = new UntypedFormControl();
 
   advancedOptions = new UntypedFormGroup({
@@ -145,6 +174,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _waitQueueModalRef: NgbModalRef;
   private _launchModalCloseTimeout: NodeJS.Timeout;
   private _userInfoContainerRef: NgbModalRef;
+  private _streamDialogRef: NgbModalRef;
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
@@ -293,6 +323,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._initializeEvent?.cancel();
     this._macDownloadModalRef?.close();
     this._userInfoContainerRef?.close();
+    this._streamDialogRef?.close();
     Swal.close();
   }
 
@@ -1578,6 +1609,19 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
     
   }
+
+  openStreamDialog(container: ElementRef<HTMLDivElement>) {
+    this._streamDialogRef = this.ngbModal.open(container, {
+      centered: true,
+      modalDialogClass: "modal-md",
+      scrollable: true,
+      keyboard: false,
+    });
+  }
+  closeStreamDialog() {
+    this._streamDialogRef?.close();
+  }
+
   showError(error, doAction: boolean = false) {
     Swal.fire({
       title: error.data.title,
