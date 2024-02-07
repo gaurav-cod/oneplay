@@ -112,11 +112,19 @@
         width: 242px !important;
       }
     }
-    @media screen and (min-width: 850px) and (max-width: 1400px) {
+    @media screen and (min-width: 850px) and (max-width: 1200px) {
       padding-right: 50px !important;
       gap: 0px !important;
       .gameCard {
         width: 25% !important;
+        height: 230px !important;
+      }
+    }
+    @media screen and (min-width: 1200px) and (max-width: 1400px) {
+      padding-right: 50px !important;
+      gap: 0px !important;
+      .gameCard {
+        width: 20% !important;
         height: 230px !important;
       }
     }
