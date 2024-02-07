@@ -1358,8 +1358,8 @@
           <div class="streams cursorPointer" *ngIf="selectedStreamConfig != idx" (click)="openStreamInput(stream)">
             <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1">
               <div class="col text-left d-flex">
-                <img src="assets/img/{{ stream.icon }}" alt="">
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
+                <img src="assets/img/{{ stream.platform == 'Custom' && stream.isKeyAvailable ? 'custom-icon.svg' : stream.icon }}" alt="">
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform == "Custom" && stream.isKeyAvailable ? stream.customPlatformName.value + "(Custom)" : stream.platform }}</p>
               </div>
               <div class="col-auto">
                 <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">
