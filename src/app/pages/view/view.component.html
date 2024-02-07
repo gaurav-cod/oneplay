@@ -1366,23 +1366,58 @@
               </div>
             </div>
           </div>
-          <div class="streamsInput" *ngIf="stream.isClicked">
+          <div class="streamsInput" *ngIf="stream.isClicked && stream.platform != 'Custom'">
             <div class="col text-left d-flex">
               <img src="assets/img/{{ stream.icon }}" alt="">
               <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
             </div>
-            <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1 mt-2">
+            <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative">
+              <input
+                [type]="stream.showPassword ? 'password' : 'text'"
+                class="form-control height65 font18 font500 text-white lightBg border-0"
+                placeholder="Enter your stream key here"
+                [formControl]="stream.streamConfigControl"
+              />
+              <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 20px" (click)="stream.showPassword = !stream.showPassword">
+                <img [src]="(stream.showPassword)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" alt="">
+              </span>
+            </div>
+            <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
+              <span class="font700">NOTE - </span>
+              Please note that in order to receive live streams from our platform, 
+              ensure that the destination platform's live streaming studio is active and ready to receive the stream.
+            </p>
+          </div>
+          <div class="streamsInput" *ngIf="stream.isClicked && stream.platform == 'Custom'">
+            <div class="col text-left d-flex">
+              <img src="assets/img/{{ stream.icon }}" alt="">
+              <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
+            </div>
+            <div class="row align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative customInput">
+              <input
+                type="text"
+                class="form-control height65 font18 font500 text-white lightBg border-0"
+                placeholder="Enter a name for your custom platform"
+                style="border-radius: 0px;"
+              />
+              <input
+                type="text"
+                class="form-control height65 font18 font500 text-white lightBg border-0"
+                placeholder="Enter your stream URL here"
+                style="border-radius: 0px;"
+              />
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream key here"
+                style="border-radius: 0px;"
               />
-              <p>
-                <span>NOTE</span>
-                Please note that in order to receive live streams from our platform, 
-                ensure that the destination platform's live streaming studio is active and ready to receive the stream.
-              </p>
             </div>
+            <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
+              <span class="font700">NOTE - </span>
+              Please note that in order to receive live streams from our platform, 
+              ensure that the destination platform's live streaming studio is active and ready to receive the stream.
+            </p>
           </div>
         </div>
       </ng-container>
@@ -1390,7 +1425,9 @@
       
     </div>
     <div class="modal-footer pt-0">
-      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()">Back</button>
+      <button class="streamConfigBtn btnGradient font500" [ngClass]="{'disabled-btn': backStreamConfigBtn}" (click)="closeStreamDialog()" [disabled]="backStreamConfigBtn" *ngIf="!canShowBackBtn">Back</button>
+      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="canShowBackBtn">Save</button>
+      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="canShowBackBtn">Done</button>
     </div>
   </div>
 </ng-template>

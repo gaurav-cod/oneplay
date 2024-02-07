@@ -10,6 +10,7 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import {
+  FormControl,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
@@ -50,7 +51,9 @@ interface StreamConfiguration {
   platform: string;
   isKeyAvailable: boolean;
   isClicked: boolean;
+  showPassword: boolean;
   icon: string;
+  streamConfigControl: FormControl
 }
 
 @Component({
@@ -113,21 +116,34 @@ export class ViewComponent implements OnInit, OnDestroy {
       platform: "Youtube",
       isClicked: false,
       isKeyAvailable: false,
-      icon: "youtube.svg"
+      showPassword: false,
+      icon: "youtube.svg",
+      streamConfigControl: new UntypedFormControl()
     },
     {
       platform: "Twitch",
       isClicked: false,
       isKeyAvailable: false,
-      icon: "twitch.svg"
+      showPassword: false,
+      icon: "twitch.svg",
+      streamConfigControl: new UntypedFormControl()
     },
     {
       platform: "Custom",
       isClicked: false,
       isKeyAvailable: false,
-      icon: "add-stream.svg"
+      showPassword: false,
+      icon: "add-stream.svg",
+      streamConfigControl: new UntypedFormControl()
     },
   ];
+
+  resetStreamConfigValues() {
+    this.streamConfig.forEach((s)=> {
+      s.isClicked = false;
+      s.showPassword = false;
+    })
+  }
 
   showSettings = new UntypedFormControl();
 
@@ -585,6 +601,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         return "";
     }
   }
+  
+  get canShowBackBtn() {
+    return this.streamConfig.some((stream)=> stream.isClicked && stream.streamConfigControl.value);
+  }
 
   get macDownloadLink() {
     return this.clientDownloadLink === "macos";
@@ -738,6 +758,18 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     this._termConditionModalRef?.close();
     this.gamePlaySettingModal(container);
+  }
+
+  openStreamInput(stream) {
+    this.streamConfig.forEach((s)=> {
+      s.isClicked = (s.platform == stream.platform);
+    })
+  }
+  get backStreamConfigBtn() {
+    return this.streamConfig.every((s)=> !s.isClicked);
+  }
+  get saveStreamConfigBtn() {
+    return this.streamConfig.some((s)=> s.isClicked && s.streamConfigControl.value);
   }
 
   async playGame(
@@ -1619,6 +1651,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     });
   }
   closeStreamDialog() {
+    this.resetStreamConfigValues();
     this._streamDialogRef?.close();
   }
 

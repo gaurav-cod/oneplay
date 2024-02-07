@@ -884,3 +884,10 @@ live {
 .streamsInput input {
   background-color: #151515 !important;
 }
+.customInput {
+  border-radius: 5px !important;
+  overflow: hidden;
+}
+.disabled-btn {
+  background: gray !important;
+}

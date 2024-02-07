@@ -1517,4 +1517,29 @@ export class RestService {
       .post<void>(this.r_mix_api_3 + "/accounts/delete_remind_later", null)
       .pipe(map((res: any) => res));
   }
+
+  // Live Stream Configuration API's
+  getAllStreamConfigs() {
+    return this.http.get(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res)))
+  }
+
+  addKeyToStreamConfig(service: string, key: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/key", { service, key }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+  }
+
+  setPreferedStreamConfig(id: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/prefered", { id: id }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+  }
+
+  addCustomStreamConfig(service: string, key: string, url: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/custom", { service: service, key: key, url: url  }).pipe((map((res)=> res), catchError(({ error })=> { throw error; })))
+  }
+
+  updateCustomStreamConfig(id: string, key: string) {
+    return this.http.put(this.r_mix_api + `/streams/config/custom/${id}`, { key: key }).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+  }
+
+  deleteStreamConfig(id: string) {
+    return this.http.delete(this.r_mix_api + `/streams/config/${id}`).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+  }
 }
