@@ -92,17 +92,17 @@
    
 }
 .newGamezopAjustedHeight {
-  @media (max-width: 475px) {
+  // @media (max-width: 475px) {
     height: auto !important;
     display: flex !important;
     flex-wrap: wrap !important;
     gap: 10px;
     .gameCard {
-      height: 185px !important;
-      width: 180px !important;
+      height: 210px !important;
+      width: 245px !important;
       margin-bottom: 15px !important;
     }
-  }
+  // }
 }
 
 .paddingLeft {
