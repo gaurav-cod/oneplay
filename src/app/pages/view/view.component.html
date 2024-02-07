@@ -1353,20 +1353,20 @@
         Configure Stream
       </h5>
 
-      <ng-container *ngFor="let stream of streamConfig">
+      <ng-container *ngFor="let stream of streamConfig; let idx = index">
         <div class="streamContainer mt-4">
-          <div class="streams cursorPointer" *ngIf="!stream.isClicked" (click)="stream.isClicked = true">
+          <div class="streams cursorPointer" *ngIf="selectedStreamConfig != idx" (click)="openStreamInput(stream)">
             <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1">
               <div class="col text-left d-flex">
                 <img src="assets/img/{{ stream.icon }}" alt="">
                 <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
               </div>
               <div class="col-auto">
-                <img src="" alt="">
+                <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">
               </div>
             </div>
           </div>
-          <div class="streamsInput" *ngIf="stream.isClicked && stream.platform != 'Custom'">
+          <div class="streamsInput" *ngIf="selectedStreamConfig == idx && stream.platform != 'Custom'">
             <div class="col text-left d-flex">
               <img src="assets/img/{{ stream.icon }}" alt="">
               <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
@@ -1388,7 +1388,7 @@
               ensure that the destination platform's live streaming studio is active and ready to receive the stream.
             </p>
           </div>
-          <div class="streamsInput" *ngIf="stream.isClicked && stream.platform == 'Custom'">
+          <div class="streamsInput" *ngIf="selectedStreamConfig == idx && stream.platform == 'Custom'">
             <div class="col text-left d-flex">
               <img src="assets/img/{{ stream.icon }}" alt="">
               <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
@@ -1399,18 +1399,21 @@
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter a name for your custom platform"
                 style="border-radius: 0px;"
+                [formControl]="stream.customPlatform"
               />
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream URL here"
                 style="border-radius: 0px;"
+                [formControl]="stream.url"
               />
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream key here"
                 style="border-radius: 0px;"
+                [formControl]="stream.streamConfigControl"
               />
             </div>
             <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
@@ -1421,13 +1424,14 @@
           </div>
         </div>
       </ng-container>
-      
-      
     </div>
+    <div class="success-toast-config font500" *ngIf="canShowSuccessMsg">Stream Key Saved</div>
     <div class="modal-footer pt-0">
-      <button class="streamConfigBtn btnGradient font500" [ngClass]="{'disabled-btn': backStreamConfigBtn}" (click)="closeStreamDialog()" [disabled]="backStreamConfigBtn" *ngIf="!canShowBackBtn">Back</button>
-      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="canShowBackBtn">Save</button>
-      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="canShowBackBtn">Done</button>
+      <ng-container *ngIf="!isAnyValueStreamUpdated">
+        <button class="streamConfigBtn btnGradient font500" [ngClass]="{'disabled-btn': backStreamConfigBtn}" (click)="closeStreamDialog()" [disabled]="backStreamConfigBtn" *ngIf="!canShowBackBtn">Back</button>
+        <button class="streamConfigBtn btnGradient font500" (click)="saveStreamConfig()" *ngIf="canShowBackBtn">Save</button>
+      </ng-container>
+      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="isAnyValueStreamUpdated">Done</button>
     </div>
   </div>
 </ng-template>

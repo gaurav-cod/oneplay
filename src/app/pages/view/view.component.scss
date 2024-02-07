@@ -891,3 +891,14 @@ live {
 .disabled-btn {
   background: gray !important;
 }
+.success-toast-config {
+  background-color: #151515;
+  border-radius: 25px;
+  padding: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  margin: 10px auto;
+}
