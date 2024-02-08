@@ -251,7 +251,7 @@ live {
 
 @media (max-width: 480px) {
   .hideInMobile {
-    display: none;
+    display: none !important;
   }
 
   .fullWidthBtn {

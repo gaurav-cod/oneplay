@@ -63,6 +63,7 @@
               <div>
                 <button
                   class="btn p-0"
+                  (click)="addToWishlist()"
                   ngbTooltip="Get ready to Live stream your games."
                 >
                   <img
@@ -1382,6 +1383,7 @@
                 <img [src]="(stream.showPassword)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" alt="">
               </span>
             </div>
+            <p class="redErrorGradientColor text-left font500 py-2 px-0" *ngIf="streamErrorMsg">*{{ streamErrorMsg }}</p>
             <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
               <span class="font700">NOTE - </span>
               Please note that in order to receive live streams from our platform, 
@@ -1416,6 +1418,8 @@
                 [formControl]="stream.streamConfigControl"
               />
             </div>
+
+            <p class="redErrorGradientColor text-left font500 py-2 px-0" *ngIf="streamErrorMsg">*{{ streamErrorMsg }}</p>
             <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
               <span class="font700">NOTE - </span>
               Please note that in order to receive live streams from our platform, 
