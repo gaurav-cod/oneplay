@@ -87,15 +87,15 @@ export class Gamezop implements OnInit, OnDestroy {
         } else {
 
           this.genreSelected = query;
-          this.gameFilterSubscription = this.restService
-            .getGamezopFilteredGames(this.queries[query], 0)
-            .subscribe((games) => {
-              this.countlyEvent("filterClicked", query);
-              this.genreGames = games;
-            });
+          // this.gameFilterSubscription = this.restService
+          //   .getGamezopFilteredGames(this.queries[query], 0)
+          //   .subscribe((games) => {
+          //     this.countlyEvent("filterClicked", query);
+          //     this.genreGames = games;
+          //   });
         }
         this.feedSubscription = this.restService
-          .getGamezopFeed()
+          .getGamezopFeed(this.genreSelected)
           .subscribe((res) => {
             const feeds = res.filter((f) => f.games.length > 0);
             this.firstRow = feeds.filter((f) => f.type === 'header')[0];

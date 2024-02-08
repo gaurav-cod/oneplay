@@ -6,7 +6,7 @@
       <img src="assets/img/chat/left-arrow.svg" alt="" class="mr-4 cursorPointer" (click)="goBack()">
       <span>Level 1</span>
     </h2>
-    <div class="d-sm-block d-md-none d-lg-none">
+    <div>
       <ng-container *ngTemplateOutlet="FilterChip"></ng-container>
     </div>
     <ngb-carousel
@@ -102,22 +102,22 @@
       </ng-template>
     </ngb-carousel>
 </div>
-
+<!-- 
 <div class="d-none d-md-block">
   <ng-container *ngTemplateOutlet="FilterChip"></ng-container>
-</div>
+</div> -->
 
 <div>
-    <div class="mb-0">
-      <div *ngIf="genreSelected && genreGames.length > 0">
+    <div class="mb-0 mt-4">
+      <!-- <div *ngIf="genreSelected && genreGames.length > 0">
         <app-similar-games
           [title]="genreSelected"
           [games]="genreGames"
           [isGamezopList]="true"
           (gameClick)="countlyEvent('filterGameClicked', $event)"
         ></app-similar-games>
-      </div>
-      <div *ngIf="!genreSelected">
+      </div> -->
+      <div>
         <app-similar-games
           *ngFor="let row of restRows"
           [title]="row.title"
@@ -131,7 +131,7 @@
 
 <ng-template #FilterChip>
   <div class="container-fluid customFluid mb-3 mt-lg-3 pb-md-0">
-    <div class="row justify-content-center pt-2 pb-2">
+    <div class="row pt-2 pb-2">
       <div class="col-auto">
         <div class="row justify-content-center scrolltab">
           <div class="col-auto px-2 tabOptions">
