@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -8,7 +9,7 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
 import { UntypedFormControl } from "@angular/forms";
@@ -16,7 +17,7 @@ import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdown, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
@@ -25,18 +26,23 @@ import { FriendsService } from "src/app/services/friends.service";
 import { MessagingService } from "src/app/services/messaging.service";
 import { environment } from "src/environments/environment";
 import Swal from "sweetalert2";
-import { AvatarPipe } from "src/app/pipes/avatar.pipe";
 import { CountlyService } from "src/app/services/countly.service";
-import { CustomCountlyEvents } from "src/app/services/countly";
+import {
+  CustomCountlyEvents,
+  CustomTimedCountlyEvents,
+} from "src/app/services/countly";
 import {
   genDefaultMenuClickSegments,
   genDefaultMenuDropdownClickSegments,
+  getDefaultGuestProfileEvents,
   getGameLandingViewSource,
 } from "src/app/utils/countly.util";
 import { UserAgentUtil } from "src/app/utils/uagent.util";
 import { NotificationService } from "src/app/services/notification.service";
-import { MessagePayload } from "firebase/messaging";
-import { NotificationModel } from "src/app/models/notification.model";
+import {
+  FriendInterface,
+  NotificationModel,
+} from "src/app/models/notification.model";
 
 @Component({
   selector: "app-navbar",
@@ -44,7 +50,7 @@ import { NotificationModel } from "src/app/models/notification.model";
   styleUrls: ["./navbar.component.scss"],
   providers: [GLinkPipe],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public focus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public query = new UntypedFormControl("");
   public results: GameModel[] = [];
@@ -52,6 +58,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public gameStatus: GameStatusRO | null = null;
   public hasUnread = false;
   public isAuthenticated = false;
+  public showInitialUserMessage: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -60,6 +67,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private dontClose = false;
   private keyword = "";
   private keywordHash = "";
+  private isProfileFirstClicked: boolean = true;
   private logoutRef: NgbModalRef;
 
   private focusSubscription: Subscription;
@@ -75,10 +83,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private currMsgSub: Subscription;
   private sessionSubscription: Subscription;
   private multiNotificationSub: Subscription;
+  private _profileOverlaySub: Subscription;
+  private _qParamSubscription: Subscription;
+  private _guestDropdownSub: Subscription;
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
+
+  showOverlayProfile: boolean = false;
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -138,7 +151,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   get link() {
-    return environment.domain + "/dashboard/register?ref=" + this.user.id;
+    return environment.domain + "/dashboard/login?ref=" + this.user.id;
   }
 
   get domain() {
@@ -173,6 +186,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: "gameClicked",
+      userType: this.isAuthenticated ? "registered" : "guest",
     });
     this.countlyService.endEvent("gameLandingView");
     this.countlyService.startEvent("gameLandingView", {
@@ -228,9 +242,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private readonly gLink: GLinkPipe,
     private readonly messagingService: MessagingService,
     private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
     private readonly countlyService: CountlyService,
     private readonly notificationService: NotificationService
-  ) { }
+  ) {}
 
   ngOnDestroy(): void {
     this.focusSubscription?.unsubscribe();
@@ -246,15 +261,45 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.currMsgSub?.unsubscribe();
     this.sessionSubscription?.unsubscribe();
     this.multiNotificationSub?.unsubscribe();
+    this._profileOverlaySub?.unsubscribe();
+    this._qParamSubscription?.unsubscribe();
+    this._guestDropdownSub?.unsubscribe();
+    this.countlyService.endEvent("guestProfile");
   }
 
-  ngOnInit() {
+  @ViewChild("guestDropDown") guestDropDown: NgbDropdown;
+  ngAfterViewInit() {
+    this._guestDropdownSub = this.guestDropDown.openChange
+      .asObservable()
+      .subscribe((dropdownData: boolean) => {
+        if (dropdownData)
+          this.countlyService.startEvent("guestProfile", {
+            data: getDefaultGuestProfileEvents(),
+          });
+        else this.countlyService.endEvent("guestProfile");
+      });
+  }
+
+  async ngOnInit() {
+    this._profileOverlaySub = this.authService.profileOverlay.subscribe(
+      (data) => {
+        this.showOverlayProfile = data;
+        if (this.showOverlayProfile) {
+          setTimeout(() => {
+            this.authService.setProfileOverlay(false);
+            this.authService.setTriggerInitialModal(true);
+          }, 5000);
+        }
+      }
+    );
+
+    this.userSub = this.authService.user.subscribe((u) => (this.user = u));
+
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
       (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
-          this.authService.user = this.restService.getProfile();
-          this.sessionCountForCasualGaming();
+          // this.sessionCountForCasualGaming();
           this.initPushNotification();
           this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
             (status) => {
@@ -264,7 +309,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     );
-    this.userSub = this.authService.user.subscribe((u) => (this.user = u));
+
+    // get Initial user info
+    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      if (qParam["overlay"] && qParam["overlay"] != 'null' && !this.user?.dob) {
+        this.authService.setProfileOverlay(true);
+        this.router.navigate([], {queryParams: { overlay: "null" }, replaceUrl: true, queryParamsHandling: "merge"});
+      }
+  });
+
     this.friendsSub = this.friendsService.friends.subscribe(
       (f) => (this.acceptedFriends = f)
     );
@@ -284,7 +337,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.notificationsSub = this.notificationService.notifications.subscribe(
       (n) => (this.notificationData = n)
     );
-    this.multiNotificationSub = this.notificationService.showMultiNotificationList.subscribe((value)=> this.showMultiNotificationList = value);
+    this.multiNotificationSub =
+      this.notificationService.showMultiNotificationList.subscribe(
+        (value) => (this.showMultiNotificationList = value)
+      );
     const debouncedSearch = AwesomeDebouncePromise(
       (value) => this.search(value),
       500
@@ -408,6 +464,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: "addFriend",
+      userType: this.isAuthenticated ? "registered" : "guest",
     });
     const record = [
       ...this.acceptedFriends,
@@ -428,9 +485,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       this.keyword = res.keyword;
       this.keywordHash = res.keywordHash;
     });
-    this.restService
-      .searchUsers(value, 0, 3)
-      .subscribe((users) => (this.uResults = users));
+    if (!!this.user) {
+      this.restService
+        .searchUsers(value, 0, 3)
+        .subscribe((users) => (this.uResults = users));
+    }
   }
 
   toggleFriendsList() {
@@ -499,6 +558,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "no",
       actionType: "cancelled",
+      userType: this.isAuthenticated ? "registered" : "guest",
     });
     this.focus.next(false);
   }
@@ -524,6 +584,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       keywords: this.query.value,
       actionDone: "yes",
       actionType: tab === "games" ? "seeMoreGames" : "seeMoreUsers",
+      userType: this.isAuthenticated ? "registered" : "guest",
     });
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
@@ -531,6 +592,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         data: {
           keywords: this.query.value,
           gameCardClicked: "no",
+          userType: this.isAuthenticated ? "registered" : "guest",
         },
       });
     } else if (tab === "users") {
@@ -559,6 +621,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           icon: "success",
           title: "Success",
           text: `Successfully turned ${privacy ? "on" : "off"} search privacy.`,
+          confirmButtonText: "Okay",
         });
       },
       error: (err) => {
@@ -592,37 +655,66 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
     // domain + '/subscription.html'
   }
-  goToSignUpPage() {
+  goToSignUpPage(
+    signInFromPage: CustomTimedCountlyEvents["signIn"]["signInFromPage"]
+  ) {
+    this.countlyService.startEvent("signIn", {
+      data: { signInFromPage },
+      discardOldData: true,
+    });
     this.restService.getLogInURL().subscribe({
       next: (response) => {
-        this.logDropdownEvent("subscriptionClicked");
+        this.logDropdownEventGuest("SignInClicked");
         if (response.url === "self") {
           this.router.navigate(["/login"]);
         } else {
-          window.open(response.url);
+          window.open(`${response.url}?partner=${response.partner_id}`, '_self');
         }
       },
-      error: () => {
+      error: (error) => {
+        if (error?.error?.code == 307) {
+          this.authService.setIsNonFunctionalRegion(true);
+        } 
         this.router.navigate(["/login"]);
       },
     });
   }
 
   sessionCountForCasualGaming() {
-    this.restService.checkCasualGamingSession().subscribe({
-      next: (response: any) => {
-        this.showCasualGamingLabel = response.is_new;
-      },
-      error: () => {
-        this.showCasualGamingLabel = false;
-      },
-    });
+    if (!this.isAuthenticated) return;
+
+    // this.restService.checkCasualGamingSession().subscribe({
+    //   next: (response: any) => {
+    //     this.showCasualGamingLabel = response.is_new;
+    //   },
+    //   error: () => {
+    //     this.showCasualGamingLabel = false;
+    //   },
+    // });
   }
 
-  headerNavOnClick(item: keyof CustomCountlyEvents["menuClick"]): void {
+  headerNavOnClick(
+    item: keyof CustomCountlyEvents["menuClick"],
+    canShowInitialMsg: boolean = false
+  ): void {
     // this.isMenuCollapsed = true;
 
-    this.toggleFriends.emit("profileClicked");
+    // show only in desktop or table
+    this.showInitialUserMessage =
+      this.isAuthenticated &&
+      localStorage.getItem("showTooltipInfo") &&
+      canShowInitialMsg &&
+      window.innerWidth > 475;
+
+    if (this.showInitialUserMessage) {
+      localStorage.removeItem("showTooltipInfo");
+      setTimeout(() => {
+        this.showInitialUserMessage = false;
+      }, 2000);
+    }
+    if (this.isAuthenticated) {
+      this.toggleFriends.emit("profileClicked");
+    }
     this.countlyService.addEvent("menuClick", {
       ...genDefaultMenuClickSegments(),
       [item]: "yes",
@@ -635,6 +727,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
       [item]: "yes",
     });
   }
+  logDropdownEventGuest(
+    item: keyof CustomTimedCountlyEvents["guestProfile"]
+  ): void {
+    this.countlyService.updateEventData("guestProfile", {
+      ...getDefaultGuestProfileEvents(),
+      [item]: "yes",
+    });
+  }
 
   goToNotificationScreen() {
     if (!this.router.url.includes("notifications"))
@@ -644,9 +744,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   private initPushNotification() {
+    if (this.authService.notificationAlreadySubscribed) {
+      return;
+    }
+
     this.messagingService.requestToken();
     this.messagingService.receiveMessage();
-
+    this.authService.setIsNotificationSubscribed(true);
     this.currMsgSub = this.messagingService.currentMessage.subscribe(
       (message) => {
         this.notificationService.addNotification(message);
@@ -661,8 +765,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       imageUrl: error.data.icon,
       confirmButtonText: error.data.primary_CTA,
       showCancelButton: error.data.showSecondaryCTA,
-      cancelButtonText: error.data.secondary_CTA
-    })
+      cancelButtonText: error.data.secondary_CTA,
+    });
   }
- 
 }

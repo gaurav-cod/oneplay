@@ -1,4 +1,11 @@
-<div class="main-content">
+
+<div class="welcome-message-container" *ngIf="showWelcomeMessage">
+  <div class="welcome-message bg-gray-dark font500">Welcome back {{ username }}</div>
+</div>
+<div class="main-content"
+  [style.overflow]="stopOverflow ? 'hidden' : 'auto'"
+  [style.height]="stopOverflow ? '100vh' : ''"
+>
   <app-chat-bottom-sheet
     *ngIf="isAuthenticated"
     [isCollapsed]="friendsCollapsed"
@@ -27,7 +34,7 @@
     </div>
   </div>
   <app-bottom-nav
-    *ngIf="isAuthenticated"
     (toggleFriends)="toggleFriendsCollapsed()"
   ></app-bottom-nav>
 </div>
+<app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>

@@ -384,13 +384,23 @@
 }
 .toast-message {
   position: absolute;
-  background-color: gray;
+  background-color: #575555;
+  font-weight: 500;
   padding: 10px;
   border-radius: 20px;
   text-align: center;
   color: white;
   top: 100px;
   right: 0px;
+  @media screen and (max-width: 475px) {
+    font-size: 12px !important;
+    top: 77px !important;
+  }
+}
+.toast-arrow {
+  @media screen and (max-width: 475px) {
+    height: 60px !important;
+  }
 }
 .overlay {
   position: fixed;
@@ -402,5 +412,38 @@
   display: block;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
+}
+
+.username-message {
+  padding: 15px;
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+  position: absolute;
+  width: 300px;
+  right: 195px;
+  top: 40px;
+  z-index: 1000;
+  .arrow-right {
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-left: 20px solid black;
+    border-bottom: 10px solid transparent;
+    right: -15px;
+    top: 30px;
+  }
+}
+@media screen and (max-width: 475px) {
+  .dropdownmenu-unauth {
+    margin-top: 20px !important;
+  }
+}
+
+.overlayContainer {
+  z-index: 1000;
+  top: 21px;
+  left: -30px;
 }

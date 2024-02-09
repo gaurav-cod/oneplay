@@ -7,6 +7,7 @@ import { ToastService } from "./services/toast.service";
 import { CountlyService } from "./services/countly.service";
 import Swal from "sweetalert2";
 import { AuthService } from "./services/auth.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-root",
@@ -16,6 +17,9 @@ import { AuthService } from "./services/auth.service";
 export class AppComponent implements OnInit, OnDestroy {
   title = "Oneplay Dashboard";
   seriousNotification: string | null = null;
+
+  initialized: boolean = false;
+  private isLoggedIn: boolean = false;
 
   private gamepadMessageSubscription: Subscription;
   private isLoggedInUserSub: Subscription;
@@ -33,17 +37,32 @@ export class AppComponent implements OnInit, OnDestroy {
     );
     navEvents.subscribe((event: NavigationEnd) => {
       window.scrollTo(0, 0);
-      countlyService.track_pageview(event.urlAfterRedirects);
+      this.countlyService.track_pageview(event.urlAfterRedirects);
     });
   }
 
   ngOnInit() {
-    
+    if (this.authService.sessionToken) {
+      this.initialized = true;
+    } else {
+      this.restService
+        .getLogInURL()
+        .toPromise()
+        .then(({ partner_id }) => {
+          environment.partner_id = partner_id;
+          this.initialized = true;
+        })
+        .catch(() => {
+          this.initialized = true;
+        });
+    }
+
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Make your API call here after every navigation
         this.getSeriousNotification();
+        if (this.isLoggedIn) this.updateUser();
       });
 
     this.gamepadMessageSubscription = this.gamepadService.message.subscribe(
@@ -60,7 +79,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.isLoggedInUserSub = this.authService.sessionTokenExists.subscribe(
       (exists) => {
+        this.isLoggedIn = exists;
         if (exists) {
+          this.updateUser();
           this.restService
             .visitCasulGamingSection()
             .toPromise()
@@ -89,6 +110,16 @@ export class AppComponent implements OnInit, OnDestroy {
   private getSeriousNotification() {
     this.restService.getSeriousNotification().subscribe((data) => {
       this.seriousNotification = data;
+      if (data)
+        this.authService.setSeriousNotificationPresent(true);
     });
+  }
+
+  private updateUser() {
+    this.restService
+      .getProfile()
+      .toPromise()
+      .then((u) => this.authService.setUser(u))
+      .catch(() => {});
   }
 }

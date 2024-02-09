@@ -165,12 +165,7 @@ export class QrVerifyComponent implements OnInit, AfterViewInit {
   }
 
   goToSignup() {
-    // this.countlyService.addEvent("signUPButtonClick", {
-    //   page: location.pathname + location.hash,
-    //   trigger: "CTA",
-    //   channel: "web",
-    // });
-    this.router.navigate(["/register"]);
+    this.router.navigate(["/login"]);
   }
 
   private handlePaste(event: ClipboardEvent) {

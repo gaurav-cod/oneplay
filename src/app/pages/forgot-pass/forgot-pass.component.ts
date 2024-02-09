@@ -63,9 +63,9 @@ export class ForgotPassComponent implements OnInit {
     );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.countryCode]) {
           this.forgotPasswordForm.controls['country_code'].setValue(
-            contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.countryCode]
           );
         }
         if (res.hosting) {
@@ -158,7 +158,7 @@ export class ForgotPassComponent implements OnInit {
     }).then((response)=> {
       if (response.isConfirmed) {
         if (error.data.primary_CTA === "Sign Up") {
-          this.router.navigate(['/register']);
+          this.router.navigate(['/login']);
         } else if (error.data.primary_CTA === "Request") {
           this.router.navigate(['/forgot-password'])
         }

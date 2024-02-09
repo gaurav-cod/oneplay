@@ -1,5 +1,5 @@
 <div *ngIf="!!video" class="row m-0 stream">
-  <div class="col-lg-9 col-md-7 col-sm-12 px-0">
+  <div class="col-lg-9 col-md-7 col-sm-12 px-0" [ngClass]="{'col-lg-9 col-md-7': user, 'col-lg-12 col-md-12': !user}">
     <iframe
       class="youtube-player"
       [src]="playing | safe"
@@ -48,7 +48,7 @@
     </div>
   </div>
   <div
-    class="col-lg-3 col-md-5 col-sm-12"
+    [ngClass]="{'col-lg-3 col-md-5 col-sm-12': user, 'd-none': !user}"
     style="background: #171717"
   >
     <div class="">
@@ -67,9 +67,9 @@
           <div
             class="mr-2"
           >
-            <img [src]="(getSenderName(msg) | async) | avatar" width="24px" height="24px" class="avatar avatar-sm rounded-circle" alt="" />
+            <img [src]="((getSenderName(msg) | async)?.profile_image)" width="24px" height="24px" class="avatar avatar-sm rounded-circle" alt="" />
           </div>
-          <div class="text-white-50 mr-2 text-sm">{{ getSenderName(msg) | async }}</div>
+          <div class="text-white-50 mr-2 text-sm">{{ (getSenderName(msg) | async)?.username }}</div>
           <div class="text-white text-sm">{{ msg.message }}</div>
         </li>
       </ul>

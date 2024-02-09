@@ -20,6 +20,7 @@ import { StoreComponent } from "src/app/pages/store/store.component";
 import { ViewComponent } from "src/app/pages/view/view.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
+import { SearchComponent } from "src/app/pages/search/search.component";
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import { Gamezop } from "src/app/pages/home/gamezop.component";
     SpeedTestComponent,
     StoreComponent,
     ViewComponent,
+    SearchComponent,
   ],
   providers: [InstallGuard, ViewGuard],
 })

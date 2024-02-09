@@ -4,6 +4,11 @@
 @import "../node_modules//@ctrl/ngx-emoji-mart/picker.css";
 
 @font-face {
+  font-family: "ModernWarfare";
+  src: url(assets/fonts/ModernWarfair/modern-warfare.ttf);
+}
+
+@font-face {
   font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Regular.ttf);
 }
@@ -120,6 +125,11 @@ html, body {
   width: 48px;
   height: 48px;
 }
+.tooltip-container {
+  a {
+    text-decoration: underline !important;
+  }
+}
 
 .custom .navbar-nav .nav-item a {
   color: #959595;
@@ -131,6 +141,9 @@ html, body {
 
 .custom .navbar-nav .nav-item.active a {
   color: #ffffff;
+}
+select[formControlName="country_code"] {
+  width: 80px !important;
 }
 
 .dropdownBg {
@@ -630,6 +643,9 @@ input:-webkit-autofill:active {
    padding: 0rem 0.5rem; 
   }
 }
+.button-disabled {
+  background: #595959 !important;
+}
 
 .gradientText {
   background: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
@@ -840,6 +856,31 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+}
+.blueColorGradient {
+  background: linear-gradient(270deg, #3AA0FE -1.64%, #59FEF4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.purpleGradientColor:hover {
+  background: linear-gradient(270deg, #0575E6 -1.64%, #FF0CF5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.hoverGradient:hover {
+  background: linear-gradient(270deg, #3AA0FE -1.64%, #59FEF4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+.errorBorderColor {
+  border-image: linear-gradient(270deg, #FF0C0C -1.64%, #FF630C 100%) !important;
+  border-image-slice: 1 !important;
 }
 
 .errorBorder {

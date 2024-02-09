@@ -149,6 +149,7 @@ export interface ILocation {
   as: string;
   asname: string;
   city: string;
+  countryCode: string;
   continent: string;
   country: string;
   currency: string;
@@ -196,7 +197,7 @@ export interface SetOnlineRO {
 
 export interface GetLoginUrlRO {
   url: string;
-  redirect: "soft" | "hard";
+  partner_id: string;
 }
 
 export interface UserAuthDTO {
@@ -206,4 +207,15 @@ export interface UserAuthDTO {
   idempotent_key?: string;
   otp?: string;
   referral_code?: string;
+}
+
+export interface LoginRO {
+  session_token: string;
+  trigger_speed_test: boolean;
+  update_profile: boolean;
+  profile: object;
+}
+
+export interface LoginOtpRO extends LoginRO {
+  new_user: boolean;
 }

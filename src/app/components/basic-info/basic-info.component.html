@@ -33,11 +33,15 @@
       </div>
       <div class="row">
         <div class="col-md-12 mt-2">
+          <div class="username-message" *ngIf="showInitialUserMessage">
+            <span>We've assigned you a default username, modify it in Settings.</span>
+            <div class="arrow-right"></div>
+          </div>
           <label class="font16 font500 offWhiteText">
             Username
             <!-- <i
               class="fas fa-info-circle ml-1"
-              ngbTooltip="Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed."
+              ngbTooltip="Minimum 3, Maximum 16 characters. Must start with a letter. Special characters and spaces are not allowed."
               placement="bottom"
               triggers="click:blur"
             >
@@ -49,7 +53,7 @@
             >*invalid username</span
           >
           <div class="input-group">
-            <input
+            <input  
               type="text"
               [formControl]="username"
               (change)="onUpdateInput('userNameChanged')"
@@ -60,8 +64,9 @@
                 'border-0': username.valid
               }"
               style="border-radius: 5px;"
+              #usernameField
             />
-            <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
+            <span (click)="focusElement(usernameField)" class="bgTransparent fixedIcon offWhiteColor font16 font500">
               <img
                 class="img-fluid"
                 src="assets/img/singup-login/Group (1).svg"
@@ -71,7 +76,7 @@
           </div>
           
           <p class="text-white mb-0 mt-1 font500" style="font-size: 12px;">
-            *Minimum 3, Maximum 12 characters. Must start with a letter. Special characters and spaces are not allowed.
+            *Minimum 3, Maximum 16 characters. Must start with a letter. Special characters and spaces are not allowed.
           </p>
         </div>
         <div class="col-md-12 mt-4">
@@ -90,8 +95,8 @@
               #d="ngbDatepicker"
               (click)="d.toggle()"
               (dateSelect)="d.toggle()"
-              [min]="minDate"
-              [max]="maxDate"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
               style="border-radius: 5px;"
             />
             <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">
@@ -106,10 +111,6 @@
         <div class="col-md-12 mt-4">
           <label class="font16 font500 offWhiteText">Full Name</label
           ><span
-            *ngIf="name.touched && name.invalid"
-            class="font16 font500 errorGradientColor float-right"
-            >*invalid name</span
-          ><span
           *ngIf="name.value?.length > 255"
           class="font16 font500 errorGradientColor float-right"
           >*Character limit exceeded</span
@@ -121,7 +122,6 @@
             class="form-control height52 font18 font500 text-white lightBg"
             placeholder="Your name"
             [ngClass]="{
-              errorBorder: name.touched && name.invalid,
               'border-0': name.valid
             }"
           />
@@ -152,6 +152,7 @@
             [disabled]="saveProfileLoder || !isValid || !isChanged || name.value?.length > 255"
             class="btn text-white activelinear borderRadius10 border-0 pl-4 pr-4 font18 font500"
             value="Update Profile"
+            [ngClass]="{'button-disabled': !isValid || !isChanged}"
           />
         </div>
       </div>

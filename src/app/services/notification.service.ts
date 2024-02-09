@@ -40,7 +40,7 @@ export class NotificationService {
 
   removeNotification(index: number) {
     this._$notifications.next(
-      this._$notifications.value.filter((_, idx) => idx !== index)
+      this._$notifications.value?.filter((_, idx) => idx !== index)
     );
   }
 

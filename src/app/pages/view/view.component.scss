@@ -725,7 +725,7 @@ live {
 
 .warning-message-container {
   ::ng-deep .tooltip-inner {
-    max-width: 340px !important;
+    max-width: 265px !important;
     width: auto !important;
     background: #151515 !important;
     padding: 8px !important;
@@ -852,4 +852,32 @@ live {
   @media (max-width: 475px) {
     margin: 5px auto !important;
   }
+}
+.dobInput {
+  background: transparent !important;
+  border-radius: 0px !important;
+  border: none;
+  border-bottom: 1px solid lightgray !important;
+  font-size: 18px !important;
+  width: 95% !important;
+}
+
+.blink {
+  animation: blinkingAnimation 2s linear infinite; 
+}
+.full-opcaity {
+  opacity: 1 !important;
+}
+@keyframes blinkingAnimation { 
+  0% { 
+      opacity: 0; 
+  } 
+
+  50% { 
+      opacity: 1; 
+  } 
+
+  100% { 
+      opacity: 0; 
+  } 
 }

@@ -39,6 +39,8 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   selectedGames: GameModel[] = [];
   wishlist: string[] = [];
 
+  private runOnceCode: boolean = true;
+
   private _selectgameRef: NgbModalRef;
   private _onboardingUserRef: NgbModalRef;
   private wishlistSubscription: Subscription;
@@ -57,23 +59,20 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   async ngAfterViewInit() {
-    if (localStorage.getItem("#onboardingUser") !== "true") {
-      this.onboardingUser();
-      localStorage.setItem("#closeonboardingGame", "true");
-    }
-
-    this.wishlistSubscription = zip([
-      this.authService.wishlist,
-      this.authService.triggerWishlist,
-    ]).subscribe(([wishlist, triggered]) => {
-      if (triggered) {
-        this.wishlist = wishlist;
-        this.selectGame();
-      }
-    });
-
     this.detectiOsDevice();
     this.detectVPN();
+    
+    if (localStorage.getItem("#canOpenOnboarding")) {
+      if (localStorage.getItem("#onboardingUser") !== "true") {
+        this.onboardingUser();
+        localStorage.setItem("#closeonboardingGame", "true");
+      }
+
+      localStorage.removeItem("#canOpenOnboarding");
+    } else {
+
+      this.triggerSpeedTest();
+    }
   }
 
   private detectVPN() {
@@ -85,7 +84,11 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
             modalDialogClass: "modal-sm",
             scrollable: true,
           });
+        } else {
+          this.showLibraryPopup();
         }
+      }, error: (error)=>{
+        this.showLibraryPopup();
       },
     });
   }
@@ -104,6 +107,22 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
 
   cancelVPNAlert() {
     this._VPNAlertRef.close();
+    this.showLibraryPopup();
+  }
+
+  private showLibraryPopup() {
+    if (this.runOnceCode) {
+      this.runOnceCode = false;
+      this.wishlistSubscription = zip([
+        this.authService.wishlist,
+        this.authService.triggerWishlist,
+      ]).subscribe(([wishlist, triggered]) => {
+        if (triggered) {
+          this.wishlist = wishlist;
+          this.selectGame();
+        }
+      });
+    }
   }
 
   canceliOsAlert() {
@@ -229,13 +248,19 @@ export class OnboardingModalsComponent implements AfterViewInit, OnDestroy {
     this.query.reset();
     this.searchText = "";
     this.triggerSpeedTest();
+
+    localStorage.removeItem("showAddToLibrary");
+
+    // only on first time login i.e. account creation
+    if (localStorage.getItem("showUserInfoModal"))
+      this.authService.startTimerToShowUserInfo();
   }
 
   public async closeonboardingGame() {
     this._showTnC = false;
     localStorage.setItem("#onboardingUser", "true");
+    this.authService.setTriggerPlayGame(true);
     this._onboardingUserRef.close();
-    this.triggerSpeedTest();
   }
 
   public isChecked(game: GameModel) {

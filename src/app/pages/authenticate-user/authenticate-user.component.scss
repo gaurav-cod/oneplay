@@ -13,7 +13,7 @@
     }
   
     .font18 {
-      font-size: 16px;
+      font-size: 16px !important;
       line-height: 26px;
     }
   
@@ -194,16 +194,21 @@
     border-left: none;
     border-right: none;
     border-radius: 0px !important;
-    @media (max-width: 371px) {
+    @media screen and (max-width: 380px) {
         width: 30px;
+        height: 30px;
+    }
+    @media (min-width: 381px) and (max-width: 475px) {
+        width: 55px;
         height: 30px;
     }
 }
 
-input[type = "number"] {
-  appearance: textfield !important;
-  -moz-appearance: textfield !important;
-  -webkit-appearance: textfield !important;
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
 }
 .toast-message {
   background-color: #3f3e3e;
@@ -215,4 +220,20 @@ input[type = "number"] {
   position: relative;
   top: 15px;
   margin-top: 50px;
+}
+.linksContainer {
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.flexiBtn {
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+}
+.guestLinkText {
+  @media screen and (max-width: 475px) {
+    margin-top: 20px;
+  }
 }

@@ -55,6 +55,13 @@
   -webkit-line-clamp: 2;
   white-space: wrap !important;
 }
+.gamezop-truncate-line-clamp {
+  -webkit-line-clamp: 1 !important;
+  white-space: wrap !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 @media (max-width: 480px) {
   .card {
@@ -106,7 +113,7 @@
     height: 150px !important;
   }
   .gamezop-card {
-    height: 175px !important;
+    height: 195px !important;
   }
 }
 

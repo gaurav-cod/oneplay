@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { FriendModel } from "src/app/models/friend.model";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
 
@@ -24,7 +25,8 @@ export class UnreadComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly friendsService: FriendsService,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly countlyService: CountlyService
   ) {}
 
   ngOnDestroy(): void {
@@ -49,12 +51,14 @@ export class UnreadComponent implements OnInit, OnDestroy {
   }
 
   accept(friend: FriendModel) {
+    this.countlyService.updateEventData("chat", { "friendClicked": "yes" });
     this.restService.acceptFriend(friend.id).subscribe((response) => {
       this.friendsService.acceptRequest(friend);
     });
   }
 
   decline(friend: FriendModel) {
+    this.countlyService.updateEventData("chat", { "unfriendClicked": "yes" });
     this.restService.deleteFriend(friend.id).subscribe((response) => {
       this.friendsService.declineRequest(friend);
     });

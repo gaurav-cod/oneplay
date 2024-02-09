@@ -1,5 +1,5 @@
 export const environment = {
-  appVersion: "5.0.0",
+  appVersion: "6.0.0",
   production: true,
   cookie_domain: "play.shaksgame.com",
   domain: "https://play.shaksgame.com",

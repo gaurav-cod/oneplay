@@ -16,13 +16,13 @@
           </a>
         </div>
       </div>
-      <div class="row justify-content-center height100vh py-4">
-        <div class="col-auto width520">
+      <div class="row justify-content-center height100vh py-4 position-relative">
+        <div class="col-auto width520 mt-auto">
           <div class="row justify-content-center">
             <div class="col-auto routing-container">
               <router-outlet></router-outlet>
             </div>
-            <div class="col-auto d-block d-lg-none">
+            <!-- <div class="col-auto d-block d-lg-none d-md-none d-sm-none">
               <div class="text-center">
                 <div class="col-12">
                   <hr class="mt-2 mb-4 borderBottom" />
@@ -61,10 +61,10 @@
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <p class="font18 font500 offWhiteColor position-fixed bottom-0">
+        <p class="font18 font500 offWhiteColor position-relative bottom-0 footer-link"  [style.bottom]="seriousNotificationPresent ? '-30px !important' : ''">
           By continuing you agree to Oneplay's
           <span class="purpleGradient"><a [href]="domain + '/tnc.html'" target="_blank" class="anchor text-underline">Terms & Conditions</a></span>
           and

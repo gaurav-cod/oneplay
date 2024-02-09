@@ -7,8 +7,10 @@ import {
 } from "@angular/core";
 import { Subscription } from "rxjs";
 import { FriendModel } from "src/app/models/friend.model";
+import { CountlyService } from "src/app/services/countly.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { RestService } from "src/app/services/rest.service";
+import { getDefaultChatEvents } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-friends-main",
@@ -49,10 +51,14 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly friendsService: FriendsService,
-    private readonly restService: RestService
+    private readonly restService: RestService,
+    private readonly countlyService: CountlyService
   ) { }
 
   ngOnInit(): void {
+
+    this.countlyService.startEvent("chat", { data: getDefaultChatEvents() });
+
     this.friendsSub = this.friendsService.friends.subscribe((friends) => {
       this.friends = friends;
     });
@@ -79,6 +85,7 @@ export class FriendsMainComponent implements OnInit, OnDestroy {
     clearInterval(this.timer);
     this.friendsSub?.unsubscribe();
     this.requestsSub?.unsubscribe();
+    this.countlyService.endEvent("chat");
   }
 
 }

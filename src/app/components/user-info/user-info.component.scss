@@ -26,3 +26,25 @@ h5 {
 .dot-scaled {
     scale: 1.5;
 }
+.cursorPointer {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    img {
+        border-radius: 50%;
+    }
+}
+.successText {
+    text-align: center;
+    margin: 20px auto;
+}
+.successContainer {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.button-disabled {
+    background: #595959 !important;
+}

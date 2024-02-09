@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -6,7 +6,10 @@ import { Subscription } from "rxjs";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { GamezopFeedModel } from "src/app/models/gamezopFeed.model";
 import { GLinkPipe } from "src/app/pipes/glink.pipe";
+import { CustomTimedCountlyEvents } from "src/app/services/countly";
+import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { getDefaultLevel1ViewEvents } from "src/app/utils/countly.util";
 
 @Component({
   selector: "app-gamezop",
@@ -22,7 +25,8 @@ export class Gamezop implements OnInit, OnDestroy {
     private readonly title: Title,
     private readonly router: Router,
     private readonly restService: RestService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly countlyService: CountlyService
   ) { }
 
   private queries = {};
@@ -45,10 +49,20 @@ export class Gamezop implements OnInit, OnDestroy {
     this.feedSubscription?.unsubscribe();
     this.gameFilterSubscription?.unsubscribe();
     this.paramsSubscription?.unsubscribe();
+    
+    this.countlyService.endEvent("Level1View");
+  }
+
+  @HostListener("window:unload", ["$event"])
+  unloadHandler(event: Event): void {
+    event.preventDefault();
+    this.countlyService.endEvent("Level1View");
   }
 
   async ngOnInit()  {
     this.title.setTitle("Gamezop");
+
+    this.countlyService.startEvent("Level1View", { data: getDefaultLevel1ViewEvents() });
     this.loaderService.start();
     this.activatedRoute.queryParams.subscribe((qParam)=> {
       if (qParam['prevPage']) {
@@ -73,14 +87,15 @@ export class Gamezop implements OnInit, OnDestroy {
         } else {
 
           this.genreSelected = query;
-          this.gameFilterSubscription = this.restService
-            .getGamezopFilteredGames(this.queries[query], 0)
-            .subscribe((games) => {
-              this.genreGames = games;
-            });
+          // this.gameFilterSubscription = this.restService
+          //   .getGamezopFilteredGames(this.queries[query], 0)
+          //   .subscribe((games) => {
+          //     this.countlyEvent("filterClicked", query);
+          //     this.genreGames = games;
+          //   });
         }
         this.feedSubscription = this.restService
-          .getGamezopFeed()
+          .getGamezopFeed(this.genreSelected)
           .subscribe((res) => {
             const feeds = res.filter((f) => f.games.length > 0);
             this.firstRow = feeds.filter((f) => f.type === 'header')[0];
@@ -117,6 +132,7 @@ export class Gamezop implements OnInit, OnDestroy {
   }
 
   viewBannerGame(game: GamezopModel) {
+    this.countlyEvent("bannerClicked", game.name);
     window.open(game.url);
   }
 
@@ -126,6 +142,10 @@ export class Gamezop implements OnInit, OnDestroy {
 
   get routes() {
     return Object.keys(this.queries);
+  }
+
+  countlyEvent(key: keyof CustomTimedCountlyEvents['Level1View'], value: string) {
+    this.countlyService.updateEventData("Level1View", { [key]: value })
   }
 
 }

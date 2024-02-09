@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit } from "@angular/core";
 import { UntypedFormControl, Validators } from "@angular/forms";
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateParserFormatter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { UpdateProfileDTO } from "src/app/interface";
 import { UserModel } from "src/app/models/user.model";
@@ -9,12 +9,14 @@ import { AuthService } from "src/app/services/auth.service";
 import { CustomTimedCountlyEvents } from "src/app/services/countly";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 import Swal from "sweetalert2";
 
 @Component({
   selector: "app-basic-info",
   templateUrl: "./basic-info.component.html",
   styleUrls: ["./basic-info.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class BasicInfoComponent implements OnInit, OnDestroy {
   username = new UntypedFormControl("", [Validators.required]);
@@ -32,9 +34,9 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   dob = new UntypedFormControl(undefined, [Validators.required]);
 
   private dateToNgbDate = (date: Date): NgbDateStruct => ({
-    year: date.getUTCFullYear(),
-    month: date.getMonth() + 1,
     day: date.getDate(),
+    month: date.getMonth() + 1,
+    year: date.getUTCFullYear()
   });
 
   private dateMinusYears = (date: Date, count: number): Date => {
@@ -48,8 +50,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
   photo: string | ArrayBuffer;
   saveProfileLoder = false;
+
+  showInitialUserMessage: boolean = false;
+
   private userSubscription: Subscription;
   private currentUserState: UserModel;
+  private isFirstTimeEntering: boolean = true;
   private user: UserModel;
   private photoFile: File;
 
@@ -66,11 +72,24 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.user.subscribe((user) => {
       this.currentUserState = user;
       this.username.setValue(user.username);
-      this.name.setValue(user.name);
-      this.bio.setValue(user.bio);
-      this.dob.setValue(user.dob);
+      this.name.setValue(user.name ?? "");
+      this.bio.setValue(user.bio ?? "");
+      this.dob.setValue((user.dob ? this.dateToNgbDate(new Date(user.dob)) : ""));
       this.photo = user.photo || "assets/img/singup-login/" + user.gender + ".svg";
     });
+
+    // show initial message only in mobile screen
+    this.showInitialUserMessage = localStorage.getItem("showTooltipInfo") && window.innerWidth < 475;
+    if (this.showInitialUserMessage) {
+      localStorage.removeItem("showTooltipInfo");
+      setTimeout(()=> {
+        this.showInitialUserMessage = false;
+      }, 3000);
+    }
+  }
+  focusElement(element: any) {
+    if (element)
+      element.focus();
   }
 
   ngOnDestroy(): void {
@@ -83,15 +102,22 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get isValid() {
-    return this.name.valid && this.username.valid && this.bio.valid;
+    return this.username.valid && this.bio.valid;
   }
 
   get isChanged() {
+    const date = this.dateToNgbDate(new Date(this.currentUserState.dob));
+    this.bio.setValue(this.bio.value ? this.bio.value : "");
     return (
       this.name.value !== this.currentUserState.name ||
       this.username.value !== this.currentUserState.username ||
       this.bio.value !== (this.currentUserState.bio ?? "") ||
-      this.bio.value !== (this.currentUserState.dob ?? null) ||
+      (this.dob.value ?
+      (
+        this.dob.value["day"] !== (date["day"] ?? null) ||
+        this.dob.value["month"] !== (date["month"] ?? null) ||
+        this.dob.value["year"] !== (date["year"] ?? null)
+      ) : false) ||
       !!this.photoFile
     );
   }
@@ -136,11 +162,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     this.countlyService.updateEventData("settingsView", {
       updateProfileClicked: "yes",
     });
-    const body: UpdateProfileDTO = {};
+    const body: any = {};
     if (!!this.username.value) {
       body.username = this.username.value;
     }
-    if (!!this.name.value) {
+    if (!!this.name.value && this.name.value?.replaceAll(" ", "")?.length > 0) {
       const [first_name, ...rest] = this.name.value.trim().split(" ");
       const last_name = rest.join(" ") || "";
       body.first_name = first_name;
@@ -150,7 +176,12 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
         body.last_name = "";
       }
     }
-    if (!!this.bio.value) {
+    else
+    {
+      body.first_name = "";
+      body.last_name = "";
+    }
+    if (!!this.bio.value && this.bio.value?.length > 0) {
       body.bio = this.bio.value;
     } else {
       body.bio = "";
@@ -158,7 +189,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     if (!!this.photoFile) {
       body.profile_image = this.photoFile;
     }
-    if (!!this.dob.value) {
+    if (!!this.dob.value && this.dob.value["day"]) {
       const year = this.dob.value['year'];
       const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
       const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];
@@ -169,6 +200,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
 
     this.restService.updateProfile(body).subscribe(
       (data) => {
+        
+        if (body.dob) {
+          this.countlyService.updateEventData("settingsView", { "dateOfBirthChanged": "yes" })
+        }
+
         this.authService.updateProfile({
           username: body.username,
           firstName: body.first_name,
@@ -181,6 +217,7 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
           icon: "success",
           title: "Updated Profile",
           text: "Saved Changes!",
+          confirmButtonText: "Okay"
         });
         this.photoFile = null;
         this.saveProfileLoder = false;
@@ -191,7 +228,11 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   showError(error) {
+    if (!error.data.icon) {
+      error.data.icon = "assets/img/swal-icon/Account.svg";
+    }
     Swal.fire({
       title: error.data.title,
       text: error.data.message,

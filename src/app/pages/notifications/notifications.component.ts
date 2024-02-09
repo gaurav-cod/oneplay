@@ -64,8 +64,53 @@ export class NotificationsComponent implements OnInit {
         }
       });
   }
+
+  notificationAction(notification: any) {
+    // 
+    // if (this.notification.subType !== "FRIEND_REQUEST")
+    //   this.restService.markNotificationRead(this.notification.notificationId).toPromise();
+
+    // switch (notification.subType) {
+    //   case "WELCOME_MESSAGE":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "SCHEDULED_MAINTENANCE":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "SUBSCRIPTION_EXPIRING":
+    //   case "SUBSCRIPTION_EXPIRED":
+    //   case "LIMITED_TOKEN_REMAIN":
+    //     this.router.navigate(['/settings/subscription']);
+    //     break;
+    //   case "NEW_GAMES_AVAILABLE":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "GAME_UPDATE_AVAILABLE":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "PASSWORD_CHANGE":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "UNUSUAL_ACCOUNT_ACTIVITY":
+    //     this.router.navigate(['/settings/security']);
+    //     break;
+    //   case "PAYMENT_FAILED":
+    //     this.checkoutPageOfPlan(notification);
+    //     break;
+    //   case "PAYMENT_SUCCESS":
+    //     this.router.navigate(['']);
+    //     break;
+    //   case "FRIEND_REQUEST":
+    //     this.router.navigate(['/notifications'], { queryParams: { previousPage: 'settings' } });
+    //     break;
+    //   case "SCHEDULED_MAINTENANCE":
+    //     this.router.navigate(['']);
+    //   default:
+    //     this.router.navigate(['']);
+    // }
+  }
   
-  navigateByCTA(type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
+  navigateByCTA(event, type: "RENEW" | "BUY_NOW" | "ACCEPT" | "RESET_PASSWORD" | "DOWNLOAD" | "RETRY" | "IGNORE" | "REJECT", notification: NotificationModel) {
     
     if (!(type == "ACCEPT" || type == "REJECT" || type == "IGNORE"))
       this.restService.markNotificationRead(notification.notificationId).toPromise();
@@ -100,6 +145,7 @@ export class NotificationsComponent implements OnInit {
         this.checkoutPageOfPlan(notification);
         break;
     }
+    event.stopPropagation();
   }
 
   downloadInvoice(downloadLink: string) {
@@ -138,7 +184,8 @@ export class NotificationsComponent implements OnInit {
 
   }
 
-  toggleNotificationActionBtn(notificationDetail) {
+  toggleNotificationActionBtn(event, notificationDetail) {
+    event.stopPropagation();
     notificationDetail.showActionBtns = !notificationDetail.showActionBtns;
     this.userNotificationList.forEach((notification)=> {
       if (notification.notificationId != notificationDetail.notificationId)
@@ -177,17 +224,18 @@ export class NotificationsComponent implements OnInit {
       }
     })
   }
-  markRead(notification) {
+  markRead(event, notification) {
+    event.stopPropagation();
     this.restService.markNotificationRead(notification.notificationId).subscribe({
       next: ()=> {
         notification.isRead = true;
         notification.showActionBtns = false;
       }, error: ()=> {
-
       }
     })
   }
-  markUnread(notification) {
+  markUnread(event, notification) {
+    event.stopPropagation();
     this.restService.markNotificationUnRead(notification.notificationId).subscribe({
       next: ()=> {
         notification.isRead = false;

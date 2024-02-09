@@ -11,13 +11,15 @@
 }
 
 .height100vh {
-  height: 100vh;
+  height: calc(100vh - 35px);
   align-items: center;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   -ms-overflow-style: none; /* IE 11 */
   scrollbar-width: none;
-  @media (max-width: 992px) {
-    padding-top: 55px !important;
+  
+  @media (max-width: 475px) {
+    padding-top: 0px !important;
+    align-items: unset !important;
   }
 
   &::-webkit-scrollbar {
@@ -33,6 +35,11 @@
   }
   @media (max-width: 1920px) {
     width: 520px !important;
+  }
+  @media (min-width: 475px) and (max-width: 1200px)  {
+    width: 520px !important;
+    position: relative;
+    top: -60px;
   }
   @media (max-width: 430px) {
     width: 320px !important;
@@ -67,4 +74,16 @@
 
 .footerWhiteColor {
   color: #e1e1e1;
+}
+
+.footer-link {
+  color: #959595 !important;
+  padding: 15px 5px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: auto;
+  font-size: 17px !important;
+   @media screen and (min-width: 1200px) {
+      bottom: -60px !important;
+   }
 }

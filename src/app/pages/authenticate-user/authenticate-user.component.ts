@@ -1,22 +1,39 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from "sweetalert2";
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { RestService } from 'src/app/services/rest.service';
 import { phoneValidator } from 'src/app/utils/validators.util';
 import { contryCodeCurrencyMapping } from 'src/app/variables/country-code';
 import { v4 } from "uuid";
+import { CountlyService } from 'src/app/services/countly.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { getDefaultSignInSegments } from 'src/app/utils/countly.util';
+import { LoginOtpRO, LoginRO } from 'src/app/interface.d';
+import { UserModel } from 'src/app/models/user.model';
+import { CustomTimedCountlyEvents } from 'src/app/services/countly';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-authenticate-user',
   templateUrl: './authenticate-user.component.html',
   styleUrls: ['./authenticate-user.component.scss']
 })
-export class AuthenticateUserComponent implements OnInit, OnDestroy {
+export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _referralModal: NgbModalRef; 
+  private _qParamSubscription: Subscription;
+  private _referalSubscription: Subscription;
+  private _phoneSubcription: Subscription;
+  private _routerParamSubscription: Subscription;
+
+  private _deviceType: "web" | "tizen" = "web";
+
+  public nonFunctionalRegion: boolean = false;
+
   screenOnDisplay: "REGISTER_LOGIN" | "OTP" = "REGISTER_LOGIN";
   errorMessage: string | null = null;
   @ViewChild("ContactUs") contactUs: ElementRef<HTMLDialogElement>;
@@ -26,14 +43,26 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   constructor(
     private readonly ngbModal: NgbModal,
     private readonly restService: RestService,
-    private readonly router: Router
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly countlyService: CountlyService,
+    private readonly authService: AuthService,
+    private readonly toastService: ToastService,
+    private readonly activatedRoute: ActivatedRoute
   ) {}
+
+  ngAfterViewInit(): void {
+    
+  }
 
   private _isPasswordFlow: boolean = false;
   private _doesUserhavePassword: boolean = false;
   private referralName: string | null = null;
+  private redirectURL: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
+  resendOTPClicked: boolean = false;
+  isReferralAdded: boolean = false;
 
   formInput = ["one", "two", "three", "four"];
   @ViewChildren("formRow") rows: any;
@@ -63,7 +92,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.touched && control.invalid;
+    return control.invalid && control.dirty && control.value;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -72,47 +101,113 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     const control = this.referal_code;
     return !this.referralName && control.dirty && control.touched && control.value?.length > 0;
   }
-  get referralErroredBtn() {
-    const control = this.referal_code;
-    return (!this.referralName && control.dirty && control.touched) || control.value?.length == 0;
-  }
+  
   get passwordErrored() {
     const control = this.authenticateForm.controls["password"];
-    return control.touched && control.invalid;
+    return (control.value.length > 0 ? control.touched && control.invalid : true);
   }
+  get showPasswordBtn() {
+    return this.authenticateForm.controls["password"].value?.length > 0;
+  }
+
   get loginPasswordErrored() {
-    return this.phoneErrored && this.passwordErrored;
+    return this.phoneErrored || this.passwordErrored;
   }
 
   ngOnInit() {
+    const partnerId = this.route.snapshot.queryParams['partner'];
+    if (!partnerId) {
+      this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
+        environment.partner_id = partner_id;
+      }).catch((error) => {
+        if (error?.error?.code == 307) {
+          this.authService.setIsNonFunctionalRegion(true);
+        }
+      });
+    } else {
+      environment.partner_id = partnerId;
+    }
 
-    this.referal_code.valueChanges.pipe(
+    this.startSignInEvent();
+
+    this.nonFunctionalRegion = this.authService.isNonFunctionalRegion;
+
+    this._referalSubscription = this.referal_code.valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
     ).subscribe((id) => this.getUserByReferalCode(id));
-    this.authenticateForm.controls["phone"].valueChanges.pipe(
+    this._phoneSubcription = this.authenticateForm.controls["phone"].valueChanges.pipe(
       debounceTime(1000),
       distinctUntilChanged() 
-    ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)))
+    ).subscribe((phone)=> this.getUserInfoByPhone(String(this.authenticateForm.controls['country_code'].value + phone)));
+
+     this._routerParamSubscription = this.route.params.subscribe((param)=> {
+      if (!param["device"] || param["device"] != 'tizen') return;
+      this._deviceType = "tizen";
+    })
+
+    this._qParamSubscription = this.activatedRoute.queryParams.subscribe((qParam)=> {
+      this.redirectURL = qParam["redirectUrl"];
+      if (qParam["ref"]) {
+        this.getUserByReferalCode(qParam["ref"]);
+        // this.router.navigate([], {queryParams: {ref: null}});
+      }
+    })
+    this.restService.getCurrentLocation().subscribe({
+      next: (res) => {
+        if (contryCodeCurrencyMapping[res.countryCode]) {
+          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.countryCode]);
+        }
+        if (res.hosting) {
+          Swal.fire({
+            title: "Alert!",
+            html: "We've detected you're using a VPN! <br/> This may cause performance issues.",
+            imageUrl: "assets/img/error/vpn_icon.svg",
+            confirmButtonText: "Okay",
+          });
+        }
+      },
+    });
   }
+
   ngOnDestroy(): void {
-    
+    this.countlyService.endEvent("signIn");
+    this._qParamSubscription?.unsubscribe();
+    this._phoneSubcription?.unsubscribe();
+    this._referalSubscription?.unsubscribe();
+    this._routerParamSubscription?.unsubscribe();
+
+    this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+      this.handlePaste(e)
+    );
   }
 
   private getUserInfoByPhone(phone) {
+    const control = this.authenticateForm.controls["phone"];
     this.restService.isPhoneRegistred(phone, "web").subscribe({
       next: (response: any)=> {
+        control.setErrors(null)
         this._doesUserhavePassword = response.has_password;
         this._isPasswordFlow = response.has_password;
         this.isUserRegisted = response.is_registered;
         this.isValidPhoneNumber = true;
+
+        if (this._isPasswordFlow) {
+          this.countlyEvent("passwordRequired", "yes");
+        }
+
       }, error: (error: any)=> {
         this.isValidPhoneNumber = false;
+        this._isPasswordFlow = false;
+        this.isUserRegisted = false;
+        this._doesUserhavePassword = false;
+        control.setErrors({ inValidNumber: { value: control.value } })
       }
     })
   }
 
   openReferralModal(container: ElementRef<HTMLDivElement>) {
+    this.countlyEvent("ReferralIdClicked", "yes");
     this._referralModal = this.ngbModal.open(container, {
       centered: true,
       modalDialogClass: "modal-sm",
@@ -120,16 +215,32 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       keyboard: false,
     });
   }
-  closeReferralDialog() {
+  closeReferralDialog(isReferalAdded: boolean = false) {
+    this.isReferralAdded = !!this.referralName && isReferalAdded;
     this._referralModal?.close();
   }
   getUserByReferalCode(code: string) {
     this.referralName = null;
-    this.restService.getName(code).subscribe(
-      (name) => (this.referralName = name)
+    this.restService.getReferalName(code).subscribe((response) =>{
+        if (response.available) {
+          this.referralName = response.message;
+          this.isReferralAdded = true;
+        }
+        else {
+          this.referralName = null;
+          this.isReferralAdded = false;
+        }
+      }
     );
   }
   getOTP() {
+
+    if (this._isPasswordFlow) {
+      this.countlyEvent("passwordGetOtpClicked", "yes");
+    }
+    this.countlyEvent("getOtpClicked", "yes");
+    this.countlyEvent("ReferralIdEntered", (this.isUserRegisted && this.referal_code?.value) ? "yes" : "no");
+
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
@@ -139,13 +250,16 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
         if (response) {
-          this.screenOnDisplay = "OTP";
-      
+          this.changeScreen("OTP");
+          this.mobile = this.authenticateForm.controls["phone"].value;
+          this.displayTimer();
           this.otpForm.controls['four'].valueChanges.subscribe(()=> {
+            this.errorMessage = null;
             this.verifyOTP();
           })
         }
       }, error: (error) => {
+        this.showError(error);
       }
     })
   }
@@ -157,30 +271,68 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
-        
+        this.countlyEvent("resendOtpClicked", "yes");
+        this.resendOTPClicked = true;
+        this.errorMessage = null;
+        this.displayTimer();
       }, error: (error) => {
         this.errorMessage = error.message;
       }
     })
   }
   verifyOTP() {
+    this.countlyEvent("otpEntered", "yes");
     const controls = this.otpForm.controls;
     const code = controls["one"].value + controls["two"].value + controls["three"].value + controls["four"].value;
+
+    // if code in not valid don't call API
+    if (code.length != 4)
+      return;
+
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "otp": code,
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey
     }
     this.restService.verifyOTP(payload).subscribe({
       next: (response) => {
-        this.router.navigate(['/home']);
+        this.userLoginSetup(response);
+        
+        this.countlyEvent("otpEntered", "yes");
+
+        if (response.new_user) {
+          localStorage.setItem("is_new_user", String(response.new_user));
+          localStorage.setItem("showUserInfoModal", "true");
+          localStorage.setItem("showTooltipInfo", "true");
+          localStorage.setItem("showAddToLibrary", "true");
+          localStorage.removeItem("canShowProfileOverlay");
+        }
+        else {
+          if (response.update_profile)
+            localStorage.setItem("showUserInfoModal", "true");
+          localStorage.setItem("showWelcomBackMsg", "true");
+        }
+
+        if (this.redirectURL)
+          this.router.navigate([this.redirectURL]);
+        else 
+          this.router.navigate(['/home']);
       }, error: (error) => {
-        this.showError(error);
+        this.userLoginFailure(error);
+        this.countlyEvent("otpFailure", "yes");
+        this.errorMessage = error.message;
+        if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
+          
+          this.countlyEvent("otpFailureReson", "invalid");
+        } else {
+          this.countlyEvent("otpFailureReson", "expired");
+        }
       }
     })
   }
   loginWithPassword() {
+    this.countlyEvent("passwordEnterd", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
@@ -188,9 +340,20 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
     }
     this.restService.loginWithPassword(payload).subscribe({
       next: (response)=> {
-
+        this.userLoginSetup(response);
+        localStorage.setItem("showWelcomBackMsg", "true");
+        if (response.update_profile)
+          localStorage.setItem("showUserInfoModal", "true");
+        if (this.redirectURL) {
+          this.router.navigate([this.redirectURL]);
+        }
+        else {
+          this.router.navigate(['/home']);
+        }
       }, error: (error)=> {
-        this.showError(error);
+        
+        this.countlyEvent("passwordfailed", "yes");
+        this.userLoginFailure(error);
       }
     })
   }
@@ -201,7 +364,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
         input.value.length === input.maxLength &&
         index < this.formInput.length
       ) {
-        this.rows._results[index + 1].nativeElement.focus();
+        this.rows._results[index + 1]?.nativeElement.focus();
       }
     } else {
       input.value = "";
@@ -212,20 +375,109 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
    
     if (event.key === "Backspace" || event.key === "Delete") {
       const input = event.target as HTMLInputElement;
-      if (input.value.length === 0 && index > 0) {
+      if (input.value.length === 0 && index > 0 && this.rows._results[index - 1]?.nativeElement) {
         this.rows._results[index - 1].nativeElement.focus();
         this.rows._results[index - 1].nativeElement.value = "";
       }
     }
   }
-  login() {
-
+  private userLoginSetup(response: LoginRO & {profile: UserModel}) {
+    this.countlyService.endEvent("signIn", { result: 'success', phoneNumberEntered: "yes"});
+    setTimeout(()=> {
+      this.authService.trigger_speed_test = response.trigger_speed_test;
+    }, 5000);
+    const code: string = this.route.snapshot.queryParams["code"];
+    if (!!code && /\d{4}-\d{4}/.exec(code)) {
+      this.restService.setQRSession(code, response.session_token).subscribe({
+        next: ()=>{},
+        error: (error)=> {
+          this.showError(error);
+        }
+      });
+    }
+    this.authService.login(response.session_token);
+    this.authService.setUser(response.profile);
   }
+  private userLoginFailure(error: any) {
+    this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });    
+    this.showError(error);
+  }
+  private displayTimer() {
+    this.otpTimer = 60;
+    this.timer();
+  }
+  private timer(minutes: number = 1) {
+    let seconds: any = this.otpTimer;
+    const timeRef = setInterval(() => {
+      seconds--;
+      const prefix = seconds < 10 ? "0" : "";
+      this.otpTimer = Number(`${prefix}${seconds}`);
+      if (seconds == 0 || this.screenOnDisplay == "REGISTER_LOGIN") {
+        clearInterval(timeRef);
+      }
+    }, 1000);
+  }
+  guestFlow() {
+    this.countlyEvent("guestLoginClicked", "yes");
+    this.router.navigate(['/home']);
+  }
+  
   changeScreen(screenOnDisplay: "REGISTER_LOGIN" | "OTP") {
+
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
     this.isUserRegisted = false;
     this.referal_code = null;
+    this.errorMessage = null;
+    if (screenOnDisplay == "REGISTER_LOGIN")
+      this.countlyEvent("changePhoneNumber", "yes");
+    if (screenOnDisplay === "OTP") {
+      // reset otp
+      Object.keys(this.otpForm.controls).forEach((key)=> {
+        this.otpForm.controls[key].setValue("");
+      })
+      setTimeout(()=> {
+
+        this.rows._results[0]?.nativeElement.addEventListener("paste", (e) =>
+          this.handlePaste(e)
+        );
+      }, 500);
+    } else {
+      this.authenticateForm.controls["phone"].setValue("");
+      this.errorMessage = null;
+      this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
+        this.handlePaste(e)
+      );
+    }
+  }
+
+  private handlePaste(event: ClipboardEvent) {
+    event.stopPropagation();
+
+    const pastedText = event.clipboardData?.getData("text")?.trim();
+
+    if (/^\d{4}$/.test(pastedText)) {
+      const digits = pastedText.split("");
+      digits.forEach((digit, i) => {
+        Object.values(this.otpForm.controls)[i].setValue(digit);
+      })
+      this.rows._results[3]?.nativeElement.focus();
+    }
+  }
+
+  private startSignInEvent() {
+    this.countlyService.startEvent("signIn", { discardOldData: false });
+    this.countlyService.updateEventData("signIn", getDefaultSignInSegments())
+    const segments = this.countlyService.getEventData("signIn");
+    if (!segments.signInFromPage) {
+      this.countlyService.updateEventData("signIn", {
+        signInFromPage: "directLink",
+      })
+    }
+  }
+
+  private countlyEvent(key: keyof CustomTimedCountlyEvents["signIn"], value: string) {
+    this.countlyService.endEvent("signIn", { [key]: value});
   }
 
   showError(error) {
@@ -238,7 +490,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy {
       cancelButtonText: error.data.secondary_CTA
     }).then((response)=> {
       if (response.isConfirmed && (error.data.primary_CTA?.includes("Contact"))) {
-        this.contactUs.nativeElement.click();
+        this.contactUs?.nativeElement.click();
       }
     })
   }

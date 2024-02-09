@@ -1,6 +1,7 @@
 import { SubscriptionPackageModel } from "./subscriptionPackage.model";
 
 export class SubscriptionModel {
+  id: string;
   planId: string;
   planName: string;
   planDesc: string;
@@ -22,6 +23,7 @@ export class SubscriptionModel {
 
   constructor(json: any) {
     const plan = new SubscriptionPackageModel(json.subscriptionPackage);
+    this.id = json["payment"]["id"];
     this.planId = plan.id;
     this.planName = plan.name;
     this.planDesc = plan.description;

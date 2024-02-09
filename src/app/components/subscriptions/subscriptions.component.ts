@@ -69,8 +69,15 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           icon: "success",
           title: popups[swal].title,
           text: popups[swal].body,
+          confirmButtonText: "Okay"
         }).then(() => {
-          window.location.href = "/dashboard/settings/subscription";
+          if (!localStorage.getItem("planPurchaseProfileOverlay")) {
+            localStorage.setItem("planPurchaseProfileOverlay", "true");
+            window.location.href = "/dashboard/settings/subscription?overlay=true";
+          }
+          else {
+            window.location.href = "/dashboard/settings/subscription";
+          }
         });
       } catch {}
     }
@@ -247,10 +254,23 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   }
 
   downloadInvoice(subscription) {
-    this.restService.getPaymentRecipt(subscription.planId).subscribe((response)=> {
+    
+    this.restService.getPaymentRecipt(subscription.id).subscribe((response)=> {
       // TODO: Download Invoice
-    }, (error)=> {
+      const blob = new Blob([response], { type: 'application/pdf' });
 
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'downloaded.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }, (error)=> {
+      Swal.fire({
+        text: "Oops! There was an issue generating the invoice.",
+        imageUrl: "assets/img/swal-icon/Group.svg",
+        confirmButtonText: "Okay"
+      })
     })
   }
 

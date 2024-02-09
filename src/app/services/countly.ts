@@ -56,7 +56,6 @@ export const XCountlySUM = "XCountlySUM";
 export interface CustomCountlyEvents {
   websiteFooterView: {
     homeClicked: "yes" | "no";
-    gamezopClicked: "yes" | "no";
     aboutUsClicked: "yes" | "no";
     careerClicked: "yes" | "no";
     plansPricingClicked: "yes" | "no";
@@ -77,12 +76,13 @@ export interface CustomCountlyEvents {
   };
   menuClick: {
     homeClicked: "yes" | "no";
-    gamezopClicked: "yes" | "no";
     gamesClicked: "yes" | "no";
     streamsClicked: "yes" | "no";
     searchClicked: "yes" | "no";
     gameStatusClicked: "yes" | "no";
     profileClicked: "yes" | "no";
+    userType: "guest" | "registered";
+    level1Clicked: "yes" | "no";
   };
   menuDropdownClick: {
     myLibraryClicked: "yes" | "no";
@@ -97,6 +97,7 @@ export interface CustomCountlyEvents {
     tvSignInClicked: "yes" | "no";
     logOutClicked: "yes" | "no";
     logOutConfirmClicked: "yes" | "no";
+    dateOfBirthChanged: "yes" | "no"
   };
   search: {
     keywords: string;
@@ -107,6 +108,7 @@ export interface CustomCountlyEvents {
       | "gameClicked"
       | "addFriend"
       | "cancelled";
+    userType: "guest" | "registered";
   };
   gameTerminate: {
     gameSessionId: string;
@@ -119,6 +121,16 @@ export interface CustomCountlyEvents {
     playDuration: number;
     idleDuration: number;
   };
+  homeView: {
+    bannerClicked: string | "no";
+    railClicked: string | "no";
+    myLibraryClicked: string | "no";
+    filterClicked: string | "no";
+    filterGameClicked: string | "no";
+    channel: "web" | "mobile" | "androidTv";
+    partner: string;
+    userType: "guest" | "registered";
+  }
 }
 
 export interface CustomTimedCountlyEvents {
@@ -127,6 +139,7 @@ export interface CustomTimedCountlyEvents {
     browseArticlesClicked: "yes" | "no";
     joinDiscordClicked: "yes" | "no";
     browsePlansClicked: "yes" | "no";
+    accessHomeClicked: "yes" | "no"
   };
   websiteHomeView: {
     joinTodayClicked: "yes" | "no";
@@ -156,6 +169,13 @@ export interface CustomTimedCountlyEvents {
   websiteDecentralizationView: {
     connectWithUsClicked: "yes" | "no";
   };
+  Level1View: {
+    bannerClicked: string;
+    railClicked: string;
+    filterClicked: string;
+    filterGameClicked: string;
+    userType: "guest" | "registered"
+  };
   signUpFormSubmitted: {
     name: "yes" | "no";
     email: "yes" | "no";
@@ -177,13 +197,44 @@ export interface CustomTimedCountlyEvents {
     failureReason: "invalidOtp" | "invalidToken" | "tokenExpired";
   };
   signIn: {
-    result: "success" | "failure";
-    signInFromPage:
+    result?: "success" | "failure";
+    signInFromPage?:
       | "websiteHeader"
       | "directLink"
       | "signUp"
       | "home"
-      | "aboutUs";
+      | "aboutUs"
+      | "appHeader"
+      | "megaMenu"
+      | "subscriptionPage"
+      | "gameDetailspage"
+      | "chat"
+      | "accessHome";
+    phoneNumberEntered: "yes" | "no";
+    getOtpClicked: "yes" | "no";
+    guestLoginClicked: "yes" | "no";
+    ReferralIdEntered: "yes" | "no";
+    ReferralIdClicked: "yes" | "no";
+    otpEntered: "yes" | "no";
+    otpFailure: "yes" | "no";
+    otpFailureReson?: "expired" | "invalid";
+    resendOtpClicked: "yes" | "no";
+    changePhoneNumber: "yes" | "no";
+    passwordRequired: "yes" | "no";
+    passwordEnterd: "yes" | "no";
+    passwordfailed: "yes" | "no";
+    passwordGetOtpClicked: "yes" | "no";
+  };
+  guestProfile: {
+    SignInClicked: "yes" | "no";
+    subscribeClicked: "yes" | "no";
+    speedTestClicked: "yes" | "no";
+  };
+  detailsPopUp: {
+    dateOfBirth?: "success" | "skip" | "later" | "close";
+    password?: "success" | "skip" | "later" | "close";
+    userName?: "success" | "skip" | "later" | "close";
+    fullName?: "success" | "skip" | "later" | "close";
   };
   gameLandingView: {
     gameId: string;
@@ -196,8 +247,12 @@ export interface CustomTimedCountlyEvents {
       | "searchPage"
       | "gamesPage"
       | "detailsPage"
-      | "directLink";
+      | "directLink"
+      | "homePageBanner"
+      | "homePageRail"
+      | "homePageFilter";
     trigger: "banner" | "card" | "gameStatus";
+    userType: "guest" | "registered"
   };
   settingsView: {
     profileViewed: "yes" | "no";
@@ -211,9 +266,15 @@ export interface CustomTimedCountlyEvents {
     updateProfileClicked: "yes" | "no";
     passwordChanged: "yes" | "no";
     logoutFromAllClicked: "yes" | "no";
+    dateOfBirthChanged: "yes" | "no"
+  };
+  chat: {
+    friendClicked: "yes" | "no";
+    unfriendClicked: "yes" | "no";
+    messageSent: "yes" | "no";
   };
   subscriptionCardClick: {
-    source: "settingsPage";
+    source: "settingsPage" | "subscriptionPage" | "guestProfile";
     cta: "renew" | "topUp" | "buyNow" | "select";
     [XCountlySUM]: number;
   };
@@ -226,6 +287,7 @@ export interface CustomTimedCountlyEvents {
     gameCardClicked: "yes" | "no";
     gameId: string;
     gameTitle: string;
+    userType: "guest" | "registered"
   };
   searchResultsViewMoreUsers: {
     keywords: string;
@@ -273,5 +335,13 @@ export interface CustomTimedCountlyEvents {
     gameGenre: string;
     store: string;
     action: "skip" | "submit";
+  };
+  homeView: {
+    bannerClicked: string;
+    railClicked: string;
+    myLibraryClicked: string;
+    filterClicked: string;
+    filterGameClicked: string;
+    userType: "guest" | "registered"
   };
 }

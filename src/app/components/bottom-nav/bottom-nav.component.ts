@@ -54,8 +54,10 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   downloadAlert: boolean = true;
 
   private routerSub: Subscription;
+  private _sessionSubscription: Subscription;
 
   showCasualGamingLabel: boolean = false;
+  isAuthenticated: boolean = false;
 
   constructor(
     private readonly messagingService: MessagingService,
@@ -81,6 +83,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.gameStatusSubscription.unsubscribe();
     this.unreadSub?.unsubscribe();
     this.routerSub?.unsubscribe();
+    this._sessionSubscription?.unsubscribe();
   }
 
   viewGame() {
@@ -113,7 +116,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   get link() {
-    return environment.domain + "/dashboard/register?ref=" + this.user.id;
+    return environment.domain + "/dashboard/login?ref=" + this.user.id;
   }
 
   get gamePlayTooltip() {
@@ -138,6 +141,11 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+      }
+    );
     this.unreadSub = this.friendsService.unreadSenders.subscribe(
       (ids) => (this.hasUnread = ids.length > 0)
     );
@@ -151,7 +159,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
       this.user = user;
     });
 
-    this.sessionCountForCasualGaming();
+    // this.sessionCountForCasualGaming();
   }
 
   // toggleFriendsList() {
@@ -172,6 +180,21 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     });
   }
 
+  goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
+        } else {
+          window.open(`${response.url}?partner=${response.partner_id}`, '_self');
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
+      },
+    });
+  }
+
   TermsConditions(container: ElementRef<HTMLDivElement>) {
     this.ngbModal.open(container, {
       centered: true,
@@ -181,13 +204,17 @@ export class BottomNavComponent implements OnInit, OnDestroy {
   }
 
   sessionCountForCasualGaming() {
-    this.restService.checkCasualGamingSession().subscribe({
-      next: (response: any) => {
-        this.showCasualGamingLabel = response.is_new;
-      }, error: () => {
-        this.showCasualGamingLabel = false;
-      }
-    })
+
+    if (!this.isAuthenticated)
+      return;
+
+    // this.restService.checkCasualGamingSession().subscribe({
+    //   next: (response: any) => {
+    //     this.showCasualGamingLabel = response.is_new;
+    //   }, error: () => {
+    //     this.showCasualGamingLabel = false;
+    //   }
+    // })
   }
 
   getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {

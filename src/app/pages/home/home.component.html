@@ -1,4 +1,10 @@
-
+<div class="startContainer" *ngIf="username && firstSignUpMsgTimer">
+  <div class="heading text-white font30 font600 blueColorGradient">SUCCESSFUL SIGN IN</div>
+  <div class="position-relative d-flex align-items-center justify-content-center imgTxtContainer" style="top: -40px;">
+    <img src="assets/img/Dashboard/signin-popup.svg" class="position-absolute" alt="">
+    <span class="text-white font18 font600 initalText">We have assigned you a default name {{ username }}, you can change this in settings</span>
+  </div>
+</div>
 <div
   class="container-fluid pb-3 mb-lg-0 pb-lg-0"
   style="padding-left: 0px !important; padding-right: 0px !important"
@@ -171,6 +177,7 @@
       <app-similar-games
         [title]="genreSelected"
         [games]="genreGames"
+        (gameClick)="updateHomeView('filterGameClicked', $event)"
       ></app-similar-games>
     </div>
     <!-- <div>
@@ -185,6 +192,7 @@
         *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
         [title]="'My Library'"
         [games]="library"
+        (gameClick)="updateHomeView('myLibraryClicked', $event)"
       ></app-similar-games>
     </div>
     <ng-container *ngIf="!genreSelected">
@@ -193,6 +201,7 @@
         [title]="row.title"
         [games]="row.games"
         [isInstallAndPlayList]="isInstallPlayList(row.games)"
+        (gameClick)="updateHomeView('railClicked', row.title + ',' + $event)"
       ></app-similar-games>
     </ng-container>
   </div>

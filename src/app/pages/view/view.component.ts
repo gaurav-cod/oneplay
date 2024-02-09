@@ -6,6 +6,8 @@ import {
   ViewChild,
   OnDestroy,
   HostListener,
+  ContentChild,
+  AfterViewInit,
 } from "@angular/core";
 import {
   UntypedFormControl,
@@ -14,7 +16,7 @@ import {
 } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateParserFormatter, NgbDateStruct, NgbDatepicker, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { combineLatest, lastValueFrom, merge, Subscription } from "rxjs";
 import {
@@ -40,12 +42,14 @@ import { MediaQueries } from "src/app/utils/media-queries";
 import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
 import { TransformMessageModel } from "src/app/models/tansformMessage.model";
+import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
   selector: "app-view",
   templateUrl: "./view.component.html",
   styleUrls: ["./view.component.scss"],
+  providers: [{ provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
 export class ViewComponent implements OnInit, OnDestroy {
   // @ViewChild("initializedModal") initializedModal: ElementRef<HTMLDivElement>;
@@ -54,10 +58,17 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ViewChild("waitQueueModal") waitQueueModal: ElementRef<HTMLDivElement>;
   @ViewChild("smallModal") settingsModal: ElementRef<HTMLDivElement>;
   @ViewChild("macDownloadModal") macDownloadModal: ElementRef<HTMLDivElement>;
+  @ViewChild("termsConditionModal") termsConditionModal: ElementRef<HTMLDivElement>;
+
+  @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
+
+  public isWarningMessageView: boolean = false;
 
   initialized: string = "Please wait...";
   progress: number = 0;
   isReadMore = true;
+
+  showOnboardingPopup: boolean = false;
 
   game: GameModel;
   playing: string = "";
@@ -89,6 +100,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   selectedStore: PurchaseStore;
 
   gameMetaDetails: any;
+  errorMessage: string | null = null;
 
   showSettings = new UntypedFormControl();
 
@@ -100,6 +112,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     stream_codec: new UntypedFormControl("auto"),
     video_decoder_selection: new UntypedFormControl("auto"),
   });
+  dob = new UntypedFormControl("");
 
   reportText = new UntypedFormControl("", { validators: [Validators.required, Validators.maxLength(500)] });
 
@@ -127,11 +140,13 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _getGamesByDeveloperSub: Subscription;
   private _getGamesByGenreSub: Subscription;
   private _getSimilarGamesSub: Subscription;
+  private _triggerPlayGameRef: Subscription;
   private _getVideosSub: Subscription;
   private _getLiveVideosSub: Subscription;
   private _reportErrorModalRef: NgbModalRef;
   private _waitQueueModalRef: NgbModalRef;
   private _launchModalCloseTimeout: NodeJS.Timeout;
+  private _userInfoContainerRef: NgbModalRef;
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
@@ -142,6 +157,8 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private _gameErrorHandling = PlayConstants.GAMEPLAY_ERROR_REPLAY;
   private isUserLogedIn: boolean = false;
+
+  @ViewChild("UserInfoContainer") userInfoContainer;
 
   constructor(
     private readonly location: Location,
@@ -272,14 +289,18 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._getSimilarGamesSub?.unsubscribe();
     this._getVideosSub?.unsubscribe();
     this._getLiveVideosSub?.unsubscribe();
+    this._triggerPlayGameRef?.unsubscribe();
     // this._settingsEvent?.cancel();
     // this._advanceSettingsEvent?.cancel();
     // this._initializeEvent?.cancel();
     this._macDownloadModalRef?.close();
+    this._userInfoContainerRef?.close();
     Swal.close();
   }
 
+
   ngOnInit(): void {
+    
     if (this.isUserLogedIn) {
       this.restService.getGameStatus()
         .toPromise()
@@ -352,6 +373,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                 gameId: game.oneplayId,
                 gameTitle: game.title,
                 gameGenre: game.genreMappings.join(', '),
+                userType: this.user ? "registered" : "guest"
               });
             } else {
               this.countlyService.startEvent("gameLandingView", {
@@ -362,6 +384,7 @@ export class ViewComponent implements OnInit, OnDestroy {
                   gameGenre: game.genreMappings.join(', '),
                   source: "directLink",
                   trigger: "card",
+                  userType: this.user ? "registered" : "guest"
                 }
               });
             }
@@ -420,11 +443,40 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.waring_message_display = true;
   }
 
+  private dateToNgbDate = (date: Date): NgbDateStruct => ({
+    year: date.getUTCFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+  });
+
+  private dateMinusYears = (date: Date, count: number): Date => {
+    date.setUTCFullYear(date.getUTCFullYear() - count);
+    return date;
+  };
+
+  minDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 100));
+  maxDate = this.dateToNgbDate(this.dateMinusYears(new Date(), 13));
+  
+  get dateOfBirthErrored() {
+    const control = this.dob;
+    return (control.touched || control.dirty) && control.invalid;
+  }
+  get dobBtnDisabled() {
+    const control = this.dob;
+    return control.value ? ((control.touched || control.dirty) && control.invalid) : true;
+  }
+
   @HostListener("window:beforeunload", ["$event"])
   unloadNotification($event: any) {
     if (this.startingGame) {
       $event.returnValue = true;
     }
+  }
+
+  @HostListener("window:click", ["$event"])
+  click($event: any) {
+    if (this.isWarningMessageView)
+      this.isWarningMessageView = false;
   }
 
   get bgBannerImage(): string {
@@ -671,8 +723,18 @@ export class ViewComponent implements OnInit, OnDestroy {
     termConditionModal: ElementRef<HTMLDivElement> = null
   ) {
 
+     if (localStorage.getItem("#onboardingUser") !== "true" && this.user) {
+      this.showOnboardingPopup = true;
+      localStorage.setItem("#canOpenOnboarding", "true");
+      this._triggerPlayGameRef = this.authService.triggerPlayGame.subscribe((value)=> {
+        if (value)
+          this.playGame(container, skipCheckResume, termConditionModal);
+      })
+      return;
+    }
+
     if (!this.isUserLogedIn) {
-      this.router.navigate(['/login']);
+      this.goToSignUpPage();
       return;
     }
 
@@ -752,12 +814,22 @@ export class ViewComponent implements OnInit, OnDestroy {
         swalConf.showCancelButton = false;
         onConfirm = () => {};
       } else {
-        if (this.game.isInstallAndPlay && this.action === "Play") {
-          this.installAndPlaySession(termConditionModal);
-        } else if (this.showSettings.value || this.game.isInstallAndPlay) {
-          this.gamePlaySettingModal(container);
+        if (!this.user.dob) {
+          this._userInfoContainerRef = this.ngbModal.open(this.userInfoContainer, {
+            centered: true,
+            modalDialogClass: "modal-md",
+            backdrop: "static",
+            keyboard: false,
+          });
+          return;
         } else {
-          this.startGame();
+          if (this.game.isInstallAndPlay && this.action === "Play") {
+            this.installAndPlaySession(termConditionModal);
+          } else if (this.showSettings.value || this.game.isInstallAndPlay) {
+            this.gamePlaySettingModal(container);
+          } else {
+            this.startGame();
+          }
         }
       }
       if (showSwal) {
@@ -952,7 +1024,8 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._settingsModalRef?.dismiss();
   }
 
-  startGame(): void {
+  startGame(isDOBPresent: boolean = false): void {
+
     if (this.startingGame) {
       return;
     }
@@ -1084,6 +1157,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 10000);
+  }
+
+  public toggleWarningMessage(event) {
+    this.isWarningMessageView = !this.isWarningMessageView;
+    event.stopPropagation();
   }
 
   public cancelWaitQueue() {
@@ -1440,8 +1518,11 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   selectStore(store: PurchaseStore) {
+
     if (!this.selectedStore || this.selectedStore.name !== store.name) {
       this.selectedStore = store;
+      if (!this.user)
+        return;
       lastValueFrom(
         this.restService.setPreferredStoreForGame(
           this.game.oneplayId,
@@ -1451,6 +1532,46 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.showError(error);
       });
     }
+  }
+
+  closeUserInfoContainer() {
+    this._userInfoContainerRef?.close();
+  }
+
+  private goToSignUpPage() {
+    this.restService.getLogInURL().subscribe({
+      next: (response) => {
+        if (response.url === "self") {
+          this.router.navigate(["/login"]);
+        } else {
+          window.open(`${response.url}?partner=${response.partner_id}`, '_self');
+        }
+      },
+      error: () => {
+        this.router.navigate(["/login"]);
+      },
+    });
+  }
+  confirm() {
+    let body: string = "";
+    if (!!this.dob.value) {
+      const year = this.dob.value['year'];
+      const month = this.dob.value['month'] < 10 ? "0" + this.dob.value['month'] : this.dob.value['month'];
+      const day = this.dob.value['day'] < 10 ? "0" + this.dob.value['day'] : this.dob.value['day'];
+      body = `${year}-${month}-${day}`;
+    }
+    this.restService.updateProfile({dob: body}).subscribe(
+      (data) => {
+        this.authService.updateProfile({
+          dob: body
+        });
+        this._userInfoContainerRef?.close();
+        this.playGame(this.settingsModal, false, this.termsConditionModal);
+      },
+      (error) => {
+        this.errorMessage = error.message;
+      }
+    );
   }
 
   private reportErrorOrTryAgain(result: SweetAlertResult<any>, response: any) {

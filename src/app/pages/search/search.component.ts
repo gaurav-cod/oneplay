@@ -48,6 +48,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   private requestsSub: Subscription;
   private paramsSub: Subscription;
   private searchSub: Subscription;
+  private _sessionSubscription: Subscription;
+
+  isAuthenticated: boolean = false;
 
   get actions(): {
     [key in "add" | "accept" | "decline" | "cancel" | "wait" | "none"]: {
@@ -123,31 +126,41 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.requestsSub?.unsubscribe();
     this.paramsSub?.unsubscribe();
     this.searchSub?.unsubscribe();
+    this._sessionSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
+    this._sessionSubscription = this.authService.sessionTokenExists.subscribe(
+      (exists) => {
+        this.isAuthenticated = exists;
+        this.friendsSub = this.friendsService.friends.subscribe(
+          (f) => (this.acceptedFriends = f)
+        );
+        this.pendingsSub = this.friendsService.pendings.subscribe(
+          (f) => (this.pendingFriends = f)
+        );
+        this.requestsSub = this.friendsService.requests.subscribe(
+          (f) => (this.friendRequests = f)
+        );
+        if (exists) {
+          this.restService
+            .getAllFriends()
+            .toPromise()
+            .then((friends) => this.friendsService.setFriends(friends));
+          this.restService
+            .getPendingSentRequests()
+            .toPromise()
+            .then((pendings) => this.friendsService.setPendings(pendings));
+          this.restService
+            .getPendingReceivedRequests()
+            .toPromise()
+            .then((requests) => this.friendsService.setRequests(requests));
+        }
+        
+      }
+    );
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
-    this.friendsSub = this.friendsService.friends.subscribe(
-      (f) => (this.acceptedFriends = f)
-    );
-    this.pendingsSub = this.friendsService.pendings.subscribe(
-      (f) => (this.pendingFriends = f)
-    );
-    this.requestsSub = this.friendsService.requests.subscribe(
-      (f) => (this.friendRequests = f)
-    );
-    this.restService
-      .getAllFriends()
-      .toPromise()
-      .then((friends) => this.friendsService.setFriends(friends));
-    this.restService
-      .getPendingSentRequests()
-      .toPromise()
-      .then((pendings) => this.friendsService.setPendings(pendings));
-    this.restService
-      .getPendingReceivedRequests()
-      .toPromise()
-      .then((requests) => this.friendsService.setRequests(requests));
+    
     this.paramsSub = this.route.params.subscribe((params) => {
       this.route.queryParams.subscribe((query) => {
         this.tab = params.tab;
@@ -162,13 +175,18 @@ export class SearchComponent implements OnInit, OnDestroy {
             this.loadGames();
             break;
           case "users":
-            this.loadUsers();
+            if (!!this.user)
+              this.loadUsers();
             break;
           default:
             if (this.query == "") {
               this.loadGames();
             } else {
+              if (!this.isAuthenticated) {
+                this.loadGames();
+              } else {
               this.laodGamesAndUsers();
+              }
             }
             break;
         }
@@ -199,13 +217,15 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: "gameClicked",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.countlyService.endEvent("searchResultsViewMoreGames", {
       keywords: this.query,
       gameCardClicked: "yes",
       gameId: game.oneplayId,
       gameTitle: game.title,
-    });
+      userType: this.isAuthenticated ? "registered" : "guest"
+     });
     this.countlyService.startEvent("gameLandingView", {
       discardOldData: true,
       data: { source: getGameLandingViewSource(), trigger: "card" },
@@ -221,6 +241,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: tab === "games" ? "seeMoreGames" : "seeMoreUsers",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     if (tab === "games") {
       this.countlyService.startEvent("searchResultsViewMoreGames", {
@@ -228,6 +249,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         data: {
           keywords: this.query,
           gameCardClicked: "no",
+          userType: this.isAuthenticated ? "registered" : "guest"
         },
       });
     } else {
@@ -450,6 +472,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       keywords: this.query,
       actionDone: "yes",
       actionType: "addFriend",
+      userType: this.isAuthenticated ? "registered" : "guest"
     });
     this.endSearchEventOnFriendAction(friend);
     const record = [

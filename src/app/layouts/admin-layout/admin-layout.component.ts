@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
@@ -16,12 +17,11 @@ import { RestService } from "src/app/services/rest.service";
 export class AdminLayoutComponent implements OnInit, OnDestroy {
   friendsCollapsed = true;
   isApp = localStorage.getItem("src") === "oneplay_app";
-  showOnboardingPopup = false;
 
   private fiveSecondsTimer: NodeJS.Timer;
   private threeSecondsTimer: NodeJS.Timer;
   private queryParamSubscription: Subscription;
-  private userCanGameSubscription: Subscription;
+  private _userInfoRef: NgbModalRef;
 
   constructor(
     private readonly restService: RestService,
@@ -31,7 +31,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly gameService: GameService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly ngbModal: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -58,23 +59,13 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         this.isApp = false;
       }
     });
-
-    this.userCanGameSubscription = this.authService.userCanGame.subscribe(
-      (u) => {
-        if (u) {
-          this.showOnboardingPopup = true;
-        } else if (u === false) {
-          this.router.navigate(["/start-gaming"], { replaceUrl: true });
-        }
-      }
-    );
   }
 
   ngOnDestroy(): void {
     clearInterval(this.fiveSecondsTimer);
     clearInterval(this.threeSecondsTimer);
+    this._userInfoRef?.close();
     this.queryParamSubscription.unsubscribe();
-    this.userCanGameSubscription.unsubscribe();
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {
@@ -95,7 +86,6 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       .getWishlist()
       .toPromise()
       .then((list) => this.authService.setWishlist(list));
-    this.authService.user = this.restService.getProfile();
   }
 
   private initFriends() {

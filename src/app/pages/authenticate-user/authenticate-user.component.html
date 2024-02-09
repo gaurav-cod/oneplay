@@ -1,21 +1,17 @@
+<app-non-functional-region *ngIf="nonFunctionalRegion == true"></app-non-functional-region>
 <section [ngSwitch]="screenOnDisplay">
   <section *ngSwitchCase="'REGISTER_LOGIN'">
-    <form [formGroup]="authenticateForm" (submit)="login()" role="form" class="row">
+    <form [formGroup]="authenticateForm" role="form" class="row">
         <div class="col-12 text-center mt-4">
             <div class="col-md-12 mb-3 mt-4">
               <h1 class="text-white font30 font800 mb-0 textCenterCustom">
-                Signin / Signup
+                Sign In / Sign Up
               </h1>
             </div>
         </div>
         <div class="col-md-12 mt-5">
-            <label class="font18 font500 customOffWhite mb-0">Phone</label
-                ><span
-                  *ngIf="phoneErrored"
-                  class="font16 font500 errorGradientColor float-right"
-                  >*invalid phone number</span
-                >
-                <div class="input-group border-bottomInput borderRadius0">
+            <label class="font18 font500 customOffWhite mb-0">Phone</label>
+                <div class="input-group border-bottomInput borderRadius0" [ngClass]="{errorBorderColor: phoneErrored}">
                   <div class="input-group-append borderRadius0">
                     <select
                       class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font18 font500 border-0 selectBg"
@@ -31,9 +27,13 @@
                     inputmode="numeric"
                     formControlName="phone"
                     class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
-                    placeholder="Enter your Phone Number"
+                    placeholder="Enter your Mobile Number"
                   />
                 </div>
+                <span
+                  [style.visibility]="phoneErrored ? 'visible' : 'hidden'"
+                  class="font18 mt-2 font500 redErrorGradientColor float-left"
+                  >*invalid mobile number</span>
         </div>
         <ng-container *ngIf="allowPasswordInput">
           <div class="col-md-12 mt-4">
@@ -48,29 +48,37 @@
                   #passwordField
                 />
                 <span
-                  class="bgTransparent fixedIcon offWhiteColor font16 font500">
+                  class="bgTransparent fixedIcon offWhiteColor font16 font500 cursor-pointer ">
                   <img [src]="(passwordField.type=='password')?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" (click)="passwordField.type=passwordField.type=='password'?'text':'password'" class="img-fluid" alt="">
                 </span>
               </div>
           </div> 
           
+          <div class="d-flex justify-content-center mt-5 w-100"*ngIf="showPasswordBtn">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" (click)="loginWithPassword()" [disabled]="loginPasswordErrored">Continue</button>
+          </div> 
+
           <div class="container d-flex justify-content-between w-100 mt-5">
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="getOTP()">Get OTP</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="getOTP()">Get OTP</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
           </div>
           
-          <div class="d-flex justify-content-center mt-5 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" (click)="loginWithPassword()" [disabled]="loginPasswordErrored">Continue</button>
-          </div> 
         </ng-container>
         <ng-container  *ngIf="!allowPasswordInput">
-          <div class="d-flex justify-content-center mt-5 w-100">
-            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18" [disabled]="phoneErrored && !isValidPhoneNumber" (click)="getOTP()">Get OTP</button>
+          <div class="d-flex justify-content-center mt-3 w-100" *ngIf="isValidPhoneNumber; else showGuestLogin">
+            <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="isValidPhoneNumber ? phoneErrored : true" (click)="getOTP()">Get OTP</button>
           </div>
-          <div class="container d-flex justify-content-between w-100 mt-5">
-            <span class="font500 text-gray text-underline font18" *ngIf="referralName">Referal added</span>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName">Have a Referral Code?</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18" routerLink="/home">Continue as guest</a>
+          <ng-template #showGuestLogin>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline m-auto font18 hoverGradient guestLinkText" (click)="guestFlow()">Continue as Guest</a>
+          </ng-template>
+          <div class="container d-flex justify-content-between w-100 mt-5 linksContainer" *ngIf="isValidPhoneNumber && !isUserRegisted">
+            
+            <span class="font500 text-gray font18 d-flex align-items-center" *ngIf="referralName && isReferralAdded">
+              <img src="assets/img/refer/check.svg" alt="" class="mr-2">
+              <span>Referral added</span>
+            </span>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName || !isReferralAdded">Have a Referral Code?</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" (click)="guestFlow()">Continue as Guest</a>
           </div> 
         </ng-container>
     </form>
@@ -83,7 +91,7 @@
               Enter OTP Sent to <br> {{ mobile }}
             </h1>
           </div>
-          <div class="toast-message">OTP has been sent to your phone number</div>
+          <div class="toast-message" *ngIf="resendOTPClicked">OTP has been sent to your mobile number</div>
           <div class="mt-6 row justify-content-center">
             <div
               class="col-auto p-1 otpInput"
@@ -94,20 +102,20 @@
                 type="text"
                 formControlName="{{ input }}"
                 class="form-control otpInputField p-1"
+                [ngClass]="{'errorBorderColor': errorMessage}"
                 maxlength="1"
                 (input)="jump($event, i)"
                 (keydown)="jumpPrev($event, i)"
               />
             </div>
           </div>
-          
           <p class="mt-2 redErrorGradientColor text-center font600 font18" *ngIf="errorMessage">{{ errorMessage }}</p>
       </div>
     </form>
     <div class="d-flex flex-column text-center w-100 mt-5">
       <span class="font500 text-gray font18" *ngIf="otpTimer">Resend OTP in {{ otpTimer }} Seconds</span>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline font18" (click)="resendOTP()" *ngIf="!otpTimer">Resend OTP</a>
-      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4"(click)="changeScreen('REGISTER_LOGIN')">Change Phone Number</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="resendOTP()" *ngIf="!otpTimer">Resend OTP</a>
+      <a href="javascript:void(0)" class="font500 text-gray text-underline font18 mt-4 hoverGradient"(click)="changeScreen('REGISTER_LOGIN')">Change Mobile Number</a>
     </div>
   </section>
   
@@ -116,14 +124,14 @@
 <ng-template #ReferralCodeModal let-d="dismiss">
   <div class="modal-content modalBg">
     <div class="modal-body p-4 text-center">
-      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1" (click)="closeReferralDialog()">
+      <a href="javascript:void(0)" class="position-absolute btn bgTransparent p-0 top-3 text-white right-1" (click)="closeReferralDialog(false)">
         <i class="fas fa-times-circle font20"></i>
       </a>
       <h3 class="text-white font16 font700 mb-4 mt-3 text-center">
         Referral Code
       </h3>
       
-      <div class="input-group border-bottomInput borderRadius0">
+      <div class="input-group border-bottomInput borderRadius0"[ngClass]="{'errorBorderColor': referralErrored}">
         <input
           type="tel"
           class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
@@ -131,10 +139,10 @@
           [formControl]="referal_code"
         />
       </div>
-      <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referal Code</p>
+      <p class="mt-1 font14 redErrorGradientColor text-left font500" *ngIf="referralErrored">*Invalid Referral Code</p>
       <p class="mt-1 font14 text-success text-left font500" *ngIf="referralName">{{referralName}}</p>
       <div class="d-flex justify-content-center mt-4 w-100">
-        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding" [disabled]="referralErroredBtn">Continue</button>
+        <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding font18 flexiBtn" [disabled]="!referralName" (click)="closeReferralDialog(true)">Continue</button>
       </div>
     </div>
   </div>

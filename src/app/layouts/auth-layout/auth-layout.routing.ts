@@ -11,8 +11,9 @@ import { AuthenticateUserComponent } from 'src/app/pages/authenticate-user/authe
 
 export const AuthLayoutRoutes: Routes = [
     { path: 'login',                    component: AuthenticateUserComponent },
-    { path: 'register',                 component: RegisterComponent },
-    { path: 'register/:device',         component: RegisterComponent },
+    { path: 'login/:device',                    component: AuthenticateUserComponent },
+    { path: 'register',                 component: AuthenticateUserComponent },
+    { path: 'register/:device',         component: AuthenticateUserComponent },
     { path: 'verify/:token',            component: VerifyComponent },
     { path: 'forgot-password',          component: ForgotPassComponent },
     { path: 'otp-verify',               component: OtpVerifyComponent },

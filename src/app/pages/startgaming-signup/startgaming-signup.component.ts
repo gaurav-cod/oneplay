@@ -86,7 +86,7 @@ export class StartgamingSignupComponent implements OnInit {
 
   async setUserDetails() {
     const user = await lastValueFrom(this.restService.getProfile());
-    this.authService.user = of(user);
+    this.authService.setUser(user);
     if (user.username && user.age) {
       this.router.navigate(["/home"], { replaceUrl: true });
     } else if (user.username) {
@@ -107,7 +107,7 @@ export class StartgamingSignupComponent implements OnInit {
           this.countlyService.updateUser('username', this.startGameForm.value.username);
           this.countlyService.updateUser('byear', year);
           this.countlyService.saveUser();
-          this.authService.user = of(user);
+          this.authService.setUser(user);
           this.router.navigate(["/home"], { replaceUrl: true });
         },
         error: (error) => {

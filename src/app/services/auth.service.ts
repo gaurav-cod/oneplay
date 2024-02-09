@@ -1,17 +1,21 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, map, Observable } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
+import { BehaviorSubject, map, Observable, Subscription } from "rxjs";
 import { UserModel } from "../models/user.model";
 import Cookies from "js-cookie";
 import { environment } from "src/environments/environment";
 import * as moment from "moment";
+import { Router } from "@angular/router";
 
 declare const Countly: any;
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private readonly _$user: BehaviorSubject<UserModel | null> =
+    new BehaviorSubject(null);
+
+  private readonly _$triggerUserInfoModal: BehaviorSubject<boolean> =
     new BehaviorSubject(null);
 
   private readonly _$wishlist: BehaviorSubject<string[]> = new BehaviorSubject([]);
@@ -22,22 +26,91 @@ export class AuthService {
   private readonly _$triggerWishlist: BehaviorSubject<boolean> =
     new BehaviorSubject(false);
 
+  private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
+  private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  private isNotificationAlreadySubscribed: boolean = false;
+
+  private _timerIntervalRef: NodeJS.Timer;
+
+  private timerToShowUserInfo: number = 60;
+
+  private isUserLogginFlow: boolean = false;
+  private loggedInUsername: string | null = null;
+  // temporary varibles
+  private remindLaterForUserInfo: boolean = false;
+  private nonFunctionalRegion: boolean = false;
+  private isSeriousNotificationPresent: boolean = false;
+
   loggedOutByUser: boolean = false;
   trigger_speed_test: boolean = false;
 
-  constructor() {
+  constructor(
+    private readonly router: Router
+  ) {
     const sessionToken = Cookies.get("op_session_token");
     if (sessionToken) {
       this._$sessionToken.next(sessionToken);
     }
+  }
+  ngOnDestroy() {
+    clearInterval(this._timerIntervalRef);
+  }
+
+  startTimerToShowUserInfo() {
+    this._timerIntervalRef = setInterval(()=> {
+      this.timerToShowUserInfo--;
+      if (!localStorage.getItem("showUserInfoModal")) {
+        clearInterval(this._timerIntervalRef);
+      }
+      else if (this.timerToShowUserInfo === 0) {
+        clearInterval(this._timerIntervalRef);
+          this.setUserInfoModal(true);
+      }
+    }, 1000);
+  }
+
+  get seriousNotificationPresent() {
+    return this.isSeriousNotificationPresent;
+  }
+  setSeriousNotificationPresent(value: boolean) {
+    this.isSeriousNotificationPresent = value;
+  }
+
+  get getTimerToShowUserInfo() {
+    return this.timerToShowUserInfo;
+  }
+
+  get getUserLogginFlow() {
+    return this.isUserLogginFlow;
+  }
+  setUserLogginFlow(value: boolean) {
+    this.isUserLogginFlow = value;
+  }
+
+  get userInfoForRemindLater() {
+    return this.remindLaterForUserInfo;
+  }
+  setUserInfoRemindLater(value: boolean) {
+    this.remindLaterForUserInfo = value;
+  }
+
+  get getLoggedInUserName() {
+    return this.loggedInUsername;
+  }
+  setLoggedInUserName(value: string) {
+    this.loggedInUsername = value;
   }
 
   get user() {
     return this._$user.asObservable();
   }
 
-  set user(userObservable: Observable<UserModel>) {
-    userObservable.subscribe((user) => this._$user.next(user));
+  setUser(user: UserModel) {
+    this._$user.next(user);
   }
 
   get wishlist() {
@@ -47,6 +120,49 @@ export class AuthService {
   setWishlist(list: string[]) {
     this._$wishlist.next(list);
     this._$triggerWishlist.next(list.length < 1);
+  }
+
+
+  get notificationAlreadySubscribed() {
+    return this.isNotificationAlreadySubscribed;
+  }
+  setIsNotificationSubscribed(value: boolean) {
+    this.isNotificationAlreadySubscribed = value;
+  }
+
+  get isNonFunctionalRegion() {
+    return this.nonFunctionalRegion;
+  }
+  setIsNonFunctionalRegion(value: boolean) {
+    this.nonFunctionalRegion = value;
+  }
+
+  get triggerPlayGame() {
+    return this._$triggerPlayGame.asObservable();
+  }
+  setTriggerPlayGame(value: boolean) {
+    this._$triggerPlayGame.next(value);
+  }
+
+  get profileOverlay() {
+    return this._$triggerProfileOverlay.asObservable();
+  }
+  setProfileOverlay(value: boolean) {
+    this._$triggerProfileOverlay.next(value);
+  }
+
+  get userInfoModal() {
+    return this._$triggerUserInfoModal.asObservable();
+  }
+  setUserInfoModal(value: boolean) {
+    this._$triggerUserInfoModal.next(value);
+  }
+
+  get triggerInitialModal() {
+    return this._$triggerInitialModal.asObservable();
+  }
+  setTriggerInitialModal(value: boolean) {
+    this._$triggerInitialModal.next(value);
   }
 
   get sessionTokenExists() {
@@ -59,14 +175,13 @@ export class AuthService {
     return Cookies.get("op_session_token") || "";
   }
 
-  get userCanGame() {
-    return this._$user.asObservable().pipe<boolean | undefined>(
-      map((user) => {
-        if (!user) return undefined;
-        return !!user.username && !!user.age;
-      })
-    );
-  }
+  // get userCanGame() {
+  //   return this._$user.asObservable().pipe<boolean | undefined>(
+  //     map((user) => {
+  //       return !!user;
+  //     })
+  //   );
+  // }
 
   get userIdAndToken() {
     if (this.sessionToken) {

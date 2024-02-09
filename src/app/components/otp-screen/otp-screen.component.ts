@@ -89,6 +89,11 @@ export class OtpScreenComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onResend() {
+    this.errorMessage = null;
+    this.errorCode = null;
+    Object.values(
+      this.codeForm.value as { [key: string]: string }
+    ).map((el) => "");
     this.resendUpdateEmail.emit();
   }
 

@@ -275,21 +275,24 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container">
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container" [ngClass]="{'blink': !isWarningMessageView, 'full-opcaity': isWarningMessageView}" (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"
-            [ngbTooltip]="game.warningMessage"
+            [ngbTooltip]="warningMessage"
             triggers="click"
             placement="bottom-right"
           />
           <img
             class="warning-message-mob hideInLarge"
             src="assets/img/error/warning-message-symbol.svg"
-            [ngbTooltip]="game.warningMessage"
+            [ngbTooltip]="warningMessage"
             triggers="click"
             placement="right"
           />
+          <ng-template #warningMessage>
+            <div class="tooltip-container" [innerHTML]="game.warningMessage"></div>
+          </ng-template>
         </div>
       </div>
       <div class="col-md-12 px-0 marginTopRes">
@@ -1255,5 +1258,56 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #UserInfoContainer let-d="dismiss">
+  <div class="modal-content modalBg">
+    <div class="modal-body p-4 text-center">
+        <img src="assets/img/swal-icon/Verification.svg" alt="">
+      <a
+        href="javascript:void(0)"
+        class="position-absolute btn p-0 text-white rounded-circle top-2 right-1 cursorPointer"
+        style="font-size: 25px;"
+        (click)="closeUserInfoContainer()"
+      >
+        <i class="fas fa-times-circle"></i>
+      </a>
+      <h5 class="modal-title font20 font600 text-white text-center mt-3">
+        Gamer! Share your age for an enhanced gaming journey!
+      </h5>
+      
+    </div>
+    <div class="col-md-12 ml-2">
+      <label class="font16 font500 offWhiteText">Date Of Birth</label
+      ><span
+        class="font16 font500 errorGradientColor float-right"
+        *ngIf="dateOfBirthErrored"
+        >*invalid Date of Birth</span
+      >
+      <div class="input-group dateDropdown">
+        <input
+          class="form-control height52 font18 font500 text-white border-0 borderRadius10 lightBg dobInput"
+          [formControl]="dob"
+          placeholder="DD\MM\YYYY"
+          ngbDatepicker
+          #dobPicker="ngbDatepicker"
+          (click)="dobPicker.toggle()"
+          (dateSelect)="dobPicker.toggle()"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          style="border-radius: 5px;"
+        />
+      </div>
+
+      <p *ngIf="errorMessage" class="font16 font500 errorGradientColor mb-0 mt-2">
+        {{ errorMessage }}
+      </p>
+    </div>
+    <div class="w-100 d-flex justify-content-center mt-2 mb-4">
+      <button class="btn playBtn borderRadius90 px-lg-4 border-0 text-white GradientBtnPadding mt-2 text-center" (click)="confirm()" [disabled]="dobBtnDisabled" [ngClass]="{'button-disabled': dobBtnDisabled}" >Confirm</button>
+    </div>
+  </div>
+</ng-template>
+
+<app-onboarding-modals *ngIf="showOnboardingPopup"></app-onboarding-modals>
 
 <ngx-ui-loader *ngIf="!game" [fgsColor]="'#c32ead'"></ngx-ui-loader>

@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
   <div class="container-fluid removePaddingContainer">
     <p class="position-relative railHeading mb-0 paddingLeft">{{ title }}</p>
   </div>
@@ -7,15 +7,15 @@
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList }" (scroll)="updateArrows()">
+        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
             <ng-container *ngIf="!isGamezopList">
-              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay"></app-game-card>
+              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
               <app-install-play-game [game]="game" [hasFixedWidth]="true"
-                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList"></app-install-play-game>
+                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>
             <ng-container *ngIf="isGamezopList">
-              <app-gamezop-game-card [game]="game"></app-gamezop-game-card>
+              <app-gamezop-game-card [game]="game" (gameClick)="gameClicked($event)"></app-gamezop-game-card>
             </ng-container>
           </div>
         </div>

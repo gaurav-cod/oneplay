@@ -74,6 +74,7 @@ export class AuthInterceptor implements HttpInterceptor {
           let body = null,
             headers = {};
           if (req.body instanceof FormData) {
+            console.log("logout", req.body);
             req.body.delete("session_token");
             req.body.delete("password");
             body = {};
@@ -150,7 +151,7 @@ export class AuthInterceptor implements HttpInterceptor {
             statusText: error.statusText,
             error: {
               code,
-              data: ( error.error.data ? new TransformMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
+              data: ( error.error?.data ? new TransformMessageModel(error.error.data, req.urlWithParams.startsWith(environment.client_api), error.error?.msg) : {}),
               message:
                 error.error?.message ||
                 error.error?.msg ||
