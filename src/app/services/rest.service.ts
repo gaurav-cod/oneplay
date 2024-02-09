@@ -52,6 +52,7 @@ import { NotificationModel } from "../models/notification.model";
 import Swal from "sweetalert2";
 import { GamezopFeedModel } from "../models/gamezopFeed.model";
 import { GamezopModel } from "../models/gamezop.model";
+import { streamConfig } from "../models/streamConfig.model";
 @Injectable({
   providedIn: "root",
 })
@@ -1520,7 +1521,7 @@ export class RestService {
 
   // Live Stream Configuration API's
   getAllStreamConfigs() {
-    return this.http.get(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res)))
+    return this.http.get<streamConfig[]>(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res.results.map((data)=> new streamConfig(data)))))
   }
 
   addKeyToStreamConfig(service: string, key: string) {

@@ -45,20 +45,8 @@ import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageV
 import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 import { platform } from "os";
+import { streamConfig } from "src/app/models/streamConfig.model";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
-
-interface StreamConfiguration {
-  id?: string;
-  index: number;
-  platform: string;
-  isKeyAvailable: boolean;
-  isClicked: boolean;
-  showPassword: boolean;
-  icon: string;
-  url?: FormControl;
-  customPlatformName?: FormControl,
-  streamConfigControl: FormControl;
-}
 
 @Component({
   selector: "app-view",
@@ -115,65 +103,30 @@ export class ViewComponent implements OnInit, OnDestroy {
   gameMetaDetails: any;
   errorMessage: string | null = null;
 
-  streamConfig: StreamConfiguration[] = [
-    {
-      index: 0,
-      platform: "Youtube",
-      isClicked: false,
-      isKeyAvailable: false,
-      showPassword: false,
-      icon: "youtube.svg",
-      streamConfigControl: new UntypedFormControl()
-    },
-    {
-      index: 1,
-      platform: "Twitch",
-      isClicked: false,
-      isKeyAvailable: false,
-      showPassword: false,
-      icon: "twitch.svg",
-      streamConfigControl: new UntypedFormControl()
-    },
-    {
-      index: 2,
-      platform: "Custom",
-      isClicked: false,
-      isKeyAvailable: false,
-      showPassword: false,
-      icon: "add-stream.svg",
-      customPlatformName: new UntypedFormControl(),
-      streamConfigControl: new UntypedFormControl(),
-      url: new UntypedFormControl()
-    },
-  ];
+  streamConfigList: streamConfig[] = [];
+  currentStreamConfigList: streamConfig[] = [];
   selectedStreamConfig: number = null;
   isAnyValueStreamUpdated: boolean = false;
   canShowSuccessMsg: boolean = false;
 
   addCustomToStreamConfig() {
     let customCount = 0;
-    this.streamConfig.forEach((s)=> {
-      if (s.platform == "Custom")
+    this.streamConfigList.forEach((s)=> {
+      if (s.isCustom)
         customCount++;
     })
     if (customCount == 3)
       return;
 
-    this.streamConfig.push({
-      index: this.streamConfig.length,
-      platform: "Custom",
-      isClicked: false,
-      isKeyAvailable: false,
-      showPassword: false,
-      icon: "add-stream.svg",
-      customPlatformName: new UntypedFormControl(),
-      streamConfigControl: new UntypedFormControl(),
-      url: new UntypedFormControl()
-    });
+    this.streamConfigList.push(new streamConfig({
+      "is_custom": "true",
+      "service_name": "",
+    }));
   }
 
   resetStreamConfigValues() {
-    this.streamConfig.forEach((s)=> {
+    this.selectedStreamConfig = null;
+    this.streamConfigList.forEach((s)=> {
       s.isClicked = false;
       s.showPassword = false;
     })
@@ -638,9 +591,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
   }
   
-  get canShowBackBtn() {
-    return this.streamConfig.some((stream)=> stream.isClicked && stream.streamConfigControl.value && (stream.platform == "Custom" ? !stream.url.value || !stream.customPlatformName.value : true ));
-  }
   get macDownloadLink() {
     return this.clientDownloadLink === "macos";
   }
@@ -672,6 +622,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   get bitrateInMb() {
     return Math.floor((this.bitrate.value ?? 0) / 1000);
+  }
+
+  get canAddCustomConfig() {
+    return 
   }
 
   get shortDescLength() {
@@ -795,19 +749,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.gamePlaySettingModal(container);
   }
 
-  openStreamInput(stream) {
-    this.streamConfig.forEach((s, index)=> {
-      s.isClicked = (s.platform == "Custom" ? s.customPlatformName.value == stream.customPlatformName.value : s.platform == stream.platform);
-      if (s.isClicked)
-        this.selectedStreamConfig = index;
-    })
-  }
-  get backStreamConfigBtn() {
-    return this.streamConfig.every((s)=> !s.isClicked);
-  }
-  get saveStreamConfigBtn() {
-    return this.streamConfig.some((s)=> s.isClicked && s.streamConfigControl.value);
-  }
 
   async playGame(
     container: ElementRef<HTMLDivElement>,
@@ -1680,23 +1621,20 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   openStreamDialog(container: ElementRef<HTMLDivElement>) {
+    
+    this._streamDialogRef?.close();
+    PlayConstants.STREAM_PLATFORM.forEach((data)=> {
+      this.streamConfigList.push(new streamConfig(data));
+    })
+    this.streamConfigList = this.streamConfigList.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+    this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
     this.restService.getAllStreamConfigs().subscribe((res)=> {
-      this.streamConfig.forEach((stream)=> {
-        res.results.forEach((s)=> {
-          if (s.service_name == stream.platform) {
-            stream.id = s.id;
-            stream.streamConfigControl.setValue(s.key);
-            stream.showPassword = true;
-            stream.isKeyAvailable = true;
-            if (s.service_name === "Custom") {
-              stream.customPlatformName.setValue(s.service_name);
-              stream.url.setValue(s.url);
-              this.addCustomToStreamConfig();
-            }
-          }
-        })
-      })
-
+      if (res.length > 0) {
+        this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+        if (this.streamConfigList.length >= 3)
+          this.addCustomToStreamConfig();
+        this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
+      }
       this._streamDialogRef = this.ngbModal.open(container, {
         centered: true,
         modalDialogClass: "modal-md",
@@ -1707,9 +1645,26 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.showError(error);
     })
   }
+  enterStreamConfig(event: InputEvent, stream: streamConfig, value: string) {
+    stream[value] += event.data;
+  }
+  openStreamInput(stream: streamConfig) {
+    this.streamConfigList.forEach((s, index)=> {
+      s.setIsClicked(s.serviceName == stream.serviceName);
+    })
+  }
+  get screenToShow() {
+    if (this.streamConfigList.every((stream)=> !stream.getIsClicked()))
+      return "BACK";
+    else if (this.streamConfigList.some((stream)=> stream.getIsClicked() && stream.isAllDetailsFilled())) {
+      // if (this.streamConfigList.some((stream, idx)=> stream.isSame(this.cu) ))
+      return "SAVE";
+    }
+    return "DONE";
+  }
 
-  private updateCustomStream(streamConfigDetail: StreamConfiguration) {
-    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.streamConfigControl.value).subscribe({
+  private updateCustomStream(streamConfigDetail: streamConfig) {
+    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key).subscribe({
       next: (res)=> {
         this.isAnyValueStreamUpdated = true;
         this.selectedStreamConfig = null;
@@ -1717,15 +1672,15 @@ export class ViewComponent implements OnInit, OnDestroy {
       error: (error)=> ( this.streamErrorMsg = error.message )
     });
   }
-  private addCustomStream(streamConfigDetail: StreamConfiguration) {
-    this.restService.addCustomStreamConfig(streamConfigDetail.customPlatformName.value, streamConfigDetail.streamConfigControl.value, streamConfigDetail.url?.value).subscribe({
+  private addCustomStream(streamConfigDetail: streamConfig) {
+    this.restService.addCustomStreamConfig(streamConfigDetail.serviceName, streamConfigDetail.key, streamConfigDetail.url).subscribe({
       next: (res: any)=> {
           this.isAnyValueStreamUpdated = true;
           streamConfigDetail.isClicked = false;
           streamConfigDetail.isKeyAvailable = true;
           this.canShowSuccessMsg = true;
           this.selectedStreamConfig = null;
-          setTimeout(()=> ( this.canShowSuccessMsg = false ), 1000);
+          setTimeout(()=> ( this.canShowSuccessMsg = false ), 2000);
           this.addCustomToStreamConfig();
       },
       error: (error)=> ( this.streamErrorMsg = error.message )
@@ -1733,16 +1688,16 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   saveStreamConfig() {
-    const streamConfigDetail: StreamConfiguration = this.streamConfig.filter((s)=> s.isClicked && s.streamConfigControl.value)[0];
+    const streamConfigDetail: streamConfig = this.streamConfigList.filter((s)=> s.isClicked && s.serviceName)[0];
 
     if (streamConfigDetail.isKeyAvailable) {
       this.updateCustomStream(streamConfigDetail);
     }
-    else if (streamConfigDetail.platform == "Custom") {
+    else if (streamConfigDetail.isCustom) {
       this.addCustomStream(streamConfigDetail);
     } else {
 
-      this.restService.addKeyToStreamConfig(streamConfigDetail.platform, streamConfigDetail.streamConfigControl.value).subscribe({
+      this.restService.addKeyToStreamConfig(streamConfigDetail.serviceName, streamConfigDetail.key).subscribe({
         next: ()=> {
           this.isAnyValueStreamUpdated = true;
           streamConfigDetail.isClicked = false;

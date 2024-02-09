@@ -63,4 +63,29 @@ export class PlayConstants {
     const res = bitrate * (fps / 60);
     return res > 50000 ? 50000 : res;
   }
+
+  static readonly STREAM_PLATFORM = [
+    {
+      is_custom: "false",
+      key: null,
+      service_name: "Youtube",
+      url: null,
+      id: null
+    },
+    {
+      is_custom: "false",
+      key: null,
+      service_name: "Twitch",
+      url: null,
+      id: null
+    },
+    {
+      is_custom: "true",
+      key: null,
+      service_name: "",
+      url: null,
+      id: null
+    }
+  ]
 }
+

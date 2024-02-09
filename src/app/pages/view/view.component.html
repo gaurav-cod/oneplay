@@ -63,7 +63,7 @@
               <div>
                 <button
                   class="btn p-0"
-                  (click)="addToWishlist()"
+                  (click)="openStreamDialog(streamDialog)"
                   ngbTooltip="Get ready to Live stream your games."
                 >
                   <img
@@ -1341,84 +1341,84 @@
 
 <ng-template #streamDialog>
   <div class="modal-content">
-    <div class="modal-body p-4 text-center">
+    <div class="modal-header streamContainerHeader">
       <a
-        href="javascript:void(0)"
-        class="position-absolute btn p-0 text-white rounded-circle top-2 right-1 cursorPointer"
-        style="font-size: 25px;"
-        (click)="closeStreamDialog()"
+          href="javascript:void(0)"
+          class="position-absolute btn p-0 text-white rounded-circle top-2 right-1 cursorPointer"
+          style="font-size: 25px;"
+          (click)="closeStreamDialog()"
       >
         <i class="fas fa-times-circle"></i>
       </a>
-      <h5 class="modal-title font20 font600 text-white text-center mt-3">
+      <h5 class="modal-title font20 font600 text-white text-center m-auto">
         Configure Stream
       </h5>
+    </div>
 
-      <ng-container *ngFor="let stream of streamConfig; let idx = index">
+    <div class="modal-body p-4 text-center pt-0 streamModalBody">
+
+      <ng-container *ngFor="let stream of streamConfigList; let idx = index">
         <div class="streamContainer mt-4">
-          <div class="streams cursorPointer" *ngIf="selectedStreamConfig != idx" (click)="openStreamInput(stream)">
+          <div class="streams cursorPointer" *ngIf="!stream.isClicked" (click)="openStreamInput(stream)">
             <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1">
-              <div class="col text-left d-flex">
-                <img src="assets/img/{{ stream.platform == 'Custom' && stream.isKeyAvailable ? 'custom-icon.svg' : stream.icon }}" alt="">
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform == "Custom" && stream.isKeyAvailable ? stream.customPlatformName.value + "(Custom)" : stream.platform }}</p>
+              <div class="col text-left d-flex align-items-center">
+                <img src="assets/img/custom-icon.svg" alt="" height="30px" *ngIf="stream.isKeyAvailable && stream.isCustom; else showDefaultImg">
+                <ng-template #showDefaultImg>
+                  <img src="assets/img/{{ stream.icon }}.svg" alt="" height="30px">
+                </ng-template>
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName}}</p>
               </div>
               <div class="col-auto">
                 <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">
               </div>
             </div>
           </div>
-          <div class="streamsInput" *ngIf="selectedStreamConfig == idx && stream.platform != 'Custom'">
+          <div class="streamsInput" *ngIf="stream.isClicked">
+            <div class="border-0 lightBg borderRadius6" style="margin-left: -10px;">
+              <div class="col text-left d-flex align-items-center">
+                <img src="assets/img/{{ stream.icon }}.svg" alt="" height="25px">
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName }}</p>
+              </div>
+            </div>
             <div class="col text-left d-flex">
               <img src="assets/img/{{ stream.icon }}" alt="">
               <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
             </div>
-            <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative">
+            <div class="row height65 align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative" *ngIf="!stream.isCustom">
               <input
                 [type]="stream.showPassword ? 'password' : 'text'"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream key here"
-                [formControl]="stream.streamConfigControl"
+                [(ngModel)]="stream.key"
               />
               <span class="bgTransparent fixedIcon offWhiteColor font16 font500 cursorPointer" style="right: 30px; top: 20px" (click)="stream.showPassword = !stream.showPassword">
                 <img [src]="(stream.showPassword)?'assets/img/singup-login/Group.svg' : 'assets/img/singup-login/Views.svg'" class="img-fluid" alt="">
               </span>
             </div>
-            <p class="redErrorGradientColor text-left font500 py-2 px-0" *ngIf="streamErrorMsg">*{{ streamErrorMsg }}</p>
-            <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
-              <span class="font700">NOTE - </span>
-              Please note that in order to receive live streams from our platform, 
-              ensure that the destination platform's live streaming studio is active and ready to receive the stream.
-            </p>
-          </div>
-          <div class="streamsInput" *ngIf="selectedStreamConfig == idx && stream.platform == 'Custom'">
-            <div class="col text-left d-flex">
-              <img src="assets/img/{{ stream.icon }}" alt="">
-              <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.platform }}</p>
-            </div>
-            <div class="row align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative customInput">
+
+            <div class="row align-items-center border-0 lightBg borderRadius6 mx-1 mt-2 position-relative customInput" *ngIf="stream.isCustom">
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter a name for your custom platform"
                 style="border-radius: 0px;"
-                [formControl]="stream.customPlatform"
+                [(ngModel)]="stream.serviceName"
               />
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream URL here"
                 style="border-radius: 0px;"
-                [formControl]="stream.url"
+                [(ngModel)]="stream.url"
               />
               <input
                 type="text"
                 class="form-control height65 font18 font500 text-white lightBg border-0"
                 placeholder="Enter your stream key here"
                 style="border-radius: 0px;"
-                [formControl]="stream.streamConfigControl"
+                [(ngModel)]="stream.key"
               />
             </div>
-
             <p class="redErrorGradientColor text-left font500 py-2 px-0" *ngIf="streamErrorMsg">*{{ streamErrorMsg }}</p>
             <p class="text-white text-left font500" style="margin-top: 10px; padding-left: 10px;">
               <span class="font700">NOTE - </span>
@@ -1431,11 +1431,9 @@
     </div>
     <div class="success-toast-config font500" *ngIf="canShowSuccessMsg">Stream Key Saved</div>
     <div class="modal-footer pt-0">
-      <ng-container *ngIf="!isAnyValueStreamUpdated">
-        <button class="streamConfigBtn btnGradient font500" [ngClass]="{'disabled-btn': backStreamConfigBtn}" (click)="closeStreamDialog()" [disabled]="backStreamConfigBtn" *ngIf="!canShowBackBtn">Back</button>
-        <button class="streamConfigBtn btnGradient font500" (click)="saveStreamConfig()" *ngIf="canShowBackBtn">Save</button>
-      </ng-container>
-      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="isAnyValueStreamUpdated">Done</button>
+        <button class="streamConfigBtn btnGradient font500" [ngClass]="{'disabled-btn': backStreamConfigBtn}" (click)="closeStreamDialog()" [disabled]="backStreamConfigBtn" *ngIf="screenToShow == 'BACK'">Back</button>
+        <button class="streamConfigBtn btnGradient font500" (click)="saveStreamConfig()" *ngIf="screenToShow == 'SAVE'">Save</button>
+      <button class="streamConfigBtn btnGradient font500" (click)="closeStreamDialog()" *ngIf="screenToShow == 'DONE'">Done</button>
     </div>
   </div>
 </ng-template>
