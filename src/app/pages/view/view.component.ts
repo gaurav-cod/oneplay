@@ -65,6 +65,8 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
+  public isWarningMessageView: boolean = false;
+
   initialized: string = "Please wait...";
   progress: number = 0;
   isReadMore = true;
@@ -505,6 +507,12 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (this.startingGame) {
       $event.returnValue = true;
     }
+  }
+
+  @HostListener("window:click", ["$event"])
+  click($event: any) {
+    if (this.isWarningMessageView)
+      this.isWarningMessageView = false;
   }
 
   get bgBannerImage(): string {
@@ -1190,6 +1198,11 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
 
     this.queueStartSessionTimeout = setTimeout(() => this.startSession(), 10000);
+  }
+
+  public toggleWarningMessage(event) {
+    this.isWarningMessageView = !this.isWarningMessageView;
+    event.stopPropagation();
   }
 
   public cancelWaitQueue() {

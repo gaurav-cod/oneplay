@@ -128,6 +128,11 @@ html, body {
   width: 48px;
   height: 48px;
 }
+.tooltip-container {
+  a {
+    text-decoration: underline !important;
+  }
+}
 
 .custom .navbar-nav .nav-item a {
   color: #959595;

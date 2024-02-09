@@ -1371,9 +1371,10 @@ export class RestService {
   }
 
   // gamezop API
-  getGamezopFeed(params?: any): Observable<GamezopFeedModel[]> {
+  getGamezopFeed(category: string, railLimit: number = 50): Observable<GamezopFeedModel[]> {
+    const cat = encodeURIComponent(category);
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/gamezop/feeds", { params })
+      .get<any[]>(this.r_mix_api + `/games/gamezop/feeds?category=${cat}&railLimit=${railLimit}`)
       .pipe(
         map((res) => res.map((d) => new GamezopFeedModel(d))),
         catchError(({ error }) => {
