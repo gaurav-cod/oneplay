@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
-import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { GameModel } from "src/app/models/game.model";
 import { GameFeedModel } from "src/app/models/gameFeed.model";
 import { UserModel } from "src/app/models/user.model";
@@ -110,15 +109,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-
-    // const modalRef = this.ngbModal.open(UserInfoComponent, {
-    //   centered: true,
-    //   modalDialogClass: "modal-md",
-    //   backdrop: "static",
-    //   keyboard: false,
-    // });
-    // const userInfoComponentInstance = modalRef.componentInstance as UserInfoComponent;
-    // userInfoComponentInstance.ngbModalRef = modalRef;
 
     this.title.setTitle("Home");
     this.loaderService.start();

@@ -125,6 +125,7 @@ export function playerFactory() {
     InstallPlayGameComponent,
     NotificationAlertComponent,
     ImageLoadingComponent,
+    LottieAnimationComponent
   ],
 })
 export class ComponentsModule {}
