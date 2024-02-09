@@ -275,9 +275,10 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container" [ngClass]="{'blink': !isWarningMessageView, 'full-opcaity': isWarningMessageView}" (click)="toggleWarningMessage($event)">
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container" (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             src="assets/img/error/warning-message-symbol.svg"
             [ngbTooltip]="warningMessage"
             triggers="click"
@@ -285,6 +286,7 @@
           />
           <img
             class="warning-message-mob hideInLarge"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             src="assets/img/error/warning-message-symbol.svg"
             [ngbTooltip]="warningMessage"
             triggers="click"

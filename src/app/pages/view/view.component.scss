@@ -862,22 +862,16 @@ live {
   width: 95% !important;
 }
 
-.blink {
+.warning-message {
   animation: blinkingAnimation 2s linear infinite; 
 }
 .full-opcaity {
-  opacity: 1 !important;
+  transform: scale(1) !important;
+  animation-play-state: paused !important;
 }
 @keyframes blinkingAnimation { 
-  0% { 
-      opacity: 0; 
-  } 
-
-  50% { 
-      opacity: 1; 
-  } 
-
-  100% { 
-      opacity: 0; 
-  } 
+  0% { transform: scale(1); }
+  35% { transform: scale(0); }
+  80% { transform: scale(1); }
+  100% { transform: scale(1); }
 }
