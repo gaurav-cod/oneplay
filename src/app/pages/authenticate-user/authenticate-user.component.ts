@@ -223,6 +223,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.referralName = null;
     this.restService.getReferalName(code).subscribe((response) =>{
         if (response.available) {
+          this.referal_code.setValue(code);
           this.referralName = response.message;
           this.isReferralAdded = true;
         }
@@ -245,7 +246,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
       "idempotent_key": this.idempotentKey,
-      "referral_code": (this.isUserRegisted ? this.referal_code?.value : null)
+      "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
