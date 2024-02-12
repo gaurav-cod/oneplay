@@ -321,13 +321,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
-        this.userLoginFailure(error);
         this.countlyEvent("otpFailure", "yes");
         this.errorMessage = error.message;
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
-          
           this.countlyEvent("otpFailureReson", "invalid");
         } else {
+
+          this.userLoginFailure(error, false);
           this.countlyEvent("otpFailureReson", "expired");
         }
       }
@@ -400,9 +400,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.authService.login(response.session_token);
     this.authService.setUser(response.profile);
   }
-  private userLoginFailure(error: any) {
-    this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });    
-    this.showError(error);
+  private userLoginFailure(error: any, canShowError: boolean = true) {
+    this.countlyService.endEvent("signIn", { result: 'failure', phoneNumberEntered: "yes" });  
+    if (canShowError)  
+      this.showError(error);
   }
   private displayTimer() {
     this.otpTimer = 60;
