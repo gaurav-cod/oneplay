@@ -233,6 +233,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     return UserAgentUtil.parse().app !== "Oneplay App";
   }
 
+  get isClientSide() {
+    return (UserAgentUtil.parse().app === "Oneplay App");
+  }
+
   constructor(
     private readonly authService: AuthService,
     private readonly friendsService: FriendsService,
@@ -678,6 +682,15 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(["/login"]);
       },
     });
+  }
+
+  clientFun(type: 'SAVE_LOGS' | 'RUN_DIAGNOSTICS' | 'GAMEPAD_CALIBRATION') {
+    if (type == "SAVE_LOGS")
+      window.location.href = `oneplay:logs`;
+    else if (type == "RUN_DIAGNOSTICS")
+      window.location.href = `oneplay:diagnostics`;
+    else if (type == "GAMEPAD_CALIBRATION")
+      window.location.href = `oneplay:gamepad`;
   }
 
   sessionCountForCasualGaming() {

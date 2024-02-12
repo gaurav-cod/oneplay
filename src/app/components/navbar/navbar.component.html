@@ -508,6 +508,7 @@
                 </a>  -->
 
                 <a
+                  *ngIf="!isClientSide"
                   (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
@@ -518,8 +519,9 @@
                   <span class="align-middle">Speed Test</span>
                 </a>
 
-                <div class="dropdown-divider borderColor"></div>
+                <div class="dropdown-divider borderColor" ></div>
                 <a
+                  *ngIf="!isClientSide"
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
                   (click)="logDropdownEvent('downloadsClicked')"
@@ -536,6 +538,34 @@
                 >
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
+                </a>
+                <div class="dropdown-divider borderColor" *ngIf="isClientSide"></div>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('SAVE_LOGS')"
+                >
+                  <i class="ni ni-settings font14 align-middle"></i>
+                  <span class="align-middle">Save Logs</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('RUN_DIAGNOSTICS')"
+                >
+                  <i class="ni ni-settings font14 align-middle"></i>
+                  <span class="align-middle">Run Diagnostics</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('GAMEPAD_CALIBRATION')"
+                >
+                  <i class="ni ni-settings font14 align-middle"></i>
+                  <span class="align-middle">GamePad Calibration</span>
                 </a>
               </div>
             </div>
@@ -562,6 +592,7 @@
                 </a>
 
                 <a
+                  *ngIf="!isClientSide"
                   (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
