@@ -227,7 +227,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         if (response.available) {
           this.referal_code.setValue(code);
           this.referralName = response.message;
-          this.isReferralAdded = true;
         }
         else {
           this.referralName = null;
