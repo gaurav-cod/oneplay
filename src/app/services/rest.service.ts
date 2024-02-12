@@ -1522,7 +1522,7 @@ export class RestService {
 
   // Live Stream Configuration API's
   getAllStreamConfigs() {
-    return this.http.get<streamConfig[]>(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res.results.map((data)=> new streamConfig(data)))))
+    return this.http.get<any[]>(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res.results)))
   }
 
   addKeyToStreamConfig(service: string, key: string) {
