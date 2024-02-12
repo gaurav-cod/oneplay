@@ -861,6 +861,20 @@ live {
   font-size: 18px !important;
   width: 95% !important;
 }
+
+.warning-message {
+  animation: blinkingAnimation 2s linear infinite; 
+}
+.full-opcaity {
+  transform: scale(1) !important;
+  animation-play-state: paused !important;
+}
+@keyframes blinkingAnimation { 
+  0% { transform: scale(1); }
+  35% { transform: scale(0); }
+  80% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
 .height65 {
   height: 65px !important;
 }
