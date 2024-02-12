@@ -216,8 +216,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
   closeReferralDialog(isReferalAdded: boolean = false) {
-    this.isReferralAdded = !!this.referralName && isReferalAdded;
-    this._referralModal?.close();
+    this.restService.getReferalName(this.referralName).toPromise().then(()=> {
+      this.isReferralAdded = !!this.referralName && isReferalAdded;
+      this._referralModal?.close();
+    })
   }
   getUserByReferalCode(code: string) {
     this.referralName = null;
@@ -225,7 +227,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         if (response.available) {
           this.referal_code.setValue(code);
           this.referralName = response.message;
-          this.isReferralAdded = true;
         }
         else {
           this.referralName = null;
