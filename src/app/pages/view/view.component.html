@@ -472,7 +472,6 @@
 </div>
 
 <hr class="borderColor mb-0 hideInLarge" *ngIf="_videos.length > 0" />
-
 <div *ngIf="!initializationPage" class="overflow-hidden">
   <div *ngIf="!!game">
     <div class="row px-3 d-block d-md-none">
@@ -1225,7 +1224,8 @@
         Scouting for the Next Open Rig
       </h2>
       <p class="mb-0">
-        <img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" />
+        <!-- <img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" /> -->
+        <app-lottie-animation></app-lottie-animation>
       </p>
       <span class="font38 font700 text-white borderBottomTab"
         ><span class="blink">{{ queueSequence }}</span></span
@@ -1236,7 +1236,7 @@
         [innerText]="queueMessge2"
       ></p>
       <button
-        class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60"
+        class="btn btn-block customLinearGradient border-0 text-white br6 responsiveBr60 customButton"
         (click)="cancelWaitQueue()"
       >
         Cancel

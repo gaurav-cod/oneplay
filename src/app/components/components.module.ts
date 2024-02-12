@@ -16,8 +16,6 @@ import { FriendsModule } from "./friends/friends.module";
 import { SubscriptionsComponent } from "./subscriptions/subscriptions.component";
 import { PurchaseHistoryComponent } from "./purchase-history/purchase-history.component";
 import { BottomNavComponent } from "./bottom-nav/bottom-nav.component";
-import { ShareButtonsModule } from "ngx-sharebuttons/buttons";
-import { ShareIconsModule } from "ngx-sharebuttons/icons";
 import { AuthNavbarComponent } from "./auth-navbar/auth-navbar.component";
 import { NgxUiLoaderModule } from "ngx-ui-loader";
 import { GameCardComponent } from "./game-card/game-card.component";
@@ -40,6 +38,16 @@ import { NotificationAlertComponent } from './notification-alert/notification-al
 import { GamezopGameCard } from "./game-card/gamezop-game-card.component";
 import { ImageLoadingComponent } from './image-loading/image-loading.component';
 import { UserInfoComponent } from './user-info/user-info.component';
+import { LottieAnimationComponent } from './lottie-animation/lottie-animation.component';
+
+import { LottieModule } from "ngx-lottie";
+import player from "lottie-web";
+
+// Note we need a separate function as it's required
+// by the AOT compiler.
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   imports: [
@@ -52,11 +60,10 @@ import { UserInfoComponent } from './user-info/user-info.component';
     ReactiveFormsModule,
     PipesModule,
     FriendsModule,
-    ShareButtonsModule,
-    ShareIconsModule,
     InfiniteScrollModule,
     ClipboardModule,
     ScrollingModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   declarations: [
     GameCardComponent,
@@ -88,6 +95,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     NotificationAlertComponent,
     ImageLoadingComponent,
     UserInfoComponent,
+    LottieAnimationComponent,
   ],
   exports: [
     GameCardComponent,
@@ -117,6 +125,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
     InstallPlayGameComponent,
     NotificationAlertComponent,
     ImageLoadingComponent,
+    LottieAnimationComponent
   ],
 })
 export class ComponentsModule {}

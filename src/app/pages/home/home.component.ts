@@ -109,6 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+
     this.title.setTitle("Home");
     this.loaderService.start();
 

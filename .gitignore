@@ -45,3 +45,4 @@ Thumbs.db
 build.sh
 firebase-config.js
 .history
+.htaccess
