@@ -251,7 +251,7 @@ live {
 
 @media (max-width: 480px) {
   .hideInMobile {
-    display: none;
+    display: none !important;
   }
 
   .fullWidthBtn {
@@ -861,23 +861,65 @@ live {
   font-size: 18px !important;
   width: 95% !important;
 }
-
-.blink {
-  animation: blinkingAnimation 2s linear infinite; 
+.height65 {
+  height: 65px !important;
 }
-.full-opcaity {
-  opacity: 1 !important;
+
+.streamContainerHeader {
+  padding-bottom: 15px;
+  border-bottom: 2px solid gray;
 }
-@keyframes blinkingAnimation { 
-  0% { 
-      opacity: 0; 
-  } 
+.streamConfigBtn {
+  width: 100%;
+  border-radius: 3px;
+  padding: 12px;
+  border: none;
+  color: white;
+}
+.streamModalBody {
+  &::-webkit-scrollbar-track {
+    width: 0px;
+    height: 0px;
+  }
 
-  50% { 
-      opacity: 1; 
-  } 
+  &::-webkit-scrollbar {
+    width: 2px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar:horizontal {
+    height: 8px;
+  }
 
-  100% { 
-      opacity: 0; 
-  } 
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #DCDCDC;
+  }
+}
+.btnGradient {
+  background: linear-gradient(270deg, #A83AFE 0%, #6E59FE 100%);
+}
+.streams > div {
+  background-color: #151515 !important;
+}
+.streamsInput input {
+  background-color: #151515 !important;
+}
+.customInput {
+  border-radius: 5px !important;
+  overflow: hidden;
+}
+.disabled-btn {
+  background: gray !important;
+}
+.success-toast-config {
+  background-color: #151515;
+  border-radius: 25px;
+  padding: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  margin: 10px auto;
 }

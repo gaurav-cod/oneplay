@@ -52,6 +52,7 @@ import { NotificationModel } from "../models/notification.model";
 import Swal from "sweetalert2";
 import { GamezopFeedModel } from "../models/gamezopFeed.model";
 import { GamezopModel } from "../models/gamezop.model";
+import { streamConfig } from "../models/streamConfig.model";
 @Injectable({
   providedIn: "root",
 })
@@ -1517,5 +1518,30 @@ export class RestService {
     return this.http
       .post<void>(this.r_mix_api_3 + "/accounts/delete_remind_later", null)
       .pipe(map((res: any) => res));
+  }
+
+  // Live Stream Configuration API's
+  getAllStreamConfigs() {
+    return this.http.get<streamConfig[]>(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res.results.map((data)=> new streamConfig(data)))))
+  }
+
+  addKeyToStreamConfig(service: string, key: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/key", { service, key }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+  }
+
+  setPreferedStreamConfig(id: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/prefered", { id: id }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+  }
+
+  addCustomStreamConfig(service: string, key: string, url: string) {
+    return this.http.post(this.r_mix_api + "/streams/config/custom", { service: service, key: key, url: url  }).pipe((map((res)=> res), catchError(({ error })=> { throw error; })))
+  }
+
+  updateCustomStreamConfig(id: string, key: string) {
+    return this.http.put(this.r_mix_api + `/streams/config/custom/${id}`, { key: key }).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+  }
+
+  deleteStreamConfig(id: string) {
+    return this.http.delete(this.r_mix_api + `/streams/config/${id}`).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
   }
 }
