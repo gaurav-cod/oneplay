@@ -25,7 +25,7 @@ export class streamConfig {
         this.showPassword = false;
         this.isClicked = false;
         this.isKeyAvailable = !!json["key"];
-        this.icon = this.isCustom ? "custom" : json["service_name"].toLowerCase();
+        this.icon = this.isCustom ? "custom" : json["service_name"]?.toLowerCase();
         this.sortIndex = STREAM_PLATFORM_SORT[this.isCustom ? "Custom" : this.serviceName];
     }
 

@@ -120,10 +120,10 @@ export class ViewComponent implements OnInit, OnDestroy {
     if (customCount == 3)
       return;
 
-    this.streamConfigList.push(new streamConfig({
+    return new streamConfig({
       "is_custom": "true",
       "service_name": "",
-    }));
+    })
   }
 
   resetStreamConfigValues() {
@@ -1636,6 +1636,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   openStreamDialog(container: ElementRef<HTMLDivElement>) {
     
     this._streamDialogRef?.close();
+    this.streamConfigList = [];
     PlayConstants.STREAM_PLATFORM.forEach((data)=> {
       this.streamConfigList.push(new streamConfig(data));
     })
@@ -1643,9 +1644,26 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
     this.restService.getAllStreamConfigs().subscribe((res)=> {
       if (res.length > 0) {
-        this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
-        if (this.streamConfigList.length >= 3)
-          this.addCustomToStreamConfig();
+        this.streamConfigList.forEach((stream: streamConfig, idx: number)=> {
+          res.forEach((s)=> {
+            if (stream.isCustom && !stream.id) {
+              this.streamConfigList[idx] = new streamConfig(s);
+            }
+            else if (s.service_name == stream.serviceName && !stream.id) {
+              this.streamConfigList[idx] = new streamConfig(s);
+            }
+          })
+        })
+        // this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+        
+        if (res.length == 3 && this.streamConfigList[2].isKeyAvailable) {
+          this.streamConfigList.push(this.addCustomToStreamConfig());
+        }
+        else if (res.length == 4 && this.streamConfigList[3].isKeyAvailable) {
+          this.streamConfigList.push(new streamConfig(res[3]));
+          this.streamConfigList.push(this.addCustomToStreamConfig());
+        } 
+
         this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
       }
       this._streamDialogRef = this.ngbModal.open(container, {
@@ -1694,7 +1712,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           this.canShowSuccessMsg = true;
           this.selectedStreamConfig = null;
           setTimeout(()=> ( this.canShowSuccessMsg = false ), 2000);
-          this.addCustomToStreamConfig();
+          this.streamConfigList.push(this.addCustomToStreamConfig());
       },
       error: (error)=> ( this.streamErrorMsg = error.message )
     })
