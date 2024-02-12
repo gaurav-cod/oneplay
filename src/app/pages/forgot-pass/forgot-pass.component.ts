@@ -63,9 +63,9 @@ export class ForgotPassComponent implements OnInit {
     );
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
+        if (contryCodeCurrencyMapping[res.countryCode]) {
           this.forgotPasswordForm.controls['country_code'].setValue(
-            contryCodeCurrencyMapping[res.currency]
+            contryCodeCurrencyMapping[res.countryCode]
           );
         }
         if (res.hosting) {

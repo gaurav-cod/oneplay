@@ -10,6 +10,7 @@ import {
   AfterViewInit,
 } from "@angular/core";
 import {
+  FormControl,
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
@@ -43,6 +44,8 @@ import { CountlyService } from "src/app/services/countly.service";
 import { mapFPStoGamePlaySettingsPageView, mapResolutionstoGamePlaySettingsPageView, mapStreamCodecForGamePlayAdvanceSettingView } from "src/app/utils/countly.util";
 import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
+import { platform } from "os";
+import { streamConfig } from "src/app/models/streamConfig.model";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -102,6 +105,35 @@ export class ViewComponent implements OnInit, OnDestroy {
   gameMetaDetails: any;
   errorMessage: string | null = null;
 
+  streamConfigList: streamConfig[] = [];
+  currentStreamConfigList: streamConfig[] = [];
+  selectedStreamConfig: number = null;
+  isAnyValueStreamUpdated: boolean = false;
+  canShowSuccessMsg: boolean = false;
+
+  addCustomToStreamConfig() {
+    let customCount = 0;
+    this.streamConfigList.forEach((s)=> {
+      if (s.isCustom)
+        customCount++;
+    })
+    if (customCount == 3)
+      return;
+
+    this.streamConfigList.push(new streamConfig({
+      "is_custom": "true",
+      "service_name": "",
+    }));
+  }
+
+  resetStreamConfigValues() {
+    this.selectedStreamConfig = null;
+    this.streamConfigList.forEach((s)=> {
+      s.isClicked = false;
+      s.showPassword = false;
+    })
+  }
+
   showSettings = new UntypedFormControl();
 
   advancedOptions = new UntypedFormGroup({
@@ -119,6 +151,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   queueSequence = "";
   queueMessge1 = "";
   queueMessge2 = "";
+
+  public streamErrorMsg: string = null;
 
   private _devGames: GameModel[] = [];
   private _genreGames: GameModel[] = [];
@@ -147,6 +181,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private _waitQueueModalRef: NgbModalRef;
   private _launchModalCloseTimeout: NodeJS.Timeout;
   private _userInfoContainerRef: NgbModalRef;
+  private _streamDialogRef: NgbModalRef;
   private videos: VideoModel[] = [];
   private liveVideos: VideoModel[] = [];
   private reportResponse: any = null;
@@ -295,6 +330,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     // this._initializeEvent?.cancel();
     this._macDownloadModalRef?.close();
     this._userInfoContainerRef?.close();
+    this._streamDialogRef?.close();
     Swal.close();
   }
 
@@ -562,7 +598,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         return "";
     }
   }
-
+  
   get macDownloadLink() {
     return this.clientDownloadLink === "macos";
   }
@@ -594,6 +630,10 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   get bitrateInMb() {
     return Math.floor((this.bitrate.value ?? 0) / 1000);
+  }
+
+  get canAddCustomConfig() {
+    return 
   }
 
   get shortDescLength() {
@@ -716,6 +756,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     this._termConditionModalRef?.close();
     this.gamePlaySettingModal(container);
   }
+
 
   async playGame(
     container: ElementRef<HTMLDivElement>,
@@ -1591,6 +1632,102 @@ export class ViewComponent implements OnInit, OnDestroy {
     }
     
   }
+
+  openStreamDialog(container: ElementRef<HTMLDivElement>) {
+    
+    this._streamDialogRef?.close();
+    PlayConstants.STREAM_PLATFORM.forEach((data)=> {
+      this.streamConfigList.push(new streamConfig(data));
+    })
+    this.streamConfigList = this.streamConfigList.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+    this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
+    this.restService.getAllStreamConfigs().subscribe((res)=> {
+      if (res.length > 0) {
+        this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+        if (this.streamConfigList.length >= 3)
+          this.addCustomToStreamConfig();
+        this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
+      }
+      this._streamDialogRef = this.ngbModal.open(container, {
+        centered: true,
+        modalDialogClass: "modal-md",
+        scrollable: true,
+        keyboard: false,
+      });
+    }, (error)=> {
+      this.showError(error);
+    })
+  }
+  enterStreamConfig(event: InputEvent, stream: streamConfig, value: string) {
+    stream[value] += event.data;
+  }
+  openStreamInput(stream: streamConfig) {
+    this.streamConfigList.forEach((s, index)=> {
+      s.setIsClicked(s.serviceName == stream.serviceName);
+    })
+  }
+  get screenToShow() {
+    if (this.streamConfigList.every((stream)=> !stream.getIsClicked()))
+      return "BACK";
+    else if (this.streamConfigList.some((stream)=> stream.getIsClicked() && stream.isAllDetailsFilled())) {
+      // if (this.streamConfigList.some((stream, idx)=> stream.isSame(this.cu) ))
+      return "SAVE";
+    }
+    return "DONE";
+  }
+
+  private updateCustomStream(streamConfigDetail: streamConfig) {
+    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key).subscribe({
+      next: (res)=> {
+        this.isAnyValueStreamUpdated = true;
+        this.selectedStreamConfig = null;
+      },
+      error: (error)=> ( this.streamErrorMsg = error.message )
+    });
+  }
+  private addCustomStream(streamConfigDetail: streamConfig) {
+    this.restService.addCustomStreamConfig(streamConfigDetail.serviceName, streamConfigDetail.key, streamConfigDetail.url).subscribe({
+      next: (res: any)=> {
+          this.isAnyValueStreamUpdated = true;
+          streamConfigDetail.isClicked = false;
+          streamConfigDetail.isKeyAvailable = true;
+          this.canShowSuccessMsg = true;
+          this.selectedStreamConfig = null;
+          setTimeout(()=> ( this.canShowSuccessMsg = false ), 2000);
+          this.addCustomToStreamConfig();
+      },
+      error: (error)=> ( this.streamErrorMsg = error.message )
+    })
+  }
+
+  saveStreamConfig() {
+    const streamConfigDetail: streamConfig = this.streamConfigList.filter((s)=> s.isClicked && s.serviceName)[0];
+
+    if (streamConfigDetail.isKeyAvailable) {
+      this.updateCustomStream(streamConfigDetail);
+    }
+    else if (streamConfigDetail.isCustom) {
+      this.addCustomStream(streamConfigDetail);
+    } else {
+
+      this.restService.addKeyToStreamConfig(streamConfigDetail.serviceName, streamConfigDetail.key).subscribe({
+        next: ()=> {
+          this.isAnyValueStreamUpdated = true;
+          streamConfigDetail.isClicked = false;
+          streamConfigDetail.isKeyAvailable = true;
+          this.canShowSuccessMsg = true;
+          this.selectedStreamConfig = null;
+          setTimeout(()=> ( this.canShowSuccessMsg = false ), 1000);
+        },
+        error: (error)=> ( this.streamErrorMsg = error.message )
+      })
+    }
+  }
+  closeStreamDialog() {
+    this.resetStreamConfigValues();
+    this._streamDialogRef?.close();
+  }
+
   showError(error, doAction: boolean = false) {
     Swal.fire({
       title: error.data.title,

@@ -145,6 +145,9 @@ html, body {
 .custom .navbar-nav .nav-item.active a {
   color: #ffffff;
 }
+select[formControlName="country_code"] {
+  width: 80px !important;
+}
 
 .dropdownBg {
   background: #151515;
