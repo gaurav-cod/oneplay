@@ -92,7 +92,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   
   get phoneErrored() {
     const control = this.authenticateForm.controls["phone"];
-    return control.invalid && control.dirty;
+    return control.invalid && control.dirty && control.value;
   }
   get countryCodes() {
     return Object.values(contryCodeCurrencyMapping);
@@ -117,7 +117,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   ngOnInit() {
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
-      this.restService.getLogInURL().toPromise().catch((error) => {
+      this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
+        environment.partner_id = partner_id;
+      }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
         }
@@ -153,8 +155,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     })
     this.restService.getCurrentLocation().subscribe({
       next: (res) => {
-        if (contryCodeCurrencyMapping[res.currency]) {
-          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.currency]);
+        if (contryCodeCurrencyMapping[res.countryCode]) {
+          this.authenticateForm.controls['country_code'].setValue(contryCodeCurrencyMapping[res.countryCode]);
         }
         if (res.hosting) {
           Swal.fire({
@@ -220,10 +222,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   getUserByReferalCode(code: string) {
     this.referralName = null;
     this.restService.getReferalName(code).subscribe((response) =>{
-        if (response.available)
+        if (response.available) {
+          this.referal_code.setValue(code);
           this.referralName = response.message;
-        else
+          this.isReferralAdded = true;
+        }
+        else {
           this.referralName = null;
+          this.isReferralAdded = false;
+        }
       }
     );
   }
@@ -239,7 +246,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": "web",
       "idempotent_key": this.idempotentKey,
-      "referral_code": (this.isUserRegisted ? this.referal_code?.value : null)
+      "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.getLoginOTP(payload).subscribe({
       next: (response)=> {
@@ -313,12 +320,13 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         else 
           this.router.navigate(['/home']);
       }, error: (error) => {
+        this.userLoginFailure(error);
         this.countlyEvent("otpFailure", "yes");
+        this.errorMessage = error.message;
         if (["invalid otp", "otp entered is invalid"].includes(error.message?.toLowerCase())) {
-          this.errorMessage = error.message;
+          
           this.countlyEvent("otpFailureReson", "invalid");
         } else {
-          this.userLoginFailure(error);
           this.countlyEvent("otpFailureReson", "expired");
         }
       }
