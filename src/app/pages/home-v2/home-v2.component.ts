@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Subscription } from 'rxjs';
+import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
+import { environment } from 'src/environments/environment';
 import Swal from "sweetalert2";
 
 @Component({
@@ -17,6 +20,9 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
+  public selectedHeroBannerId: string;
+  public selectedBannerGame: GameModel;
+  public playVideo: boolean = false;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
@@ -33,6 +39,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     private readonly authService: AuthService
   ) { }
 
+  get domain() {
+    return environment.domain;
+  }
+
   ngOnInit(): void {
 
     this.title.setTitle("Home");
@@ -45,6 +55,11 @@ export class HomeV2Component implements OnInit, OnDestroy {
           next: (response) => {
             const feeds = response.filter((feed)=> feed.games.length > 0);
             this.heroBannerRow = feeds.filter((feed)=> feed.type === "header").at(0);
+            this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
+            this.selectedBannerGame = this.heroBannerRow.games[0];
+            setTimeout(()=> {
+              this.playVideo = true;
+            }, 2000);
           }, error: (error)=> {
             this.loaderService.stop();
             if (error.timeout) {
@@ -63,5 +78,22 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this._feedSubscription?.unsubscribe();
     this._paramSubscription?.unsubscribe();
     Swal.close();
+  }
+
+  onSlideChange(event?: NgbSlideEvent) {
+    let index = null;
+    this.heroBannerRow.games.forEach((element, idx) => {
+      if (element.oneplayId === this.selectedHeroBannerId)
+        index = idx;
+    });
+    this.selectedHeroBannerId = this.heroBannerRow.games[(index+1) % this.heroBannerRow.games.length].oneplayId;
+    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
+    setTimeout(()=> {
+      this.playVideo = true;
+    }, 2000);
+  }
+  videoEnded() {
+    this.playVideo = false;
+    this.onSlideChange();
   }
 }

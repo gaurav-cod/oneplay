@@ -1,6 +1,39 @@
 .height50vh {
     height: 50vh !important;
 }
+.height30vh {
+    height: 30vh !important;
+    width: 20vw;
+}
 .card-img {
     object-fit: cover;
+}
+.text-logo {
+    width: 60%;
+    left: 5%;
+    img {
+        width: 40%;
+        height: 50%;
+    }
+}
+.games-carousel {
+    gap: 20px;
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    .card-carousel-img {
+        height: 100px;
+        width: 80px;
+        object-fit: cover;
+    }
+    .card {
+        background: transparent;
+    }
+    .selectedGame {
+        border: 1px solid transparent;
+        border-radius: 15px !important;
+        background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
+        background-origin: border-box;
+        padding: 2px !important;
+    }
 }

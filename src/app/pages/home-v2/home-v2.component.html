@@ -1,39 +1,47 @@
 <section>
-    <div class="heroBanner w-100">
+    <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow">
         <ngb-carousel
             id="home-header"
-            [interval]="4000"
             [pauseOnFocus]="false"
             [pauseOnHover]="true"
-            [showNavigationArrows]="true"
+            [showNavigationArrows]="false"
             [showNavigationIndicators]="false"
+            (slide)="onSlideChange($event)"
             *ngIf="!!heroBannerRow"
+            interval="0"
         >
             <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-                <div class="card bgTransparent border-0 borderRadius10 height50vh">
+                <div class="card bgTransparent border-0 borderRadius10 height50vh position-relative">
                     <div class="row carousel-images">
+                      <ng-container *ngIf="!playVideo">
                         <img
-                        #bannerImg1
-                        class="card-img borderRadius10 height50vh left-img"
-                        [src]="
-                            heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgImage
-                        "
-                        alt="img"
+                          #bannerImg
+                          class="card-img borderRadius10 height50vh left-img"
+                          [src]="selectedBannerGame.bgImage"
+                          alt="img"
                         />
                         <image-loading
-                        [image]="bannerImg1"
-                        [hash]="
-                            heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgHash
-                        "
+                          [image]="bannerImg"
+                          [hash]="selectedBannerGame.bgHash"
                         />
+                      </ng-container>
+                      <ng-container *ngIf="playVideo">
+                        <video width="100%" height="100%" autoplay (ended)="videoEnded()">
+                          <source [src]="selectedBannerGame.video" type="video/mp4">
+                          Your browser does not support the video tag.
+                        </video>
+                      </ng-container>
                     </div>
 
-                    <div class="card-img-overlay">
-                        
+                    <div class="text-logo position-absolute">
+                      <img
+                        [src]="selectedBannerGame.textLogo"
+                        alt=""
+                      />
                     </div>
                     <div class="position-absolute bottom-0 d-flex ml-4">
                         <button
-                          (click)="viewBannerGame(game)"
+                          (click)="viewBannerGame(selectedBannerGame)"
                           class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
                         >
                           View More
@@ -50,22 +58,26 @@
                           alt=""
                         />
                       </button>
-                      <!-- <button
-                        *ngIf="isInWishlist"
-                        (click)="removeFromWishlist()"
-                        [disabled]="loadingWishlist"
-                        class="btn p-0"
-                        ngbTooltip="Remove from Library"
-                      >
-                        <img
-                          src="assets/icons/Speedtest.svg"
-                          class="img-fluid"
-                          alt=""
-                        />
-                      </button> -->
                     </div>
                 </div>
             </ng-template>
         </ngb-carousel>
+        <div class="games-carousel d-flex align-items-center">
+          <div class="leftArrow">
+            <img src="assets/img/Vector.svg " alt="">
+          </div>
+          <ng-container ngbSlide *ngFor="let game of heroBannerRow.games; let i = index">
+            <div class="card borderRadius10 position-relative">
+              <img
+                class="card-carousel-img borderRadius10" [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}"
+                [src]="game.bgImage"
+                alt="img"
+              />
+            </div>
+          </ng-container>
+          <div class="rightArrow">
+            <img src="assets/img/Vector (1).svg " alt="">
+          </div>
+        </div>
     </div>
 </section>
