@@ -10,22 +10,60 @@
             *ngIf="!!heroBannerRow"
         >
             <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-                <div class="card bgTransparent border-0 borderRadius10" style="height: 50%;">
-                    <img
-                      #bannerImg1
-                      class="card-img borderRadius10 height40vh left-img"
-                      [src]="
-                        heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgImage
-                      "
-                      alt="img"
-                    />
-                    <image-loading
-                      [image]="bannerImg1"
-                      [hash]="
-                        heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgHash
-                      "
-                    />
-                    <div class="card-img-overlay playnowbtn borderRadius10"></div>
+                <div class="card bgTransparent border-0 borderRadius10 height50vh">
+                    <div class="row carousel-images">
+                        <img
+                        #bannerImg1
+                        class="card-img borderRadius10 height50vh left-img"
+                        [src]="
+                            heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgImage
+                        "
+                        alt="img"
+                        />
+                        <image-loading
+                        [image]="bannerImg1"
+                        [hash]="
+                            heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgHash
+                        "
+                        />
+                    </div>
+
+                    <div class="card-img-overlay">
+                        
+                    </div>
+                    <div class="position-absolute bottom-0 d-flex ml-4">
+                        <button
+                          (click)="viewBannerGame(game)"
+                          class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
+                        >
+                          View More
+                        </button>
+                        <button
+                        (click)="addToWishlist()"
+                        [disabled]="loadingWishlist"
+                        class="btn p-0 ml-2"
+                        ngbTooltip="Add to Library"
+                      >
+                        <img
+                          src="assets/icons/Speedtest (2).svg"
+                          class="img-fluid"
+                          alt=""
+                        />
+                      </button>
+                      <!-- <button
+                        *ngIf="isInWishlist"
+                        (click)="removeFromWishlist()"
+                        [disabled]="loadingWishlist"
+                        class="btn p-0"
+                        ngbTooltip="Remove from Library"
+                      >
+                        <img
+                          src="assets/icons/Speedtest.svg"
+                          class="img-fluid"
+                          alt=""
+                        />
+                      </button> -->
+                    </div>
                 </div>
             </ng-template>
         </ngb-carousel>
