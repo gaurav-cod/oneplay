@@ -1,0 +1,33 @@
+<section>
+    <div class="heroBanner w-100">
+        <ngb-carousel
+            id="home-header"
+            [interval]="4000"
+            [pauseOnFocus]="false"
+            [pauseOnHover]="true"
+            [showNavigationArrows]="true"
+            [showNavigationIndicators]="false"
+            *ngIf="!!heroBannerRow"
+        >
+            <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
+                <div class="card bgTransparent border-0 borderRadius10" style="height: 50%;">
+                    <img
+                      #bannerImg1
+                      class="card-img borderRadius10 height40vh left-img"
+                      [src]="
+                        heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgImage
+                      "
+                      alt="img"
+                    />
+                    <image-loading
+                      [image]="bannerImg1"
+                      [hash]="
+                        heroBannerRow.games[i < 1 ? heroBannerRow.games.length - 1 : i - 1].bgHash
+                      "
+                    />
+                    <div class="card-img-overlay playnowbtn borderRadius10"></div>
+                </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
+</section>
