@@ -57,9 +57,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.heroBannerRow = feeds.filter((feed)=> feed.type === "header").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            setTimeout(()=> {
-              this.playVideo = true;
-            }, 2000);
+            // setTimeout(()=> {
+            //   this.playVideo = true;
+            // }, 2000);
           }, error: (error)=> {
             this.loaderService.stop();
             if (error.timeout) {
@@ -88,9 +88,14 @@ export class HomeV2Component implements OnInit, OnDestroy {
     });
     this.selectedHeroBannerId = this.heroBannerRow.games[(index+1) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
-    setTimeout(()=> {
-      this.playVideo = true;
-    }, 2000);
+    // setTimeout(()=> {
+    //   this.playVideo = true;
+    // }, 2000);
+  }
+
+  cardSelected(game: GameModel) {
+    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === game.oneplayId)[0];
+    this.selectedHeroBannerId = game.oneplayId;
   }
   videoEnded() {
     this.playVideo = false;
