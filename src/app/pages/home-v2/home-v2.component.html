@@ -11,12 +11,12 @@
             interval="0"
         >
             <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-                <div class="card bgTransparent border-0 borderRadius10 height50vh position-relative">
+                <div class="card bgTransparent border-0 borderRadius10 height65vh position-relative">
                     <div class="row carousel-images">
                       <ng-container *ngIf="!playVideo">
                         <img
                           #bannerImg
-                          class="card-img borderRadius10 height50vh left-img"
+                          class="card-img borderRadius10 height65vh left-img"
                           [src]="selectedBannerGame.bgImage"
                           alt="img"
                         />

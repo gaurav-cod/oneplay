@@ -1,6 +1,7 @@
 .navbar {
   // background-color: #151617 !important;
-  // position: fixed;
+  position: absolute;
+  filter: blur(0px);
   top: -1px !important;
   left: 0;
   width: 100%;
