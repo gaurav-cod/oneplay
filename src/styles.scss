@@ -131,6 +131,10 @@ html, body {
 .tooltip-container {
   a {
     text-decoration: underline !important;
+    color: #fff;
+  }
+  a:hover {
+    color: #fff;
   }
 }
 
