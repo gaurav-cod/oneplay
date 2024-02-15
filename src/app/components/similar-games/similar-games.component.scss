@@ -76,7 +76,7 @@
 }
 .scrollGameHeight {
   @media (min-width: 1200px) {
-    height: 210px !important;
+    height: 400px !important;
   }
 }
 .scrollGameHeightAdjust {
@@ -203,10 +203,11 @@
 
 .railHeading {
   font-weight: 500;
-  font-size: 18px;
+  font-size: 36px;
   line-height: 20px;
   color: #dcdcdc;
   letter-spacing: 0.02em;
+  font-family: "TsukiRegular";
   @media (max-width: 480px) {
     font-size: 16px;
     line-height: 26px;

@@ -81,3 +81,30 @@
         </div>
     </div>
 </section>
+
+<div>
+  <div class="mb-0 mt-4">
+    <!-- <div *ngIf="genreSelected && genreGames.length > 0">
+      <app-similar-games
+        [title]="genreSelected"
+        [games]="genreGames"
+        (gameClick)="updateHomeView('filterGameClicked', $event)"
+      ></app-similar-games>
+    </div> -->
+    <!-- <div>
+      <app-similar-games
+        *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
+        [title]="'My Library'"
+        [games]="library"
+        (gameClick)="updateHomeView('myLibraryClicked', $event)"
+      ></app-similar-games>
+    </div> -->
+    <!-- <ng-container *ngIf="!genreSelected"> -->
+      <app-similar-games
+        *ngFor="let row of restRows"
+        [title]="row.title"
+        [games]="row.games"
+      ></app-similar-games>
+    <!-- </ng-container> -->
+  </div>
+</div>

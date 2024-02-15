@@ -42,6 +42,7 @@ import { LottieAnimationComponent } from './lottie-animation/lottie-animation.co
 
 import { LottieModule } from "ngx-lottie";
 import player from "lottie-web";
+import { GameCardV2Component } from './game-card-v2/game-card-v2.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -96,6 +97,7 @@ export function playerFactory() {
     ImageLoadingComponent,
     UserInfoComponent,
     LottieAnimationComponent,
+    GameCardV2Component,
   ],
   exports: [
     GameCardComponent,
