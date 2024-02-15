@@ -16,6 +16,7 @@
                     <select
                       class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font18 font500 border-0 selectBg"
                       formControlName="country_code"
+                      [style.width]="getCountryCodeWidth"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
                         {{ code }}

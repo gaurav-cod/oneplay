@@ -86,6 +86,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   });
   referal_code = new UntypedFormControl("")
 
+  get getCountryCodeWidth() {
+     const wordLength = this.authenticateForm.controls['country_code'].value.length;
+     return wordLength > 4 && wordLength <=6 ? '100px !important' :  (wordLength > 6 ? '120px !important' : '' )
+  }
+
   get allowPasswordInput() {
     return this._isPasswordFlow && this._doesUserhavePassword;
   }
