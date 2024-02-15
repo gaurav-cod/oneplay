@@ -96,6 +96,18 @@ export class HomeV2Component implements OnInit, OnDestroy {
     // }, 2000);
   }
 
+  moveSelectedCard(direction: "LEFT" | "RIGHT") {
+    let currSelectedGameIndex = -1;
+    this.heroBannerRow.games.forEach((game, index)=> {
+      if (game.oneplayId == this.selectedHeroBannerId)
+        currSelectedGameIndex = index;
+    })
+    if (currSelectedGameIndex === 0)
+      currSelectedGameIndex = 1;
+    this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex+ (direction == "LEFT" ? -1 : 1) ) % this.heroBannerRow.games.length].oneplayId;
+    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
+  }
+
   cardSelected(game: GameModel) {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === game.oneplayId)[0];
     this.selectedHeroBannerId = game.oneplayId;

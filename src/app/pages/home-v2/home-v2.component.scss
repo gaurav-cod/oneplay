@@ -31,8 +31,14 @@
     }
     .card {
         background: transparent;
+        img {
+            opacity: 0.8;
+            filter: blur(1px);
+        }
     }
     .selectedGame {
+        opacity: 1 !important;
+        filter: blur(0px) !important;
         border: 1px solid transparent;
         border-radius: 15px !important;
         background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
