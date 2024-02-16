@@ -309,10 +309,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"(click)="toggleWarningMessage($event)">
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             [ngbTooltip]="warningMessage"
             triggers="click"
             placement="bottom-right"
@@ -320,6 +321,7 @@
           <img
             class="warning-message-mob hideInLarge"
             src="assets/img/error/warning-message-symbol.svg"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             [ngbTooltip]="warningMessage"
             triggers="click"
             placement="right"
