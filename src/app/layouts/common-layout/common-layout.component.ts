@@ -66,7 +66,6 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.queryParamSubscription = this.activatedRoute.queryParams.subscribe((params) => {
       if (params.src === "oneplay_app") {
         localStorage.setItem("src", "oneplay_app");

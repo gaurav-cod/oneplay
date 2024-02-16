@@ -86,6 +86,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   });
   referal_code = new UntypedFormControl("")
 
+  get getCountryCodeWidth() {
+     const wordLength = this.authenticateForm.controls['country_code'].value.length;
+     return wordLength > 4 && wordLength <=6 ? '100px !important' :  (wordLength > 6 ? '120px !important' : '' )
+  }
+
   get allowPasswordInput() {
     return this._isPasswordFlow && this._doesUserhavePassword;
   }
@@ -216,8 +221,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
   closeReferralDialog(isReferalAdded: boolean = false) {
-    this.isReferralAdded = !!this.referralName && isReferalAdded;
-    this._referralModal?.close();
+    this.restService.getReferalName(this.referralName).toPromise().then(()=> {
+      this.isReferralAdded = !!this.referralName && isReferalAdded;
+      this._referralModal?.close();
+    })
   }
   getUserByReferalCode(code: string) {
     this.referralName = null;
@@ -225,7 +232,6 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         if (response.available) {
           this.referal_code.setValue(code);
           this.referralName = response.message;
-          this.isReferralAdded = true;
         }
         else {
           this.referralName = null;

@@ -76,6 +76,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.userDetails?.username;
   }
 
+  @HostListener('click', ['$event'])
+  clickout(event) {
+    this.firstSignUpMsgTimer = 0;
+    clearInterval(this.messageTimer);
+    this.authService.setTriggerInitialModal(true);
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly authService: AuthService,
@@ -105,10 +112,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   @HostListener("window:unload", ["$event"])
   unloadHandler(event: Event): void {
     event.preventDefault();
+    clearInterval(this.messageTimer);
     this.countlyService.endEvent("homeView");
   }
 
   async ngOnInit() {
+
     this.title.setTitle("Home");
     this.loaderService.start();
 

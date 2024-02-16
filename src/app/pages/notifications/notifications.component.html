@@ -17,7 +17,7 @@
                 <div *ngIf="!isSameDate(i)" class="d-flex w-100 top-0 my-3">
                     <div class="date-tag font14 font500 muteText">{{ getDate(notification) }}</div>
                 </div>
-                <div class="d-flex position-relative notificationCard mt-2 cursorPointer" (click)="notificationAction(notification)">
+                <div class="d-flex position-relative notificationCard mt-2 cursorPointer" (click)="notificationAction($event, notification)">
 
                     <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
                         <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""

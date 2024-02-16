@@ -508,6 +508,7 @@
                 </a>  -->
 
                 <a
+                  *ngIf="!isClientSide"
                   (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
@@ -518,8 +519,9 @@
                   <span class="align-middle">Speed Test</span>
                 </a>
 
-                <div class="dropdown-divider borderColor"></div>
+                <div class="dropdown-divider borderColor" ></div>
                 <a
+                  *ngIf="!isClientSide"
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
                   (click)="logDropdownEvent('downloadsClicked')"
@@ -536,6 +538,34 @@
                 >
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
+                </a>
+                <div class="dropdown-divider borderColor" *ngIf="isClientSide"></div>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('SAVE_LOGS')"
+                >
+                  <i class="fa fa-history font16 align-middle"></i>
+                  <span class="align-middle">Save Logs</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('RUN_DIAGNOSTICS')"
+                >
+                  <i class="ni ni-ambulance font16 align-middle"></i>
+                  <span class="align-middle">Run Diagnostics</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('GAMEPAD_CALIBRATION')"
+                >
+                  <i class="ni ni-controller align-middle font16"></i>
+                  <span class="align-middle">GamePad Calibration</span>
                 </a>
               </div>
             </div>
@@ -562,6 +592,7 @@
                 </a>
 
                 <a
+                  *ngIf="!isClientSide"
                   (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
@@ -583,63 +614,6 @@
     </ul>
   </div>
 </nav>
-
-<ng-template #share let-d="dismiss">
-  <div class="modal-content position-relative modalBorderGradient">
-    <div class="modal-body modalBG">
-      <a
-        href="javascript:void(0)"
-        class="position-absolute btn modalBG rounded-circle right-0 top-2"
-        style="padding: 5px 10px"
-        (click)="d('Cross click')"
-      >
-        <i class="fas fa-times-circle text-white" style="font-size: 20px"></i>
-      </a>
-      <div class="row justify-content-center">
-        <div class="col-lg-9 col-md-11 col-sm-11 col-12 text-center mt-4">
-          <img
-            src="assets/img/refer/image 31.svg"
-            class="img-fluid height180"
-            alt=""
-          />
-          <p class="customWhite font800 mb-3 font24 mt-4">Refer a Friend</p>
-          <p class="font16 font500 muteText mt-2 mb-0">
-            Enjoy one month of Free OnePlay Subscription when you invite someone
-          </p>
-          <div class="row justify-content-center">
-            <div class="col-auto">
-              <div class="middleBorder82 my-3"></div>
-            </div>
-          </div>
-          <share-buttons
-            [url]="link"
-            [include]="[
-              'facebook',
-              'twitter',
-              'linkedin',
-              'telegram',
-              'whatsapp',
-              'email',
-              'copy'
-            ]"
-            theme="circles-dark"
-            show="11"
-          ></share-buttons>
-          <div class="text-center mt-3">
-            <u
-              ><a
-                href="javascript:void(0)"
-                (click)="TermsConditions(TermsAndConditions)"
-                class="font16 font500 offWhiteText"
-                >T&C Applicable</a
-              ></u
-            >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
 
 
 <ng-template #TermsAndConditions let-d="dismiss">
