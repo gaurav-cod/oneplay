@@ -712,6 +712,10 @@ input[type="checkbox"] {
   }
 }
 
+a[type="button"] {
+  -webkit-appearance: none !important;
+}
+
 .btn-github {
   background-color: #212123 !important;
   z-index: 3;
