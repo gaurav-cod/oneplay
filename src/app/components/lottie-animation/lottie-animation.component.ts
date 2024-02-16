@@ -9,7 +9,7 @@ import { AnimationOptions } from 'ngx-lottie';
 })
 export class LottieAnimationComponent {
   options: AnimationOptions = {
-    path: 'assets/img/Dashboard/lottie-animation.json',
+    // path: 'assets/img/Dashboard/lottie-animation.json',
   };
 
   animationCreated(animationItem: AnimationItem): void {
