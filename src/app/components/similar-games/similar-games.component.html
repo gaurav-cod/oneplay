@@ -7,7 +7,7 @@
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
+        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'scrollGameGamezopWidth': isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
             <ng-container *ngIf="!isGamezopList">
               <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
