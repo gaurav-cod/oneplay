@@ -79,6 +79,13 @@
     padding-top: 16px;
   }
 }
+.scrollGameGamezopWidth {
+  @media screen and (min-width: 1450px) {
+    padding-right: 15px !important;
+    padding-left: 150px !important;
+    margin: auto !important; 
+  }
+}
 .scrollGameHeight {
   @media (min-width: 1200px) {
     height: 210px !important;
