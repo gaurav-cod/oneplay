@@ -55,19 +55,19 @@
   scrollbar-width: none; 
   white-space: nowrap;
   display: block;
-  padding-left: 90px;
+  padding-left: 80px;
   padding-right: 78px;
   padding-top: 15px;
   padding-bottom: 20px;
   scrollbar-color: transparent transparent; 
 
   @media (max-width: 1300px) {
-    padding-left: 40px;
+    padding-left: 35px;
     padding-right: 40px;
     padding-bottom: 45px;
   }
   @media (max-width: 850px) {
-    padding-left: 40px;
+    padding-left: 35px;
     padding-right: 15px;
   }
 
@@ -80,6 +80,11 @@
   }
 }
 .scrollGameGamezopWidth {
+  // @media (min-width: 1451px) and (max-width: 1450px) {
+  //   padding-right: 15px !important;
+  //   padding-left: 125px !important;
+  //   margin: auto !important; 
+  // }
   @media screen and (min-width: 1450px) {
     padding-right: 15px !important;
     padding-left: 150px !important;
