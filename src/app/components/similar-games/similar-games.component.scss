@@ -149,6 +149,10 @@
 .scrollGameStreamHeight {
   height: 390px !important;
 }
+.gamezop-list {
+  display: flex;
+  height: fit-content !important;
+}
 
 .paddingLeft {
   @media (max-width: 767.9px) {
@@ -174,6 +178,8 @@
 }
 .w370 {
   width: 370px !important;
+  margin-right: 40px;
+  margin-bottom: 30px;
 }
 
 .w290 {
