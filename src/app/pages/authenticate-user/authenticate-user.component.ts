@@ -124,6 +124,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     if (!partnerId) {
       this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
         environment.partner_id = partner_id;
+        localStorage.setItem("x-partner-id", partner_id);
       }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
@@ -131,6 +132,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       });
     } else {
       environment.partner_id = partnerId;
+      localStorage.setItem("x-partner-id", partnerId);
     }
 
     this.startSignInEvent();
