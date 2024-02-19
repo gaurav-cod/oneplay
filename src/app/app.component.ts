@@ -15,7 +15,7 @@ import { environment } from "src/environments/environment";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = "Oneplay Dashboard";
+  title = "OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.";
   seriousNotification: string | null = null;
 
   initialized: boolean = false;
