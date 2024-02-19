@@ -15,8 +15,8 @@
       />
       <!-- <image-loading [hash]="game.textBgHash" [image]="image"></image-loading> -->
     </div>
-    <h3 class="game-title mt-2 mb-1">{{ game.title }}</h3>
-    <span class="sub-title mb-2 d-block">{{ game.title }}</span>
+    <h3 class="game-title mt-2 mb-1 truncate-line-clamp ">{{ game.title }}</h3>
+    <span class="sub-title mb-2 d-block truncate-line-clamp">{{ game.title }}</span>
     <div class="gameTagsContianer">
       <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
         <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>

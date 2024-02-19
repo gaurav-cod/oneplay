@@ -2,14 +2,14 @@
   transition: transform 0.2s ease;
 
   @media (min-width: 768px) {
-    &:hover {
-      transform: scale(1.2);
-      z-index: 9;
-    }
+    // &:hover {
+    //   transform: scale(1.2);
+    //   z-index: 9;
+    // }
 
-    &:first-child:hover {
-      transform: scale(1.2);
-    }
+    // &:first-child:hover {
+    //   transform: scale(1.2);
+    // }
   }
 }
 
@@ -76,7 +76,7 @@
 }
 .scrollGameHeight {
   @media (min-width: 1200px) {
-    height: 450px !important;
+    height: 500px !important;
   }
 }
 .scrollGameHeightAdjust {
@@ -193,14 +193,14 @@
   height: 180px;
   width: 300px;
   @media (min-width: 768px) {
-    &:hover {
-      transform: scale(1.1) !important;
-      z-index: 9;
-    }
+    // &:hover {
+    //   transform: scale(1.1) !important;
+    //   z-index: 9;
+    // }
 
-    &:first-child:hover {
-      transform: scale(1.1) !important;
-    }
+    // &:first-child:hover {
+    //   transform: scale(1.1) !important;
+    // }
   }
 }
 
