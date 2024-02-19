@@ -17,6 +17,10 @@ import { UserModel } from 'src/app/models/user.model';
 import { CustomTimedCountlyEvents } from 'src/app/services/countly';
 import { environment } from 'src/environments/environment';
 
+enum PARTNER_CODE {
+  BATELCO = "fda35338-ae5d-11ee-af68-023d25f0c398"
+}
+
 @Component({
   selector: 'app-authenticate-user',
   templateUrl: './authenticate-user.component.html',
@@ -158,6 +162,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       if (qParam["ref"]) {
         this.getUserByReferalCode(qParam["ref"]);
         // this.router.navigate([], {queryParams: {ref: null}});
+      } 
+      if (qParam["partner"]) {
+        environment.partner_id = qParam["partner"] == PARTNER_CODE.BATELCO ? qParam["partner"] : environment.partner_id;
+        if (qParam["msisdn"]) {
+          const mobile = decodeURIComponent(qParam["msisdn"].trim());
+          this.authenticateForm.controls["country_code"].setValue("+" + mobile.substr(0, 3));
+          this.authenticateForm.controls["phone"].setValue(mobile.substr(3));
+          this.getUserInfoByPhone("+" + mobile, true);
+        } 
       }
     })
     this.restService.getCurrentLocation().subscribe({
@@ -189,7 +202,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
 
-  private getUserInfoByPhone(phone) {
+  private getUserInfoByPhone(phone, goToOTPScreen: boolean = false) {
     const control = this.authenticateForm.controls["phone"];
     this.restService.isPhoneRegistred(phone, "web").subscribe({
       next: (response: any)=> {
@@ -202,6 +215,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         if (this._isPasswordFlow) {
           this.countlyEvent("passwordRequired", "yes");
         }
+
+        if (goToOTPScreen)
+          this.getOTP();
 
       }, error: (error: any)=> {
         this.isValidPhoneNumber = false;
