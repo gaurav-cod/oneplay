@@ -43,6 +43,7 @@ import { LottieAnimationComponent } from './lottie-animation/lottie-animation.co
 import { LottieModule } from "ngx-lottie";
 import player from "lottie-web";
 import { GameCardV2Component } from './game-card-v2/game-card-v2.component';
+import { AppSimilarStreamsComponent } from './app-similar-streams/app-similar-streams.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -98,6 +99,7 @@ export function playerFactory() {
     UserInfoComponent,
     LottieAnimationComponent,
     GameCardV2Component,
+    AppSimilarStreamsComponent,
   ],
   exports: [
     GameCardComponent,
@@ -127,7 +129,8 @@ export function playerFactory() {
     InstallPlayGameComponent,
     NotificationAlertComponent,
     ImageLoadingComponent,
-    LottieAnimationComponent
+    LottieAnimationComponent,
+    AppSimilarStreamsComponent
   ],
 })
 export class ComponentsModule {}

@@ -146,6 +146,10 @@
   // }
 }
 
+.scrollGameStreamHeight {
+  height: 390px !important;
+}
+
 .paddingLeft {
   @media (max-width: 767.9px) {
     padding-left: 25px;
@@ -167,6 +171,9 @@
 
 .w210 {
   width: 210px !important;
+}
+.w370 {
+  width: 370px !important;
 }
 
 .w290 {
