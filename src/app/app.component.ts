@@ -42,6 +42,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    localStorage.setItem("x-partner-id", environment.partner_id);
     if (this.authService.sessionToken) {
       this.initialized = true;
     } else {
@@ -50,6 +52,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .toPromise()
         .then(({ partner_id }) => {
           environment.partner_id = partner_id;
+          localStorage.setItem("x-partner-id", partner_id);
           this.initialized = true;
         })
         .catch(() => {
