@@ -208,10 +208,31 @@
   color: #dcdcdc;
   letter-spacing: 0.02em;
   font-family: "TsukiRegular";
-  margin-bottom: 10px;
+  margin-bottom: 0px;
   @media (max-width: 480px) {
     font-size: 16px;
     line-height: 26px;
+  }
+}
+.filterContainerList {
+  display: flex;
+  border-radius: 30px;
+  background-color: #212123;
+  padding: 10px;
+  min-width: 400px;
+  margin-left: 20px;
+  .filter {
+    padding: 10px;
+    font-weight: 600;
+    color: #A8A8A8;
+    margin-right: 12px;
+    cursor: pointer;
+  }
+  .linearGradient {
+    color: white;
+    border-radius: 30px;
+    min-width: 70px;
+    text-align: center;
   }
 }
 

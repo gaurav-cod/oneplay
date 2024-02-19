@@ -1,6 +1,12 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
-  <div class="container-fluid removePaddingContainer">
-    <p class="position-relative railHeading mb-0 paddingLeft">{{ title }}</p>
+  <div class="container-fluid removePaddingContainer d-flex align-items-center mb-4">
+    <p class="position-relative railHeading paddingLeft mr-4">{{ title }}</p>
+    <div class="filterContainerList">
+      <ng-container>
+        <div class="filter linearGradient">All</div>
+        <div class="filter">Action</div>
+      </ng-container>
+    </div>
   </div>
 </div>
 <div class="position-relative">
