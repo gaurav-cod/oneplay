@@ -475,6 +475,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
+  onKeyPressCheckMobile(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_+@';
+    if (validChars.includes(String.fromCharCode(charCode)) || event.code == "KeyE") {
+      event.preventDefault();
+    }
+  }
+
   private handlePaste(event: ClipboardEvent) {
     event.stopPropagation();
 
