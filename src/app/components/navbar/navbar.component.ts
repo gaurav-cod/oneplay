@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -86,6 +87,11 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _profileOverlaySub: Subscription;
   private _qParamSubscription: Subscription;
   private _guestDropdownSub: Subscription;
+
+  @HostListener('window:scroll', ['$event']) 
+  onScroll(event) {
+      this.showSearchBar = event.currentTarget.pageYOffset > 45
+  }
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;

@@ -16,6 +16,7 @@
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
+  [style.background]="showSearchBar ? '#151617' : ''"
 >
   <div
     class="container-fluid p-0"
@@ -36,7 +37,7 @@
     <a href="javascript:void(0)" class="navbar-brand" [routerLink]="['/home']">
       <img
         class="img-fluid w120"
-        src="assets/img/brand/brandLogo.svg"
+        src="assets/img/brand/oneplay-logo.svg"
         alt=" "
       />
     </a>
@@ -95,7 +96,7 @@
           <form
             class="navbar-search position-relative w-100 h-100"
           >
-            <div class="search-box">
+            <div class="search-box" (mouseenter)="showSearchBar = true">
               <input
                 #search
                 class="search-txt"

@@ -1,6 +1,6 @@
 .navbar {
   // background-color: #151617 !important;
-  position: absolute;
+  position: fixed;
   filter: blur(0px);
   top: -1px !important;
   left: 0;
@@ -311,6 +311,8 @@
 
 .searchDropdown {
   overflow: auto !important;
+  position: relative;
+  right: 5px;
 }
 
 .searchDropdown::-webkit-scrollbar {
