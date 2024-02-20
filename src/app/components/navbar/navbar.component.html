@@ -96,7 +96,7 @@
           <form
             class="navbar-search position-relative w-100 h-100"
           >
-            <div class="search-box" (mouseenter)="showSearchBar = true">
+            <div class="search-box" (mouseenter)="showSearchBar = true" (mouseleave)="showSearchBar = false">
               <input
                 #search
                 class="search-txt"
