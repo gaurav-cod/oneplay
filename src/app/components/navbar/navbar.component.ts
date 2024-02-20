@@ -425,6 +425,14 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  showSearchBar: boolean = false;
+  onMouseEnter() {
+    this.showSearchBar = true;
+  }
+  onMouseOver() {
+    this.showSearchBar = false;
+  }
+
   private acceptFriend(friend: UserModel) {
     this.dontClose = true;
     const request = this.friendRequests.find((f) => f.user_id === friend.id);

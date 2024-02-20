@@ -44,8 +44,7 @@ import { HomeV2Component } from './pages/home-v2/home-v2.component';
     AdminLayoutComponent,
     AuthLayoutComponent,
     TvAuthLayoutComponent,
-    CommonLayoutComponent,
-    HomeV2Component,
+    CommonLayoutComponent
   ],
   providers: [
     {

@@ -21,6 +21,7 @@ import { ViewComponent } from "src/app/pages/view/view.component";
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
 import { SearchComponent } from "src/app/pages/search/search.component";
+import { HomeV2Component } from "src/app/pages/home-v2/home-v2.component";
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { SearchComponent } from "src/app/pages/search/search.component";
   declarations: [
     ErrorComponent,
     HomeComponent,
+    HomeV2Component,
     Gamezop,
     ServerErrorComponent,
     InstallComponent,
