@@ -85,7 +85,7 @@
   font-size: 16px !important;
   line-height: 18px;
   font-weight: 500;
-  min-width: 55px;
+  min-width: 62px;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -260,10 +260,21 @@
 .customWhite {
   color: #DCDCDC;
 }
+.searchIconMobile {
+  background-color: #212123;
+    /* border-radius: 0.4375rem; */
+    height: 35px;
+    width: 35px !important;
+    display: block;
+    display: flex;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+}
 
 @media (max-width: 1200.9px) {
   .xsborderBottom {
-    border-bottom: 1px solid #3E4246;
+    // border-bottom: 1px solid #3E4246;
   }
 }
 
@@ -286,7 +297,7 @@
 
 @media (max-width: 475px) {
   .w120 {
-    width: 100px !important;
+    width: 150px !important;
   }
 }
 

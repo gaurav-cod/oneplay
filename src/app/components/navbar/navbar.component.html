@@ -17,13 +17,14 @@
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
   [style.background]="showSearchBar ? '#151617' : ''"
+  [style.position]="!isHomePage ? 'relative !important' : ''"
 >
   <div
     class="container-fluid p-0"
     style="padding-left: 1% !important; padding-right: 2% !important"
   >
     <div class="search">
-      <span class="bgTransparent offWhiteColor font16 font500">
+      <span class="searchIconMobile offWhiteColor font16 font500">
         <a
           href="javascript:void(0)"
           routerLinkActive="active"
@@ -351,13 +352,13 @@
     <ul class="navbar-nav pl-md-4 pl-lg-0">
       <li class="nav-item">
         <div class="row position-relative">
-          <button
+          <!-- <button
               *ngIf="!isAuthenticated"
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mr-lg-4"
               (click)="goToSignUpPage('websiteHeader')"
             >
               Sign In
-          </button>
+          </button> -->
           <div
             class="col-auto align-self-center pl-0 d-none d-lg-inline hideIcon"
           >
@@ -467,7 +468,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 d-flex justify-content-end"
               role="button"
               (click)="headerNavOnClick('profileClicked', true)"
               ngbDropdownToggle

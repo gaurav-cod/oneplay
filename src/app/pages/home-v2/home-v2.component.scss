@@ -4,6 +4,12 @@
 .height65vh {
     height: 65vh !important;
 }
+.height90vh {
+    height: 90vh !important;
+    @media screen and (max-width: 475px) {
+        height: 50vh !important;
+    }
+}
 .height30vh {
     height: 30vh !important;
     width: 20vw;
@@ -22,8 +28,8 @@
 .games-carousel {
     gap: 20px;
     position: absolute;
-    bottom: 20px;
-    right: 10px;
+    bottom: 120px;
+    right: 40px;
     .card-carousel-img {
         height: 100px;
         width: 80px;
@@ -44,6 +50,10 @@
         background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
         background-origin: border-box;
         padding: 2px !important;
+    }
+
+    @media screen and (max-width: 1200px) {
+        display: none !important;
     }
 }
 // .specialBackground {

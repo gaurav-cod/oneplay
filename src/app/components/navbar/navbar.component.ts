@@ -168,6 +168,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     return environment.appVersion;
   }
 
+  get isHomePage() {
+    return this.router.url.includes("home");
+  }
+
   viewGame() {
     this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {

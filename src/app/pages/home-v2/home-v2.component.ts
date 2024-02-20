@@ -102,14 +102,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
       if (game.oneplayId == this.selectedHeroBannerId)
         currSelectedGameIndex = index;
     })
-    if (currSelectedGameIndex === 0)
-      currSelectedGameIndex = 1;
     this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex+ (direction == "LEFT" ? -1 : 1) ) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
   }
 
   cardSelected(game: GameModel) {
-    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === game.oneplayId)[0];
+    this.selectedBannerGame = game;
     this.selectedHeroBannerId = game.oneplayId;
   }
   videoEnded() {

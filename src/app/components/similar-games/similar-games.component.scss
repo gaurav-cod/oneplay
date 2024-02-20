@@ -31,6 +31,7 @@
 
   .removePaddingContainer {
     padding: 0px !important;
+    margin-bottom: 0px !important;
   }
 }
 
@@ -72,6 +73,7 @@
     padding-right: 30px;
     padding-bottom: 30px;
     padding-top: 16px;
+    height: 370px;
   }
 }
 .scrollGameHeight {
@@ -223,8 +225,10 @@
   font-family: "TsukiRegular";
   margin-bottom: 0px;
   @media (max-width: 480px) {
-    font-size: 16px;
+    font-size: 28px;
     line-height: 26px;
+    width: 50%;
+    margin-right: 0px !important;
   }
 }
 .filterContainerList {
@@ -247,6 +251,18 @@
     min-width: 70px;
     text-align: center;
   }
+   @media screen and (max-width: 475px) {
+      width: 200px;
+      min-width: unset;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      position: relative;
+      right: -10px;
+      padding: 8px;
+      .filter {
+        padding: 10px 5px;
+      }
+   }
 }
 
 .arrowPaddingLeft {

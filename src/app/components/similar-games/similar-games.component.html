@@ -16,22 +16,22 @@
         <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied, 'gamezop-list': false }" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'w370': false}">
             <!-- <app-casualgame-home-card [game]="game"></app-casualgame-home-card> -->
-            <app-similar-streams [game]="game"></app-similar-streams>
-            <!-- <ng-container *ngIf="!isGamezopList">
+            <!-- <app-similar-streams [game]="game"></app-similar-streams> -->
+            <ng-container *ngIf="!isGamezopList">
               <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
               <app-install-play-game [game]="game" [hasFixedWidth]="true"
                 *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>
             <ng-container *ngIf="isGamezopList">
               <app-gamezop-game-card [game]="game" (gameClick)="gameClicked($event)"></app-gamezop-game-card>
-            </ng-container> -->
+            </ng-container>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <button
+  <!-- <button
     *ngIf="showLeftArrow"
     class="btn position-absolute h-100 arrowPaddingLeft pr-2"
     (click)="scrollLeft()"
@@ -45,5 +45,5 @@
     (click)="scrollRight()"
   >
     <img src="assets/img/Vector (1).svg" height="20px" alt="" />
-  </button>
+  </button> -->
 </div>
