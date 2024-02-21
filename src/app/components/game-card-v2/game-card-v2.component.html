@@ -12,11 +12,11 @@
     <div class="position-relative">
       <img
         #image
-        [ngClass]="{ w290h185: hfw }"
+        [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
         class="card-img borderRadius10 loadingBg"
         [src]="game.textBgImage"
         [ngStyle]="{
-          'object-fit': hfw ? 'unset' : 'cover',
+          'object-fit': hfw ? 'unset' : 'cover'
         }"
         alt=""
         loading="lazy"

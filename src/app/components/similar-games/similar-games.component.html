@@ -1,7 +1,7 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
   <div class="container-fluid removePaddingContainer d-flex align-items-center mb-4">
     <p class="position-relative railHeading paddingLeft mr-4">{{ title }}</p>
-    <div class="filterContainerList">
+    <div class="filterContainerList" *ngIf="!isSpecialBanner">
       <ng-container>
         <div class="filter linearGradient">All</div>
         <div class="filter">Action</div>
@@ -13,12 +13,12 @@
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied, 'gamezop-list': false }" (scroll)="updateArrows()">
+        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied, 'gamezop-list': false, 'specialBannerGame': isSpecialBanner}" (scroll)="updateArrows()">
           <div *ngFor="let game of _games" [ngClass]="!game.trailer_video ? 'zoom' : ''" class="col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'w370': false}">
             <!-- <app-casualgame-home-card [game]="game"></app-casualgame-home-card> -->
             <!-- <app-similar-streams [game]="game"></app-similar-streams> -->
             <ng-container *ngIf="!isGamezopList">
-              <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card-v2>
+              <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-game-card-v2>
               <app-install-play-game [game]="game" [hasFixedWidth]="true"
                 *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>

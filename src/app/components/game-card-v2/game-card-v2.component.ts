@@ -24,6 +24,8 @@ export class GameCardV2Component implements AfterViewInit {
     | "STORE_OTHER"
     | "LIBRARY" = "HOME";
 
+  @Input() specialBannerGame: boolean = false;
+
   @Output("gameClick") gameClick = new EventEmitter();
 
   @ViewChild("gameLink") gameLink;
@@ -42,6 +44,8 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    console.log(this.specialBannerGame);
+    debugger;
     // setTimeout(()=> {
 
     //   this.playVideo(this.gameLink.nativeElement, this.image.nativeElement);

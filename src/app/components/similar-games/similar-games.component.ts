@@ -14,6 +14,7 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit {
   @Input() games: GameModel[] | GamezopModel[];
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
+  @Input() isSpecialBanner: boolean = false;
 
   @Output() gameClick = new EventEmitter<string>();
 

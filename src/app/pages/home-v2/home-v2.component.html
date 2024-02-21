@@ -105,10 +105,15 @@
         [title]="row.title"
         [games]="row.games"
       ></app-similar-games>
-      <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
-        <span>GTA FRANCHISE</span>
-        
-      </div> -->
+      <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
+        <div class="py-4">
+          <app-similar-games
+            [isSpecialBanner]="true"
+            [title]="restRows[0].title"
+            [games]="restRows[0].games"
+          ></app-similar-games>
+        </div>
+      </div>
 
     <!-- </ng-container> -->
     <!-- <app-similar-streams
