@@ -2,14 +2,14 @@
   transition: transform 0.2s ease;
 
   @media (min-width: 768px) {
-    // &:hover {
-    //   transform: scale(1.2);
-    //   z-index: 9;
-    // }
+    &:hover {
+      transform: scale(1.1);
+      z-index: 9;
+    }
 
-    // &:first-child:hover {
-    //   transform: scale(1.2);
-    // }
+    &:first-child:hover {
+      transform: scale(1.1);
+    }
   }
 }
 
@@ -186,7 +186,7 @@
 
 .w290 {
   width: 280px;
-  height: 150px;
+  height: 100%;
   
   @media (max-width: 320px) {
     height: 145px;
@@ -210,6 +210,12 @@
     //   transform: scale(1.1) !important;
     // }
   }
+}
+.scrollListing:hover > .arrowPaddingright {
+    display: block !important;
+}
+.scrollListing:hover >  .arrowPaddingLeft {
+  display: block !important;
 }
 
 .borderRadius15 {
@@ -265,13 +271,18 @@
    }
 }
 
+.arrowPaddingLeft:hover > img {
+  transform: scale(1.5);
+}
 .arrowPaddingLeft {
   padding-left: 50px;
   top: 0;
   left: 0;
   z-index: 10;
-  border-radius: 0px;
+  border: none;
+  border-radius: 10px;
   background: #151515a8;
+  display: none;
 
   @media (max-width: 1300px) {
     padding-left: 30px;
@@ -281,14 +292,18 @@
     padding-left: 10px;
   }
 }
-
+.arrowPaddingright:hover > img {
+  transform: scale(1.5);
+}
 .arrowPaddingright {
   padding-right: 50px;
   top: 0;
   right: 0px;
   z-index: 10;
-  border-radius: 0px;
+  border: none;
+  border-radius: 10px;
   background: #151515a8;
+  display: none;
 
   @media (max-width: 1300px) {
     padding-right: 30px;

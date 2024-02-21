@@ -352,13 +352,13 @@
     <ul class="navbar-nav pl-md-4 pl-lg-0">
       <li class="nav-item">
         <div class="row position-relative">
-          <!-- <button
+          <button
               *ngIf="!isAuthenticated"
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mr-lg-4"
               (click)="goToSignUpPage('websiteHeader')"
             >
               Sign In
-          </button> -->
+          </button>
           <div
             class="col-auto align-self-center pl-0 d-none d-lg-inline hideIcon"
           >
@@ -385,6 +385,7 @@
               class="nav-link p-0 br50 mr-2"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage('chat')"
+              style="min-width: fit-content;"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
@@ -444,6 +445,7 @@
                 class="nav-link p-0 br50"
                 role="button"
                 (click)="goToNotificationScreen()"
+                style="min-width: fit-content;"
               >
                 <img
                   alt=""
@@ -472,6 +474,7 @@
               role="button"
               (click)="headerNavOnClick('profileClicked', true)"
               ngbDropdownToggle
+              style="min-width: fit-content;"
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
                 <img

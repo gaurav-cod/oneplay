@@ -9,16 +9,16 @@
     </div>
   </div>
 </div>
-<div class="position-relative">
+<div class="position-relative scrollListing">
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
         <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied, 'gamezop-list': false }" (scroll)="updateArrows()">
-          <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'w370': false}">
+          <div *ngFor="let game of _games" [ngClass]="!game.trailer_video ? 'zoom' : ''" class="col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'w370': false}">
             <!-- <app-casualgame-home-card [game]="game"></app-casualgame-home-card> -->
             <!-- <app-similar-streams [game]="game"></app-similar-streams> -->
             <ng-container *ngIf="!isGamezopList">
-              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
+              <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card-v2>
               <app-install-play-game [game]="game" [hasFixedWidth]="true"
                 *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>
@@ -31,12 +31,12 @@
     </div>
   </div>
 
-  <!-- <button
+  <button
     *ngIf="showLeftArrow"
     class="btn position-absolute h-100 arrowPaddingLeft pr-2"
     (click)="scrollLeft()"
   >
-    <img src="assets/img/Vector.svg" height="20px" alt="" />
+    <img src="assets/img/arrow-left.svg" height="30px" alt="" />
   </button>
 
   <button
@@ -44,6 +44,6 @@
     class="btn position-absolute h-100 arrowPaddingright pl-2"
     (click)="scrollRight()"
   >
-    <img src="assets/img/Vector (1).svg" height="20px" alt="" />
-  </button> -->
+    <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+  </button>
 </div>

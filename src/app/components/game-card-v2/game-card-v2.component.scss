@@ -26,7 +26,14 @@
   .unmute {
     padding: 2px 6px !important;
   }
-  
+  video {
+    border-radius: 4px;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
+    background-origin: border-box;
+  }
   .card, .gamezop-card {
     background: none !important;
     cursor: pointer;
@@ -35,12 +42,6 @@
       object-position: center;
       height: 100%;
       width: 100%;
-    }
-  
-    video {
-      border-radius: 4px;
-      height: 100%;
-      object-fit: cover;
     }
   
     .game-title {
@@ -143,7 +144,7 @@
   @media (min-width: 1300px) {
     .card {
       // width: 150px;
-      height: 150px !important;
+      height: 65% !important;
     }
     .gamezop-card {
       height: 195px !important;

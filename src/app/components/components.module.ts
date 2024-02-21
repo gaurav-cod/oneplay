@@ -70,6 +70,7 @@ export function playerFactory() {
   ],
   declarations: [
     GameCardComponent,
+    GameCardV2Component,
     GamezopGameCard,
     FooterComponent,
     NavbarComponent,
@@ -105,6 +106,7 @@ export function playerFactory() {
   ],
   exports: [
     GameCardComponent,
+    GameCardV2Component,
     GamezopGameCard,
     FooterComponent,
     NavbarComponent,

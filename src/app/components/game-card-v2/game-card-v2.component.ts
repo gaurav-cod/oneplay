@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -11,9 +11,10 @@ import { v4 } from 'uuid';
 @Component({
   selector: 'app-game-card-v2',
   templateUrl: './game-card-v2.component.html',
-  styleUrls: ['./game-card-v2.component.scss']
+  styleUrls: ['./game-card-v2.component.scss'],
+  providers: [GLinkPipe],
 })
-export class GameCardV2Component {
+export class GameCardV2Component implements AfterViewInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
@@ -25,6 +26,9 @@ export class GameCardV2Component {
 
   @Output("gameClick") gameClick = new EventEmitter();
 
+  @ViewChild("gameLink") gameLink;
+  @ViewChild("image") image;
+
   timer: NodeJS.Timeout;
   muted = true;
   showSound = false;
@@ -35,6 +39,13 @@ export class GameCardV2Component {
 
   get isMobile() {
     return window.innerWidth < 768;
+  }
+
+  ngAfterViewInit(): void {
+    // setTimeout(()=> {
+
+    //   this.playVideo(this.gameLink.nativeElement, this.image.nativeElement);
+    // }, 1000)
   }
 
   constructor(
@@ -64,7 +75,6 @@ export class GameCardV2Component {
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
-        image.style.opacity = "0";
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");
@@ -75,6 +85,16 @@ export class GameCardV2Component {
             this.game.oneplayId +
             this.game.trailer_video;
           video.muted = true;
+          video.style.objectFit = 'cover';
+          video.style.width = "200%";
+          video.style.height = "100%";
+          video.style.zIndex = "100";
+          video.style.border = "2px solid transparent";
+          video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
+          video.style.backgroundOrigin = "border-box";
+          video.addEventListener("mouseleave", ()=> {
+            this.pauseVideo(gameLink, image, video);
+          })
           video.play();
           // circular loader until video is loaded
           this.loaderService.startLoader(this.loaderId);
@@ -86,7 +106,10 @@ export class GameCardV2Component {
     }
   }
 
-  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
+  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement, video) {
+    video.style.zIndex = "0";
+    video.style.width = "0%";
+    video.style.height = "0%";
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -99,6 +122,8 @@ export class GameCardV2Component {
       this.muted = true;
       this.loaderService.stopLoader(this.loaderId);
     }
+
+    video.removeEventListener("mouseleave");
   }
 
   muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {

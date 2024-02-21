@@ -60,9 +60,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.selectedBannerGame = this.heroBannerRow.games[0];
             this.restRows = feeds.filter((f) => f.type === "rail");
             
-            // setTimeout(()=> {
-            //   this.playVideo = true;
-            // }, 2000);
+            setTimeout(()=> {
+              this.playVideo = true;
+            }, 2000);
           }, error: (error)=> {
             this.loaderService.stop();
             if (error.timeout) {
@@ -91,9 +91,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
     });
     this.selectedHeroBannerId = this.heroBannerRow.games[(index+1) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
-    // setTimeout(()=> {
-    //   this.playVideo = true;
-    // }, 2000);
+    setTimeout(()=> {
+      this.playVideo = true;
+    }, 2000);
   }
 
   moveSelectedCard(direction: "LEFT" | "RIGHT") {

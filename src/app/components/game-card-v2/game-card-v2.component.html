@@ -3,13 +3,11 @@
   href="javascript:void(0)"
   class="card card-block border-0 shadow-1 position-relative"
   (click)="onGameClick()"
-  [ngClass]="{'adjustCardStore': calledFrom.includes('STORE')}"
 >
   <div
     class="mask"
     style="z-index: 2;"
     (mouseenter)="playVideo(gameLink, image)"
-    (mouseleave)="pauseVideo(gameLink, image)"
   >
     <div class="position-relative">
       <img
