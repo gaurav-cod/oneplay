@@ -9,12 +9,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PipesModule } from 'src/app/pipes/pipes.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { QrVerifyComponent } from 'src/app/pages/qr-verify/qr-verify.component';
+import { QrVerifyTizenComponent } from 'src/app/pages/qr-verify-tizen/qr-verify-tizen.component';
 import { NgxUiLoaderModule } from 'ngx-ui-loader';
 
 @NgModule({
   declarations: [
     QrSignupComponent,
     QrVerifyComponent,
+    QrVerifyTizenComponent
   ],
   imports: [
     CommonModule,

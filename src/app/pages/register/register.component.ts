@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 import { phoneValidator } from "src/app/utils/validators.util";
 import { Subscription, debounceTime, distinctUntilChanged } from "rxjs";
 import { contryCodeCurrencyMapping } from "src/app/variables/country-code";
+import { ReferrerService } from "src/app/services/referrer.service";
 
 @Component({
   selector: "app-register",
@@ -132,11 +133,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly title: Title,
     private readonly ngbModal: NgbModal,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly referrerService:ReferrerService,
   ) {}
 
   ngOnInit() {
-  
+    const referrer = this.referrerService.getReferrer();
+    if (referrer === 'tizen') {
+      this._deviceType = "TIZEN";
+
+    } 
     this.title.setTitle("Signup");
     this.startSignupEvent();
     const ctrl = this.registerForm.controls["referred_by_id"];

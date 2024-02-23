@@ -16,6 +16,7 @@ import { LoginOtpRO, LoginRO } from 'src/app/interface.d';
 import { UserModel } from 'src/app/models/user.model';
 import { CustomTimedCountlyEvents } from 'src/app/services/countly';
 import { environment } from 'src/environments/environment';
+import { ReferrerService } from 'src/app/services/referrer.service';
 
 enum PARTNER_CODE {
   BATELCO = "fda35338-ae5d-11ee-af68-023d25f0c398"
@@ -52,7 +53,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     private readonly countlyService: CountlyService,
     private readonly authService: AuthService,
     private readonly toastService: ToastService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly referrerService: ReferrerService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -124,6 +126,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    const referrer = this.referrerService.getReferrer();
+    if(referrer==="tizen"){
+      this._deviceType="tizen";
+    }
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
       this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
@@ -259,7 +265,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
   getOTP() {
-
+   
     if (this._isPasswordFlow) {
       this.countlyEvent("passwordGetOtpClicked", "yes");
     }
@@ -268,7 +274,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
       "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
@@ -291,7 +297,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   resendOTP() {
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
     }
     this.restService.resendOTP(payload).subscribe({
@@ -360,7 +366,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.countlyEvent("passwordEnterd", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "password": this.authenticateForm.controls["password"].value,
     }
     this.restService.loginWithPassword(payload).subscribe({
