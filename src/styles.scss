@@ -187,6 +187,10 @@ input:-webkit-autofill:active {
   background-color: #151515 !important;
 }
 
+a {
+  -webkit-user-drag: none;
+}
+
 .textMuted {
   color: #959595 !important;
   font-weight: 500;
