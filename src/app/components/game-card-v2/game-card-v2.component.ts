@@ -44,8 +44,6 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.specialBannerGame);
-    debugger;
     // setTimeout(()=> {
 
     //   this.playVideo(this.gameLink.nativeElement, this.image.nativeElement);
