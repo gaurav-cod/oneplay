@@ -5,6 +5,7 @@ import { of } from "rxjs/internal/observable/of";
 import { throwError } from "rxjs/internal/observable/throwError";
 import { switchMap } from "rxjs/internal/operators/switchMap";
 import { environment } from "src/environments/environment";
+import { ReferrerService } from "./referrer.service";
 import {
   BilldeskPaymentRO,
   ClientTokenRO,
@@ -62,14 +63,19 @@ export class RestService {
   private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
   private readonly r_mix_api_3 = environment.render_mix_api + "/v3";
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient, private readonly referrerService:ReferrerService) {}
 
   login(data: LoginDTO): Observable<{
     session_token: string;
     trigger_speed_test: boolean;
   }> {
+    let device="web";
+    const referrer = this.referrerService.getReferrer();
+    if(referrer==="tizen"){
+      device="tizen";
+    }
     return this.http
-      .post(this.r_mix_api + "/accounts/login", { ...data, device: "web" })
+      .post(this.r_mix_api + "/accounts/login", { ...data, device})
       .pipe(
         map((res) => ({
           session_token: res["session_token"],
@@ -1429,6 +1435,7 @@ export class RestService {
 
   // ? Should not be POST method should be PUT
   isPhoneRegistred(phone: string, device: "web" | "tizen") {
+   
     return this.http
       .post(this.r_mix_api_3 + "/accounts/check_phone_number", {
         phone: phone,

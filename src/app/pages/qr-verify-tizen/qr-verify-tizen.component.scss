@@ -1,0 +1,60 @@
+.font38 {
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 50px;
+    @media (max-width: 800px) {
+      font-size: 20px;
+      line-height: 30px;
+    }
+  }
+  
+  .w70h61 {
+    width: 70px;
+    height: 61px;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 50px;
+    color: #ffffff;
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 5px solid #3e4246;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px !important;
+    @media (max-width: 700px) {
+      width: 45px;
+      height: 50px;
+      font-size: 16px;
+      line-height: 21px;
+    }
+    @media (max-width: 500px) {
+      width: 25px;
+      height: 30px;
+      font-size: 16px;
+      line-height: 21px;
+    }
+  }
+  
+  .mutedColor {
+    color: #3e4246 !important;
+    font-size: 40px;
+  }
+  
+  .font20 {
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 34px;
+    color: #959595;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
