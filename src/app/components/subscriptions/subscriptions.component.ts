@@ -219,13 +219,13 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
       html:
         sub.planType === "base"
           ? "Once the current one expires, this subscription pack will start."
-          : "You are about to pay for the chosen subscription plan.",
+          : "You are about to renew your subscription plan.",
       imageUrl: "assets/img/error/payment.svg",
       showDenyButton: true,
       showCloseButton: true,
       confirmButtonText: "Renew",
       cancelButtonText: "No",
-      denyButtonText: "Change plan",
+      denyButtonText: "Change Plan",
       customClass: "swalPadding",
     }).then(async (result) => {
       if (result.isConfirmed) {
