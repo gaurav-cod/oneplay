@@ -46,6 +46,6 @@ export class SubscriptionModel {
     this.isLiveForPurchase = plan.isLiveForPurchase;
     this.isUnlimited = plan.isUnlimited
     this.totalTokenOffered = json?.subscriptionPackage?.total_offered_tokens;
-    this.showDownloadInvoiceOpt = (json?.payment?.provider != "cms") || true; // remove true condition when needed to show download invoice with condition
+    this.showDownloadInvoiceOpt = (json?.payment?.provider != "cms");
   }
 }
