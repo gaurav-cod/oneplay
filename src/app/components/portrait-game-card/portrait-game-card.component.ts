@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -9,22 +9,14 @@ import { environment } from 'src/environments/environment';
 import { v4 } from 'uuid';
 
 @Component({
-  selector: 'app-game-card-v2',
-  templateUrl: './game-card-v2.component.html',
-  styleUrls: ['./game-card-v2.component.scss'],
+  selector: 'app-portrait-game-card',
+  templateUrl: './portrait-game-card.component.html',
+  styleUrls: ['./portrait-game-card.component.scss'],
   providers: [GLinkPipe],
 })
-export class GameCardV2Component implements AfterViewInit {
+export class PortraitGameCardComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
-  @Input("hasFixedWidth") hfw: boolean = false;
-  @Input("calledFrom") calledFrom:
-    | "HOME"
-    | "STORE_INSTALL_PLAY"
-    | "STORE_OTHER"
-    | "LIBRARY" = "HOME";
-
-  @Input() specialBannerGame: boolean = false;
 
   @Output("gameClick") gameClick = new EventEmitter();
 
