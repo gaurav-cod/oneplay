@@ -66,3 +66,7 @@
     background-size: cover !important;
     background-repeat: no-repeat !important;
 }
+.zoom-tran:hover {
+    transform: scale(1.08);
+    cursor: pointer;
+}

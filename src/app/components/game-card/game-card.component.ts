@@ -81,7 +81,7 @@ export class GameCardComponent implements AfterViewInit {
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
-        image.style.opacity = "0";
+        // image.style.opacity = "0";
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");

@@ -78,13 +78,11 @@ export class PortraitGameCardComponent {
           video.style.objectFit = 'cover';
           video.style.width = "200%";
           video.style.height = "100%";
-          video.style.zIndex = "100";
+          video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
-          video.addEventListener("mouseleave", ()=> {
-            this.pauseVideo(gameLink, image, video);
-          })
+          
           video.play();
           // circular loader until video is loaded
           this.loaderService.startLoader(this.loaderId);
@@ -96,10 +94,10 @@ export class PortraitGameCardComponent {
     }
   }
 
-  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement, video) {
-    video.style.zIndex = "0";
-    video.style.width = "0%";
-    video.style.height = "0%";
+  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
+    // video.style.zIndex = "0";
+    // video.style.width = "0%";
+    // video.style.height = "0%";
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -113,7 +111,7 @@ export class PortraitGameCardComponent {
       this.loaderService.stopLoader(this.loaderId);
     }
 
-    video.removeEventListener("mouseleave");
+    // video.removeEventListener("mouseleave");
   }
 
   muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {

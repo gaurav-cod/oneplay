@@ -67,7 +67,7 @@
             <img src="assets/img/Vector.svg " alt="">
           </div>
           <ng-container ngbSlide *ngFor="let game of heroBannerRow.games; let i = index">
-            <div class="card borderRadius10 position-relative" (click)="cardSelected(game)">
+            <div class="card borderRadius10 position-relative zoom-tran" (click)="cardSelected(game)">
               <img
                 class="card-carousel-img borderRadius10" [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}"
                 [src]="game.bgImage"
