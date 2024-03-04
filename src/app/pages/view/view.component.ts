@@ -1316,7 +1316,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   private startGameWithClientTokenFailed(err: any, sessionId: string) {
     // this._initializeEvent?.end({ result: "failure" });
-    if (this._gameErrorHandling.clientTokenCount) {
+    if (this._gameErrorHandling.clientTokenCount && err.code != 706 && err.code != 723) {
       this._gameErrorHandling.clientTokenCount--;
       this.startGameWithClientToken(sessionId);
     } else {
