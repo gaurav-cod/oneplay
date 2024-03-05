@@ -63,7 +63,7 @@ export class PortraitGameCardComponent {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.video && !this.isMobile && this.game.status === "live") {
+    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -77,12 +77,16 @@ export class PortraitGameCardComponent {
           video.muted = true;
           video.style.objectFit = 'cover';
           video.style.width = "200%";
-          video.style.height = "100%";
+          video.style.height = "110%";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
           
+          if (video.getBoundingClientRect().right > window.innerWidth) {
+            video.style.left = String(Number(video.style.left) - 250) + "px";
+          }
+
           video.play();
           // circular loader until video is loaded
           this.loaderService.startLoader(this.loaderId);
@@ -95,13 +99,10 @@ export class PortraitGameCardComponent {
   }
 
   pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    // video.style.zIndex = "0";
-    // video.style.width = "0%";
-    // video.style.height = "0%";
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.video && !this.isMobile && this.game.status === "live") {
+    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -110,13 +111,11 @@ export class PortraitGameCardComponent {
       this.muted = true;
       this.loaderService.stopLoader(this.loaderId);
     }
-
-    // video.removeEventListener("mouseleave");
   }
 
   muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
     e.stopPropagation();
-    if (game.video) {
+    if (game.trailer_video) {
       const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
@@ -126,5 +125,19 @@ export class PortraitGameCardComponent {
         this.muted = true;
       }
     }
+  }
+
+  scaleImage(image, type: "INCREASE" | "DECREASE") {
+    if (!this.game.trailer_video)  {
+      if (type == "INCREASE")
+        image.className += " card-hover position-absolute";
+      else {
+        image.className = this.replaceAll(image.className, "card-hover", "");
+        image.className = this.replaceAll(image.className, "position-absolute", "");
+      }
+    }
+  }
+  private replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
   }
 }

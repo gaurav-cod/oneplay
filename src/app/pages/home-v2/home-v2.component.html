@@ -84,28 +84,14 @@
 
 <div>
   <div class="mb-0 mt-4">
-    <!-- <div *ngIf="genreSelected && genreGames.length > 0">
-      <app-similar-games
-        [title]="genreSelected"
-        [games]="genreGames"
-        (gameClick)="updateHomeView('filterGameClicked', $event)"
-      ></app-similar-games>
-    </div> -->
-    <!-- <div>
-      <app-similar-games
-        *ngIf="library.length != 0 && (allGamesLength > 0 || !!firstRow)"
-        [title]="'My Library'"
-        [games]="library"
-        (gameClick)="updateHomeView('myLibraryClicked', $event)"
-      ></app-similar-games>
-    </div> -->
+    
     <!-- <ng-container *ngIf="!genreSelected"> -->
-      <!-- <app-similar-games
-        *ngFor="let row of restRows"
+      <app-similar-games
+        *ngFor="let row of portraitCardRows"
         [title]="row.title"
         [games]="row.games"
       ></app-similar-games>
-      <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
+      <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
         <div class="py-4">
           <app-similar-games
             [isSpecialBanner]="true"
@@ -115,11 +101,6 @@
         </div>
       </div> -->
 
-    <!-- </ng-container> -->
-    <!-- <app-similar-streams
-      *ngFor="let row of restRows"
-      [title]="row.title"
-      [games]="row.games"
-    ></app-similar-streams> -->
+
   </div>
 </div>

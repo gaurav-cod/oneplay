@@ -80,7 +80,9 @@ export class GameModel {
   readonly poster_hero_banner_16_9_blurhash: string;
   readonly video_hero_banner_1_1: string;
   readonly video_hero_banner_16_9: string;
-
+  readonly isPremium: boolean;
+  readonly playing: number;
+  readonly streaming: number;
 
 
   constructor(json: { [key: string]: any }) {
@@ -121,6 +123,11 @@ export class GameModel {
 
     this.poster_16_9 = json["poster_16_9"];
     this.poster_16_9_blurhash = json["poster_16_9_blurhash"];
+    this.poster_3_4 = json["poster_3_4"];
+    this.poster_3_4_blurhash = json["poster_3_4_blurhash"];
+    this.isPremium = json["subscription_type"] == "premium";
+    this.playing = json["playing"];
+    this.streaming = json["streaming"];
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];

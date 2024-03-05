@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
-  public restRows: GameFeedModel[] = [];
+  public portraitCardRows: GameFeedModel[] = [];
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
   public playVideo: boolean = false;
@@ -58,7 +58,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.heroBannerRow = feeds.filter((feed)=> feed.type === "hero_banner").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            // this.restRows = feeds.filter((f) => f.type === "rail");
+            this.portraitCardRows = feeds.filter((f) => f.type === "portrait_card");
             
             setTimeout(()=> {
               this.playVideo = true;

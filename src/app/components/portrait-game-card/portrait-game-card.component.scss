@@ -34,8 +34,10 @@
     background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
     background-origin: border-box;
   }
-  .card:hover {
-    transform: scale(1.08);
+  .card-hover {
+    transform: scaleX(1.08) scaleY(1.1);
+    height: 320px !important;
+    transition: all 0.3s;
   }
   .card, .gamezop-card {
     background: none !important;
@@ -46,7 +48,7 @@
       height: 100%;
       width: 100%;
     }
-  
+
     .game-title {
       color: #ffffff;
       width: 100%;

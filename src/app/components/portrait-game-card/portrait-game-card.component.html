@@ -14,11 +14,13 @@
       <img
         #image
         class="card-img borderRadius10 loadingBg w290h185"
-        [src]="game.textBgImage"
+        [src]="game.poster_3_4"
         loading="lazy"
         (error)="onImgError($event)"
+        (mouseenter)="scaleImage(image, 'INCREASE')"
+        (mouseleave)="scaleImage(image, 'DECREASE')"
       />
-      <image-loading [hash]="game.textBgHash" [image]="image"></image-loading>
+      <image-loading [hash]="game.poster_3_4_blurhash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
           <span class="freeTag px-2 tagText">
@@ -32,7 +34,7 @@
           <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
         </div>
       </div>
-      <div class="premiumIcon">
+      <div class="premiumIcon" *ngIf="game.isPremium">
         <img src="assets/icons/premium-icon.svg" alt="">
       </div>
     </div>
@@ -43,13 +45,13 @@
       </ng-container>
     </div>
     <div class="d-flex align-items-center mt-2">
-      <div class="d-flex mr-2">
+      <div class="d-flex mr-2" *ngIf="game.playing">
         <img src="assets/icons/player-count.svg" alt="" class="mr-2">
-        <span class="font500 text-white">200</span>
+        <span class="font500 text-white">{{ game.playing }}</span>
       </div>
-      <div class="d-flex align-items-center mr-2">
+      <div class="d-flex align-items-center mr-2" *ngIf="game.streaming">
         <img src="assets/icons/live-icon.svg" alt="" class="mr-2">
-        <span class="font500 text-white">200</span>
+        <span class="font500 text-white">{{ game.streaming }}</span>
       </div>
     </div>
     <div
