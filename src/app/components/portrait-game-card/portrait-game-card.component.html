@@ -7,6 +7,17 @@
   (mouseleave)="pauseVideo(gameLink, image)"
 >
   <div
+    *ngIf="showSound"
+    class="mute bg-translucent-darker"
+    [ngClass]="{ unmute: !muted }"
+    (click)="muteUnmute($event, gameLink, game)"
+  >
+    <em
+      class="fa text-white"
+      [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"
+    ></em>
+  </div>
+  <div
     class="mask"
     style="z-index: 2;"
   >

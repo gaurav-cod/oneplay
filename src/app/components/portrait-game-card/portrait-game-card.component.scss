@@ -17,10 +17,11 @@
   
   .mute {
     position: absolute;
-    bottom: 16px;
-    right: 16px;
+    bottom: 0px;
+    left: 180%;
     padding: 1px 8px;
     border-radius: 50%;
+    z-index: 100000;
   }
   
   .unmute {
@@ -35,9 +36,10 @@
     background-origin: border-box;
   }
   .card-hover {
-    transform: scaleX(1.08) scaleY(1.1);
+    transform: scaleX(1.15) scaleY(1.1);
     height: 320px !important;
-    transition: all 0.3s;
+    transition: all 0.3s linear;
+    margin-top: 15px;
   }
   .card, .gamezop-card {
     background: none !important;
