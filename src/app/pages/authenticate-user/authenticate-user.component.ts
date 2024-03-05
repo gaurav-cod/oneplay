@@ -16,6 +16,11 @@ import { LoginOtpRO, LoginRO } from 'src/app/interface.d';
 import { UserModel } from 'src/app/models/user.model';
 import { CustomTimedCountlyEvents } from 'src/app/services/countly';
 import { environment } from 'src/environments/environment';
+import { ReferrerService } from 'src/app/services/referrer.service';
+
+enum PARTNER_CODE {
+  BATELCO = "fda35338-ae5d-11ee-af68-023d25f0c398"
+}
 
 @Component({
   selector: 'app-authenticate-user',
@@ -48,7 +53,8 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     private readonly countlyService: CountlyService,
     private readonly authService: AuthService,
     private readonly toastService: ToastService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly referrerService: ReferrerService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -120,10 +126,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit() {
+    const referrer = this.referrerService.getReferrer();
+    if(referrer==="tizen"){
+      this._deviceType="tizen";
+    }
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
       this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
         environment.partner_id = partner_id;
+        localStorage.setItem("x-partner-id", partner_id);
       }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
@@ -131,6 +142,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       });
     } else {
       environment.partner_id = partnerId;
+      localStorage.setItem("x-partner-id", partnerId);
     }
 
     this.startSignInEvent();
@@ -156,6 +168,15 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       if (qParam["ref"]) {
         this.getUserByReferalCode(qParam["ref"]);
         // this.router.navigate([], {queryParams: {ref: null}});
+      } 
+      if (qParam["partner"]) {
+        environment.partner_id = qParam["partner"] == PARTNER_CODE.BATELCO ? qParam["partner"] : environment.partner_id;
+        if (qParam["msisdn"]) {
+          const mobile = decodeURIComponent(qParam["msisdn"].trim());
+          this.authenticateForm.controls["country_code"].setValue("+" + mobile.substr(0, 3));
+          this.authenticateForm.controls["phone"].setValue(mobile.substr(3));
+          this.getUserInfoByPhone("+" + mobile, true);
+        } 
       }
     })
     this.restService.getCurrentLocation().subscribe({
@@ -187,7 +208,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
 
-  private getUserInfoByPhone(phone) {
+  private getUserInfoByPhone(phone, goToOTPScreen: boolean = false) {
     const control = this.authenticateForm.controls["phone"];
     this.restService.isPhoneRegistred(phone, "web").subscribe({
       next: (response: any)=> {
@@ -200,6 +221,9 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
         if (this._isPasswordFlow) {
           this.countlyEvent("passwordRequired", "yes");
         }
+
+        if (goToOTPScreen)
+          this.getOTP();
 
       }, error: (error: any)=> {
         this.isValidPhoneNumber = false;
@@ -241,7 +265,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     );
   }
   getOTP() {
-
+   
     if (this._isPasswordFlow) {
       this.countlyEvent("passwordGetOtpClicked", "yes");
     }
@@ -250,7 +274,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
       "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
@@ -273,7 +297,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   resendOTP() {
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
     }
     this.restService.resendOTP(payload).subscribe({
@@ -342,7 +366,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     this.countlyEvent("passwordEnterd", "yes");
     const payload = {
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
-      "device": "web",
+      "device": this._deviceType == "tizen" ? "tizen" : "web",
       "password": this.authenticateForm.controls["password"].value,
     }
     this.restService.loginWithPassword(payload).subscribe({
@@ -456,6 +480,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
         this.handlePaste(e)
       );
+    }
+  }
+
+  onKeyPressCheckMobile(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_+@';
+    if (validChars.includes(String.fromCharCode(charCode)) || event.code == "KeyE") {
+      event.preventDefault();
     }
   }
 

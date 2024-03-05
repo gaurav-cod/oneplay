@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -87,6 +88,11 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _qParamSubscription: Subscription;
   private _guestDropdownSub: Subscription;
 
+  @HostListener('window:scroll', ['$event']) 
+  onScroll(event) {
+      this.showSearchBar = event.currentTarget.pageYOffset > 45
+  }
+
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
@@ -162,6 +168,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     return environment.appVersion;
   }
 
+  get isHomePage() {
+    return this.router.url.includes("home");
+  }
+
   viewGame() {
     this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
@@ -232,10 +242,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   get showDownload() {
     return UserAgentUtil.parse().app !== "Oneplay App";
   }
-
   get isClientSide() {
     return (UserAgentUtil.parse().app === "Oneplay App");
   }
+
 
   constructor(
     private readonly authService: AuthService,
@@ -427,6 +437,14 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       return ["add"];
     }
+  }
+
+  showSearchBar: boolean = false;
+  onMouseEnter() {
+    this.showSearchBar = true;
+  }
+  onMouseOver() {
+    this.showSearchBar = window.pageYOffset > 45;
   }
 
   private acceptFriend(friend: UserModel) {
@@ -683,7 +701,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       },
     });
   }
-
   clientFun(type: 'SAVE_LOGS' | 'RUN_DIAGNOSTICS' | 'GAMEPAD_CALIBRATION') {
     if (type == "SAVE_LOGS")
       window.location.href = `oneplay:logs`;

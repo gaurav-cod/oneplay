@@ -55,26 +55,46 @@
   scrollbar-width: none; 
   white-space: nowrap;
   display: block;
-  padding-left: 80px;
+  padding-left: 90px;
   padding-right: 78px;
   padding-top: 15px;
   padding-bottom: 20px;
   scrollbar-color: transparent transparent; 
-
+  
+  @media (max-width: 1600px) {
+    padding-left: 140px;
+    padding-right: 40px;
+  }
+  @media (max-width: 1500px) {
+    padding-left: 85px;
+    padding-right: 40px;
+  }
+  @media (max-width: 1400px) {
+    padding-left: 30px;
+    padding-right: 40px;
+  }
   @media (max-width: 1300px) {
     padding-left: 35px;
     padding-right: 40px;
     padding-bottom: 45px;
   }
   @media (max-width: 850px) {
-    padding-left: 35px;
-    padding-right: 15px;
+    padding-left: 30px;
+    padding-right: 5px;
+  }
+  @media (max-width: 660px) {
+    padding-left: 15px;
+    padding-right: 5px;
+  }
+  @media (max-width: 575px) {
+    padding-left: 40px;
+    padding-right: 5px;
   }
 
   @media (max-width: 480px) {
     overflow-y: hidden;
-    padding-left: 15px;
-    padding-right: 10px;
+    padding-left: 30px;
+    padding-right: 5px;
     padding-bottom: 30px;
     padding-top: 16px;
   }
@@ -87,7 +107,7 @@
   // }
   @media screen and (min-width: 1450px) {
     padding-right: 15px !important;
-    padding-left: 150px !important;
+    padding-left: 100px !important;
     margin: auto !important; 
   }
 }
@@ -119,7 +139,8 @@
       width: 245px !important;
       margin-bottom: 15px !important;
     }
-    @media screen and (min-width: 1550px) {
+    @media screen and (min-width: 1850px) {
+      padding-left: 160px !important;
       .gameCard {
         width: 295px !important;
       }
