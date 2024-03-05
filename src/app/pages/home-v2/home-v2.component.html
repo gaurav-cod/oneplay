@@ -17,17 +17,17 @@
                         <img
                           #bannerImg
                           class="card-img borderRadius10 height90vh left-img"
-                          [src]="selectedBannerGame.bgImage"
+                          [src]="selectedBannerGame.poster_16_9"
                           alt="img"
                         />
                         <image-loading
                           [image]="bannerImg"
-                          [hash]="selectedBannerGame.bgHash"
+                          [hash]="selectedBannerGame.poster_16_9_blurhash"
                         />
                       </ng-container>
                       <ng-container *ngIf="playVideo">
                         <video width="100%" height="100%" autoplay (ended)="videoEnded()">
-                          <source [src]="selectedBannerGame.video" type="video/mp4">
+                          <source [src]="selectedBannerGame.trailer_video" type="video/mp4">
                           Your browser does not support the video tag.
                         </video>
                       </ng-container>
@@ -70,7 +70,7 @@
             <div class="card borderRadius10 position-relative zoom-tran" (click)="cardSelected(game)">
               <img
                 class="card-carousel-img borderRadius10" [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}"
-                [src]="game.bgImage"
+                [src]="game.poster_16_9"
                 alt="img"
               />
             </div>
@@ -100,7 +100,7 @@
       ></app-similar-games>
     </div> -->
     <!-- <ng-container *ngIf="!genreSelected"> -->
-      <app-similar-games
+      <!-- <app-similar-games
         *ngFor="let row of restRows"
         [title]="row.title"
         [games]="row.games"
@@ -113,7 +113,7 @@
             [games]="restRows[0].games"
           ></app-similar-games>
         </div>
-      </div>
+      </div> -->
 
     <!-- </ng-container> -->
     <!-- <app-similar-streams

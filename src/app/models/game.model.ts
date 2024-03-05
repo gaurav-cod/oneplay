@@ -14,11 +14,12 @@ export enum status {
   UPDATING = "updating",
 }
 export class GameModel {
+
   readonly id: number;
   readonly oneplayId: string;
   readonly title: string;
-  readonly description: string;
-  readonly playTime: number;
+  readonly description: string; // NA
+  readonly playTime: number; // NA
   readonly releaseDate: Date;
   readonly posterImg: string;
   readonly bgImage: string;
@@ -66,6 +67,22 @@ export class GameModel {
   readonly installPlayDetailImgMob: string;
   readonly installPlayDetailImgTab: string;
 
+
+  readonly poster_1_1: string;
+  readonly poster_1_1_blurhash: string;
+  readonly poster_3_4: string;
+  readonly poster_3_4_blurhash: string;
+  readonly poster_16_9: string;
+  readonly poster_16_9_blurhash: string;
+  readonly poster_hero_banner_1_1: string;
+  readonly poster_hero_banner_1_1_blurhash: string;
+  readonly poster_hero_banner_16_9: string;
+  readonly poster_hero_banner_16_9_blurhash: string;
+  readonly video_hero_banner_1_1: string;
+  readonly video_hero_banner_16_9: string;
+
+
+
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
     this.oneplayId = json["oplay_id"];
@@ -101,6 +118,9 @@ export class GameModel {
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
+
+    this.poster_16_9 = json["poster_16_9"];
+    this.poster_16_9_blurhash = json["poster_16_9_blurhash"];
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];

@@ -55,10 +55,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
         this._feedSubscription = this.restService.getHomeFeed().subscribe({
           next: (response) => {
             const feeds = response.filter((feed)=> feed.games.length > 0);
-            this.heroBannerRow = feeds.filter((feed)=> feed.type === "header").at(0);
+            this.heroBannerRow = feeds.filter((feed)=> feed.type === "hero_banner").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            this.restRows = feeds.filter((f) => f.type === "rail");
+            // this.restRows = feeds.filter((f) => f.type === "rail");
             
             setTimeout(()=> {
               this.playVideo = true;

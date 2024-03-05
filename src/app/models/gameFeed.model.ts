@@ -3,7 +3,7 @@ import { GameModel } from "./game.model";
 export class GameFeedModel {
   readonly title: string;
   readonly games: GameModel[];
-  readonly type: 'header' | 'rail';
+  readonly type: 'hero_banner' | 'portrait_card' | 'portrait_category';
 
   constructor(json: { [key: string]: any }) {
     this.title = json.title;

@@ -4,7 +4,7 @@ import { ServerErrorComponent } from "src/app/pages/server-error/server-error.co
 import { InstallComponent } from "src/app/pages/install/install.component";
 import { InstallGuard } from "src/app/guards/install.guard";
 import { SpeedTestComponent } from "src/app/pages/speed-test/speed-test.component";
-import { HomeComponent } from "src/app/pages/home/home.component";
+// import { HomeComponent } from "src/app/pages/home/home.component";
 import { StoreComponent } from "src/app/pages/store/store.component";
 import { ViewComponent } from "src/app/pages/view/view.component";
 import { ViewGuard } from "src/app/guards/view.guard";
