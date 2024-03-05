@@ -309,10 +309,11 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"(click)="toggleWarningMessage($event)">
+        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             [ngbTooltip]="warningMessage"
             triggers="click"
             placement="bottom-right"
@@ -320,6 +321,7 @@
           <img
             class="warning-message-mob hideInLarge"
             src="assets/img/error/warning-message-symbol.svg"
+            [ngClass]="{'blink-animation': !isWarningMessageView, 'full-opcaity': isWarningMessageView}"
             [ngbTooltip]="warningMessage"
             triggers="click"
             placement="right"
@@ -1222,8 +1224,8 @@
         Scouting for the Next Open Rig
       </h2>
       <p class="mb-0">
-        <!-- <img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" /> -->
-        <app-lottie-animation></app-lottie-animation>
+        <img src="assets/img/waitQueae.svg" class="img-fluid py-4" alt="" />
+        <!-- <app-lottie-animation></app-lottie-animation> -->
       </p>
       <span class="font38 font700 text-white borderBottomTab"
         ><span class="blink">{{ queueSequence }}</span></span

@@ -10,12 +10,13 @@
             </div>
         </div>
         <div class="col-md-12 mt-5">
-            <label class="font18 font500 customOffWhite mb-0">Phone</label>
+            <label class="font18 font500 customOffWhite mb-0">Mobile</label>
                 <div class="input-group border-bottomInput borderRadius0" [ngClass]="{errorBorderColor: phoneErrored}">
                   <div class="input-group-append borderRadius0">
                     <select
                       class="form-control pl-1 pr-4 mutedColor borderRadius0 bgTransparent inputFocus font18 font500 border-0 selectBg"
                       formControlName="country_code"
+                      [style.width]="getCountryCodeWidth"
                     >
                       <option *ngFor="let code of countryCodes" [value]="code">
                         {{ code }}
@@ -28,6 +29,7 @@
                     formControlName="phone"
                     class="form-control p-0 mutedColor bgTransparent inputFocus font18 font500 border-0"
                     placeholder="Enter your Mobile Number"
+                    (keydown)="onKeyPressCheckMobile($event)"
                   />
                 </div>
                 <span

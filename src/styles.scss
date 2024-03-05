@@ -133,6 +133,10 @@ html, body {
 .tooltip-container {
   a {
     text-decoration: underline !important;
+    color: #fff;
+  }
+  a:hover {
+    color: #fff;
   }
 }
 
@@ -186,6 +190,10 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: none !important;
   background-color: #151515 !important;
+}
+
+a {
+  -webkit-user-drag: none;
 }
 
 .textMuted {
@@ -711,6 +719,10 @@ input[type="checkbox"] {
   &:focus-visible {
     opacity: 1 !important;
   }
+}
+
+a[type="button"] {
+  -webkit-appearance: none !important;
 }
 
 .btn-github {

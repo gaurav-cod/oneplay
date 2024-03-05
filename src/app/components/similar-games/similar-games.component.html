@@ -13,8 +13,8 @@
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
-        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied, 'gamezop-list': false, 'specialBannerGame': isSpecialBanner}" (scroll)="updateArrows()">
-          <div *ngFor="let game of _games" class="col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'w370': false}">
+        <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'scrollGameGamezopWidth': isGamezopList && isFilterApplied, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
+          <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
             <ng-container *ngIf="!isGamezopList">
               <app-portrait-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-portrait-game-card>
               <!-- <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-game-card-v2> -->

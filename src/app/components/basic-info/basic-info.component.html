@@ -97,6 +97,7 @@
               (dateSelect)="d.toggle()"
               [minDate]="minDate"
               [maxDate]="maxDate"
+              (keydown)="onKeyPressCheckDOB($event)"
               style="border-radius: 5px;"
             />
             <span (click)="d.toggle()" class="bgTransparent fixedIcon offWhiteColor font16 font500">

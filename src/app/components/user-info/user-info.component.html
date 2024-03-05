@@ -19,7 +19,7 @@
           <div class="input-group dateDropdown">
             <input class="form-control height52 font18 font500 text-white border-0 borderRadius10 lightBg border-bottom"
               formControlName="dob" placeholder="DD\MM\YYYY" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()"
-              (dateSelect)="d.toggle()" [minDate]="minDate" [maxDate]="maxDate" style="border-radius: 5px;"
+              (dateSelect)="d.toggle()" [minDate]="minDate" [maxDate]="maxDate" style="border-radius: 5px;" (keydown)="onKeyPressCheckDOB($event)"
               [ngClass]="{'errorBorderColor': errorMessage}" />
           </div>
           <span *ngIf="errorMessage" class="font16 font500 redErrorGradientColor mt-2">{{errorMessage}}</span>

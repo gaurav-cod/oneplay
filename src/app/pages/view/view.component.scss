@@ -863,35 +863,35 @@ live {
 }
 
 .blink-animation {
-  animation: blinkingAnimation 2s linear infinite; 
+  animation: blinkingAnimation 1.5s linear infinite; 
 }
-// .full-opcaity {
-//   transform: scale(1) !important;
-//   animation-play-state: paused !important;
-// }
-@keyframes blinkingAnimation { 
-  0% { 
-      opacity: 0; 
-  } 
-
-  50% { 
-      opacity: 1; 
-  } 
-
-  100% { 
-      opacity: 0; 
-  } 
-}
-
 .full-opcaity {
-  opacity: 1 !important;
+  transform: scale(1) !important;
+  animation-play-state: paused !important;
 }
 // @keyframes blinkingAnimation { 
-//   0% { transform: scale(1); }
-//   35% { transform: scale(0); }
-//   80% { transform: scale(1); }
-//   100% { transform: scale(1); }
+//   0% { 
+//       opacity: 0; 
+//   } 
+
+//   50% { 
+//       opacity: 1; 
+//   } 
+
+//   100% { 
+//       opacity: 0; 
+//   } 
 // }
+
+// .full-opcaity {
+//   opacity: 1 !important;
+// }
+@keyframes blinkingAnimation { 
+  0% { transform: scale(1); }
+  35% { transform: scale(0); }
+  70% { transform: scale(1); }
+  100% { transform: scale(1); }
+}
 .height65 {
   height: 65px !important;
 }

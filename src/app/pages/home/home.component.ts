@@ -118,7 +118,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    this.title.setTitle("Home");
+    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
     this.loaderService.start();
 
     this.countlyService.startEvent("homeView", {

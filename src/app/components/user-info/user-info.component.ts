@@ -36,6 +36,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   showSuccessMessage: boolean = false;
   atleastOneFieldUpdated: boolean = false;
 
+  private isPasswordAvailable: boolean = false;
+
   private userSub: Subscription;
   private confirmPassSub: Subscription;
 
@@ -60,6 +62,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       if (response.username) {
         controls["username"].setValue(response.username);
       }
+      this.isPasswordAvailable = response?.hasPassword;
     });
 
     this.confirmPassSub = this.userInfo.controls["confirmPassword"].valueChanges
@@ -207,7 +210,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         this.countlyEvent(this.countlyKey(this.screenType), "success");
         this.goToNext();
 
-        if (this.screenType == "USERNAME") {
+        if (this.screenType == "USERNAME" && !this.isPasswordAvailable) {
           this.updatePassword();
         }
 
@@ -223,6 +226,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
         this.errorMessage = error.message;
       }
     );
+  }
+
+  onKeyPressCheckDOB(event: KeyboardEvent) {
+    event.preventDefault();
   }
 
   updatePassword() {
@@ -262,6 +269,8 @@ export class UserInfoComponent implements OnInit, OnDestroy {
       }
     } else {
       this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
+      if (this.isPasswordAvailable && this.screenType == "PASSWORD")
+        this.screenType = this.getNextPage()[this.screenType] as SCREEN_TYPE;
     }
   }
   close(removeRemindLater: boolean = false) {

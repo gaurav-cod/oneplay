@@ -49,7 +49,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/home']"
             class="nav-link p-0 mt-2 pt-1 mr-4 text-white"
             (click)="headerNavOnClick('homeClicked')"
@@ -59,7 +59,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/store']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="headerNavOnClick('gamesClicked')"
@@ -69,7 +69,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/streams']"
             class="nav-link p-0 mt-2 pt-1 mr-3 text-white"
             (click)="headerNavOnClick('streamsClicked')"
@@ -86,7 +86,7 @@
           /> -->
           <a 
               href="javascript:void(0)"
-              routerLinkActive="active"
+              routerLinkActive="text-white"
               [routerLink]="['/casual-games']"
               class="nav-link p-0 mt-2 pt-1 mr-3 text-white"
               (click)="headerNavOnClick('level1Clicked')"
@@ -97,7 +97,7 @@
           <form
             class="navbar-search position-relative w-100 h-100"
           >
-            <div class="search-box" (mouseenter)="showSearchBar = true" (mouseleave)="showSearchBar = false">
+            <div class="search-box" (mouseenter)="showSearchBar = true" (mouseleave)="onMouseOver()">
               <input
                 #search
                 class="search-txt"
@@ -119,9 +119,10 @@
 
 
               <div
+                (mouseenter)="showSearchBar = true"
                 *ngIf="!isMenuCollapsed"
                 class="position-absolute w-100 bg-dark list-group border-0 searchDropdown d-none"
-                style="top: calc(100% + 8px); max-height: calc(99vh - 79px)"
+                style="top: calc(100% + 1px); max-height: calc(99vh - 79px)"
             >
               <div
                 *ngFor="let game of results"
@@ -539,6 +540,7 @@
                 </a>  -->
 
                 <a
+                *ngIf="!isClientSide"
                   (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
@@ -551,6 +553,7 @@
 
                 <div class="dropdown-divider borderColor"></div>
                 <a
+                *ngIf="!isClientSide"
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
                   (click)="logDropdownEvent('downloadsClicked')"
@@ -567,6 +570,34 @@
                 >
                   <i class="ni ni-settings font14 align-middle"></i>
                   <span class="align-middle">Settings</span>
+                </a>
+                <div class="dropdown-divider borderColor" *ngIf="isClientSide"></div>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('SAVE_LOGS')"
+                >
+                  <i class="fa fa-history font16 align-middle"></i>
+                  <span class="align-middle">Save Logs</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('RUN_DIAGNOSTICS')"
+                >
+                  <i class="ni ni-ambulance font16 align-middle"></i>
+                  <span class="align-middle">Run Diagnostics</span>
+                </a>
+                <a
+                  *ngIf="isClientSide"
+                  href="javascript:void(0)"
+                  class="dropdown-item"
+                  (click)="clientFun('GAMEPAD_CALIBRATION')"
+                >
+                  <i class="ni ni-controller align-middle font16"></i>
+                  <span class="align-middle">GamePad Calibration</span>
                 </a>
               </div>
             </div>
@@ -593,6 +624,7 @@
                 </a>
 
                 <a
+                *ngIf="!isClientSide"
                   (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
