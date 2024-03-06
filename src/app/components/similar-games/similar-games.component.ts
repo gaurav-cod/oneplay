@@ -1,17 +1,19 @@
-import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GameModel } from "src/app/models/game.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { CountlyService } from "src/app/services/countly.service";
+import { RestService } from "src/app/services/rest.service";
 
 @Component({
   selector: "app-similar-games",
   templateUrl: "./similar-games.component.html",
   styleUrls: ["./similar-games.component.scss"],
 })
-export class SimilarGamesComponent implements OnInit, AfterViewInit {
+export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
   @Input() games: GameModel[] | GamezopModel[];
+  @Input() railCategoryList: string[];
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
   @Input() isSpecialBanner: boolean = false;
@@ -23,16 +25,26 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit {
   showRightArrow = false;
   showLeftArrow = false;
 
+  private arrowTimeout: NodeJS.Timer;
+
   public isFilterApplied: boolean = false;
+  public selectedFilter: string = "All";
 
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly countlyService: CountlyService
+    private readonly countlyService: CountlyService,
+    private readonly restService: RestService
   ) { }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.arrowTimeout);
+  }
+
   ngAfterViewInit(): void {
-    setTimeout(() => this.updateArrows(), 100)
+    this.arrowTimeout = setTimeout(() => this.updateArrows(), 100);
+    if (this.railCategoryList?.length > 0)
+      this.railCategoryList.splice(0, 0, "All")
   }
   ngOnInit(): void {
     this.isFilterApplied  = this.activatedRoute.snapshot.params['filter'] != null;
@@ -85,5 +97,18 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit {
     const el = this.containerRef?.nativeElement;
     this.showRightArrow = el.scrollWidth - el.scrollLeft - el.clientWidth >= 1;
     this.showLeftArrow = el.scrollLeft > 0;
+  }
+
+  selectFilter(filter: string) {
+    this.selectedFilter = filter;
+    this.restService.getFilteredGames({genres: filter}, 0).subscribe((games) => {
+              // this.updateHomeView('filterClicked', query);
+              // this.genreGames = games;
+    });
+    // this.router.navigate([], {
+    //   relativeTo: this.activatedRoute,
+    //   queryParams: { type: filter },
+    //   queryParamsHandling: 'merge',
+    // });
   }
 }

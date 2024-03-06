@@ -286,15 +286,16 @@
   display: flex;
   border-radius: 30px;
   background-color: #212123;
-  padding: 7px;
+  padding: 10px;
   min-width: 400px;
   margin-left: 20px;
   .filter {
-    padding: 8px;
+    padding: 10px 15px;
     font-weight: 600;
     color: #A8A8A8;
     margin-right: 12px;
     cursor: pointer;
+    min-width: 60px;
   }
   .linearGradient {
     color: white;

@@ -1,12 +1,13 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
   <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
     <p class="position-relative railHeading paddingLeft mr-4">{{ title }}</p>
-    <div class="filterContainerList" *ngIf="!isSpecialBanner">
-      <ng-container>
-        <div class="filter linearGradient">All</div>
-        <div class="filter">Action</div>
-      </ng-container>
-    </div>
+    <ng-container *ngIf="railCategoryList?.length > 0">
+      <div class="filterContainerList" *ngIf="!isSpecialBanner">
+          <ng-container *ngFor="let filter of railCategoryList">
+            <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
+          </ng-container>
+      </div>
+    </ng-container>
   </div>
 </div>
 <div class="position-relative scrollListing">

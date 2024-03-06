@@ -89,12 +89,12 @@
 </section>
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
-    
     <!-- <ng-container *ngIf="!genreSelected"> -->
       <app-similar-games
         *ngFor="let row of portraitCardRows"
         [title]="row.title"
         [games]="row.games"
+        [railCategoryList]="row.categories"
       ></app-similar-games>
       <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
         <div class="py-4">

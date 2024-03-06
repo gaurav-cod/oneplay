@@ -67,7 +67,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.heroBannerRow = feeds.filter((feed)=> feed.type === "hero_banner").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            this.portraitCardRows = feeds.filter((f) => f.type === "portrait_card");
+            this.portraitCardRows = feeds.filter((f) => f.type === "portrait_card" || "portrait_category");
 
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.selectedBannerGame.trailer_video) {

@@ -119,7 +119,7 @@ export class GameModel {
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
-    this.isInstallAndPlay = json["is_install_and_play"] === "true";
+    this.isInstallAndPlay = json["is_install_and_play"] === "true" || true;
 
     this.poster_1_1 = json["poster_1_1"];
     this.poster_1_1_blurhash = json["poster_1_1_blurhash"];
