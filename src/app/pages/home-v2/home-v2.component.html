@@ -1,4 +1,4 @@
-<section>
+<section class="position-relative">
     <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow">
         <ngb-carousel
             id="home-header"
@@ -17,12 +17,12 @@
                         <img
                           #bannerImg
                           class="card-img borderRadius10 height90vh left-img"
-                          [src]="selectedBannerGame.poster_16_9"
+                          [src]="getBannerImage"
                           alt="img"
                         />
                         <image-loading
                           [image]="bannerImg"
-                          [hash]="selectedBannerGame.poster_16_9_blurhash"
+                          [hash]="getBannerImageBlurHash"
                         />
                       </ng-container>
                       <ng-container *ngIf="playVideo">
@@ -64,25 +64,30 @@
         </ngb-carousel>
         <div class="games-carousel d-flex align-items-center">
           <div class="leftArrow cursorPointer" (click)="moveSelectedCard('LEFT')">
-            <img src="assets/img/Vector.svg " alt="">
+            <img src="assets/img/arrow-gray-left.svg" alt="">
           </div>
-          <ng-container ngbSlide *ngFor="let game of heroBannerRow.games; let i = index">
+          <ng-container *ngFor="let game of heroBannerRow.games; let i = index">
             <div class="card borderRadius10 position-relative zoom-tran" (click)="cardSelected(game)">
               <img
                 class="card-carousel-img borderRadius10" [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}"
-                [src]="game.poster_16_9"
+                [src]="game.poster_3_4"
                 alt="img"
               />
             </div>
           </ng-container>
           <div class="rightArrow cursorPointer" (click)="moveSelectedCard('RIGHT')"> 
-            <img src="assets/img/Vector (1).svg " alt="">
+            <img src="assets/img/arrow-gray-right.svg" alt="">
           </div>
         </div>
+        <div class="dots-indicator">
+          <ng-container *ngFor="let game of heroBannerRow.games; let idx = index">
+            <div class="dot" [ngClass]="{'dot-active': game.oneplayId == selectedBannerGame.oneplayId}" [style]="'transform: scale('+getScaleByDistance(idx)+')'"></div>
+          </ng-container>
+        </div>
     </div>
+    <div class="transparentBlur"></div>
 </section>
-
-<div>
+<div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
     
     <!-- <ng-container *ngIf="!genreSelected"> -->

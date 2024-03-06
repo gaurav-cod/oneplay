@@ -17,6 +17,33 @@
 .card-img {
     object-fit: cover;
 }
+.dots-indicator {
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #151515;
+    max-width: 120px;
+    min-width: 80px;
+    gap: 5px;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    bottom: 15%;
+    @media screen and (max-width: 1200px) {
+        display: flex;
+    }
+    @media screen and (min-width: 1200px) {
+        display: none;
+    }
+    .dot {
+        border-radius: 50%;
+        height: 10px;
+        width: 10px;
+        background-color: #959595;
+    }
+    .dot-active {
+        background: linear-gradient(to right, #36FF78, #0CFFFF);
+    }
+}
 .text-logo {
     width: 60%;
     left: 5%;
@@ -38,7 +65,7 @@
     .card {
         background: transparent;
         img {
-            opacity: 0.8;
+            opacity: 0.5;
             filter: blur(1px);
         }
     }
@@ -69,4 +96,24 @@
 .zoom-tran:hover {
     transform: scale(1.08);
     cursor: pointer;
+}
+
+.homeListingContainer {
+    background-color: #020F1B;
+}
+.transparentBlur {
+    width: 100%;
+    height: 100px;
+    position: absolute;
+    bottom: 0px;
+    background: linear-gradient(180deg, transparent, #020f1b8e, #020F1B);
+}
+.leftArrow, .rightArrow {
+    background: white;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -121,6 +121,8 @@ export class GameModel {
     this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
 
+    this.poster_1_1 = json["poster_1_1"];
+    this.poster_1_1_blurhash = json["poster_1_1_blurhash"];
     this.poster_16_9 = json["poster_16_9"];
     this.poster_16_9_blurhash = json["poster_16_9_blurhash"];
     this.poster_3_4 = json["poster_3_4"];

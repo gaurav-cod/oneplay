@@ -29,6 +29,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   private _paramSubscription: Subscription;
   private _userSubscription: Subscription;
 
+  private bannerShowTimer: NodeJS.Timer;
+  private playVideoTimer: NodeJS.Timer;
+
   private userDetails: UserModel | null = null;
 
   constructor(
@@ -42,6 +45,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   get domain() {
     return environment.domain;
+  }
+  get getBannerImage() {
+    return  window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9 : this.selectedBannerGame.poster_1_1;
+  }
+  get getBannerImageBlurHash() {
+    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9_blurhash : this.selectedBannerGame.poster_1_1_blurhash; 
   }
 
   ngOnInit(): void {
@@ -59,8 +68,18 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
             this.portraitCardRows = feeds.filter((f) => f.type === "portrait_card");
+
+            // if game does not contain video then by default banner will move to next game in 5sec
+            if (!this.selectedBannerGame.trailer_video) {
+              clearTimeout(this.bannerShowTimer);
+              this.bannerShowTimer = setTimeout(()=> {
+                this.moveSelectedCard("RIGHT");
+              }, 5000);
+            }
             
-            setTimeout(()=> {
+            // play initial video in 2sec
+            clearTimeout(this.playVideoTimer);
+            this.playVideoTimer = setTimeout(()=> {
               this.playVideo = true;
             }, 2000);
           }, error: (error)=> {
@@ -80,6 +99,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._feedSubscription?.unsubscribe();
     this._paramSubscription?.unsubscribe();
+    clearTimeout(this.bannerShowTimer);
+    clearTimeout(this.playVideoTimer);
     Swal.close();
   }
 
@@ -97,6 +118,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   moveSelectedCard(direction: "LEFT" | "RIGHT") {
+
+    clearTimeout(this.bannerShowTimer);
+
     let currSelectedGameIndex = -1;
     this.heroBannerRow.games.forEach((game, index)=> {
       if (game.oneplayId == this.selectedHeroBannerId)
@@ -104,6 +128,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
     })
     this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex+ (direction == "LEFT" ? -1 : 1) ) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
+
+     // if game does not contain video then by default banner will move to next game in 5sec
+     if (!this.selectedBannerGame.trailer_video) {
+      this.bannerShowTimer = setTimeout(()=> {
+        this.moveSelectedCard("RIGHT");
+      }, 5000);
+    }
   }
 
   cardSelected(game: GameModel) {
@@ -113,5 +144,16 @@ export class HomeV2Component implements OnInit, OnDestroy {
   videoEnded() {
     this.playVideo = false;
     this.onSlideChange();
+  }
+
+  getScaleByDistance(index: number) {
+    let selectedBannerIdx = 1;
+    for (let idx=0; idx < this.heroBannerRow.games.length; idx++)
+      if (this.selectedBannerGame.oneplayId == this.heroBannerRow.games[idx].oneplayId) {
+        selectedBannerIdx = idx;
+        break;
+      }
+
+    return 1 -(Math.abs(selectedBannerIdx - index) / 10);
   }
 }
