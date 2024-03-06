@@ -52,6 +52,10 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     private readonly ngbModal: NgbModal,
   ) {}
 
+  get isHomePage() {
+    return this.router.url.includes("home");
+  }
+
   @HostListener('click', ['$event'])
   handleClick(event: Event) {
     if (localStorage.getItem("showUserInfoModal")) {

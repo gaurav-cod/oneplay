@@ -18,8 +18,8 @@
           <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
             <ng-container *ngIf="!isGamezopList">
               <app-portrait-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-portrait-game-card>
-              <app-install-play-game [game]="game" [hasFixedWidth]="true"
-                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
+              <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true"
+                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game-v2>
             </ng-container>
             <ng-container *ngIf="isGamezopList">
               <app-gamezop-game-card [game]="game" (gameClick)="gameClicked($event)"></app-gamezop-game-card>
