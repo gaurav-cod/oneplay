@@ -63,7 +63,7 @@
                           <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
                         </ng-container>
                     </div>
-                    <div *ngIf="playVideo" class="audioContainer">
+                    <div *ngIf="playVideo" class="audioContainer position-absolute">
                       <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
                       <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
                     </div>

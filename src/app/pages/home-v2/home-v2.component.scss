@@ -17,11 +17,19 @@
 .card-img {
     object-fit: cover;
 }
+.carousel-images {
+    height: 100%;
+}
 .audioContainer {
     margin-left: auto;
+    bottom: 0px;
+    right: 0px;
     @media screen and (min-width: 475px) {
         display: none;
     }
+}
+video {
+    object-fit: cover;
 }
 .dots-indicator {
     padding: 5px;
