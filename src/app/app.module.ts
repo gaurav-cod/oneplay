@@ -18,7 +18,6 @@ import { CommonLayoutComponent } from "./layouts/common-layout/common-layout.com
 import { TvAuthLayoutComponent } from "./layouts/tv-auth-layout/tv-auth-layout.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { UserAgentUtil } from "./utils/uagent.util";
-import { HomeV2Component } from './pages/home-v2/home-v2.component';
 
 @NgModule({
   imports: [

@@ -22,6 +22,7 @@ import { InfiniteScrollModule } from "ngx-infinite-scroll";
 import { Gamezop } from "src/app/pages/home/gamezop.component";
 import { SearchComponent } from "src/app/pages/search/search.component";
 import { HomeV2Component } from "src/app/pages/home-v2/home-v2.component";
+import { ParallexSecComponent } from "src/app/parallex-sec/parallex-sec.component";
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { HomeV2Component } from "src/app/pages/home-v2/home-v2.component";
     StoreComponent,
     ViewComponent,
     SearchComponent,
+    ParallexSecComponent
   ],
   providers: [InstallGuard, ViewGuard],
 })

@@ -1,0 +1,32 @@
+.parallexContainer {
+    height: 75vh;
+    width: 100%;
+    position: relative;
+    .logo {
+        position: absolute;
+        top: 25%;
+        left: 45%;
+        img {
+            height: 140px;
+        }
+    }
+    .characterContainer {
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .parallexBackground {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-image: url('./../../assets/img/Dashboard/parallex_background.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        filter: blur(3px);
+        -webkit-filter: blur(3px);
+        height: 100%;
+        width: 100%;
+    }
+}
