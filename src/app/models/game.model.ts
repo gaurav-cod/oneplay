@@ -83,7 +83,6 @@ export class GameModel {
   readonly isPremium: boolean;
   readonly playing: number;
   readonly streaming: number;
-  readonly contentId: string;
 
 
   constructor(json: { [key: string]: any }) {
@@ -131,7 +130,6 @@ export class GameModel {
     this.isPremium = json["subscription_type"] == "premium";
     this.playing = json["playing"];
     this.streaming = json["streaming"];
-    this.contentId = json["payload"]?.["content_ids"];
     this.video_hero_banner_16_9 = json["video_hero_banner_16_9"];
     this.video_hero_banner_1_1 = json["video_hero_banner_1_1"];
 

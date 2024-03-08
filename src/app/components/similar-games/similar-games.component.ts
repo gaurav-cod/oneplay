@@ -26,10 +26,12 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   showRightArrow = false;
   showLeftArrow = false;
 
-  private arrowTimeout: NodeJS.Timer;
+  private _arrowTimeout: NodeJS.Timer;
+  private _loaderTimeout: NodeJS.Timer;
 
   public isFilterApplied: boolean = false;
   public selectedFilter: string = "All";
+  public isLoading: boolean = false;
 
   constructor(
     private readonly router: Router,
@@ -39,11 +41,12 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnDestroy(): void {
-    clearTimeout(this.arrowTimeout);
+    clearTimeout(this._arrowTimeout);
+    clearTimeout(this._loaderTimeout);
   }
 
   ngAfterViewInit(): void {
-    this.arrowTimeout = setTimeout(() => this.updateArrows(), 100);
+    this._arrowTimeout = setTimeout(() => this.updateArrows(), 100);
     if (this.railCategoryList?.length > 0)
       this.railCategoryList.splice(0, 0, "All")
   }
@@ -101,9 +104,17 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   selectFilter(filter: string) {
+
+    if (filter == this.selectedFilter)
+      return;
+
     this.selectedFilter = filter;
-    this.restService.getFilteredGamesV2({genres: filter}, this.contentId,0).subscribe((games) => {
+    this.isLoading = true;
+    this.restService.getFilteredGamesV2({genres: filter == "All" ? null : filter}, this.contentId,0).subscribe((games) => {
       this.games = games;
+      this._loaderTimeout = setTimeout(()=> {
+        this.isLoading = false;
+      }, 500);
     });
   }
 }
