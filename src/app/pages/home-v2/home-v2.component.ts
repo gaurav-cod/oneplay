@@ -52,6 +52,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   get getBannerImageBlurHash() {
     return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9_blurhash : this.selectedBannerGame.poster_1_1_blurhash; 
   }
+  get getTrailerVideo() {
+    return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1; 
+  }
 
   ngOnInit(): void {
 
@@ -61,8 +64,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this._paramSubscription = this.activatedRoute.params.subscribe({
       next: (params)=> {
         this._feedSubscription?.unsubscribe();
+        
         this._feedSubscription = this.restService.getHomeFeed().subscribe({
           next: (response) => {
+            
             const feeds = response.filter((feed)=> feed.games.length > 0);
             this.heroBannerRow = feeds.filter((feed)=> feed.type === "hero_banner").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
@@ -84,7 +89,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             }, 2000);
           }, error: (error)=> {
             this.loaderService.stop();
-            if (error.timeout) {
+            if (error?.timeout) {
               this.router.navigateByUrl("/server-error");
             }
           }

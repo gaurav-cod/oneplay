@@ -27,7 +27,7 @@
                       </ng-container>
                       <ng-container *ngIf="playVideo">
                         <video width="100%" height="100%" autoplay (ended)="videoEnded()">
-                          <source [src]="selectedBannerGame.trailer_video" type="video/mp4">
+                          <source [src]="getTrailerVideo" type="video/mp4">
                           Your browser does not support the video tag.
                         </video>
                       </ng-container>
@@ -94,6 +94,7 @@
         *ngFor="let row of portraitCardRows"
         [title]="row.title"
         [games]="row.games"
+        [contentId]="row.contentId"
         [railCategoryList]="row.categories"
       ></app-similar-games>
       <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">

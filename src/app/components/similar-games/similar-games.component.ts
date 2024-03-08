@@ -12,6 +12,7 @@ import { RestService } from "src/app/services/rest.service";
 })
 export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
+  @Input() contentId: string;
   @Input() games: GameModel[] | GamezopModel[];
   @Input() railCategoryList: string[];
   @Input() isInstallAndPlayList: boolean = false;
@@ -101,14 +102,8 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectFilter(filter: string) {
     this.selectedFilter = filter;
-    this.restService.getFilteredGames({genres: filter}, 0).subscribe((games) => {
-              // this.updateHomeView('filterClicked', query);
-              // this.genreGames = games;
+    this.restService.getFilteredGamesV2({genres: filter}, this.contentId,0).subscribe((games) => {
+      this.games = games;
     });
-    // this.router.navigate([], {
-    //   relativeTo: this.activatedRoute,
-    //   queryParams: { type: filter },
-    //   queryParamsHandling: 'merge',
-    // });
   }
 }

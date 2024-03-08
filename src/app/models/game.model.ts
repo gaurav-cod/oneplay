@@ -83,6 +83,7 @@ export class GameModel {
   readonly isPremium: boolean;
   readonly playing: number;
   readonly streaming: number;
+  readonly contentId: string;
 
 
   constructor(json: { [key: string]: any }) {
@@ -119,7 +120,7 @@ export class GameModel {
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
-    this.isInstallAndPlay = json["is_install_and_play"] === "true" || true;
+    this.isInstallAndPlay = json["is_install_and_play"] === "true";
 
     this.poster_1_1 = json["poster_1_1"];
     this.poster_1_1_blurhash = json["poster_1_1_blurhash"];
@@ -130,6 +131,9 @@ export class GameModel {
     this.isPremium = json["subscription_type"] == "premium";
     this.playing = json["playing"];
     this.streaming = json["streaming"];
+    this.contentId = json["payload"]?.["content_ids"];
+    this.video_hero_banner_16_9 = json["video_hero_banner_16_9"];
+    this.video_hero_banner_1_1 = json["video_hero_banner_1_1"];
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];
