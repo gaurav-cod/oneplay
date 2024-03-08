@@ -24,6 +24,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
   public playVideo: boolean = false;
+  public isVideoMute: boolean = false;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;

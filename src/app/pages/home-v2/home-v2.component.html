@@ -26,7 +26,7 @@
                         />
                       </ng-container>
                       <ng-container *ngIf="playVideo">
-                        <video width="100%" height="100%" autoplay (ended)="videoEnded()">
+                        <video width="100%" height="100%" autoplay (ended)="videoEnded()" [muted]="isVideoMute">
                           <source [src]="getTrailerVideo" type="video/mp4">
                           Your browser does not support the video tag.
                         </video>
@@ -57,7 +57,15 @@
                           class="img-fluid"
                           alt=""
                         />
-                      </button>
+                        </button>
+                        <ng-container *ngIf="playVideo">
+                          <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
+                          <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+                        </ng-container>
+                    </div>
+                    <div *ngIf="playVideo" class="audioContainer">
+                      <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
+                      <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
                     </div>
                 </div>
             </ng-template>
