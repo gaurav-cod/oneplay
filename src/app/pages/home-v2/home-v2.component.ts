@@ -21,6 +21,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
   public portraitCardRows: GameFeedModel[] = [];
+  public gamezopCardRow: GameFeedModel[];
+
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
   public playVideo: boolean = false;
@@ -74,7 +76,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
             this.portraitCardRows = feeds.filter((f) => f.type === "portrait_card" || "portrait_category");
-
+            this.gamezopCardRow = feeds.filter((f)=> f.type === "square_category_small");
+            
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.selectedBannerGame.trailer_video) {
               clearTimeout(this.bannerShowTimer);

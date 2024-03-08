@@ -47,6 +47,7 @@ import { AppSimilarStreamsComponent } from './app-similar-streams/app-similar-st
 import { CasualgameHomeCardComponent } from './casualgame-home-card/casualgame-home-card.component';
 import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-card.component';
 import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
+import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -107,6 +108,7 @@ export function playerFactory() {
     CasualgameHomeCardComponent,
     PortraitGameCardComponent,
     InstallPlayGameV2Component,
+    SquareSmallCardComponent,
   ],
   exports: [
     GameCardComponent,

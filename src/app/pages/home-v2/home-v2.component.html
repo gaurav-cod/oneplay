@@ -108,6 +108,13 @@
         [contentId]="row.contentId"
         [railCategoryList]="row.categories"
       ></app-similar-games>
+      <app-similar-games
+        [title]="gamezopCardRow[0].title"
+        [games]="gamezopCardRow[0].games"
+        [contentId]="gamezopCardRow[0].contentId"
+        [railCategoryList]="gamezopCardRow[0].categories"
+        [isGamezopList]="true"
+      ></app-similar-games>
       <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
         <div class="py-4">
           <app-similar-games

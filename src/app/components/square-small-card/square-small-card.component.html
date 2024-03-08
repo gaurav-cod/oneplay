@@ -1,0 +1,11 @@
+<section class="d-flex" style="gap: 20px;">
+    <img [src]="game.poster_1_1" alt="" height="150px" width="150px">
+    <div>
+        <span class="game-title">{{ game.title }}</span>
+        <div class="gameTagsContianer mt-2">
+            <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
+              <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
+            </ng-container>
+        </div>
+    </div>
+</section>

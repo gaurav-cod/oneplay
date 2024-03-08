@@ -119,8 +119,10 @@
   }
 }
 .scrollGameHeightAdjust {
+  display: flex;
+  flex-wrap: wrap;
   @media (min-width: 1200px) {
-    height: 275px !important;
+    height: 600px !important;
   }
   @media (max-width: 1200px) {
     height: 265px !important;
@@ -221,7 +223,8 @@
 }
 
 .w210 {
-  width: 210px !important;
+  width: 380px !important;
+  height: unset !important;
 }
 .w370 {
   width: 370px !important;

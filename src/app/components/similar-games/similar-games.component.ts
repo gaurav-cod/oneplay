@@ -46,8 +46,9 @@ export class SimilarGamesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+
     this._arrowTimeout = setTimeout(() => this.updateArrows(), 100);
-    if (this.railCategoryList?.length > 0)
+    if (this.railCategoryList?.length > 0 && !this.railCategoryList.includes("All"))
       this.railCategoryList.splice(0, 0, "All")
   }
   ngOnInit(): void {
