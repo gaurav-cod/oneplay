@@ -101,7 +101,7 @@
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
     <!-- <ng-container *ngIf="!genreSelected"> -->
-      <app-similar-games
+      <!-- <app-similar-games
         *ngFor="let row of portraitCardRows"
         [title]="row.title"
         [games]="row.games"
@@ -109,11 +109,19 @@
         [railCategoryList]="row.categories"
       ></app-similar-games>
       <app-similar-games
+        *ngIf="gamezopCardRow?.length > 0"
         [title]="gamezopCardRow[0].title"
         [games]="gamezopCardRow[0].games"
         [contentId]="gamezopCardRow[0].contentId"
         [railCategoryList]="gamezopCardRow[0].categories"
         [isGamezopList]="true"
+      ></app-similar-games> -->
+      <app-similar-games
+        *ngIf="landscapeVideoCardRow?.length > 0"
+        [title]="landscapeVideoCardRow[0].title"
+        [games]="landscapeVideoCardRow[0].games"
+        [contentId]="landscapeVideoCardRow[0].contentId"
+        [railCategoryList]="landscapeVideoCardRow[0].categories"
       ></app-similar-games>
       <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
         <div class="py-4">

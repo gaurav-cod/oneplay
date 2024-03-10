@@ -48,6 +48,7 @@ import { CasualgameHomeCardComponent } from './casualgame-home-card/casualgame-h
 import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-card.component';
 import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
 import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
+import { LanscapeVideoComponent } from './lanscape-video/lanscape-video.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -109,6 +110,7 @@ export function playerFactory() {
     PortraitGameCardComponent,
     InstallPlayGameV2Component,
     SquareSmallCardComponent,
+    LanscapeVideoComponent,
   ],
   exports: [
     GameCardComponent,
@@ -142,7 +144,8 @@ export function playerFactory() {
     LottieAnimationComponent,
     AppSimilarStreamsComponent,
     PortraitGameCardComponent,
-    InstallPlayGameV2Component
+    InstallPlayGameV2Component,
+    LanscapeVideoComponent
   ],
 })
 export class ComponentsModule {}

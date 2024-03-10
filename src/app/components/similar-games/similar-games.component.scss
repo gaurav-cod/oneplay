@@ -226,6 +226,13 @@
   width: 380px !important;
   height: unset !important;
 }
+.streamCard {
+  width: 380px !important;
+  height: unset !important;
+  @media screen and (max-width: 600px) {
+    width: 260px !important;
+  }
+}
 .w370 {
   width: 370px !important;
   margin-right: 40px;
