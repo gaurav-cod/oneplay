@@ -49,6 +49,8 @@ import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-ca
 import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
 import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
 import { LanscapeVideoComponent } from './lanscape-video/lanscape-video.component';
+import { ParallexSecComponent } from "../parallex-sec/parallex-sec.component";
+import { SpecialBannerCardComponent } from './special-banner-card/special-banner-card.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -111,6 +113,8 @@ export function playerFactory() {
     InstallPlayGameV2Component,
     SquareSmallCardComponent,
     LanscapeVideoComponent,
+    ParallexSecComponent,
+    SpecialBannerCardComponent
   ],
   exports: [
     GameCardComponent,
@@ -145,7 +149,8 @@ export function playerFactory() {
     AppSimilarStreamsComponent,
     PortraitGameCardComponent,
     InstallPlayGameV2Component,
-    LanscapeVideoComponent
+    LanscapeVideoComponent,
+    ParallexSecComponent
   ],
 })
 export class ComponentsModule {}
