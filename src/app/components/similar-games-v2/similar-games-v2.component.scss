@@ -305,7 +305,7 @@
       display: none;
     }
     .filter {
-      padding: 10px 12px;
+      padding: 10px 20px;
       font-weight: 600;
       color: #A8A8A8;
       margin-right: 12px;
@@ -387,5 +387,11 @@
   .scrollGameWidthCategoryLarge {
     .gameCard {
       width: 330px !important;
+    }
+
+    @media screen and (max-width: 475px) {
+      .gameCard {
+        width: 250px !important;
+      };
     }
   }

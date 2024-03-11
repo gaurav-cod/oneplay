@@ -195,4 +195,8 @@
   .categoryLargeWidth {
     width: 300px !important;
     height: 300px !important;
+    @media screen and (max-width: 475px) {
+      height: 230px !important;
+      width: 230px !important;
+    }
   }

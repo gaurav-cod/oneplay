@@ -22,3 +22,11 @@ img {
     margin-top: 5px;
     font-weight: 500;
   }
+  .imageContainer {
+    height: 150px;
+    width: 150px;
+    @media screen and (max-width: 475px) {
+      height: 80px;
+      width: 80px;
+    }
+  }
