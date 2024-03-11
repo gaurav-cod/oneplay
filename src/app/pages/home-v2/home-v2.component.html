@@ -100,7 +100,7 @@
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
       <ng-container *ngFor="let row of railRowCards">
-        <ng-container *ngIf="row.type != 'special_banner'">
+        <!-- <ng-container *ngIf="row.type != 'special_banner'">
           <app-similar-games-v2
             [title]="row.title"
             [games]="row.games"
@@ -108,9 +108,12 @@
             [railCategoryList]="row.categories"
             [railType]="row.type"
           ></app-similar-games-v2>
-        </ng-container>
+        </ng-container> -->
         <ng-container *ngIf="row.type == 'special_banner'">
           <app-parallex-sec [gamesFeed]="row"></app-parallex-sec>
+        </ng-container>
+        <ng-container *ngIf="row.type == 'spotlight_banner'">
+          <app-spotlight-banner [gameFeed]="row"></app-spotlight-banner>
         </ng-container>
       </ng-container>
   </div>

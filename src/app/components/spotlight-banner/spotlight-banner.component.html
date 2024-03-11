@@ -1,0 +1,19 @@
+<div class="spotlightBannerContainer">
+
+    <div class="spotlightBanner" [style.backgroundImage]="'url('+ getBackgroundImage +')'"></div>
+    <div class="d-flex h-100 align-items-baseline">
+        <div class="mainSpecialBanner">
+            <span class="railHeading position-relative">{{ gameFeed.title }}</span>
+            <img [src]="specialBannerGame.poster_1_1" alt="" class="spotlightBannerImage">
+        </div>
+        <div class="specialBannerList scrollGame row">
+            <div>
+                <div *ngFor="let game of specialBannerRowGame" class="zoom col-auto gameCard pr-0 w290">
+                    <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)" [railType]="gameFeed.type"></app-game-card-v2>
+                    <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true"
+                        *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)" [railType]="gameFeed.type"></app-install-play-game-v2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

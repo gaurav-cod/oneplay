@@ -1,0 +1,102 @@
+.spotlightBannerContainer {
+    height: 75vh;
+    width: 100%;
+    position: relative;
+    margin-bottom: 20px;
+    .logo {
+        position: absolute;
+        top: 25%;
+        left: 45%;
+        img {
+            height: 140px;
+        }
+    }
+    .spotlightBanner {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        width: 100%;
+    }
+}
+.specialBannerList {
+    display: flex;
+    align-items: end;
+}
+
+.railHeading {
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 20px;
+    color: #dcdcdc;
+    letter-spacing: 0.02em;
+    font-family: "TsukiRegular";
+    margin-bottom: 0px;
+    z-index: 1;
+    @media (max-width: 1200px) {
+      font-size: 28px;
+      line-height: 26px;
+      width: 50%;
+      margin-right: 0px !important;
+    }
+  }
+
+.scrollGame {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -ms-overflow-style: none; /* IE 11 */
+    scrollbar-width: none; 
+    white-space: nowrap;
+    display: block;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+    scrollbar-color: transparent transparent; 
+    
+    @media (max-width: 1600px) {
+      padding-left: 140px;
+      padding-right: 40px;
+    }
+    @media (max-width: 1500px) {
+      padding-left: 85px;
+      padding-right: 40px;
+    }
+    @media (max-width: 1400px) {
+      padding-left: 30px;
+      padding-right: 40px;
+    }
+    @media (max-width: 1300px) {
+      padding-left: 35px;
+      padding-right: 40px;
+      padding-bottom: 45px;
+    }
+    @media (max-width: 850px) {
+      padding-left: 30px;
+      padding-right: 5px;
+    }
+    @media (max-width: 660px) {
+      padding-left: 15px;
+      padding-right: 5px;
+    }
+    @media (max-width: 575px) {
+      padding-left: 40px;
+      padding-right: 5px;
+    }
+  
+    @media (max-width: 480px) {
+      overflow-y: hidden;
+      padding-left: 30px;
+      padding-right: 5px;
+      padding-bottom: 30px;
+      padding-top: 16px;
+    }
+  }
+  .scrollGame .gameCard {
+    display: inline-block;
+  }
+  .spotlightBannerImage {
+    position: relative;
+    z-index: 100;
+  }

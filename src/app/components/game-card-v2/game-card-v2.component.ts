@@ -2,6 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
+import { RAIL_TYPES } from 'src/app/models/gameFeed.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { getGameLandingViewSource } from 'src/app/utils/countly.util';
@@ -23,6 +24,8 @@ export class GameCardV2Component implements AfterViewInit {
     | "STORE_INSTALL_PLAY"
     | "STORE_OTHER"
     | "LIBRARY" = "HOME";
+
+  @Input() railType: RAIL_TYPES;
 
   @Input() specialBannerGame: boolean = false;
 
