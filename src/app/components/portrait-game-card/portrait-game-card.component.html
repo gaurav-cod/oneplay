@@ -25,6 +25,7 @@
       <img
         #image
         class="card-img borderRadius10 loadingBg w290h185"
+        [ngClass]="{'categoryLargeWidth': railType == 'square_category_large'}"
         [src]="game.poster_3_4"
         loading="lazy"
         (error)="onImgError($event)"

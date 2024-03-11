@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
+import { RAIL_TYPES } from 'src/app/models/gameFeed.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { getGameLandingViewSource } from 'src/app/utils/countly.util';
@@ -17,6 +18,7 @@ import { v4 } from 'uuid';
 export class PortraitGameCardComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
+  @Input() railType: RAIL_TYPES;
 
   @Output("gameClick") gameClick = new EventEmitter();
 
@@ -44,6 +46,7 @@ export class PortraitGameCardComponent {
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
   ) {
+    debugger;
   }
 
   onGameClick() {

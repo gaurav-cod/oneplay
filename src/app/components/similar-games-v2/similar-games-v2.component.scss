@@ -374,7 +374,7 @@
   }
   
 
-  .scrollGameWidth {
+  .scrollGameWidthCategorySmall {
     display: flex;
     flex-wrap: wrap;
     gap: 10px !important;
@@ -382,5 +382,10 @@
     .gameCard {
       height: fit-content !important;
       width: 415px !important;
+    }
+  }
+  .scrollGameWidthCategoryLarge {
+    .gameCard {
+      width: 330px !important;
     }
   }

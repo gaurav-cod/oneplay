@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { GameModel } from '../models/game.model';
-import { GameFeedModel } from '../models/gameFeed.model';
+import { GameFeedModel } from 'src/app/models/gameFeed.model';
 
 @Component({
   selector: 'app-parallex-sec',
