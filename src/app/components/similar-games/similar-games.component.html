@@ -1,39 +1,23 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
-  <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
-    <p class="position-relative railHeading paddingLeft mr-4">{{ title }}</p>
-    <ng-container *ngIf="railCategoryList?.length > 0">
-      <div class="filterContainerList" *ngIf="!isSpecialBanner">
-          <ng-container *ngFor="let filter of railCategoryList">
-            <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
-          </ng-container>
-      </div>
-    </ng-container>
+  <div class="container-fluid removePaddingContainer">
+    <p class="position-relative railHeading mb-0 paddingLeft">{{ title }}</p>
   </div>
 </div>
-<div class="position-relative scrollListing">
+<div class="position-relative">
   <div class="container-fluid padding-right-0 padding-left-0">
     <div class="row">
       <div class="col-md-12">
         <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'scrollGameGamezopWidth': isGamezopList && isFilterApplied, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
-          <ng-container *ngIf="!isLoading; else showLoadingScreen">
-            <div *ngFor="let game of games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList || true, 'streamCard': true}">
-              <ng-container *ngIf="!isGamezopList">
-                <app-portrait-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-portrait-game-card>
-                <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true"
-                  *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game-v2>
-              </ng-container>
-              <ng-container *ngIf="isGamezopList">
-                <app-square-small-card [game]="game"></app-square-small-card>
-              </ng-container>
-              <!-- <app-lanscape-video [game]="game"></app-lanscape-video> -->
-            </div>
-
-          </ng-container>
-          <ng-template #showLoadingScreen>
-            <ng-container *ngFor="let _ of [].constructor(10)">
-              <img src="assets/img/placeholder-game.svg" alt="placeholder image" height="90%" class="mr-4">
+          <div *ngFor="let game of _games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList}">
+            <ng-container *ngIf="!isGamezopList">
+              <app-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" (gameClick)="gameClicked($event)"></app-game-card>
+              <app-install-play-game [game]="game" [hasFixedWidth]="true"
+                *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game>
             </ng-container>
-          </ng-template>
+            <ng-container *ngIf="isGamezopList">
+              <app-gamezop-game-card [game]="game" (gameClick)="gameClicked($event)"></app-gamezop-game-card>
+            </ng-container>
+          </div>
         </div>
       </div>
     </div>
@@ -44,7 +28,7 @@
     class="btn position-absolute h-100 arrowPaddingLeft pr-2"
     (click)="scrollLeft()"
   >
-    <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+    <img src="assets/img/Vector.svg" height="20px" alt="" />
   </button>
 
   <button
@@ -52,6 +36,6 @@
     class="btn position-absolute h-100 arrowPaddingright pl-2"
     (click)="scrollRight()"
   >
-    <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+    <img src="assets/img/Vector (1).svg" height="20px" alt="" />
   </button>
 </div>

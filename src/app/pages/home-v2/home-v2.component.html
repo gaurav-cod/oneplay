@@ -102,12 +102,12 @@
   <div class="mb-0 mt-4">
     <!-- <ng-container *ngIf="!genreSelected"> -->
       <ng-container *ngFor="let row of portraitCardRows">
-        <app-similar-games
+        <app-similar-games-v2
           [title]="row.title"
           [games]="row.games"
           [contentId]="row.contentId"
           [railCategoryList]="row.categories"
-        ></app-similar-games>
+        ></app-similar-games-v2>
 
         <app-parallex-sec *ngIf="row.type == 'special_banner'" [gamesFeed]="row"></app-parallex-sec>
     </ng-container>
