@@ -1,6 +1,6 @@
 import { GameModel } from "./game.model";
 
-type RAIL_TYPES = 'hero_banner' 
+export type RAIL_TYPES = 'hero_banner' 
   | 'portrait_card' 
   | 'portrait_category' 
   | "square_category_small" 

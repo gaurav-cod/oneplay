@@ -97,47 +97,21 @@
     <div class="transparentBlur"></div>
 </section>
 
-<!-- <app-parallex-sec></app-parallex-sec> -->
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
-    <!-- <ng-container *ngIf="!genreSelected"> -->
-      <ng-container *ngFor="let row of portraitCardRows">
-        <app-similar-games-v2
-          [title]="row.title"
-          [games]="row.games"
-          [contentId]="row.contentId"
-          [railCategoryList]="row.categories"
-        ></app-similar-games-v2>
-
-        <app-parallex-sec *ngIf="row.type == 'special_banner'" [gamesFeed]="row"></app-parallex-sec>
-    </ng-container>
-      
-      <!-- <app-similar-games
-        *ngIf="gamezopCardRow?.length > 0"
-        [title]="gamezopCardRow[0].title"
-        [games]="gamezopCardRow[0].games"
-        [contentId]="gamezopCardRow[0].contentId"
-        [railCategoryList]="gamezopCardRow[0].categories"
-        [isGamezopList]="true"
-      ></app-similar-games>
-      <app-similar-games
-        *ngIf="landscapeVideoCardRow?.length > 0"
-        [title]="landscapeVideoCardRow[0].title"
-        [games]="landscapeVideoCardRow[0].games"
-        [contentId]="landscapeVideoCardRow[0].contentId"
-        [railCategoryList]="landscapeVideoCardRow[0].categories"
-      ></app-similar-games> -->
-      
-      <!-- <div [style.background]="'url(assets/icons/background-temp.svg)'" class="specialBackground">
-        <div class="py-4">
-          <app-similar-games
-            [isSpecialBanner]="true"
-            [title]="restRows[0].title"
-            [games]="restRows[0].games"
-          ></app-similar-games>
-        </div>
-      </div> -->
-
-
+      <ng-container *ngFor="let row of railRowCards">
+        <ng-container *ngIf="row.type != 'special_banner'">
+          <app-similar-games-v2
+            [title]="row.title"
+            [games]="row.games"
+            [contentId]="row.contentId"
+            [railCategoryList]="row.categories"
+            [railType]="row.type"
+          ></app-similar-games-v2>
+        </ng-container>
+        <ng-container *ngIf="row.type == 'special_banner'">
+          <app-parallex-sec [gamesFeed]="row"></app-parallex-sec>
+        </ng-container>
+      </ng-container>
   </div>
 </div>

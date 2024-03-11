@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GameModel } from "src/app/models/game.model";
+import { RAIL_TYPES } from "src/app/models/gameFeed.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
@@ -17,6 +18,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
   @Input() isSpecialBanner: boolean = false;
+  @Input() railType: RAIL_TYPES;
 
   @Output() gameClick = new EventEmitter<string>();
 

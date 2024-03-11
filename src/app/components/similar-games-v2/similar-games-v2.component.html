@@ -14,18 +14,19 @@
     <div class="container-fluid padding-right-0 padding-left-0">
       <div class="row">
         <div class="col-md-12">
-          <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameHeightAdjust':isGamezopList, 'scrollGameGamezopWidth': isGamezopList && isFilterApplied, 'newGamezopAjustedHeight': isGamezopList && isFilterApplied }" (scroll)="updateArrows()">
+          <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameWidth': railType === 'square_category_small'}" (scroll)="updateArrows()">
             <ng-container *ngIf="!isLoading; else showLoadingScreen">
-              <div *ngFor="let game of games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList || true, 'streamCard': true}">
-                <ng-container *ngIf="!isGamezopList">
-                  <app-portrait-game-card [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-portrait-game-card>
-                  <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true"
-                    *ngIf="game.isInstallAndPlay" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game-v2>
-                </ng-container>
-                <ng-container *ngIf="isGamezopList">
-                  <app-square-small-card [game]="game"></app-square-small-card>
-                </ng-container>
-                <!-- <app-lanscape-video [game]="game"></app-lanscape-video> -->
+              <div *ngFor="let game of games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'streamCard': railType === 'landscape_video'}">
+                  <ng-container *ngIf="railType == 'portrait_card' || railType == 'portrait_category'">
+                    <app-portrait-game-card *ngIf="!game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"></app-portrait-game-card>
+                    <app-install-play-game-v2 *ngIf="game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"></app-install-play-game-v2>
+                  </ng-container>
+                  <ng-container *ngIf="railType == 'square_category_small'">
+                    <app-square-small-card [game]="game"></app-square-small-card>
+                  </ng-container>
+                  <ng-container *ngIf="railType == 'landscape_video'">
+                    <app-lanscape-video [game]="game"></app-lanscape-video>
+                  </ng-container>
               </div>
   
             </ng-container>
