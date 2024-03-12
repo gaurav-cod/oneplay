@@ -1,0 +1,202 @@
+.w290h185 {
+    width: 256px !important;
+    height: 300px !important;
+  
+    @media (max-width: 767.9px) {
+      width: 100% !important;
+      height: 220px !important;
+    }
+  }
+  .premiumIcon {
+    position: absolute;
+    background-color: gray;
+    border-radius: 50%;
+    top: 10px;
+    left: 10px;
+  }
+  
+  .mute {
+    position: absolute;
+    bottom: 0px;
+    left: 180%;
+    padding: 4px 8px;
+    border-radius: 50%;
+    z-index: 100000;
+  }
+  
+  .unmute {
+    padding: 4px 12px !important;
+  }
+  video {
+    border-radius: 4px;
+    height: 100%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
+    background-origin: border-box;
+  }
+  .card-hover {
+    transform: scaleX(1.15) scaleY(1.1);
+    height: 320px !important;
+    transition: all 0.3s linear;
+    margin-top: 15px;
+  }
+  .card, .gamezop-card {
+    background: none !important;
+    cursor: pointer;
+  
+    .card-img {
+      object-position: center;
+      height: 100%;
+      width: 100%;
+    }
+
+    .game-title {
+      color: #ffffff;
+      width: 100%;
+      max-height: 50px;
+      overflow: hidden;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+    .gameTags {
+      position: absolute;
+      left: 8px;
+      bottom: 10px;
+      .tagText {
+        color: white;
+        font-size: 14px;
+        border-radius: 3px;
+      }
+      .freeTagTriangle {
+        height: 20px;
+        width: 20px;
+        display: block;
+      }
+    }
+  
+    .gameTagsContianer {
+      display: flex;
+      gap: 10px;
+    }
+    .gameGenre {
+      background-color: #212123;
+      padding: 5px 10px;
+      color: white;
+      width: fit-content;
+      border-radius: 20px;
+    }
+  }
+  .game-gamezop-title {
+    width: 100%;
+    color: #ffffff;
+    margin-top: 5px;
+  }
+  .truncate-line-clamp {
+    -webkit-line-clamp: 2;
+    white-space: wrap !important;
+  }
+  .gamezop-truncate-line-clamp {
+    -webkit-line-clamp: 1 !important;
+    white-space: wrap !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      // width: 150px;
+      height: 135px;
+      top: -2px;
+    }
+    .gamezop-card {
+      height: 160px !important;
+    }
+    .adjustCardStore {
+      height: 95px !important;
+    }
+  }
+  
+  @media (min-width: 481px) and (max-width: 767px) {
+    .card {
+      // width: 150px;
+      height: 121px;
+    }
+    .gamezop-card {
+      height: 160px !important;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    .card {
+      // width: 150px;
+      height: 80px;
+    }
+    .gamezop-card {
+      height: 160px !important;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .card {
+      // width: 150px;
+      height: 380px !important;
+    }
+    .gamezop-card {
+      height: 175px !important;
+    }
+  }
+  
+  @media (min-width: 1300px) {
+    .card {
+      // width: 150px;
+      height: 65% !important;
+    }
+    .gamezop-card {
+      height: 195px !important;
+    }
+  }
+  
+  .borderRadius10 {
+    border-radius: 10px !important;
+  }
+  
+  .bg-translucent-darker {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+  }
+  
+  .tagText {
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    padding: 4px 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .bottomTag {
+    position: absolute;
+    bottom: 0px;
+    color: #fff;
+  }
+  
+  .freeOnStoreIcon {
+    flex-direction: column;
+    width: 18px;
+    height: 17px;
+    gap: 10px;
+  }
+
+  .specialCardHeight {
+    height: 250px !important;
+  }
+  .categoryLargeWidth {
+    width: 300px !important;
+    height: 300px !important;
+    @media screen and (max-width: 475px) {
+      height: 230px !important;
+      width: 230px !important;
+    }
+  }

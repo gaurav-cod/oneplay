@@ -42,6 +42,17 @@ import { LottieAnimationComponent } from './lottie-animation/lottie-animation.co
 
 import { LottieModule } from "ngx-lottie";
 import player from "lottie-web";
+import { GameCardV2Component } from './game-card-v2/game-card-v2.component';
+import { AppSimilarStreamsComponent } from './app-similar-streams/app-similar-streams.component';
+import { CasualgameHomeCardComponent } from './casualgame-home-card/casualgame-home-card.component';
+import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-card.component';
+import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
+import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
+import { LanscapeVideoComponent } from './lanscape-video/lanscape-video.component';
+import { ParallexSecComponent } from "../parallex-sec/parallex-sec.component";
+import { SpecialBannerCardComponent } from './special-banner-card/special-banner-card.component';
+import { SimilarGamesV2Component } from './similar-games-v2/similar-games-v2.component';
+import { SpotlightBannerComponent } from './spotlight-banner/spotlight-banner.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -67,6 +78,7 @@ export function playerFactory() {
   ],
   declarations: [
     GameCardComponent,
+    GameCardV2Component,
     GamezopGameCard,
     FooterComponent,
     NavbarComponent,
@@ -96,9 +108,21 @@ export function playerFactory() {
     ImageLoadingComponent,
     UserInfoComponent,
     LottieAnimationComponent,
+    GameCardV2Component,
+    AppSimilarStreamsComponent,
+    CasualgameHomeCardComponent,
+    PortraitGameCardComponent,
+    InstallPlayGameV2Component,
+    SquareSmallCardComponent,
+    LanscapeVideoComponent,
+    ParallexSecComponent,
+    SpecialBannerCardComponent,
+    SimilarGamesV2Component,
+    SpotlightBannerComponent
   ],
   exports: [
     GameCardComponent,
+    GameCardV2Component,
     GamezopGameCard,
     FooterComponent,
     NavbarComponent,
@@ -125,7 +149,14 @@ export function playerFactory() {
     InstallPlayGameComponent,
     NotificationAlertComponent,
     ImageLoadingComponent,
-    LottieAnimationComponent
+    LottieAnimationComponent,
+    AppSimilarStreamsComponent,
+    PortraitGameCardComponent,
+    InstallPlayGameV2Component,
+    LanscapeVideoComponent,
+    ParallexSecComponent,
+    SimilarGamesV2Component,
+    SpotlightBannerComponent
   ],
 })
 export class ComponentsModule {}

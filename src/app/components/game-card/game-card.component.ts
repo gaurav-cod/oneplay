@@ -24,7 +24,7 @@ import { v4 } from "uuid";
   styleUrls: ["./game-card.component.scss"],
   providers: [GLinkPipe],
 })
-export class GameCardComponent {
+export class GameCardComponent implements AfterViewInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
@@ -53,7 +53,14 @@ export class GameCardComponent {
     private readonly gLink: GLinkPipe,
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
-  ) {}
+  ) {
+  }
+
+  ngAfterViewInit(): void {
+    
+    console.log(this.game);
+    
+  }
 
   onGameClick() {
     this.countlyService.endEvent("gameLandingView");
@@ -74,7 +81,7 @@ export class GameCardComponent {
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
-        image.style.opacity = "0";
+        // image.style.opacity = "0";
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");
