@@ -48,7 +48,7 @@ import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-ca
 import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
 import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
 import { LanscapeVideoComponent } from './lanscape-video/lanscape-video.component';
-import { ParallexSecComponent } from "../parallex-sec/parallex-sec.component";
+import { ParallexSecComponent } from "./parallex-sec/parallex-sec.component";
 import { SpecialBannerCardComponent } from './special-banner-card/special-banner-card.component';
 import { SimilarGamesV2Component } from './similar-games-v2/similar-games-v2.component';
 import { SpotlightBannerComponent } from './spotlight-banner/spotlight-banner.component';
@@ -154,6 +154,7 @@ export function playerFactory() {
     PortraitGameCardComponent,
     InstallPlayGameV2Component,
     LanscapeVideoComponent,
+    SpecialBannerCardComponent,
     ParallexSecComponent,
     SimilarGamesV2Component,
     SpotlightBannerComponent,
