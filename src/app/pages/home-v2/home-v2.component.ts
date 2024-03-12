@@ -52,13 +52,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
     return environment.domain;
   }
   get getBannerImage() {
-    return  window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9 : this.selectedBannerGame.poster_1_1;
+    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9 : this.selectedBannerGame.poster_1_1;
   }
   get getBannerImageBlurHash() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9_blurhash : this.selectedBannerGame.poster_1_1_blurhash; 
+    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9_blurhash : this.selectedBannerGame.poster_1_1_blurhash;
   }
   get getTrailerVideo() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1; 
+    return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
   }
 
   ngOnInit(): void {
@@ -67,31 +67,31 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.loaderService.start();
 
     this._paramSubscription = this.activatedRoute.params.subscribe({
-      next: (params)=> {
+      next: (params) => {
         this._feedSubscription?.unsubscribe();
-        
+
         this._feedSubscription = this.restService.getHomeFeed().subscribe({
           next: (response) => {
-            
-            const feeds = response.filter((feed)=> feed.games.length > 0);
-            this.heroBannerRow = feeds.filter((feed)=> feed.type === "hero_banner").at(0);
+
+            const feeds = response.filter((feed) => feed.games.length > 0);
+            this.heroBannerRow = feeds.filter((feed) => feed.type === "hero_banner").at(0);
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
             this.railRowCards = feeds.filter((f) => f.type !== "hero_banner" && f.type != "spotlight_banner");
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.selectedBannerGame.trailer_video) {
               clearTimeout(this.bannerShowTimer);
-              this.bannerShowTimer = setTimeout(()=> {
+              this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
               }, 5000);
             }
-            
+
             // play initial video in 2sec
             clearTimeout(this.playVideoTimer);
-            this.playVideoTimer = setTimeout(()=> {
+            this.playVideoTimer = setTimeout(() => {
               this.playVideo = true;
             }, 2000);
-          }, error: (error)=> {
+          }, error: (error) => {
             this.loaderService.stop();
             if (error?.timeout) {
               this.router.navigateByUrl("/server-error");
@@ -119,9 +119,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
       if (element.oneplayId === this.selectedHeroBannerId)
         index = idx;
     });
-    this.selectedHeroBannerId = this.heroBannerRow.games[(index+1) % this.heroBannerRow.games.length].oneplayId;
-    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
-    setTimeout(()=> {
+    this.selectedHeroBannerId = this.heroBannerRow.games[(index + 1) % this.heroBannerRow.games.length].oneplayId;
+    this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
+    setTimeout(() => {
       this.playVideo = true;
     }, 2000);
   }
@@ -131,16 +131,16 @@ export class HomeV2Component implements OnInit, OnDestroy {
     clearTimeout(this.bannerShowTimer);
 
     let currSelectedGameIndex = -1;
-    this.heroBannerRow.games.forEach((game, index)=> {
+    this.heroBannerRow.games.forEach((game, index) => {
       if (game.oneplayId == this.selectedHeroBannerId)
         currSelectedGameIndex = index;
     })
-    this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex+ (direction == "LEFT" ? -1 : 1) ) % this.heroBannerRow.games.length].oneplayId;
-    this.selectedBannerGame = this.heroBannerRow.games.filter((game)=> game.oneplayId === this.selectedHeroBannerId)[0];
+    this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex + (direction == "LEFT" ? -1 : 1)) % this.heroBannerRow.games.length].oneplayId;
+    this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
 
-     // if game does not contain video then by default banner will move to next game in 5sec
-     if (!this.selectedBannerGame.trailer_video) {
-      this.bannerShowTimer = setTimeout(()=> {
+    // if game does not contain video then by default banner will move to next game in 5sec
+    if (!this.selectedBannerGame.trailer_video) {
+      this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
     }
@@ -157,12 +157,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   getScaleByDistance(index: number) {
     let selectedBannerIdx = 1;
-    for (let idx=0; idx < this.heroBannerRow.games.length; idx++)
+    for (let idx = 0; idx < this.heroBannerRow.games.length; idx++)
       if (this.selectedBannerGame.oneplayId == this.heroBannerRow.games[idx].oneplayId) {
         selectedBannerIdx = idx;
         break;
       }
 
-    return 1 -(Math.abs(selectedBannerIdx - index) / 10);
+    return 1 - (Math.abs(selectedBannerIdx - index) / 10);
   }
 }

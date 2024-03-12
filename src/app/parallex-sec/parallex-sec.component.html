@@ -1,4 +1,3 @@
-
 <section class="parallexContainer">
     <div class="parallexBackground" [style.backgroundImage]="'url('+ getBackgroundImage +')'"></div>
     <!-- <div class="logo">
@@ -18,19 +17,12 @@
         </ng-container>
 
 
-    <button
-            *ngIf="showLeftArrow"
-            class="btn position-absolute h-100 arrowPaddingLeft pr-2"
-            (click)="scrollLeft()"
-        >
+        <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
             <img src="assets/img/arrow-left.svg" height="30px" alt="" />
         </button>
 
-        <button
-            *ngIf="showRightArrow"
-            class="btn position-absolute h-100 arrowPaddingright pl-2"
-            (click)="scrollRight()"
-        >
+        <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2"
+            (click)="scrollRight()">
             <img src="assets/img/arrow-right.svg" height="30px" alt="" />
         </button>
     </div>

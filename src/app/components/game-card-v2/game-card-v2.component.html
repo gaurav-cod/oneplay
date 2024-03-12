@@ -1,28 +1,11 @@
-<a
-  #gameLink
-  href="javascript:void(0)"
-  class="card card-block border-0 shadow-1 position-relative"
-  (click)="onGameClick()"
-  [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner'}"
->
-  <div
-    class="mask"
-    style="z-index: 2;"
-    (mouseenter)="playVideo(gameLink, image)"
-  >
+<a #gameLink href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative"
+  (click)="onGameClick()" [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner'}">
+  <div class="mask" style="z-index: 2;" (mouseenter)="playVideo(gameLink, image)">
     <div class="position-relative">
-      <img
-        #image
-        [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
-        class="card-img borderRadius10 loadingBg"
-        [src]="game.textBgImage"
-        [ngStyle]="{
+      <img #image [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
+        class="card-img borderRadius10 loadingBg" [src]="game.textBgImage" [ngStyle]="{
           'object-fit': hfw ? 'unset' : 'cover'
-        }"
-        alt=""
-        loading="lazy"
-        (error)="onImgError($event)"
-      />
+        }" alt="" loading="lazy" (error)="onImgError($event)" />
       <image-loading [hash]="game.textBgHash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
@@ -33,9 +16,12 @@
         </div>
         <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 tagText">COMING SOON</span>
         <div class="row justify-content-center mt-2">
-          <div *ngIf="game.status === 'maintenance'" class="col-auto"><span class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
-          <div *ngIf="game.status === 'updating'" class="col-auto"><span class="updatingGradient px-2 tagText">UPDATING</span></div>
-          <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
+          <div *ngIf="game.status === 'maintenance'" class="col-auto"><span
+              class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
+          <div *ngIf="game.status === 'updating'" class="col-auto"><span
+              class="updatingGradient px-2 tagText">UPDATING</span></div>
+          <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT
+              OPTIMIZED</span></div>
         </div>
       </div>
       <div class="premiumIcon">
@@ -58,22 +44,11 @@
         <span class="font500 text-white">200</span>
       </div>
     </div>
-    <div
-      *ngIf="showSound"
-      class="mute bg-translucent-darker"
-      [ngClass]="{ unmute: !muted }"
-      (click)="muteUnmute($event, gameLink, game)"
-    >
-      <em
-        class="fa text-white"
-        [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"
-      ></em>
+    <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)">
+      <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
     </div>
-    <ngx-ui-loader
-      [fgsColor]="'#c32ead'"
-      [hasProgressBar]="false"
-      [loaderId]="loaderId"
-      [overlayBorderRadius]="'15px'"
-    ></ngx-ui-loader>
+    <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
+      [overlayBorderRadius]="'15px'"></ngx-ui-loader>
   </div>
 </a>

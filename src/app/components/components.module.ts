@@ -44,7 +44,6 @@ import { LottieModule } from "ngx-lottie";
 import player from "lottie-web";
 import { GameCardV2Component } from './game-card-v2/game-card-v2.component';
 import { AppSimilarStreamsComponent } from './app-similar-streams/app-similar-streams.component';
-import { CasualgameHomeCardComponent } from './casualgame-home-card/casualgame-home-card.component';
 import { PortraitGameCardComponent } from './portrait-game-card/portrait-game-card.component';
 import { InstallPlayGameV2Component } from './install-play-game-v2/install-play-game-v2.component';
 import { SquareSmallCardComponent } from './square-small-card/square-small-card.component';
@@ -111,7 +110,6 @@ export function playerFactory() {
     LottieAnimationComponent,
     GameCardV2Component,
     AppSimilarStreamsComponent,
-    CasualgameHomeCardComponent,
     PortraitGameCardComponent,
     InstallPlayGameV2Component,
     SquareSmallCardComponent,

@@ -1,12 +1,14 @@
 <div class="smallCategoryContainer container-fluid">
     <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
-        <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp" [style.width.%]="gameFeed.categories?.length > 0 ? '50%' : '100%'">{{ gameFeed.title }}</p>
+        <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp"
+            [style.width.%]="gameFeed.categories?.length > 0 ? '50%' : '100%'">{{ gameFeed.title }}</p>
         <ng-container *ngIf="gameFeed.categories?.length > 0">
-          <div class="filterContainerList">
-              <ng-container *ngFor="let filter of gameFeed.categories">
-                <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
-              </ng-container>
-          </div>
+            <div class="filterContainerList">
+                <ng-container *ngFor="let filter of gameFeed.categories">
+                    <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}"
+                        (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
+                </ng-container>
+            </div>
         </ng-container>
     </div>
     <div class="d-flex h-100 align-items-baseline container-fluid">

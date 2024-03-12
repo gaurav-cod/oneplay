@@ -10,7 +10,7 @@ import { RestService } from "src/app/services/rest.service";
   templateUrl: './similar-games-v2.component.html',
   styleUrls: ['./similar-games-v2.component.scss']
 })
-export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy  {
+export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
   @Input() contentId: string;
   @Input() games: GameModel[] | GamezopModel[];
@@ -53,7 +53,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
       this.railCategoryList.splice(0, 0, "All")
   }
   ngOnInit(): void {
-    this.isFilterApplied  = this.activatedRoute.snapshot.params['filter'] != null;
+    this.isFilterApplied = this.activatedRoute.snapshot.params['filter'] != null;
   }
 
   gameClicked(event: string) {
@@ -112,9 +112,9 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({genres: filter == "All" ? null : filter}, this.contentId,0).subscribe((games) => {
+    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
       this.games = games;
-      this._loaderTimeout = setTimeout(()=> {
+      this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;
       }, 500);
     });

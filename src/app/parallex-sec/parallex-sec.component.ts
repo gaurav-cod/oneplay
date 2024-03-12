@@ -41,7 +41,7 @@ export class ParallexSecComponent implements OnInit {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-      const st = window.pageYOffset || document.documentElement.scrollTop;
+    const st = window.pageYOffset || document.documentElement.scrollTop;
     if (st > this.lastScrollTop) {
       this.marginValue += 4;
     } else {
