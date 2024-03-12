@@ -119,17 +119,17 @@
       color: #A8A8A8;
       margin-right: 12px;
       cursor: pointer;
-      min-width: fit-content;
+      min-width: max-content;
     }
     .linearGradient {
       color: white;
       border-radius: 30px;
-      min-width: fit-content;
+      min-width: max-content;
       text-align: center;
       padding: 10px 20px;
     }
      @media screen and (max-width: 475px) {
-        width: 50%;
+        width: 90%;
         border-top-right-radius: 0px;
         border-bottom-right-radius: 0px;
         position: relative;
