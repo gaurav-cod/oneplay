@@ -22,8 +22,12 @@
 }
 .audioContainer {
     margin-left: auto;
-    bottom: 0px;
-    right: 0px;
+    bottom: 30px;
+    right: 20px;
+    img {
+        height: 40px;
+        width: 40px;
+    }
     @media screen and (min-width: 475px) {
         display: none;
     }
@@ -34,16 +38,19 @@ video {
 .dots-indicator {
     padding: 5px;
     border-radius: 10px;
-    background-color: #151515;
+    background-color: #1515157a;
     max-width: 120px;
     min-width: 80px;
     gap: 5px;
+    display: flex;
     justify-content: center;
     position: absolute;
     left: 40%;
-    bottom: 15%;
-    @media screen and (max-width: 1200px) {
+    bottom: 5%;
+    @media screen and (min-width: 475px)  and (max-width: 1200px) {
         display: flex;
+        right: 30px !important;
+        left: unset !important;
     }
     @media screen and (min-width: 1200px) {
         display: none;
@@ -64,6 +71,16 @@ video {
     img {
         width: 40%;
         height: 50%;
+    }
+}
+.game-carousel-trans {
+    @media screen and (max-width: 1200px) {
+        display: none !important;
+    }
+}
+.game-carousel-btn {
+    @media screen and (max-width: 1200px) {
+        bottom: 20px !important;
     }
 }
 .games-carousel {
@@ -93,7 +110,7 @@ video {
         padding: 2px !important;
     }
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 475px) {
         display: none !important;
     }
 }
