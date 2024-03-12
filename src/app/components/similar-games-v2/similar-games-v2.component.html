@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
     <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
-      <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp" [style.width.%]="railCategoryList?.length > 0 ? '50%' : '100%'">{{ title }}</p>
+      <p class="position-relative railHeading paddingLeft mr-4" [style.width.%]="railCategoryList?.length > 0 ? '50' : '100'">{{ title }}</p>
       <ng-container *ngIf="railCategoryList?.length > 0">
         <div class="filterContainerList" *ngIf="!isSpecialBanner">
             <ng-container *ngFor="let filter of railCategoryList">

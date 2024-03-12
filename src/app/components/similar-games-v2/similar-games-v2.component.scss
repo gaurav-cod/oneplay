@@ -202,13 +202,6 @@
     display: flex;
     height: fit-content !important;
   }
-  .truncate-line-clamp {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    width: 50%;
-    overflow: hidden;
-  }
   
   .paddingLeft {
     @media (max-width: 767.9px) {
@@ -289,15 +282,18 @@
   
   .railHeading {
     font-weight: 500;
-    font-size: 38px;
-    line-height: 20px;
+    font-size: 48px;
     color: #dcdcdc;
     letter-spacing: 0.02em;
     font-family: "TsukiRegular";
     margin-bottom: 0px;
-    @media (max-width: 1200px) {
-      font-size: 28px;
-      line-height: 26px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    
+    @media (max-width: 475px) {
+      font-size: 32px !important;
       margin-right: 0px !important;
     }
   }

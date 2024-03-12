@@ -2,9 +2,9 @@
     width: 256px !important;
     height: 300px !important;
   
-    @media (max-width: 767.9px) {
+    @media (max-width: 1200px) {
       width: 100% !important;
-      height: 220px !important;
+      height: 245px !important;
     }
   }
   .premiumIcon {
@@ -35,11 +35,15 @@
     background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);                  
     background-origin: border-box;
   }
+
   .card-hover {
-    transform: scaleX(1.15) scaleY(1.1);
-    height: 320px !important;
-    transition: all 0.1s linear;
-    margin-top: 15px;
+    .card-img{
+      transform: scale(1.1);
+      transition: all 0.1s linear;
+    }
+    .hideOnHover {
+      display: none !important;
+    }
   }
   .card, .gamezop-card {
     background: none !important;

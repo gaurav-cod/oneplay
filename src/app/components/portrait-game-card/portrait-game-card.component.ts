@@ -129,13 +129,13 @@ export class PortraitGameCardComponent {
     }
   }
 
-  scaleImage(image, type: "INCREASE" | "DECREASE") {
+  scaleImage(gameContainer, type: "INCREASE" | "DECREASE") {
     if (!this.game.trailer_video)  {
       if (type == "INCREASE")
-        image.className += " card-hover position-absolute";
+      gameContainer.className += " card-hover position-absolute";
       else {
-        image.className = this.replaceAll(image.className, "card-hover", "");
-        image.className = this.replaceAll(image.className, "position-absolute", "");
+        gameContainer.className = this.replaceAll(gameContainer.className, "card-hover", "");
+        gameContainer.className = this.replaceAll(gameContainer.className, "position-absolute", "");
       }
     }
   }
