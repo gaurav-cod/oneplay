@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { Subscription } from "rxjs";
+import { Subscription, filter } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { FriendsService } from "src/app/services/friends.service";
 import { GameService } from "src/app/services/game.service";
@@ -22,6 +22,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   private threeSecondsTimer: NodeJS.Timer;
   private queryParamSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
+  private _routerSubscription: Subscription;
+
+  public isHomePage: boolean = false;
 
   constructor(
     private readonly restService: RestService,
@@ -41,6 +44,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.initParties();
     this.setOnline();
     this.initGames();
+
+    this._routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+       this.isHomePage = this.router.url.includes("home");
+    });
 
     this.fiveSecondsTimer = setInterval(() => {
       this.initGames();
@@ -66,6 +75,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     clearInterval(this.threeSecondsTimer);
     this._userInfoRef?.close();
     this.queryParamSubscription.unsubscribe();
+    this._routerSubscription?.unsubscribe();
   }
 
   toggleFriendsCollapsed(event: string | undefined = undefined) {

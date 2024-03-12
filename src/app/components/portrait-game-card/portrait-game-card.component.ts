@@ -46,7 +46,6 @@ export class PortraitGameCardComponent {
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
   ) {
-    debugger;
   }
 
   onGameClick() {
