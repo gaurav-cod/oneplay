@@ -206,7 +206,7 @@
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    width: 100%;
+    width: 50%;
     overflow: hidden;
   }
   
@@ -307,7 +307,7 @@
     background-color: #212123;
     padding: 10px;
     min-width: unset;
-    margin-left: 20px;
+    margin-left: auto;
     overflow-x: auto;
     &::-webkit-scrollbar-track,
     &::-webkit-scrollbar,
