@@ -53,6 +53,7 @@ import { ParallexSecComponent } from "../parallex-sec/parallex-sec.component";
 import { SpecialBannerCardComponent } from './special-banner-card/special-banner-card.component';
 import { SimilarGamesV2Component } from './similar-games-v2/similar-games-v2.component';
 import { SpotlightBannerComponent } from './spotlight-banner/spotlight-banner.component';
+import { CategorySmallRailComponent } from './category-small-rail/category-small-rail.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -118,7 +119,8 @@ export function playerFactory() {
     ParallexSecComponent,
     SpecialBannerCardComponent,
     SimilarGamesV2Component,
-    SpotlightBannerComponent
+    SpotlightBannerComponent,
+    CategorySmallRailComponent
   ],
   exports: [
     GameCardComponent,
@@ -156,7 +158,8 @@ export function playerFactory() {
     LanscapeVideoComponent,
     ParallexSecComponent,
     SimilarGamesV2Component,
-    SpotlightBannerComponent
+    SpotlightBannerComponent,
+    CategorySmallRailComponent
   ],
 })
 export class ComponentsModule {}
