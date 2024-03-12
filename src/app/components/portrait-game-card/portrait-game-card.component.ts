@@ -78,7 +78,7 @@ export class PortraitGameCardComponent {
             this.game.trailer_video;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "200%";
+          video.style.width = "190%";
           video.style.height = "110%";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";

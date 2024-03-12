@@ -39,7 +39,7 @@
                         alt=""
                       />
                     </div>
-                    <div class="position-absolute games-carousel d-flex ml-4" [style.left.px]="20">
+                    <div class="position-absolute games-carousel game-carousel-btn d-flex ml-4" [style.left.px]="20">
                         <button
                           (click)="viewBannerGame(selectedBannerGame)"
                           class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block"
@@ -71,7 +71,7 @@
                 </div>
             </ng-template>
         </ngb-carousel>
-        <div class="games-carousel d-flex align-items-center">
+        <div class="games-carousel game-carousel-trans d-flex align-items-center">
           <div class="leftArrow cursorPointer" (click)="moveSelectedCard('LEFT')">
             <img src="assets/img/arrow-gray-left.svg" alt="">
           </div>
@@ -100,7 +100,7 @@
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
       <ng-container *ngFor="let row of railRowCards">
-        <ng-container *ngIf="row.type != 'special_banner' && row.type != 'spotlight_banner'">
+        <ng-container *ngIf="row.type != 'special_banner' && row.type != 'spotlight_banner' && row.type != 'square_category_small'">
           <app-similar-games-v2
             [title]="row.title"
             [games]="row.games"
@@ -111,6 +111,9 @@
         </ng-container>
         <ng-container *ngIf="row.type == 'special_banner'">
           <app-parallex-sec [gamesFeed]="row"></app-parallex-sec>
+        </ng-container>
+        <ng-container *ngIf="row.type == 'square_category_small'">
+          <app-category-small-rail [gameFeed]="row"></app-category-small-rail>
         </ng-container>
         <ng-container *ngIf="row.type == 'spotlight_banner'">
           <app-spotlight-banner [gameFeed]="row"></app-spotlight-banner>

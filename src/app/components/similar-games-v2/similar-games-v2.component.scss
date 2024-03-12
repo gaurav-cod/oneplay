@@ -63,7 +63,7 @@
     scrollbar-color: transparent transparent; 
     
     @media (max-width: 1600px) {
-      padding-left: 140px;
+      padding-left: 70px;
       padding-right: 40px;
     }
     @media (max-width: 1500px) {
@@ -88,13 +88,13 @@
       padding-right: 5px;
     }
     @media (max-width: 575px) {
-      padding-left: 40px;
+      padding-left: 15px;
       padding-right: 5px;
     }
   
     @media (max-width: 480px) {
       overflow-y: hidden;
-      padding-left: 30px;
+      padding-left: 15px;
       padding-right: 5px;
       padding-bottom: 30px;
       padding-top: 16px;
@@ -202,10 +202,17 @@
     display: flex;
     height: fit-content !important;
   }
+  .truncate-line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    width: 50%;
+    overflow: hidden;
+  }
   
   .paddingLeft {
     @media (max-width: 767.9px) {
-      padding-left: 25px;
+      padding-left: 0px;
     }
   
     @media (max-width: 480px) {
@@ -276,6 +283,9 @@
   .borderRadius15 {
     border-radius: 15px !important;
   }
+  .container-fluid  {
+    // padding-left: 15px !important;
+  }
   
   .railHeading {
     font-weight: 500;
@@ -288,7 +298,6 @@
     @media (max-width: 1200px) {
       font-size: 28px;
       line-height: 26px;
-      width: 50%;
       margin-right: 0px !important;
     }
   }
@@ -298,7 +307,8 @@
     background-color: #212123;
     padding: 10px;
     min-width: unset;
-    margin-left: 20px;
+    margin-left: auto;
+    overflow-x: auto;
     &::-webkit-scrollbar-track,
     &::-webkit-scrollbar,
     &::-webkit-scrollbar-thumb {
@@ -310,24 +320,32 @@
       color: #A8A8A8;
       margin-right: 12px;
       cursor: pointer;
-      min-width: fit-content;
+      min-width: max-content;
     }
     .linearGradient {
       color: white;
       border-radius: 30px;
-      min-width: fit-content;
+      min-width: max-content;
       text-align: center;
       padding: 10px 20px;
     }
      @media screen and (max-width: 475px) {
-        width: 50%;
+        width: 90%;
         border-top-right-radius: 0px;
         border-bottom-right-radius: 0px;
         position: relative;
         right: -10px;
         padding: 8px;
-        overflow-x: auto;
      }
+     @media screen and (min-width: 475px) and (max-width: 1200px) {
+      width: 60%;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      position: relative;
+      right: -10px;
+      padding: 8px;
+      overflow-x: auto;
+   }
   }
   
   .arrowPaddingLeft:hover > img {
@@ -393,5 +411,10 @@
       .gameCard {
         width: 250px !important;
       };
+    }
+    @media screen and (min-width: 475px) and (max-width: 1200px) {
+      .gameCard {
+        width: 285px !important;
+      }
     }
   }

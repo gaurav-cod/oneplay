@@ -14,9 +14,11 @@
     .characterContainer {
         width: 100%;
         position: absolute;
-        bottom: 0px;
         display: flex;
         justify-content: space-between;
+        @media screen and (max-width: 520px) {
+          bottom: 35% !important;
+        }
     }
     .parallexBackground {
         position: absolute;
@@ -24,12 +26,20 @@
         left: 0px;
         // background-image: url('./../../assets/img/Dashboard/parallex_background.png');
         background-size: cover;
+        background-position: center center;
         background-repeat: no-repeat;
         filter: blur(3px);
         -webkit-filter: blur(3px);
         height: 100%;
         width: 100%;
     }
+}
+.leftCharacter, .rightCharacter {
+  width: 18%;
+  height: 100%;
+  @media screen and (max-width: 1200px) {
+    width: 30%;
+  }
 }
 
 .scrollGame {
@@ -43,7 +53,7 @@
     position: absolute;
     top: 50%;
     @media (max-width: 1600px) {
-      padding-left: 140px;
+      padding-left: 70px;
       padding-right: 40px;
     }
     @media (max-width: 1500px) {
@@ -64,11 +74,11 @@
       padding-right: 5px;
     }
     @media (max-width: 660px) {
-      padding-left: 15px;
+      padding-left: 30px;
       padding-right: 5px;
     }
     @media (max-width: 575px) {
-      padding-left: 40px;
+      padding-left: 30px;
       padding-right: 5px;
     }
   
