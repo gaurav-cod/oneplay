@@ -10,14 +10,14 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
 import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Subscription, filter } from "rxjs";
 import { NgbDropdown, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
@@ -60,6 +60,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public hasUnread = false;
   public isAuthenticated = false;
   public showInitialUserMessage: boolean = false;
+  public isHomePage: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -87,6 +88,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _profileOverlaySub: Subscription;
   private _qParamSubscription: Subscription;
   private _guestDropdownSub: Subscription;
+  private _routerSubscription: Subscription;
 
   @HostListener('window:scroll', ['$event']) 
   onScroll(event) {
@@ -98,6 +100,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   showMultiNotificationList: boolean = false;
 
   showOverlayProfile: boolean = false;
+  
 
   @Output() toggleFriends = new EventEmitter();
 
@@ -166,10 +169,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   get appVersion() {
     return environment.appVersion;
-  }
-
-  get isHomePage() {
-    return this.router.url.includes("home");
   }
 
   viewGame() {
@@ -278,6 +277,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this._profileOverlaySub?.unsubscribe();
     this._qParamSubscription?.unsubscribe();
     this._guestDropdownSub?.unsubscribe();
+    this._routerSubscription?.unsubscribe();
     this.countlyService.endEvent("guestProfile");
   }
 
@@ -306,6 +306,13 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+
+    this.isHomePage = this.router.url.includes("home");
+    this._routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+       this.isHomePage = this.router.url.includes("home");
+    });
 
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
 

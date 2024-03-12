@@ -45,6 +45,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.setOnline();
     this.initGames();
 
+    this.isHomePage = this.router.url.includes("home");
     this._routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
