@@ -64,6 +64,8 @@
   padding-top: 15px;
   padding-bottom: 20px;
   scrollbar-color: transparent transparent;
+  display: flex;
+  flex-wrap: nowrap;
 
   @media (max-width: 1600px) {
     padding-left: 70px;
@@ -263,8 +265,11 @@
   width: 380px !important;
   height: unset !important;
 
-  @media screen and (max-width: 600px) {
-    width: 260px !important;
+  @media screen and (min-width: 475px) and (max-width: 1200px) {
+    width: 325px !important;
+  }
+  @media screen and (max-width: 475px) {
+    width: 290px !important;
   }
 }
 
@@ -325,12 +330,14 @@
   font-size: 48px;
   color: #dcdcdc;
   letter-spacing: 0.02em;
-  font-family: "TsukiRegular";
+  font-family: "TsukiRegular" !important;
   margin-bottom: 0px;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 
   @media (max-width: 475px) {
     font-size: 32px !important;

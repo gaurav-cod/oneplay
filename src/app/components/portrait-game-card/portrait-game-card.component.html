@@ -6,7 +6,7 @@
   </div>
   <div class="mask" style="z-index: 2;">
     <div class="position-relative">
-      <img #image class="card-img borderRadius10 loadingBg w290h185"
+      <img #image class="card-img loadingBg w290h185"
         [ngClass]="{'categoryLargeWidth': railType == 'square_category_large'}" [src]="game.poster_3_4" loading="lazy"
         (error)="onImgError($event)" (mouseenter)="scaleImage(gameLink, 'INCREASE')"
         (mouseleave)="scaleImage(gameLink, 'DECREASE')" />
@@ -31,7 +31,7 @@
         <img src="assets/icons/premium-icon.svg" alt="">
       </div>
     </div>
-    <h4 class="game-title hideOnHover">{{ game.title }}</h4>
+    <h4 class="game-title hideOnHover truncate-line-clamp">{{ game.title }}</h4>
     <div class="gameTagsContianer hideOnHover">
       <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
         <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>

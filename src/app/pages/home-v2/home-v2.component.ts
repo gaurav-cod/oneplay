@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Subscription } from 'rxjs';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
+import { VideoFeedModel } from 'src/app/models/streamFeed.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
@@ -20,10 +21,8 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
-  public portraitCardRows: GameFeedModel[] = [];
-  public gamezopCardRow: GameFeedModel[] = [];
-  public landscapeVideoCardRow: GameFeedModel[] = [];
-  public railRowCards: GameFeedModel[] = [];
+  public railRowCards: (GameFeedModel | VideoFeedModel)[] = [];
+  public landscapeRowCards: VideoFeedModel[] = [];
 
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
@@ -72,12 +71,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
         this._feedSubscription = this.restService.getHomeFeed().subscribe({
           next: (response) => {
-
-            const feeds = response.filter((feed) => feed.games.length > 0);
-            this.heroBannerRow = feeds.filter((feed) => feed.type === "hero_banner").at(0);
+            const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0));
+            this.heroBannerRow = feeds.filter((feed) => (feed as GameFeedModel).type === "hero_banner").at(0) as GameFeedModel;
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            this.railRowCards = feeds.filter((f) => f.type !== "hero_banner" && f.type != "spotlight_banner");
+            this.railRowCards = (feeds.filter((f) => f.type !== "hero_banner"));
+          
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.selectedBannerGame.trailer_video) {
               clearTimeout(this.bannerShowTimer);
@@ -108,6 +107,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._feedSubscription?.unsubscribe();
     this._paramSubscription?.unsubscribe();
+    this._userSubscription?.unsubscribe();
     clearTimeout(this.bannerShowTimer);
     clearTimeout(this.playVideoTimer);
     Swal.close();

@@ -298,7 +298,7 @@
 
 @media (max-width: 475px) {
   .w120 {
-    width: 150px !important;
+    width: 130px !important;
   }
 }
 
@@ -417,6 +417,11 @@
 .adjustPosition {
   right: -100px !important;
 }
+.profileIcon {
+  @media screen and (max-width: 475px) {
+    padding-right: 0px !important; 
+  }
+}
 
 .box-with-shadow {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -424,6 +429,9 @@
 
 .GradientBtnPadding {
   padding: 10px 20px !important;
+  @media screen and (max-width: 475px) {
+    padding: 10px !important;
+  }
 }
 .notificationList {
   gap: 5px;

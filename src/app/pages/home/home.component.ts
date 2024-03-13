@@ -152,7 +152,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
         this.feedSubscription = this.restService.getHomeFeed().subscribe(
           (res) => {
-            const feeds = res.filter((f) => f.games.length > 0);
+            // const feeds = res.filter((f) => f.games.length > 0);
             // this.firstRow = feeds.filter((f) => f.type === "header")[0];
             // // this.installPlayRow = feeds.filter((f) => f.title === "Test Feed")[0];
             // this.restRows = feeds.filter((f) => f.type === "rail");

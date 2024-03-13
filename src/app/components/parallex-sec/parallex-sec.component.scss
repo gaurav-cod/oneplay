@@ -21,7 +21,7 @@
     justify-content: space-between;
 
     @media screen and (max-width: 520px) {
-      bottom: 35% !important;
+      top: 10% !important;
     }
   }
 
@@ -41,12 +41,13 @@
 
 .leftCharacter,
 .rightCharacter {
-  width: 18%;
-  height: 100%;
+  position: relative;
+  // width: u;
+  // height: 100%;
 
-  @media screen and (max-width: 1200px) {
-    width: 30%;
-  }
+  // @media screen and (max-width: 1200px) {
+  //   width: 30%;
+  // }
 }
 
 .scrollGame {
@@ -103,6 +104,7 @@
     padding-bottom: 30px;
     padding-top: 16px;
     height: 370px;
+    top: 35% !important;
   }
 }
 
