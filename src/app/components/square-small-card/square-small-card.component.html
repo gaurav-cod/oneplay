@@ -1,5 +1,5 @@
-<section class="d-flex" style="gap: 20px;">
-    <img [src]="game.poster_1_1" alt="" class="imageContainer">
+<section class="d-flex position-relative" style="gap: 20px;" #gameLink>
+    <img #image [src]="game.poster_1_1" alt="" class="imageContainer" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
     <div>
         <span class="game-title">{{ game.title }}</span>
         <div class="gameTagsContianer mt-2">
@@ -8,4 +8,10 @@
             </ng-container>
         </div>
     </div>
+    <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)">
+      <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
+    </div>
+    <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
+      [overlayBorderRadius]="'15px'"></ngx-ui-loader>
 </section>

@@ -1,9 +1,9 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
   <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2 position-relative">
-    <p class="position-relative railHeading paddingLeft mr-4"
+    <p class="position-relative paddingLeft mr-4 d-flex align-items-center"
       [style.width.%]="railCategoryList?.length > 0 ? '50' : '100'">
       <img [src]="getStreamIcon" alt="" height="40px" width="40px" class="mr-2" *ngIf="railType === 'landscape_video'">
-      <span>{{ title }}</span>
+      <span class="railHeading">{{ title }}</span>
     </p>
     <ng-container *ngIf="railCategoryList?.length > 0">
       <div class="filterContainerList" *ngIf="!isSpecialBanner">
