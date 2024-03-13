@@ -1,12 +1,12 @@
 <a #gameLink href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative"
-  (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+  (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" >
   <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
     (click)="muteUnmute($event, gameLink, game)">
     <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
   </div>
   <div class="mask" style="z-index: 2;">
     <div class="position-relative">
-      <img #image class="card-img borderRadius10 loadingBg w290h185"
+      <img #image class="card-img loadingBg w290h185"
         [ngClass]="{'categoryLargeWidth': railType == 'square_category_large'}" [src]="game.poster_3_4" loading="lazy"
         (error)="onImgError($event)" (mouseenter)="scaleImage(gameLink, 'INCREASE')"
         (mouseleave)="scaleImage(gameLink, 'DECREASE')" />

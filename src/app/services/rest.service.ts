@@ -895,12 +895,13 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(params?: any): Observable<GameFeedModel[]> {
+  getHomeFeed(params?: any): Observable<(VideoFeedModel | GameFeedModel)[]> {
     
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", { params })
       .pipe(
-        map((res) => res.map((d) => new GameFeedModel(d))),
+        map((res) => res.map((d) => {
+          return d.type == 'landscape_video' ? new VideoFeedModel(d) : new GameFeedModel(d)})),
         catchError(({ error }) => {
           throw error;
         })

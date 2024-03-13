@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { GameModel } from "src/app/models/game.model";
 import { RAIL_TYPES } from "src/app/models/gameFeed.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
+import { VideoModel } from "src/app/models/video.model";
 import { CountlyService } from "src/app/services/countly.service";
 import { RestService } from "src/app/services/rest.service";
 @Component({
@@ -13,7 +14,7 @@ import { RestService } from "src/app/services/rest.service";
 export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
   @Input() contentId: string;
-  @Input() games: GameModel[] | GamezopModel[];
+  @Input() entries: (GameModel | VideoModel)[] = [];
   @Input() railCategoryList: string[];
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
@@ -35,9 +36,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   public isLoading: boolean = false;
 
   constructor(
-    private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly countlyService: CountlyService,
     private readonly restService: RestService
   ) { }
 
@@ -56,22 +55,14 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
     this.isFilterApplied = this.activatedRoute.snapshot.params['filter'] != null;
   }
 
+  get getStreamIcon() {
+    return ((this.entries instanceof VideoModel) && (this.entries[0] as VideoModel).isLive) ? "assets/icons/live-icon.svg" : "assets/icons/recorded-game.gif";
+  }
+
   gameClicked(event: string) {
     this.gameClick.emit(event);
   }
 
-  // get unique games
-  get _games() {
-    if (!this.isGamezopList) {
-      return (this.games as GameModel[]).filter((game, index, self) => {
-        return index === self.findIndex((t) => (t as GameModel).oneplayId === (game as GameModel).oneplayId);
-      });
-    } else {
-      return (this.games as GamezopModel[]).filter((game, index, self) => {
-        return index === self.findIndex((t) => (t as GamezopModel).code === (game as GamezopModel).code);
-      });
-    }
-  }
 
   scrollRight() {
     const container = this.containerRef.nativeElement;
@@ -113,7 +104,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
     this.selectedFilter = filter;
     this.isLoading = true;
     this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
-      this.games = games;
+      this.entries = games;
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;
       }, 500);

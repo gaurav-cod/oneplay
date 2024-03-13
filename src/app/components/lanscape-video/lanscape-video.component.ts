@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { GameModel } from 'src/app/models/game.model';
+import { VideoModel } from 'src/app/models/video.model';
 
 @Component({
   selector: 'app-lanscape-video',
@@ -8,15 +10,20 @@ import { GameModel } from 'src/app/models/game.model';
 })
 export class LanscapeVideoComponent implements OnInit {
 
-  @Input("game") videoCard: GameModel;
+  @Input("video") videoCard: VideoModel;
+
+  constructor(
+    private readonly router: Router
+  ) {}
 
   ngOnInit(): void {
   }
-  goToStream() {
 
+  goToStream() {
+    this.router.navigate([`/streams/${encodeURIComponent(JSON.stringify( { videoCard:  this.videoCard} ))}`]);
   }
 
   get viewerCount() {
-    return this.videoCard.streaming > 1000 ? ((this.videoCard.streaming/1000) + "k") : this.videoCard.streaming;
+    return this.videoCard.sourceViews > 1000 ? ((this.videoCard.sourceViews / 1000) + "k") : this.videoCard.sourceViews;
   }
 }

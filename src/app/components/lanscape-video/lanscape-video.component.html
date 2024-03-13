@@ -1,20 +1,20 @@
 <section (click)="goToStream()" class="streamContainer">
-    <img [src]="videoCard.poster_16_9" alt="" class="card-img borderRadius10 loadingBg">
-    <h4 class="game-title">{{ videoCard.title }}</h4>
-    <div class="game-secondary-title">Call of duty warzone 2.0</div>
-    <div class="gameTagsContianer">
-      <ng-container *ngFor="let genre of videoCard.genreMappings; let idx = index">
-        <span class="d-block gameGenre" *ngIf="idx < 3">{{ genre }}</span>
-      </ng-container>
+  <img [src]="videoCard.thumbnail" alt="" class="card-img borderRadius10 loadingBg">
+  <h4 class="game-title truncate-line-clamp">{{ videoCard.title }}</h4>
+  <div class="game-secondary-title truncate-line-clamp">{{ videoCard.gameName }}</div>
+  <!-- <div class="gameTagsContianer">
+    <ng-container *ngFor="let genre of videoCard.genreMappings; let idx = index">
+      <span class="d-block gameGenre" *ngIf="idx < 3">{{ genre }}</span>
+    </ng-container>
+  </div> -->
+  <div class="videoChannelContainer">
+    <img [src]="videoCard.creatorThumbnail || (videoCard.creatorName | avatar)" alt="" height="40px" width="40px">
+    <div>
+      <span class="game-title">{{ videoCard.creatorName }}</span>
+      <div class="date" *ngIf="!videoCard.isLive">{{ videoCard.addedAt | date }}</div>
     </div>
-    <div class="videoChannelContainer">
-        <img src="" alt="">
-        <div>
-            <span class="game-title">Mkice & fire</span>
-            <div class="date">{{ videoCard.releaseDate | date }}</div>
-        </div>
-    </div>
-    <div class="viewCount" *ngIf="videoCard.streaming > 0">
-        <span class="redErrorGradientColor">{{ viewerCount }} viewers</span>
-    </div>
+  </div>
+  <div class="viewCount" *ngIf="videoCard.sourceViews > 0">
+    <span class="redErrorGradientColor">{{ viewerCount }} viewers</span>
+  </div>
 </section>
