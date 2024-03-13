@@ -1,10 +1,18 @@
 .w290h185 {
   width: 256px !important;
-  height: 300px !important;
+  height: 330px !important;
 
-  @media (max-width: 1200px) {
+  @media screen and (max-width: 475px) {
     width: 100% !important;
     height: 245px !important;
+  }
+  @media screen and (min-width: 700px) and (max-width: 1200px) {
+    width: 260px !important;
+    height: 310px !important;
+  }
+  @media screen and (min-width: 475px) and (max-width: 700px) {
+    width: 200px !important;
+    height: 275px !important;
   }
 }
 
