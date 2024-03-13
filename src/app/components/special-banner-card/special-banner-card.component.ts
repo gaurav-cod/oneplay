@@ -15,7 +15,7 @@ import { v4 } from 'uuid';
   providers: [GLinkPipe]
 })
 export class SpecialBannerCardComponent implements OnInit {
-  
+
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
 
@@ -83,7 +83,7 @@ export class SpecialBannerCardComponent implements OnInit {
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
-          
+
           if (video.getBoundingClientRect().right > window.innerWidth) {
             video.style.left = String(Number(video.style.left) - 250) + "px";
           }
@@ -129,7 +129,7 @@ export class SpecialBannerCardComponent implements OnInit {
   }
 
   scaleImage(image, type: "INCREASE" | "DECREASE") {
-    if (!this.game.trailer_video)  {
+    if (!this.game.trailer_video) {
       if (type == "INCREASE")
         image.className += " card-hover position-absolute";
       else {

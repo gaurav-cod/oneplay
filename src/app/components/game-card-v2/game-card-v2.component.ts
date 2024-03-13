@@ -93,7 +93,7 @@ export class GameCardV2Component implements AfterViewInit {
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
-          video.addEventListener("mouseleave", ()=> {
+          video.addEventListener("mouseleave", () => {
             this.pauseVideo(gameLink, image, video);
           })
           video.play();

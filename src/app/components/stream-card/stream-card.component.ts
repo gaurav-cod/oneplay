@@ -18,9 +18,9 @@ export class StreamCardComponent implements OnInit {
 
   constructor(
     private readonly gavatar: AvatarPipe,
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   getId(video: VideoModel): string {
     const data: VideoWithGameId = {

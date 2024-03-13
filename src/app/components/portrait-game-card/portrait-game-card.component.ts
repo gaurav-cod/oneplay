@@ -84,7 +84,7 @@ export class PortraitGameCardComponent {
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
-          
+
           if (video.getBoundingClientRect().right > window.innerWidth) {
             video.style.left = String(Number(video.style.left) - 250) + "px";
           }
@@ -129,13 +129,13 @@ export class PortraitGameCardComponent {
     }
   }
 
-  scaleImage(image, type: "INCREASE" | "DECREASE") {
-    if (!this.game.trailer_video)  {
+  scaleImage(gameContainer, type: "INCREASE" | "DECREASE") {
+    if (!this.game.trailer_video) {
       if (type == "INCREASE")
-        image.className += " card-hover position-absolute";
+        gameContainer.className += " card-hover position-absolute";
       else {
-        image.className = this.replaceAll(image.className, "card-hover", "");
-        image.className = this.replaceAll(image.className, "position-absolute", "");
+        gameContainer.className = this.replaceAll(gameContainer.className, "card-hover", "");
+        gameContainer.className = this.replaceAll(gameContainer.className, "position-absolute", "");
       }
     }
   }

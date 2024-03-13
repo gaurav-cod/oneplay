@@ -13,11 +13,11 @@ export class CategorySmallRailComponent implements OnInit {
 
   constructor(
     private readonly restService: RestService
-  ) {}
+  ) { }
 
   @Input() gameFeed: GameFeedModel;
   @Input() contentId: string;
-  public gamesListBatches = {}; 
+  public gamesListBatches = {};
 
 
   public isFilterApplied: boolean = false;
@@ -35,8 +35,8 @@ export class CategorySmallRailComponent implements OnInit {
   rearrangeGameBatch(games: GameModel[]) {
     this.gamesListBatches = {};
     let key: number = -1;
-    for (let i=0; i<games.length; i++) {
-      if (i%4 == 0)  {
+    for (let i = 0; i < games.length; i++) {
+      if (i % 4 == 0) {
         key++;
         this.gamesListBatches[key] = [];
       }
@@ -54,9 +54,9 @@ export class CategorySmallRailComponent implements OnInit {
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({genres: filter == "All" ? null : filter}, this.contentId,0).subscribe((games) => {
+    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
       this.rearrangeGameBatch(games);
-      this._loaderTimeout = setTimeout(()=> {
+      this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;
       }, 500);
     });

@@ -1,59 +1,60 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
-    <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
-      <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp" [style.width.%]="railCategoryList?.length > 0 ? '50%' : '100%'">{{ title }}</p>
-      <ng-container *ngIf="railCategoryList?.length > 0">
-        <div class="filterContainerList" *ngIf="!isSpecialBanner">
-            <ng-container *ngFor="let filter of railCategoryList">
-              <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
-            </ng-container>
-        </div>
-      </ng-container>
-    </div>
+  <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
+    <p class="position-relative railHeading paddingLeft mr-4"
+      [style.width.%]="railCategoryList?.length > 0 ? '50' : '100'">{{ title }}</p>
+    <ng-container *ngIf="railCategoryList?.length > 0">
+      <div class="filterContainerList" *ngIf="!isSpecialBanner">
+        <ng-container *ngFor="let filter of railCategoryList">
+          <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{
+            filter | titlecase }}</div>
+        </ng-container>
+      </div>
+    </ng-container>
   </div>
-  <div class="position-relative scrollListing">
-    <div class="container-fluid padding-right-0 padding-left-0">
-      <div class="row">
-        <div class="col-md-12">
-          <div #container class="row scrollGame scrollGameHeight" [ngClass]="{'scrollGameWidthCategorySmall': railType === 'square_category_small', 'scrollGameWidthCategoryLarge': railType === 'square_category_large'}" (scroll)="updateArrows()">
-            <ng-container *ngIf="!isLoading; else showLoadingScreen">
-              <div *ngFor="let game of games" class="zoom col-auto gameCard pr-0 w290" [ngClass]="{'w210': isGamezopList, 'streamCard': railType === 'landscape_video'}">
-                  <ng-container *ngIf="railType == 'portrait_card' || railType == 'portrait_category' || railType == 'square_category_large'">
-                    <app-portrait-game-card *ngIf="!game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true" [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)" [railType]="railType"></app-portrait-game-card>
-                    <app-install-play-game-v2 *ngIf="game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true" [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)" [railType]="railType"></app-install-play-game-v2>
-                  </ng-container>
-                  <ng-container *ngIf="railType == 'square_category_small'">
-                    <app-square-small-card [game]="game"></app-square-small-card>
-                  </ng-container>
-                  <ng-container *ngIf="railType == 'landscape_video'">
-                    <app-lanscape-video [game]="game"></app-lanscape-video>
-                  </ng-container>
-              </div>
-  
-            </ng-container>
-            <ng-template #showLoadingScreen>
-              <ng-container *ngFor="let _ of [].constructor(10)">
-                <img src="assets/img/placeholder-game.svg" alt="placeholder image" height="90%" class="mr-4">
+</div>
+<div class="position-relative scrollListing">
+  <div class="container-fluid padding-right-0 padding-left-0">
+    <div class="row">
+      <div class="col-md-12">
+        <div #container class="row scrollGame scrollGameHeight"
+          [ngClass]="{'scrollGameWidthCategorySmall': railType === 'square_category_small', 'scrollGameWidthCategoryLarge': railType === 'square_category_large'}"
+          (scroll)="updateArrows()">
+          <ng-container *ngIf="!isLoading; else showLoadingScreen">
+            <div *ngFor="let game of games" class="zoom col-auto gameCard pr-0 w290"
+              [ngClass]="{'w210': isGamezopList, 'streamCard': railType === 'landscape_video'}">
+              <ng-container
+                *ngIf="railType == 'portrait_card' || railType == 'portrait_category' || railType == 'square_category_large'">
+                <app-portrait-game-card *ngIf="!game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true"
+                  [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"
+                  [railType]="railType"></app-portrait-game-card>
+                <app-install-play-game-v2 *ngIf="game.isInstallAndPlay" [game]="game" [hasFixedWidth]="true"
+                  [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"
+                  [railType]="railType"></app-install-play-game-v2>
               </ng-container>
-            </ng-template>
-          </div>
+              <ng-container *ngIf="railType == 'square_category_small'">
+                <app-square-small-card [game]="game"></app-square-small-card>
+              </ng-container>
+              <ng-container *ngIf="railType == 'landscape_video'">
+                <app-lanscape-video [game]="game"></app-lanscape-video>
+              </ng-container>
+            </div>
+
+          </ng-container>
+          <ng-template #showLoadingScreen>
+            <ng-container *ngFor="let _ of [].constructor(10)">
+              <img src="assets/img/placeholder-game.svg" alt="placeholder image" height="90%" class="mr-4">
+            </ng-container>
+          </ng-template>
         </div>
       </div>
     </div>
-  
-    <button
-      *ngIf="showLeftArrow"
-      class="btn position-absolute h-100 arrowPaddingLeft pr-2"
-      (click)="scrollLeft()"
-    >
-      <img src="assets/img/arrow-left.svg" height="30px" alt="" />
-    </button>
-  
-    <button
-      *ngIf="showRightArrow"
-      class="btn position-absolute h-100 arrowPaddingright pl-2"
-      (click)="scrollRight()"
-    >
-      <img src="assets/img/arrow-right.svg" height="30px" alt="" />
-    </button>
   </div>
-  
+
+  <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+    <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+  </button>
+
+  <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
+    <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+  </button>
+</div>
