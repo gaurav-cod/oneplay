@@ -876,6 +876,28 @@ export class RestService {
         })
       );
   }
+  getFilteredCasualGamesV2(
+    query: { [key: string]: string },
+    contentId: string,
+    page: number,
+    limit: number = 12
+  ): Observable<GamezopModel[]> {
+    const data = {
+      order_by: "release_date:desc",
+      content_ids: contentId,
+      ...query,
+    };
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+        params: { page, limit },
+      })
+      .pipe(
+        map((res) => res.map((d) => new GamezopModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
 
   getWishlistGames(ids: string[]): Observable<GameModel[]> {
     if (ids.length === 0) {

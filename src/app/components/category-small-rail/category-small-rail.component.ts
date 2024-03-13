@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { GamezopModel } from 'src/app/models/gamezop.model';
@@ -10,7 +10,7 @@ import { RestService } from 'src/app/services/rest.service';
   templateUrl: './category-small-rail.component.html',
   styleUrls: ['./category-small-rail.component.scss']
 })
-export class CategorySmallRailComponent implements OnInit {
+export class CategorySmallRailComponent implements OnInit, OnDestroy {
 
 
   constructor(
@@ -29,6 +29,10 @@ export class CategorySmallRailComponent implements OnInit {
   private _arrowTimeout: NodeJS.Timer;
   private _loaderTimeout: NodeJS.Timer;
 
+  ngOnDestroy(): void {
+    clearInterval(this._arrowTimeout);
+    clearInterval(this._loaderTimeout);
+  }
 
   ngOnInit() {
     this.rearrangeGameBatch(this.gameFeed.games);
@@ -58,8 +62,8 @@ export class CategorySmallRailComponent implements OnInit {
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
-      // this.rearrangeGameBatch(games);
+    this.restService.getFilteredCasualGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
+      this.rearrangeGameBatch(games);
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;
       }, 500);
