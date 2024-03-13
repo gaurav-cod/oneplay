@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
+import { GamezopModel } from 'src/app/models/gamezop.model';
+import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -15,7 +17,7 @@ export class CategorySmallRailComponent implements OnInit {
     private readonly restService: RestService
   ) { }
 
-  @Input() gameFeed: GameFeedModel;
+  @Input() gameFeed: GamezopFeedModel;
   @Input() contentId: string;
   public gamesListBatches = {};
 
@@ -30,9 +32,11 @@ export class CategorySmallRailComponent implements OnInit {
 
   ngOnInit() {
     this.rearrangeGameBatch(this.gameFeed.games);
+    if (!this.gameFeed.categories.includes("All"))
+      this.gameFeed.categories.splice(0, 0, "All");
   }
 
-  rearrangeGameBatch(games: GameModel[]) {
+  rearrangeGameBatch(games: GamezopModel[]) {
     this.gamesListBatches = {};
     let key: number = -1;
     for (let i = 0; i < games.length; i++) {
@@ -55,7 +59,7 @@ export class CategorySmallRailComponent implements OnInit {
     this.selectedFilter = filter;
     this.isLoading = true;
     this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
-      this.rearrangeGameBatch(games);
+      // this.rearrangeGameBatch(games);
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;
       }, 500);

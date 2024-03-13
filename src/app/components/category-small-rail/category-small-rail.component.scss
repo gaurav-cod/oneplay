@@ -5,6 +5,10 @@
   letter-spacing: 0.02em;
   font-family: "TsukiRegular";
   margin-bottom: 0px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 
   @media (max-width: 1200px) {
     font-size: 28px;
@@ -15,12 +19,19 @@
 
 .gameCol {
   margin: 20px;
-  width: unset;
+  width: 390px;
 
+  // @media screen and (max-width: 475px) {
+  //   margin: 10px !important;
+  //   margin-right: 20px !important;
+  //   margin-bottom: 20px !important;
+  //   width: 310px !important;
+  // }
   @media screen and (max-width: 1200px) {
     margin: 10px !important;
     margin-right: 20px !important;
-    width: 280px !important;
+    margin-bottom: 20px !important;
+    width: 310px !important;
   }
 }
 

@@ -859,7 +859,7 @@ export class RestService {
     contentId: string,
     page: number,
     limit: number = 12
-  ): Observable<GameModel[]> {
+  ): Observable<(GameModel | GamezopModel)[]> {
     const data = {
       order_by: "release_date:desc",
       content_ids: contentId,
@@ -895,13 +895,19 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(params?: any): Observable<(VideoFeedModel | GameFeedModel)[]> {
+  getHomeFeed(params?: any): Observable<(VideoFeedModel | GamezopFeedModel | GameFeedModel)[]> {
     
     return this.http
       .get<any[]>(this.r_mix_api + "/games/feed/personalized", { params })
       .pipe(
         map((res) => res.map((d) => {
-          return d.type == 'landscape_video' ? new VideoFeedModel(d) : new GameFeedModel(d)})),
+          if (d.type == "landscape_video")
+            return new VideoFeedModel(d);
+          else if (d.type == "square_category_small")
+            return new GamezopFeedModel(d);
+          else
+            return new GameFeedModel(d);
+        })),
         catchError(({ error }) => {
           throw error;
         })

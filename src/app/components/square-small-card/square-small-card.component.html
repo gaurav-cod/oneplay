@@ -1,9 +1,9 @@
-<section class="d-flex position-relative" style="gap: 20px;" #gameLink>
-    <img #image [src]="game.poster_1_1" alt="" class="imageContainer" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+<section class="d-flex position-relative cursorPointer" style="gap: 20px;" #gameLink (click)="gamezopGame()">
+    <img #image [src]="game.assets.square" alt="" class="imageContainer" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
     <div>
-        <span class="game-title">{{ game.title }}</span>
+        <span class="game-title">{{ game.name }}</span>
         <div class="gameTagsContianer mt-2">
-            <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
+            <ng-container *ngFor="let genre of game.categories; let idx = index">
                 <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
             </ng-container>
         </div>
