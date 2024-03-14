@@ -20,7 +20,7 @@ export class LanscapeVideoComponent implements OnInit {
   }
 
   goToStream() {
-    this.router.navigate([`/streams/${encodeURIComponent(JSON.stringify( { videoCard:  this.videoCard} ))}`]);
+    this.router.navigate([`/streams/${encodeURIComponent(JSON.stringify( { video:  this.videoCard} ))}`]);
   }
 
   get viewerCount() {

@@ -6,6 +6,7 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { Subscription } from 'rxjs';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
+import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { VideoFeedModel } from 'src/app/models/streamFeed.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,7 +22,7 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
-  public railRowCards: (GameFeedModel | VideoFeedModel)[] = [];
+  public railRowCards: (GameFeedModel | VideoFeedModel | GamezopFeedModel)[] = [];
   public landscapeRowCards: VideoFeedModel[] = [];
 
   public selectedHeroBannerId: string;
@@ -71,12 +72,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
         this._feedSubscription = this.restService.getHomeFeed().subscribe({
           next: (response) => {
-            const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0));
+            const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
             this.heroBannerRow = feeds.filter((feed) => (feed as GameFeedModel).type === "hero_banner").at(0) as GameFeedModel;
             this.selectedHeroBannerId = this.heroBannerRow.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow.games[0];
-            this.railRowCards = (feeds.filter((f) => f.type !== "hero_banner"));
-          
+            this.railRowCards = (feeds.filter((f) => f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"));
+            // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.selectedBannerGame.trailer_video) {
               clearTimeout(this.bannerShowTimer);

@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
+import { GamezopModel } from 'src/app/models/gamezop.model';
+import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { RestService } from 'src/app/services/rest.service';
 
 @Component({
@@ -8,14 +10,14 @@ import { RestService } from 'src/app/services/rest.service';
   templateUrl: './category-small-rail.component.html',
   styleUrls: ['./category-small-rail.component.scss']
 })
-export class CategorySmallRailComponent implements OnInit {
+export class CategorySmallRailComponent implements OnInit, OnDestroy {
 
 
   constructor(
     private readonly restService: RestService
   ) { }
 
-  @Input() gameFeed: GameFeedModel;
+  @Input() gameFeed: GamezopFeedModel;
   @Input() contentId: string;
   public gamesListBatches = {};
 
@@ -27,12 +29,18 @@ export class CategorySmallRailComponent implements OnInit {
   private _arrowTimeout: NodeJS.Timer;
   private _loaderTimeout: NodeJS.Timer;
 
+  ngOnDestroy(): void {
+    clearInterval(this._arrowTimeout);
+    clearInterval(this._loaderTimeout);
+  }
 
   ngOnInit() {
     this.rearrangeGameBatch(this.gameFeed.games);
+    if (!this.gameFeed.categories.includes("All"))
+      this.gameFeed.categories.splice(0, 0, "All");
   }
 
-  rearrangeGameBatch(games: GameModel[]) {
+  rearrangeGameBatch(games: GamezopModel[]) {
     this.gamesListBatches = {};
     let key: number = -1;
     for (let i = 0; i < games.length; i++) {
@@ -54,7 +62,7 @@ export class CategorySmallRailComponent implements OnInit {
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
+    this.restService.getFilteredCasualGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
       this.rearrangeGameBatch(games);
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;

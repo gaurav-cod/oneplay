@@ -14,7 +14,7 @@ import { RestService } from "src/app/services/rest.service";
 export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
   @Input() contentId: string;
-  @Input() entries: (GameModel | VideoModel)[] = [];
+  @Input() entries: (GameModel | VideoModel | GamezopModel)[] = [];
   @Input() railCategoryList: string[];
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
