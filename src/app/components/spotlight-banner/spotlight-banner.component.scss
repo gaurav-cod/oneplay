@@ -39,6 +39,10 @@
   font-family: "TsukiRegular";
   margin-bottom: 0px;
   z-index: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
 
   @media (max-width: 1200px) {
     font-size: 28px;
@@ -155,5 +159,6 @@
     right: -10px;
     padding: 8px;
     overflow-x: auto;
+    margin-left: 5px;
   }
 }
