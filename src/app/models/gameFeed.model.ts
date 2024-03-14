@@ -1,3 +1,4 @@
+import { FilterPayload } from "../interface";
 import { GameModel } from "./game.model";
 
 export type RAIL_TYPES = 'hero_banner' 
@@ -13,6 +14,7 @@ export class GameFeedModel {
   readonly title: string;
   readonly games: GameModel[];
   readonly categories: string[];
+  readonly filterPayload: FilterPayload;
   readonly type: RAIL_TYPES;
   readonly contentId: string;
   readonly backgroundImage: string;
@@ -29,6 +31,7 @@ export class GameFeedModel {
     this.games = json.results.map((game) => new GameModel(game));
     this.type = json.type;
     this.categories = json.categories;
+    this.filterPayload = json.payload;
     this.contentId = json["payload"]?.["content_ids"];
     this.backgroundImage = json["background_image"];
     this.backgroundImageBlurhash = json["background_image_blurhash"];

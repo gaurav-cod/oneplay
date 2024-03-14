@@ -219,3 +219,9 @@ export interface LoginRO {
 export interface LoginOtpRO extends LoginRO {
   new_user: boolean;
 }
+
+export interface FilterPayload {
+  cell_style: string;
+  content_ids: string;
+  game_ids: string;
+}
