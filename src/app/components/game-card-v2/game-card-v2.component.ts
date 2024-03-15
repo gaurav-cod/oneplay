@@ -39,6 +39,7 @@ export class GameCardV2Component implements AfterViewInit {
   showSound = false;
   showTitle = false;
   imageLoaded = false;
+  showHover: boolean = false;
 
   readonly loaderId = v4();
 

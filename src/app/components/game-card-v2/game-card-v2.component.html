@@ -5,7 +5,7 @@
       <img #image [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
         class="card-img borderRadius10 loadingBg" [src]="game.poster_16_9" [ngStyle]="{
           'object-fit': hfw ? 'unset' : 'cover'
-        }" alt="" loading="lazy" (error)="onImgError($event)" />
+        }" alt="" loading="lazy" (error)="onImgError($event)" (mouseenter)="showHover = !game.video" />
       <image-loading [hash]="game.poster_16_9_blurhash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
@@ -52,3 +52,7 @@
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>
   </div>
 </a>
+<img (click)="onGameClick()"  
+      [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }" 
+      class="card-img-hover borderRadius10 loadingBg" [src]="game.poster_16_9" 
+      [ngStyle]="{'object-fit': hfw ? 'unset' : 'cover'}" alt="" *ngIf="showHover" (mouseleave)="showHover = false" />
