@@ -238,3 +238,17 @@ video {
     width: 260px !important;
   }
 }
+
+.card-img-hover {
+  z-index: 1000;
+  position: absolute;
+  top: 40px;
+  transition: transform 0.2s ease-out;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+  border: 2px solid transparent;
+}
+.card-img-hover:hover {
+  transform: scale(1.3);
+}
+

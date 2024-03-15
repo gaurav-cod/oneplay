@@ -7,7 +7,7 @@
   <div class="mask" style="z-index: 2;">
     <div class="position-relative">
       <img #image class="card-img borderRadius10 loadingBg w290h185" [src]="game.poster_16_9" loading="lazy"
-        (error)="onImgError($event)" />
+        (error)="onImgError($event)" (mouseenter)="showHover = true" />
       <image-loading [hash]="game.poster_3_4_blurhash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
@@ -53,3 +53,4 @@
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>
   </div>
 </a>
+<img class="card-img-hover borderRadius10 loadingBg w290h185 cursorPointer" [src]="game.poster_16_9" (mouseleave)="showHover = false" (click)="onGameClick()" *ngIf="showHover" />

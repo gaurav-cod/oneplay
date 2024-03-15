@@ -29,6 +29,7 @@ export class SpecialBannerCardComponent implements OnInit {
   showSound = false;
   showTitle = false;
   imageLoaded = false;
+  showHover: boolean = false;
 
   readonly loaderId = v4();
 
