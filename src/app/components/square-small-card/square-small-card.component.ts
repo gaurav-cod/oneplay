@@ -39,7 +39,7 @@ export class SquareSmallCardComponent implements OnInit {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
-          const video = document.createElement("iframe");
+          const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
           video.src = this.game.gamePreviews;

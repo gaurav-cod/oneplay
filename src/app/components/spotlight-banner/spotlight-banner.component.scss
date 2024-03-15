@@ -27,23 +27,26 @@
 
 .specialBannerList {
   display: flex;
-  align-items: end;
+  align-items: center;
+  height: 70%;
 }
 
 .railHeading {
   font-weight: 500;
   font-size: 38px;
-  line-height: 20px;
   color: #dcdcdc;
   letter-spacing: 0.02em;
   font-family: "TsukiRegular";
-  margin-bottom: 0px;
+  margin-bottom: 10px;
   z-index: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  display: -webkit-box;
 
   @media (max-width: 1200px) {
     font-size: 28px;
     line-height: 26px;
-    width: 50%;
     margin-right: 0px !important;
   }
 }
@@ -110,10 +113,26 @@
 .scrollGame .gameCard {
   display: inline-block;
 }
+.container-fluid {
+  @media screen and (max-width: 475px) {
+    flex-direction: column !important;
+  }
+}
 
 .spotlightBannerImage {
   position: relative;
   z-index: 100;
+  height: 400px;
+  width: 400px;
+  border-radius: 15px;
+  @media screen and (min-width: 475px) and (max-width: 1200px) {
+    height: 350px;
+    width: 350px;
+  }
+  @media screen and (max-width: 475px) {
+    height: 310px;
+    width: 310px;
+  }
 }
 
 .filterContainerList {
@@ -155,5 +174,19 @@
     right: -10px;
     padding: 8px;
     overflow-x: auto;
+    margin-left: 5px;
   }
+}
+.hideInLarge {
+  @media screen and (min-width: 475px) {
+    display: none;
+  }
+}
+.hideInMobile {
+  @media screen and (max-width: 475px) {
+    display: none;
+  }
+}
+.mainSpecialBanner {
+  margin-top: 20px;
 }

@@ -70,8 +70,8 @@
     <ng-container *ngFor="let row of railRowCards">
       <ng-container
         *ngIf="row.type != 'special_banner' && row.type != 'spotlight_banner' && row.type != 'square_category_small'">
-        <app-similar-games-v2 [title]="row.title" [entries]="row.type == 'landscape_video' ? row.videos : row.games" [contentId]="row.contentId"
-          [railCategoryList]="row.categories" [railType]="row.type"></app-similar-games-v2>
+        <app-similar-games-v2 [title]="row.title" [entries]="row.type == 'landscape_video' ? row.videos : row.games"
+          [railCategoryList]="row.categories" [railType]="row.type" [payload]="row.filterPayload"></app-similar-games-v2>
       </ng-container>
       <ng-container *ngIf="row.type == 'special_banner'">
         <app-parallex-sec [gamesFeed]="row"></app-parallex-sec>

@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { FilterPayload } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
 import { RAIL_TYPES } from "src/app/models/gameFeed.model";
 import { GamezopModel } from "src/app/models/gamezop.model";
@@ -13,8 +14,8 @@ import { RestService } from "src/app/services/rest.service";
 })
 export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy {
   @Input() title: string;
-  @Input() contentId: string;
   @Input() entries: (GameModel | VideoModel | GamezopModel)[] = [];
+  @Input() payload: FilterPayload;
   @Input() railCategoryList: string[];
   @Input() isInstallAndPlayList: boolean = false;
   @Input() isGamezopList: boolean = false;
@@ -103,7 +104,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
+    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.payload, 0).subscribe((games) => {
       this.entries = games;
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;

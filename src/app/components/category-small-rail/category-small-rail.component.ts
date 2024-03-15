@@ -56,13 +56,12 @@ export class CategorySmallRailComponent implements OnInit, OnDestroy {
     return Object.keys(this.gamesListBatches);
   }
   selectFilter(filter: string) {
-
     if (filter == this.selectedFilter)
       return;
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredCasualGamesV2({ genres: filter == "All" ? null : filter }, this.contentId, 0).subscribe((games) => {
+    this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, 0).subscribe((games) => {
       this.rearrangeGameBatch(games);
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;

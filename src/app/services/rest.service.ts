@@ -10,6 +10,7 @@ import {
   BilldeskPaymentRO,
   ClientTokenRO,
   CouponResponse,
+  FilterPayload,
   GameSessionRO,
   GameStatusRO,
   GameTermCondition,
@@ -856,13 +857,13 @@ export class RestService {
 
   getFilteredGamesV2(
     query: { [key: string]: string },
-    contentId: string,
+    payload: FilterPayload,
     page: number,
     limit: number = 12
   ): Observable<(GameModel | GamezopModel)[]> {
     const data = {
       order_by: "release_date:desc",
-      content_ids: contentId,
+      ...payload,
       ...query,
     };
     return this.http
@@ -877,22 +878,21 @@ export class RestService {
       );
   }
   getFilteredCasualGamesV2(
-    query: { [key: string]: string },
-    contentId: string,
+    category: string | null,
     page: number,
     limit: number = 12
   ): Observable<GamezopModel[]> {
     const data = {
       order_by: "release_date:desc",
-      content_ids: contentId,
-      ...query,
+      categories: category
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
         params: { page, limit },
       })
       .pipe(
-        map((res) => res.map((d) => new GamezopModel(d))),
+        map((res: any) => {
+          return res.games.map((d) => new GamezopModel(d))}),
         catchError(({ error }) => {
           throw error;
         })
