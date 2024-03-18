@@ -13,7 +13,7 @@
         #image
         [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
         class="card-img borderRadius10 loadingBg"
-        [src]="game.textBgImage"
+        [src]="installPlayImage"
         [ngStyle]="{
           'object-fit': hfw ? 'unset' : 'cover'
         }"
@@ -21,21 +21,8 @@
         loading="lazy"
         (error)="onImgError($event)"
       />
-      <image-loading [hash]="game.textBgHash" [image]="image"></image-loading>
-      <div class="gameTags">
-        <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
-          <span class="freeTag px-2 tagText">
-            FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
-          </span>
-          <!-- <span class="freeTag freeTagTriangle"></span> -->
-        </div>
-        <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 tagText">COMING SOON</span>
-        <div class="row justify-content-center mt-2">
-          <div *ngIf="game.status === 'maintenance'" class="col-auto"><span class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
-          <div *ngIf="game.status === 'updating'" class="col-auto"><span class="updatingGradient px-2 tagText">UPDATING</span></div>
-          <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT OPTIMIZED</span></div>
-        </div>
-      </div>
+      <image-loading [hash]="installPlayBlurhashImage" [image]="image"></image-loading>
+      
       <div class="premiumIcon">
         <img src="assets/icons/premium-icon.svg" alt="">
       </div>

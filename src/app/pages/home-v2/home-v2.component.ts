@@ -9,6 +9,7 @@ import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { VideoFeedModel } from 'src/app/models/streamFeed.model';
 import { UserModel } from 'src/app/models/user.model';
+import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
@@ -17,7 +18,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: 'app-home-v2',
   templateUrl: './home-v2.component.html',
-  styleUrls: ['./home-v2.component.scss']
+  styleUrls: ['./home-v2.component.scss'],
+  providers: [GLinkPipe]
 })
 export class HomeV2Component implements OnInit, OnDestroy {
 
@@ -28,7 +30,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
   public playVideo: boolean = false;
-  public isVideoMute: boolean = false;
+  public isVideoMute: boolean = true;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
@@ -45,7 +47,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly title: Title,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly gLink: GLinkPipe,
   ) { }
 
   get domain() {
@@ -127,6 +130,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  viewBannerGame(game: GameModel) {
+    this.router.navigate(["view", this.gLink.transform(game)]);
+  }
+
   moveSelectedCard(direction: "LEFT" | "RIGHT") {
 
     clearTimeout(this.bannerShowTimer);
@@ -139,6 +146,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex + (direction == "LEFT" ? -1 : 1)) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     // if game does not contain video then by default banner will move to next game in 5sec
+    this.playVideo = false;
     if (!this.selectedBannerGame.trailer_video) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
@@ -147,8 +155,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   cardSelected(game: GameModel) {
-    this.selectedBannerGame = game;
+    this.selectedBannerGame = game; 
     this.selectedHeroBannerId = game.oneplayId;
+    this.playVideo = false;
+    setTimeout(() => {
+      this.playVideo = true;
+    }, 2000);
   }
   videoEnded() {
     this.playVideo = false;

@@ -45,9 +45,13 @@ export class ParallexSecComponent implements OnInit {
     const st = window.pageYOffset || document.documentElement.scrollTop;
 
     if (st > this.lastScrollTop) {
-      this.marginValue += step;
+      this.marginValue += (step / 500);
+      if (this.marginValue > 1.5)
+        this.marginValue = 1.5;
     } else {
-      this.marginValue -= step;
+      this.marginValue -= (step / 500);
+      if (this.marginValue < 1)
+        this.marginValue = 1;
     }
     this.lastScrollTop = st <= 0 ? 0 : st;
   }
