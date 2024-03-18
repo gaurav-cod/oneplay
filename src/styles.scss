@@ -9,6 +9,11 @@
 }
 
 @font-face {
+  font-family: "TsukiRegular";
+  src: url(assets/fonts/Tuski/NineTsukiRegular.ttf);
+}
+
+@font-face {
   font-family: "Poppins";
   src: url(assets/fonts/Poppins/Poppins-Regular.ttf);
 }
@@ -185,6 +190,10 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: none !important;
   background-color: #151515 !important;
+}
+
+a {
+  -webkit-user-drag: none;
 }
 
 .textMuted {

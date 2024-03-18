@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { Subscription } from "rxjs";
+import { Subscription, filter } from "rxjs";
 import { UserInfoComponent } from "src/app/components/user-info/user-info.component";
 import { UserModel } from "src/app/models/user.model";
 import { AuthService } from "src/app/services/auth.service";
@@ -29,12 +29,14 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
   private _qParamsSubscription: Subscription;
   private _triggerInitialModalSubscription: Subscription;
   private _userInfoRef: NgbModalRef;
+  private _routerSubscription: Subscription;
   private _userInfoSubscription: Subscription;
   private queryParamSubscription: Subscription;
   private _openUserInfoModal: NodeJS.Timer;
 
   private clickCountForOverlay: number = 0;
 
+  public isHomePage: boolean = false;
   public showWelcomeMessage: boolean = false;
   public isApp: boolean = localStorage.getItem("src") === "oneplay_app";;
 
@@ -74,6 +76,13 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
         localStorage.removeItem("src");
         this.isApp = false;
       }
+    });
+    
+    this.isHomePage = this.router.url.includes("home");
+    this._routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+       this.isHomePage = this.router.url.includes("home");
     });
 
     this.sessionSubscription = this.authService.sessionTokenExists.subscribe(
@@ -169,6 +178,7 @@ export class CommonLayoutComponent implements OnInit, OnDestroy {
     this._triggerInitialModalSubscription?.unsubscribe();
     this._userInfoSubscription?.unsubscribe();
     this.queryParamSubscription?.unsubscribe();
+    this._routerSubscription?.unsubscribe();
     this._userInfoRef?.close();
     clearInterval(this.timer);
     clearInterval(this.threeSecondsTimer);

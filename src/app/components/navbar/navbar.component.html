@@ -14,15 +14,19 @@
   />
 </div>
 <nav
-  class="navbar navbar-expand-lg navbar-dark sticky-top navbarBg xsborderBottom"
+  class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
+  [ngClass]="{'adjustPositionOnWarning': isWarningShown && isHomePage}"
+  [style.background]="showSearchBar ? '#151617' : ''"
+  [style.top]="showSearchBar ? '-1px !important': ''"
+  [style.position]="!isHomePage ? 'relative !important' : ''"
 >
   <div
     class="container-fluid p-0"
     style="padding-left: 1% !important; padding-right: 2% !important"
   >
     <div class="search">
-      <span class="bgTransparent offWhiteColor font16 font500">
+      <span class="searchIconMobile offWhiteColor font16 font500">
         <a
           href="javascript:void(0)"
           routerLinkActive="active"
@@ -36,7 +40,7 @@
     <a href="javascript:void(0)" class="navbar-brand" [routerLink]="['/home']">
       <img
         class="img-fluid w120"
-        src="assets/img/brand/brandLogo.svg"
+        src="assets/img/brand/oneplay-logo.svg"
         alt=" "
       />
     </a>
@@ -47,7 +51,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/home']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="headerNavOnClick('homeClicked')"
@@ -57,7 +61,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/store']"
             class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="headerNavOnClick('gamesClicked')"
@@ -67,7 +71,7 @@
         <li class="nav-item">
           <a
             href="javascript:void(0)"
-            routerLinkActive="active"
+            routerLinkActive="text-white"
             [routerLink]="['/streams']"
             class="nav-link p-0 mt-2 pt-1 mr-3"
             (click)="headerNavOnClick('streamsClicked')"
@@ -85,24 +89,21 @@
           />
           <a 
               href="javascript:void(0)"
-              routerLinkActive="active"
+              routerLinkActive="text-white"
               [routerLink]="['/casual-games']"
               class="nav-link p-0 mt-2 pt-1 mr-3"
               (click)="headerNavOnClick('level1Clicked')"
             >Level 1</a
           >
         </li>
-        <li class="d-none d-lg-inline ml-2">
+        <li class="nav-item position-relative w-100">
           <form
-            class="navbar-search form-inline d-none d-md-flex mt-md-3 mt-lg-0 ml-lg-auto position-relative"
+            class="navbar-search position-relative w-100 h-100"
           >
-            <div
-              class="form-group mb-0"
-              [ngClass]="{ focused: (isFocused | async) === true }"
-            >
+            <div class="search-box" (mouseenter)="showSearchBar = true" (mouseleave)="onMouseOver()">
               <input
                 #search
-                class="form-control font18 font500 width200 border-0 modalBG"
+                class="search-txt"
                 placeholder="Search for games or friends"
                 type="text"
                 [formControl]="query"
@@ -111,19 +112,20 @@
                 (click)="headerNavOnClick('searchClicked')"
                 (keyup.enter)="results.length === 3 ? search.blur() : ''"
               />
-              
               <span
-                class="bgTransparent fixedIcon offWhiteColor font16 font500"
+                class="search-btn"
               >
                 <a href="javascript:void(0)"
                   ><i class="fas fa-search text-white"></i
                 ></a>
               </span>
-            </div>
-            <div
-              *ngIf="!isMenuCollapsed"
-              class="position-absolute w-100 bg-dark list-group border-0 searchDropdown"
-              style="top: calc(100% + 8px); max-height: calc(99vh - 79px)"
+
+
+              <div
+                (mouseenter)="showSearchBar = true"
+                *ngIf="!isMenuCollapsed"
+                class="position-absolute w-100 bg-dark list-group border-0 searchDropdown d-none"
+                style="top: calc(100% + 1px); max-height: calc(99vh - 79px)"
             >
               <div
                 *ngFor="let game of results"
@@ -215,7 +217,7 @@
                     />
                     <image-loading [image]="image" [hash]="game.iapSearchHash" />
                   </div>
-                 
+                
                   <div class="d-flex mt-1">
                     <ng-container *ngFor="let store of game.storesMapping">
                       <img [src]="store.store_image" height="18" width="18" alt="" class="mr-1">
@@ -316,7 +318,36 @@
                   Please try different keywords.
                 </p>
               </div>
+              </div>
+
             </div>
+
+            <!-- <div
+              class="form-group mb-0"
+              [ngClass]="{ focused: (isFocused | async) === true }"
+              *ngIf="showSearchBar"
+            >
+              <input
+                #search
+                class="form-control font18 font500 width200 border-0 modalBG"
+                placeholder="Search for games or friends"
+                type="text"
+                [formControl]="query"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+                (click)="headerNavOnClick('searchClicked')"
+                (keyup.enter)="results.length === 3 ? search.blur() : ''"
+              />
+              
+              <span
+                class="bgTransparent fixedIcon offWhiteColor font16 font500"
+                (mouseenter)="onMouseEnter()"
+              >
+                <a href="javascript:void(0)"
+                  ><i class="fas fa-search text-white"></i
+                ></a>
+              </span>
+            </div> -->
           </form>
         </li>
       </ul>
@@ -358,6 +389,7 @@
               class="nav-link p-0 br50 mr-2"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage('chat')"
+              style="min-width: fit-content;"
             >
               <span class="" >
                 <!-- <i class="fas fa-user-friends"></i> -->
@@ -417,6 +449,7 @@
                 class="nav-link p-0 br50"
                 role="button"
                 (click)="goToNotificationScreen()"
+                style="min-width: fit-content;"
               >
                 <img
                   alt=""
@@ -434,17 +467,18 @@
               </div>
           </div>
           <div
-            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible"
+            class="col-auto align-self-center pr-3 pl-0 removeFocusVisible profileIcon"
             ngbDropdown
             #guestDropDown="ngbDropdown"
             placement="bottom-right"
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 d-flex justify-content-end"
               role="button"
               (click)="headerNavOnClick('profileClicked', true)"
               ngbDropdownToggle
+              style="min-width: fit-content;"
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
                 <img
@@ -509,7 +543,7 @@
                 </a>  -->
 
                 <a
-                  *ngIf="!isClientSide"
+                *ngIf="!isClientSide"
                   (click)="logDropdownEvent('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
@@ -520,9 +554,9 @@
                   <span class="align-middle">Speed Test</span>
                 </a>
 
-                <div class="dropdown-divider borderColor" ></div>
+                <div class="dropdown-divider borderColor"></div>
                 <a
-                  *ngIf="!isClientSide"
+                *ngIf="!isClientSide"
                   [href]="domain + '/download.html'"
                   class="dropdown-item d-none d-sm-inline"
                   (click)="logDropdownEvent('downloadsClicked')"
@@ -593,7 +627,7 @@
                 </a>
 
                 <a
-                  *ngIf="!isClientSide"
+                *ngIf="!isClientSide"
                   (click)="logDropdownEventGuest('speedTestClicked')"
                   href="javascript:void(0)"
                   routerLinkActive="active"
