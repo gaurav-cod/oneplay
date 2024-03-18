@@ -1319,7 +1319,7 @@ export class RestService {
   }
 
   checkCasualGamingSession() {
-    return this.http.get(this.r_mix_api + "/games/gamezop/is_new_visit").pipe(
+    return this.http.get(this.r_mix_api + "/games/gamezop/is_free").pipe(
       map((res) => res),
       catchError(({ error }) => {
         throw error;
