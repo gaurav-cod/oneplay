@@ -62,6 +62,8 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public showInitialUserMessage: boolean = false;
   public isHomePage: boolean = false;
   public isWarningShown: boolean = false;
+  public showSearchBar: boolean = false;
+  public showSearchBarForce: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -94,7 +96,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:scroll', ['$event']) 
   onScroll(event) {
-      this.showSearchBar = event.currentTarget.pageYOffset > 45;
+      this.showSearchBarForce = event.currentTarget.pageYOffset > 45;
   }
 
   notificationData: NotificationModel[] | null = null;
@@ -103,7 +105,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showOverlayProfile: boolean = false;
   
-
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
@@ -457,7 +458,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  showSearchBar: boolean = false;
   onMouseEnter() {
     this.showSearchBar = true;
   }
