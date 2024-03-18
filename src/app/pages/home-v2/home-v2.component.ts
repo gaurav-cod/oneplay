@@ -8,6 +8,7 @@ import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { VideoFeedModel } from 'src/app/models/streamFeed.model';
+import { TransformMessageModel } from 'src/app/models/tansformMessage.model';
 import { UserModel } from 'src/app/models/user.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
@@ -35,6 +36,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
   private _userSubscription: Subscription;
+
+  private wishlist: string[] = [];
+  loadingWishlist = false;
 
   private bannerShowTimer: NodeJS.Timer;
   private playVideoTimer: NodeJS.Timer;
@@ -104,6 +108,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
         this._userSubscription = this.authService.user.subscribe((user) => {
           this.userDetails = user;
+          this.authService.wishlist.subscribe(
+            (wishlist) => (this.wishlist = (wishlist ?? []))
+          );
         });
       }
     })
@@ -176,5 +183,51 @@ export class HomeV2Component implements OnInit, OnDestroy {
       }
 
     return 1 - (Math.abs(selectedBannerIdx - index) / 10);
+  }
+
+  get isInWishlist(): boolean {
+    return this.wishlist.includes(this.selectedBannerGame?.oneplayId);
+  }
+
+  addToWishlist(game): void {
+    this.loadingWishlist = true;
+    this.restService.addWishlist(game.oneplayId).subscribe((response) => {
+      this.loadingWishlist = false;
+      this.showSuccess(new TransformMessageModel(response.data));
+      this.authService.addToWishlist(game.oneplayId);
+    }, (error)=> {
+      this.showError(error);
+    });
+  }
+
+  removeFromWishlist(game): void {
+    this.loadingWishlist = true;
+    this.restService.removeWishlist(game.oneplayId).subscribe((response) => {
+      this.loadingWishlist = false;
+      this.authService.removeFromWishlist(game.oneplayId);
+      this.showSuccess(new TransformMessageModel(response.data));
+    }, (error)=> {
+      this.showError(error);
+    });
+  }
+  showError(error, doAction: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
+  }
+  showSuccess(response) {
+    Swal.fire({
+      title: response.title,
+      text: response.message,
+      imageUrl: response.icon,
+      confirmButtonText: response.primary_CTA,
+      showCancelButton: response.showSecondaryCTA,
+      cancelButtonText: response.secondary_CTA
+    })
   }
 }
