@@ -298,6 +298,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.sessionCountForCasualGaming();
     this.restService.getSeriousNotification().toPromise().then((data)=> {
       this.isWarningShown = data.length > 0;
       if (this.isWarningShown) {
@@ -331,7 +332,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       (exists) => {
         this.isAuthenticated = exists;
         if (exists) {
-          // this.sessionCountForCasualGaming();
           this.initPushNotification();
           this.gameStatusSubscription = this.gameService.gameStatus.subscribe(
             (status) => {
@@ -729,16 +729,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   sessionCountForCasualGaming() {
-    if (!this.isAuthenticated) return;
 
-    // this.restService.checkCasualGamingSession().subscribe({
-    //   next: (response: any) => {
-    //     this.showCasualGamingLabel = response.is_new;
-    //   },
-    //   error: () => {
-    //     this.showCasualGamingLabel = false;
-    //   },
-    // });
+    this.restService.checkCasualGamingSession().toPromise().then((response: any)=> {
+      this.showCasualGamingLabel = response.is_free;
+    })
   }
 
   headerNavOnClick(
