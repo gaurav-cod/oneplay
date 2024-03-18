@@ -298,6 +298,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.sessionCountForCasualGaming();
     this.restService.getSeriousNotification().toPromise().then((data)=> {
       this.isWarningShown = data.length > 0;
       if (this.isWarningShown) {
