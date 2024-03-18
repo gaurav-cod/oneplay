@@ -8,7 +8,9 @@ import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { VideoFeedModel } from 'src/app/models/streamFeed.model';
+import { TransformMessageModel } from 'src/app/models/tansformMessage.model';
 import { UserModel } from 'src/app/models/user.model';
+import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
@@ -17,7 +19,8 @@ import Swal from "sweetalert2";
 @Component({
   selector: 'app-home-v2',
   templateUrl: './home-v2.component.html',
-  styleUrls: ['./home-v2.component.scss']
+  styleUrls: ['./home-v2.component.scss'],
+  providers: [GLinkPipe]
 })
 export class HomeV2Component implements OnInit, OnDestroy {
 
@@ -28,11 +31,14 @@ export class HomeV2Component implements OnInit, OnDestroy {
   public selectedHeroBannerId: string;
   public selectedBannerGame: GameModel;
   public playVideo: boolean = false;
-  public isVideoMute: boolean = false;
+  public isVideoMute: boolean = true;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
   private _userSubscription: Subscription;
+
+  private wishlist: string[] = [];
+  loadingWishlist = false;
 
   private bannerShowTimer: NodeJS.Timer;
   private playVideoTimer: NodeJS.Timer;
@@ -45,7 +51,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly title: Title,
     private readonly loaderService: NgxUiLoaderService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly gLink: GLinkPipe,
   ) { }
 
   get domain() {
@@ -101,6 +108,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
         this._userSubscription = this.authService.user.subscribe((user) => {
           this.userDetails = user;
+          this.authService.wishlist.subscribe(
+            (wishlist) => (this.wishlist = (wishlist ?? []))
+          );
         });
       }
     })
@@ -127,6 +137,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }, 2000);
   }
 
+  viewBannerGame(game: GameModel) {
+    this.router.navigate(["view", this.gLink.transform(game)]);
+  }
+
   moveSelectedCard(direction: "LEFT" | "RIGHT") {
 
     clearTimeout(this.bannerShowTimer);
@@ -139,6 +153,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex + (direction == "LEFT" ? -1 : 1)) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     // if game does not contain video then by default banner will move to next game in 5sec
+    this.playVideo = false;
     if (!this.selectedBannerGame.trailer_video) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
@@ -147,8 +162,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   cardSelected(game: GameModel) {
-    this.selectedBannerGame = game;
+    this.selectedBannerGame = game; 
     this.selectedHeroBannerId = game.oneplayId;
+    this.playVideo = false;
+    setTimeout(() => {
+      this.playVideo = true;
+    }, 2000);
   }
   videoEnded() {
     this.playVideo = false;
@@ -164,5 +183,51 @@ export class HomeV2Component implements OnInit, OnDestroy {
       }
 
     return 1 - (Math.abs(selectedBannerIdx - index) / 10);
+  }
+
+  get isInWishlist(): boolean {
+    return this.wishlist.includes(this.selectedBannerGame?.oneplayId);
+  }
+
+  addToWishlist(game): void {
+    this.loadingWishlist = true;
+    this.restService.addWishlist(game.oneplayId).subscribe((response) => {
+      this.loadingWishlist = false;
+      this.showSuccess(new TransformMessageModel(response.data));
+      this.authService.addToWishlist(game.oneplayId);
+    }, (error)=> {
+      this.showError(error);
+    });
+  }
+
+  removeFromWishlist(game): void {
+    this.loadingWishlist = true;
+    this.restService.removeWishlist(game.oneplayId).subscribe((response) => {
+      this.loadingWishlist = false;
+      this.authService.removeFromWishlist(game.oneplayId);
+      this.showSuccess(new TransformMessageModel(response.data));
+    }, (error)=> {
+      this.showError(error);
+    });
+  }
+  showError(error, doAction: boolean = false) {
+    Swal.fire({
+      title: error.data.title,
+      text: error.data.message,
+      imageUrl: error.data.icon,
+      confirmButtonText: error.data.primary_CTA,
+      showCancelButton: error.data.showSecondaryCTA,
+      cancelButtonText: error.data.secondary_CTA
+    })
+  }
+  showSuccess(response) {
+    Swal.fire({
+      title: response.title,
+      text: response.message,
+      imageUrl: response.icon,
+      confirmButtonText: response.primary_CTA,
+      showCancelButton: response.showSecondaryCTA,
+      cancelButtonText: response.secondary_CTA
+    })
   }
 }

@@ -110,7 +110,7 @@ export class SpotlightBannerComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.specialBannerGame.trailer_video && !this.isMobile && this.specialBannerGame.status === "live") {
+    if ((this.specialBannerGame.video_hero_banner_16_9 || this.specialBannerGame.video_hero_banner_1_1 || this.specialBannerGame.trailer_video ) && !this.isMobile && this.specialBannerGame.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);

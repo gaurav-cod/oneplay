@@ -25,9 +25,27 @@
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block">
               View More
             </button>
-            <button (click)="addToWishlist()" [disabled]="loadingWishlist" class="btn p-0 ml-2"
-              ngbTooltip="Add to Library" *ngIf="userDetails">
+            <button 
+              (click)="addToWishlist(selectedBannerGame)" 
+              *ngIf="!isInWishlist && userDetails"
+              [disabled]="loadingWishlist" 
+              class="btn p-0 ml-2 cursorPointer"
+              ngbTooltip="Add to Library"
+            >
               <img src="assets/icons/Speedtest (2).svg" class="img-fluid" alt="" />
+            </button>
+            <button
+              *ngIf="isInWishlist && userDetails"
+              (click)="removeFromWishlist(selectedBannerGame)"
+              [disabled]="loadingWishlist"
+              class="btn p-0 cursorPointer"
+              ngbTooltip="Remove from Library"
+            >
+              <img
+                src="assets/icons/Speedtest.svg"
+                class="img-fluid"
+                alt=""
+              />
             </button>
             <ng-container *ngIf="playVideo">
               <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">

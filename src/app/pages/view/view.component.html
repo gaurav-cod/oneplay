@@ -327,7 +327,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
+        <div *ngIf="!!game.warningMessage?.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"

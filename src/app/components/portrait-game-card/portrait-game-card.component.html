@@ -54,4 +54,4 @@
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>
   </div>
 </a>
-<img (click)="onGameClick()" class="card-img-hover borderRadius10 cursorPointer loadingBg w290h185" [ngClass]="{'categoryLargeWidth': railType == 'square_category_large'}" [src]="game.poster_3_4" (mouseleave)="showHover = false" *ngIf="showHover" />
+<img #hoverImage (click)="onGameClick()" class="card-img-hover borderRadius10 cursorPointer loadingBg w290h185" [ngClass]="{'categoryLargeWidth': railType == 'square_category_large'}" [src]="game.poster_3_4" (mouseleave)="showHover = false" *ngIf="showHover" />

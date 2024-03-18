@@ -3,6 +3,7 @@
   width: 100%;
   position: relative;
   margin-bottom: 20px;
+  overflow: hidden;
 
   @media screen and (max-width: 475px) {
     height: 60vh;
@@ -46,12 +47,13 @@
     top: 0px;
     left: 0px;
     background-size: cover;
-    background-position: center center;
     background-repeat: no-repeat;
     height: 100%;
     z-index: 1;
     position: relative;
-    opacity: 0.7;
+    @media screen and (max-width: 475px) {
+      top: 45px;
+    }
   }
 }
 

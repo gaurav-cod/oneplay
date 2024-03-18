@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
+import { RAIL_TYPES } from 'src/app/models/gameFeed.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { getGameLandingViewSource } from 'src/app/utils/countly.util';
@@ -13,7 +14,7 @@ import { v4 } from 'uuid';
   styleUrls: ['./install-play-game-v2.component.scss'],
   providers: [GLinkPipe],
 })
-export class InstallPlayGameV2Component {
+export class InstallPlayGameV2Component implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
@@ -29,6 +30,7 @@ export class InstallPlayGameV2Component {
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @Input() railType: RAIL_TYPES;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -40,6 +42,17 @@ export class InstallPlayGameV2Component {
 
   get isMobile() {
     return window.innerWidth < 768;
+  }
+
+  ngOnInit(): void {
+    console.log(this.game);
+  }
+
+  get installPlayImage() {
+    return window.innerWidth > 475 ? this.game.poster_16_9 : this.game.poster_1_1;
+  } 
+  get installPlayBlurhashImage() {
+    return window.innerWidth > 475 ? this.game.poster_16_9_blurhash : this.game.poster_1_1_blurhash;
   }
 
   ngAfterViewInit(): void {

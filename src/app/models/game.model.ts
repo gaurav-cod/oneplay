@@ -1,9 +1,15 @@
+import { environment } from "src/environments/environment";
 import { PurchaseStore } from "../interface";
 
 export interface ImageHash {
   blurhash: string;
   max_height: number;
   max_width: number;
+}
+export interface PartnerMapping {
+  id: string;
+  status: string;
+  warning_message: string;
 }
 
 export enum status {
@@ -49,6 +55,8 @@ export class GameModel {
   readonly preferredStore: string;
   readonly warningMessage: string;
   readonly isInstallAndPlay: boolean;
+
+  // readonly partnerMapping: PartnerMapping;
 
   readonly backgroundImageBlurhash: ImageHash | null;
   readonly posterImageBlurhash: ImageHash | null;
@@ -117,7 +125,7 @@ export class GameModel {
     this.publisher = json["publisher"];
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
-    this.warningMessage = json["warning_message"];
+    // this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
 
     this.poster_1_1 = json["poster_1_1"];
@@ -131,6 +139,8 @@ export class GameModel {
     this.streaming = json["streaming"];
     this.video_hero_banner_16_9 = json["video_hero_banner_16_9"];
     this.video_hero_banner_1_1 = json["video_hero_banner_1_1"];
+
+    // this.partnerMapping = json["partner_mappings"]?.filter((partner)=> partner.id == environment.partner_id);
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];

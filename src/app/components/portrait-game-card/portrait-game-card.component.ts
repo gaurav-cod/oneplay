@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -24,6 +24,7 @@ export class PortraitGameCardComponent {
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -36,6 +37,13 @@ export class PortraitGameCardComponent {
 
   get isMobile() {
     return window.innerWidth < 768;
+  }
+
+  get getTrailerVideo() {
+    return environment.game_assets + this.game.oneplayId;
+  }
+  get getVideo() {
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
   }
 
   ngAfterViewInit(): void {
@@ -73,10 +81,7 @@ export class PortraitGameCardComponent {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src =
-            environment.game_assets +
-            this.game.oneplayId +
-            this.game.trailer_video;
+          video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
           video.style.width = "190%";
@@ -105,7 +110,7 @@ export class PortraitGameCardComponent {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
