@@ -30,6 +30,7 @@ export class PortraitGameCardComponent {
   showSound = false;
   showTitle = false;
   imageLoaded = false;
+  showHover: boolean = false;
 
   readonly loaderId = v4();
 
@@ -127,6 +128,10 @@ export class PortraitGameCardComponent {
         this.muted = true;
       }
     }
+  }
+
+  mouseEnterHandler() {
+    this.showHover = !this.game.trailer_video;
   }
 
   scaleImage(gameContainer, type: "INCREASE" | "DECREASE") {

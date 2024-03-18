@@ -67,7 +67,6 @@ export class GameModel {
   readonly installPlayDetailImgMob: string;
   readonly installPlayDetailImgTab: string;
 
-
   readonly poster_1_1: string;
   readonly poster_1_1_blurhash: string;
   readonly poster_3_4: string;

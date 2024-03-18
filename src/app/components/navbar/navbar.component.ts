@@ -61,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public isAuthenticated = false;
   public showInitialUserMessage: boolean = false;
   public isHomePage: boolean = false;
+  public isWarningShown: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -89,10 +90,11 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _qParamSubscription: Subscription;
   private _guestDropdownSub: Subscription;
   private _routerSubscription: Subscription;
+  private _warningMessageSub: Subscription;
 
   @HostListener('window:scroll', ['$event']) 
   onScroll(event) {
-      this.showSearchBar = event.currentTarget.pageYOffset > 45
+      this.showSearchBar = event.currentTarget.pageYOffset > 45;
   }
 
   notificationData: NotificationModel[] | null = null;
@@ -278,6 +280,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this._qParamSubscription?.unsubscribe();
     this._guestDropdownSub?.unsubscribe();
     this._routerSubscription?.unsubscribe();
+    this._warningMessageSub?.unsubscribe();
     this.countlyService.endEvent("guestProfile");
   }
 
@@ -294,7 +297,15 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.restService.getSeriousNotification().toPromise().then((data)=> {
+      this.isWarningShown = data.length > 0;
+      if (this.isWarningShown) {
+        this._warningMessageSub = this.authService.warningMessagePresent.subscribe((value)=> {
+          this.isWarningShown = value;
+        })
+      }
+    })
     this._profileOverlaySub = this.authService.profileOverlay.subscribe(
       (data) => {
         this.showOverlayProfile = data;
@@ -398,7 +409,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!focused) {
         setTimeout(() => {
           if (!this.dontClose) {
-            this.query.setValue("");
+            // this.query.setValue("");
           } else {
             this.dontClose = false;
             this.searchElement.nativeElement.focus();

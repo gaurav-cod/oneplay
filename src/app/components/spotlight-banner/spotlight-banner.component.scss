@@ -29,6 +29,9 @@
   display: flex;
   align-items: center;
   height: 70%;
+  width: 100%;
+  overflow-x: auto;
+  padding-left: 35px !important;
 }
 
 .railHeading {
@@ -63,51 +66,6 @@
   height: 100%;
   width: 100%;
   scrollbar-color: transparent transparent;
-
-  @media (max-width: 1600px) {
-    padding-left: 70px;
-    padding-right: 40px;
-  }
-
-  @media (max-width: 1500px) {
-    padding-left: 85px;
-    padding-right: 40px;
-  }
-
-  @media (max-width: 1400px) {
-    padding-left: 30px;
-    padding-right: 40px;
-  }
-
-  @media (max-width: 1300px) {
-    padding-left: 35px;
-    padding-right: 40px;
-    padding-bottom: 45px;
-  }
-
-  @media (max-width: 850px) {
-    padding-left: 30px;
-    padding-right: 5px;
-  }
-
-  @media (max-width: 660px) {
-    padding-left: 15px;
-    padding-right: 5px;
-  }
-
-  @media (max-width: 575px) {
-    padding-left: 30px;
-    padding-right: 5px;
-  }
-
-  @media (max-width: 480px) {
-    overflow-y: hidden;
-    padding-left: 15px;
-    padding-right: 5px;
-    padding-bottom: 30px;
-    padding-top: 16px;
-    height: 370px;
-  }
 }
 
 .scrollGame .gameCard {
@@ -116,6 +74,30 @@
 .container-fluid {
   @media screen and (max-width: 475px) {
     flex-direction: column !important;
+  }
+}
+.premiumIcon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+}
+.gameTags {
+  position: absolute;
+  left: 8px;
+  bottom: 10px;
+  z-index: 100;
+
+  .tagText {
+    color: white;
+    font-size: 14px;
+    border-radius: 3px;
+  }
+
+  .freeTagTriangle {
+    height: 20px;
+    width: 20px;
+    display: block;
   }
 }
 
@@ -189,4 +171,64 @@
 }
 .mainSpecialBanner {
   margin-top: 20px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.spotlightBannerContainer:hover>.arrowPaddingright {
+  display: block !important;
+}
+
+.spotlightBannerContainer:hover>.arrowPaddingLeft {
+  display: block !important;
+}
+
+.arrowPaddingLeft:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingLeft {
+  padding-left: 50px;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border: none;
+  border-radius: 10px;
+  background: #151515a8;
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-left: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-left: 10px;
+  }
+}
+
+.arrowPaddingright:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingright {
+  padding-right: 50px;
+  top: 0;
+  right: 0px;
+  z-index: 10;
+  border: none;
+  border-radius: 10px;
+  background: #151515a8;
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-right: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-right: 10px;
+  }
+}
+
+.spotlightBannerContainer:hover .arrowPaddingLeft {
+  display: block !important;
 }
