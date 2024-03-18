@@ -104,7 +104,7 @@ export class SpecialBannerCardComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video )  && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);

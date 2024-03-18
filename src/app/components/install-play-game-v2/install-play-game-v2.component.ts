@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
+import { RAIL_TYPES } from 'src/app/models/gameFeed.model';
 import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { CountlyService } from 'src/app/services/countly.service';
 import { getGameLandingViewSource } from 'src/app/utils/countly.util';
@@ -29,6 +30,7 @@ export class InstallPlayGameV2Component implements OnInit {
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @Input() railType: RAIL_TYPES;
 
   timer: NodeJS.Timeout;
   muted = true;

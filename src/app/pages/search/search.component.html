@@ -91,14 +91,14 @@
             <div class="card border-0 bg-dark">
               <img
                 #image2
-                [src]="game.textBgImage"
+                [src]="game.poster_1_1"
                 (error)="onImgError($event)"
                 class="br6"
                 width="125"
                 height="80"
                 alt=""
               />
-              <image-loading [image]="image2" [hash]="game.textBgHash" />
+              <image-loading [image]="image2" [hash]="game.poster_1_1_blurhash" />
               <div class="card-img-overlay p-0">
                 <span *ngIf="game.isFree && game.status !== 'coming_soon'" class="freeTag px-2 free tagText">
                   FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
@@ -141,14 +141,14 @@
             <div class="card border-0 bg-dark">
               <img
                 #image
-                [src]="game.installPlaySearchImg"
+                [src]="game.poster_1_1"
                 (error)="onImgError($event)"
                 class="br6"
                 width="125"
                 height="80"
                 alt=""
               />
-              <image-loading [image]="image" [hash]="game.iapSearchHash" />
+              <image-loading [image]="image" [hash]="game.poster_1_1_blurhash" />
             </div>
            
             <div class="d-flex mt-1">
