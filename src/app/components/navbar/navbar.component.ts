@@ -409,7 +409,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!focused) {
         setTimeout(() => {
           if (!this.dontClose) {
-            this.query.setValue("");
+            // this.query.setValue("");
           } else {
             this.dontClose = false;
             this.searchElement.nativeElement.focus();

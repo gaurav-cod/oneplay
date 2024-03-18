@@ -11,6 +11,9 @@ export class VideoFeedModel {
   constructor(json: any) {
     this.id = json.oplay_id;
     this.title = json.title;
-    this.videos = json.results.map((video) => new VideoModel(video));
+    if ("results" in json)
+      this.videos = json.results?.map((video) => new VideoModel(video));
+    else
+      this.videos = json.videos?.map((video) => new VideoModel(video));
   }
 }
