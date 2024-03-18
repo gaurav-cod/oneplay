@@ -16,7 +16,9 @@
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
+  [ngClass]="{'adjustPositionOnWarning': isWarningShown && isHomePage}"
   [style.background]="showSearchBar ? '#151617' : ''"
+  [style.top]="showSearchBar ? '-1px !important': ''"
   [style.position]="!isHomePage ? 'relative !important' : ''"
 >
   <div
@@ -51,7 +53,7 @@
             href="javascript:void(0)"
             routerLinkActive="text-white"
             [routerLink]="['/home']"
-            class="nav-link p-0 mt-2 pt-1 mr-4 text-white"
+            class="nav-link p-0 mt-2 pt-1 mr-4"
             (click)="headerNavOnClick('homeClicked')"
             >Home</a
           >
@@ -71,7 +73,7 @@
             href="javascript:void(0)"
             routerLinkActive="text-white"
             [routerLink]="['/streams']"
-            class="nav-link p-0 mt-2 pt-1 mr-3 text-white"
+            class="nav-link p-0 mt-2 pt-1 mr-3"
             (click)="headerNavOnClick('streamsClicked')"
             >Streams</a
           >
@@ -88,7 +90,7 @@
               href="javascript:void(0)"
               routerLinkActive="text-white"
               [routerLink]="['/casual-games']"
-              class="nav-link p-0 mt-2 pt-1 mr-3 text-white"
+              class="nav-link p-0 mt-2 pt-1 mr-3"
               (click)="headerNavOnClick('level1Clicked')"
             >Level 1</a
           >
