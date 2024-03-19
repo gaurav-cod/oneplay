@@ -24,7 +24,6 @@ export class PortraitGameCardComponent {
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
-  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;

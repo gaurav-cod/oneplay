@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -68,6 +68,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
     return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
   }
 
+  @HostListener("window:scroll", [])
+  onScroll(): void {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      this.loadMoreRails();
+    }
+  }
+
   ngOnInit(): void {
 
     this.title.setTitle("Home");
@@ -122,6 +129,17 @@ export class HomeV2Component implements OnInit, OnDestroy {
     clearTimeout(this.bannerShowTimer);
     clearTimeout(this.playVideoTimer);
     Swal.close();
+  }
+
+  loadMoreRails() {
+    debugger;
+    this.restService.getHomeFeed().subscribe({
+      next: (response) => {
+        const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
+        this.railRowCards = [...this.railRowCards,  ...feeds.filter((f) => f.type !== "hero_banner")];
+        debugger;
+      }
+    });
   }
 
   onSlideChange(event?: NgbSlideEvent) {
