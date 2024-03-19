@@ -367,7 +367,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 nav-link-icon"
               (click)="toggleFriendsList()"
               *ngIf="isAuthenticated"
             >
@@ -385,7 +385,7 @@
             </a>
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50 mr-2"
+              class="nav-link p-0 br50 mr-2 nav-link-icon"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage('chat')"
               style="min-width: fit-content;"
@@ -402,7 +402,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 nav-link-icon"
               (click)="viewGame()"
               ngbTooltip="{{ gamePlayTooltip }}"
             >
@@ -445,7 +445,7 @@
             </div>
               <a
                 href="javascript:void(0)"
-                class="nav-link p-0 br50"
+                class="nav-link p-0 br50 nav-link-icon"
                 role="button"
                 (click)="goToNotificationScreen()"
                 style="min-width: fit-content;"

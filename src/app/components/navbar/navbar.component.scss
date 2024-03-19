@@ -7,6 +7,9 @@
   width: 100%;
   z-index: 10001;
 }
+.nav-link-icon {
+  min-width: unset !important;
+}
 
 .nav-chat {
   border: 2px solid gray;
