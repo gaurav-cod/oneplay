@@ -56,7 +56,7 @@ export class SpotlightBannerComponent implements OnInit {
     return window.innerWidth > 475 ? this.gameFeed.backgroundImageBlurhash : this.gameFeed.backgroundImageMobileBlurhash;
   }
   get getContainerHeight() {
-    return window.innerWidth > 475 ? '100' : '50';
+    return window.innerWidth > 475 ? '100' : '100';
   }
   get isMobile() {
     return window.innerWidth < 768;

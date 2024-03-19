@@ -132,7 +132,7 @@ video {
 @media (max-width: 480px) {
   .card {
     // width: 150px;
-    height: 135px;
+    height: 288px;
     top: -2px;
   }
 
@@ -226,6 +226,10 @@ video {
 .spotlightBannerWidth .w290h185 {
   width: 220px !important;
   height: 220px !important;
+  @media screen and (max-width: 475px) {
+    height: 180px !important;
+    width: 180px !important;
+  }
 }
 
 .categoryLargeWidth {

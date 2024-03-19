@@ -60,6 +60,11 @@ video {
     overflow: hidden;
     font-size: 16px;
     margin-top: 5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-wrap: wrap;
   }
 
   .gameTags {
@@ -214,7 +219,8 @@ video {
     
   }
   @media screen and (max-width: 475px) {
-    width: 190px;
+    width: 210px;
+    height: 290px !important;
   }
 }
 .card-img-hover {
