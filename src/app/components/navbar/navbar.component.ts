@@ -96,7 +96,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @HostListener('window:scroll', ['$event']) 
   onScroll(event) {
-      this.showSearchBarForce = event.currentTarget.pageYOffset > 45;
+    this.showSearchBarForce = event.currentTarget.pageYOffset > 45;
   }
 
   notificationData: NotificationModel[] | null = null;

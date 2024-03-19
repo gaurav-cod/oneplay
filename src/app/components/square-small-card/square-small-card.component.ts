@@ -31,7 +31,6 @@ export class SquareSmallCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.game);
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
