@@ -32,6 +32,9 @@
   width: 100%;
   overflow-x: auto;
   padding-left: 35px !important;
+  @media screen and (max-width: 475px) {
+    padding-left: 0px !important;
+  }
 }
 
 .railHeading {
