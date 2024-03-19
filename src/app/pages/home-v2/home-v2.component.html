@@ -6,7 +6,7 @@
   </div>
 </div>
 <section class="position-relative">
-  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow">
+  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')">
     <ngb-carousel id="home-header" [pauseOnFocus]="false" [pauseOnHover]="true" [showNavigationArrows]="false"
       [showNavigationIndicators]="false" (slide)="onSlideChange($event)" *ngIf="!!heroBannerRow" interval="0">
       <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
