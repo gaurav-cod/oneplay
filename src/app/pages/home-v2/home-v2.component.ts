@@ -132,12 +132,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   loadMoreRails() {
-    debugger;
     this.restService.getHomeFeed().subscribe({
       next: (response) => {
         const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
         this.railRowCards = [...this.railRowCards,  ...feeds.filter((f) => f.type !== "hero_banner")];
-        debugger;
       }
     });
   }
