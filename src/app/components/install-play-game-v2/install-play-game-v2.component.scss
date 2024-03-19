@@ -7,7 +7,7 @@
     height: 245px !important;
   }
   @media screen and (min-width: 700px) and (max-width: 1200px) {
-    width: 260px !important;
+    width: 240px !important;
     height: 330px !important;
   }
   @media screen and (min-width: 475px) and (max-width: 700px) {
@@ -132,7 +132,7 @@ video {
 @media (max-width: 480px) {
   .card {
     // width: 150px;
-    height: 135px;
+    height: 288px;
     top: -2px;
   }
 
@@ -170,7 +170,7 @@ video {
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    height: 380px !important;
+    height: 130px !important;
   }
 
   .gamezop-card {
@@ -226,6 +226,10 @@ video {
 .spotlightBannerWidth .w290h185 {
   width: 220px !important;
   height: 220px !important;
+  @media screen and (max-width: 475px) {
+    height: 180px !important;
+    width: 180px !important;
+  }
 }
 
 .categoryLargeWidth {

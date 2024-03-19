@@ -60,6 +60,11 @@ video {
     overflow: hidden;
     font-size: 16px;
     margin-top: 5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-wrap: wrap;
   }
 
   .gameTags {
@@ -215,6 +220,7 @@ video {
   }
   @media screen and (max-width: 475px) {
     width: 190px;
+    height: 290px !important;
   }
 }
 .card-img-hover {
@@ -225,8 +231,14 @@ video {
   background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
   background-origin: border-box;
   border: 2px solid transparent;
+  transition: all .2s ease-in-out;
+  animation: scaleAnimation 0.3s forwards;
 }
-.card-img-hover:hover {
-  transform: scale(1.3);
-  cursor: pointer;
+@keyframes scaleAnimation {
+  0% {
+      transform: scale(1); /* Start with original size */
+  }
+  100% {
+      transform: scale(1.3); /* End with scaled size */
+  }
 }
