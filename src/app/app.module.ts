@@ -43,7 +43,7 @@ import { UserAgentUtil } from "./utils/uagent.util";
     AdminLayoutComponent,
     AuthLayoutComponent,
     TvAuthLayoutComponent,
-    CommonLayoutComponent,
+    CommonLayoutComponent
   ],
   providers: [
     {

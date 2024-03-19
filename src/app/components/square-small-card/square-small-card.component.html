@@ -1,0 +1,17 @@
+<section class="d-flex position-relative cursorPointer" style="gap: 20px;" #gameLink (click)="gamezopGame()">
+    <img #image [src]="game.assets.square" alt="" class="imageContainer" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+    <div>
+        <span class="game-title">{{ game.name }}</span>
+        <div class="gameTagsContianer mt-2">
+            <ng-container *ngFor="let genre of game.categories; let idx = index">
+                <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
+            </ng-container>
+        </div>
+    </div>
+    <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)">
+      <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
+    </div>
+    <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
+      [overlayBorderRadius]="'15px'"></ngx-ui-loader>
+</section>

@@ -1,0 +1,73 @@
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GameModel } from 'src/app/models/game.model';
+import { GLinkPipe } from 'src/app/pipes/glink.pipe';
+import { CountlyService } from 'src/app/services/countly.service';
+import { getGameLandingViewSource } from 'src/app/utils/countly.util';
+import { v4 } from 'uuid';
+
+@Component({
+  selector: 'app-install-play-game-v2',
+  templateUrl: './install-play-game-v2.component.html',
+  styleUrls: ['./install-play-game-v2.component.scss'],
+  providers: [GLinkPipe],
+})
+export class InstallPlayGameV2Component {
+  @Input("game") game: GameModel;
+  @Input("queryParams") queryParams?: any;
+  @Input("hasFixedWidth") hfw: boolean = false;
+  @Input("calledFrom") calledFrom:
+    | "HOME"
+    | "STORE_INSTALL_PLAY"
+    | "STORE_OTHER"
+    | "LIBRARY" = "HOME";
+
+  @Input() specialBannerGame: boolean = false;
+
+  @Output("gameClick") gameClick = new EventEmitter();
+
+  @ViewChild("gameLink") gameLink;
+  @ViewChild("image") image;
+
+  timer: NodeJS.Timeout;
+  muted = true;
+  showSound = false;
+  showTitle = false;
+  imageLoaded = false;
+
+  readonly loaderId = v4();
+
+  get isMobile() {
+    return window.innerWidth < 768;
+  }
+
+  ngAfterViewInit(): void {
+  }
+
+  constructor(
+    private readonly router: Router,
+    private readonly gLink: GLinkPipe,
+    private readonly loaderService: NgxUiLoaderService,
+    private readonly countlyService: CountlyService
+  ) {
+  }
+
+  onGameClick() {
+    this.countlyService.endEvent("gameLandingView");
+    this.countlyService.startEvent("gameLandingView", {
+      data: { source: getGameLandingViewSource(), trigger: "card" },
+    });
+    this.gameClick.emit(this.game.title);
+    this.router.navigate(["view", this.gLink.transform(this.game)], {
+      queryParams: this.queryParams,
+    });
+  }
+
+  onImgError(event) {
+    event.target.src = "assets/img/default_bg.webp";
+    this.showTitle = true;
+  }
+
+
+}

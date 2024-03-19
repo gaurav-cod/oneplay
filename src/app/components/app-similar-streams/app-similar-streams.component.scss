@@ -1,0 +1,35 @@
+.card-img {
+    height: 200px;
+    width: 98%;
+    border-radius: 15px;
+}
+.game-title {
+    color: white;   
+}
+.sub-title {
+    color: #959595;
+    font-weight: 400 !important;
+}
+.gameTagsContianer {
+    display: flex;
+    gap: 10px;
+}
+.gameGenre {
+  background-color: #212123;
+  padding: 5px 10px;
+  color: white;
+  width: fit-content;
+  border-radius: 20px;
+}
+.views {
+  background-color: #212123;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  width: fit-content;
+  margin-top: 12px;
+}
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
+}

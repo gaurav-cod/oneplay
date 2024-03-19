@@ -201,6 +201,9 @@ live {
   .marginTopRes {
     margin-top: 4rem;
   }
+  .updateMarginTopRes {
+    margin-top: 9rem !important;
+  }
 }
 
 .height80 {
@@ -220,6 +223,16 @@ live {
   }
   @media (max-width: 480px) {
     height: 330px;
+  }
+}
+.height430 {
+  @media screen and (max-width: 475px) {
+    height: 420px !important;
+  }
+}
+.height410 {
+  @media screen and (max-width: 475px) {
+    height: 410px !important;
   }
 }
 
@@ -262,7 +275,7 @@ live {
   }
 
   .height300 {
-    height: 350px;
+    height: 330px;
     overflow-y: scroll;
     -ms-overflow-style: none; /* IE 11 */
     scrollbar-width: none;
@@ -958,4 +971,18 @@ live {
   width: 200px;
   border-radius: 20px;
   margin: auto;
+}
+
+.info-sec {
+  background-color: #15151594;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: white;
+  width: fit-content;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: normal;
+  text-align: center;
 }

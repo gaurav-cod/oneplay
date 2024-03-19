@@ -229,6 +229,10 @@ export class BasicInfoComponent implements OnInit, OnDestroy {
     );
   }
 
+  onKeyPressCheckDOB(event: KeyboardEvent) {
+    event.preventDefault();
+  }
+
   showError(error) {
     if (!error.data.icon) {
       error.data.icon = "assets/img/swal-icon/Account.svg";
