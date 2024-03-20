@@ -25,6 +25,7 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
+  public library: GameModel[] = [];
   public railRowCards: (GameFeedModel | VideoFeedModel | GamezopFeedModel)[] = [];
   public landscapeRowCards: VideoFeedModel[] = [];
 
@@ -33,15 +34,22 @@ export class HomeV2Component implements OnInit, OnDestroy {
   public playVideo: boolean = false;
   public isVideoMute: boolean = true;
 
+  private swipeCoord?: [number, number];
+  private swipeTime?: number;
+
+  public firstSignUpMsgTimer: number | null = null;
+
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
   private _userSubscription: Subscription;
+  private _wishlistSubscription: Subscription;
 
   private wishlist: string[] = [];
   loadingWishlist = false;
 
   private bannerShowTimer: NodeJS.Timer;
   private playVideoTimer: NodeJS.Timer;
+  private messageTimer: NodeJS.Timer;
 
   private userDetails: UserModel | null = null;
 
@@ -67,6 +75,19 @@ export class HomeV2Component implements OnInit, OnDestroy {
   get getTrailerVideo() {
     return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
   }
+  get username(): string | null {
+    return this.userDetails?.username;
+  }
+  get allGamesLength(): number {
+    return this.railRowCards?.length;
+  }
+
+  @HostListener('click', ['$event'])
+  clickout(event) {
+    this.firstSignUpMsgTimer = 0;
+    clearInterval(this.messageTimer);
+    this.authService.setTriggerInitialModal(true);
+  }
 
   @HostListener("window:scroll", [])
   onScroll(): void {
@@ -77,7 +98,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.title.setTitle("Home");
+    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
     this.loaderService.start();
 
     this._paramSubscription = this.activatedRoute.params.subscribe({
@@ -105,6 +126,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.playVideoTimer = setTimeout(() => {
               this.playVideo = true;
             }, 2000);
+
+
+            document.body.click();
+            this.loaderService.stop();
           }, error: (error) => {
             this.loaderService.stop();
             if (error?.timeout) {
@@ -113,11 +138,33 @@ export class HomeV2Component implements OnInit, OnDestroy {
           }
         })
 
+        if (localStorage.getItem("is_new_user")) {
+          localStorage.removeItem("is_new_user");
+          this.firstSignUpMsgTimer = 5;
+          this.messageTimer = setInterval(() => {
+            this.firstSignUpMsgTimer--;
+            if (this.firstSignUpMsgTimer == 0) {
+              this.authService.setTriggerInitialModal(true);
+              clearInterval(this.messageTimer);
+            }
+          }, 3000);
+        }
+
         this._userSubscription = this.authService.user.subscribe((user) => {
           this.userDetails = user;
           this.authService.wishlist.subscribe(
             (wishlist) => (this.wishlist = (wishlist ?? []))
           );
+        });
+        this._wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
+          if (ids) {
+            this.wishlist = ids;
+            this.restService
+              .getWishlistGames(ids)
+              .subscribe((games) => {
+                this.library = games;
+              });
+          }
         });
       }
     })
@@ -126,9 +173,28 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this._feedSubscription?.unsubscribe();
     this._paramSubscription?.unsubscribe();
     this._userSubscription?.unsubscribe();
+    this._wishlistSubscription?.unsubscribe();
     clearTimeout(this.bannerShowTimer);
     clearTimeout(this.playVideoTimer);
     Swal.close();
+  }
+
+  swipe(e: TouchEvent, when: string): void {
+    const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+    const time = new Date().getTime();
+
+    if (when === 'start') {
+      this.swipeCoord = coord;
+      this.swipeTime = time;
+    } else if (when === 'end') {
+      const direction = [coord[0] - this.swipeCoord[0], coord[1] - this.swipeCoord[1]];
+      const duration = time - this.swipeTime;
+
+      if (duration < 1000 && Math.abs(direction[0]) > 30 && Math.abs(direction[0]) > Math.abs(direction[1] * 3)) { 
+          const swipe = direction[0] < 0 ? 'RIGHT' : 'LEFT';
+          this.moveSelectedCard(swipe);
+      }
+    }
   }
 
   loadMoreRails() {

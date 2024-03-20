@@ -20,7 +20,6 @@ export class ParallexSecComponent implements OnInit {
   showLeftArrow = false;
 
   ngOnInit(): void {
-    console.log(this.gamesFeed);
   }
   constructor() {
   }

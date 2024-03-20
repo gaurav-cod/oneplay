@@ -1,23 +1,23 @@
 <div class="overlay" *ngIf="showOverlayProfile"></div>
 
 <div class="position-relative overlayContainer" *ngIf="showOverlayProfile">
-  <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -7px; right: -7px">
-  <img src="assets/img/navbar/arrow.svg" class="position-absolute toast-arrow" style="right: 45px; top: 15px;" alt="">
+  <img src="assets/img/navbar/outline.svg" alt="" class="position-absolute" height="50" style="top: -15px; right: 16px">
+  <img src="assets/img/navbar/arrow.svg" class="position-absolute toast-arrow" style="right: 65px; top: 15px;" alt="">
   <div class="toast-message">You can modify the profile details in the settings.</div>
-  <img
+  <!-- <img
     alt=""
     width="36px"
     height="36px"
     class="rounded-circle position-absolute right-0"
     [src]="photo || 'assets/img/defaultUser.svg'"
     (error)="onUserError($event)"
-  />
+  /> -->
 </div>
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
-  [ngClass]="{'adjustPositionOnWarning': (isWarningShown && isHomePage) || showSearchBarForce}"
-  [style.background]="showSearchBar || showSearchBarForce ? '#151617' : ''"
+  [ngClass]="{'adjustPositionOnWarning': (isWarningShown && isHomePage) || showSearchBarForce, 'navbarFadeIn': showSearchBar || showSearchBarForce}"
+  
   [style.top]="(showSearchBar && !isWarningShown) || showSearchBarForce ? '-1px !important': ''"
   [style.position]="!isHomePage ? 'relative !important' : ''"
 >
@@ -369,7 +369,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50"
+              class="nav-link p-0 br50 nav-link-icon"
               (click)="toggleFriendsList()"
               *ngIf="isAuthenticated"
             >
@@ -387,7 +387,7 @@
             </a>
             <a
               href="javascript:void(0)"
-              class="nav-link p-0 br50 mr-2"
+              class="nav-link p-0 br50 mr-2 nav-link-icon"
               *ngIf="!isAuthenticated"
               (click)="goToSignUpPage('chat')"
               style="min-width: fit-content;"
@@ -404,7 +404,7 @@
           >
             <a
               href="javascript:void(0)"
-              class="nav-link p-0"
+              class="nav-link p-0 nav-link-icon"
               (click)="viewGame()"
               ngbTooltip="{{ gamePlayTooltip }}"
             >
@@ -447,7 +447,7 @@
             </div>
               <a
                 href="javascript:void(0)"
-                class="nav-link p-0 br50"
+                class="nav-link p-0 br50 nav-link-icon"
                 role="button"
                 (click)="goToNotificationScreen()"
                 style="min-width: fit-content;"
@@ -483,7 +483,6 @@
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
                 <img
-                  [style.visibility]="showOverlayProfile ? 'hidden' : 'visible'"
                   alt=""
                   width="36px"
                   height="36px"

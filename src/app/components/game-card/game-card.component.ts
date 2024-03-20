@@ -24,7 +24,7 @@ import { v4 } from "uuid";
   styleUrls: ["./game-card.component.scss"],
   providers: [GLinkPipe],
 })
-export class GameCardComponent implements AfterViewInit {
+export class GameCardComponent {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input("hasFixedWidth") hfw: boolean = false;
@@ -54,12 +54,6 @@ export class GameCardComponent implements AfterViewInit {
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
   ) {
-  }
-
-  ngAfterViewInit(): void {
-    
-    console.log(this.game);
-    
   }
 
   onGameClick() {

@@ -1,4 +1,4 @@
-<div class="smallCategoryContainer container-fluid" #gameLink>
+<div class="smallCategoryContainer container-fluid position-relative">
     <div class="container-fluid removePaddingContainer d-flex align-items-center mb-2">
         <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp"
             [style.width.%]="gameFeed.categories?.length > 0 ? '50%' : '100%'">{{ gameFeed.title }}</p>
@@ -12,7 +12,7 @@
         </ng-container>
     </div>
     <div class="d-flex h-100 align-items-baseline container-fluid">
-        <div class="scrollGameList">
+        <div class="scrollGameList" #container>
             <ng-container *ngFor="let key of getObjectKeys(); let idx = index">
                 <div>
                     <div *ngFor="let game of gamesListBatches[key]" class="gameCol">
@@ -22,4 +22,12 @@
             </ng-container>
         </div>
     </div>
+
+    <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+        <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+    </button>
+
+    <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
+        <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+    </button>
 </div>

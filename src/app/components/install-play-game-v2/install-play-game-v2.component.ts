@@ -45,7 +45,6 @@ export class InstallPlayGameV2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.game);
   }
 
   get installPlayImage() {
