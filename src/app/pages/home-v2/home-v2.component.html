@@ -39,7 +39,7 @@
               class="btn p-0 ml-2 cursorPointer"
               ngbTooltip="Add to Library"
             >
-              <img src="assets/icons/Speedtest (2).svg" class="img-fluid" alt="" />
+              <img src="assets/icons/Speedtest (2).svg" height="42px" width="42px" class="img-fluid" alt="" />
             </button>
             <button
               *ngIf="isInWishlist && userDetails"
@@ -54,30 +54,38 @@
                 alt=""
               />
             </button>
-            <ng-container *ngIf="playVideo">
+            <div *ngIf="playVideo" class="d-flex audioContainerTab">
               <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
               <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
-            </ng-container>
+            </div>
           </div>
           <div *ngIf="playVideo" class="audioContainer position-absolute">
-            <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
-            <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+            <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" *ngIf="isVideoMute" (click)="isVideoMute = false">
+            <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" *ngIf="!isVideoMute" (click)="isVideoMute = true">
           </div>
         </div>
       </ng-template>
     </ngb-carousel>
-    <div class="games-carousel game-carousel-trans d-flex align-items-center">
-      <div class="leftArrow cursorPointer" (click)="moveSelectedCard('LEFT')">
-        <img src="assets/img/arrow-gray-left.svg" alt="">
-      </div>
-      <ng-container *ngFor="let game of heroBannerRow.games; let i = index">
-        <div class="card borderRadius10 position-relative zoom-tran" (click)="cardSelected(game)">
-          <img class="card-carousel-img borderRadius10"
-            [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}" [src]="game.poster_3_4" alt="img" />
+    <div class="d-flex flex-column position-relative">
+      <ng-container *ngIf="playVideo">
+        <div class="audioContainerDesk">
+          <img src="assets/img/Dashboard/mute.svg" height="40px" width="40px" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
+          <img src="assets/img/Dashboard/unmute.svg" height="40px" width="40px" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
         </div>
       </ng-container>
-      <div class="rightArrow cursorPointer" (click)="moveSelectedCard('RIGHT')">
-        <img src="assets/img/arrow-gray-right.svg" alt="">
+      <div class="games-carousel game-carousel-trans d-flex align-items-center">
+        <div class="leftArrow cursorPointer" (click)="moveSelectedCard('LEFT')">
+          <img src="assets/img/arrow-gray-left.svg" alt="">
+        </div>
+        <ng-container *ngFor="let game of heroBannerRow.games; let i = index">
+          <div class="card borderRadius10 position-relative zoom-tran" (click)="cardSelected(game)">
+            <img class="card-carousel-img borderRadius10"
+              [ngClass]="{'selectedGame': selectedHeroBannerId === game.oneplayId}" [src]="game.poster_3_4" alt="img" />
+          </div>
+        </ng-container>
+        <div class="rightArrow cursorPointer" (click)="moveSelectedCard('RIGHT')">
+          <img src="assets/img/arrow-gray-right.svg" alt="">
+        </div>
       </div>
     </div>
     <div class="dots-indicator">

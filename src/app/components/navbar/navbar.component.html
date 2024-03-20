@@ -16,8 +16,8 @@
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
-  [ngClass]="{'adjustPositionOnWarning': (isWarningShown && isHomePage) || showSearchBarForce}"
-  [style.background]="showSearchBar || showSearchBarForce ? '#151617' : ''"
+  [ngClass]="{'adjustPositionOnWarning': (isWarningShown && isHomePage) || showSearchBarForce, 'navbarFadeIn': showSearchBar || showSearchBarForce}"
+  
   [style.top]="(showSearchBar && !isWarningShown) || showSearchBarForce ? '-1px !important': ''"
   [style.position]="!isHomePage ? 'relative !important' : ''"
 >
@@ -481,7 +481,6 @@
             >
               <div class="position-relative overlayTop" *ngIf="isAuthenticated">
                 <img
-                  [style.visibility]="showOverlayProfile ? 'hidden' : 'visible'"
                   alt=""
                   width="36px"
                   height="36px"
