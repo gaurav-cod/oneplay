@@ -74,7 +74,7 @@
                 </button>
               </div> -->
             </div>
-            <div class="row imagesText height330 align-items-end mt-md-4">
+            <div class="row imagesText height330 align-items-end mt-md-4" [ngClass]="{'height300': game.storesMapping?.length == 0, 'height430': game.storesMapping?.length > 1, 'height410': game.storesMapping?.length == 1}">
               <div class="col-md-12 pb-5">
                 <div class="row height100px"[ngClass]="{'adjustHeightWidth': game.isInstallAndPlay}">
                   <div class="col" *ngIf="!game.isInstallAndPlay">
@@ -234,6 +234,23 @@
                   </div>
                 </div>
 
+                <div class="info-sec row" *ngIf="game.storesMapping?.length > 0">
+                  <div>
+                    <ng-container *ngFor="let store of game.storesMapping; let idx = index">
+                      <img
+                        [src]="store.store_image || 'assets/img/store/store.svg'"
+                        height="20px"
+                        class="mr-1"
+                        [alt]="store.store_image"
+                        onerror="this.style.display = 'none'"
+                      />
+                      <span class="mr-1">{{ store.name }} <ng-container *ngIf="game.storesMapping?.length > (idx +1)">/</ng-container> </span>
+                    </ng-container>
+
+                  account required to play this game.
+                  </div>
+                </div>
+
                 <div *ngIf="game.isInstallAndPlay" class="licenseRequired">LICENSE REQUIRED</div>
 
                 <form
@@ -267,6 +284,7 @@
                       ></label
                     >
                   </div>
+  
                 </form>
                 <div class="font16 my-3 textCenterInResponsive hideInMobile adjustHeight" >
                   <p
@@ -331,7 +349,7 @@
           </ng-template>
         </div>
       </div>
-      <div class="col-md-12 px-0 marginTopRes">
+      <div class="col-md-12 px-0 marginTopRes" [ngClass]="{'updateMarginTopRes': this.game.storesMapping?.length > 0}">
         <div class="font16 textCenterInResponsive px-2">
           <!-- <p
             class="cancelgradientText font600"
@@ -368,6 +386,7 @@
         </div>
         <hr class="borderColor hideInLarge" />
       </div>
+      
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-6 mt-sm-4" *ngIf="!game.isInstallAndPlay">
