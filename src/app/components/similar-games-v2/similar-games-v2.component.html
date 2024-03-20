@@ -26,7 +26,7 @@
             <div *ngFor="let entry of entries" class="zoom col-auto gameCard pr-0 w290"
               [ngClass]="{'w210': isGamezopList, 'streamCard truncate-line-clamp': railType === 'landscape_video'}">
               <ng-container
-                *ngIf="railType == 'portrait_card' || railType == 'portrait_category' || railType == 'square_category_large'">
+                *ngIf="railType == 'portrait_card' || railType == 'portrait_category' || railType == 'square_category_large' || railType == 'my_library'">
                 <app-portrait-game-card *ngIf="!entry.isInstallAndPlay" [game]="entry" [hasFixedWidth]="true"
                   [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"
                   [railType]="railType"></app-portrait-game-card>

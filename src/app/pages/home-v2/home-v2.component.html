@@ -100,6 +100,7 @@
 
 <div class="homeListingContainer pt-4">
   <div class="mb-0 mt-4">
+    <app-similar-games-v2 *ngIf="library.length > 0" [title]="'My Library'" [railType]="'my_library'" [entries]="library"></app-similar-games-v2>
     <ng-container *ngFor="let row of railRowCards">
       <ng-container
         *ngIf="row.type != 'special_banner' && row.type != 'spotlight_banner' && row.type != 'square_category_small'">

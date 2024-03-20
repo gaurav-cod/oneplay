@@ -25,6 +25,7 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
   public heroBannerRow: GameFeedModel;
+  public library: GameModel[] = [];
   public railRowCards: (GameFeedModel | VideoFeedModel | GamezopFeedModel)[] = [];
   public landscapeRowCards: VideoFeedModel[] = [];
 
@@ -36,12 +37,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
   private swipeCoord?: [number, number];
   private swipeTime?: number;
 
-
   public firstSignUpMsgTimer: number | null = null;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
   private _userSubscription: Subscription;
+  private _wishlistSubscription: Subscription;
 
   private wishlist: string[] = [];
   loadingWishlist = false;
@@ -155,6 +156,16 @@ export class HomeV2Component implements OnInit, OnDestroy {
             (wishlist) => (this.wishlist = (wishlist ?? []))
           );
         });
+        this._wishlistSubscription = this.authService.wishlist.subscribe((ids) => {
+          if (ids) {
+            this.wishlist = ids;
+            this.restService
+              .getWishlistGames(ids)
+              .subscribe((games) => {
+                this.library = games;
+              });
+          }
+        });
       }
     })
   }
@@ -162,6 +173,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this._feedSubscription?.unsubscribe();
     this._paramSubscription?.unsubscribe();
     this._userSubscription?.unsubscribe();
+    this._wishlistSubscription?.unsubscribe();
     clearTimeout(this.bannerShowTimer);
     clearTimeout(this.playVideoTimer);
     Swal.close();
