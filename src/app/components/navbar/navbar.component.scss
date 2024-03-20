@@ -1,12 +1,12 @@
 .navbar {
   // background-color: #151617 !important;
-  position: fixed;
+  position: absolute;
   filter: blur(0px);
   top: -1px !important;
   left: 0;
   width: 100%;
   transition: background-color 0.3s ease-in; 
-  z-index: 10001;
+  z-index: 1001;
 }
 .nav-link-icon {
   min-width: unset !important;
@@ -94,6 +94,7 @@
 }
 .navbarFadeIn {
   background-color: #151617 !important;
+  position: fixed !important;
 }
 .navbar-dark .navbar-nav .nav-link {
   color: #959595;
@@ -534,5 +535,5 @@
   }
 }
 .adjustPositionOnWarning {
-  top: 40px !important;
+  // top: 40px !important;
 }
