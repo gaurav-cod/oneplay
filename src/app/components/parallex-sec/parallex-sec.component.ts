@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 
 @Component({
@@ -6,7 +6,10 @@ import { GameFeedModel } from 'src/app/models/gameFeed.model';
   templateUrl: './parallex-sec.component.html',
   styleUrls: ['./parallex-sec.component.scss']
 })
-export class ParallexSecComponent implements OnInit {
+export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
+
+
+  private _arrowTimeout: NodeJS.Timer;
 
   private lastScrollTop: number = 0;
   public marginValue: number = 1;
@@ -16,11 +19,18 @@ export class ParallexSecComponent implements OnInit {
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
 
-  showRightArrow = false;
-  showLeftArrow = false;
+  public showRightArrow = false;
+  public showLeftArrow = false;
 
   ngOnInit(): void {
   }
+  ngAfterViewInit(): void {
+    this._arrowTimeout = setTimeout(() => this.updateArrows(), 100);
+  }
+  ngOnDestroy(): void {
+    clearTimeout(this._arrowTimeout);
+  }
+
   constructor() {
   }
 

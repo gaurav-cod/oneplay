@@ -99,7 +99,7 @@ video {
 }
 
 .text-logo {
-    width: 30vw;
+    width: 22vw;
     left: 2%;
     bottom: 27%;
 
@@ -138,6 +138,7 @@ video {
     position: absolute;
     bottom: 120px;
     right: 40px;
+    z-index: 101;
 
     .card-carousel-img {
         height: 100px;

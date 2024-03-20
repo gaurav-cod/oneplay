@@ -16,7 +16,7 @@
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
-  [ngClass]="{'adjustPositionOnWarning': (isWarningShown && isHomePage) || showSearchBarForce, 'navbarFadeIn': showSearchBar || showSearchBarForce}"
+  [ngClass]="{'navbarFadeIn': showSearchBar || showSearchBarForce}"
   
   [style.top]="(showSearchBar && !isWarningShown) || showSearchBarForce ? '-1px !important': ''"
   [style.position]="!isHomePage ? 'relative !important' : ''"

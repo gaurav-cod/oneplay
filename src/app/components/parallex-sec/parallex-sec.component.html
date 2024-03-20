@@ -13,18 +13,19 @@
         </div>
     </div> -->
     <div class="row scrollGame scrollGameHeight scrollListing">
-        <ng-container *ngFor="let game of gamesFeed.games">
-            <app-special-banner-card [game]="game"></app-special-banner-card>
+        <ng-container *ngIf="gamesFeed.games.length > 0">
+            <div *ngFor="let game of gamesFeed.games">
+                <app-special-banner-card [game]="game"></app-special-banner-card>
+            </div>
         </ng-container>
-
-
-        <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
-            <img src="assets/img/arrow-left.svg" height="30px" alt="" />
-        </button>
-
-        <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2"
-            (click)="scrollRight()">
-            <img src="assets/img/arrow-right.svg" height="30px" alt="" />
-        </button>
     </div>
+
+    <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+        <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+    </button>
+
+    <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2"
+        (click)="scrollRight()">
+        <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+    </button>
 </section>
