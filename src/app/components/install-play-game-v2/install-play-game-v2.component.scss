@@ -76,6 +76,10 @@ video {
     overflow: hidden;
     font-size: 16px;
     margin-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-wrap: wrap;
   }
 
   .gameTags {
@@ -181,7 +185,8 @@ video {
 @media (min-width: 1300px) {
   .card {
     // width: 150px;
-    height: 65% !important;
+    height: 200px !important;
+    width: 230px !important;
   }
 
   .gamezop-card {

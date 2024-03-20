@@ -46,6 +46,12 @@ export class GameCardV2Component implements AfterViewInit {
   get isMobile() {
     return window.innerWidth < 768;
   }
+  get getTrailerVideo() {
+    return environment.game_assets + this.game.oneplayId;
+  }
+  get getVideo() {
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
+  }
 
   ngAfterViewInit(): void {
   }
@@ -73,30 +79,33 @@ export class GameCardV2Component implements AfterViewInit {
     event.target.src = "assets/img/default_bg.webp";
     this.showTitle = true;
   }
+  mouseEnterHandler() {
+    this.showHover = !this.game.trailer_video;
+  }
 
+  
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.video && !this.isMobile && this.game.status === "live") {
+    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src =
-            environment.game_assets +
-            this.game.oneplayId +
-            this.game.trailer_video;
+          video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "200%";
-          video.style.height = "100%";
-          video.style.zIndex = "100";
+          video.style.width = "120%";
+          video.style.height = "120%";
+          video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
-          video.addEventListener("mouseleave", () => {
-            this.pauseVideo(gameLink, image, video);
-          })
+
+          if (video.getBoundingClientRect().right > window.innerWidth) {
+            video.style.left = String(Number(video.style.left) - 250) + "px";
+          }
+
           video.play();
           // circular loader until video is loaded
           this.loaderService.startLoader(this.loaderId);
@@ -107,15 +116,13 @@ export class GameCardV2Component implements AfterViewInit {
       }, 1000);
     }
   }
+  
 
-  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement, video) {
-    video.style.zIndex = "0";
-    video.style.width = "0%";
-    video.style.height = "0%";
+  pauseVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.video && !this.isMobile && this.game.status === "live") {
+    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -124,8 +131,6 @@ export class GameCardV2Component implements AfterViewInit {
       this.muted = true;
       this.loaderService.stopLoader(this.loaderId);
     }
-
-    video.removeEventListener("mouseleave");
   }
 
   muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
