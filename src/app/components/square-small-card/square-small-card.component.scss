@@ -35,3 +35,23 @@ img {
     width: 80px;
   }
 }
+
+
+.card-img-hover {
+  z-index: 1000;
+  position: absolute;
+  transition: transform 0.2s ease-out;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+  border: 2px solid transparent;
+  transition: all .2s ease-in-out;
+  animation: scaleAnimation 0.3s forwards;
+}
+@keyframes scaleAnimation {
+  0% {
+      transform: scale(1); /* Start with original size */
+  }
+  100% {
+      transform: scale(1.4); /* End with scaled size */
+  }
+}

@@ -228,12 +228,15 @@ video {
 .specialCardHeight {
   height: 250px !important;
 }
-.spotlightBannerWidth .w290h185 {
-  width: 220px !important;
-  height: 220px !important;
-  @media screen and (max-width: 475px) {
-    height: 180px !important;
-    width: 180px !important;
+.spotlightBannerWidth {
+  margin-left: 10px;
+  .w290h185 {
+    width: 220px !important;
+    height: 220px !important;
+    @media screen and (max-width: 475px) {
+      height: 180px !important;
+      width: 180px !important;
+    }
   }
 }
 
