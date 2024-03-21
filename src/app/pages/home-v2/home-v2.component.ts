@@ -115,7 +115,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.railRowCards = (feeds.filter((f) => f.type !== "hero_banner"));
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
-            if (!this.selectedBannerGame.trailer_video) {
+            if (!this.getTrailerVideo) {
               clearTimeout(this.bannerShowTimer);
               this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
