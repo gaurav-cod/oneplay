@@ -3,9 +3,11 @@
   width: 100%;
   position: relative;
   margin-bottom: 20px;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   @media screen and (max-width: 475px) {
-    height: 90vh !important;
+    height: 75vh !important;
   }
 
   .logo {
