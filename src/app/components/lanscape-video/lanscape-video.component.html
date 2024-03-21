@@ -10,7 +10,7 @@
   <div class="videoChannelContainer">
     <img [src]="videoCard.creatorThumbnail || (videoCard.creatorName | avatar)" alt="" height="40px" width="40px">
     <div>
-      <span class="game-title">{{ videoCard.creatorName }}</span>
+      <span class="game-title" style="font-weight: 500;">{{ videoCard.creatorName }}</span>
       <div class="date" *ngIf="!videoCard.isLive">{{ videoCard.addedAt | date }}</div>
     </div>
   </div>

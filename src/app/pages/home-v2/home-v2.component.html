@@ -26,6 +26,10 @@
 
           <div class="text-logo position-absolute">
             <img [src]="selectedBannerGame.textLogo" alt="" />
+            <div *ngIf="playVideo" class="audioContainer position-absolute">
+              <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" *ngIf="isVideoMute" (click)="isVideoMute = false">
+              <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+            </div>
           </div>
           <div class="position-absolute games-carousel game-carousel-btn d-flex" [style.left.px]="20">
             <button (click)="viewBannerGame(selectedBannerGame)"
@@ -58,10 +62,6 @@
               <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
               <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
             </div>
-          </div>
-          <div *ngIf="playVideo" class="audioContainer position-absolute">
-            <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" *ngIf="isVideoMute" (click)="isVideoMute = false">
-            <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" *ngIf="!isVideoMute" (click)="isVideoMute = true">
           </div>
         </div>
       </ng-template>
