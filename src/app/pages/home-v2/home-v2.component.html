@@ -27,8 +27,8 @@
           <div class="text-logo position-absolute">
             <img [src]="selectedBannerGame.textLogo" alt="" />
             <div *ngIf="playVideo" class="audioContainer position-absolute">
-              <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" *ngIf="isVideoMute" (click)="isVideoMute = false">
-              <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+              <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" [hidden]="!isVideoMute" (click)="isVideoMute = false">
+              <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" [hidden]="isVideoMute" (click)="isVideoMute = true">
             </div>
           </div>
           <div class="position-absolute games-carousel game-carousel-btn d-flex" [style.left.px]="20">
@@ -59,8 +59,8 @@
               />
             </button>
             <div *ngIf="playVideo" class="d-flex audioContainerTab">
-              <img src="assets/img/Dashboard/mute.svg" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
-              <img src="assets/img/Dashboard/unmute.svg" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+              <img src="assets/img/Dashboard/mute.svg" alt="mute" [hidden]="!isVideoMute"  (click)="isVideoMute = false">
+              <img src="assets/img/Dashboard/unmute.svg" alt="unmute" [hidden]="isVideoMute"  (click)="isVideoMute = true">
             </div>
           </div>
         </div>
@@ -69,8 +69,8 @@
     <div class="d-flex flex-column position-relative">
       <ng-container *ngIf="playVideo">
         <div class="audioContainerDesk">
-          <img src="assets/img/Dashboard/mute.svg" height="40px" width="40px" alt="mute" *ngIf="isVideoMute" (click)="isVideoMute = false">
-          <img src="assets/img/Dashboard/unmute.svg" height="40px" width="40px" alt="unmute" *ngIf="!isVideoMute" (click)="isVideoMute = true">
+          <img src="assets/img/Dashboard/mute.svg" height="40px" width="40px" alt="mute" [hidden]="!isVideoMute"  (click)="isVideoMute = false">
+          <img src="assets/img/Dashboard/unmute.svg" height="40px" width="40px" alt="unmute" [hidden]="isVideoMute"  (click)="isVideoMute = true">
         </div>
       </ng-container>
       <div class="games-carousel game-carousel-trans d-flex align-items-center">
