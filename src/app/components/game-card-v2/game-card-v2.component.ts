@@ -80,7 +80,7 @@ export class GameCardV2Component implements AfterViewInit {
     this.showTitle = true;
   }
   mouseEnterHandler() {
-    this.showHover = !this.game.trailer_video;
+    this.showHover = !this.isMobile && !this.game.trailer_video;
   }
 
   

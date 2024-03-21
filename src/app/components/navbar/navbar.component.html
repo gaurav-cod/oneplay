@@ -16,9 +16,7 @@
 <nav
   class="navbar navbar-expand-lg sticky-top xsborderBottom"
   id="navbar-main"
-  [ngClass]="{'navbarFadeIn': showSearchBar || showSearchBarForce}"
-  
-  [style.top]="(showSearchBar && !isWarningShown) || showSearchBarForce ? '-1px !important': ''"
+  [ngClass]="{'navbarFadeIn': showSearchBar || showSearchBarForce, 'position-fixed': showSearchBarForce}"
   [style.position]="!isHomePage ? 'relative !important' : ''"
 >
   <div
@@ -101,7 +99,7 @@
           <form
             class="navbar-search position-relative w-100 h-100"
           >
-            <div class="search-box" (mouseenter)="showSearchBar = true" (mouseleave)="onMouseOver()">
+            <div class="search-box" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseOver()">
               <input
                 #search
                 class="search-txt"

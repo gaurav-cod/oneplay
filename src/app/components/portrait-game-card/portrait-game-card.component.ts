@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -15,7 +15,7 @@ import { v4 } from 'uuid';
   styleUrls: ['./portrait-game-card.component.scss'],
   providers: [GLinkPipe],
 })
-export class PortraitGameCardComponent {
+export class PortraitGameCardComponent implements OnInit {
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
   @Input() railType: RAIL_TYPES;
@@ -45,6 +45,9 @@ export class PortraitGameCardComponent {
     return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
   }
 
+  ngOnInit(): void {
+    
+  }
   ngAfterViewInit(): void {
   }
 
@@ -135,20 +138,6 @@ export class PortraitGameCardComponent {
   }
 
   mouseEnterHandler() {
-    this.showHover = !this.game.trailer_video;
-  }
-
-  scaleImage(gameContainer, type: "INCREASE" | "DECREASE") {
-    if (!this.game.trailer_video) {
-      if (type == "INCREASE")
-        gameContainer.className += " card-hover position-absolute";
-      else {
-        gameContainer.className = this.replaceAll(gameContainer.className, "card-hover", "");
-        gameContainer.className = this.replaceAll(gameContainer.className, "position-absolute", "");
-      }
-    }
-  }
-  private replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
+    this.showHover = !this.isMobile && !this.game.trailer_video;
   }
 }

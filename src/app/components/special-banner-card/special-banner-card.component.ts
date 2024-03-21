@@ -71,7 +71,7 @@ export class SpecialBannerCardComponent implements OnInit {
     this.showTitle = true;
   }
   mouseEnterHandler() {
-    this.showHover = !this.game.trailer_video;
+    this.showHover = !this.isMobile && !this.game.trailer_video;
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {

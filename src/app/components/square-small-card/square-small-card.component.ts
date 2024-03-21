@@ -103,7 +103,7 @@ export class SquareSmallCardComponent implements OnInit {
   }
 
   mouseEnterHandler() {
-    this.showHover = !this.game.gamePreviews;
+    this.showHover = !this.isMobile && !this.game.gamePreviews;
   }
 
   gamezopGame() {
