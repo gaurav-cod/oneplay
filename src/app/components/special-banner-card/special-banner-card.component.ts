@@ -37,6 +37,13 @@ export class SpecialBannerCardComponent implements OnInit {
     return window.innerWidth < 768;
   }
 
+  get getTrailerVideo() {
+    return environment.game_assets + this.game.oneplayId;
+  }
+  get getVideo() {
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
+  }
+
   ngOnInit(): void {
   }
 
@@ -63,6 +70,9 @@ export class SpecialBannerCardComponent implements OnInit {
     event.target.src = "assets/img/default_bg.webp";
     this.showTitle = true;
   }
+  mouseEnterHandler() {
+    this.showHover = !this.game.trailer_video;
+  }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
@@ -72,10 +82,7 @@ export class SpecialBannerCardComponent implements OnInit {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src =
-            environment.game_assets +
-            this.game.oneplayId +
-            this.game.trailer_video;
+          video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
           video.style.width = "120%";

@@ -1,5 +1,5 @@
-<section class="d-flex position-relative cursorPointer" style="gap: 20px;" #gameLink (click)="gamezopGame()">
-    <img #image [src]="game.assets.square" alt="" class="imageContainer" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+<section class="d-flex position-relative cursorPointer" style="gap: 20px;" #gameLink (click)="gamezopGame()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+    <img #image [src]="game.assets.square" alt="" class="imageContainer" (mouseenter)="mouseEnterHandler()" >
     <div>
         <span class="game-title">{{ game.name }}</span>
         <div class="gameTagsContianer mt-2">
@@ -12,6 +12,13 @@
       (click)="muteUnmute($event, gameLink, game)">
       <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
     </div>
+    <img 
+      (click)="gamezopGame()" 
+      class="card-img-hover imageContainer" 
+      [src]="game.assets.square" 
+      (mouseleave)="showHover = false" 
+      [hidden]="!showHover" 
+    />
     <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>
 </section>

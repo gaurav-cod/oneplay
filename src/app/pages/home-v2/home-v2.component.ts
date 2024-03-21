@@ -36,6 +36,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   private swipeCoord?: [number, number];
   private swipeTime?: number;
+  private pageNo: number = 0;
 
   public firstSignUpMsgTimer: number | null = null;
 
@@ -105,7 +106,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
       next: (params) => {
         this._feedSubscription?.unsubscribe();
 
-        this._feedSubscription = this.restService.getHomeFeed().subscribe({
+        this._feedSubscription = this.restService.getHomeFeed({ page: this.pageNo }).subscribe({
           next: (response) => {
             const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
             this.heroBannerRow = feeds.filter((feed) => (feed as GameFeedModel).type === "hero_banner").at(0) as GameFeedModel;
@@ -198,7 +199,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   loadMoreRails() {
-    this.restService.getHomeFeed().subscribe({
+    this.pageNo++;
+    this.restService.getHomeFeed({page: this.pageNo}).subscribe({
       next: (response) => {
         const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
         this.railRowCards = [...this.railRowCards,  ...feeds.filter((f) => f.type !== "hero_banner")];

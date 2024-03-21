@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
 import { GamezopModel } from 'src/app/models/gamezop.model';
@@ -20,7 +21,10 @@ export class SquareSmallCardComponent implements OnInit {
   showTitle = false;
   imageLoaded = false;
 
+  public showHover: boolean = false;
+
   constructor(
+    private readonly sanitizer: DomSanitizer,
     private readonly loaderService: NgxUiLoaderService
   ) {}
 
@@ -38,11 +42,12 @@ export class SquareSmallCardComponent implements OnInit {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
-          const video = document.createElement("video");
+          const video = document.createElement("iframe");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src = this.game.gamePreviews;
-          
+          // video.src = this.sanitizer.bypassSecurityTrustResourceUrl(this.game.gamePreviews).toString();
+          video.src = `https://www.youtube.com/embed/${this.game.gamePreviews.split("/").at(-1)}?autoplay=1`;
+
           video.style.objectFit = 'cover';
           video.style.width = "100%";
           video.style.height = "150%";
@@ -50,6 +55,9 @@ export class SquareSmallCardComponent implements OnInit {
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
           video.style.backgroundOrigin = "border-box";
+          video.setAttribute("allow", "autoplay; encrypted-media");
+          video.setAttribute("frameborder", "0");
+          video.setAttribute("allowfullscreen", "");
 
           if (video.getBoundingClientRect().right > window.innerWidth) {
             video.style.left = String(Number(video.style.left) - 250) + "px";
@@ -71,7 +79,7 @@ export class SquareSmallCardComponent implements OnInit {
     }
     if (this.game.gamePreviews && !this.isMobile) {
       image.style.opacity = "1";
-      if (gameLink.firstElementChild instanceof HTMLVideoElement) {
+      if (gameLink.firstElementChild instanceof HTMLIFrameElement) {
         gameLink.removeChild(gameLink.firstElementChild);
       }
       this.showSound = false;
@@ -92,6 +100,10 @@ export class SquareSmallCardComponent implements OnInit {
         this.muted = true;
       }
     }
+  }
+
+  mouseEnterHandler() {
+    this.showHover = !this.game.gamePreviews;
   }
 
   gamezopGame() {

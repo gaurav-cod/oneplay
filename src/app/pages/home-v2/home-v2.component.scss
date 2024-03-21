@@ -45,13 +45,12 @@
 
 .audioContainer {
     margin-left: auto;
-    bottom: 30px;
     right: 20px;
     z-index: 1;
 
     img {
-        height: 40px;
-        width: 40px;
+        height: 40px !important;
+        width: 40px !important;
     }
 
     @media screen and (min-width: 475px) {
@@ -100,7 +99,7 @@ video {
 
 .text-logo {
     width: 22vw;
-    left: 2%;
+    left: 3%;
     bottom: 27%;
 
     img {
@@ -113,7 +112,13 @@ video {
     }
 
     @media screen and (max-width: 475px) {
-        width: 130px !important;
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        width: 100% !important;
+        img {
+          width: 50%;
+        }
     }
 }
 
