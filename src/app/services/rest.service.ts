@@ -920,9 +920,9 @@ export class RestService {
   getHomeFeed(params?: any): Observable<(VideoFeedModel | GamezopFeedModel | GameFeedModel)[]> {
     
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/feed/personalized", { params })
+      .get<any[]>(this.r_mix_api_2 + "/games/feed/personalized", { params })
       .pipe(
-        map((res) => res.map((d) => {
+        map((res: any) => res.feeds.map((d) => {
           if (d.type == "landscape_video")
             return new VideoFeedModel(d);
           else if (d.type == "square_category_small")

@@ -35,7 +35,7 @@
   height: 70%;
   width: 100%;
   overflow-x: auto;
-  padding-left: 35px !important;
+  padding-left: 10px !important;
   @media screen and (max-width: 475px) {
     padding-left: 0px !important;
   }
@@ -73,6 +73,9 @@
   height: 100%;
   width: 100%;
   scrollbar-color: transparent transparent;
+  @media screen and (max-width: 475px) {
+    height: 45%;
+  }
 }
 
 .scrollGame .gameCard {

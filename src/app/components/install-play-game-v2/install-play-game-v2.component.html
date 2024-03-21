@@ -23,9 +23,13 @@
         (error)="onImgError($event)"
       />
       <image-loading [hash]="installPlayBlurhashImage" [image]="image"></image-loading>
-      
-      <div class="premiumIcon">
-        <img src="assets/icons/premium-icon.svg" alt="">
+      <div class="stickyContainer">
+        <div class="premiumIcon">
+          <img src="assets/icons/premium-icon.svg" alt="">
+        </div>
+        <div class="storeIcons">
+          <img *ngFor="let store of game.storesMapping" [src]="store.store_image" height="25px" width="25px" />
+        </div>
       </div>
     </div>
     <h4 class="game-title">{{ game.title }}</h4>
