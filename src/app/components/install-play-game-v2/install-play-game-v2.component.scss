@@ -7,7 +7,7 @@
     height: 245px !important;
   }
   @media screen and (min-width: 700px) and (max-width: 1200px) {
-    width: 240px !important;
+    width: 260px !important;
     height: 330px !important;
   }
   @media screen and (min-width: 475px) and (max-width: 700px) {
@@ -28,8 +28,8 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  @media screen and (max-width: 1300px) {
-    width: 88% !important;
+  @media screen and (max-width: 700px) {
+    width: 78% !important;
   }
 }
 
@@ -154,8 +154,8 @@ video {
 
 @media (max-width: 480px) {
   .card {
-    width: 190px;
-    height: 230px;
+    width: 205px;
+    height: 255px;
     top: -2px;
   }
 
@@ -256,6 +256,12 @@ video {
     @media screen and (max-width: 475px) {
       height: 180px !important;
       width: 180px !important;
+    }
+  }
+  .card {
+    @media screen and (max-width: 475px) {
+      
+      width: 190px !important;
     }
   }
   .stickyContainer {

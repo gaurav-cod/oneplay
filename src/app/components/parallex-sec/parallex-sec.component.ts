@@ -67,8 +67,8 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
 
   updateArrows() {
     const el = this.containerRef?.nativeElement;
-    this.showRightArrow = el.scrollWidth - el.scrollLeft - el.clientWidth >= 1;
-    this.showLeftArrow = el.scrollLeft > 0;
+    this.showRightArrow = el?.scrollWidth - el?.scrollLeft - el?.clientWidth >= 1;
+    this.showLeftArrow = el?.scrollLeft > 0;
   }
 
   scrollRight() {
