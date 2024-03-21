@@ -462,7 +462,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSearchBar = true;
   }
   onMouseOver() {
-    this.showSearchBar = window.pageYOffset > 45;
+    this.showSearchBar = false;
   }
 
   private acceptFriend(friend: UserModel) {
