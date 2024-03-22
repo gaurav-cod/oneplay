@@ -352,6 +352,7 @@
   min-width: unset;
   margin-left: auto;
   overflow-x: auto;
+  // cursor: grab;
 
   &::-webkit-scrollbar-track,
   &::-webkit-scrollbar,
@@ -366,6 +367,7 @@
     margin-right: 12px;
     cursor: pointer;
     min-width: max-content;
+    // user-select: none; 
   }
 
   .linearGradient {

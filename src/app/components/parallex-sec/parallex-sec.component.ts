@@ -15,6 +15,7 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
   public marginValue: number = 1;
   public hoveringCardId: string | null = null;
 
+
   @Input() gamesFeed: GameFeedModel;
 
   @Output() gameClick = new EventEmitter<string>();
@@ -34,7 +35,6 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cardHoverHandler(oneplayId: string) {
-    debugger;
     this.hoveringCardId = oneplayId;
   }
 
@@ -57,6 +57,11 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
+    
+    // removing hovering cards
+    this.hoveringCardId = null;
+
+    // parallex 
     const step = window.innerWidth > 475 ?  4 : 0.5;
     const st = window.pageYOffset || document.documentElement.scrollTop;
 

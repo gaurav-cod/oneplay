@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -23,6 +23,10 @@ export class SquareSmallCardComponent implements OnInit {
 
   public showHover: boolean = false;
 
+  @Input("hoveringCardId") hoveringCardId: string | null = null;
+  @Output("onMouseHoverCard") onMouseHoverCard = new EventEmitter<string>();
+  @ViewChild("hoverImage") hoverImage;
+
   constructor(
     private readonly sanitizer: DomSanitizer,
     private readonly loaderService: NgxUiLoaderService
@@ -35,6 +39,11 @@ export class SquareSmallCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  } 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.game.code != this.hoveringCardId) {
+      this.showHover = false;
+    }
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
@@ -102,11 +111,27 @@ export class SquareSmallCardComponent implements OnInit {
     }
   }
 
-  mouseEnterHandler() {
-    this.showHover = !this.isMobile && !this.game.gamePreviews;
-  }
-
   gamezopGame() {
     window.open(this.game.url);
+  }
+
+  mouseEnterHandler() {
+    this.onMouseHoverCard.emit(this.game.code);
+    setTimeout(()=> {
+      this.showHover = !this.isMobile && !this.game.code && (this.hoveringCardId == this.game.code);
+      if (this.showHover) {
+        this.onMouseHoverCard.emit(this.game.code);
+        
+          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+          }
+      }
+    }, 100)
+  }
+  mouseLeaveHandler() {
+    if (this.hoveringCardId == this.game.code) {
+      this.showHover = false;
+      this.onMouseHoverCard.emit(null);
+    }
   }
 }

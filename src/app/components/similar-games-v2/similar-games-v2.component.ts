@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnInit, OnDestroy, HostListener } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FilterPayload } from "src/app/interface";
 import { GameModel } from "src/app/models/game.model";
@@ -25,6 +25,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   @Output() gameClick = new EventEmitter<string>();
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
+  @ViewChild("scrollFilter") scrollFilter: ElementRef<HTMLDivElement>;
 
   showRightArrow = false;
   showLeftArrow = false;
@@ -35,6 +36,15 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   public isFilterApplied: boolean = false;
   public selectedFilter: string = "All";
   public isLoading: boolean = false;
+  public hoveringCardId: string | null = null;
+  public canMoveCard: boolean = false;
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    
+    // removing hovering cards
+    this.hoveringCardId = null;
+  }
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -45,6 +55,15 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
     clearTimeout(this._arrowTimeout);
     clearTimeout(this._loaderTimeout);
   }
+  // mouseDownHandler(event) {
+  //   const container = this.scrollFilter.nativeElement;
+  //   const scrollAmount = event.pageX - container.scrollLeft;
+  //   container.scrollLeft = (container.scrollLeft + scrollAmount) * 0.5;
+  //   console.log(container.scrollLeft);
+  // }
+  // mouseMoveHandler() {
+
+  // }
 
   ngAfterViewInit(): void {
 
@@ -62,6 +81,9 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
 
   gameClicked(event: string) {
     this.gameClick.emit(event);
+  }
+  cardHoverHandler(oneplayId: string) {
+    this.hoveringCardId = oneplayId;
   }
 
 

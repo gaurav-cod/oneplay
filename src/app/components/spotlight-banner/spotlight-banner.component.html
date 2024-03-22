@@ -31,7 +31,7 @@
             <div class="d-flex align-items-center specialBannerList" [style.height.%]="getContainerHeight" #container (scroll)="updateArrows()">
                 <div *ngFor="let game of specialBannerRowGame" class="zoom col-auto gameCard pr-0 w290 pl-0">
                     <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay"
-                        (gameClick)="gameClicked($event)" [railType]="gameFeed.type"></app-game-card-v2>
+                        (gameClick)="gameClicked($event)" [railType]="gameFeed.type" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-game-card-v2>
                     <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true" *ngIf="game.isInstallAndPlay"
                         [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"
                         [railType]="gameFeed.type"></app-install-play-game-v2>

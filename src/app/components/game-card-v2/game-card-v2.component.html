@@ -55,4 +55,4 @@
 <img (click)="onGameClick()"  
       [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }" 
       class="card-img-hover borderRadius10 loadingBg" [src]="game.poster_16_9" 
-      [ngStyle]="{'object-fit': hfw ? 'unset' : 'cover'}" alt="" (mouseleave)="showHover = false" [hidden]="!showHover" />
+      [ngStyle]="{'object-fit': hfw ? 'unset' : 'cover'}" alt="" (mouseleave)="mouseLeaveHandler()" [hidden]="!showHover" #hoverImage />
