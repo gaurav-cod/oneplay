@@ -13,6 +13,8 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lastScrollTop: number = 0;
   public marginValue: number = 1;
+  public hoveringCardId: string | null = null;
+
   @Input() gamesFeed: GameFeedModel;
 
   @Output() gameClick = new EventEmitter<string>();
@@ -29,6 +31,11 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void {
     clearTimeout(this._arrowTimeout);
+  }
+
+  cardHoverHandler(oneplayId: string) {
+    debugger;
+    this.hoveringCardId = oneplayId;
   }
 
   constructor() {

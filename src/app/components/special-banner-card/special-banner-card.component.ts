@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -18,11 +18,14 @@ export class SpecialBannerCardComponent implements OnInit {
 
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
+  @Input("hoveringCardId") hoveringCardId: string | null = null;
 
   @Output("gameClick") gameClick = new EventEmitter();
+  @Output("onMouseHoverCard") onMouseHoverCard = new EventEmitter<string>();
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -71,7 +74,24 @@ export class SpecialBannerCardComponent implements OnInit {
     this.showTitle = true;
   }
   mouseEnterHandler() {
-    this.showHover = !this.isMobile && !this.game.trailer_video;
+    this.showHover = !this.isMobile && !this.game.trailer_video && !this.hoveringCardId;
+
+    if (this.showHover) {
+      this.onMouseHoverCard.emit(this.game.oneplayId);
+      setTimeout(()=> {
+        if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+          this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+        }
+        if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
+          this.hoverImage.nativeElement.style.right = String(Number(this.hoverImage.nativeElement.style.right) + 150) + "px";
+        }
+      }, 500);
+    }
+  }
+  mouseLeaveHandler() {
+    this.showHover = false;
+    debugger;
+    this.onMouseHoverCard.emit(null);
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
