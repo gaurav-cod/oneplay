@@ -134,6 +134,10 @@ export class GameModel {
     this.poster_16_9_blurhash = json["poster_16_9_blurhash"];
     this.poster_3_4 = json["poster_3_4"];
     this.poster_3_4_blurhash = json["poster_3_4_blurhash"];
+    this.poster_hero_banner_16_9 = json["poster_hero_banner_16_9"];
+    this.poster_hero_banner_16_9_blurhash = json["poster_hero_banner_16_9_blurhash"];
+    this.poster_hero_banner_1_1 = json["poster_hero_banner_1_1"];
+    this.poster_hero_banner_1_1_blurhash = json["poster_hero_banner_1_1_blurhash"];
     this.isPremium = json["subscription_type"] == "premium";
     this.playing = json["playing"];
     this.streaming = json["streaming"];

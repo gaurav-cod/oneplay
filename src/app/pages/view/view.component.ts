@@ -533,11 +533,11 @@ export class ViewComponent implements OnInit, OnDestroy {
   //     : null;
   // }
   get bgBannerImage(): string {
-    return window.innerWidth > 475 ? this.game.poster_16_9 : this.game.poster_1_1;
+    return window.innerWidth > 475 ? this.game.poster_hero_banner_16_9 : this.game.poster_hero_banner_1_1;
   }
 
   get bgBannerHash(): string {
-    return window.innerWidth > 475 ? this.game.poster_16_9_blurhash : this.game.poster_1_1_blurhash;
+    return window.innerWidth > 475 ? this.game.poster_hero_banner_16_9_blurhash : this.game.poster_hero_banner_1_1_blurhash;
   }
 
   get isInWishlist(): boolean {
