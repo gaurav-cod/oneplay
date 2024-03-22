@@ -175,6 +175,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewGame() {
+    
     this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
       this.countlyService.endEvent("gameLandingView");
@@ -193,6 +194,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewGameFromSearch(game: GameModel) {
+    this.query.setValue("");
     this.isMenuCollapsed = true;
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
@@ -301,7 +303,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.sessionCountForCasualGaming();
     this.restService.getSeriousNotification().toPromise().then((data)=> {
-      this.isWarningShown = data.length > 0;
+      this.isWarningShown = data?.length > 0;
       if (this.isWarningShown) {
         this._warningMessageSub = this.authService.warningMessagePresent.subscribe((value)=> {
           this.isWarningShown = value;

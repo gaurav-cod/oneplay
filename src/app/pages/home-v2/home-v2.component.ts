@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -23,6 +23,9 @@ import Swal from "sweetalert2";
   providers: [GLinkPipe]
 })
 export class HomeV2Component implements OnInit, OnDestroy {
+
+
+  @ViewChild("heroBannerVideo") heroBannerVideo: ElementRef<HTMLVideoElement>;
 
   public heroBannerRow: GameFeedModel;
   public library: GameModel[] = [];
@@ -68,10 +71,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     return environment.domain;
   }
   get getBannerImage() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9 : this.selectedBannerGame.poster_1_1;
+    return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9 : this.selectedBannerGame.poster_hero_banner_1_1;
   }
   get getBannerImageBlurHash() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.poster_16_9_blurhash : this.selectedBannerGame.poster_1_1_blurhash;
+    return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9_blurhash : this.selectedBannerGame.poster_hero_banner_1_1_blurhash;
   }
   get getTrailerVideo() {
     return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
@@ -92,8 +95,24 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   @HostListener("window:scroll", [])
   onScroll(): void {
+
+    // for infinite scroll
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
       this.loadMoreRails();
+    }
+
+    // pause video on scroll
+    if (this.heroBannerVideo) {
+      const scrollPosition = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const scrollHeight = document.body.scrollHeight;
+      const scrollPercentage = (scrollPosition / (scrollHeight - viewportHeight)) * 100;
+
+      if (scrollPercentage >= 10) {
+        this.heroBannerVideo.nativeElement.pause();
+      } else {
+        this.heroBannerVideo.nativeElement.play();
+      }
     }
   }
 
@@ -238,10 +257,15 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
-    if (!this.selectedBannerGame.trailer_video) {
+    if (!this.getTrailerVideo) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
+    } else {
+      this.bannerShowTimer = setTimeout(()=> {
+        this.playVideo = true;
+        clearTimeout(this.bannerShowTimer);
+      }, 2000)
     }
   }
 
