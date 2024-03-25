@@ -410,7 +410,7 @@
   border: none;
   border-radius: 10px;
   background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
-  display: block;
+  display: none;
 
   @media (max-width: 1300px) {
     padding-left: 30px;
@@ -433,7 +433,7 @@
   border: none;
   border-radius: 10px;
   background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
-  display: block;
+  display: none;
 
   @media (max-width: 1300px) {
     padding-right: 30px;
