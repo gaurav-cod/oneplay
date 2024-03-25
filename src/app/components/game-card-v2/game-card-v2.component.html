@@ -9,7 +9,7 @@
       <image-loading [hash]="game.poster_16_9_blurhash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
-          <span class="freeTag px-2 tagText">
+          <span class="freeTag freeTagTriangle px-2 tagText">
             FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
           </span>
           <!-- <span class="freeTag freeTagTriangle"></span> -->

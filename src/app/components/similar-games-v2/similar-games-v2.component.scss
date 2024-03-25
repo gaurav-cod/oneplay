@@ -465,7 +465,7 @@
 
   @media screen and (max-width: 475px) {
     .gameCard {
-      width: 250px !important;
+      width: 220px !important;
     }
   }
 
@@ -474,4 +474,7 @@
       width: 285px !important;
     }
   }
+   @media screen and (max-width: 475px) {
+      height: 370px !important;
+   }
 }

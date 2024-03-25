@@ -12,12 +12,12 @@
       <image-loading [hash]="game.poster_3_4_blurhash" [image]="image"></image-loading>
       <div class="gameTags hideOnHover">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
-          <span class="freeTag px-2 tagText">
+          <span class="freeTag freeTagTriangle px-2 tagText">
             FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
           </span>
         </div>
         <span *ngIf="game.status === 'coming_soon'" class="redGradient px-2 tagText">COMING SOON</span>
-        <div class="row justify-content-center mt-2">
+        <div class="row justify-content-center mt-2 mb-1">
           <div *ngIf="game.status === 'maintenance'" class="col-auto"><span
               class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
           <div *ngIf="game.status === 'updating'" class="col-auto"><span

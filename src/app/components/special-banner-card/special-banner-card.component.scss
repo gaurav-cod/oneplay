@@ -10,7 +10,6 @@
 
 .premiumIcon {
   position: absolute;
-  background-color: gray;
   border-radius: 50%;
   top: 10px;
   left: 10px;
@@ -73,14 +72,13 @@ video {
 
     .tagText {
       color: white;
-      font-size: 14px;
+      font-size: 12px;
       border-radius: 3px;
     }
 
     .freeTagTriangle {
-      height: 20px;
-      width: 20px;
-      display: block;
+      clip-path: polygon(79% 0, 100% 49%, 81% 100%, 0 100%, 0 0);
+      padding-right: 20px !important;
     }
   }
 

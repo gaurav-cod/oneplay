@@ -75,6 +75,10 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
     this.isFilterApplied = this.activatedRoute.snapshot.params['filter'] != null;
   }
 
+  get isMobile() {
+    return window.innerWidth < 768;
+  }
+
   get getStreamIcon() {
     return ((this.entries instanceof VideoModel) && (this.entries[0] as VideoModel).isLive) ? "assets/icons/live-icon.svg" : "assets/icons/recorded-game.gif";
   }

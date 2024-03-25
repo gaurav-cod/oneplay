@@ -11,12 +11,12 @@
                 </div>
                 <div class="gameTags hideOnHover">
                     <div *ngIf="specialBannerGame.isFree && specialBannerGame.status !== 'coming_soon'" class="d-flex mb-1">
-                      <span class="freeTag px-2 tagText">
+                      <span class="freeTag freeTagTriangle px-2 tagText">
                         FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
                       </span>
                     </div>
                     <span *ngIf="specialBannerGame.status === 'coming_soon'" class="redGradient px-2 tagText">COMING SOON</span>
-                    <div class="row justify-content-center mt-2">
+                    <div class="row justify-content-center mt-2 mb-1">
                       <div *ngIf="specialBannerGame.status === 'maintenance'" class="col-auto"><span
                           class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
                       <div *ngIf="specialBannerGame.status === 'updating'" class="col-auto"><span
@@ -39,11 +39,13 @@
             </div>
         </div>
     </div>
-    <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
-        <img src="assets/img/arrow-left.svg" height="30px" alt="" />
-    </button>
+    <ng-container *ngIf="!isMobile">
+        <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+            <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+        </button>
 
-    <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
-        <img src="assets/img/arrow-right.svg" height="30px" alt="" />
-    </button>
+        <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
+            <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+        </button>
+    </ng-container>
 </div>

@@ -62,7 +62,7 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
     this.hoveringCardId = null;
 
     // parallex 
-    const step = window.innerWidth > 475 ?  4 : 0.5;
+    const step = window.innerWidth > 475 ?  4 : 1.5;
     const st = window.pageYOffset || document.documentElement.scrollTop;
 
     if (st > this.lastScrollTop) {
@@ -75,6 +75,10 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
         this.marginValue = 1;
     }
     this.lastScrollTop = st <= 0 ? 0 : st;
+  }
+
+  get isMobile() {
+    return window.innerWidth < 768;
   }
 
   updateArrows() {

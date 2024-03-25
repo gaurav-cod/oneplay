@@ -2,7 +2,7 @@
   height: 75vh;
   width: 100%;
   position: relative;
-  margin-bottom: 40px;
+  margin: 40px 0px;
   overflow: hidden;
 
   @media screen and (max-width: 475px) {
@@ -38,7 +38,7 @@
     background-position: center center;
     background-repeat: no-repeat;
     filter: blur(3px);
-    -webkit-filter: blur(3px);
+    -webkit-filter: blur(2px);
     height: 100%;
     width: 100%;
   }
@@ -52,7 +52,7 @@
     z-index: 1;
     position: relative;
     @media screen and (max-width: 475px) {
-      top: 45px;
+      top: 90px;
     }
   }
 }
