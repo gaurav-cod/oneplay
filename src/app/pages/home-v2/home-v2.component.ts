@@ -235,6 +235,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     });
     this.selectedHeroBannerId = this.heroBannerRow.games[(index + 1) % this.heroBannerRow.games.length].oneplayId;
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
+    this.playVideo = false;
     setTimeout(() => {
       this.playVideo = true;
     }, 2000);
