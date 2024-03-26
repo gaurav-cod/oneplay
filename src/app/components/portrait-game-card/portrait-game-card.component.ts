@@ -152,9 +152,15 @@ export class PortraitGameCardComponent implements OnInit {
       if (this.showHover) {
         this.onMouseHoverCard.emit(this.game.oneplayId);
         
+        setTimeout(()=> {
           if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
-            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 150) + "px";
+          } 
+          if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) - 200) + "px";
           }
+        }, 50)
+          
       }
     }, 100)
   }
