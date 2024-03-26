@@ -84,8 +84,8 @@ export class SpotlightBannerComponent implements OnInit {
             this.specialBannerGame.trailer_video;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "190%";
-          video.style.height = "110%";
+          video.style.width = "200px";
+          video.style.height = "200px";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";

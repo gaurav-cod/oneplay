@@ -3,12 +3,12 @@
   height: 160px !important;
 
   @media screen and (min-width: 475px) and (max-width: 1200px) {
-    width: 220px !important;
-    height: 220px !important;
+    width: 160px !important;
+    height: 160px !important;
   }
   @media screen and (max-width: 475px) {
-    width: 180px !important;
-    height: 180px !important;
+    width: 140px !important;
+    height: 140px !important;
   }
 }
 
@@ -219,8 +219,8 @@ video {
     
   }
   @media screen and (max-width: 475px) {
-    width: 180px;
-    height: 310px !important;
+    width: 145px;
+    height: 250px !important;
   }
 }
 .card-img-hover {
