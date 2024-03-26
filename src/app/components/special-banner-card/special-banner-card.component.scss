@@ -105,7 +105,6 @@ video {
 .card-img-hover {
   z-index: 1000;
   position: absolute;
-  top: 150px;
   background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
   background-origin: border-box;
   border: 2px solid transparent;
@@ -192,7 +191,7 @@ video {
 
 @media (min-width: 1300px) {
   .card {
-    width: 400px !important;
+    width: 300px !important;
     height: 40% !important;
   }
 
