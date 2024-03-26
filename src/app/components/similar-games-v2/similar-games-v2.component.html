@@ -1,10 +1,10 @@
 <div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
   <div class="container-fluid removePaddingContainer d-flex align-items-center position-relative" [style.marginBottom]="railCategoryList?.length > 0 ? '20px' : ''">
-    <p class="position-relative paddingLeft mr-4 d-flex align-items-center mb-0"
-      [style.width.%]="railCategoryList?.length > 0 ? '50' : '100'">
+    <div class="position-relative paddingLeft mr-4 d-flex align-items-center mb-0 railHeading"
+      [style.width.%]="railCategoryList?.length > 0 ? '' : '100'">
       <!-- <img [src]="getStreamIcon" alt="" height="40px" width="40px" class="mr-2" *ngIf="railType === 'landscape_video'"> -->
-      <span class="railHeading">{{ title }}</span>
-    </p>
+      {{ title }}
+    </div>
     <ng-container *ngIf="railCategoryList?.length > 0">
       <div class="filterContainerList" *ngIf="!isSpecialBanner" #scrollFilter>
         <ng-container *ngFor="let filter of railCategoryList">
@@ -33,9 +33,6 @@
                 <app-install-play-game-v2 *ngIf="entry.isInstallAndPlay" [game]="entry" [hasFixedWidth]="true"
                   [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"
                   [railType]="railType"></app-install-play-game-v2>
-              </ng-container>
-              <ng-container *ngIf="railType == 'square_category_small'">
-                <app-square-small-card [game]="entry" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-square-small-card>
               </ng-container>
               <ng-container *ngIf="railType == 'landscape_video'">
                 <app-lanscape-video [video]="entry"></app-lanscape-video>

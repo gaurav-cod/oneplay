@@ -1,14 +1,14 @@
 .w290h185 {
-  width: 256px !important;
-  height: 330px !important;
+  width: 200px !important;
+  height: 260px !important;
 
   @media screen and (max-width: 475px) {
     width: 100% !important;
     height: 245px !important;
   }
   @media screen and (min-width: 700px) and (max-width: 1200px) {
-    width: 260px !important;
-    height: 330px !important;
+    width: 200px !important;
+    height: 250px !important;
   }
   @media screen and (min-width: 475px) and (max-width: 700px) {
     width: 200px !important;
@@ -25,11 +25,14 @@
 
 .mute {
   position: absolute;
-  bottom: 0px;
-  left: 170%;
+  bottom: 15%;
+  left: 160%;
   padding: 4px 8px;
   border-radius: 50%;
   z-index: 100000;
+}
+.muteLeft {
+  left: 175% !important;
 }
 
 .unmute {
@@ -223,8 +226,8 @@ video {
 }
 
 .categoryLargeWidth {
-  width: 300px !important;
-  height: 300px !important;
+  width: 250px !important;
+  height: 250px !important;
 
   @media screen and (max-width: 475px) {
     height: 200px !important;

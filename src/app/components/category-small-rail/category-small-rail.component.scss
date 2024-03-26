@@ -9,6 +9,9 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  width: 30%;
+  min-width: 30%;
+  max-width: 50%;
 
   @media (max-width: 1200px) {
     font-size: 28px;
@@ -19,7 +22,7 @@
 
 .gameCol {
   margin: 20px;
-  width: 390px;
+  width: 330px;
 
   // @media screen and (max-width: 475px) {
   //   margin: 10px !important;
@@ -44,6 +47,7 @@
 .scrollGameList {
   display: flex;
   width: 100%;
+  padding: 5px;
   overflow-x: auto;
 
   &::-webkit-scrollbar-track,
@@ -59,8 +63,8 @@
   background-color: #212123;
   padding: 10px;
   width: fit-content;
-  max-width: 60%;
-  margin-left: 20px;
+  max-width: 70%;
+  // margin-left: 20px;
   overflow-x: auto;
 
   &::-webkit-scrollbar-track,
@@ -76,6 +80,7 @@
     margin-right: 12px;
     cursor: pointer;
     min-width: max-content;
+    font-size: 14px;
   }
 
   .linearGradient {

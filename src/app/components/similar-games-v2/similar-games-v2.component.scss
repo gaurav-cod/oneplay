@@ -262,7 +262,7 @@
 }
 
 .streamCard {
-  width: 380px !important;
+  width: 300px !important;
   height: unset !important;
 
   @media screen and (min-width: 475px) and (max-width: 1200px) {
@@ -280,7 +280,7 @@
 }
 
 .w290 {
-  width: 280px;
+  width: 215px;
   height: 100%;
 
   @media (max-width: 320px) {
@@ -327,19 +327,22 @@
 
 .railHeading {
   font-weight: 500;
-  font-size: 48px;
+  font-size: 38px;
   color: #dcdcdc;
   letter-spacing: 0.02em;
-  font-family: "TsukiRegular" !important;
+  font-family: "TsukiRegular";
   margin-bottom: 0px;
+  display: -webkit-box !important;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  display: -webkit-box;
-  align-items: center;
+  width: 30%;
+  min-width: 30%;
+  max-width: 50%;
 
-  @media (max-width: 475px) {
-    font-size: 32px !important;
+  @media (max-width: 1200px) {
+    font-size: 28px;
+    line-height: 26px;
     margin-right: 0px !important;
   }
 }
@@ -350,9 +353,11 @@
   background-color: #212123;
   padding: 10px;
   width: fit-content;
-  max-width: 60%;
+  max-width: 70%;
+  // margin-left: 20px;
   margin-left: auto;
   overflow-x: auto;
+  font-size: 14px;
   // cursor: grab;
 
   &::-webkit-scrollbar-track,
@@ -459,7 +464,7 @@
 
 .scrollGameWidthCategoryLarge {
   .gameCard {
-    width: 330px !important;
+    width: 265px !important;
   }
 
   @media screen and (max-width: 475px) {

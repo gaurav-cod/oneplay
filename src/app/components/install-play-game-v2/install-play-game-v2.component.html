@@ -25,14 +25,15 @@
       <image-loading [hash]="installPlayBlurhashImage" [image]="image"></image-loading>
       <div class="stickyContainer">
         <div class="premiumIcon">
-          <img src="assets/icons/premium-icon.svg" alt="">
+          <img src="assets/icons/premium-icon.svg" alt="" height="25px" width="25px">
         </div>
         <div class="storeIcons">
-          <img *ngFor="let store of game.storesMapping" [src]="store.store_image" height="25px" width="25px" />
+          <img *ngFor="let store of game.storesMapping" [src]="store.store_image" height="20px" width="20px" />
         </div>
       </div>
     </div>
     <h4 class="game-title">{{ game.title }}</h4>
+    <div class="developerName" *ngIf="game.developer?.length > 0">{{ game.developer[0] }}</div>
     <div class="gameTagsContianer">
       <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
         <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>

@@ -49,8 +49,8 @@
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
+    width: 100%;
     z-index: 1;
-    position: relative;
     @media screen and (max-width: 475px) {
       top: 90px;
     }
@@ -76,8 +76,8 @@
   overflow-x: auto;
   flex-wrap: nowrap !important;
   padding: 10px 40px;
-  position: absolute;
-  top: 40%;
+  position: relative;
+  align-items: center;
 
   @media (max-width: 1600px) {
     padding-left: 70px;
@@ -97,7 +97,7 @@
   @media (max-width: 1300px) {
     padding-left: 35px;
     padding-right: 40px;
-    padding-bottom: 45px;
+    padding-bottom: 0px;
   }
 
   @media (max-width: 850px) {

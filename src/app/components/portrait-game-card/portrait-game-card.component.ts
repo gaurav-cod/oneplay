@@ -94,8 +94,8 @@ export class PortraitGameCardComponent implements OnInit {
           video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "190%";
-          video.style.height = "110%";
+          video.style.width = this.railType == "square_category_large" ? "180%" : "200%";
+          video.style.height = "90%";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";

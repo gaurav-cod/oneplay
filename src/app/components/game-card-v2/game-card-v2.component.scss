@@ -1,14 +1,14 @@
 .w290h185 {
-  width: 220px !important;
-  height: 220px !important;
+  width: 160px !important;
+  height: 160px !important;
 
   @media screen and (min-width: 475px) and (max-width: 1200px) {
-    width: 220px !important;
-    height: 220px !important;
+    width: 160px !important;
+    height: 160px !important;
   }
   @media screen and (max-width: 475px) {
-    width: 180px !important;
-    height: 180px !important;
+    width: 140px !important;
+    height: 140px !important;
   }
 }
 
@@ -95,6 +95,7 @@ video {
     color: #DCDCDC;
     width: fit-content;
     border-radius: 20px;
+    font-size: 12px;
   }
 }
 
@@ -213,13 +214,13 @@ video {
 }
 
 .spotlightBannerWidth {
-  width: 230px;
+  width: 165px;
   @media screen and (min-width: 475px) and (max-width: 1200px) {
     
   }
   @media screen and (max-width: 475px) {
-    width: 180px;
-    height: 310px !important;
+    width: 145px;
+    height: 250px !important;
   }
 }
 .card-img-hover {

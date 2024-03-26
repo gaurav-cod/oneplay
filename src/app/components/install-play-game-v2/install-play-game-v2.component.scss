@@ -1,14 +1,14 @@
 .w290h185 {
-  width: 256px !important;
-  height: 330px !important;
+  width: 200px !important;
+  height: 260px !important;
 
   @media screen and (max-width: 475px) {
     width: 100% !important;
     height: 245px !important; // 200px
   }
   @media screen and (min-width: 700px) and (max-width: 1200px) {
-    width: 260px !important;
-    height: 330px !important;
+    width: 200px !important;
+    height: 250px !important;
   }
   @media screen and (min-width: 475px) and (max-width: 700px) {
     width: 200px !important;
@@ -97,6 +97,7 @@ video {
     overflow: hidden;
     font-size: 16px;
     margin-top: 9px;
+    margin-bottom: 3px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -136,6 +137,14 @@ video {
   }
 }
 
+.developerName {
+  color: #959595;
+  padding: 0px 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .game-gamezop-title {
   width: 100%;
   color: #ffffff;
@@ -158,7 +167,7 @@ video {
 @media (max-width: 480px) {
   .card {
     width: 200px; // 185px
-    height: 310px; 
+    height: 250px; 
     top: -2px;
   }
 
@@ -196,7 +205,7 @@ video {
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    width: 230px !important;
+    width: 165px !important;
     height: 130px !important;
   }
 
@@ -209,7 +218,7 @@ video {
   .card {
     // width: 150px;
     height: 200px !important;
-    width: 230px !important;
+    width: 165px !important;
   }
 
   .gamezop-card {
@@ -253,8 +262,8 @@ video {
 }
 .squareCategoryLargeWidth {
   .w290h185 {
-    height: 300px !important;
-    width: 300px !important;
+    height: 250px !important;
+    width: 250px !important;
     @media (min-width: 475px) and (max-width: 1200px) {
       height: 260px !important;
       width: 260px !important;
@@ -265,7 +274,7 @@ video {
     }
   }
   .stickyContainer {
-    width: 120% !important;
+    width: 100% !important;
     @media (max-width: 475px) {
       width: 88% !important;
     }
@@ -274,11 +283,11 @@ video {
 .spotlightBannerWidth {
   margin-left: 10px;
   .w290h185 {
-    width: 220px !important;
-    height: 220px !important;
+    width: 160px !important;
+    height: 160px !important;
     @media screen and (max-width: 475px) {
-      height: 180px !important;
-      width: 180px !important;
+      height: 140px !important;
+      width: 140px !important;
     }
   }
   .stickyContainer {
@@ -286,14 +295,14 @@ video {
   }
   @media screen and (max-width: 475px) {
     
-    width: 180px !important;
+    width: 145px !important;
   }
 
 }
 
 .categoryLargeWidth {
-  width: 300px !important;
-  height: 300px !important;
+  width: 250px !important;
+  height: 250px !important;
 
   @media screen and (max-width: 475px) {
     height: 230px !important;

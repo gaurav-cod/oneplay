@@ -99,9 +99,9 @@ video {
 }
 
 .text-logo {
-    width: 22vw;
+    width: 20vw;
     left: 3%;
-    bottom: 27%;
+    bottom: 33%;
 
     img {
         width: 100%;
@@ -140,15 +140,15 @@ video {
 }
 
 .games-carousel {
-    gap: 20px;
+    gap: 8px;
     position: absolute;
     bottom: 120px;
     right: 40px;
     z-index: 101;
 
     .card-carousel-img {
-        height: 100px;
-        width: 80px;
+        height: 90px;
+        width: 70px;
         object-fit: cover;
     }
 
