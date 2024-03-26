@@ -1,6 +1,6 @@
 .w290h185 {
-  width: 370px !important;
-  height: 225px !important;
+  width: 280px !important;
+  height: 180px !important;
 
   @media (max-width: 1200px) {
     width: 280px !important;
@@ -105,7 +105,7 @@ video {
 .card-img-hover {
   z-index: 1000;
   position: absolute;
-  top: 40px;
+  top: 150px;
   background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
   background-origin: border-box;
   border: 2px solid transparent;
@@ -175,8 +175,8 @@ video {
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    height: 380px !important;
-    width: 400px;
+    height: 290px !important;
+    width: 290px;
   }
 
   .gamezop-card {

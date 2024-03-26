@@ -1,6 +1,6 @@
 .w290h185 {
-  width: 220px !important;
-  height: 220px !important;
+  width: 160px !important;
+  height: 160px !important;
 
   @media screen and (min-width: 475px) and (max-width: 1200px) {
     width: 220px !important;
@@ -95,6 +95,7 @@ video {
     color: #DCDCDC;
     width: fit-content;
     border-radius: 20px;
+    font-size: 12px;
   }
 }
 
@@ -213,7 +214,7 @@ video {
 }
 
 .spotlightBannerWidth {
-  width: 230px;
+  width: 165px;
   @media screen and (min-width: 475px) and (max-width: 1200px) {
     
   }

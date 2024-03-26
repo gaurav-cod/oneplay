@@ -7,7 +7,7 @@
                 <img [src]="specialBannerGame.poster_16_9" alt="" class="spotlightBannerImage" #image>
 
                 <div class="premiumIcon hideOnHover" *ngIf="specialBannerGame.isPremium">
-                    <img src="assets/icons/premium-icon.svg" alt="" >
+                    <img src="assets/icons/premium-icon.svg" alt="" height="25px" width="25px">
                 </div>
                 <div class="gameTags hideOnHover">
                     <div *ngIf="specialBannerGame.isFree && specialBannerGame.status !== 'coming_soon'" class="d-flex mb-1">

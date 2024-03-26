@@ -1,6 +1,6 @@
 .w290h185 {
-  width: 256px !important;
-  height: 330px !important;
+  width: 200px !important;
+  height: 260px !important;
 
   @media screen and (max-width: 475px) {
     width: 100% !important;
@@ -196,7 +196,7 @@ video {
 @media (min-width: 768px) {
   .card {
     // width: 150px;
-    width: 230px !important;
+    width: 165px !important;
     height: 130px !important;
   }
 
@@ -253,8 +253,8 @@ video {
 }
 .squareCategoryLargeWidth {
   .w290h185 {
-    height: 300px !important;
-    width: 300px !important;
+    height: 250px !important;
+    width: 250px !important;
     @media (min-width: 475px) and (max-width: 1200px) {
       height: 260px !important;
       width: 260px !important;
@@ -265,7 +265,7 @@ video {
     }
   }
   .stickyContainer {
-    width: 120% !important;
+    width: 100% !important;
     @media (max-width: 475px) {
       width: 88% !important;
     }
@@ -274,8 +274,8 @@ video {
 .spotlightBannerWidth {
   margin-left: 10px;
   .w290h185 {
-    width: 220px !important;
-    height: 220px !important;
+    width: 160px !important;
+    height: 160px !important;
     @media screen and (max-width: 475px) {
       height: 180px !important;
       width: 180px !important;
@@ -292,8 +292,8 @@ video {
 }
 
 .categoryLargeWidth {
-  width: 300px !important;
-  height: 300px !important;
+  width: 250px !important;
+  height: 250px !important;
 
   @media screen and (max-width: 475px) {
     height: 230px !important;
