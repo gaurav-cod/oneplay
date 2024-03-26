@@ -1,6 +1,6 @@
 <a #gameLink href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative"
   (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
-  <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+  <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ 'unmute': !muted, 'muteLeft': railType == 'portrait_category' || railType == 'portrait_card' }"
     (click)="muteUnmute($event, gameLink, game)">
     <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
   </div>

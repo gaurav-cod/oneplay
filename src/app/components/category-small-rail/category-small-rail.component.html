@@ -16,7 +16,7 @@
             <ng-container *ngFor="let key of getObjectKeys(); let idx = index">
                 <div>
                     <div *ngFor="let game of gamesListBatches[key]" class="gameCol">
-                        <app-square-small-card [game]="game"></app-square-small-card>
+                        <app-square-small-card [game]="game" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-square-small-card>
                     </div>
                 </div>
             </ng-container>

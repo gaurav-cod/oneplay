@@ -33,6 +33,7 @@
       </div>
     </div>
     <h4 class="game-title">{{ game.title }}</h4>
+    <div class="developerName" *ngIf="game.developer?.length > 0">{{ game.developer[0] }}</div>
     <div class="gameTagsContianer">
       <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
         <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>

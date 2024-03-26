@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { GameModel } from 'src/app/models/game.model';
 import { GameFeedModel } from 'src/app/models/gameFeed.model';
 import { GamezopModel } from 'src/app/models/gamezop.model';
@@ -29,12 +29,20 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
 
   public showRightArrow = false;
   public showLeftArrow = false;
+  public hoveringCardId: string | null = null;
 
   private _arrowTimeout: NodeJS.Timer;
   private _loaderTimeout: NodeJS.Timer;
 
   get isMobile() {
     return window.innerWidth < 768;
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    
+    // removing hovering cards
+    this.hoveringCardId = null;
   }
 
   ngOnDestroy(): void {
@@ -50,6 +58,10 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
 
   ngAfterViewInit(): void {
     this._arrowTimeout = setTimeout(() => this.updateArrows(), 100);
+  }
+
+  cardHoverHandler(oneplayId: string) {
+    this.hoveringCardId = oneplayId;
   }
 
   rearrangeGameBatch(games: GamezopModel[]) {
