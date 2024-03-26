@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -21,9 +21,12 @@ export class PortraitGameCardComponent implements OnInit {
   @Input() railType: RAIL_TYPES;
 
   @Output("gameClick") gameClick = new EventEmitter();
+  @Input("hoveringCardId") hoveringCardId: string | null = null;
+  @Output("onMouseHoverCard") onMouseHoverCard = new EventEmitter<string>();
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -49,6 +52,11 @@ export class PortraitGameCardComponent implements OnInit {
     
   }
   ngAfterViewInit(): void {
+  }  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.game.oneplayId != this.hoveringCardId) {
+      this.showHover = false;
+    }
   }
 
   constructor(
@@ -138,6 +146,22 @@ export class PortraitGameCardComponent implements OnInit {
   }
 
   mouseEnterHandler() {
-    this.showHover = !this.isMobile && !this.game.trailer_video;
+    this.onMouseHoverCard.emit(this.game.oneplayId);
+    setTimeout(()=> {
+      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+      if (this.showHover) {
+        this.onMouseHoverCard.emit(this.game.oneplayId);
+        
+          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+          }
+      }
+    }, 100)
+  }
+  mouseLeaveHandler() {
+    if (this.hoveringCardId == this.game.oneplayId) {
+      this.showHover = false;
+      this.onMouseHoverCard.emit(null);
+    }
   }
 }

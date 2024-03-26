@@ -10,7 +10,6 @@
 
 .premiumIcon {
   position: absolute;
-  background-color: gray;
   border-radius: 50%;
   top: 10px;
   left: 10px;
@@ -64,6 +63,7 @@ video {
     overflow: hidden;
     font-size: 16px;
     margin-top: 9px;
+    padding: 0px 5px;
   }
 
   .gameTags {
@@ -73,14 +73,13 @@ video {
 
     .tagText {
       color: white;
-      font-size: 14px;
+      font-size: 12px;
       border-radius: 3px;
     }
 
     .freeTagTriangle {
-      height: 20px;
-      width: 20px;
-      display: block;
+      clip-path: polygon(79% 0, 100% 49%, 81% 100%, 0 100%, 0 0);
+      padding-right: 20px !important;
     }
   }
 
@@ -107,7 +106,6 @@ video {
   z-index: 1000;
   position: absolute;
   top: 40px;
-  transition: transform 0.2s ease-out;
   background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
   background-origin: border-box;
   border: 2px solid transparent;

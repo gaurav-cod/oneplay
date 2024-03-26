@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -14,15 +14,17 @@ import { v4 } from 'uuid';
   styleUrls: ['./special-banner-card.component.scss'],
   providers: [GLinkPipe]
 })
-export class SpecialBannerCardComponent implements OnInit {
+export class SpecialBannerCardComponent implements OnInit, OnChanges {
 
   @Input("game") game: GameModel;
   @Input("queryParams") queryParams?: any;
-
+  @Input("hoveringCardId") hoveringCardId: string | null = null;
+  @Output("onMouseHoverCard") onMouseHoverCard = new EventEmitter<string>();
   @Output("gameClick") gameClick = new EventEmitter();
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -45,6 +47,11 @@ export class SpecialBannerCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.game.oneplayId != this.hoveringCardId) {
+      this.showHover = false;
+    }
   }
 
   constructor(
@@ -71,7 +78,24 @@ export class SpecialBannerCardComponent implements OnInit {
     this.showTitle = true;
   }
   mouseEnterHandler() {
-    this.showHover = !this.isMobile && !this.game.trailer_video;
+      
+    this.onMouseHoverCard.emit(this.game.oneplayId);
+    setTimeout(()=> {
+      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+      if (this.showHover) {
+        this.onMouseHoverCard.emit(this.game.oneplayId);
+        
+          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+          }
+      }
+    }, 100)
+  }
+  mouseLeaveHandler() {
+    if (this.hoveringCardId == this.game.oneplayId) {
+      this.showHover = false;
+      this.onMouseHoverCard.emit(null);
+    }
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
@@ -135,19 +159,4 @@ export class SpecialBannerCardComponent implements OnInit {
       }
     }
   }
-
-  scaleImage(image, type: "INCREASE" | "DECREASE") {
-    if (!this.game.trailer_video) {
-      if (type == "INCREASE")
-        image.className += " card-hover position-absolute";
-      else {
-        image.className = this.replaceAll(image.className, "card-hover", "");
-        image.className = this.replaceAll(image.className, "position-absolute", "");
-      }
-    }
-  }
-  private replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
-  }
-
 }

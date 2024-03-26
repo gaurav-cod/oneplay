@@ -23,7 +23,6 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
   
   public gamesListBatches = {};
 
-
   public isFilterApplied: boolean = false;
   public selectedFilter: string = "All";
   public isLoading: boolean = false;
@@ -33,6 +32,10 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
 
   private _arrowTimeout: NodeJS.Timer;
   private _loaderTimeout: NodeJS.Timer;
+
+  get isMobile() {
+    return window.innerWidth < 768;
+  }
 
   ngOnDestroy(): void {
     clearInterval(this._arrowTimeout);

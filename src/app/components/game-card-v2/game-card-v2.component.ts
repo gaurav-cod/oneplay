@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { GameModel } from 'src/app/models/game.model';
@@ -26,6 +26,8 @@ export class GameCardV2Component implements AfterViewInit {
     | "LIBRARY" = "HOME";
 
   @Input() railType: RAIL_TYPES;
+  @Input("hoveringCardId") hoveringCardId: string | null = null;
+  @Output("onMouseHoverCard") onMouseHoverCard = new EventEmitter<string>();
 
   @Input() specialBannerGame: boolean = false;
 
@@ -33,6 +35,7 @@ export class GameCardV2Component implements AfterViewInit {
 
   @ViewChild("gameLink") gameLink;
   @ViewChild("image") image;
+  @ViewChild("hoverImage") hoverImage;
 
   timer: NodeJS.Timeout;
   muted = true;
@@ -54,6 +57,11 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.game.oneplayId != this.hoveringCardId) {
+      this.showHover = false;
+    }
   }
 
   constructor(
@@ -79,11 +87,7 @@ export class GameCardV2Component implements AfterViewInit {
     event.target.src = "assets/img/default_bg.webp";
     this.showTitle = true;
   }
-  mouseEnterHandler() {
-    this.showHover = !this.isMobile && !this.game.trailer_video;
-  }
 
-  
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
@@ -146,4 +150,25 @@ export class GameCardV2Component implements AfterViewInit {
       }
     }
   }
+
+  mouseEnterHandler() {
+    this.onMouseHoverCard.emit(this.game.oneplayId);
+    setTimeout(()=> {
+      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+      if (this.showHover) {
+        this.onMouseHoverCard.emit(this.game.oneplayId);
+        
+          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+          }
+      }
+    }, 100)
+  }
+  mouseLeaveHandler() {
+    if (this.hoveringCardId == this.game.oneplayId) {
+      this.showHover = false;
+      this.onMouseHoverCard.emit(null);
+    }
+  }
+
 }

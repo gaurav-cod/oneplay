@@ -16,8 +16,9 @@
       (click)="gamezopGame()" 
       class="card-img-hover imageContainer" 
       [src]="game.assets.square" 
-      (mouseleave)="showHover = false" 
+      (mouseleave)="mouseLeaveHandler()" 
       [hidden]="!showHover" 
+      #hoverImage
     />
     <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>

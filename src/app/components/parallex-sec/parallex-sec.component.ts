@@ -13,6 +13,9 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private lastScrollTop: number = 0;
   public marginValue: number = 1;
+  public hoveringCardId: string | null = null;
+
+
   @Input() gamesFeed: GameFeedModel;
 
   @Output() gameClick = new EventEmitter<string>();
@@ -29,6 +32,10 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngOnDestroy(): void {
     clearTimeout(this._arrowTimeout);
+  }
+
+  cardHoverHandler(oneplayId: string) {
+    this.hoveringCardId = oneplayId;
   }
 
   constructor() {
@@ -50,7 +57,12 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
-    const step = window.innerWidth > 475 ?  4 : 0.5;
+    
+    // removing hovering cards
+    this.hoveringCardId = null;
+
+    // parallex 
+    const step = window.innerWidth > 475 ?  4 : 1.5;
     const st = window.pageYOffset || document.documentElement.scrollTop;
 
     if (st > this.lastScrollTop) {
@@ -63,6 +75,10 @@ export class ParallexSecComponent implements OnInit, AfterViewInit, OnDestroy {
         this.marginValue = 1;
     }
     this.lastScrollTop = st <= 0 ? 0 : st;
+  }
+
+  get isMobile() {
+    return window.innerWidth < 768;
   }
 
   updateArrows() {
