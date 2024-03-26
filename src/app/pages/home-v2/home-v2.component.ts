@@ -254,8 +254,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
       if (game.oneplayId == this.selectedHeroBannerId)
         currSelectedGameIndex = index;
     })
-    this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex + (direction == "LEFT" ? -1 : 1)) % this.heroBannerRow.games.length].oneplayId;
-    this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
+    if (currSelectedGameIndex == 0 && direction == "LEFT") {
+      this.selectedHeroBannerId = this.heroBannerRow.games.at(-1).oneplayId;
+      this.selectedBannerGame = this.heroBannerRow.games.at(-1);
+    } else {
+      this.selectedHeroBannerId = this.heroBannerRow.games[(currSelectedGameIndex + (direction == "LEFT" ? -1 : 1)) % this.heroBannerRow.games.length].oneplayId;
+      this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
+    }
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
     if (!this.getTrailerVideo) {
