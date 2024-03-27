@@ -47,6 +47,9 @@ export class PortraitGameCardComponent implements OnInit {
   get getVideo() {
     return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
   }
+  get getVideoHeight() {
+    return window.innerWidth > 1280 ? "90%" : "60%";
+  }
 
   ngOnInit(): void {
     
@@ -95,7 +98,7 @@ export class PortraitGameCardComponent implements OnInit {
           video.muted = true;
           video.style.objectFit = 'cover';
           video.style.width = this.railType == "square_category_large" ? "180%" : "200%";
-          video.style.height = "90%";
+          video.style.height = this.getVideoHeight;
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
