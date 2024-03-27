@@ -625,6 +625,9 @@ live {
 .adjustHeightWidth {
   height: auto !important;
   width: 40% !important;
+  @media (max-width: 475px) {
+    width: 80% !important;
+  }
 }
 
 .blackBbg {

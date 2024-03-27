@@ -64,6 +64,7 @@ video {
     font-size: 16px;
     margin-top: 9px;
     padding: 0px 5px;
+    white-space: normal;
   }
 
   .gameTags {
@@ -85,6 +86,7 @@ video {
 
   .gameTagsContianer {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
@@ -94,6 +96,7 @@ video {
     color: #DCDCDC;
     width: fit-content;
     border-radius: 20px;
+    font-size: 14px;
   }
 }
 

@@ -9,7 +9,7 @@
                 <div class="premiumIcon hideOnHover" *ngIf="specialBannerGame.isPremium">
                     <img src="assets/icons/premium-icon.svg" alt="" height="25px" width="25px">
                 </div>
-                <div class="gameTags hideOnHover">
+                <div class="gameTags hideOnHover" [ngClass]="{'mb-4': gameFeed.specialLabel?.length > 0}">
                     <div *ngIf="specialBannerGame.isFree && specialBannerGame.status !== 'coming_soon'" class="d-flex mb-1">
                       <span class="freeTag freeTagTriangle px-2 tagText">
                         FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
@@ -24,7 +24,8 @@
                       <div *ngIf="specialBannerGame.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT
                           OPTIMIZED</span></div>
                     </div>
-                  </div>
+                </div>
+                <div class="specialLabel">{{ gameFeed.specialLabel }}</div>
             </div>
         </div>
         <div class="scrollGame row">

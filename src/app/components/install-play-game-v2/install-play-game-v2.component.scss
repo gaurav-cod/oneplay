@@ -103,6 +103,7 @@ video {
     -webkit-box-orient: vertical;
     text-wrap: wrap;
     padding: 0px 5px;
+    white-space: normal;
   }
 
   .gameTags {
@@ -125,6 +126,7 @@ video {
 
   .gameTagsContianer {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
@@ -134,6 +136,7 @@ video {
     color: #DCDCDC;
     width: fit-content;
     border-radius: 20px;
+    font-size: 14px;
   }
 }
 
@@ -167,7 +170,7 @@ video {
 @media (max-width: 480px) {
   .card {
     width: 200px; // 185px
-    height: 250px; 
+    height: 295px; 
     top: -2px;
   }
 
