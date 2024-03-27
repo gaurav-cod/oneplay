@@ -87,6 +87,7 @@ video {
 
   .gameTagsContianer {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
@@ -96,7 +97,7 @@ video {
     color: #DCDCDC;
     width: fit-content;
     border-radius: 20px;
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -221,7 +222,7 @@ video {
   }
   @media screen and (max-width: 475px) {
     width: 145px;
-    height: 250px !important;
+    height: 295px !important;
   }
 }
 .card-img-hover {
