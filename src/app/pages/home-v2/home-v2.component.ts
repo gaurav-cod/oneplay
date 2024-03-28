@@ -219,6 +219,12 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }
   }
 
+  navigateToDetail(game) {
+    if (window.innerWidth <= 475) { 
+      this.router.navigate(["view", this.gLink.transform(game)]);
+    }
+  }
+
   loadMoreRails() {
     // this.pageNo++;
     // this.restService.getHomeFeed({page: this.pageNo}).subscribe({

@@ -10,7 +10,7 @@
     <ngb-carousel id="home-header" [showNavigationArrows]="false"
       [showNavigationIndicators]="false" (slide)="onSlideChange($event)" *ngIf="!!heroBannerRow" interval="0">
       <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-        <div class="card bgTransparent border-0 borderRadius10 height90vh position-relative">
+        <div class="card bgTransparent border-0 borderRadius10 height90vh position-relative" (click)="navigateToDetail(game)">
           <div class="row carousel-images">
             <ng-container *ngIf="!playVideo">
               <img #bannerImg class="card-img borderRadius10 height90vh left-img" [src]="getBannerImage" alt="img" />
