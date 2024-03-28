@@ -59,7 +59,7 @@ export class SpotlightBannerComponent implements OnInit {
     return window.innerWidth > 475 ? '100' : '100';
   }
   get isMobile() {
-    return window.innerWidth < 768;
+    return window.innerWidth < 1200;
   }
 
   onGameClick() {
