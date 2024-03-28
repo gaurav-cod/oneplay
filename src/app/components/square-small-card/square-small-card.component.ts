@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { GameModel } from 'src/app/models/game.model';
 import { GamezopModel } from 'src/app/models/gamezop.model';
-import { environment } from 'src/environments/environment';
 import { v4 } from 'uuid';
 
 @Component({
