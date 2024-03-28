@@ -121,9 +121,7 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
     
     this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, this.payload, 0).subscribe((games) => {
       this.rearrangeGameBatch(games);
-      this._loaderTimeout = setTimeout(() => {
-        this.isLoading = false;
-      }, 500);
+      this.isLoading = false;
     });
   }
 }

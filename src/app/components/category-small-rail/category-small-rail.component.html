@@ -13,14 +13,24 @@
     </div>
     <div class="d-flex h-100 align-items-baseline container-fluid" style="padding-right: 0px !important;">
         <div class="scrollGameList" #container>
-            <ng-container *ngFor="let key of getObjectKeys(); let idx = index">
-                <div>
-                    <div *ngFor="let game of gamesListBatches[key]" class="gameCol">
-                        <app-square-small-card [game]="game" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-square-small-card>
+            <ng-container *ngIf="!isLoading; else showLoadingScreen">
+                <ng-container *ngFor="let key of getObjectKeys(); let idx = index">
+                    <div>
+                        <div *ngFor="let game of gamesListBatches[key]" class="gameCol">
+                            <app-square-small-card [game]="game" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-square-small-card>
+                        </div>
                     </div>
-                </div>
+                </ng-container>
             </ng-container>
+            <ng-template #showLoadingScreen>
+                <ng-container *ngFor="let _ of [].constructor(5)">
+                    <div>
+                        <img src="assets/img/placeholder-game.svg" alt="placeholder image" style="margin-right: 10px;" class="placeholderImage gameCol" style="width: 180px" *ngFor="let _ of [].constructor(2)">
+                    </div>
+                </ng-container>
+            </ng-template>
         </div>
+        
     </div>
 
     <ng-container *ngIf="!isMobile">

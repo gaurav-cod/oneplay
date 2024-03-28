@@ -173,4 +173,11 @@ export class PortraitGameCardComponent implements OnInit {
       this.onMouseHoverCard.emit(null);
     }
   }
+
+  get streamCount() {
+    return this.game.streaming > 1000 ? ((this.game.streaming / 1000) + "k") : this.game.streaming;
+  }
+  get playersCount() {
+    return this.game.playing > 1000 ? ((this.game.playing / 1000) + "k") : this.game.playing;
+  }
 }

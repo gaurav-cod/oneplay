@@ -168,3 +168,32 @@
   display: block !important;
 }
 
+
+.placeholderImage {
+  // transition: all .2s ease-in-out;
+  animation: loadingPlaceholer 0.8s infinite;
+  @media (min-width: 768px) and (max-width: 1200px) {
+    width: 180px !important;
+  }
+  @media (max-width: 768px) {
+    width: 140px !important;
+  }
+}
+@keyframes loadingPlaceholer {
+  0% {
+      opacity: 0.5;
+      // clip-path: inset(0 100% 0 0);
+  }
+  50% {
+    opacity: 1;
+    // clip-path: inset(0 0 0 0);
+  }
+  100% {
+      opacity: 0.5; 
+      // clip-path: inset(0 100% 0 0);
+  }
+}
+
+
+
+
