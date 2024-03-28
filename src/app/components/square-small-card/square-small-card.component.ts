@@ -35,7 +35,7 @@ export class SquareSmallCardComponent implements OnInit {
   readonly loaderId = v4();
 
   get isMobile() {
-    return window.innerWidth < 768;
+    return window.innerWidth < 1200;
   }
 
   ngOnInit(): void {

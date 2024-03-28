@@ -36,7 +36,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
   readonly loaderId = v4();
 
   get isMobile() {
-    return window.innerWidth < 768;
+    return window.innerWidth < 1200;
   }
 
   get getTrailerVideo() {

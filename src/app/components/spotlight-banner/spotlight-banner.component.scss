@@ -63,6 +63,7 @@
   }
   @media (max-width: 475px) {
     font-size: 24px;
+    width: 80% !important;
   }
 }
 
@@ -188,6 +189,7 @@
   }
 }
 .hideInLarge {
+  margin-left: 0px;
   @media screen and (min-width: 475px) {
     display: none;
   }

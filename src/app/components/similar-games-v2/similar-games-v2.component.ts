@@ -76,7 +76,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   }
 
   get isMobile() {
-    return window.innerWidth < 768;
+    return window.innerWidth < 1200;
   }
 
   get getStreamIcon() {
