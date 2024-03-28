@@ -1,10 +1,10 @@
 .w290h185 {
-  width: 200px !important;
-  height: 260px !important;
+  width: 185px !important;
+  height: 250px !important;
 
   @media screen and (max-width: 475px) {
     width: 100% !important;
-    height: 245px !important; // 200px
+    height: 215px !important; // 200px
   }
   @media screen and (min-width: 700px) and (max-width: 1200px) {
     width: 200px !important;
@@ -26,9 +26,12 @@
   left: 10px;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  @media screen and (max-width: 700px) {
-    width: 78% !important;
+  width: 78%;
+  @media screen and (min-width: 1200px) {
+      width: 100% !important;
+  }
+  @media screen and (min-width: 700px) and (max-width: 1200px) {
+    width: 110% !important;
   }
   @media screen and (max-width: 475px) {
     width: 88% !important;
@@ -169,7 +172,7 @@ video {
 
 @media (max-width: 480px) {
   .card {
-    width: 200px; // 185px
+    width: 165px; // 185px
     height: 295px; 
     top: -2px;
   }
@@ -265,15 +268,15 @@ video {
 }
 .squareCategoryLargeWidth {
   .w290h185 {
-    height: 250px !important;
-    width: 250px !important;
+    height: 220px !important;
+    width: 220px !important;
     @media (min-width: 475px) and (max-width: 1200px) {
-      height: 260px !important;
-      width: 260px !important;
+      height: 230px !important;
+      width: 230px !important;
     }
     @media (max-width: 475px) {
-      height: 200px !important;
-      width: 200px !important;
+      height: 180px !important;
+      width: 180px !important;
     }
   }
   .stickyContainer {

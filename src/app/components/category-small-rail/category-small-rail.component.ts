@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GameModel } from 'src/app/models/game.model';
-import { GameFeedModel } from 'src/app/models/gameFeed.model';
+import { FilterPayload } from 'src/app/interface';
 import { GamezopModel } from 'src/app/models/gamezop.model';
 import { GamezopFeedModel } from 'src/app/models/gamezopFeed.model';
 import { RestService } from 'src/app/services/rest.service';
@@ -19,6 +18,7 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
 
   @Input() gameFeed: GamezopFeedModel;
   @Input() contentId: string;
+  @Input() payload: FilterPayload;
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
   
   public gamesListBatches = {};
@@ -118,7 +118,8 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, 0).subscribe((games) => {
+    
+    this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, this.payload, 0).subscribe((games) => {
       this.rearrangeGameBatch(games);
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;

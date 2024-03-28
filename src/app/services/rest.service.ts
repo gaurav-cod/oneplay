@@ -861,11 +861,11 @@ export class RestService {
     page: number,
     limit: number = 12
   ): Observable<(GameModel | GamezopModel)[]> {
-    const data = {
-      order_by: "release_date:desc",
+    let data = {
       ...payload,
-      ...query,
     };
+    if (query?.genres)
+      data = { ...data, ...query};
     return this.http
       .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
       .pipe(
@@ -877,17 +877,22 @@ export class RestService {
   }
   getFilteredCasualGamesV2(
     category: string | null,
+    payload: FilterPayload,
     page: number,
     limit: number = 12
   ): Observable<GamezopModel[]> {
-    const data = {
-      order_by: "release_date:desc",
-      categories: category
+    let data = {
+      ...payload
     };
+    if (category)  {
+      data = {
+        ...data,
+        categories: category,
+        genres: category
+      }
+    }
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
-        params: { page, limit },
-      })
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data)
       .pipe(
         map((res: any) => {
           return res.games.map((d) => new GamezopModel(d))}),
