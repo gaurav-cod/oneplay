@@ -40,6 +40,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   private swipeCoord?: [number, number];
   private swipeTime?: number;
   private pageNo: number = 0;
+  private railDataToPush:(GameFeedModel | VideoFeedModel | GamezopFeedModel)[] = [];
 
   public firstSignUpMsgTimer: number | null = null;
 
@@ -97,7 +98,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   onScroll(): void {
 
     // for infinite scroll
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
       this.loadMoreRails();
     }
 
@@ -132,6 +133,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.selectedHeroBannerId = this.heroBannerRow?.games[0].oneplayId;
             this.selectedBannerGame = this.heroBannerRow?.games[0];
             this.railRowCards = (feeds.filter((f) => f.type !== "hero_banner"));
+            this.railDataToPush = this.railRowCards;
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
             if (!this.getTrailerVideo) {
@@ -218,13 +220,14 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   loadMoreRails() {
-    this.pageNo++;
-    this.restService.getHomeFeed({page: this.pageNo}).subscribe({
-      next: (response) => {
-        const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
-        this.railRowCards = [...this.railRowCards,  ...feeds.filter((f) => f.type !== "hero_banner")];
-      }
-    });
+    // this.pageNo++;
+    // this.restService.getHomeFeed({page: this.pageNo}).subscribe({
+    //   next: (response) => {
+    //     const feeds = response.filter((feed) => (feed instanceof GameFeedModel && feed.games?.length > 0) || (feed instanceof VideoFeedModel && feed.videos?.length > 0) || (feed instanceof GamezopFeedModel && feed.games?.length > 0));
+    //     this.railRowCards = [...this.railRowCards,  ...feeds.filter((f) => f.type !== "hero_banner")];
+    //   }
+    // });
+    this.railRowCards = [...this.railRowCards, ...this.railDataToPush];
   }
 
   onSlideChange(event?: NgbSlideEvent) {

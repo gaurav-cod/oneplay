@@ -23,8 +23,7 @@
               </video>
             </ng-container>
           </div>
-
-          <div class="text-logo position-absolute">
+          <div class="text-logo showOnMobile position-absolute">
             <img [src]="selectedBannerGame.textLogo" alt="" />
             <div *ngIf="playVideo" class="audioContainer position-absolute">
               <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" [hidden]="!isVideoMute" (click)="isVideoMute = false">
@@ -32,6 +31,13 @@
             </div>
           </div>
           <div class="position-absolute games-carousel game-carousel-btn d-flex" [style.left.px]="20">
+            <div class="text-logo position-absolute">
+              <img [src]="selectedBannerGame.textLogo" alt="" />
+              <div *ngIf="playVideo" class="audioContainer position-absolute">
+                <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" [hidden]="!isVideoMute" (click)="isVideoMute = false">
+                <img src="assets/img/Dashboard/unmute.svg" alt="unmute" height="40px" width="40px" [hidden]="isVideoMute" (click)="isVideoMute = true">
+              </div>
+            </div>
             <button (click)="viewBannerGame(selectedBannerGame)"
               class="btn playBtn borderRadius90 font18 px-lg-4 border-0 text-white GradientBtnPadding mt-3 mb-3 d-none d-sm-block">
               View More
