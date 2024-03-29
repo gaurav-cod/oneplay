@@ -6,7 +6,7 @@
       {{ title }}
     </div>
     <ng-container *ngIf="railCategoryList?.length > 0">
-      <div class="filterContainerList" *ngIf="!isSpecialBanner" #scrollFilter>
+      <div class="filterContainerList" *ngIf="!isSpecialBanner" #scrollFilter (mousedown) ="startDragging($event, false, scrollFilter)" (mouseup) ="stopDragging($event, false)" (mouseleave) ="stopDragging($event, false)" (mousemove)="moveEvent($event, scrollFilter)">
         <ng-container *ngFor="let filter of railCategoryList">
           <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{
             filter | titlecase }}</div>

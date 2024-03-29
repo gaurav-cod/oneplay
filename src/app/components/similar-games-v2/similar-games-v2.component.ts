@@ -25,7 +25,6 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   @Output() gameClick = new EventEmitter<string>();
 
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
-  @ViewChild("scrollFilter") scrollFilter: ElementRef<HTMLDivElement>;
 
   showRightArrow = false;
   showLeftArrow = false;
@@ -38,6 +37,12 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   public isLoading: boolean = false;
   public hoveringCardId: string | null = null;
   public canMoveCard: boolean = false;
+
+  // mouse scroll helper variables
+  private mouseDown = false;
+  private mouseLeftScroll: number = 0;
+  private startX: number = 0;
+
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event) {
@@ -55,15 +60,6 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
     clearTimeout(this._arrowTimeout);
     clearTimeout(this._loaderTimeout);
   }
-  // mouseDownHandler(event) {
-  //   const container = this.scrollFilter.nativeElement;
-  //   const scrollAmount = event.pageX - container.scrollLeft;
-  //   container.scrollLeft = (container.scrollLeft + scrollAmount) * 0.5;
-  //   console.log(container.scrollLeft);
-  // }
-  // mouseMoveHandler() {
-
-  // }
 
   ngAfterViewInit(): void {
 
@@ -137,4 +133,24 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
       }, 500);
     });
   }
+
+  // mouse scroll events for horizontal scroll
+  startDragging(e, flag, slider) {
+    this.mouseDown = true;
+    this.startX = e.pageX - slider.offsetLeft;
+    this.mouseLeftScroll = slider.scrollLeft;
+  }
+  stopDragging(e, flag) {
+    this.mouseDown = false;
+  }
+  moveEvent(e, slider) {
+    e.preventDefault();
+    if (!this.mouseDown) {
+      return;
+    }
+    const x = e.pageX - slider.offsetLeft;
+    const scroll = x - this.startX;
+    slider.scrollLeft = this.mouseLeftScroll - scroll;
+  }
+
 }

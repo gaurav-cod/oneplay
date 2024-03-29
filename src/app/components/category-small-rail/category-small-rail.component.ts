@@ -34,6 +34,11 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
   private _arrowTimeout: NodeJS.Timer;
   private _loaderTimeout: NodeJS.Timer;
 
+  // mouse scroll helper variables
+  private mouseDown = false;
+  private mouseLeftScroll: number = 0;
+  private startX: number = 0;
+
   get isMobile() {
     return window.innerWidth < 768;
   }
@@ -123,5 +128,24 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
       this.rearrangeGameBatch(games);
       this.isLoading = false;
     });
+  }
+
+  // mouse scroll events for horizontal scroll
+  startDragging(e, flag, slider) {
+    this.mouseDown = true;
+    this.startX = e.pageX - slider.offsetLeft;
+    this.mouseLeftScroll = slider.scrollLeft;
+  }
+  stopDragging(e, flag) {
+    this.mouseDown = false;
+  }
+  moveEvent(e, slider) {
+    e.preventDefault();
+    if (!this.mouseDown) {
+      return;
+    }
+    const x = e.pageX - slider.offsetLeft;
+    const scroll = x - this.startX;
+    slider.scrollLeft = this.mouseLeftScroll - scroll;
   }
 }

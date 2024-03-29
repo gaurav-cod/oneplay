@@ -322,11 +322,11 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     );
 
-    this.isHomePage = this.router.url.includes("home");
+    this.isHomePage = this.router.url?.split('?')[0].includes("home");
     this._routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
-       this.isHomePage = this.router.url.includes("home");
+       this.isHomePage = this.router.url?.split('?')[0].includes("home");
     });
 
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));

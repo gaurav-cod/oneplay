@@ -3,7 +3,7 @@
         <p class="position-relative railHeading paddingLeft mr-4 truncate-line-clamp"
             [style.width.%]="gameFeed.categories?.length > 0 ? '50%' : '100%'">{{ gameFeed.title }}</p>
         <ng-container *ngIf="gameFeed.categories?.length > 0">
-            <div class="filterContainerList">
+            <div class="filterContainerList" #scrollFilter (mousedown) ="startDragging($event, false, scrollFilter)" (mouseup) ="stopDragging($event, false)" (mouseleave) ="stopDragging($event, false)" (mousemove)="moveEvent($event, scrollFilter)">
                 <ng-container *ngFor="let filter of gameFeed.categories">
                     <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}"
                         (click)="selectFilter(filter)">{{ filter | titlecase }}</div>
