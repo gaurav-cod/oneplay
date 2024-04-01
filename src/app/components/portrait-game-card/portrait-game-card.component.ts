@@ -37,8 +37,8 @@ export class PortraitGameCardComponent implements OnInit {
 
   readonly loaderId = v4();
 
-  get isMobile() {
-    return window.innerWidth < 768;
+  get isMobileTab() {
+    return window.innerWidth < 1200;
   }
 
   get getTrailerVideo() {
@@ -87,7 +87,7 @@ export class PortraitGameCardComponent implements OnInit {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if (this.game.trailer_video && !this.isMobileTab && this.game.status === "live") {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -123,7 +123,7 @@ export class PortraitGameCardComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobile && this.game.status === "live") {
+    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobileTab && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -151,7 +151,7 @@ export class PortraitGameCardComponent implements OnInit {
   mouseEnterHandler() {
     this.onMouseHoverCard.emit(this.game.oneplayId);
     setTimeout(()=> {
-      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+      this.showHover = !this.isMobileTab && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
       if (this.showHover) {
         this.onMouseHoverCard.emit(this.game.oneplayId);
         
@@ -175,9 +175,9 @@ export class PortraitGameCardComponent implements OnInit {
   }
 
   get streamCount() {
-    return this.game.streaming > 1000 ? ((this.game.streaming / 1000) + "k") : this.game.streaming;
+    return this.game.streaming >= 1000 ? ((this.game.streaming / 1000) + "k") : this.game.streaming;
   }
   get playersCount() {
-    return this.game.playing > 1000 ? ((this.game.playing / 1000) + "k") : this.game.playing;
+    return this.game.playing >= 1000 ? ((this.game.playing / 1000) + "k") : this.game.playing;
   }
 }

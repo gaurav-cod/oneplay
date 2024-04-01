@@ -98,9 +98,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   onScroll(): void {
 
     // for infinite scroll
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
-      this.loadMoreRails();
-    }
+    // if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
+    //   this.loadMoreRails();
+    // }
 
     // pause video on scroll
     if (this.heroBannerVideo) {
