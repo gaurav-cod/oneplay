@@ -340,18 +340,18 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  width: 30%;
-  min-width: 30%;
-  max-width: 50%;
+  max-width: 400px;
+  width: fit-content;
 
   @media (min-width: 475px) and (max-width: 1200px) {
     font-size: 30px;
     line-height: 26px;
     margin-right: 0px !important;
+    max-width: 500px !important;
   }
   @media (max-width: 475px) {
     font-size: 24px;
-    width: 80% !important;
+    max-width: 299px !important;
   }
 }
 
@@ -363,7 +363,7 @@
   width: fit-content;
   max-width: 70%;
   // margin-left: 20px;
-  margin-left: auto;
+  // margin-left: auto;
   overflow-x: auto;
   font-size: 14px;
   // cursor: grab;
