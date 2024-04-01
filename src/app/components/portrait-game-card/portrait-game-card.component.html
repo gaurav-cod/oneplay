@@ -33,7 +33,7 @@
     <h4 class="game-title hideOnHover truncate-line-clamp">{{ game.title }}</h4>
     <div class="gameTagsContianer hideOnHover">
       <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
-        <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
+        <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre.length > 18 ? genre.substr(0, 18) + '...' : genre }}</span>
       </ng-container>
     </div>
     <div class="d-flex align-items-center mt-2 hideOnHover">

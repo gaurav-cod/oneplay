@@ -4,7 +4,7 @@
         <span class="game-title">{{ game.name }}</span>
         <div class="gameTagsContianer mt-2">
             <ng-container *ngFor="let genre of game.categories; let idx = index">
-                <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
+                <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre.length > 18 ? genre.substr(0, 18) + '...' : genre  }}</span>
             </ng-container>
         </div>
     </div>

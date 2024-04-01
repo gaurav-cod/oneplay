@@ -56,7 +56,7 @@
   overflow-x: auto;
 
   @media (min-width: 1200px) {
-    padding-bottom: 40px;
+    padding-bottom: 45px;
   }
 
   &::-webkit-scrollbar-track,
@@ -75,6 +75,7 @@
   max-width: 70%;
   // margin-left: 20px;
   overflow-x: auto;
+  margin-right: 20px;
 
   &::-webkit-scrollbar-track,
   &::-webkit-scrollbar,
@@ -163,6 +164,10 @@
   @media (max-width: 767.9px) {
     padding-right: 10px;
   }
+}
+
+.smallCategoryContainer {
+  padding-right: 0px !important;
 }
 
 .smallCategoryContainer:hover>.arrowPaddingright {
