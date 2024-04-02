@@ -78,7 +78,10 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
     this.showTitle = true;
   }
   mouseEnterHandler() {
-      
+    
+    if (this.game.isInstallAndPlay)
+      return;
+
     this.onMouseHoverCard.emit(this.game.oneplayId);
     setTimeout(()=> {
       this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
@@ -158,5 +161,13 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
         this.muted = true;
       }
     }
+  }
+
+
+  get streamCount() {
+    return this.game.streaming >= 1000 ? ((this.game.streaming / 1000) + "k") : this.game.streaming;
+  }
+  get playersCount() {
+    return this.game.playing >= 1000 ? ((this.game.playing / 1000) + "k") : this.game.playing;
   }
 }

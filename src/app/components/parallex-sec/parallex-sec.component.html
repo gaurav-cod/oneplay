@@ -12,7 +12,7 @@
             <img src="assets/img/Dashboard/parallex_character_2.png" alt="" height="100%" width="100%">
         </div>
     </div> -->
-    <div class="row scrollGame scrollGameHeight scrollListing" #container>
+    <div class="row scrollGame scrollGameHeight scrollListing" #container (scroll)="updateArrows()">
         <ng-container *ngIf="gamesFeed.games.length > 0">
             <div *ngFor="let game of gamesFeed.games; let idx = index">
                 <app-special-banner-card [game]="game" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-special-banner-card>
