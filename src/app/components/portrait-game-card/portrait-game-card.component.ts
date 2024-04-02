@@ -175,9 +175,13 @@ export class PortraitGameCardComponent implements OnInit {
   }
 
   get streamCount() {
-    return this.game.streaming >= 1000 ? ((this.game.streaming / 1000) + "k") : this.game.streaming;
+    return this.game.streaming >= 1000 ? (this.formatNumberWithOneDecimal(this.game.streaming / 1000) + "k") : this.game.streaming;
   }
   get playersCount() {
-    return this.game.playing >= 1000 ? ((this.game.playing / 1000) + "k") : this.game.playing;
+    return this.game.playing >= 1000 ? (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k") : this.game.playing;
+  }
+  formatNumberWithOneDecimal(num) {
+    const number = String(num).split('.');
+    return number.length > 1 ? String(num).split('.')[0] + "." + String(num).split('.')[1][0] : num;
   }
 }
