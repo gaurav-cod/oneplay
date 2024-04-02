@@ -304,6 +304,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
+      "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
@@ -463,8 +464,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
-    this.isUserRegisted = false;
-    this.referal_code = null;
+    if (this.isUserRegisted && screenOnDisplay == "OTP") {
+      this.referal_code = null;
+    } else {
+      this.isUserRegisted = false;
+    }
     this.errorMessage = null;
     if (screenOnDisplay == "REGISTER_LOGIN")
       this.countlyEvent("changePhoneNumber", "yes");
