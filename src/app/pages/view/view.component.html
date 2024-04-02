@@ -215,7 +215,7 @@
                         />
                       </button>
                     </div>
-                    <!-- <div>
+                    <div>
                       <button
                         class="btn p-0"
                         placement="right"
@@ -230,7 +230,7 @@
                           height="41px"
                         />
                       </button>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
 
@@ -327,7 +327,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="!!game.warningMessage.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
+        <div *ngIf="!!game.warningMessage?.trim()" class="warning-message-container"  (click)="toggleWarningMessage($event)">
           <img
             class="warning-message hideInMobile"
             src="assets/img/error/warning-message-symbol.svg"
@@ -615,10 +615,11 @@
     </div>
 
     <div *ngIf="similarGames.length">
-      <app-similar-games
+      <app-similar-games-v2
         [title]="'Similar games'"
-        [games]="similarGames"
-      ></app-similar-games>
+        [entries]="similarGames"
+        [railType]="'portrait_card'" 
+      ></app-similar-games-v2>
     </div>
 
     <div *ngIf="liveVideos.length" class="mt-2 mt-lg-4 d-none d-md-block">
@@ -630,17 +631,19 @@
     </div>
 
     <div *ngIf="genreGames.length">
-      <app-similar-games
+      <app-similar-games-v2
         [title]="'From Genre'"
-        [games]="genreGames"
-      ></app-similar-games>
+        [entries]="genreGames"
+        [railType]="'portrait_card'" 
+      ></app-similar-games-v2>
     </div>
 
     <div *ngIf="devGames.length">
-      <app-similar-games
+      <app-similar-games-v2
         [title]="'From Developer'"
-        [games]="devGames"
-      ></app-similar-games>
+        [entries]="devGames"
+        [railType]="'portrait_card'" 
+      ></app-similar-games-v2>
     </div>
   </div>
 </div>

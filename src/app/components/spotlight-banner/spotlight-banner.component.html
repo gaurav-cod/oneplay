@@ -1,0 +1,52 @@
+<span class="railHeading hideInLarge container-fluid">{{ gameFeed.title }}</span>
+<div class="spotlightBannerContainer" [style.backgroundImage]="'url('+ getBackgroundImage +')'" #gameLink>
+    <div class="d-flex h-100 align-items-center container-fluid">
+        <div class="mainSpecialBanner" (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+            <span class="railHeading hideInMobile">{{ gameFeed.title }}</span>
+            <div class="position-relative">
+                <img [src]="specialBannerGame.poster_16_9" alt="" class="spotlightBannerImage" #image>
+
+                <div class="premiumIcon hideOnHover" *ngIf="specialBannerGame.isPremium">
+                    <img src="assets/icons/premium-icon.svg" alt="" height="25px" width="25px">
+                </div>
+                <div class="gameTags hideOnHover" [ngClass]="{'mb-4': gameFeed.specialLabel?.length > 0}">
+                    <div *ngIf="specialBannerGame.isFree && specialBannerGame.status !== 'coming_soon'" class="d-flex mb-1">
+                      <span class="freeTag freeTagTriangle px-2 tagText">
+                        FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
+                      </span>
+                    </div>
+                    <span *ngIf="specialBannerGame.status === 'coming_soon'" class="redGradient px-2 tagText">COMING SOON</span>
+                    <div class="row justify-content-center mt-2 mb-1">
+                      <div *ngIf="specialBannerGame.status === 'maintenance'" class="col-auto"><span
+                          class="orangeGradientBg px-2 tagText">MAINTENANCE</span></div>
+                      <div *ngIf="specialBannerGame.status === 'updating'" class="col-auto"><span
+                          class="updatingGradient px-2 tagText">UPDATING</span></div>
+                      <div *ngIf="specialBannerGame.status === 'not_optimized'" class="col-auto"><span class="darkredGradient px-2 tagText">NOT
+                          OPTIMIZED</span></div>
+                    </div>
+                </div>
+                <div class="specialLabel">{{ gameFeed.specialLabel }}</div>
+            </div>
+        </div>
+        <div class="scrollGame row">
+            <div class="d-flex align-items-center specialBannerList" [style.height.%]="getContainerHeight" #container (scroll)="updateArrows()">
+                <div *ngFor="let game of specialBannerRowGame" class="zoom col-auto gameCard pr-0 w290 pl-0">
+                    <app-game-card-v2 [game]="game" [hasFixedWidth]="true" *ngIf="!game.isInstallAndPlay"
+                        (gameClick)="gameClicked($event)" [railType]="gameFeed.type" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-game-card-v2>
+                    <app-install-play-game-v2 [game]="game" [hasFixedWidth]="true" *ngIf="game.isInstallAndPlay"
+                        [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"
+                        [railType]="gameFeed.type"></app-install-play-game-v2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-container *ngIf="!isMobile">
+        <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+            <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+        </button>
+
+        <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
+            <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+        </button>
+    </ng-container>
+</div>

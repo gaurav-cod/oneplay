@@ -12,11 +12,7 @@
         <div #container class="row scrollGame">
           <div *ngFor="let video of videos" class="zoom col-auto gameCard w290 pr-0">
             <a href="javascript:void(0)" [routerLink]="['/streams/' + getId(video)]" class="root">
-              <img
-                class="image borderRadius15 loadingBg"
-                [src]="video.thumbnail"
-                alt=""
-              />
+              <img class="image borderRadius15 loadingBg" [src]="video.thumbnail" alt="" />
               <div class="row">
                 <div class="col-md-12 font16 font500 offWhiteText mt-3 removeWhiteSpace">
                   <span class="truncate-line-clamp">{{ video.title }}</span>
@@ -25,12 +21,8 @@
               <div class="row mt-2">
                 <div class="col-auto pr-0">
                   <div>
-                    <img
-                      (error)="onImgError($event, video)"
-                      class="img-fluid wh50 rounded-circle"
-                      [src]="video.creatorThumbnail || (video.creatorName | avatar)"
-                      alt=""
-                    />
+                    <img (error)="onImgError($event, video)" class="img-fluid wh50 rounded-circle"
+                      [src]="video.creatorThumbnail || (video.creatorName | avatar)" alt="" />
                   </div>
                 </div>
                 <div class="col text-truncate">
@@ -45,17 +37,11 @@
     </div>
   </div>
 
-  <button
-    class="btn position-absolute h80 arrowPaddingLeft pr-2"
-    (click)="scrollLeft()"
-  >
+  <button class="btn position-absolute h80 arrowPaddingLeft pr-2" (click)="scrollLeft()">
     <img src="assets/img/Vector.svg" height="20px" alt="" />
   </button>
 
-  <button
-    class="btn position-absolute h80 arrowPaddingright pl-2"
-    (click)="scrollRight()"
-  >
+  <button class="btn position-absolute h80 arrowPaddingright pl-2" (click)="scrollRight()">
     <img src="assets/img/Vector (1).svg" height="20px" alt="" />
   </button>
 </div>

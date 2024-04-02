@@ -1,9 +1,15 @@
+import { environment } from "src/environments/environment";
 import { PurchaseStore } from "../interface";
 
 export interface ImageHash {
   blurhash: string;
   max_height: number;
   max_width: number;
+}
+export interface PartnerMapping {
+  id: string;
+  status: string;
+  warning_message: string;
 }
 
 export enum status {
@@ -14,11 +20,12 @@ export enum status {
   UPDATING = "updating",
 }
 export class GameModel {
+
   readonly id: number;
   readonly oneplayId: string;
   readonly title: string;
-  readonly description: string;
-  readonly playTime: number;
+  readonly description: string; // NA
+  readonly playTime: number; // NA
   readonly releaseDate: Date;
   readonly posterImg: string;
   readonly bgImage: string;
@@ -49,6 +56,8 @@ export class GameModel {
   readonly warningMessage: string;
   readonly isInstallAndPlay: boolean;
 
+  // readonly partnerMapping: PartnerMapping;
+
   readonly backgroundImageBlurhash: ImageHash | null;
   readonly posterImageBlurhash: ImageHash | null;
   readonly textBackgroundImageBlurhash: ImageHash | null;
@@ -65,6 +74,23 @@ export class GameModel {
   readonly installPlayDetailImg: string;
   readonly installPlayDetailImgMob: string;
   readonly installPlayDetailImgTab: string;
+
+  readonly poster_1_1: string;
+  readonly poster_1_1_blurhash: string;
+  readonly poster_3_4: string;
+  readonly poster_3_4_blurhash: string;
+  readonly poster_16_9: string;
+  readonly poster_16_9_blurhash: string;
+  readonly poster_hero_banner_1_1: string;
+  readonly poster_hero_banner_1_1_blurhash: string;
+  readonly poster_hero_banner_16_9: string;
+  readonly poster_hero_banner_16_9_blurhash: string;
+  readonly video_hero_banner_1_1: string;
+  readonly video_hero_banner_16_9: string;
+  readonly isPremium: boolean;
+  readonly playing: number;
+  readonly streaming: number;
+
 
   constructor(json: { [key: string]: any }) {
     this.id = json["id"];
@@ -99,8 +125,26 @@ export class GameModel {
     this.publisher = json["publisher"];
     this.storesMapping = json["stores_mappings"];
     this.preferredStore = json["preferred_store"];
-    this.warningMessage = json["warning_message"];
+    // this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
+
+    this.poster_1_1 = json["poster_1_1"];
+    this.poster_1_1_blurhash = json["poster_1_1_blurhash"];
+    this.poster_16_9 = json["poster_16_9"];
+    this.poster_16_9_blurhash = json["poster_16_9_blurhash"];
+    this.poster_3_4 = json["poster_3_4"];
+    this.poster_3_4_blurhash = json["poster_3_4_blurhash"];
+    this.poster_hero_banner_16_9 = json["poster_hero_banner_16_9"];
+    this.poster_hero_banner_16_9_blurhash = json["poster_hero_banner_16_9_blurhash"];
+    this.poster_hero_banner_1_1 = json["poster_hero_banner_1_1"];
+    this.poster_hero_banner_1_1_blurhash = json["poster_hero_banner_1_1_blurhash"];
+    this.isPremium = json["subscription_type"] == "premium";
+    this.playing = json["playing"];
+    this.streaming = json["streaming"];
+    this.video_hero_banner_16_9 = json["video_hero_banner_16_9"];
+    this.video_hero_banner_1_1 = json["video_hero_banner_1_1"];
+
+    // this.partnerMapping = json["partner_mappings"]?.filter((partner)=> partner.id == environment.partner_id);
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];

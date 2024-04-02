@@ -1,0 +1,70 @@
+<a
+  #gameLink
+  href="javascript:void(0)"
+  class="card card-block border-0 shadow-1 position-relative"
+  (click)="onGameClick()"
+  [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner', 'squareCategoryLargeWidth': railType == 'square_category_large'}"
+>
+  <div
+    class="mask"
+    style="z-index: 2;"
+  >
+    <div class="position-relative">
+      <img
+        #image
+        [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
+        class="card-img borderRadius10 loadingBg"
+        [src]="installPlayImage"
+        [ngStyle]="{
+          'object-fit': hfw ? 'unset' : 'cover'
+        }"
+        alt=""
+        loading="lazy"
+        (error)="onImgError($event)"
+      />
+      <image-loading [hash]="installPlayBlurhashImage" [image]="image"></image-loading>
+      <div class="stickyContainer">
+        <div class="premiumIcon">
+          <img src="assets/icons/premium-icon.svg" alt="" height="25px" width="25px">
+        </div>
+        <div class="storeIcons">
+          <img *ngFor="let store of game.storesMapping" [src]="store.store_image" height="20px" width="20px" />
+        </div>
+      </div>
+    </div>
+    <h4 class="game-title">{{ game.title }}</h4>
+    <div class="developerName" *ngIf="game.developer?.length > 0">{{ game.developer[0] }}</div>
+    <div class="gameTagsContianer">
+      <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
+        <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre.length > 18 ? genre.substr(0, 18) + '...' : genre }}</span>
+      </ng-container>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+      <div class="d-flex mr-2" *ngIf="game.playing">
+        <img src="assets/icons/player-count.svg" alt="" class="mr-2">
+        <span class="font500 text-white">{{ game.playing }}</span>
+      </div>
+      <div class="d-flex align-items-center mr-2" *ngIf="game.streaming">
+        <img src="assets/icons/live-icon.svg" alt="" class="mr-2">
+        <span class="font500 text-white">{{ game.streaming }}</span>
+      </div>
+    </div>
+    <div
+      *ngIf="showSound"
+      class="mute bg-translucent-darker"
+      [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)"
+    >
+      <em
+        class="fa text-white"
+        [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"
+      ></em>
+    </div>
+    <ngx-ui-loader
+      [fgsColor]="'#c32ead'"
+      [hasProgressBar]="false"
+      [loaderId]="loaderId"
+      [overlayBorderRadius]="'15px'"
+    ></ngx-ui-loader>
+  </div>
+</a>

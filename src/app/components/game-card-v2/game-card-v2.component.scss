@@ -1,0 +1,246 @@
+.w290h185 {
+  width: 160px !important;
+  height: 160px !important;
+
+  @media screen and (min-width: 475px) and (max-width: 1200px) {
+    width: 160px !important;
+    height: 160px !important;
+  }
+  @media screen and (max-width: 475px) {
+    width: 140px !important;
+    height: 140px !important;
+  }
+}
+
+.premiumIcon {
+  position: absolute;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+}
+
+.mute {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 1px 8px;
+  border-radius: 50%;
+}
+
+.unmute {
+  padding: 2px 6px !important;
+}
+
+video {
+  border-radius: 4px;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+}
+
+.card,
+.gamezop-card {
+  background: none !important;
+  cursor: pointer;
+  margin-left: 10px;
+
+  .card-img {
+    object-position: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .game-title {
+    color: #DCDCDC;
+    width: 100%;
+    max-height: 50px;
+    overflow: hidden;
+    font-size: 16px;
+    margin-top: 9px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-wrap: wrap;
+    padding: 0px 5px;
+    white-space: normal;
+  }
+
+  .gameTags {
+    position: absolute;
+    left: 10px;
+    bottom: 2px;
+
+    .tagText {
+      color: white;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    .freeTagTriangle {
+      clip-path: polygon(79% 0, 100% 49%, 81% 100%, 0 100%, 0 0);
+      padding-right: 20px !important;
+    }
+  }
+
+  .gameTagsContianer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gameGenre {
+    background-color: #212123;
+    padding: 5px 10px;
+    color: #DCDCDC;
+    width: fit-content;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+}
+
+.game-gamezop-title {
+  width: 100%;
+  color: #ffffff;
+  margin-top: 5px;
+}
+
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
+}
+
+.gamezop-truncate-line-clamp {
+  -webkit-line-clamp: 1 !important;
+  white-space: wrap !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .card {
+    // width: 150px;
+    height: 135px;
+    top: -2px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+
+  .adjustCardStore {
+    height: 95px !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .card {
+    // width: 150px;
+    height: 121px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .card {
+    // width: 150px;
+    height: 80px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    // width: 150px;
+    height: 130px !important;
+  }
+
+  .gamezop-card {
+    height: 175px !important;
+  }
+}
+
+@media (min-width: 1300px) {
+  .card {
+    // width: 150px;
+    height: 200px !important;
+  }
+
+  .gamezop-card {
+    height: 195px !important;
+  }
+}
+
+.borderRadius10 {
+  border-radius: 10px !important;
+}
+
+.bg-translucent-darker {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.bottomTag {
+  position: absolute;
+  bottom: 0px;
+  color: #fff;
+}
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
+}
+
+.specialCardHeight {
+  height: 250px !important;
+}
+
+.spotlightBannerWidth {
+  width: 165px;
+  @media screen and (min-width: 475px) and (max-width: 1200px) {
+    
+  }
+  @media screen and (max-width: 475px) {
+    width: 145px;
+    height: 295px !important;
+  }
+}
+.card-img-hover {
+  z-index: 1000;
+  position: absolute;
+  top: 40px;
+  transition: transform 0.2s ease-out;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+  border: 2px solid transparent;
+  transition: all .2s ease-in-out;
+  animation: scaleAnimation 0.3s forwards;
+}
+@keyframes scaleAnimation {
+  0% {
+      transform: scale(1); /* Start with original size */
+  }
+  100% {
+      transform: scale(1.3); /* End with scaled size */
+  }
+}
