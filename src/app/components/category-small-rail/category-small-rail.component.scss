@@ -168,6 +168,10 @@
 
 .smallCategoryContainer {
   padding-right: 0px !important;
+  padding-left: 0px !important;
+  @media (min-width: 1300px) {
+    padding-left: 39px !important;
+  }
 }
 
 .smallCategoryContainer:hover>.arrowPaddingright {
