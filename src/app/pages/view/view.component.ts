@@ -1663,10 +1663,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         })
         // this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
         
-        if (res.length == 3 && this.streamConfigList[2].isKeyAvailable) {
+        if (res.length == 3 && this.streamConfigList[2]?.isKeyAvailable) {
           this.streamConfigList.push(this.addCustomToStreamConfig());
         }
-        else if (res.length == 4 && this.streamConfigList[3].isKeyAvailable) {
+        else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
           this.streamConfigList.push(new streamConfig(res[3]));
           this.streamConfigList.push(this.addCustomToStreamConfig());
         } 
