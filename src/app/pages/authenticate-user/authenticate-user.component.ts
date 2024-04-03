@@ -67,6 +67,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private redirectURL: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
+  public  isPartnerReferalCodeAllowed: boolean = true; // TODO: will be configured by backend
   resendOTPClicked: boolean = false;
   isReferralAdded: boolean = false;
 
