@@ -94,9 +94,12 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _routerSubscription: Subscription;
   private _warningMessageSub: Subscription;
 
+  public scrollValue: number = 0;
+
   @HostListener('window:scroll', ['$event']) 
   onScroll(event) {
-    this.showSearchBarForce = event.currentTarget.pageYOffset > 45;
+    // this.showSearchBarForce = event.currentTarget.pageYOffset > 5;
+    this.scrollValue = event.currentTarget.pageYOffset / 100;
   }
 
   notificationData: NotificationModel[] | null = null;
