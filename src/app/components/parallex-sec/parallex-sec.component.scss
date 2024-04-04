@@ -5,10 +5,19 @@
   margin: 40px 0px;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: end;
 
   @media screen and (max-width: 475px) {
-    height: 60vh;
+    height: 85vh;
+  }
+  // @media screen and (min-width: 475px) and (max-width: 968px) {
+  //   height: 50vh !important;
+  // }
+  @media screen and (min-width: 475px) and (max-width: 900px) {
+    height: 65vh !important;
+  }
+  @media screen and (min-width: 900px) and (max-width: 1200px) {
+    height: 88vh !important;
   }
 
   .logo {
@@ -59,17 +68,6 @@
   }
 }
 
-.leftCharacter,
-.rightCharacter {
-  position: relative;
-  // width: u;
-  // height: 100%;
-
-  // @media screen and (max-width: 1200px) {
-  //   width: 30%;
-  // }
-}
-
 .scrollGame {
   scrollbar-color: transparent transparent;
   display: flex;
@@ -117,13 +115,17 @@
     padding-right: 5px;
   }
 
+  @media (min-width: 475px) and (max-width: 1200px) {
+    height: 60% !important;
+  }
+
   @media (max-width: 480px) {
     overflow-y: hidden;
     padding-left: 30px;
     padding-right: 5px;
     padding-bottom: 30px;
     padding-top: 16px;
-    height: 430px;
+    height: 370px;
   }
 }
 
