@@ -1,0 +1,36 @@
+<a
+  href="javascript:void(0)"
+  class="card card-block border-0 shadow-1 position-relative"
+>
+  <div
+    class="mask"
+    style="z-index: 2;"
+  >
+    <div class="position-relative">
+      <img
+        class="card-img borderRadius10 loadingBg"
+        [src]="game.textBgImage"
+        alt=""
+        loading="lazy"
+      />
+      <!-- <image-loading [hash]="game.textBgHash" [image]="image"></image-loading> -->
+    </div>
+    <h3 class="game-title mt-2 mb-1 truncate-line-clamp ">{{ game.title }}</h3>
+    <span class="sub-title mb-2 d-block truncate-line-clamp">{{ game.title }}</span>
+    <div class="gameTagsContianer">
+      <ng-container *ngFor="let genre of game.genreMappings; let idx = index">
+        <span class="d-block gameGenre" *ngIf="idx < 2">{{ genre }}</span>
+      </ng-container>
+    </div>
+    <div class="mt-2">
+      <div class="d-flex align-items-center">
+        <img [src]="game.textBgImage" class="mr-3" alt="" height="40px" width="40px" style="border-radius: 50%;">
+        <div class="d-flex flex-column">
+            <span class="font500 text-white">Micice & Fire</span>
+            <span class="text-white">Jan 5 2024</span>
+        </div>
+      </div>
+      <div class="views">1000k views</div>
+    </div>
+  </div>
+</a>

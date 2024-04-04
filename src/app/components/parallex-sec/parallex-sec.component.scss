@@ -1,0 +1,184 @@
+.parallexContainer {
+  height: 75vh;
+  width: 100%;
+  position: relative;
+  margin: 40px 0px;
+  overflow: hidden;
+  display: flex;
+  align-items: end;
+
+  @media screen and (max-width: 475px) {
+    height: 85vh;
+  }
+  // @media screen and (min-width: 475px) and (max-width: 968px) {
+  //   height: 50vh !important;
+  // }
+  @media screen and (min-width: 475px) and (max-width: 900px) {
+    height: 65vh !important;
+  }
+  @media screen and (min-width: 900px) and (max-width: 1200px) {
+    height: 88vh !important;
+  }
+
+  .logo {
+    position: absolute;
+    top: 25%;
+    left: 45%;
+
+    img {
+      height: 140px;
+    }
+  }
+
+  .characterContainer {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+
+    @media screen and (max-width: 520px) {
+      top: 10% !important;
+    }
+  }
+
+  .parallexBackground {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    filter: blur(3px);
+    -webkit-filter: blur(2px);
+    height: 100%;
+    width: 100%;
+  }
+  .forgroundContainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    @media screen and (max-width: 475px) {
+      top: 90px;
+    }
+  }
+}
+
+.scrollGame {
+  scrollbar-color: transparent transparent;
+  display: flex;
+  width: 100%;
+  height: 85%;
+  overflow-x: auto;
+  flex-wrap: nowrap !important;
+  padding: 10px 40px;
+  padding-top: 40px;
+  position: relative;
+
+  @media (max-width: 1600px) {
+    padding-left: 70px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 1500px) {
+    padding-left: 85px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 1400px) {
+    padding-left: 30px;
+    padding-right: 40px;
+  }
+
+  @media (max-width: 1300px) {
+    padding-left: 35px;
+    padding-right: 40px;
+    padding-bottom: 0px;
+  }
+
+  @media (max-width: 850px) {
+    padding-left: 30px;
+    padding-right: 5px;
+  }
+
+  @media (max-width: 660px) {
+    padding-left: 30px;
+    padding-right: 5px;
+  }
+
+  @media (max-width: 575px) {
+    padding-left: 30px;
+    padding-right: 5px;
+  }
+
+  @media (min-width: 475px) and (max-width: 1200px) {
+    height: 60% !important;
+  }
+
+  @media (max-width: 480px) {
+    overflow-y: hidden;
+    padding-left: 30px;
+    padding-right: 5px;
+    padding-bottom: 30px;
+    padding-top: 16px;
+    height: 370px;
+  }
+}
+
+.arrowPaddingLeft:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingLeft {
+  padding-left: 50px;
+  top: -10px;
+  left: 0;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-left: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-left: 10px;
+  }
+}
+
+.arrowPaddingright:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingright {
+  padding-right: 50px;
+  top: -10px;
+  right: 0px;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-right: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-right: 10px;
+  }
+}
+
+.parallexContainer:hover>.arrowPaddingright {
+  display: block !important;
+}
+
+.parallexContainer:hover>.arrowPaddingLeft {
+  display: block !important;
+}

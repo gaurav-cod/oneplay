@@ -3,20 +3,21 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
   Output,
   ViewChild,
 } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 import { UserModel } from "src/app/models/user.model";
 import { UntypedFormControl } from "@angular/forms";
 import { RestService } from "src/app/services/rest.service";
 import { GameModel } from "src/app/models/game.model";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Subscription, filter } from "rxjs";
 import { NgbDropdown, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { GameService } from "src/app/services/game.service";
 import { GameStatusRO } from "src/app/interface";
@@ -59,6 +60,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   public hasUnread = false;
   public isAuthenticated = false;
   public showInitialUserMessage: boolean = false;
+  public isHomePage: boolean = false;
+  public isWarningShown: boolean = false;
+  public showSearchBar: boolean = false;
+  public showSearchBarForce: boolean = false;
 
   private user: UserModel;
   private acceptedFriends: FriendModel[] = [];
@@ -86,13 +91,23 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   private _profileOverlaySub: Subscription;
   private _qParamSubscription: Subscription;
   private _guestDropdownSub: Subscription;
+  private _routerSubscription: Subscription;
+  private _warningMessageSub: Subscription;
+
+  public scrollValue: number = 0;
+
+  @HostListener('window:scroll', ['$event']) 
+  onScroll(event) {
+    // this.showSearchBarForce = event.currentTarget.pageYOffset > 5;
+    this.scrollValue = event.currentTarget.pageYOffset / 100;
+  }
 
   notificationData: NotificationModel[] | null = null;
   unseenNotificationCount: number = 0;
   showMultiNotificationList: boolean = false;
 
   showOverlayProfile: boolean = false;
-
+  
   @Output() toggleFriends = new EventEmitter();
 
   @ViewChild("search") searchElement: ElementRef;
@@ -163,6 +178,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewGame() {
+    
     this.headerNavOnClick("gameStatusClicked");
     if (this.gameStatus && this.gameStatus.is_running) {
       this.countlyService.endEvent("gameLandingView");
@@ -181,6 +197,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewGameFromSearch(game: GameModel) {
+    this.query.setValue("");
     this.isMenuCollapsed = true;
     this.countlyService.addEvent("search", {
       keywords: this.query.value,
@@ -232,10 +249,10 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
   get showDownload() {
     return UserAgentUtil.parse().app !== "Oneplay App";
   }
-
   get isClientSide() {
     return (UserAgentUtil.parse().app === "Oneplay App");
   }
+
 
   constructor(
     private readonly authService: AuthService,
@@ -268,6 +285,8 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this._profileOverlaySub?.unsubscribe();
     this._qParamSubscription?.unsubscribe();
     this._guestDropdownSub?.unsubscribe();
+    this._routerSubscription?.unsubscribe();
+    this._warningMessageSub?.unsubscribe();
     this.countlyService.endEvent("guestProfile");
   }
 
@@ -284,8 +303,16 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     this.sessionCountForCasualGaming();
+    this.restService.getSeriousNotification().toPromise().then((data)=> {
+      this.isWarningShown = data?.length > 0;
+      if (this.isWarningShown) {
+        this._warningMessageSub = this.authService.warningMessagePresent.subscribe((value)=> {
+          this.isWarningShown = value;
+        })
+      }
+    })
     this._profileOverlaySub = this.authService.profileOverlay.subscribe(
       (data) => {
         this.showOverlayProfile = data;
@@ -297,6 +324,13 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     );
+
+    this.isHomePage = this.router.url?.split('?')[0].includes("home");
+    this._routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+       this.isHomePage = this.router.url?.split('?')[0].includes("home");
+    });
 
     this.userSub = this.authService.user.subscribe((u) => (this.user = u));
 
@@ -381,7 +415,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       if (!focused) {
         setTimeout(() => {
           if (!this.dontClose) {
-            this.query.setValue("");
+            // this.query.setValue("");
           } else {
             this.dontClose = false;
             this.searchElement.nativeElement.focus();
@@ -427,6 +461,13 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       return ["add"];
     }
+  }
+
+  onMouseEnter() {
+    this.showSearchBar = true;
+  }
+  onMouseOver() {
+    this.showSearchBar = false;
   }
 
   private acceptFriend(friend: UserModel) {
@@ -683,7 +724,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       },
     });
   }
-
   clientFun(type: 'SAVE_LOGS' | 'RUN_DIAGNOSTICS' | 'GAMEPAD_CALIBRATION') {
     if (type == "SAVE_LOGS")
       window.location.href = `oneplay:logs`;
@@ -698,7 +738,6 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
     this.restService.checkCasualGamingSession().toPromise().then((response: any)=> {
       this.showCasualGamingLabel = response.is_free;
     })
-
   }
 
   headerNavOnClick(

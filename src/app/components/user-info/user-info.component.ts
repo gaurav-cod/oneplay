@@ -232,6 +232,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     );
   }
 
+  onKeyPressCheckDOB(event: KeyboardEvent) {
+    event.preventDefault();
+  }
+
   updatePassword() {
     this.restService
       .createPassword(this.userInfo.controls["password"].value)

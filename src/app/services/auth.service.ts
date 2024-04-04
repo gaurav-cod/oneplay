@@ -27,10 +27,9 @@ export class AuthService implements OnDestroy {
     new BehaviorSubject(false);
 
   private readonly _$triggerProfileOverlay: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
   private readonly _$triggerInitialModal: BehaviorSubject<boolean> = new BehaviorSubject(true);
-
   private readonly _$triggerPlayGame: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private readonly _$isWarningMessagePresent: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   private isNotificationAlreadySubscribed: boolean = false;
 
@@ -71,6 +70,12 @@ export class AuthService implements OnDestroy {
           this.setUserInfoModal(true);
       }
     }, 1000);
+  }
+  get warningMessagePresent() {
+    return this._$isWarningMessagePresent.asObservable();
+  }
+  setWarningMessagePresent(value: boolean) {
+    this._$isWarningMessagePresent.next(value);
   }
 
   get seriousNotificationPresent() {

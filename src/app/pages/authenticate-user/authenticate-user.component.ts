@@ -245,6 +245,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
   closeReferralDialog(isReferalAdded: boolean = false) {
+    if (!isReferalAdded) {
+      this.isReferralAdded = false;
+      this._referralModal?.close();
+      return;
+    }
     this.restService.getReferalName(this.referralName).toPromise().then(()=> {
       this.isReferralAdded = !!this.referralName && isReferalAdded;
       this._referralModal?.close();
@@ -299,6 +304,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
+      "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
@@ -458,8 +464,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
-    this.isUserRegisted = false;
-    this.referal_code = null;
+    if (this.isUserRegisted && screenOnDisplay == "OTP") {
+      this.referal_code = null;
+    } else {
+      this.isUserRegisted = false;
+    }
     this.errorMessage = null;
     if (screenOnDisplay == "REGISTER_LOGIN")
       this.countlyEvent("changePhoneNumber", "yes");
@@ -480,6 +489,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
         this.handlePaste(e)
       );
+    }
+  }
+
+  onKeyPressCheckMobile(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_+@';
+    if (validChars.includes(String.fromCharCode(charCode)) || event.code == "KeyE") {
+      event.preventDefault();
     }
   }
 

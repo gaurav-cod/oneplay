@@ -1,0 +1,33 @@
+<section class="parallexContainer">
+    <div class="parallexBackground" [style.backgroundImage]="'url('+ getBackgroundImage +')'"></div>
+    <div class="forgroundContainer" [style.backgroundImage]="'url('+ getForegroundImage +')'" [style.transform]="'scale('+ marginValue +')'"></div>
+    <!-- <div class="logo">
+        <img src="assets/img/Dashboard/parallex_logo.png" alt="">
+    </div> -->
+    <!-- <div class="characterContainer">
+        <div class="leftCharacter" [style.left.px]="marginValue">
+            <img src="assets/img/Dashboard/parallex_character_1.png" alt="" height="100%" width="100%">
+        </div>
+        <div class="rightCharacter" [style.right.px]="marginValue">
+            <img src="assets/img/Dashboard/parallex_character_2.png" alt="" height="100%" width="100%">
+        </div>
+    </div> -->
+    <div class="row scrollGame scrollGameHeight scrollListing" #container (scroll)="updateArrows()">
+        <ng-container *ngIf="gamesFeed.games.length > 0">
+            <div *ngFor="let game of gamesFeed.games; let idx = index">
+                <app-special-banner-card [game]="game" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-special-banner-card>
+            </div>
+        </ng-container>
+    </div>
+
+    <ng-container *ngIf="!isMobile">
+        <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+            <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+        </button>
+
+        <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2"
+            (click)="scrollRight()">
+            <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+        </button>
+    </ng-container>
+</section>

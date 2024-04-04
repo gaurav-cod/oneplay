@@ -1,0 +1,62 @@
+<div class="container-fluid" *ngIf="isGamezopList ? !isFilterApplied : true">
+  <div class="container-fluid removePaddingContainer d-flex align-items-center position-relative" [style.marginBottom]="railCategoryList?.length > 0 ? '20px' : '10px'">
+    <div class="position-relative paddingLeft mr-4 d-flex align-items-center mb-0 railHeading lightPinkGradient"
+      [style.width.%]="railCategoryList?.length > 0 ? '' : '100'">
+      <!-- <img [src]="getStreamIcon" alt="" height="40px" width="40px" class="mr-2" *ngIf="railType === 'landscape_video'"> -->
+      {{ title }}
+    </div>
+    <ng-container *ngIf="railCategoryList?.length > 0">
+      <div class="filterContainerList" *ngIf="!isSpecialBanner" #scrollFilter (mousedown) ="startDragging($event, false, scrollFilter)" (mouseup) ="stopDragging($event, false)" (mouseleave) ="stopDragging($event, false)" (mousemove)="moveEvent($event, scrollFilter)">
+        <ng-container *ngFor="let filter of railCategoryList">
+          <div class="filter" [ngClass]="{'linearGradient': selectedFilter == filter}" (click)="selectFilter(filter)">{{
+            filter | titlecase }}</div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div class="position-relative scrollListing">
+  <div class="container-fluid padding-right-0 padding-left-0">
+    <div class="row">
+      <div class="col-md-12">
+        <div #container class="row scrollGame scrollGameHeight"
+          [ngClass]="{'scrollGameWidthCategorySmall': railType === 'square_category_small', 'scrollGameWidthCategoryLarge': railType === 'square_category_large'}"
+          (scroll)="updateArrows()">
+          <ng-container *ngIf="!isLoading; else showLoadingScreen">
+            <div *ngFor="let entry of entries" class="zoom col-auto gameCard pr-0 w290"
+              [ngClass]="{'w210': isGamezopList, 'streamCard truncate-line-clamp': railType === 'landscape_video'}">
+              <ng-container
+                *ngIf="railType == 'portrait_card' || railType == 'portrait_category' || railType == 'square_category_large' || railType == 'my_library'">
+                <app-portrait-game-card *ngIf="!entry.isInstallAndPlay" [game]="entry" [hasFixedWidth]="true"
+                  [specialBannerGame]="isSpecialBanner" (gameClick)="gameClicked($event)"
+                  [railType]="railType" [hoveringCardId]="hoveringCardId" (onMouseHoverCard)="cardHoverHandler($event)"></app-portrait-game-card>
+                <app-install-play-game-v2 *ngIf="entry.isInstallAndPlay" [game]="entry" [hasFixedWidth]="true"
+                  [isInstallAndPlayList]="isInstallAndPlayList" (gameClick)="gameClicked($event)"
+                  [railType]="railType"></app-install-play-game-v2>
+              </ng-container>
+              <ng-container *ngIf="railType == 'landscape_video'">
+                <app-lanscape-video [video]="entry"></app-lanscape-video>
+              </ng-container>
+            </div>
+
+          </ng-container>
+          <ng-template #showLoadingScreen>
+            <ng-container *ngFor="let _ of [].constructor(10)">
+              <img src="assets/img/placeholder-game.svg" alt="placeholder image" height="80%" style="margin-right: 10px;" class="placeholderImage">
+            </ng-container>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!isMobile">
+    <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-2" (click)="scrollLeft()">
+      <img src="assets/img/arrow-left.svg" height="30px" alt="" />
+    </button>
+
+    <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-2" (click)="scrollRight()">
+      <img src="assets/img/arrow-right.svg" height="30px" alt="" />
+    </button>
+  </ng-container>
+</div>

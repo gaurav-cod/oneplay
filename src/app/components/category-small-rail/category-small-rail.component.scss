@@ -1,0 +1,213 @@
+.railHeading {
+  font-weight: 500;
+  font-size: 38px;
+  color: #dcdcdc;
+  letter-spacing: 0.02em;
+  font-family: "TsukiRegular";
+  margin-bottom: 0px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 400px;
+  width: fit-content;
+
+  @media (min-width: 475px) and (max-width: 1200px) {
+    font-size: 30px;
+    line-height: 26px;
+    margin-right: 0px !important;
+    max-width: 500px !important;
+  }
+  @media (max-width: 475px) {
+    font-size: 24px;
+    max-width: 299px !important;
+  }
+}
+
+.gameCol {
+  margin: 20px;
+  margin-left: 5px;
+  width: 330px;
+
+  @media screen and (max-width: 475px) {
+    margin: 10px !important;
+    margin-right: 20px !important;
+    margin-bottom: 20px !important;
+    width: 285px !important;
+  }
+  @media (min-width: 475px) and (max-width: 1200px) {
+    margin: 10px !important;
+    margin-right: 20px !important;
+    margin-bottom: 20px !important;
+    width: 310px !important;
+  }
+}
+
+.container-fluid {
+  @media screen and (max-width: 1200px) {
+    padding-left: 5px !important;
+  }
+}
+
+.scrollGameList {
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  overflow-x: auto;
+
+  @media (min-width: 1200px) {
+    padding-bottom: 55px;
+  }
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+}
+
+.filterContainerList {
+  display: flex;
+  border-radius: 30px;
+  background-color: #212123;
+  padding: 10px;
+  width: fit-content;
+  max-width: 70%;
+  // margin-left: 20px;
+  overflow-x: auto;
+  margin-right: 20px;
+
+  &::-webkit-scrollbar-track,
+  &::-webkit-scrollbar,
+  &::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+  .filter {
+    padding: 10px 20px;
+    font-weight: 600;
+    color: #A8A8A8;
+    margin-right: 12px;
+    cursor: pointer;
+    min-width: max-content;
+    font-size: 14px;
+  }
+
+  .linearGradient {
+    color: white;
+    border-radius: 30px;
+    min-width: max-content;
+    text-align: center;
+    padding: 10px 20px;
+  }
+
+  @media screen and (max-width: 475px) {
+    width: 90%;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    position: relative;
+    right: -10px;
+    padding: 8px;
+    margin-left: 5px;
+  }
+
+  @media screen and (min-width: 475px) and (max-width: 1200px) {
+    position: relative;
+    right: -10px;
+    padding: 8px;
+    overflow-x: auto;
+  }
+}
+
+
+.arrowPaddingLeft:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingLeft {
+  padding-left: 50px;
+  top: -10px;
+  left: 0;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-left: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-left: 10px;
+  }
+}
+
+.arrowPaddingright:hover>img {
+  transform: scale(1.5);
+}
+
+.arrowPaddingright {
+  padding-right: 50px;
+  top: -10px;
+  right: 0px;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
+  display: none;
+
+  @media (max-width: 1300px) {
+    padding-right: 30px;
+  }
+
+  @media (max-width: 767.9px) {
+    padding-right: 10px;
+  }
+}
+
+.smallCategoryContainer {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  @media (min-width: 1300px) {
+    padding-left: 39px !important;
+  }
+}
+
+.smallCategoryContainer:hover>.arrowPaddingright {
+  display: block !important;
+}
+
+.smallCategoryContainer:hover>.arrowPaddingLeft {
+  display: block !important;
+}
+
+
+.placeholderImage {
+  // transition: all .2s ease-in-out;
+  animation: loadingPlaceholer 0.8s infinite;
+  @media (min-width: 768px) and (max-width: 1200px) {
+    width: 180px !important;
+  }
+  @media (max-width: 768px) {
+    width: 140px !important;
+  }
+}
+@keyframes loadingPlaceholer {
+  0% {
+      opacity: 0.5;
+      // clip-path: inset(0 100% 0 0);
+  }
+  50% {
+    opacity: 1;
+    // clip-path: inset(0 0 0 0);
+  }
+  100% {
+      opacity: 0.5; 
+      // clip-path: inset(0 100% 0 0);
+  }
+}
+
+
+
+

@@ -70,6 +70,7 @@ export class AuthInterceptor implements HttpInterceptor {
           return res;
         }),
         catchError(async (error: HttpErrorResponse) => {
+          
           const code = Number(error.error?.code) || error.status || 503;
           let body = null,
             headers = {};

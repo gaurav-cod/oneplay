@@ -344,7 +344,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
         const config = {
           merchantLogo:
-            environment.domain + "/dashboard/assets/img/brand/brandLogo.svg",
+            environment.domain + "/dashboard/assets/img/brand/oneplay-logo.svg",
           flowConfig,
           themeConfig,
           flowType: "payments",

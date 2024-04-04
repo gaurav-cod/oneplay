@@ -25,10 +25,11 @@
       padding-right: 0px !important;
       overflow-x: hidden;
     "
+    [style.backgroundColor]="isHomePage ? '#151515' : ''"
   >
     <router-outlet></router-outlet>
   </div>
-  <div class="container-fluid">
+  <div class="container-fluid" [style.backgroundColor]="isHomePage ? '#151515' : ''">
     <div class="height130">
       <app-footer></app-footer>
     </div>

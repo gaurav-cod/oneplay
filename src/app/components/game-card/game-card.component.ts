@@ -53,7 +53,8 @@ export class GameCardComponent {
     private readonly gLink: GLinkPipe,
     private readonly loaderService: NgxUiLoaderService,
     private readonly countlyService: CountlyService
-  ) {}
+  ) {
+  }
 
   onGameClick() {
     this.countlyService.endEvent("gameLandingView");
@@ -74,7 +75,7 @@ export class GameCardComponent {
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     if (this.game.video && !this.isMobile && this.game.status === "live") {
       this.timer = setTimeout(() => {
-        image.style.opacity = "0";
+        // image.style.opacity = "0";
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");
@@ -100,7 +101,7 @@ export class GameCardComponent {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if (this.game.video && !this.isMobile && this.game.status === "live") {
+    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video )  && !this.isMobile && this.game.status === "live") {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
