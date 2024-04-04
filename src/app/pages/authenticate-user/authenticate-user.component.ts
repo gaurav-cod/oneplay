@@ -67,7 +67,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private redirectURL: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
-  public  isPartnerReferalCodeAllowed: boolean = true; // TODO: will be configured by backend
+  public  isPartnerReferalCodeAllowed: boolean = false; 
   resendOTPClicked: boolean = false;
   isReferralAdded: boolean = false;
 
@@ -133,9 +133,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
-      this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
+      this.restService.getLogInURL().toPromise().then(({ partner_id, referral_allowed }) => {
         environment.partner_id = partner_id;
         localStorage.setItem("x-partner-id", partner_id);
+        this.isPartnerReferalCodeAllowed = referral_allowed;
       }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
