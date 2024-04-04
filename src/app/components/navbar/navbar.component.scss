@@ -397,9 +397,24 @@
     top: 77px !important;
   }
 }
+.circular-overlay {
+  top: -7px; 
+  right: 4px;
+  @media screen and (min-width: 475px) and (max-width: 900px) {
+    right: -4px !important;
+  }
+  @media screen and (min-width: 900px) and (max-width: 1200px) {
+    right: 3px !important;
+  }
+  @media screen and (max-width: 475px) {
+    top: -11px !important;
+    right: -14px !important;
+  }
+}
 .toast-arrow {
   @media screen and (max-width: 475px) {
     height: 60px !important;
+    right: 28px !important;
   }
 }
 .overlay {

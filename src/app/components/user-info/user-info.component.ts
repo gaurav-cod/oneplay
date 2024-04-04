@@ -41,6 +41,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   private userSub: Subscription;
   private confirmPassSub: Subscription;
 
+  get canShowCloseDialog() {
+    return !(this.screenType == 'PASSWORD' || this.screenType == 'DOB');
+  }
+
   constructor(
     private readonly activeModal: NgbActiveModal,
     private readonly restService: RestService,
