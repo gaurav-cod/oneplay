@@ -57,7 +57,7 @@ export class SquareSmallCardComponent implements OnInit {
 
           video.style.objectFit = 'cover';
           video.style.width = "100%";
-          video.style.height = "150%";
+          video.style.height = "180px";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
