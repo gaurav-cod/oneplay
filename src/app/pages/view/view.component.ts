@@ -46,6 +46,7 @@ import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 import { platform } from "os";
 import { streamConfig } from "src/app/models/streamConfig.model";
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -194,6 +195,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   private isUserLogedIn: boolean = false;
 
   @ViewChild("UserInfoContainer") userInfoContainer;
+  
+  get isClientSide() {
+    return (UserAgentUtil.parse().app === "Oneplay App");
+  }
 
   constructor(
     private readonly location: Location,
