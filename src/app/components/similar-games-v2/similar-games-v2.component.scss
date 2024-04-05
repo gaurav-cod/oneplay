@@ -342,16 +342,19 @@
   overflow: hidden;
   max-width: 400px;
   width: fit-content;
+  margin-right: 80px !important;
 
   @media (min-width: 475px) and (max-width: 1200px) {
     font-size: 30px;
     line-height: 26px;
     margin-right: 0px !important;
     max-width: 500px !important;
+    margin-right: 60px !important;
   }
   @media (max-width: 475px) {
     font-size: 24px;
     max-width: 299px !important;
+    margin-right: 10px !important;
   }
 }
 
