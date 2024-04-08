@@ -125,9 +125,9 @@
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
                   >{{ sub.duration }} days plan .
                 </span> -->
-                <span class="font16 font500 muteText"
-                  > Expires on {{ sub.endsAt | date : "mediumDate" }}</span
-                >
+                <span class="font16 font500 muteText"> 
+                  {{ false ? 'Expires on' : 'Next billing date'}} {{ sub.endsAt | date : "mediumDate" }} - <a href="javascript:void(0)" class="unsubscribeBtn" (click)="unsubscriptionDialog()">Unsubscribe</a>
+                </span>
               </div>
             </div>
           </div>
