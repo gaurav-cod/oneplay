@@ -48,6 +48,7 @@ export class GameModel {
   readonly preferredStore: string;
   readonly warningMessage: string;
   readonly isInstallAndPlay: boolean;
+  readonly aliases: string[];
 
   readonly backgroundImageBlurhash: ImageHash | null;
   readonly posterImageBlurhash: ImageHash | null;
@@ -101,6 +102,7 @@ export class GameModel {
     this.preferredStore = json["preferred_store"];
     this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
+    this.aliases = json["aliases"];
 
     this.installPlaySearchImg = json["install_and_play_search_image"];
     this.installPlayDetailImg = json["install_and_play_details_image"];

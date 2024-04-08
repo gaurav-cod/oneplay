@@ -365,7 +365,7 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.game = game;
             this.title.setTitle("OnePlay | Play " + game.title);
             this.meta.addTags([
-              { name: "keywords", content: game.tagsMapping?.join(", ") },
+              { name: "keywords", content: (game.genreMappings?.join(", ").toLowerCase() + game.aliases?.join(", ").toLowerCase()) },
               { name: "description", content: game.description },
             ]);
 
