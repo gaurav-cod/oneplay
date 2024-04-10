@@ -55,6 +55,7 @@ export class GameModel {
   readonly preferredStore: string;
   readonly warningMessage: string;
   readonly isInstallAndPlay: boolean;
+  readonly aliases: string[];
 
   // readonly partnerMapping: PartnerMapping;
 
@@ -127,6 +128,7 @@ export class GameModel {
     this.preferredStore = json["preferred_store"];
     // this.warningMessage = json["warning_message"];
     this.isInstallAndPlay = json["is_install_and_play"] === "true";
+    this.aliases = json["aliases"];
 
     this.poster_1_1 = json["poster_1_1"];
     this.poster_1_1_blurhash = json["poster_1_1_blurhash"];
