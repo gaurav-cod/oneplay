@@ -1566,6 +1566,10 @@ export class RestService {
       );
   }
 
+  canStartGame() {
+    return this.http.get(environment.render_mix_api + "/v1/subscriptions/can_start_game");
+  }
+
   setRemindLater() {
     return this.http
       .post<void>(this.r_mix_api_3 + "/accounts/set_remind_later", null)
