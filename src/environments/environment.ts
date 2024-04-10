@@ -4,11 +4,12 @@ export const environment = {
   appVersion: "6.2.0",
   production: false,
   cookie_domain: "localhost",
-  domain: "https://www.oneplay.in",
-  client_api: "https://client-apis.oneplay.in/services/v2",
-  render_mix_api: "https://rendermix.oneplay.in",
-  socket_endpoint: "https://chatservices.oneplay.in",
-  game_assets: "https://cdn.edge-net.co/game_assets/",
+  domain: "http://localhost:4200",
+  client_api: "https://client-apis.oneream.com/services/v2",
+  render_mix_api: "https://rendermix.oneream.com",
+  socket_endpoint: "https://chatservices.oneream.com",
+  game_assets:
+    "https://oneplay-assets-dev.s3.ap-south-1.amazonaws.com/game_assets/",
   partner_id: "e7fb1f1e-8929-11ed-90bc-02205a62d5b0",
   partner_name: "onePlay",
   stripe_key:
