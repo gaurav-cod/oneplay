@@ -757,6 +757,13 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.gamePlaySettingModal(container);
   }
 
+  canStartGame() {
+    debugger;
+    this.restService.canStartGame().subscribe((response)=> {
+      debugger;
+      this.startGame();
+    })
+  }
 
   async playGame(
     container: ElementRef<HTMLDivElement>,
