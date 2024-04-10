@@ -1,12 +1,14 @@
 <div class="modal-content modalBg">
   <ng-container *ngIf="!(showSuccessMessage && atleastOneFieldUpdated) else SuccessMessage">
-    <div class="modal-body p-4 text-center" *ngIf="canShowCloseDialog">
-      <img src="assets/img/swal-icon/Verification.svg" alt="">
-      <a href="javascript:void(0)"
-        class="position-absolute btn p-0 text-white rounded-circle top-2 right-1 cursorPointer" style="font-size: 25px;"
-        (click)="close(true)">
-        <i class="fas fa-times-circle"></i>
-      </a>
+    <div class="modal-body p-4 text-center">
+      <ng-container *ngIf="canShowCloseDialog">
+        <img src="assets/img/swal-icon/Verification.svg" alt="">
+        <a href="javascript:void(0)"
+          class="position-absolute btn p-0 text-white rounded-circle top-2 right-1 cursorPointer" style="font-size: 25px;"
+          (click)="close(true)">
+          <i class="fas fa-times-circle"></i>
+        </a>
+      </ng-container>
       <h5 class="modal-title font20 font600 text-white text-center mt-3">
         Enhance your experience by sharing additional details with us.
       </h5>
