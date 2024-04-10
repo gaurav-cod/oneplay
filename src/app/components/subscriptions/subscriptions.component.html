@@ -125,9 +125,12 @@
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
                   >{{ sub.duration }} days plan .
                 </span> -->
-                <span class="font16 font500 muteText"
-                  > Expires on {{ sub.endsAt | date : "mediumDate" }}</span
-                >
+                <span class="font16 font500 muteText"> 
+                  {{ !sub.autoRenewable ? 'Expires on' : 'Next billing date'}} {{ sub.endsAt | date : "mediumDate" }} 
+                    <ng-container *ngIf="sub.autoRenewable">  
+                      - <a href="javascript:void(0)" class="unsubscribeBtn" (click)="openUnsubscribeDialog()">Unsubscribe</a>
+                    </ng-container>
+                </span>
               </div>
             </div>
           </div>

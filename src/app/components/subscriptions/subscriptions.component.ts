@@ -316,6 +316,34 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     return sub_date < new Date();
   }
 
+  openUnsubscribeDialog() {
+    Swal.fire({
+      title: "Unsubscribe?",
+      text: "Are you sure you want to unsubscribe from Oneplay services? This action will take effect once your current subscription ends.",
+      imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+      confirmButtonText: "Unsubscribe",
+      showCancelButton: true,
+      cancelButtonText: "Cancel"
+    })
+  }
+  unsubscriptionSuccessDialog() {
+    Swal.fire({
+      title: "You have successfully opted out of Oneplay services.",
+      imageUrl: "assets/img/signup-login/Group 250.svg",
+      showCancelButton: false,
+      showConfirmButton: false
+    })
+  }
+  unsubscriptionFailureDialog() {
+    Swal.fire({
+      title: "Your unsubscribe request was not successful. Please try again later.",
+      imageUrl: "assets/img/swal-icon/Warning.svg",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "OK"
+    })
+  }
+
   showError(error) {
     Swal.fire({
       title: error.data.title,

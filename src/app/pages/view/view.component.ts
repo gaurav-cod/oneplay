@@ -881,7 +881,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else if (this.showSettings.value || this.game.isInstallAndPlay) {
             this.gamePlaySettingModal(container);
           } else {
-            this.startGame();
+            this.canStartGame();
           }
         }
       }
@@ -1069,12 +1069,21 @@ export class ViewComponent implements OnInit, OnDestroy {
     localStorage.setItem("vsync", this.vsync.value);
 
     this._settingsModalRef?.close();
-    this.startGame();
+    this.canStartGame();
   }
 
   dismissSettingsModal() {
     this.countlyService.cancelEvent("gamePlaySettingsPageView");
     this._settingsModalRef?.dismiss();
+  }
+
+  canStartGame() {
+    this.startGame();
+    this.restService.canStartGame().subscribe((response)=> {
+      this.startGame();
+    }, (error)=> {
+      this.showError(error);
+    })
   }
 
   startGame(isDOBPresent: boolean = false): void {
