@@ -27,6 +27,7 @@
                 (subscriptionPacakage.tokens/60
                 == 1 ? 'hr' : 'hrs') : '0' }}
               </p>
+              <p class="note">*THIS PLAN WILL BEGIN ONCE THE CURRENT ACTIVE PLAN EXPIRES.</p>
             </div>
           </div>
           <div class="row mt-3" *ngIf="is_upcoming_plan">
@@ -47,7 +48,7 @@
                 Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 text-white mb-1">{{ subscriptionPacakage.actual_price }}</p>
+              <p class="font20 font500 offWhiteText mb-1">{{ subscriptionPacakage.actual_price }}</p>
               <p class="font20 font500 greenText"
                 *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
                 {{ subscriptionPacakage.amount - subscriptionPacakage.actual_price }}</p>
@@ -62,6 +63,14 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-auto offWhiteText pr-0">
+              <span class="font16 font500 py-1 px-2">GST @ 18%</span>
+            </div>
+            <div class="col text-right pl-0">
+              <p class="font20 font500 offWhiteText">₹{{ 'a' }}</p>
+            </div>
+          </div>
+          <div class="row light-text">
             <div class="col-auto align-self-end pr-0">
               <p class="font20 font500 offWhiteText mb-0">Total Payable</p>
             </div>
