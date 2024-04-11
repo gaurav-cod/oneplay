@@ -1149,6 +1149,17 @@ export class RestService {
       );
   }
 
+  canStartGame() {
+    return this.http
+    .get(this.r_mix_api + "/subscriptions/can_start_game")
+    .pipe(
+      map((res) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
+  }
+
   startGame(
     gameId: string,
     resolution: string,

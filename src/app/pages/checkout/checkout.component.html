@@ -21,7 +21,7 @@
             </div>
             <div class="col text-right pl-0">
               <p class="font25 font500 mb-0"
-                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
+                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate', 'midnightPlanGradientText': subscriptionPacakage.name == 'Midnight Master' || subscriptionPacakage.name == 'Midnight Pro'}">
                 {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' :
                 subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 +
                 (subscriptionPacakage.tokens/60
@@ -68,7 +68,7 @@
               <span class="font16 font500 py-1 px-2">GST @ 18%</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText">₹{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText">{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
             </div>
           </div>
           <div class="row light-text">
