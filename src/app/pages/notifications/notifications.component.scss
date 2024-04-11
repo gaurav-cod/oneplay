@@ -95,3 +95,11 @@
 .error-text {
     color: #FF5151 !important;
 }
+.adjustIconPosition {
+    img {
+        position: relative;
+        top: -3px;
+        height: 25px;
+        width: 25px;
+    }
+}

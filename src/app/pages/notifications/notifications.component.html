@@ -17,12 +17,11 @@
                 <div *ngIf="!isSameDate(i)" class="d-flex w-100 top-0 my-3">
                     <div class="date-tag font14 font500 muteText">{{ getDate(notification) }}</div>
                 </div>
-                <div class="d-flex position-relative notificationCard mt-2 cursorPointer" (click)="notificationAction($event, notification)">
-
+                <div class="d-flex align-items-center position-relative notificationCard mt-2 cursorPointer" (click)="notificationAction($event, notification)">
                     <div class="col-lg-8 col-md-6 col-sm-12 d-flex position-relative">
                         <img src="assets/img/chat/in-game.svg" class="position-absolute unreadIcon" alt=""
                             *ngIf="notification.isNew">
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex" [ngClass]="{'adjustIconPosition': isSingleLineDesktop(notification.title)}">
                             <img src="assets/icons/alert-icon.svg" height="25" width="25" alt=""
                                 *ngIf="notification.type === 'warning'">
                                 <img src="assets/icons/question-icon.svg" height="25" width="25" alt=""
