@@ -769,12 +769,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.gamePlaySettingModal(container);
   }
 
-  canStartGame() {
-    this.restService.canStartGame().subscribe((response)=> {
-      this.startGame();
-    })
-  }
-
   async playGame(
     container: ElementRef<HTMLDivElement>,
     skipCheckResume = false,
@@ -1083,7 +1077,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   canStartGame() {
-    this.startGame();
     this.restService.canStartGame().subscribe((response)=> {
       this.startGame();
     }, (error)=> {
