@@ -758,9 +758,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   canStartGame() {
-    debugger;
     this.restService.canStartGame().subscribe((response)=> {
-      debugger;
       this.startGame();
     })
   }
