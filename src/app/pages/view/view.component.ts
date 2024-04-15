@@ -363,10 +363,10 @@ export class ViewComponent implements OnInit, OnDestroy {
         .subscribe(
           (game) => {
             this.game = game;
-            this.title.setTitle("OnePlay | Play " + game.title);
-            this.meta.addTags([
-              { name: "keywords", content: (game.genreMappings?.join(", ").toLowerCase() + game.aliases?.join(", ").toLowerCase()) },
-              { name: "description", content: game.description },
+            this.title.setTitle("Play " + game.title + " on OnePlay" + (game.isFree ? " for Free" : "") +" | Cloud Gaming");
+            this.meta.addTags([ 
+              { name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + ", " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") },
+              { name: "description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description },
             ]);
 
             if (game.preferredStore) {
