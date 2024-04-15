@@ -13,11 +13,14 @@
   // @media screen and (min-width: 475px) and (max-width: 968px) {
   //   height: 50vh !important;
   // }
-  @media screen and (min-width: 475px) and (max-width: 900px) {
+  @media screen and (min-width: 476px) and (max-width: 900px) {
     height: 65vh !important;
   }
-  @media screen and (min-width: 900px) and (max-width: 1200px) {
+  @media screen and (min-width: 901px) and (max-width: 1200px) {
     height: 88vh !important;
+  }
+  @media screen and (min-width: 1201px) and (max-width: 1400px) {
+    height: 115vh !important;
   }
 
   .logo {

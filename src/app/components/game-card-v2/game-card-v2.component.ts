@@ -177,11 +177,19 @@ export class GameCardV2Component implements AfterViewInit {
     }
   }
 
+ 
   get streamCount() {
-    return this.game.streaming >= 1000 ? (this.formatNumberWithOneDecimal(this.game.streaming / 1000) + "k") : this.game.streaming;
+    if (this.game.streaming >= 1000000)
+      return (this.formatNumberWithOneDecimal(this.game.streaming / 1000000) + "M") 
+    else if (this.game.streaming >= 1000)
+      return (this.formatNumberWithOneDecimal(this.game.streaming / 1000) + "k")
+    return this.game.streaming;
   }
   get playersCount() {
-    return this.game.playing >= 1000 ? (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k") : this.game.playing;
+    if (this.game.playing >= 1000000)
+      return (this.formatNumberWithOneDecimal(this.game.playing / 1000000) + "M");
+    else if (this.game.playing > 1000)
+      return (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k");
   }
   formatNumberWithOneDecimal(num) {
     const number = String(num).split('.');
