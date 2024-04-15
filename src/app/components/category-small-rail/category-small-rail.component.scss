@@ -16,7 +16,7 @@
   @media (min-width: 475px) and (max-width: 1200px) {
     font-size: 30px;
     line-height: 26px;
-    margin-right: 0px !important;
+    margin-right: 60px !important;
     max-width: 500px !important;
   }
   @media (max-width: 475px) {
@@ -47,7 +47,7 @@
 }
 
 .container-fluid {
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 800px) {
     padding-left: 5px !important;
   }
 }
