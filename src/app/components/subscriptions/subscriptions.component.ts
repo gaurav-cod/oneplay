@@ -47,6 +47,10 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
 
   private _playTimeBarIntervalRef: NodeJS.Timer;
 
+  get isMonthlyPlanAvailabl() {
+    return this.currentSubscriptions.some((sub)=> sub.planType == "base" || sub.planType == "base_nightly")
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
