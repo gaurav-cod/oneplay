@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
-import { Title } from "@angular/platform-browser";
+import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { Subscription } from "rxjs";
@@ -24,6 +24,7 @@ export class Gamezop implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly title: Title,
     private readonly router: Router,
+    private readonly meta: Meta,
     private readonly restService: RestService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly countlyService: CountlyService
@@ -60,7 +61,11 @@ export class Gamezop implements OnInit, OnDestroy {
   }
 
   async ngOnInit()  {
-    this.title.setTitle("Gamezop");
+    this.title.setTitle("Free Online Games on Level1 | Play Now");
+      this.meta.addTags([
+        { name: "keywords", content: "free games, online free games, casual games, 3d games, racing games, sports games, action games" },
+        { name: "description", content: "Play Addictive Free Online Games on the go in Racing, Action, Sports, Casual and many more other genres on Level 1 by OnePlay." },
+      ]);
 
     this.countlyService.startEvent("Level1View", { data: getDefaultLevel1ViewEvents() });
     this.loaderService.start();

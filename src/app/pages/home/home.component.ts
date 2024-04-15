@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
-import { Title } from "@angular/platform-browser";
+import { Meta, Title } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgxUiLoaderService } from "ngx-ui-loader";
@@ -92,7 +92,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly gLink: GLinkPipe,
     private readonly countlyService: CountlyService,
-    private readonly ngbModal: NgbModal,
+    private readonly meta: Meta,
     private readonly toastService: ToastService
   ) {}
 
@@ -118,7 +118,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
 
-    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
+    this.title.setTitle("OnePlay - Largest Cloud Gaming Platform from India");
+    this.meta.addTags([
+      { name: "keywords", content: "cloud gaming, indian cloud gaming, cloud gaming india, cloud pc, cloud gaming pc, popular cloud gaming, cloud gaming service, android cloud gaming, linux gaming" },
+      { name: "description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" },
+    ]);
     this.loaderService.start();
 
     this.countlyService.startEvent("homeView", {
