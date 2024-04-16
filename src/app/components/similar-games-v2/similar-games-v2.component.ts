@@ -21,6 +21,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
   @Input() isGamezopList: boolean = false;
   @Input() isSpecialBanner: boolean = false;
   @Input() railType: RAIL_TYPES;
+  @Input() limit: number = 10;
 
   @Output() gameClick = new EventEmitter<string>();
 
@@ -126,7 +127,7 @@ export class SimilarGamesV2Component implements OnInit, AfterViewInit, OnDestroy
 
     this.selectedFilter = filter;
     this.isLoading = true;
-    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.payload, 0).subscribe((games) => {
+    this.restService.getFilteredGamesV2({ genres: filter == "All" ? null : filter }, this.payload, 0, this.limit).subscribe((games) => {
       this.entries = games;
       this._loaderTimeout = setTimeout(() => {
         this.isLoading = false;

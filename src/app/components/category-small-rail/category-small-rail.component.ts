@@ -19,6 +19,7 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
   @Input() gameFeed: GamezopFeedModel;
   @Input() contentId: string;
   @Input() payload: FilterPayload;
+  @Input() limit: number = 10;
   @ViewChild("container") containerRef: ElementRef<HTMLDivElement>;
   
   public gamesListBatches = {};
@@ -124,7 +125,7 @@ export class CategorySmallRailComponent implements OnInit, AfterViewInit, OnDest
     this.selectedFilter = filter;
     this.isLoading = true;
     
-    this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, this.payload, 0).subscribe((games) => {
+    this.restService.getFilteredCasualGamesV2(this.selectedFilter == "All" ? null : this.selectedFilter, this.payload, 0, this.limit).subscribe((games) => {
       this.rearrangeGameBatch(games);
       this.isLoading = false;
     });
