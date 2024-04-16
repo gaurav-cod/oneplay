@@ -16,7 +16,7 @@ export class SubscriptionModel {
   purchasedAt: Date;
   tokens: number;
   tokensRemaining: number;
-  planType: 'base' | 'topup';
+  planType: 'base' | 'topup' | 'base_nightly';
   isLiveForPurchase: boolean;
   isUnlimited: boolean;
   totalTokenOffered: number;

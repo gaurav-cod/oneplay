@@ -104,7 +104,7 @@
                 </a>
               </div>
               <div
-                *ngIf="sub.planType == 'topup'"
+                *ngIf="sub.planType == 'topup' && !isMonthlyPlanAvailabl"
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
