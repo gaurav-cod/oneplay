@@ -92,8 +92,9 @@ export class InstallPlayGameV2Component implements OnInit {
   get playersCount() {
     if (this.game.playing >= 1000000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000000) + "M");
-    else if (this.game.playing > 1000)
+    else if (this.game.playing >= 1000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k");
+    return this.game.playing;
   }
   formatNumberWithOneDecimal(num) {
     const number = String(num).split('.');
