@@ -26,6 +26,7 @@ export class GameFeedModel {
   readonly foregroundImageMobile: string;
   readonly foregroundImageMobileBlurhash: string;
   readonly specialLabel: string;
+  readonly limit: number;
 
   constructor(json: { [key: string]: any }) {
     this.title = json.title;
@@ -43,5 +44,6 @@ export class GameFeedModel {
     this.foregroundImageMobile = json["foreground_image_mobile"];
     this.foregroundImageMobileBlurhash = json["foreground_image_mobile_blurhash"];
     this.specialLabel = json["special_label"];
+    this.limit = json["limit"];
   }
 }

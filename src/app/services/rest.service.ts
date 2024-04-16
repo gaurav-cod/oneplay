@@ -862,12 +862,14 @@ export class RestService {
     limit: number = 12
   ): Observable<(GameModel | GamezopModel)[]> {
     let data = {
-      ...payload,
+      ...payload
     };
     if (query?.genres)
       data = { ...data, ...query};
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data,{
+        params: { page, limit },
+      })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),
         catchError(({ error }) => {
@@ -892,7 +894,9 @@ export class RestService {
       }
     }
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data)
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data,{
+        params: { page, limit },
+      })
       .pipe(
         map((res: any) => {
           return res.games.map((d) => new GamezopModel(d))}),
