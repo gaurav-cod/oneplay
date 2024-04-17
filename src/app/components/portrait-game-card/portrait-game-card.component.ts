@@ -88,7 +88,6 @@ export class PortraitGameCardComponent implements OnInit {
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
     
-    debugger;
     if (this.getVideo && !this.isMobileTab) {
       this.timer = setTimeout(() => {
         this.showSound = true;
@@ -152,7 +151,6 @@ export class PortraitGameCardComponent implements OnInit {
 
   mouseEnterHandler() {
     this.onMouseHoverCard.emit(this.game.oneplayId);
-    debugger;
     setTimeout(()=> {
       this.showHover = !this.isMobileTab && !this.getVideo && (this.hoveringCardId == this.game.oneplayId);
       if (this.showHover) {
