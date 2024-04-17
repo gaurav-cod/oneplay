@@ -133,16 +133,35 @@
   }
 }
 .specialLabel {
-  background: linear-gradient(180deg, #FF0C0C -1.64%, #FF630C 100%);
+  background: linear-gradient(91.24deg, #FF843F 9.57%, #FF5151 87.28%);
   color: white;
   width: fit-content;
-  padding: 5px 10px;
+  padding: 0px 6px 0px 6px !important;
   position: absolute;
-  bottom: 0px;
+  bottom: 13px;
+  left:15px;
   z-index: 100;
-  font-weight: 800;
-  border-bottom-left-radius: 15px;
-  border-top-right-radius: 5px;
+  width: 167px; 
+  height: 21px;
+  transform: skewX(-40deg);
+  opacity: 0px;
+  display: flex;
+  align-items: center;
+}
+.specialLabelText{
+  flex-grow: 1; /* Allow text to expand and fill remaining space */
+  text-align: center;
+  font-family: Poppins;
+font-size: 14px;
+font-weight: 700;
+line-height: 21px;
+letter-spacing: 0.02em;
+color: #FFFFFF;
+transform: skewX(40deg) !important;
+}
+
+.star{
+  transform: skewX(40deg) !important;
 }
 
 .filterContainerList {
