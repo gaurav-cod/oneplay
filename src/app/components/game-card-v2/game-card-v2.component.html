@@ -1,6 +1,6 @@
 <a #gameLink href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative"
-  (click)="onGameClick()" [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner'}">
-  <div class="mask" style="z-index: 2;" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+  (click)="onGameClick()" [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner'}" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+  <div class="mask" style="z-index: 2;">
     <div class="position-relative">
       <img #image [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
         class="card-img borderRadius10 loadingBg" [src]="game.poster_16_9" [ngStyle]="{
