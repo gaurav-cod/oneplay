@@ -1,0 +1,11 @@
+<video
+  width="100%"
+  height="100%"
+  autoplay
+  (ended)="videoEnded.emit()"
+  [muted]="isVideoMute"
+  #heroBannerVideo
+>
+  <source [src]="src" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>

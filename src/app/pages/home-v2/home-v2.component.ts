@@ -25,7 +25,6 @@ import Swal from "sweetalert2";
 export class HomeV2Component implements OnInit, OnDestroy {
 
 
-  @ViewChild("heroBannerVideo") heroBannerVideo: ElementRef<HTMLVideoElement>;
 
   public heroBannerRow: GameFeedModel;
   public library: GameModel[] = [];
@@ -92,29 +91,6 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.firstSignUpMsgTimer = 0;
     clearInterval(this.messageTimer);
     this.authService.setTriggerInitialModal(true);
-  }
-
-  @HostListener("window:scroll", [])
-  onScroll(): void {
-
-    // for infinite scroll
-    // if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
-    //   this.loadMoreRails();
-    // }
-
-    // pause video on scroll
-    if (this.heroBannerVideo) {
-      const scrollPosition = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      const scrollHeight = document.body.scrollHeight;
-      const scrollPercentage = (scrollPosition / (scrollHeight - viewportHeight)) * 100;
-
-      if (scrollPercentage >= 10) {
-        this.heroBannerVideo.nativeElement.pause();
-      } else {
-        this.heroBannerVideo.nativeElement.play();
-      }
-    }
   }
 
   ngOnInit(): void {
