@@ -7,6 +7,7 @@ export class GamezopFeedModel {
   readonly categories: string[];
   readonly filterPayload: FilterPayload;
   readonly type: 'header' | 'rail';
+  readonly limit: number;
 
   constructor(json: { [key: string]: any }) {
     this.title = json["title"];
@@ -14,5 +15,6 @@ export class GamezopFeedModel {
     this.games = json.results.map((game) => new GamezopModel(game));
     this.type = json["type"];
     this.filterPayload = json["payload"];
+    this.limit = json["limit"];
   }
 }
