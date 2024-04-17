@@ -34,6 +34,7 @@ export class SpotlightBannerComponent implements OnInit {
 
   public showLeftArrow: boolean = true;
   public showRightArrow: boolean = true;
+  public hoveringCardId: string | null = null;
 
   readonly loaderId = v4();
 
@@ -47,6 +48,16 @@ export class SpotlightBannerComponent implements OnInit {
   ngOnInit(): void {
     this.specialBannerGame = this.gameFeed.games[0];
     this.specialBannerRowGame = this.gameFeed.games.splice(1);
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll($event) {
+    
+    // removing hovering cards
+    this.hoveringCardId = null;
+  }
+  cardHoverHandler(oneplayId: string) {
+    this.hoveringCardId = oneplayId;
   }
 
   get getBackgroundImage() {
