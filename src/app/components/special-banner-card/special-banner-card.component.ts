@@ -102,7 +102,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo && !this.isMobile) {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -138,7 +138,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video )  && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo  && !this.isMobile) {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);

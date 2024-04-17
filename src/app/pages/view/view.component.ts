@@ -533,7 +533,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   //     : null;
   // }
   get bgBannerImage(): string {
-    return window.innerWidth > 475 ? this.game.poster_hero_banner_16_9 : this.game.poster_hero_banner_1_1;
+    return this.game.isInstallAndPlay ? this.game.installPlayDetailImg :  (window.innerWidth > 475 ? this.game.poster_hero_banner_16_9 : this.game.poster_hero_banner_1_1);
   }
 
   get bgBannerHash(): string {

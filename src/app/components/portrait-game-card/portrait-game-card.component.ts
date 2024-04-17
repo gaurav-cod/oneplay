@@ -87,7 +87,8 @@ export class PortraitGameCardComponent implements OnInit {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.trailer_video && !this.isMobileTab && this.game.status === "live") {
+    
+    if (this.getVideo && !this.isMobileTab) {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -123,7 +124,7 @@ export class PortraitGameCardComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobileTab && this.game.status === "live") {
+    if (this.getVideo && !this.isMobileTab) {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -136,7 +137,7 @@ export class PortraitGameCardComponent implements OnInit {
 
   muteUnmute(e: Event, gameLink: HTMLAnchorElement, game: GameModel) {
     e.stopPropagation();
-    if (game.trailer_video) {
+    if (this.getVideo) {
       const video = gameLink.firstElementChild as HTMLVideoElement;
       if (video.muted) {
         video.muted = false;
@@ -151,7 +152,7 @@ export class PortraitGameCardComponent implements OnInit {
   mouseEnterHandler() {
     this.onMouseHoverCard.emit(this.game.oneplayId);
     setTimeout(()=> {
-      this.showHover = !this.isMobileTab && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+      this.showHover = !this.isMobileTab && !this.getVideo && (this.hoveringCardId == this.game.oneplayId);
       if (this.showHover) {
         this.onMouseHoverCard.emit(this.game.oneplayId);
         
