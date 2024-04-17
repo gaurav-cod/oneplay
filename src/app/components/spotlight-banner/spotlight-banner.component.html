@@ -25,7 +25,13 @@
                           OPTIMIZED</span></div>
                     </div>
                 </div>
-                <div class="specialLabel">{{ gameFeed.specialLabel }}</div>
+                <span class="specialLabel">
+                    <img class="star" src="assets/img/store/star.svg" />
+                    <span class="specialLabelText">
+                        {{ gameFeed?.specialLabel ? gameFeed.specialLabel.toUpperCase() : '' }}
+                    </span>
+                    <img class="star" src="assets/img/store/star.svg" />
+                </span>
             </div>
         </div>
         <div class="scrollGame row">
