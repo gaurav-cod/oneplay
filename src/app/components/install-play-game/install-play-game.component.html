@@ -8,7 +8,7 @@
         (click)="onGameClick()"
         [ngClass]="{'adjustHeight': calledFrom=='HOME', 'adjustHeightStore': calledFrom.includes('STORE'), 'adjustHeightLib': calledFrom === 'LIBRARY'}">
 
-        <img #image [src]="game.installPlayRailImg" height="100%" width="100%" alt="">
+        <img #image [src]="game.poster_16_9" height="100%" width="100%" alt="">
         <image-loading [image]="image" [hash]="game.iapRailHash" />
         <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 
