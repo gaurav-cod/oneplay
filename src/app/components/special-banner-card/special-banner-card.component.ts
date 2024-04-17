@@ -43,7 +43,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
     return environment.game_assets + this.game.oneplayId;
   }
   get getVideo() {
-    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ) : (this.game.video_hero_banner_1_1 );
   }
 
   ngOnInit(): void {
