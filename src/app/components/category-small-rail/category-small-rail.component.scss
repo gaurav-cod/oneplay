@@ -135,6 +135,10 @@
 .arrowPaddingLeft:hover>img {
   transform: scale(2.5);
 }
+.arrow-img-left{
+  position:absolute !important;
+  left:15px;
+}
 
 .arrowPaddingLeft {
   padding-left: 50px;
@@ -142,12 +146,13 @@
   left: 0;
   z-index: 1000;
   border: none;
-  border-radius: 10px;
   background: linear-gradient(to right, 
   rgba(0, 0, 0, 1) 0%, 
-  rgba(0, 0, 0, 0.7) 40%, 
+  rgba(0, 0, 0, 0.9) 60%, 
+  rgba(0, 0, 0, 0.7) 70%, 
   rgba(0, 0, 0, 0.5) 80%, 
-  rgba(0, 0, 0, 0.3) 100%);
+  rgba(0, 0, 0, 0.3) 90%, 
+  rgba(0, 0, 0, 0.1) 100%);
   display: none;
 
   @media (max-width: 1300px) {
@@ -176,9 +181,11 @@
   border-radius: 10px;
   background: linear-gradient(to left, 
   rgba(0, 0, 0, 1) 0%, 
-  rgba(0, 0, 0, 0.7) 40%, 
+  rgba(0, 0, 0, 0.9) 60%, 
+  rgba(0, 0, 0, 0.7) 70%, 
   rgba(0, 0, 0, 0.5) 80%, 
-  rgba(0, 0, 0, 0.3) 100%);
+  rgba(0, 0, 0, 0.3) 90%, 
+  rgba(0, 0, 0, 0.1) 100%);
   display: none;
 
   @media (max-width: 1300px) {
