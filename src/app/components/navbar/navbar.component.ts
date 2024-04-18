@@ -303,16 +303,7 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  ngOnInit() {
-    this.sessionCountForCasualGaming();
-    this.restService.getSeriousNotification().toPromise().then((data)=> {
-      this.isWarningShown = data?.length > 0;
-      if (this.isWarningShown) {
-        this._warningMessageSub = this.authService.warningMessagePresent.subscribe((value)=> {
-          this.isWarningShown = value;
-        })
-      }
-    })
+  async ngOnInit() {
     this._profileOverlaySub = this.authService.profileOverlay.subscribe(
       (data) => {
         this.showOverlayProfile = data;
@@ -735,9 +726,14 @@ export class NavbarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   sessionCountForCasualGaming() {
 
-    this.restService.checkCasualGamingSession().toPromise().then((response: any)=> {
-      this.showCasualGamingLabel = response.is_free;
-    })
+    // this.restService.checkCasualGamingSession().subscribe({
+    //   next: (response: any) => {
+    //     this.showCasualGamingLabel = response.is_new;
+    //   },
+    //   error: () => {
+    //     this.showCasualGamingLabel = false;
+    //   },
+    // });
   }
 
   headerNavOnClick(

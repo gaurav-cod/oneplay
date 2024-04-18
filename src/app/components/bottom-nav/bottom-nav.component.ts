@@ -208,6 +208,7 @@ export class BottomNavComponent implements OnInit, OnDestroy {
     this.restService.checkCasualGamingSession().toPromise().then((response: any)=> {
       this.showCasualGamingLabel = response.is_free;
     })
+  
   }
 
   getCurrentSelectedTab(currentUrl: string): BOTTOM_NAV {

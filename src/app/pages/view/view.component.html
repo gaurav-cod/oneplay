@@ -234,19 +234,19 @@
                   </div>
                 </div>
 
-                <div class="info-sec row" *ngIf="game.storesMapping?.length > 0">
+                <div class="info-sec" *ngIf="game.storesMapping?.length > 0">
                   <div>
                     <ng-container *ngFor="let store of game.storesMapping; let idx = index">
                       <img
                         [src]="store.store_image || 'assets/img/store/store.svg'"
                         height="20px"
-                        class="mr-1"
+                        class="mr-2"
                         [alt]="store.store_image"
+                        style="margin-bottom: 2px;"
                         onerror="this.style.display = 'none'"
                       />
-                      <span class="mr-1">{{ store.name }} <ng-container *ngIf="game.storesMapping?.length > (idx +1)">/</ng-container> </span>
+                      <span [class]="game.storesMapping?.length > (idx +1) ? 'mr-1' : ''">{{ store.name }} <ng-container *ngIf="game.storesMapping?.length > (idx +1)">/</ng-container> </span>
                     </ng-container>
-
                   account required to play this game.
                   </div>
                 </div>
@@ -254,7 +254,8 @@
                 <div *ngIf="game.isInstallAndPlay" class="licenseRequired">LICENSE REQUIRED</div>
 
                 <form
-                  class="row justify-content-center checkBox pl-3"
+                style="margin-left: 5px;"
+                  class="justify-content-center checkBox"
                   *ngIf="
                     game.status === 'live' || game.status === 'not_optimized'
                   "
