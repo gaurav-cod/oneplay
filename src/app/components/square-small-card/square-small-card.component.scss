@@ -1,0 +1,87 @@
+img {
+  border-radius: 10px;
+}
+
+.gameTagsContianer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gameGenre {
+  background-color: #212123;
+  padding: 5px 10px;
+  color: #DCDCDC;
+  width: fit-content;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.game-title {
+  color: #DCDCDC;
+  width: 100%;
+  max-height: 50px;
+  overflow: hidden;
+  font-size: 20px;
+  margin-top: 5px;
+  font-weight: 700;
+  white-space: normal;
+
+  @media (max-width: 1200px) {
+    font-size: 14px;
+  }
+}
+
+.imageContainer {
+  height: 125px;
+  width: 125px;
+
+  @media screen and (max-width: 1200px) {
+    height: 80px;
+    width: 80px;
+  }
+}
+
+
+.card-img-hover {
+  z-index: 1000;
+  position: absolute;
+  transition: transform 0.2s ease-out;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+  border: 2px solid transparent;
+  transition: all .2s ease-in-out;
+  animation: scaleAnimation 0.3s forwards;
+}
+
+@keyframes scaleAnimation {
+  0% {
+    transform: scale(0);
+    /* Start with original size */
+  }
+
+  20% {
+    transform: scale(0.2);
+  }
+
+  30% {
+    transform: scale(0.4);
+  }
+
+  40% {
+    transform: scale(0.6);
+  }
+
+  50% {
+    transform: scale(0.8);
+  }
+
+  75% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.3);
+    /* End with scaled size */
+  }
+}

@@ -10,6 +10,7 @@ import {
   BilldeskPaymentRO,
   ClientTokenRO,
   CouponResponse,
+  FilterPayload,
   GameSessionRO,
   GameStatusRO,
   GameTermCondition,
@@ -854,6 +855,57 @@ export class RestService {
       );
   }
 
+  getFilteredGamesV2(
+    query: { [key: string]: string },
+    payload: FilterPayload,
+    page: number,
+    limit: number = 12
+  ): Observable<(GameModel | GamezopModel)[]> {
+    let data = {
+      ...payload
+    };
+    if (query?.genres)
+      data = { ...data, ...query};
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data,{
+        params: { page, limit },
+      })
+      .pipe(
+        map((res) => res.map((d) => new GameModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+  getFilteredCasualGamesV2(
+    category: string | null,
+    payload: FilterPayload,
+    page: number,
+    limit: number = 12
+  ): Observable<GamezopModel[]> {
+    let data = {
+      ...payload
+    };
+    if (category)  {
+      data = {
+        ...data,
+        categories: category,
+        genres: category
+      }
+    }
+    return this.http
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data,{
+        params: { page, limit },
+      })
+      .pipe(
+        map((res: any) => {
+          return res.games.map((d) => new GamezopModel(d))}),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
   getWishlistGames(ids: string[]): Observable<GameModel[]> {
     if (ids.length === 0) {
       return of([]);
@@ -872,11 +924,19 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(params?: any): Observable<GameFeedModel[]> {
+  getHomeFeed(params?: any): Observable<(VideoFeedModel | GamezopFeedModel | GameFeedModel)[]> {
+    
     return this.http
-      .get<any[]>(this.r_mix_api + "/games/feed/personalized", { params })
+      .get<any[]>(this.r_mix_api_2 + "/games/feed/personalized", { params })
       .pipe(
-        map((res) => res.map((d) => new GameFeedModel(d))),
+        map((res: any) => res.feeds.map((d) => {
+          if (d.type == "landscape_video")
+            return new VideoFeedModel(d);
+          else if (d.type == "square_category_small")
+            return new GamezopFeedModel(d);
+          else
+            return new GameFeedModel(d);
+        })),
         catchError(({ error }) => {
           throw error;
         })

@@ -1,14 +1,14 @@
 <section [ngClass]="{'mt-4': isInstallAndPlayList && calledFrom.includes('STORE')}" style="position: relative;">
     <div class="d-flex text-center position-absolute freeToPlayTab w-100" style="z-index: 1; top: -12px"
         *ngIf="calledFrom !== 'STORE_OTHER' && calledFrom !== 'LIBRARY'">
-        <span *ngIf="game.isFree" class="freeTag px-2 tagText text-white">
+        <span *ngIf="game.isFree" class="freeTag freeTagTriangle px-2 tagText text-white">
             FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" /></span>
     </div>
     <a href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative h-100 overflow-hidden"
         (click)="onGameClick()"
         [ngClass]="{'adjustHeight': calledFrom=='HOME', 'adjustHeightStore': calledFrom.includes('STORE'), 'adjustHeightLib': calledFrom === 'LIBRARY'}">
 
-        <img #image [src]="game.installPlayRailImg" height="100%" width="100%" alt="">
+        <img #image [src]="game.poster_16_9" height="100%" width="100%" alt="">
         <image-loading [image]="image" [hash]="game.iapRailHash" />
         <div class="h-100 w-100 d-flex flex-column justify-content-between p-2 position-absolute mainContainer">
 

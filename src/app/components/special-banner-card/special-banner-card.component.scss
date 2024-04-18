@@ -1,0 +1,281 @@
+.w290h185 {
+  width: 280px !important;
+  height: 180px !important;
+
+  @media (max-width: 1200px) {
+    width: 280px !important;
+    height: 180px !important;
+  }
+}
+
+.premiumIcon {
+  position: absolute;
+  border-radius: 50%;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  width: 85%;
+  justify-content: space-between;
+
+  .storeIcons {
+    display: flex;
+    gap: 5px;
+  }
+}
+
+.developerName {
+  color: #959595;
+  padding: 0px 5px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mute {
+  position: absolute;
+  bottom: 15px;
+  left: 105%;
+  padding: 4px 8px;
+  border-radius: 50%;
+  z-index: 100000;
+}
+
+.unmute {
+  padding: 4px 12px !important;
+}
+
+video {
+  border-radius: 4px;
+  height: 100%;
+  object-fit: cover;
+  border: 2px solid transparent;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+}
+
+.card-hover {
+  transform: scaleX(1.15) scaleY(1.1);
+  height: 320px !important;
+  transition: all 0.3s linear;
+  margin-top: 15px;
+}
+
+.card,
+.gamezop-card {
+  background: none !important;
+  cursor: pointer;
+
+
+  .card-img {
+    object-position: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .game-title {
+    color: #DCDCDC;
+    width: 100%;
+    max-height: 50px;
+    overflow: hidden;
+    font-size: 16px;
+    margin-top: 9px;
+    padding: 0px 5px;
+    white-space: normal;
+  }
+
+  .gameTags {
+    position: absolute;
+    left: 10px;
+    bottom: 2px;
+
+    .tagText {
+      color: white;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    .freeTagTriangle {
+      clip-path: polygon(79% 0, 100% 49%, 81% 100%, 0 100%, 0 0);
+      padding-right: 20px !important;
+    }
+  }
+
+  .gameTagsContianer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .gameGenre {
+    background-color: #212123;
+    padding: 5px 10px;
+    color: #DCDCDC;
+    width: fit-content;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+}
+
+.game-gamezop-title {
+  width: 100%;
+  color: #ffffff;
+  margin-top: 5px;
+}
+
+.card-img-hover {
+  z-index: 1000;
+  position: absolute;
+  background-image: linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6);
+  background-origin: border-box;
+  border: 2px solid transparent;
+  transition: all .2s ease-in-out;
+  animation: scaleAnimation 0.3s forwards;
+  top: 0px;
+}
+
+@keyframes scaleAnimation {
+  0% {
+    transform: scale(0);
+    /* Start with original size */
+  }
+
+  20% {
+    transform: scale(0.2);
+  }
+
+  30% {
+    transform: scale(0.4);
+  }
+
+  40% {
+    transform: scale(0.6);
+  }
+
+  50% {
+    transform: scale(0.8);
+  }
+
+  75% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.3);
+    /* End with scaled size */
+  }
+}
+
+.truncate-line-clamp {
+  -webkit-line-clamp: 2;
+  white-space: wrap !important;
+}
+
+.gamezop-truncate-line-clamp {
+  -webkit-line-clamp: 1 !important;
+  white-space: wrap !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 480px) {
+  .card {
+    // width: 150px;
+    height: 135px;
+    top: -2px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+
+  .adjustCardStore {
+    height: 95px !important;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .card {
+    // width: 150px;
+    height: 121px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .card {
+    // width: 150px;
+    height: 80px;
+  }
+
+  .gamezop-card {
+    height: 160px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    // width: 150px;
+    height: 290px !important;
+    width: 290px;
+  }
+
+  .gamezop-card {
+    height: 175px !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .card {
+    width: 300px !important;
+  }
+}
+
+@media (min-width: 1300px) {
+  .card {
+    width: 300px !important;
+    height: 40% !important;
+  }
+
+  .gamezop-card {
+    height: 195px !important;
+  }
+}
+
+.borderRadius10 {
+  border-radius: 10px !important;
+}
+
+.bg-translucent-darker {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.tagText {
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 4px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.bottomTag {
+  position: absolute;
+  bottom: 0px;
+  color: #fff;
+}
+
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 18px;
+  height: 17px;
+  gap: 10px;
+}
+
+.specialCardHeight {
+  height: 250px !important;
+}

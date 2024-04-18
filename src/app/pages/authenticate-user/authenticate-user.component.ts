@@ -245,6 +245,12 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     });
   }
   closeReferralDialog(isReferalAdded: boolean = false) {
+    if (!isReferalAdded) {
+      this.isReferralAdded = false;
+      this.referal_code.setValue("");
+      this._referralModal?.close();
+      return;
+    }
     this.restService.getReferalName(this.referralName).toPromise().then(()=> {
       this.isReferralAdded = !!this.referralName && isReferalAdded;
       this._referralModal?.close();
@@ -480,6 +486,14 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       this.rows._results[0]?.nativeElement.removeEventListener("paste", (e) =>
         this.handlePaste(e)
       );
+    }
+  }
+
+  onKeyPressCheckMobile(event: KeyboardEvent) {
+    const charCode = event.charCode;
+    const validChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_+@';
+    if (validChars.includes(String.fromCharCode(charCode)) || event.code == "KeyE") {
+      event.preventDefault();
     }
   }
 
