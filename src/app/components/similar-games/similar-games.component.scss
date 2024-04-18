@@ -264,7 +264,11 @@
   left: 0;
   z-index: 10;
   border-radius: 0px;
-  background: #151515a8;
+  background: linear-gradient(to right, 
+  rgba(0, 0, 0, 1) 0%, 
+  rgba(0, 0, 0, 0.7) 40%, 
+  rgba(0, 0, 0, 0.5) 80%, 
+  rgba(0, 0, 0, 0.3) 100%);
 
   @media (max-width: 1300px) {
     padding-left: 30px;
