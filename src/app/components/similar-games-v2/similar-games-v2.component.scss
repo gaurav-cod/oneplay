@@ -415,7 +415,11 @@
 }
 
 .arrowPaddingLeft:hover>img {
-  transform: scale(1.5);
+  transform: scale(2.5);
+}
+.arrow-img-left{
+  position:absolute !important;
+  left:15px;
 }
 
 .arrowPaddingLeft {
@@ -424,8 +428,14 @@
   left: 0;
   z-index: 1000;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
+  height:400px !important;
+  background: linear-gradient(to right,
+  rgba(0, 0, 0, 1) 0%,
+  rgba(0, 0, 0, 0.9) 30%, /* Slightly reduced opacity */
+  rgba(0, 0, 0, 0.7) 50%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.5) 70%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.3) 90%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.1) 100%); /* End color with minimal opacity */
   display: none;
 
   @media (max-width: 1300px) {
@@ -438,17 +448,29 @@
 }
 
 .arrowPaddingright:hover>img {
-  transform: scale(1.5);
+  transform: scale(2.5);
+  margin-left:20px;
 }
-
+.arrow-img{
+  right:15px;
+}
 .arrowPaddingright {
   padding-right: 50px;
+  height: 400px !important;
   top: -10px;
   right: 0px;
   z-index: 1000;
   border: none;
   border-radius: 10px;
-  background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
+  background: linear-gradient(to left,
+  rgba(0, 0, 0, 1) 0%,
+  rgba(0, 0, 0, 0.9) 30%, /* Slightly reduced opacity */
+  rgba(0, 0, 0, 0.7) 50%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.5) 70%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.3) 90%, /* Increased spacing and reduced opacity */
+  rgba(0, 0, 0, 0.1) 100%); /* End color with minimal opacity */
+
+
   display: none;
 
   @media (max-width: 1300px) {

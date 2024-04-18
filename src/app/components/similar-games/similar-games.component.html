@@ -25,17 +25,17 @@
 
   <button
     *ngIf="showLeftArrow"
-    class="btn position-absolute h-100 arrowPaddingLeft pr-2"
+    class="btn position-absolute h-100 arrowPaddingLeft pr-4"
     (click)="scrollLeft()"
   >
-    <img src="assets/img/Vector.svg" height="20px" alt="" />
+    <img class="position-absolute arrow-img-left" src="assets/img/Vector.svg" height="20px" alt="" />
   </button>
 
   <button
     *ngIf="showRightArrow"
-    class="btn position-absolute h-100 arrowPaddingright pl-2"
+    class="btn position-absolute h-100 arrowPaddingright pl-4"
     (click)="scrollRight()"
   >
-    <img src="assets/img/Vector (1).svg" height="20px" alt="" />
+    <img class="position-absolute arrow-img"  src="assets/img/Vector (1).svg" height="20px" alt="" />
   </button>
 </div>

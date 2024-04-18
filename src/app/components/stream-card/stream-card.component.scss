@@ -102,15 +102,23 @@
     width: 100%;
     overflow: hidden;
 }
-
+.arrow-img-left{
+    position:absolute !important;
+    left:15px;
+  }
 .arrowPaddingLeft {
     padding-left: 50px;
     top: -10px;
     left: 0;
     z-index: 1000;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
+    background: linear-gradient(to right, 
+    rgba(0, 0, 0, 1) 0%, 
+    rgba(0, 0, 0, 0.9) 60%, 
+    rgba(0, 0, 0, 0.7) 70%, 
+    rgba(0, 0, 0, 0.5) 80%, 
+    rgba(0, 0, 0, 0.3) 90%, 
+    rgba(0, 0, 0, 0.1) 100%);
     display: none;
   
     @media (max-width: 1300px) {
@@ -129,7 +137,13 @@
     z-index: 1000;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
+    background: linear-gradient(to left, 
+    rgba(0, 0, 0, 1) 0%, 
+    rgba(0, 0, 0, 0.9) 60%, 
+    rgba(0, 0, 0, 0.7) 70%, 
+    rgba(0, 0, 0, 0.5) 80%, 
+    rgba(0, 0, 0, 0.3) 90%, 
+    rgba(0, 0, 0, 0.1) 100%);
     display: none;
   
     @media (max-width: 1300px) {
