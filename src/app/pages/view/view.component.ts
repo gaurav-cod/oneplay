@@ -388,7 +388,6 @@ export class ViewComponent implements OnInit, OnDestroy {
               .subscribe(
                 (games) =>
                 (this._devGames = this.getShuffledGames([
-                  ...this._devGames,
                   ...games,
                 ]))
               )
@@ -538,6 +537,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get devGames(): GameModel[] {
+    console.log([this._devGames]);
     return [...this._devGames]
       .filter((game) => game.oneplayId !== this.game.oneplayId)
       .sort((a, b) => a.popularityScore - b.popularityScore);
