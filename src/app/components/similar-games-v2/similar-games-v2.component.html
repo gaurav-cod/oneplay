@@ -51,11 +51,11 @@
   </div>
 
   <ng-container *ngIf="!isMobile">
-    <button *ngIf="showLeftArrow" class="btn position-absolute h-100 arrowPaddingLeft pr-4" (click)="scrollLeft()">
+    <button *ngIf="showLeftArrow" class="btn position-absolute arrowPaddingLeft pr-4" (click)="scrollLeft()">
       <img class="position-absolute arrow-img-left" src="assets/img/arrow-left.svg" height="30px" alt="" />
     </button>
 
-    <button *ngIf="showRightArrow" class="btn position-absolute h-100 arrowPaddingright pl-4" (click)="scrollRight()">
+    <button *ngIf="showRightArrow" class="btn position-absolute arrowPaddingright pl-4" (click)="scrollRight()">
       <img class="position-absolute arrow-img" src="assets/img/arrow-right.svg" height="30px" alt="" />
     </button>
   </ng-container>
