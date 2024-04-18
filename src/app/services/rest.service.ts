@@ -812,7 +812,7 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data, {
         params: {
           textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
         },
@@ -826,7 +826,7 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data, {
         params: {
           textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
         },
@@ -844,7 +844,7 @@ export class RestService {
       ...query,
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data, {
         params: { page, limit },
       })
       .pipe(
@@ -867,7 +867,7 @@ export class RestService {
     if (query?.genres)
       data = { ...data, ...query};
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data,{
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data,{
         params: { page, limit },
       })
       .pipe(
@@ -894,7 +894,7 @@ export class RestService {
       }
     }
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data,{
+      .post<any[]>(this.r_mix_api_2 + "/games/gamezop/get_filtered_games", data,{
         params: { page, limit },
       })
       .pipe(
@@ -914,7 +914,7 @@ export class RestService {
       content_ids: ids.join(","),
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data)
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data)
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
@@ -1470,7 +1470,7 @@ export class RestService {
       ...query,
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
+      .post<any[]>(this.r_mix_api_2 + "/games/gamezop/get_filtered_games", data, {
         params: { page, limit },
       })
       .pipe(
