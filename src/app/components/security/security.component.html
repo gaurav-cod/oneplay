@@ -62,24 +62,30 @@
 
   </div>
   <div class="user-data-container col-sm-12 col-md-6 col-lg-12 mt-4">
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth">
+    <div class="col-md-12 d-flex flex-row height70 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth position-relative">
 
-      <img src="assets/img/setting/privacy-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <img src="assets/img/setting/privacy-setting.svg" class="img-fluid cursorPointer extraNegMargin" alt="" />
 
-      <p class="mb-0 font18 font500 text-white col">Privacy</p>
-      <div class="col-auto d-flex justify-content-end position-relative" style="left: 45px;">
+      <div class="col extraContent">
+        <p class="mb-0 font18 font500 text-white">Search Privacy</p>
+        <p class="mb-0 font14 font500 text-gray extraPosition">Enabling this will make your profile non-searchable.</p>
+      </div>
+      <div class="col-auto d-flex justify-content-end position-absolute extraNegMargin" style="right: -32px;">
         <div class="custom-control custom-switch">
           <input type="checkbox" class="custom-control-input" id="privacyCheckBox" [(ngModel)]="isPrivate">
           <label class="custom-control-label" for="privacyCheckBox" (click)="switchSearchPrivacy()"></label>
         </div>
       </div>
     </div>
-    <div class="col-md-12 d-flex flex-row height52 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth">
+    <div class="col-md-12 d-flex flex-row height70 align-items-center border-0 lightBg borderRadius6 mt-3 adjustWidth position-relative">
 
-      <img src="assets/img/setting/session-setting.svg" class="img-fluid cursorPointer" alt="" />
+      <img src="assets/img/setting/session-setting.svg" class="img-fluid cursorPointer extraNegMargin" alt="" />
 
-      <p class="mb-0 font18 font500 text-white col">Session Data</p>
-      <div class="col-auto d-flex justify-content-end cursorPointer" (click)="deleteSessionData()" style="left: 10px;">
+      <div class="col extraContent">
+        <p class="mb-0 font18 font500 text-white">Clear Session Data</p>
+        <p class="mb-0 font14 font500 text-gray extraPosition">This action will delete all your logged-in stores and game saves.</p>
+      </div>
+      <div class="col-auto d-flex justify-content-end cursorPointer position-absolute extraNegMargin" (click)="deleteSessionData()" style="right: 10px;">
         <img src="assets/img/setting/delete-icon.svg" alt="" class="img-fluid">
       </div>
     </div>
