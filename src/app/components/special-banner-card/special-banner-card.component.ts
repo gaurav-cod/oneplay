@@ -79,20 +79,20 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
   }
   mouseEnterHandler() {
     
-    if (this.game.isInstallAndPlay)
-      return;
+    // if (this.game.isInstallAndPlay)
+    //   return;
 
-    this.onMouseHoverCard.emit(this.game.oneplayId);
-    setTimeout(()=> {
-      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
-      if (this.showHover) {
-        this.onMouseHoverCard.emit(this.game.oneplayId);
+    // this.onMouseHoverCard.emit(this.game.oneplayId);
+    // setTimeout(()=> {
+    //   this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+    //   if (this.showHover) {
+    //     this.onMouseHoverCard.emit(this.game.oneplayId);
         
-          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
-            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
-          }
-      }
-    }, 100)
+    //       if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+    //         this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+    //       }
+    //   }
+    // }, 100)
   }
   mouseLeaveHandler() {
     if (this.hoveringCardId == this.game.oneplayId) {

@@ -114,17 +114,17 @@ export class SquareSmallCardComponent implements OnInit {
   }
 
   mouseEnterHandler() {
-    this.onMouseHoverCard.emit(this.game.code);
-    setTimeout(()=> {
-      this.showHover = !this.isMobile && !this.game.gamePreviews && (this.hoveringCardId == this.game.code);
-      if (this.showHover) {
-        this.onMouseHoverCard.emit(this.game.code);
+    // this.onMouseHoverCard.emit(this.game.code);
+    // setTimeout(()=> {
+    //   this.showHover = !this.isMobile && !this.game.gamePreviews && (this.hoveringCardId == this.game.code);
+    //   if (this.showHover) {
+    //     this.onMouseHoverCard.emit(this.game.code);
         
-          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
-            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
-          }
-      }
-    }, 100)
+    //       if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+    //         this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 100) + "px";
+    //       }
+    //   }
+    // }, 100)
   }
   mouseLeaveHandler() {
     if (this.hoveringCardId == this.game.code) {

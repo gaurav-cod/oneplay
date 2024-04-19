@@ -152,25 +152,25 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   mouseEnterHandler() {
-    if (!this.getVideo) {
-      this.onMouseHoverCard.emit(this.game.oneplayId);
-      setTimeout(()=> {
-        this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
-        if (this.showHover) {
-          this.onMouseHoverCard.emit(this.game.oneplayId);
+    // if (!this.getVideo) {
+    //   this.onMouseHoverCard.emit(this.game.oneplayId);
+    //   setTimeout(()=> {
+    //     this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+    //     if (this.showHover) {
+    //       this.onMouseHoverCard.emit(this.game.oneplayId);
           
-          setTimeout(()=> {
-            if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
-              this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 150) + "px";
-            } 
-            if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
-              this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) - 200) + "px";
-            }
-          }, 50)
+    //       setTimeout(()=> {
+    //         if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+    //           this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 150) + "px";
+    //         } 
+    //         if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
+    //           this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) - 200) + "px";
+    //         }
+    //       }, 50)
             
-        }
-      }, 100)
-    }
+    //     }
+    //   }, 100)
+    // }
   }
   mouseLeaveHandler() {
     if (this.hoveringCardId == this.game.oneplayId) {
