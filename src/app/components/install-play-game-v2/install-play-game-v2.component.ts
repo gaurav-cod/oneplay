@@ -48,10 +48,32 @@ export class InstallPlayGameV2Component implements OnInit {
   }
 
   get installPlayImage() {
-    return window.innerWidth > 475 ? this.game.poster_16_9 : this.game.poster_1_1;
+    switch (this.railType) {
+      case 'portrait_card':
+      case 'portrait_category':
+        return this.game.poster_3_4;
+      case 'special_banner':
+        return this.game.poster_16_9;
+      case 'square_category_large':
+      case 'spotlight_banner':
+        return this.game.poster_1_1;
+      default:
+        return window.innerWidth > 475 ? this.game.poster_3_4 : this.game.poster_1_1;
+    }
   } 
   get installPlayBlurhashImage() {
-    return window.innerWidth > 475 ? this.game.poster_16_9_blurhash : this.game.poster_1_1_blurhash;
+    switch (this.railType) {
+      case 'portrait_card':
+      case 'portrait_category':
+        return this.game.poster_3_4_blurhash;
+      case 'special_banner':
+        return this.game.poster_16_9_blurhash;
+      case 'square_category_large':
+      case 'spotlight_banner':
+        return this.game.poster_1_1_blurhash;
+      default:
+        return window.innerWidth > 475 ? this.game.poster_3_4_blurhash : this.game.poster_1_1_blurhash;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -92,8 +114,9 @@ export class InstallPlayGameV2Component implements OnInit {
   get playersCount() {
     if (this.game.playing >= 1000000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000000) + "M");
-    else if (this.game.playing > 1000)
+    else if (this.game.playing >= 1000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k");
+    return this.game.playing;
   }
   formatNumberWithOneDecimal(num) {
     const number = String(num).split('.');

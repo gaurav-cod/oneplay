@@ -54,6 +54,7 @@ import { SimilarGamesV2Component } from './similar-games-v2/similar-games-v2.com
 import { SpotlightBannerComponent } from './spotlight-banner/spotlight-banner.component';
 import { CategorySmallRailComponent } from './category-small-rail/category-small-rail.component';
 import { SpecialBannerCardComponent } from "./special-banner-card/special-banner-card.component";
+import { HeroVideoComponent } from './hero-video/hero-video.component';
 
 // Note we need a separate function as it's required
 // by the AOT compiler.
@@ -119,7 +120,8 @@ export function playerFactory() {
     SpecialBannerCardComponent,
     SimilarGamesV2Component,
     SpotlightBannerComponent,
-    CategorySmallRailComponent
+    CategorySmallRailComponent,
+    HeroVideoComponent
   ],
   exports: [
     GameCardComponent,
@@ -159,7 +161,8 @@ export function playerFactory() {
     SpecialBannerCardComponent,
     SimilarGamesV2Component,
     SpotlightBannerComponent,
-    CategorySmallRailComponent
+    CategorySmallRailComponent,
+    HeroVideoComponent,
   ],
 })
 export class ComponentsModule {}

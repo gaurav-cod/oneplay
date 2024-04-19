@@ -249,6 +249,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   closeReferralDialog(isReferalAdded: boolean = false) {
     if (!isReferalAdded) {
       this.isReferralAdded = false;
+      this.referal_code.setValue("");
       this._referralModal?.close();
       return;
     }

@@ -520,29 +520,22 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.isWarningMessageView = false;
   }
 
-  // get bgBannerImage(): string {
-  //   return !!this.game 
-  //     ? (this.game.isInstallAndPlay 
-  //       ? (window.innerWidth > 475 
-  //         ? ( window.innerWidth < 1200 
-  //           ? this.game.installPlayDetailImgTab
-  //           : this.game.installPlayDetailImg) 
-  //         : this.game.installPlayDetailImgMob) 
-  //       : this.game.bgImage)
-  //     : null;
-  // }
-
-  // get bgBannerHash(): string {
-  //   return !!this.game
-  //     ? (this.game.isInstallAndPlay ? this.game.iapBgHash : this.game.bgHash)
-  //     : null;
-  // }
   get bgBannerImage(): string {
-    return window.innerWidth > 475 ? this.game.poster_hero_banner_16_9 : this.game.poster_hero_banner_1_1;
+    return !!this.game 
+      ? (this.game.isInstallAndPlay 
+        ? (window.innerWidth > 475 
+          ? ( window.innerWidth < 1200 
+            ? this.game.installPlayDetailImgTab
+            : this.game.installPlayDetailImg) 
+          : this.game.installPlayDetailImgMob) 
+        : (window.innerWidth > 475 ? this.game.poster_hero_banner_16_9 : this.game.poster_hero_banner_1_1))
+      : null;
   }
 
   get bgBannerHash(): string {
-    return window.innerWidth > 475 ? this.game.poster_hero_banner_16_9_blurhash : this.game.poster_hero_banner_1_1_blurhash;
+    return !!this.game
+      ? (this.game.isInstallAndPlay ? this.game.iapBgHash : (window.innerWidth > 475 ? this.game.poster_hero_banner_16_9_blurhash : this.game.poster_hero_banner_1_1_blurhash))
+      : null;
   }
 
   get isInWishlist(): boolean {

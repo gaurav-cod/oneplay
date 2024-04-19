@@ -43,7 +43,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
     return environment.game_assets + this.game.oneplayId;
   }
   get getVideo() {
-    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ) : (this.game.video_hero_banner_1_1 );
   }
 
   ngOnInit(): void {
@@ -102,7 +102,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo && !this.isMobile) {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -138,7 +138,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video )  && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo  && !this.isMobile) {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -175,8 +175,9 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
   get playersCount() {
     if (this.game.playing >= 1000000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000000) + "M");
-    else if (this.game.playing > 1000)
+    else if (this.game.playing >= 1000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k");
+    return this.game.playing;
   }
 
   formatNumberWithOneDecimal(num) {

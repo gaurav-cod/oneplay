@@ -102,15 +102,23 @@
     width: 100%;
     overflow: hidden;
 }
-
+.arrow-img-left{
+    position:absolute !important;
+    left:15px;
+  }
 .arrowPaddingLeft {
     padding-left: 50px;
     top: -10px;
     left: 0;
     z-index: 1000;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(to right, #040404, rgb(2 15 27), rgba(50, 50, 93, 0.11) );
+    background: linear-gradient(to right,
+  rgba(21, 21, 21, 1) 0%,
+  rgba(21, 21, 21, 0.9) 30%, /* Slightly reduced opacity */
+  rgba(21, 21, 21, 0.7) 50%, /* Increased spacing and reduced opacity */
+  rgba(21, 21, 21, 0.5) 70%, /* Increased spacing and reduced opacity */
+  rgba(21, 21, 21, 0.3) 90%, /* Increased spacing and reduced opacity */
+  rgba(21, 21, 21, 0.1) 100%);
     display: none;
   
     @media (max-width: 1300px) {
@@ -128,8 +136,14 @@
     right: 0px;
     z-index: 1000;
     border: none;
-    border-radius: 10px;
-    background: linear-gradient(to right,rgba(50, 50, 93, 0.11),rgb(2 15 27), #040404 );
+    border-radius: 0px;
+    background: linear-gradient(to left,
+    rgba(21, 21, 21, 1) 0%,
+    rgba(21, 21, 21, 0.9) 30%, /* Slightly reduced opacity */
+    rgba(21, 21, 21, 0.7) 50%, /* Increased spacing and reduced opacity */
+    rgba(21, 21, 21, 0.5) 70%, /* Increased spacing and reduced opacity */
+    rgba(21, 21, 21, 0.3) 90%, /* Increased spacing and reduced opacity */
+    rgba(21, 21, 21, 0.1) 100%);
     display: none;
   
     @media (max-width: 1300px) {

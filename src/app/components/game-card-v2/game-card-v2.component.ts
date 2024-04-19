@@ -53,7 +53,7 @@ export class GameCardV2Component implements AfterViewInit {
     return environment.game_assets + this.game.oneplayId;
   }
   get getVideo() {
-    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ?? (this.getTrailerVideo + this.game.trailer_video)) : (this.game.video_hero_banner_1_1 ?? (this.getTrailerVideo + this.game.trailer_video));
+    return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ) : (this.game.video_hero_banner_1_1 );
   }
 
   ngAfterViewInit(): void {
@@ -89,7 +89,7 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.game.trailer_video && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo && !this.isMobile) {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
@@ -126,7 +126,7 @@ export class GameCardV2Component implements AfterViewInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.game.video_hero_banner_16_9 || this.game.video_hero_banner_1_1 || this.game.trailer_video ) && !this.isMobile && this.game.status === "live") {
+    if (this.getVideo && !this.isMobile) {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
@@ -152,23 +152,25 @@ export class GameCardV2Component implements AfterViewInit {
   }
 
   mouseEnterHandler() {
-    this.onMouseHoverCard.emit(this.game.oneplayId);
-    setTimeout(()=> {
-      this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
-      if (this.showHover) {
-        this.onMouseHoverCard.emit(this.game.oneplayId);
-        
-        setTimeout(()=> {
-          if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
-            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 150) + "px";
-          } 
-          if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
-            this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) - 200) + "px";
-          }
-        }, 50)
+    if (!this.getVideo) {
+      this.onMouseHoverCard.emit(this.game.oneplayId);
+      setTimeout(()=> {
+        this.showHover = !this.isMobile && !this.game.trailer_video && (this.hoveringCardId == this.game.oneplayId);
+        if (this.showHover) {
+          this.onMouseHoverCard.emit(this.game.oneplayId);
           
-      }
-    }, 100)
+          setTimeout(()=> {
+            if (this.hoverImage.nativeElement.getBoundingClientRect().left < 0) {
+              this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) + 150) + "px";
+            } 
+            if (this.hoverImage.nativeElement.getBoundingClientRect().right > window.innerWidth) {
+              this.hoverImage.nativeElement.style.left = String(Number(this.hoverImage.nativeElement.style.left) - 200) + "px";
+            }
+          }, 50)
+            
+        }
+      }, 100)
+    }
   }
   mouseLeaveHandler() {
     if (this.hoveringCardId == this.game.oneplayId) {
@@ -188,8 +190,9 @@ export class GameCardV2Component implements AfterViewInit {
   get playersCount() {
     if (this.game.playing >= 1000000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000000) + "M");
-    else if (this.game.playing > 1000)
+    else if (this.game.playing >= 1000)
       return (this.formatNumberWithOneDecimal(this.game.playing / 1000) + "k");
+    return this.game.playing;
   }
   formatNumberWithOneDecimal(num) {
     const number = String(num).split('.');

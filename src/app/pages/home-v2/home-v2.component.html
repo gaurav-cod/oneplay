@@ -17,10 +17,7 @@
               <image-loading [image]="bannerImg" [hash]="getBannerImageBlurHash" />
             </ng-container>
             <ng-container *ngIf="playVideo">
-              <video width="100%" height="100%" autoplay (ended)="videoEnded()" [muted]="isVideoMute" #heroBannerVideo>
-                <source [src]="getTrailerVideo" type="video/mp4">
-                Your browser does not support the video tag.
-              </video>
+              <app-hero-video style="width: 100%; height: 100%;" (videoEnded)="videoEnded()" [src]="getTrailerVideo" [isVideoMute]="isVideoMute"></app-hero-video>
             </ng-container>
           </div>
           <div class="text-logo showOnMobile position-absolute">
@@ -112,14 +109,14 @@
     <ng-container *ngFor="let row of railRowCards">
       <ng-container
         *ngIf="row.type != 'special_banner' && row.type != 'spotlight_banner' && row.type != 'square_category_small'">
-        <app-similar-games-v2 [title]="row.title" [entries]="row.type == 'landscape_video' ? row.videos : row.games"
+        <app-similar-games-v2 [limit]="row.limit" [title]="row.title" [entries]="row.type == 'landscape_video' ? row.videos : row.games"
           [railCategoryList]="row.categories" [railType]="row.type" [payload]="row.filterPayload"></app-similar-games-v2>
       </ng-container>
       <ng-container *ngIf="row.type == 'special_banner'">
         <app-parallex-sec [gamesFeed]="row"></app-parallex-sec>
       </ng-container>
       <ng-container *ngIf="row.type == 'square_category_small'">
-        <app-category-small-rail [gameFeed]="row" [payload]="row.filterPayload"></app-category-small-rail>
+        <app-category-small-rail [limit]="row.limit" [gameFeed]="row" [payload]="row.filterPayload"></app-category-small-rail>
       </ng-container>
       <ng-container *ngIf="row.type == 'spotlight_banner'">
         <app-spotlight-banner [gameFeed]="row"></app-spotlight-banner>
