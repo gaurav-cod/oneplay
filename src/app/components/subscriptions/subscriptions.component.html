@@ -39,7 +39,7 @@
               </div>
               <div class="timeText">
                 {{ remainingDailyToken | tokens:"Hr" }} 
-                <span style="font-size: 10px;">left till 12 midnight</span>
+                <span *ngIf="!isNightlyPlanAvailable"style="font-size: 10px;">left till 12 midnight</span>
               </div>
             </div>
             <div>
