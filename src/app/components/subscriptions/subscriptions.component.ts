@@ -238,18 +238,39 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl("/checkout/" + sub.planId);
         } else {
           this.addSubCardEvent("renew");
-          window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+          if(sub.planType === "base_nightly"){
+            window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+          }
+          else{
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
         }
       } else if (result.isDenied) {
+        
         this.addSubCardEvent("renew");
+        if(sub.planType === "base_nightly"){
+          window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+        }
+        else{
         window.location.href = `${environment.domain}/subscription.html`;
+        }
       }
     });
   }
 
   buyTopUp(sub: SubscriptionModel) {
     this.addSubCardEvent("topUp");
-    window.location.href = environment.domain + "/subscription.html";
+    window.location.href = environment.domain + "/subscription.html#topup";
+  }
+
+  upgradePlan(sub:SubscriptionModel){
+    if(sub.planType==='base_nightly'){
+      this.addSubCardEvent("topUp");
+      window.location.href = environment.domain + "/subscription.html#base_nightly";
+    }
+    else{
+      window.location.href = environment.domain + "/subscription.html";
+    }
   }
 
   buyNow() {

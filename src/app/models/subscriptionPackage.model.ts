@@ -13,6 +13,7 @@ export class SubscriptionPackageModel {
   type: 'base' | 'topup' | 'base_nightly';
   isLiveForPurchase: boolean;
   isUnlimited: boolean;
+  isActive:boolean;
 
   constructor(json: any) {
     this.id = json.id;
@@ -28,6 +29,7 @@ export class SubscriptionPackageModel {
     this.tokens = json.total_offered_tokens;
     this.type = json.package_type;
     this.isLiveForPurchase = json.is_live_for_purchase === "true";
+    this.isActive = json.is_active === "true";
     this.isUnlimited = json.plan_config.is_unlimited;
   }
 }
