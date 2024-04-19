@@ -20,7 +20,7 @@
               <app-hero-video style="width: 100%; height: 100%;" (videoEnded)="videoEnded()" [src]="getTrailerVideo" [isVideoMute]="isVideoMute"></app-hero-video>
             </ng-container>
           </div>
-          <div class="text-logo showOnMobile position-absolute">
+          <div class="text-logo showOnMobile position-absolute mb-2">
             <img [src]="selectedBannerGame.textLogo" alt="" />
             <div *ngIf="playVideo" class="audioContainer position-absolute">
               <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" [hidden]="!isVideoMute" (click)="isVideoMute = false">
@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="position-absolute games-carousel game-carousel-btn d-flex" [style.left.px]="20">
-            <div class="text-logo position-absolute">
+            <div class="text-logo position-absolute mb-2">
               <img [src]="selectedBannerGame.textLogo" alt="" />
               <div *ngIf="playVideo" class="audioContainer position-absolute">
                 <img src="assets/img/Dashboard/mute.svg" alt="mute" height="40px" width="40px" [hidden]="!isVideoMute" (click)="isVideoMute = false">
