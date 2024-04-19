@@ -10,10 +10,10 @@
     <ngb-carousel id="home-header" [showNavigationArrows]="false"
       [showNavigationIndicators]="false" (slide)="onSlideChange($event)" *ngIf="!!heroBannerRow" interval="0">
       <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-        <div class="card bgTransparent border-0 borderRadius10 height90vh position-relative" (click)="navigateToDetail(game)">
+        <div class="card bgTransparent border-0 borderRadius10 height80vh position-relative" (click)="navigateToDetail(game)">
           <div class="row carousel-images">
             <ng-container *ngIf="!playVideo">
-              <img #bannerImg class="card-img borderRadius10 height90vh left-img" [src]="getBannerImage" alt="img" />
+              <img #bannerImg class="card-img borderRadius10 height80vh left-img" [src]="getBannerImage" alt="img" />
               <image-loading [image]="bannerImg" [hash]="getBannerImageBlurHash" />
             </ng-container>
             <ng-container *ngIf="playVideo">
@@ -103,8 +103,8 @@
   <div class="transparentBlur"></div>
 </section>
 
-<div class="homeListingContainer pt-4">
-  <div class="mb-0 mt-4">
+<div class="homeListingContainer">
+  <div class="mb-0">
     <app-similar-games-v2 *ngIf="library.length > 0" [title]="'My Library'" [railType]="'my_library'" [entries]="library"></app-similar-games-v2>
     <ng-container *ngFor="let row of railRowCards">
       <ng-container
