@@ -200,9 +200,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.selected_payment_source == "billdesk") {
       this.handlePayWithBilldesk();
     } else if (this.selected_payment_source == "stripe") {
-      this.handlePayWithStripe();
-    }
+      setTimeout(() => {
+        this.handlePayWithStripe();
+      }, 3000);
   }
+}
 
   private timeoutPaymentIntent(orderId: string, source: "billdesk" | "stripe") {
     this.timer = setTimeout(() => {
