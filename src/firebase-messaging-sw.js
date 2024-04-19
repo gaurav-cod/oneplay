@@ -22,7 +22,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = (payload.data ? payload.data?.title : payload.notification?.body);
   const notificationOptions = {
     body: payload?.notification?.title,
-    icon: environment.domain + '/dashboard/assets/img/brand/oneplay-logo.svg',
+    icon: environment.domain + '/dashboard/assets/img/brand/oneplay-birthday-logo.svg',
     data: payload.data
   };
 
