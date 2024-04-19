@@ -397,7 +397,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               .subscribe(
                 (games) =>
                 (this._genreGames = this.getShuffledGames([
-                  ...this._genreGames,
+                  // ...this._genreGames,
                   ...games,
                 ]))
               )
