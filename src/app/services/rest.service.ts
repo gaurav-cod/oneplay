@@ -7,6 +7,7 @@ import { switchMap } from "rxjs/internal/operators/switchMap";
 import { environment } from "src/environments/environment";
 import { ReferrerService } from "./referrer.service";
 import {
+  AaaFiltersRO,
   BilldeskPaymentRO,
   ClientTokenRO,
   CouponResponse,
@@ -64,19 +65,22 @@ export class RestService {
   private readonly r_mix_api_2 = environment.render_mix_api + "/v2";
   private readonly r_mix_api_3 = environment.render_mix_api + "/v3";
 
-  constructor(private readonly http: HttpClient, private readonly referrerService:ReferrerService) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly referrerService: ReferrerService
+  ) {}
 
   login(data: LoginDTO): Observable<{
     session_token: string;
     trigger_speed_test: boolean;
   }> {
-    let device="web";
+    let device = "web";
     const referrer = this.referrerService.getReferrer();
-    if(referrer==="tizen"){
-      device="tizen";
+    if (referrer === "tizen") {
+      device = "tizen";
     }
     return this.http
-      .post(this.r_mix_api + "/accounts/login", { ...data, device})
+      .post(this.r_mix_api + "/accounts/login", { ...data, device })
       .pipe(
         map((res) => ({
           session_token: res["session_token"],
@@ -812,12 +816,13 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: {
-          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
-        },
-      })
-      .pipe(map((res) => res.map((d) => new GameModel(d))));
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data)
+      .pipe(
+        map((res) => res.map((d) => new GameModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getGamesByDeveloper(developer: string): Observable<GameModel[]> {
@@ -826,12 +831,13 @@ export class RestService {
       order_by: "trend_score:desc",
     };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
-        params: {
-          textBackground: window.innerWidth > 485 ? "290x185" : "200x127",
-        },
-      })
-      .pipe(map((res) => res.map((d) => new GameModel(d))));
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", data)
+      .pipe(
+        map((res) => res.map((d) => new GameModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   getFilteredGames(
@@ -839,16 +845,22 @@ export class RestService {
     page: number,
     limit: number = 12
   ): Observable<GameModel[]> {
-    const data = {
-      order_by: "release_date:desc",
-      ...query,
-    };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
+      .post<any[]>(this.r_mix_api_2 + "/games/feed/custom", query, {
         params: { page, limit },
       })
       .pipe(
         map((res) => res.map((d) => new GameModel(d))),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
+  }
+
+  getAaaFilters() {
+    return this.http
+      .get<AaaFiltersRO[]>(this.r_mix_api + "/games/aaa_filters")
+      .pipe(
         catchError(({ error }) => {
           throw error;
         })
@@ -862,12 +874,11 @@ export class RestService {
     limit: number = 12
   ): Observable<(GameModel | GamezopModel)[]> {
     let data = {
-      ...payload
+      ...payload,
     };
-    if (query?.genres)
-      data = { ...data, ...query};
+    if (query?.genres) data = { ...data, ...query };
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/feed/custom", data,{
+      .post<any[]>(this.r_mix_api + "/games/feed/custom", data, {
         params: { page, limit },
       })
       .pipe(
@@ -884,22 +895,23 @@ export class RestService {
     limit: number = 12
   ): Observable<GamezopModel[]> {
     let data = {
-      ...payload
+      ...payload,
     };
-    if (category)  {
+    if (category) {
       data = {
         ...data,
         categories: category,
-        genres: category
-      }
+        genres: category,
+      };
     }
     return this.http
-      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data,{
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data, {
         params: { page, limit },
       })
       .pipe(
         map((res: any) => {
-          return res.games.map((d) => new GamezopModel(d))}),
+          return res.games.map((d) => new GamezopModel(d));
+        }),
         catchError(({ error }) => {
           throw error;
         })
@@ -924,19 +936,20 @@ export class RestService {
       .pipe(map((res) => res.map((d) => new GameModel(d))));
   }
 
-  getHomeFeed(params?: any): Observable<(VideoFeedModel | GamezopFeedModel | GameFeedModel)[]> {
-    
+  getHomeFeed(
+    params?: any
+  ): Observable<(VideoFeedModel | GamezopFeedModel | GameFeedModel)[]> {
     return this.http
       .get<any[]>(this.r_mix_api_2 + "/games/feed/personalized", { params })
       .pipe(
-        map((res: any) => res.feeds.map((d) => {
-          if (d.type == "landscape_video")
-            return new VideoFeedModel(d);
-          else if (d.type == "square_category_small")
-            return new GamezopFeedModel(d);
-          else
-            return new GameFeedModel(d);
-        })),
+        map((res: any) =>
+          res.feeds.map((d) => {
+            if (d.type == "landscape_video") return new VideoFeedModel(d);
+            else if (d.type == "square_category_small")
+              return new GamezopFeedModel(d);
+            else return new GameFeedModel(d);
+          })
+        ),
         catchError(({ error }) => {
           throw error;
         })
@@ -1437,10 +1450,16 @@ export class RestService {
   }
 
   // gamezop API
-  getGamezopFeed(category: string, railLimit: number = 50): Observable<GamezopFeedModel[]> {
+  getGamezopFeed(
+    category: string,
+    railLimit: number = 50
+  ): Observable<GamezopFeedModel[]> {
     const cat = encodeURIComponent(category);
     return this.http
-      .get<any[]>(this.r_mix_api + `/games/gamezop/feeds?category=${cat}&railLimit=${railLimit}`)
+      .get<any[]>(
+        this.r_mix_api +
+          `/games/gamezop/feeds?category=${cat}&railLimit=${railLimit}`
+      )
       .pipe(
         map((res) => res.map((d) => new GamezopFeedModel(d))),
         catchError(({ error }) => {
@@ -1495,7 +1514,6 @@ export class RestService {
 
   // ? Should not be POST method should be PUT
   isPhoneRegistred(phone: string, device: "web" | "tizen") {
-   
     return this.http
       .post(this.r_mix_api_3 + "/accounts/check_phone_number", {
         phone: phone,
@@ -1589,26 +1607,65 @@ export class RestService {
 
   // Live Stream Configuration API's
   getAllStreamConfigs() {
-    return this.http.get<any[]>(this.r_mix_api + "/streams/config/saved").pipe((map((res: any)=> res.results)))
+    return this.http
+      .get<any[]>(this.r_mix_api + "/streams/config/saved")
+      .pipe(map((res: any) => res.results));
   }
 
   addKeyToStreamConfig(service: string, key: string) {
-    return this.http.post(this.r_mix_api + "/streams/config/key", { service, key }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+    return this.http
+      .post(this.r_mix_api + "/streams/config/key", { service, key })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   setPreferedStreamConfig(id: string) {
-    return this.http.post(this.r_mix_api + "/streams/config/prefered", { id: id }).pipe((map((res)=> res)), catchError(({ error }) => { throw error; }))
+    return this.http
+      .post(this.r_mix_api + "/streams/config/prefered", { id: id })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   addCustomStreamConfig(service: string, key: string, url: string) {
-    return this.http.post(this.r_mix_api + "/streams/config/custom", { service: service, key: key, url: url  }).pipe((map((res)=> res), catchError(({ error })=> { throw error; })))
+    return this.http
+      .post(this.r_mix_api + "/streams/config/custom", {
+        service: service,
+        key: key,
+        url: url,
+      })
+      .pipe(
+        (map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        }))
+      );
   }
 
   updateCustomStreamConfig(id: string, key: string) {
-    return this.http.put(this.r_mix_api + `/streams/config/custom/${id}`, { key: key }).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+    return this.http
+      .put(this.r_mix_api + `/streams/config/custom/${id}`, { key: key })
+      .pipe(
+        map((res) => res),
+        catchError(({ error }) => {
+          throw error;
+        })
+      );
   }
 
   deleteStreamConfig(id: string) {
-    return this.http.delete(this.r_mix_api + `/streams/config/${id}`).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+    return this.http.delete(this.r_mix_api + `/streams/config/${id}`).pipe(
+      map((res) => res),
+      catchError(({ error }) => {
+        throw error;
+      })
+    );
   }
 }
