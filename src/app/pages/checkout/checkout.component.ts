@@ -33,7 +33,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   stripeLoad = false;
   currentamount: string;
   currency: string;
-
+  curr:string;
+ 
   coupon_code = new UntypedFormControl("", [Validators.required]);
   applied_coupon_code: string = null;
   coupon_message: string = null;
@@ -75,6 +76,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.subscriptionPacakage = await this.restService
             .getSubscriptionPackage(params.id)
             .toPromise();
+          if(this.subscriptionPacakage.currency==='inr'){
+          this.curr="₹";
+          }
+          else{
+            this.curr=this.subscriptionPacakage.currency
+          }
           if (this.subscriptionPacakage.type === "base" || this.subscriptionPacakage.type==="base_nightly") {
             this.is_upcoming_plan = (
               await this.restService.getCurrentSubscription().toPromise()
