@@ -38,7 +38,7 @@
               <!-- <span class="font16 font500 py-1 px-2 " style="line-height: 26px; letter-spacing: 0.32px;">
                 *This plan will begin once the current active plan expires.
               </span> -->
-              <p class="note">*THIS PLAN WILL BEGIN ONCE THE CURRENT ACTIVE PLAN EXPIRES.</p>
+              <p class="note">*This plan will begin once the current active plan expires.</p>
             </div>
           </div>
           <div class="row">
@@ -49,10 +49,10 @@
                 Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText mb-1">{{ subscriptionPacakage.actual_price - (0.18*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText mb-1">₹{{ subscriptionPacakage.actual_price - (0.18*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
               <p class="font20 font500 greenText"
                 *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
-                {{ subscriptionPacakage.amount - subscriptionPacakage.actual_price }}</p>
+                -₹{{subscriptionPacakage.actual_price - subscriptionPacakage.amount  }}</p>
             </div>
           </div>
           <div class="row" *ngIf="applied_coupon_code_value > 0">
@@ -68,7 +68,7 @@
               <span class="font16 font500 py-1 px-2">GST @ 18%</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText">{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText">₹{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
             </div>
           </div>
           <div class="row light-text">

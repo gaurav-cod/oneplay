@@ -10,7 +10,7 @@ export class SubscriptionPackageModel {
   can_run_mobile: boolean;
   plan_duration_in_days: number;
   tokens: number;
-  type: 'base' | 'topup';
+  type: 'base' | 'topup' | 'base_nightly';
   isLiveForPurchase: boolean;
   isUnlimited: boolean;
 

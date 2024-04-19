@@ -75,10 +75,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.subscriptionPacakage = await this.restService
             .getSubscriptionPackage(params.id)
             .toPromise();
-          if (this.subscriptionPacakage.type === "base") {
+          if (this.subscriptionPacakage.type === "base" || this.subscriptionPacakage.type==="base_nightly") {
             this.is_upcoming_plan = (
               await this.restService.getCurrentSubscription().toPromise()
-            ).some((sub) => sub.planType === "base");
+            ).some((sub) => sub.planType === "base" || sub.planType==="base_nightly");
           }
         } catch (error) {
           this.showError(error, true);
