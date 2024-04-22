@@ -181,7 +181,7 @@
       <div class="row justify-content-end mt-4 mt-lg-5 mx-5 mx-md-0">
         <div class="col-12 col-md-5 col-lg-4">
 
-          <button (click)="handlePaymentCheckout()" [ngClass]="{'mutedBg': !selected_payment_source}"
+          <button (click)="handlePaymentCheckout()" [disabled]="isButtonDisabled" [ngClass]="{'mutedBg': !selected_payment_source}"
             class="btn btn-block text-white font18 font500 customBorder0 customLinearGradient ">
             Proceed
           </button>

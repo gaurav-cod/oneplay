@@ -45,6 +45,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   subscriptionPacakage: SubscriptionPackageModel;
 
+  isButtonDisabled: boolean = false;
   private querySubscriptions: Subscription;
   private queryCancelSubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
@@ -204,12 +205,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // if (this.selected_payment_source == 'upi_payment') {
     //   this.handlePayWithPhonePay();
     // }
+    this.isButtonDisabled = true;
     if (this.selected_payment_source == "billdesk") {
       this.handlePayWithBilldesk();
     } else if (this.selected_payment_source == "stripe") {
-      this.handlePayWithStripe();
-    }
+        this.handlePayWithStripe();
   }
+  setTimeout(() => {
+    this.isButtonDisabled = false;
+  }, 3000);
+
+}
 
   private timeoutPaymentIntent(orderId: string, source: "billdesk" | "stripe") {
     this.timer = setTimeout(() => {
