@@ -369,10 +369,8 @@ export class ViewComponent implements OnInit, OnDestroy {
           (game) => {
             this.game = game;
             this.title.setTitle("Play " + game.title + " on OnePlay" + (game.isFree ? " for Free" : "") +" | Cloud Gaming");
-            this.meta.addTags([ 
-              { name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + ", " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") },
-              { name: "description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description },
-            ]);
+            this.meta.updateTag({ name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + ", " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") });
+            this.meta.updateTag({ name: "description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description });
 
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
