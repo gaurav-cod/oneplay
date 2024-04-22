@@ -39,7 +39,7 @@
               </div>
               <div class="timeText">
                 {{ remainingDailyToken | tokens:"Hr" }} 
-                <span style="font-size: 10px;">left till 12 midnight</span>
+                <span *ngIf="!isNightlyPlanAvailable"style="font-size: 10px;">left till 12 midnight</span>
               </div>
             </div>
             <div>
@@ -83,20 +83,20 @@
                 </h2>
               </div>
               <div
-                *ngIf="sub.planType == 'base'"
+                *ngIf="sub.planType == 'base' || sub.planType=='base_nightly'"
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
                   href="javascript:void(0)"
-                  *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
-                  (click)="buyTopUp(sub)"
+                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.totalTokenOffered<1200) && (sub.isLiveForPurchase==false ||sub.isActive==false)"
+                  (click)="upgradePlan(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Upgrade
                 </a>
                 <a
                   href="javascript:void(0)"
-                  *ngIf="isAboutToExpire(sub.endsAt)"
+                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.sub.totalTokenOffered>1200) && (sub.isLiveForPurchase==true && sub.isActive==true)"
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >

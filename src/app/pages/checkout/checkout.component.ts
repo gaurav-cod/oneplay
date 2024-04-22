@@ -33,7 +33,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   stripeLoad = false;
   currentamount: string;
   currency: string;
-
+  curr:string;
+ 
   coupon_code = new UntypedFormControl("", [Validators.required]);
   applied_coupon_code: string = null;
   coupon_message: string = null;
@@ -44,6 +45,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   subscriptionPacakage: SubscriptionPackageModel;
 
+  isButtonDisabled: boolean = false;
   private querySubscriptions: Subscription;
   private queryCancelSubscriptions: Subscription;
   private stripeModalRef: NgbModalRef;
@@ -75,10 +77,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           this.subscriptionPacakage = await this.restService
             .getSubscriptionPackage(params.id)
             .toPromise();
-          if (this.subscriptionPacakage.type === "base") {
+          if(this.subscriptionPacakage.currency==='inr'){
+          this.curr="₹";
+          }
+          else{
+            this.curr=this.subscriptionPacakage.currency
+          }
+          if (this.subscriptionPacakage.type === "base" || this.subscriptionPacakage.type==="base_nightly") {
             this.is_upcoming_plan = (
               await this.restService.getCurrentSubscription().toPromise()
-            ).some((sub) => sub.planType === "base");
+            ).some((sub) => sub.planType === "base" || sub.planType==="base_nightly");
           }
         } catch (error) {
           this.showError(error, true);
@@ -197,12 +205,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // if (this.selected_payment_source == 'upi_payment') {
     //   this.handlePayWithPhonePay();
     // }
+    this.isButtonDisabled = true;
     if (this.selected_payment_source == "billdesk") {
       this.handlePayWithBilldesk();
     } else if (this.selected_payment_source == "stripe") {
-      this.handlePayWithStripe();
-    }
+        this.handlePayWithStripe();
   }
+  setTimeout(() => {
+    this.isButtonDisabled = false;
+  }, 3000);
+
+}
 
   private timeoutPaymentIntent(orderId: string, source: "billdesk" | "stripe") {
     this.timer = setTimeout(() => {

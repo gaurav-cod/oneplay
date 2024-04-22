@@ -14,7 +14,7 @@ export class SubscriptionPaymentModel {
   startsAt: Date;
   purchasedAt: Date;
   tokens: number;
-  planType: 'base' | 'topup';
+  planType: 'base' | 'topup' | 'base_nightly';
   transitionId: string;
 
   constructor(json: any) {

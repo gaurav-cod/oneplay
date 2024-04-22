@@ -50,6 +50,9 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   get isMonthlyPlanAvailabl() {
     return this.currentSubscriptions.some((sub)=> sub.planType == "base" || sub.planType == "base_nightly")
   }
+  get isNightlyPlanAvailable(){
+    return this.currentSubscriptions.some((sub)=>sub.planType == "base_nightly")
+  }
 
   constructor(
     private readonly restService: RestService,
@@ -221,7 +224,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     Swal.fire({
       title: "Ready to unlock?",
       html:
-        sub.planType === "base"
+        sub.planType === "base"|| sub.planType==="base_nightly"
           ? "Once the current one expires, this subscription pack will start."
           : "You are about to renew your subscription plan.",
       imageUrl: "assets/img/error/payment.svg",
@@ -238,18 +241,39 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl("/checkout/" + sub.planId);
         } else {
           this.addSubCardEvent("renew");
-          window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+          if(sub.planType === "base_nightly"){
+            window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+          }
+          else{
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
         }
       } else if (result.isDenied) {
+        
         this.addSubCardEvent("renew");
+        if(sub.planType === "base_nightly"){
+          window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+        }
+        else{
         window.location.href = `${environment.domain}/subscription.html`;
+        }
       }
     });
   }
 
   buyTopUp(sub: SubscriptionModel) {
     this.addSubCardEvent("topUp");
-    window.location.href = environment.domain + "/subscription.html";
+    window.location.href = environment.domain + "/subscription.html#topup";
+  }
+
+  upgradePlan(sub:SubscriptionModel){
+    if(sub.planType==='base_nightly'){
+      this.addSubCardEvent("topUp");
+      window.location.href = environment.domain + "/subscription.html#base_nightly";
+    }
+    else{
+      window.location.href = environment.domain + "/subscription.html";
+    }
   }
 
   buyNow() {
