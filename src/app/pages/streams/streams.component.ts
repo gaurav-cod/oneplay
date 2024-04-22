@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Title } from "@angular/platform-browser";
+import { Meta, Title } from "@angular/platform-browser";
 import { Router, NavigationEnd } from "@angular/router";
 import { NgxUiLoaderService } from "ngx-ui-loader";
 import { VideoFeedModel } from "src/app/models/streamFeed.model";
@@ -19,11 +19,19 @@ export class StreamsComponent implements OnInit {
     private readonly restService: RestService,
     private readonly loaderService: NgxUiLoaderService,
     private readonly title: Title,
+    private readonly meta: Meta,
     private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.title.setTitle("Streams");
+    this.title.setTitle("Watch Game Live Streams, Videos, Shorts | OnePlay Streams");
+    // this.meta.addTags([ 
+    //   { name: "keywords", content: "live streaming, game streaming, live, esports, videos, shorts, best moments, best game clips" },
+    //   { name: "description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" },
+    // ]);
+    this.meta.updateTag({ name: "keywords", content: "live streaming, game streaming, live, esports, videos, shorts, best moments, best game clips" });
+    this.meta.updateTag({ name: "description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" });
+
     this.loaderService.start();
     this.restService.getStreamsFeed().subscribe(
       (feeds) => {

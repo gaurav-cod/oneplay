@@ -39,7 +39,7 @@
               </div>
               <div class="timeText">
                 {{ remainingDailyToken | tokens:"Hr" }} 
-                <span style="font-size: 10px;">left till 12 midnight</span>
+                <span *ngIf="!isNightlyPlanAvailable"style="font-size: 10px;">left till 12 midnight</span>
               </div>
             </div>
             <div>
@@ -78,25 +78,28 @@
                 <p class="font16 font500 muteText mb-2">
                   {{ sub.planName }}
                 </p>
-                <h2 class="font38 font700 text-white">
+                <h2 *ngIf="sub.planCurrency === 'INR' || sub.planCurrency === 'inr'" class="font38 font700 text-white">
                   {{ sub.amount | currency : (sub.planCurrency | uppercase) }}
-                </h2>
+                </h2>  
+                <h2 *ngIf="sub.planCurrency !== 'INR' && sub.planCurrency !== 'inr'" class="font38 font700 text-white">
+                  {{ sub.planCurrency | uppercase }}{{ sub.amount}}
+                </h2>               
               </div>
               <div
-                *ngIf="sub.planType == 'base'"
+                *ngIf="sub.planType == 'base' || sub.planType=='base_nightly'"
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
                   href="javascript:void(0)"
-                  *ngIf="!isAboutToExpire(sub.endsAt) && sub.tokensRemaining < 120"
-                  (click)="buyTopUp(sub)"
+                  *ngIf="(sub.totalTokenOffered<1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==false && sub.isActive==true)"
+                  (click)="upgradePlan(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
                   Upgrade
                 </a>
                 <a
                   href="javascript:void(0)"
-                  *ngIf="isAboutToExpire(sub.endsAt)"
+                  *ngIf="(sub.totalTokenOffered>1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==true && sub.isActive==true)"
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
@@ -104,7 +107,7 @@
                 </a>
               </div>
               <div
-                *ngIf="sub.planType == 'topup'"
+                *ngIf="sub.planType == 'topup' && !isMonthlyPlanAvailabl"
                 class="col-auto align-self-center text-right pl-0 pt-lg-4"
               >
                 <a
@@ -125,9 +128,12 @@
                   class="font18 font500 offWhiteText d-none d-sm-inline-block"
                   >{{ sub.duration }} days plan .
                 </span> -->
-                <span class="font16 font500 muteText"
-                  > Expires on {{ sub.endsAt | date : "mediumDate" }}</span
-                >
+                <span class="font16 font500 muteText"> 
+                  {{ sub.autoRenewable==false ? 'Expires on' : 'Next billing date'}} {{ sub.endsAt | date : "mediumDate" }} 
+                    <ng-container *ngIf="sub.autoRenewable==true">  
+                      - <a href="javascript:void(0)" class="unsubscribeBtn" (click)="openUnsubscribeDialog()">Unsubscribe</a>
+                    </ng-container>
+                </span>
               </div>
             </div>
           </div>
@@ -208,9 +214,12 @@
                       {{ subscription.planDesc }}
                     </p>
                   </td>
-                  <td class="align-middle text-center py-3">
+                  <td *ngIf="subscription.planCurrency === 'INR' || subscription.planCurrency === 'inr'" class="align-middle text-center py-3">
                     {{ subscription.amount | currency : (subscription.planCurrency | uppercase) }}
                   </td>
+                  <td class="align-middle text-center py-3">
+                    {{ subscription.planCurrency | uppercase }}{{ subscription.amount}}
+                  </td> 
                   <td
                     class="align-middle py-3 text-center font500"
                     [ngClass]="{

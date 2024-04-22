@@ -20,13 +20,14 @@
               <p class="font16 font500">Plan Chosen</p>
             </div>
             <div class="col text-right pl-0">
-              <p class="font25 font500 "
-                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate'}">
+              <p class="font25 font500 mb-0"
+                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate', 'midnightPlanGradientText': subscriptionPacakage.type == 'base_nightly'}">
                 {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' :
                 subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 +
                 (subscriptionPacakage.tokens/60
                 == 1 ? 'hr' : 'hrs') : '0' }}
               </p>
+              
             </div>
           </div>
           <div class="row mt-3" *ngIf="is_upcoming_plan">
@@ -34,9 +35,10 @@
               <p class="font16 font500">&nbsp;</p>
             </div>
             <div class="col text-right pl-0 ">
-              <span class="font16 font500 py-1 px-2 " style="line-height: 26px; letter-spacing: 0.32px;">
+              <!-- <span class="font16 font500 py-1 px-2 " style="line-height: 26px; letter-spacing: 0.32px;">
                 *This plan will begin once the current active plan expires.
-              </span>
+              </span> -->
+              <p class="note">*This plan will begin once the current active plan expires.</p>
             </div>
           </div>
           <div class="row">
@@ -47,10 +49,10 @@
                 Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 text-white mb-1">{{ subscriptionPacakage.actual_price }}</p>
+              <p class="font20 font500 offWhiteText mb-1">{{curr | uppercase}}{{ subscriptionPacakage.actual_price - (0.18*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
               <p class="font20 font500 greenText"
                 *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
-                {{ subscriptionPacakage.amount - subscriptionPacakage.actual_price }}</p>
+                -{{curr | uppercase}}{{subscriptionPacakage.actual_price - subscriptionPacakage.amount  }}</p>
             </div>
           </div>
           <div class="row" *ngIf="applied_coupon_code_value > 0">
@@ -58,15 +60,23 @@
               <span class="font16 font500 badgeBg py-1 px-2">{{ applied_coupon_code }} Coupon Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 greenText">-₹{{ applied_coupon_code_value }}</p>
+              <p class="font20 font500 greenText">-{{curr | uppercase}}{{ applied_coupon_code_value }}</p>
             </div>
           </div>
           <div class="row">
+            <div class="col-auto offWhiteText pr-0">
+              <span class="font16 font500 py-1 px-2">GST @ 18%</span>
+            </div>
+            <div class="col text-right pl-0">
+              <p class="font20 font500 offWhiteText">{{curr | uppercase}}{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
+            </div>
+          </div>
+          <div class="row light-text">
             <div class="col-auto align-self-end pr-0">
               <p class="font20 font500 offWhiteText mb-0">Total Payable</p>
             </div>
             <div class="col text-right pl-0">
-              <h2 class="font38 font700 text-white mb-0">₹{{ subscriptionPacakage.amount - applied_coupon_code_value }}
+              <h2 class="font38 font700 text-white mb-0">{{curr | uppercase}}{{ subscriptionPacakage.amount - applied_coupon_code_value}}
               </h2>
             </div>
           </div>
@@ -171,7 +181,7 @@
       <div class="row justify-content-end mt-4 mt-lg-5 mx-5 mx-md-0">
         <div class="col-12 col-md-5 col-lg-4">
 
-          <button (click)="handlePaymentCheckout()" [ngClass]="{'mutedBg': !selected_payment_source}"
+          <button (click)="handlePaymentCheckout()" [disabled]="isButtonDisabled" [ngClass]="{'mutedBg': !selected_payment_source}"
             class="btn btn-block text-white font18 font500 customBorder0 customLinearGradient ">
             Proceed
           </button>
@@ -190,9 +200,12 @@
             <p class="font500 offWhiteText mb-0">Total Amount</p>
           </div>
           <div class="col-auto">
-            <h2 class="font800 text-white mb-0 text-right">
+            <h2 *ngIf="currency === 'INR' || currency === 'inr'" class="font800 text-white mb-0 text-right">
               {{ currentamount | currency : (currency | uppercase) }}
-            </h2>
+            </h2>  
+            <h2 *ngIf="currency !== 'INR' && currency !== 'inr'" class="font800 text-white mb-0 text-right">
+              {{ currency | uppercase }}{{ currentamount }}
+            </h2> 
           </div>
         </div>
         <div id="stripe-card"></div>

@@ -79,8 +79,8 @@
               <img src="assets/img/refer/check.svg" alt="" class="mr-2">
               <span>Referral added</span>
             </span>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="!referralName || !isReferralAdded">Have a Referral Code?</a>
-            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" (click)="guestFlow()">Continue as Guest</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient" (click)="openReferralModal(ReferralCodeModal)" *ngIf="(!referralName || !isReferralAdded) && isPartnerReferalCodeAllowed">Have a Referral Code?</a>
+            <a href="javascript:void(0)" class="font500 text-gray text-underline font18 hoverGradient guestLinkText" (click)="guestFlow()" [style.margin]="!isPartnerReferalCodeAllowed ? 'auto' : ''">Continue as Guest</a>
           </div> 
         </ng-container>
     </form>
