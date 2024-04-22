@@ -100,7 +100,7 @@ export class GameModel {
     this.description = json["description"];
     this.playTime = json["play_time"];
     this.releaseDate = new Date(json["release_date"]);
-    this.posterImg = json["poster_image"];
+    this.posterImg = json["poster_3_4"];
     this.bgImage = json["background_image"];
     this.textBgImage = json["text_background_image"];
     this.textLogo = json["text_logo"];
