@@ -50,6 +50,9 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
   get isMonthlyPlanAvailabl() {
     return this.currentSubscriptions.some((sub)=> sub.planType == "base" || sub.planType == "base_nightly")
   }
+  get isNightlyPlanAvailable(){
+    return this.currentSubscriptions.some((sub)=>sub.planType == "base_nightly")
+  }
 
   constructor(
     private readonly restService: RestService,
@@ -221,7 +224,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     Swal.fire({
       title: "Ready to unlock?",
       html:
-        sub.planType === "base"
+        sub.planType === "base"|| sub.planType==="base_nightly"
           ? "Once the current one expires, this subscription pack will start."
           : "You are about to renew your subscription plan.",
       imageUrl: "assets/img/error/payment.svg",
