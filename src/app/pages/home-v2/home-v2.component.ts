@@ -177,8 +177,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
     Swal.close();
   }
 
-  swipe(e: TouchEvent, when: string): void {
-    const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+  swipe(e: any, when: string): void {
+    let clientX = 0, clientY = 0;
+    if (e instanceof TouchEvent)
+      clientX = e?.changedTouches[0]?.clientX, clientY = e?.changedTouches[0]?.clientY;
+    else
+      clientX = e?.clientX, clientY = e.clientY;
+    const coord: [number, number] = [clientX, clientY];
     const time = new Date().getTime();
 
     if (when === 'start') {
