@@ -68,6 +68,7 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
       // ]);
       this.meta.updateTag({ name: "keywords", content: data.video.gameName + ", watch " + data.video.gameName + " videos," + data.video.gameName + " best clips " + data.video.creatorName + " videos" });
       this.meta.updateTag({ name: "description", content: "Watch " + data.video.title });
+      this.meta.updateTag({ name: "og:description", content: "Watch " + data.video.title });
 
       this.video = data.video;
       this.restService.getGameDetails(data.video.gameId).subscribe((game) => {
