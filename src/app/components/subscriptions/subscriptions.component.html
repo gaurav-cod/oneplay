@@ -91,7 +91,7 @@
               >
                 <a
                   href="javascript:void(0)"
-                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.totalTokenOffered<1200) && (sub.isLiveForPurchase==false ||sub.isActive==false)"
+                  *ngIf="(sub.totalTokenOffered<1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==false && sub.isActive==true)"
                   (click)="upgradePlan(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
@@ -99,7 +99,7 @@
                 </a>
                 <a
                   href="javascript:void(0)"
-                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.totalTokenOffered>1200) && (sub.isLiveForPurchase==true && sub.isActive==true)"
+                  *ngIf="(sub.totalTokenOffered>1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==true && sub.isActive==true)"
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
@@ -129,8 +129,8 @@
                   >{{ sub.duration }} days plan .
                 </span> -->
                 <span class="font16 font500 muteText"> 
-                  {{ !sub.autoRenewable ? 'Expires on' : 'Next billing date'}} {{ sub.endsAt | date : "mediumDate" }} 
-                    <ng-container *ngIf="sub.autoRenewable">  
+                  {{ sub.autoRenewable==false ? 'Expires on' : 'Next billing date'}} {{ sub.endsAt | date : "mediumDate" }} 
+                    <ng-container *ngIf="sub.autoRenewable==true">  
                       - <a href="javascript:void(0)" class="unsubscribeBtn" (click)="openUnsubscribeDialog()">Unsubscribe</a>
                     </ng-container>
                 </span>
