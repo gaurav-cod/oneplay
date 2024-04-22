@@ -47,6 +47,13 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
 
   private _playTimeBarIntervalRef: NodeJS.Timer;
 
+  get isMonthlyPlanAvailabl() {
+    return this.currentSubscriptions.some((sub)=> sub.planType == "base" || sub.planType == "base_nightly")
+  }
+  get isNightlyPlanAvailable(){
+    return this.currentSubscriptions.some((sub)=>sub.planType == "base_nightly")
+  }
+
   constructor(
     private readonly restService: RestService,
     private readonly router: Router,
@@ -217,7 +224,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     Swal.fire({
       title: "Ready to unlock?",
       html:
-        sub.planType === "base"
+        sub.planType === "base"|| sub.planType==="base_nightly"
           ? "Once the current one expires, this subscription pack will start."
           : "You are about to renew your subscription plan.",
       imageUrl: "assets/img/error/payment.svg",
@@ -234,18 +241,39 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
           this.router.navigateByUrl("/checkout/" + sub.planId);
         } else {
           this.addSubCardEvent("renew");
-          window.location.href = `${environment.domain}/subscription.html?plan=10800`;
+          if(sub.planType === "base_nightly"){
+            window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+          }
+          else{
+            window.location.href = `${environment.domain}/subscription.html`;
+          }
         }
       } else if (result.isDenied) {
+        
         this.addSubCardEvent("renew");
+        if(sub.planType === "base_nightly"){
+          window.location.href = `${environment.domain}/subscription.html#base_nightly`;
+        }
+        else{
         window.location.href = `${environment.domain}/subscription.html`;
+        }
       }
     });
   }
 
   buyTopUp(sub: SubscriptionModel) {
     this.addSubCardEvent("topUp");
-    window.location.href = environment.domain + "/subscription.html";
+    window.location.href = environment.domain + "/subscription.html#topup";
+  }
+
+  upgradePlan(sub:SubscriptionModel){
+    if(sub.planType==='base_nightly'){
+      this.addSubCardEvent("topUp");
+      window.location.href = environment.domain + "/subscription.html#base_nightly";
+    }
+    else{
+      window.location.href = environment.domain + "/subscription.html";
+    }
   }
 
   buyNow() {
@@ -314,6 +342,34 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
     let sub_date = new Date(date);
     sub_date.setDate(sub_date.getDate() - 2); //Two day less;
     return sub_date < new Date();
+  }
+
+  openUnsubscribeDialog() {
+    Swal.fire({
+      title: "Unsubscribe?",
+      text: "Are you sure you want to unsubscribe from Oneplay services? This action will take effect once your current subscription ends.",
+      imageUrl: "assets/img/swal-icon/Recharge-Subscription.svg",
+      confirmButtonText: "Unsubscribe",
+      showCancelButton: true,
+      cancelButtonText: "Cancel"
+    })
+  }
+  unsubscriptionSuccessDialog() {
+    Swal.fire({
+      title: "You have successfully opted out of Oneplay services.",
+      imageUrl: "assets/img/signup-login/Group 250.svg",
+      showCancelButton: false,
+      showConfirmButton: false
+    })
+  }
+  unsubscriptionFailureDialog() {
+    Swal.fire({
+      title: "Your unsubscribe request was not successful. Please try again later.",
+      imageUrl: "assets/img/swal-icon/Warning.svg",
+      showCancelButton: false,
+      showConfirmButton: true,
+      confirmButtonText: "OK"
+    })
   }
 
   showError(error) {

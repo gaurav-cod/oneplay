@@ -127,6 +127,12 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
   }
+  .midnightPlanGradientText {
+    background: linear-gradient(to right, #12BEF8 40%, #F9EB24  100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
   
   .badgeBg {
     background: #151515;
@@ -167,4 +173,9 @@
     border-radius: 12px;
     opacity: 0.4;
     background: #0E0E0E;
+}
+.note {
+  color: #959595;
+  font-weight: 500;
+  font-size: 16px;
 }

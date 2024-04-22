@@ -61,11 +61,14 @@ export class StreamComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       const data: VideoWithGameId = JSON.parse(decodeURIComponent(params.id));
-      this.title.setTitle("OnePlay | Watch " + data.video.title);
-      this.meta.addTags([
-        { name: "keywords", content: data.video.creatorName },
-        { name: "description", content: data.video.description },
-      ]);
+      this.title.setTitle("Watch " + data.video.title + " OnePlay Streams");
+      // this.meta.addTags([
+      //   { name: "keywords", content: data.video.gameName + ", watch " + data.video.gameName + " videos," + data.video.gameName + " best clips " + data.video.creatorName + " videos" },
+      //   { name: "description", content: "Watch " + data.video.title },
+      // ]);
+      this.meta.updateTag({ name: "keywords", content: data.video.gameName + ", watch " + data.video.gameName + " videos," + data.video.gameName + " best clips " + data.video.creatorName + " videos" });
+      this.meta.updateTag({ name: "description", content: "Watch " + data.video.title });
+
       this.video = data.video;
       this.restService.getGameDetails(data.video.gameId).subscribe((game) => {
         this.game = game;

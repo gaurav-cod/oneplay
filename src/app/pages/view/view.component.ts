@@ -46,6 +46,7 @@ import { TransformMessageModel } from "src/app/models/tansformMessage.model";
 import { CustomDateParserFormatter } from "src/app/utils/dateparse.util";
 import { platform } from "os";
 import { streamConfig } from "src/app/models/streamConfig.model";
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 // import { CustomSegments, StartEvent } from "src/app/services/countly";
 
 @Component({
@@ -194,6 +195,10 @@ export class ViewComponent implements OnInit, OnDestroy {
   private isUserLogedIn: boolean = false;
 
   @ViewChild("UserInfoContainer") userInfoContainer;
+  
+  get isClientSide() {
+    return (UserAgentUtil.parse().app === "Oneplay App");
+  }
 
   constructor(
     private readonly location: Location,
@@ -363,11 +368,9 @@ export class ViewComponent implements OnInit, OnDestroy {
         .subscribe(
           (game) => {
             this.game = game;
-            this.title.setTitle("OnePlay | Play " + game.title);
-            this.meta.addTags([
-              { name: "keywords", content: (game.genreMappings?.join(", ").toLowerCase() + game.aliases?.join(", ").toLowerCase()) },
-              { name: "description", content: game.description },
-            ]);
+            this.title.setTitle("Play " + game.title + " on OnePlay" + (game.isFree ? " for Free" : "") +" | Cloud Gaming");
+            this.meta.updateTag({ name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + ", " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") });
+            this.meta.updateTag({ name: "description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description });
 
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
@@ -388,7 +391,6 @@ export class ViewComponent implements OnInit, OnDestroy {
               .subscribe(
                 (games) =>
                 (this._devGames = this.getShuffledGames([
-                  ...this._devGames,
                   ...games,
                 ]))
               )
@@ -398,7 +400,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               .subscribe(
                 (games) =>
                 (this._genreGames = this.getShuffledGames([
-                  ...this._genreGames,
+                  // ...this._genreGames,
                   ...games,
                 ]))
               )
@@ -538,6 +540,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get devGames(): GameModel[] {
+    console.log([this._devGames]);
     return [...this._devGames]
       .filter((game) => game.oneplayId !== this.game.oneplayId)
       .sort((a, b) => a.popularityScore - b.popularityScore);
@@ -757,7 +760,6 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.gamePlaySettingModal(container);
   }
 
-
   async playGame(
     container: ElementRef<HTMLDivElement>,
     skipCheckResume = false,
@@ -869,7 +871,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           } else if (this.showSettings.value || this.game.isInstallAndPlay) {
             this.gamePlaySettingModal(container);
           } else {
-            this.startGame();
+            this.canStartGame();
           }
         }
       }
@@ -1057,12 +1059,20 @@ export class ViewComponent implements OnInit, OnDestroy {
     localStorage.setItem("vsync", this.vsync.value);
 
     this._settingsModalRef?.close();
-    this.startGame();
+    this.canStartGame();
   }
 
   dismissSettingsModal() {
     this.countlyService.cancelEvent("gamePlaySettingsPageView");
     this._settingsModalRef?.dismiss();
+  }
+
+  canStartGame() {
+    this.restService.canStartGame().subscribe((response)=> {
+      this.startGame();
+    }, (error)=> {
+      this.showError(error);
+    })
   }
 
   startGame(isDOBPresent: boolean = false): void {

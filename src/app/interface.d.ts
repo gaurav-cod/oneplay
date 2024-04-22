@@ -198,6 +198,7 @@ export interface SetOnlineRO {
 export interface GetLoginUrlRO {
   url: string;
   partner_id: string;
+  referral_allowed: boolean;
 }
 
 export interface UserAuthDTO {

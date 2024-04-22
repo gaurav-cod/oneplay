@@ -67,6 +67,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
   private redirectURL: string | null = null;
   private readonly idempotentKey: string = v4();
   public  isUserRegisted: boolean = false;
+  public  isPartnerReferalCodeAllowed: boolean = false; 
   resendOTPClicked: boolean = false;
   isReferralAdded: boolean = false;
 
@@ -132,9 +133,10 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
     }
     const partnerId = this.route.snapshot.queryParams['partner'];
     if (!partnerId) {
-      this.restService.getLogInURL().toPromise().then(({ partner_id }) => {
+      this.restService.getLogInURL().toPromise().then(({ partner_id, referral_allowed }) => {
         environment.partner_id = partner_id;
         localStorage.setItem("x-partner-id", partner_id);
+        this.isPartnerReferalCodeAllowed = referral_allowed;
       }).catch((error) => {
         if (error?.error?.code == 307) {
           this.authService.setIsNonFunctionalRegion(true);
@@ -305,6 +307,7 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
       "phone": String(this.authenticateForm.value["country_code"] + this.authenticateForm.controls["phone"].value),
       "device": this._deviceType == "tizen" ? "tizen" : "web",
       "idempotent_key": this.idempotentKey,
+      "referral_code": (!this.isUserRegisted ? this.referal_code?.value : null)
     }
     this.restService.resendOTP(payload).subscribe({
       next: (response) => {
@@ -464,8 +467,11 @@ export class AuthenticateUserComponent implements OnInit, OnDestroy, AfterViewIn
 
     this.screenOnDisplay = screenOnDisplay;
     this._doesUserhavePassword = false;
-    this.isUserRegisted = false;
-    this.referal_code = null;
+    if (this.isUserRegisted && screenOnDisplay == "OTP") {
+      this.referal_code = null;
+    } else {
+      this.isUserRegisted = false;
+    }
     this.errorMessage = null;
     if (screenOnDisplay == "REGISTER_LOGIN")
       this.countlyEvent("changePhoneNumber", "yes");

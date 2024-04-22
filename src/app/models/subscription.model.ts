@@ -16,11 +16,13 @@ export class SubscriptionModel {
   purchasedAt: Date;
   tokens: number;
   tokensRemaining: number;
-  planType: 'base' | 'topup';
+  planType: 'base' | 'topup' | 'base_nightly';
   isLiveForPurchase: boolean;
   isUnlimited: boolean;
   totalTokenOffered: number;
   showDownloadInvoiceOpt: boolean;
+  autoRenewable: boolean;
+  isActive:boolean;
 
   constructor(json: any) {
     const plan = new SubscriptionPackageModel(json.subscriptionPackage);
@@ -47,5 +49,7 @@ export class SubscriptionModel {
     this.isUnlimited = plan.isUnlimited
     this.totalTokenOffered = json?.subscriptionPackage?.total_offered_tokens;
     this.showDownloadInvoiceOpt = (json?.payment?.provider != "cms");
+    this.autoRenewable = json["auto_renewable"] == "true";
+    this.isActive=plan.isActive;
   }
 }

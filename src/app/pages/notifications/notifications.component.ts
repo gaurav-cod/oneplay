@@ -21,6 +21,10 @@ export class NotificationsComponent implements OnInit {
   pageLimit: number = 5;
   loadMoreBtn: boolean = true;
   private previousPage: string = "home";
+
+  isSingleLineDesktop(value: string) {
+    return window.innerWidth > 1200 && value?.length < 100;
+  }
   
   constructor(
     private readonly restService: RestService,
