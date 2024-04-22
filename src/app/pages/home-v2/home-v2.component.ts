@@ -94,7 +94,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
+    this.title.setTitle("OnePlay - Largest Cloud Gaming Platform from India");
     this.meta.updateTag({ name: "keywords", content: "cloud gaming, indian cloud gaming, cloud gaming india, cloud pc, cloud gaming pc, popular cloud gaming, cloud gaming service, android cloud gaming, linux gaming" });
     this.meta.updateTag({ name: "description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
     this.meta.updateTag({ name: "og:description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
