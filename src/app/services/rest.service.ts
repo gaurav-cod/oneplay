@@ -889,7 +889,7 @@ export class RestService {
       }
     }
     return this.http
-      .post<any[]>(this.r_mix_api_2 + "/games/gamezop/get_filtered_games", data,{
+      .post<any[]>(this.r_mix_api + "/games/gamezop/get_filtered_games", data,{
         params: { page, limit },
       })
       .pipe(
