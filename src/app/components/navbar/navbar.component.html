@@ -148,7 +148,7 @@
                     />
                     <image-loading [image]="image2" [hash]="game.textBgHash" />
                     <div class="gameTags">
-                      <div *ngIf="true" class="d-flex">
+                      <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
                         <span class="freeTag freeTagTriangle tagText">
                           FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
                         </span>
@@ -160,7 +160,7 @@
                             class="orangeGradientBg tagText">MAINTENANCE</span></div>
                         <div *ngIf="game.status === 'updating'" class="col-auto"><span
                             class="updatingGradient  tagText">UPDATING</span></div>
-                        <div *ngIf="true" class="col-auto"><span class="darkredGradient tagText">NOT
+                        <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient tagText">NOT
                             OPTIMIZED</span></div>
                       </div>
                     </div>
