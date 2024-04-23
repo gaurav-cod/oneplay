@@ -537,3 +537,27 @@
 .adjustPositionOnWarning {
   // top: 40px !important;
 }
+
+.gameTags {
+  position: absolute;
+  left: 6px;
+  bottom: 5px;
+
+  .tagText {
+    color:white !important;
+    font-size: 9px;
+    border-radius: 3px;
+    padding:2px 3px !important;
+  }
+
+  .freeTagTriangle {
+    clip-path: polygon(79% 0, 100% 49%, 81% 100%, 0 100%, 0 0);
+    padding-right: 18px !important;
+  }
+}
+.freeOnStoreIcon {
+  flex-direction: column;
+  width: 14px !important;
+  height: 14px !important;
+  gap: 10px;
+}

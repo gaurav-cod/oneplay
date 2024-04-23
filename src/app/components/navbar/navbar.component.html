@@ -147,49 +147,21 @@
                       alt=""
                     />
                     <image-loading [image]="image2" [hash]="game.textBgHash" />
-                    <div class="card-img-overlay p-0">
-                      <span
-                        *ngIf="game.isFree && game.status !== 'coming_soon'"
-                        class="freeTag px-2 free tagText"
-                      >
-                        FREE ON
-                        <img
-                          src="assets/img/store/store.svg"
-                          class="freeOnStoreIcon"
-                          alt="store"
-                      /></span>
-                      <span
-                        *ngIf="game.status === 'coming_soon'"
-                        class="redGradient px-1 free tagText"
-                        >COMING SOON</span
-                      >
-                      <div
-                        class="row h-100 align-items-end justify-content-center"
-                      >
-                        <div
-                          *ngIf="game.status === 'maintenance'"
-                          class="col-auto"
-                        >
-                          <span class="orangeGradientBg text-white px-1 tagText"
-                            >MAINTENANCE</span
-                          >
-                        </div>
-                        <div
-                          *ngIf="game.status === 'updating'"
-                          class="col-auto"
-                        >
-                          <span class="updatingGradient text-white px-1 tagText"
-                            >UPDATING</span
-                          >
-                        </div>
-                        <div
-                          *ngIf="game.status === 'not_optimized'"
-                          class="col-auto"
-                        >
-                          <span class="darkredGradient text-white px-1 tagText"
-                            >NOT OPTIMIZED</span
-                          >
-                        </div>
+                    <div class="gameTags">
+                      <div *ngIf="true" class="d-flex">
+                        <span class="freeTag freeTagTriangle tagText">
+                          FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
+                        </span>
+                        <!-- <span class="freeTag freeTagTriangle"></span> -->
+                      </div>
+                      <span *ngIf="game.status === 'coming_soon'" class="redGradient tagText">COMING SOON</span>
+                      <div class="row">
+                        <div *ngIf="game.status === 'maintenance'" class="col-auto"><span
+                            class="orangeGradientBg tagText">MAINTENANCE</span></div>
+                        <div *ngIf="game.status === 'updating'" class="col-auto"><span
+                            class="updatingGradient  tagText">UPDATING</span></div>
+                        <div *ngIf="true" class="col-auto"><span class="darkredGradient tagText">NOT
+                            OPTIMIZED</span></div>
                       </div>
                     </div>
                   </div>
