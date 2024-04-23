@@ -205,6 +205,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
       this.router.navigate(["view", this.gLink.transform(game)]);
     }
   }
+  toggleVideoAudio(event, value: boolean) {
+    this.isVideoMute = value;
+    event.stopPropagation();
+  }
 
   loadMoreRails() {
     // this.pageNo++;
