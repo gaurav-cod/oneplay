@@ -6,7 +6,7 @@
         class="card-img borderRadius10 loadingBg" [src]="game.poster_16_9" [ngStyle]="{
           'object-fit': hfw ? 'unset' : 'cover'
         }" alt="" loading="lazy" (error)="onImgError($event)" (mouseenter)="mouseEnterHandler()"  />
-      <image-loading [hash]="game.poster_16_9_blurhash" [image]="image"></image-loading>
+      <image-loading [hash]="gameBlurHash" [image]="image"></image-loading>
       <div class="gameTags">
         <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
           <span class="freeTag freeTagTriangle px-2 tagText">

@@ -55,6 +55,9 @@ export class GameCardV2Component implements AfterViewInit {
   get getVideo() {
     return window.innerWidth > 475 ? (this.game.video_hero_banner_16_9 ) : (this.game.video_hero_banner_1_1 );
   }
+  get gameBlurHash() {
+    return JSON.parse(this.game.poster_16_9_blurhash)?.blurhash;
+  }
 
   ngAfterViewInit(): void {
   }

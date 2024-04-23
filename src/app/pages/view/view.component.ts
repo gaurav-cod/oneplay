@@ -532,7 +532,7 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   get bgBannerHash(): string {
     return !!this.game
-      ? (this.game.isInstallAndPlay ? this.game.iapBgHash : (window.innerWidth > 475 ? this.game.poster_hero_banner_16_9_blurhash : this.game.poster_hero_banner_1_1_blurhash))
+      ? (this.game.isInstallAndPlay ? this.game.iapBgHash : JSON.parse(window.innerWidth > 475 ? this.game.poster_hero_banner_16_9_blurhash : this.game.poster_hero_banner_1_1_blurhash)?.blurhash)
       : null;
   }
 

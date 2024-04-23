@@ -14,6 +14,7 @@ import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -73,7 +74,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9 : this.selectedBannerGame.poster_hero_banner_1_1;
   }
   get getBannerImageBlurHash() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9_blurhash : this.selectedBannerGame.poster_hero_banner_1_1_blurhash;
+    return JSON.parse(window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9_blurhash : this.selectedBannerGame.poster_hero_banner_1_1_blurhash)?.blurhash;
   }
   get getTrailerVideo() {
     return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
@@ -83,6 +84,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
   get allGamesLength(): number {
     return this.railRowCards?.length;
+  }
+  get canPlayHeroVideo() {
+    return !(UserAgentUtil.parse().browser.toLowerCase().includes("safari") || UserAgentUtil.parse().app == "Oneplay App");
   }
 
   @HostListener('click', ['$event'])
@@ -115,7 +119,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.railDataToPush = this.railRowCards;
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
-            if (!this.getTrailerVideo) {
+            if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
               clearTimeout(this.bannerShowTimer);
               this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
@@ -125,7 +129,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             // play initial video in 2sec
             clearTimeout(this.playVideoTimer);
             this.playVideoTimer = setTimeout(() => {
-              this.playVideo = true;
+              this.playVideo = this.canPlayHeroVideo;
             }, 2000);
 
 
@@ -208,6 +212,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
       this.router.navigate(["view", this.gLink.transform(game)]);
     }
   }
+  toggleVideoAudio(event, value: boolean) {
+    this.isVideoMute = value;
+    event.stopPropagation();
+  }
 
   loadMoreRails() {
     // this.pageNo++;
@@ -230,7 +238,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
 
@@ -256,7 +264,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
-    if (!this.getTrailerVideo) {
+    if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
@@ -273,7 +281,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = game.oneplayId;
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
   videoEnded() {

@@ -67,6 +67,11 @@
     display: none !important;
   }
 }
+.viewMoreHomePageBtn {
+  @media screen and (max-width: 475px) {
+    display: none !important;
+  }
+}
 
 .audioContainer {
     margin-left: auto;
