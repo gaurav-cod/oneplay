@@ -4,6 +4,7 @@ type DeviceInfo = {
   device?: string;
   app?: string;
   version?: string;
+  browser?: string;
 };
 
 export class UserAgentUtil {
@@ -27,6 +28,8 @@ export class UserAgentUtil {
     } else if (/oneplay/i.test(navigator.userAgent)) {
       deviceInfo.app = "Oneplay App";
     }
+
+    deviceInfo.browser = browser?.name;
 
     if (browser && browser.version) {
       deviceInfo.version = browser.version;

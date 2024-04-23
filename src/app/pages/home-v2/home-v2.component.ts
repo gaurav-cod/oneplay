@@ -14,6 +14,7 @@ import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -85,6 +86,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   get allGamesLength(): number {
     return this.railRowCards?.length;
   }
+  get isSafariBrowser() {
+    return UserAgentUtil.parse().browser.toLowerCase().includes("safari");
+  }
 
   @HostListener('click', ['$event'])
   clickout(event) {
@@ -112,7 +116,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.railDataToPush = this.railRowCards;
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
-            if (!this.getTrailerVideo) {
+            if (!this.getTrailerVideo || this.isSafariBrowser) {
               clearTimeout(this.bannerShowTimer);
               this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
@@ -122,7 +126,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             // play initial video in 2sec
             clearTimeout(this.playVideoTimer);
             this.playVideoTimer = setTimeout(() => {
-              this.playVideo = true;
+              this.playVideo = true && !this.isSafariBrowser;
             }, 2000);
 
 
@@ -231,7 +235,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = true && !this.isSafariBrowser;
     }, 2000);
   }
 
@@ -257,7 +261,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
-    if (!this.getTrailerVideo) {
+    if (!this.getTrailerVideo || this.isSafariBrowser) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
@@ -274,7 +278,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = game.oneplayId;
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = true && !this.isSafariBrowser;
     }, 2000);
   }
   videoEnded() {
