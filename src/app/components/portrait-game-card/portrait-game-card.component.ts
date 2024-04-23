@@ -50,6 +50,9 @@ export class PortraitGameCardComponent implements OnInit {
   get getVideoHeight() {
     return window.innerWidth > 1280 ? "90%" : "60%";
   }
+  get gameBlurHash() {
+    return JSON.parse(this.game.poster_3_4_blurhash)?.blurhash;
+  }
 
   ngOnInit(): void {
     
