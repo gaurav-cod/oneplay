@@ -21,7 +21,7 @@
             </div>
             <div class="col text-right pl-0">
               <p class="font25 font500 mb-0"
-                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate', 'midnightPlanGradientText': subscriptionPacakage.name == 'Midnight Master' || subscriptionPacakage.name == 'Midnight Pro'}">
+                [ngClass]="{'defaultGradientText': subscriptionPacakage.name != 'Foundation','fountGradientText': subscriptionPacakage.name == 'Foundation', 'orangeGradientText': subscriptionPacakage.name == 'Enhanced', 'unlimitedGradientText': subscriptionPacakage.name == 'Ultimate', 'midnightPlanGradientText': subscriptionPacakage.type == 'base_nightly'}">
                 {{ subscriptionPacakage.name }} {{ subscriptionPacakage.isUnlimited ? '- Unlimited' :
                 subscriptionPacakage.tokens > 0 ? '- '+subscriptionPacakage.tokens/60 +
                 (subscriptionPacakage.tokens/60
@@ -49,10 +49,10 @@
                 Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText mb-1">{{curr}}{{ subscriptionPacakage.actual_price - (0.18*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText mb-1">{{curr | uppercase}}{{ subscriptionPacakage.actual_price - (0.152*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
               <p class="font20 font500 greenText"
                 *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
-                -{{curr}}{{subscriptionPacakage.actual_price - subscriptionPacakage.amount  }}</p>
+                -{{curr | uppercase}}{{subscriptionPacakage.actual_price - subscriptionPacakage.amount  }}</p>
             </div>
           </div>
           <div class="row" *ngIf="applied_coupon_code_value > 0">
@@ -60,15 +60,15 @@
               <span class="font16 font500 badgeBg py-1 px-2">{{ applied_coupon_code }} Coupon Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 greenText">-{{curr}}{{ applied_coupon_code_value }}</p>
+              <p class="font20 font500 greenText">-{{curr | uppercase}}{{ applied_coupon_code_value }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-auto offWhiteText pr-0">
-              <span class="font16 font500 py-1 px-2">GST @ 18%</span>
+              <span class="font16 font500 py-1">GST @ 18%</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText">{{curr}}{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText">{{curr | uppercase}}{{ (0.152*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
             </div>
           </div>
           <div class="row light-text">
@@ -76,7 +76,7 @@
               <p class="font20 font500 offWhiteText mb-0">Total Payable</p>
             </div>
             <div class="col text-right pl-0">
-              <h2 class="font38 font700 text-white mb-0">{{curr}}{{ subscriptionPacakage.amount - applied_coupon_code_value}}
+              <h2 class="font38 font700 text-white mb-0">{{curr | uppercase}}{{ subscriptionPacakage.amount - applied_coupon_code_value}}
               </h2>
             </div>
           </div>
@@ -200,9 +200,12 @@
             <p class="font500 offWhiteText mb-0">Total Amount</p>
           </div>
           <div class="col-auto">
-            <h2 class="font800 text-white mb-0 text-right">
+            <h2 *ngIf="currency === 'INR' || currency === 'inr'" class="font800 text-white mb-0 text-right">
               {{ currentamount | currency : (currency | uppercase) }}
-            </h2>
+            </h2>  
+            <h2 *ngIf="currency !== 'INR' && currency !== 'inr'" class="font800 text-white mb-0 text-right">
+              {{ currency | uppercase }}{{ currentamount }}
+            </h2> 
           </div>
         </div>
         <div id="stripe-card"></div>

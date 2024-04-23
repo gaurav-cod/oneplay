@@ -44,6 +44,10 @@ export class GameCardComponent {
 
   readonly loaderId = v4();
 
+  get gameBlurHash() {
+    return JSON.parse(this.game.poster_16_9_blurhash)?.blurhash;
+  }
+
   get isMobile() {
     return window.innerWidth < 768;
   }

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -14,6 +14,7 @@ import { GLinkPipe } from 'src/app/pipes/glink.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { RestService } from 'src/app/services/rest.service';
 import { environment } from 'src/environments/environment';
+import { UserAgentUtil } from "src/app/utils/uagent.util";
 import Swal from "sweetalert2";
 
 @Component({
@@ -23,8 +24,6 @@ import Swal from "sweetalert2";
   providers: [GLinkPipe]
 })
 export class HomeV2Component implements OnInit, OnDestroy {
-
-
 
   public heroBannerRow: GameFeedModel;
   public library: GameModel[] = [];
@@ -65,6 +64,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly authService: AuthService,
     private readonly gLink: GLinkPipe,
+    private readonly meta: Meta,
   ) { }
 
   get domain() {
@@ -74,7 +74,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9 : this.selectedBannerGame.poster_hero_banner_1_1;
   }
   get getBannerImageBlurHash() {
-    return window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9_blurhash : this.selectedBannerGame.poster_hero_banner_1_1_blurhash;
+    return JSON.parse(window.innerWidth > 475 ? this.selectedBannerGame.poster_hero_banner_16_9_blurhash : this.selectedBannerGame.poster_hero_banner_1_1_blurhash)?.blurhash;
   }
   get getTrailerVideo() {
     return window.innerWidth > 475 ? this.selectedBannerGame.video_hero_banner_16_9 : this.selectedBannerGame.video_hero_banner_1_1;
@@ -84,6 +84,9 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
   get allGamesLength(): number {
     return this.railRowCards?.length;
+  }
+  get canPlayHeroVideo() {
+    return !(UserAgentUtil.parse().browser.toLowerCase().includes("safari") || UserAgentUtil.parse().app == "Oneplay App");
   }
 
   @HostListener('click', ['$event'])
@@ -95,7 +98,11 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
+    this.title.setTitle("OnePlay - Largest Cloud Gaming Platform from India");
+    this.meta.updateTag({ name: "keywords", content: "cloud gaming, indian cloud gaming, cloud gaming india, cloud pc, cloud gaming pc, popular cloud gaming, cloud gaming service, android cloud gaming, linux gaming" });
+    this.meta.updateTag({ name: "description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
+    this.meta.updateTag({ name: "og:description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
+    
     this.loaderService.start();
 
     this._paramSubscription = this.activatedRoute.params.subscribe({
@@ -112,7 +119,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.railDataToPush = this.railRowCards;
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
-            if (!this.getTrailerVideo) {
+            if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
               clearTimeout(this.bannerShowTimer);
               this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
@@ -122,7 +129,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             // play initial video in 2sec
             clearTimeout(this.playVideoTimer);
             this.playVideoTimer = setTimeout(() => {
-              this.playVideo = true;
+              this.playVideo = this.canPlayHeroVideo;
             }, 2000);
 
 
@@ -177,8 +184,13 @@ export class HomeV2Component implements OnInit, OnDestroy {
     Swal.close();
   }
 
-  swipe(e: TouchEvent, when: string): void {
-    const coord: [number, number] = [e.changedTouches[0].clientX, e.changedTouches[0].clientY];
+  swipe(e: any, when: string): void {
+    let clientX = 0, clientY = 0;
+    if (e instanceof TouchEvent)
+      clientX = e?.changedTouches[0]?.clientX, clientY = e?.changedTouches[0]?.clientY;
+    else
+      clientX = e?.clientX, clientY = e.clientY;
+    const coord: [number, number] = [clientX, clientY];
     const time = new Date().getTime();
 
     if (when === 'start') {
@@ -199,6 +211,10 @@ export class HomeV2Component implements OnInit, OnDestroy {
     if (window.innerWidth <= 475) { 
       this.router.navigate(["view", this.gLink.transform(game)]);
     }
+  }
+  toggleVideoAudio(event, value: boolean) {
+    this.isVideoMute = value;
+    event.stopPropagation();
   }
 
   loadMoreRails() {
@@ -222,7 +238,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
 
@@ -248,7 +264,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
-    if (!this.getTrailerVideo) {
+    if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
@@ -265,7 +281,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = game.oneplayId;
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
   videoEnded() {

@@ -48,6 +48,8 @@
     height: 100%;
 }
 .audioContainerTab {
+  z-index: 1000;
+  cursor: pointer;
   @media screen and (max-width: 475px) {
     display: none !important;
   }
@@ -57,9 +59,16 @@
 }
 .audioContainerDesk {
   position: absolute;
-  bottom: 240px;
-  right: 45px;  
+  cursor: pointer;
+  bottom: 190px;
+  right: 45px; 
+  z-index: 1000; 
   @media screen and (max-width: 1200px) {
+    display: none !important;
+  }
+}
+.viewMoreHomePageBtn {
+  @media screen and (max-width: 475px) {
     display: none !important;
   }
 }
@@ -68,7 +77,8 @@
     margin-left: auto;
     right: 20px;
     margin-top: 15px;
-    z-index: 1;
+    z-index: 1000;
+    cursor: pointer;
 
     img {
         height: 40px !important;

@@ -78,9 +78,12 @@
                 <p class="font16 font500 muteText mb-2">
                   {{ sub.planName }}
                 </p>
-                <h2 class="font38 font700 text-white">
+                <h2 *ngIf="sub.planCurrency === 'INR' || sub.planCurrency === 'inr'" class="font38 font700 text-white">
                   {{ sub.amount | currency : (sub.planCurrency | uppercase) }}
-                </h2>
+                </h2>  
+                <h2 *ngIf="sub.planCurrency !== 'INR' && sub.planCurrency !== 'inr'" class="font38 font700 text-white">
+                  {{ sub.planCurrency | uppercase }}{{ sub.amount}}
+                </h2>               
               </div>
               <div
                 *ngIf="sub.planType == 'base' || sub.planType=='base_nightly'"
@@ -88,7 +91,7 @@
               >
                 <a
                   href="javascript:void(0)"
-                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.totalTokenOffered<1200) && (sub.isLiveForPurchase==false ||sub.isActive==false)"
+                  *ngIf="(sub.totalTokenOffered<1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==false && sub.isActive==true)"
                   (click)="upgradePlan(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
@@ -96,7 +99,7 @@
                 </a>
                 <a
                   href="javascript:void(0)"
-                  *ngIf="(isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120 || sub.sub.totalTokenOffered>1200) && (sub.isLiveForPurchase==true && sub.isActive==true)"
+                  *ngIf="(sub.totalTokenOffered>1200 && (isAboutToExpire(sub.endsAt) || sub.tokensRemaining < 120)) && (sub.isLiveForPurchase==true && sub.isActive==true)"
                   (click)="onRenew(sub)"
                   class="btn pl-lg-4 pr-lg-4 border-0 text-white linearGradient borderRadius10"
                 >
@@ -211,9 +214,12 @@
                       {{ subscription.planDesc }}
                     </p>
                   </td>
-                  <td class="align-middle text-center py-3">
+                  <td *ngIf="subscription.planCurrency === 'INR' || subscription.planCurrency === 'inr'" class="align-middle text-center py-3">
                     {{ subscription.amount | currency : (subscription.planCurrency | uppercase) }}
                   </td>
+                  <td class="align-middle text-center py-3">
+                    {{ subscription.planCurrency | uppercase }}{{ subscription.amount}}
+                  </td> 
                   <td
                     class="align-middle py-3 text-center font500"
                     [ngClass]="{

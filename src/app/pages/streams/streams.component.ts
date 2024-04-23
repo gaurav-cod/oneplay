@@ -25,10 +25,14 @@ export class StreamsComponent implements OnInit {
 
   ngOnInit(): void {
     this.title.setTitle("Watch Game Live Streams, Videos, Shorts | OnePlay Streams");
-    this.meta.addTags([ 
-      { name: "keywords", content: "live streaming, game streaming, live, esports, videos, shorts, best moments, best game clips" },
-      { name: "description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" },
-    ]);
+    // this.meta.addTags([ 
+    //   { name: "keywords", content: "live streaming, game streaming, live, esports, videos, shorts, best moments, best game clips" },
+    //   { name: "description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" },
+    // ]);
+    this.meta.updateTag({ name: "keywords", content: "live streaming, game streaming, live, esports, videos, shorts, best moments, best game clips" });
+    this.meta.updateTag({ name: "description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" });
+    this.meta.updateTag({ name: "og:description", content: "Watch Game Streams, Videos, Clips of all your favourite games aggregated into a Single Dashboard by OnePlay" });
+
     this.loaderService.start();
     this.restService.getStreamsFeed().subscribe(
       (feeds) => {

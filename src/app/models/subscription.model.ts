@@ -49,7 +49,7 @@ export class SubscriptionModel {
     this.isUnlimited = plan.isUnlimited
     this.totalTokenOffered = json?.subscriptionPackage?.total_offered_tokens;
     this.showDownloadInvoiceOpt = (json?.payment?.provider != "cms");
-    this.autoRenewable = json["auto_renewable"] == "true" || true;
+    this.autoRenewable = json["auto_renewable"] == "true" && false;
     this.isActive=plan.isActive;
   }
 }
