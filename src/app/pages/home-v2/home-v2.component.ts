@@ -85,8 +85,8 @@ export class HomeV2Component implements OnInit, OnDestroy {
   get allGamesLength(): number {
     return this.railRowCards?.length;
   }
-  get isSafariBrowser() {
-    return UserAgentUtil.parse().browser.toLowerCase().includes("safari");
+  get canPlayHeroVideo() {
+    return !(UserAgentUtil.parse().browser.toLowerCase().includes("safari") || UserAgentUtil.parse().app == "Oneplay App");
   }
 
   @HostListener('click', ['$event'])
@@ -119,7 +119,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             this.railDataToPush = this.railRowCards;
             // f.type !== "hero_banner" && f.type !== "special_banner" && f.type !== "spotlight_banner"
             // if game does not contain video then by default banner will move to next game in 5sec
-            if (!this.getTrailerVideo || this.isSafariBrowser) {
+            if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
               clearTimeout(this.bannerShowTimer);
               this.bannerShowTimer = setTimeout(() => {
                 this.moveSelectedCard("RIGHT");
@@ -129,7 +129,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
             // play initial video in 2sec
             clearTimeout(this.playVideoTimer);
             this.playVideoTimer = setTimeout(() => {
-              this.playVideo = true && !this.isSafariBrowser;
+              this.playVideo = this.canPlayHeroVideo;
             }, 2000);
 
 
@@ -238,7 +238,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedBannerGame = this.heroBannerRow.games.filter((game) => game.oneplayId === this.selectedHeroBannerId)[0];
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true && !this.isSafariBrowser;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
 
@@ -264,7 +264,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     }
     // if game does not contain video then by default banner will move to next game in 5sec
     this.playVideo = false;
-    if (!this.getTrailerVideo || this.isSafariBrowser) {
+    if (!this.getTrailerVideo || !this.canPlayHeroVideo) {
       this.bannerShowTimer = setTimeout(() => {
         this.moveSelectedCard("RIGHT");
       }, 5000);
@@ -281,7 +281,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     this.selectedHeroBannerId = game.oneplayId;
     this.playVideo = false;
     setTimeout(() => {
-      this.playVideo = true && !this.isSafariBrowser;
+      this.playVideo = this.canPlayHeroVideo;
     }, 2000);
   }
   videoEnded() {
