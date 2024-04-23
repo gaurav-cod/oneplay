@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbSlideEvent } from '@ng-bootstrap/ng-bootstrap';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -24,8 +24,6 @@ import Swal from "sweetalert2";
   providers: [GLinkPipe]
 })
 export class HomeV2Component implements OnInit, OnDestroy {
-
-
 
   public heroBannerRow: GameFeedModel;
   public library: GameModel[] = [];
@@ -66,6 +64,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
     private readonly loaderService: NgxUiLoaderService,
     private readonly authService: AuthService,
     private readonly gLink: GLinkPipe,
+    private readonly meta: Meta,
   ) { }
 
   get domain() {
@@ -99,7 +98,11 @@ export class HomeV2Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.title.setTitle("OnePlay - India’s biggest BYOG cloud gaming platform | Everything gaming.");
+    this.title.setTitle("OnePlay - Largest Cloud Gaming Platform from India");
+    this.meta.updateTag({ name: "keywords", content: "cloud gaming, indian cloud gaming, cloud gaming india, cloud pc, cloud gaming pc, popular cloud gaming, cloud gaming service, android cloud gaming, linux gaming" });
+    this.meta.updateTag({ name: "description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
+    this.meta.updateTag({ name: "og:description", content: "Play any AAA gaming on any device, anywhere! with OnePlay's cloud gaming service, available in India and other regions. Register for free and Play now!" });
+    
     this.loaderService.start();
 
     this._paramSubscription = this.activatedRoute.params.subscribe({

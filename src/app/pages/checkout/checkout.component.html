@@ -49,7 +49,7 @@
                 Applied</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText mb-1">{{curr | uppercase}}{{ subscriptionPacakage.actual_price - (0.18*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText mb-1">{{curr | uppercase}}{{ subscriptionPacakage.actual_price - (0.152*(subscriptionPacakage.amount - applied_coupon_code_value)) | number:"1.0-1" }}</p>
               <p class="font20 font500 greenText"
                 *ngIf="(subscriptionPacakage.actual_price - subscriptionPacakage.amount) > 0">
                 -{{curr | uppercase}}{{subscriptionPacakage.actual_price - subscriptionPacakage.amount  }}</p>
@@ -65,10 +65,10 @@
           </div>
           <div class="row">
             <div class="col-auto offWhiteText pr-0">
-              <span class="font16 font500 py-1 px-2">GST @ 18%</span>
+              <span class="font16 font500 py-1">GST @ 18%</span>
             </div>
             <div class="col text-right pl-0">
-              <p class="font20 font500 offWhiteText">{{curr | uppercase}}{{ (0.18*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
+              <p class="font20 font500 offWhiteText">{{curr | uppercase}}{{ (0.152*(subscriptionPacakage.amount - applied_coupon_code_value))  | number:"1.0-1" }}</p>
             </div>
           </div>
           <div class="row light-text">

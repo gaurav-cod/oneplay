@@ -64,6 +64,7 @@ export class Gamezop implements OnInit, OnDestroy {
     this.title.setTitle("Free Online Games on Level1 | Play Now");
     this.meta.updateTag({ name: "keywords", content: "free games, online free games, casual games, 3d games, racing games, sports games, action games" });
     this.meta.updateTag({ name: "description", content: "Play Addictive Free Online Games on the go in Racing, Action, Sports, Casual and many more other genres on Level 1 by OnePlay." });
+    this.meta.updateTag({ name: "og:description", content: "Play Addictive Free Online Games on the go in Racing, Action, Sports, Casual and many more other genres on Level 1 by OnePlay." });
 
     this.countlyService.startEvent("Level1View", { data: getDefaultLevel1ViewEvents() });
     this.loaderService.start();
