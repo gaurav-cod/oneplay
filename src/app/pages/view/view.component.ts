@@ -67,6 +67,8 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
   public isWarningMessageView: boolean = false;
+  public storeOnSale: PurchaseStore | null = null;
+  public currancyForStoreSale: string | null = null; // will be removed
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -386,6 +388,17 @@ export class ViewComponent implements OnInit, OnDestroy {
             } else {
               this.selectedStore = game.storesMapping[0] ?? null;
             }
+
+            this.game.storesMapping.forEach((store)=> {
+              if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
+                this.storeOnSale = store;
+                this.currancyForStoreSale = this.storeOnSale.sale_price.split(" ")[1];
+                this.storeOnSale.normal_price = "399";
+                this.storeOnSale.sale_price = "150"
+                this.storeOnSale.sale_price = this.storeOnSale.sale_price.split(" ")[0];
+              }
+            })
+
             this._getGamesByDeveloperSub?.unsubscribe();
             this._getGamesByDeveloperSub = this.restService
               .getGamesByDeveloper(game.developer.join(","))

@@ -472,12 +472,29 @@
             </div>
             <div class="row mt-4 mb-4">
               <div class="col-12 col-md-6">
-                <p class="font16 font500 muteText mb-0">Tags</p>
-                <span
-                  *ngFor="let genre of game.genreMappings"
-                  class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
-                  >{{ genre }}</span
-                >
+                <div>
+                  <p class="font16 font500 muteText mb-0">Tags</p>
+                  <span
+                    *ngFor="let genre of game.genreMappings"
+                    class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
+                    >{{ genre }}</span
+                  >
+                </div>
+                <div class="col-auto mt-2 specialStoreOffer" *ngIf="storeOnSale">
+                  <div class="d-flex">
+                    <div class="borderLeft"></div>
+                    <p class="font16 font500 text-white mb-0">Offers on this game</p>
+                    <div class="borderRight"></div>
+                  </div>
+                  <div style="padding: 10px 20px;">
+                    <span class="font16 font500">In {{ storeOnSale.name }}</span>
+                    <div class="pricing d-flex align-items-center" style="gap: 10px;">
+                      <div class="percentDiscount font500">-{{ (storeOnSale.normal_price - storeOnSale.sale_price)*(100/storeOnSale.normal_price) | number:'1.0-1'}}%</div>
+                      <div class="normalPrice font500">{{storeOnSale.normal_price | currency : currancyForStoreSale}}</div>
+                      <div class="discountPrice activeGradientText">{{ storeOnSale.sale_price | currency : currancyForStoreSale }}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-auto pr-lg-5 d-lg-none d-md-block removeOnMob" *ngIf="game.isInstallAndPlay">
                 <p class="font16 font500 muteText">Website</p>

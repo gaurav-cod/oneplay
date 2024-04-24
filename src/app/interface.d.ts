@@ -45,6 +45,10 @@ export interface PurchaseStore {
   name: string;
   link: string;
   store_image: string;
+  sale_price: string; // need to change to number
+  normal_price: string; // need to change to number
+  on_sale: boolean;
+  // need one currancy variable
 }
 
 export interface StripeTxn {
