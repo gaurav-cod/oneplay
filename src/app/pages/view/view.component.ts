@@ -1654,20 +1654,27 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
     this.restService.getAllStreamConfigs().subscribe((res)=> {
       if (res.length > 0) {
+        const selectedIds = new Set();
         for (let idx =0; idx<this.streamConfigList.length; idx++) {
 
           let stream = this.streamConfigList[idx]; 
+       
           res.forEach((s)=> {
-            if (stream.isCustom && !stream.id && s.is_custom == "true") {
-              this.streamConfigList[idx] = new streamConfig(s);
-              stream = this.streamConfigList[idx];
-              const data: streamConfig = this.addCustomToStreamConfig();
-              if (data) 
-                this.streamConfigList.push(new streamConfig(data));
-            }
-            else if (s.service_name == stream.serviceName && !stream.id) {
-              this.streamConfigList[idx] = new streamConfig(s);
-              stream = this.streamConfigList[idx];
+            if (!selectedIds.has(s.id)) {
+
+              if (stream.isCustom && !stream.id && s.is_custom == "true") {
+                this.streamConfigList[idx] = new streamConfig(s);
+                stream = this.streamConfigList[idx];
+                selectedIds.add(s.id);
+                const data: streamConfig = this.addCustomToStreamConfig();
+                if (data) 
+                  this.streamConfigList.push(data);
+              }
+              else if (s.service_name == stream.serviceName && !stream.id) {
+                this.streamConfigList[idx] = new streamConfig(s);
+                selectedIds.add(s.id);
+                stream = this.streamConfigList[idx];
+              }
             }
           })
         }
