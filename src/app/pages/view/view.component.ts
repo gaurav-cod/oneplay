@@ -541,7 +541,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get devGames(): GameModel[] {
-    console.log([this._devGames]);
     return [...this._devGames]
       .filter((game) => game.oneplayId !== this.game.oneplayId)
       .sort((a, b) => a.popularityScore - b.popularityScore);
@@ -1655,24 +1654,34 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
     this.restService.getAllStreamConfigs().subscribe((res)=> {
       if (res.length > 0) {
-        this.streamConfigList.forEach((stream: streamConfig, idx: number)=> {
+        for (let idx =0; idx<this.streamConfigList.length; idx++) {
+
+          let stream = this.streamConfigList[idx]; 
           res.forEach((s)=> {
-            if (stream.isCustom && !stream.id) {
+            if (stream.isCustom && !stream.id && s.is_custom == "true") {
               this.streamConfigList[idx] = new streamConfig(s);
+              stream = this.streamConfigList[idx];
+              const data: streamConfig = this.addCustomToStreamConfig();
+              if (data) 
+                this.streamConfigList.push(new streamConfig(data));
             }
             else if (s.service_name == stream.serviceName && !stream.id) {
               this.streamConfigList[idx] = new streamConfig(s);
+              stream = this.streamConfigList[idx];
             }
           })
-        })
-        // this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
+        }
         
         if (res.length == 3 && this.streamConfigList[2]?.isKeyAvailable) {
-          this.streamConfigList.push(this.addCustomToStreamConfig());
+          const data: streamConfig = this.addCustomToStreamConfig();
+          if (data) 
+            this.streamConfigList.push(new streamConfig(data));
         }
         else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
           this.streamConfigList.push(new streamConfig(res[3]));
-          this.streamConfigList.push(this.addCustomToStreamConfig());
+          const data: streamConfig = this.addCustomToStreamConfig();
+          if (data) 
+            this.streamConfigList.push(new streamConfig(data));
         } 
 
         this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
@@ -1687,9 +1696,7 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.showError(error);
     })
   }
-  enterStreamConfig(event: InputEvent, stream: streamConfig, value: string) {
-    stream[value] += event.data;
-  }
+
   openStreamInput(stream: streamConfig) {
     this.streamConfigList.forEach((s, index)=> {
       s.setIsClicked(s.serviceName == stream.serviceName);
