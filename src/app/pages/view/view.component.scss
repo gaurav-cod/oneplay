@@ -992,7 +992,9 @@ live {
 
 .specialStoreOffer {
   border-radius: 10px;
+  padding: 10px 0px;
   box-shadow: 0 0 10px rgb(39 39 39 / 67%);
+  min-width: fit-content;
 }
 .normalPrice {
   text-decoration:line-through;
@@ -1007,14 +1009,19 @@ live {
   border-top: 2px dashed transparent;
   border-image: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
   border-image-slice: 1;
-  margin-right: 2px;
+  margin-right: 3px;
   width: 20px;
   position: relative;
   top: 12px;
 }
 .borderRight {
-  width: auto;
-  border-top: 2px solid linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
+  border-top: 2px dashed transparent;
+  border-image: linear-gradient(270deg, #a83afe 0%, #6e59fe 100%);
+  border-image-slice: 1;
+  margin-left: 3px;
+  width: -webkit-fill-available;
+  position: relative;
+  top: 12px;
 }
 .discountPrice {
   text-decoration: underline !important;

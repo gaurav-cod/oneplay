@@ -392,10 +392,10 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.game.storesMapping.forEach((store)=> {
               if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
                 this.storeOnSale = store;
-                this.currancyForStoreSale = this.storeOnSale.sale_price.split(" ")[1];
+                this.currancyForStoreSale = "INR";
                 this.storeOnSale.normal_price = "399";
-                this.storeOnSale.sale_price = "150"
-                this.storeOnSale.sale_price = this.storeOnSale.sale_price.split(" ")[0];
+                this.storeOnSale.sale_price = "150";
+                // this.storeOnSale.sale_price = this.storeOnSale.sale_price.split(" ")[0];
               }
             })
 
