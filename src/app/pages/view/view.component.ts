@@ -1685,7 +1685,6 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.streamConfigList.push(new streamConfig(data));
         }
         else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
-          this.streamConfigList.push(new streamConfig(res[3]));
           const data: streamConfig = this.addCustomToStreamConfig();
           if (data) 
             this.streamConfigList.push(new streamConfig(data));
