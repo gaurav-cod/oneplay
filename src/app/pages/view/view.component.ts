@@ -1767,6 +1767,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   navigateToOffer() {
+    this.countlyService.addEvent("couponClicked", {
+      "gameId": this.game.oneplayId,
+      "price": this.storeOnSale.sale_price,
+      "storeId": this.storeOnSale.id,
+      "userId": this.user.id
+    });
     window.open(this.storeOnSale.link);
   }
 
