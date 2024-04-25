@@ -1422,7 +1422,7 @@
             <div class="border-0 lightBg borderRadius6" style="margin-left: -10px;">
               <div class="col text-left d-flex align-items-center">
                 <img src="assets/img/{{ stream.icon }}.svg" alt="" height="25px">
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName }}</p>
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom && !stream.isKeyAvailable ? "Custom" : stream.serviceName }}</p>
               </div>
             </div>
             <div class="col text-left d-flex">
