@@ -228,3 +228,13 @@ export interface FilterPayload {
   genres: string;
   categories: string;
 }
+
+export interface AaaFilterCollection {
+  title: string;
+  payload: { [x: string]: any };
+}
+
+export interface AaaFiltersRO {
+  title: string;
+  collections: AaaFilterCollection[];
+}
