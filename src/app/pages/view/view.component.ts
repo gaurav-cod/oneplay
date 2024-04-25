@@ -68,7 +68,6 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   public isWarningMessageView: boolean = false;
   public storeOnSale: PurchaseStore | null = null;
-  public currancyForStoreSale: string | null = null; // will be removed
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -389,6 +388,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.selectedStore = game.storesMapping[0] ?? null;
             }
 
+            this.storeOnSale = null;
             this.game.storesMapping.forEach((store)=> {
               if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
                 this.storeOnSale = store;
