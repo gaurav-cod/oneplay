@@ -1,4 +1,3 @@
-
 .desc {
   min-width: 450px;
 
@@ -988,4 +987,51 @@ live {
   flex-wrap: wrap;
   line-height: normal;
   text-align: center;
+}
+
+.specialStoreOffer {
+  border-radius: 10px;
+  padding: 10px 0px;
+  box-shadow: 0 0 2px #353439;
+  min-width: fit-content;
+  cursor: pointer;
+}
+.normalPrice {
+  text-decoration:line-through;
+  font-size: small;
+  position: relative;
+  top: 3px;
+}
+.percentDiscount {
+  font-size: large;
+}
+.borderLeft {
+  border-top: 2px dashed #c14d4d;
+  margin-right: 3px;
+  width: 45px;
+  position: relative;
+  top: 12px;
+}
+.borderRight {
+  border-top: 2px dashed #c14d4d;
+  margin-left: 3px;
+  width: -webkit-fill-available;
+  position: relative;
+  top: 12px;
+}
+.discountPrice {
+  text-decoration: underline !important;
+  font-weight: 600;
+  position: relative;
+  font-size: larger;
+}
+.discountPrice::after {
+  content: "";
+  position: absolute;
+  bottom: 5px; 
+  left: 1px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(270deg, #3aa0fe 0%, #59fef4 100%); 
+  pointer-events: none; 
 }
