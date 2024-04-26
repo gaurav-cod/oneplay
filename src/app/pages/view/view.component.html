@@ -63,6 +63,7 @@
               <div>
                 <button
                   class="btn p-0"
+                  style="z-index: 1000;"
                   (click)="openStreamDialog(streamDialog)"
                   ngbTooltip="Get ready to Live stream your games."
                 >
@@ -219,6 +220,7 @@
                       <button
                         class="btn p-0"
                         placement="right"
+                         style="z-index: 1000;"
                         ngbTooltip="Get ready to live stream your games."
                         (click)="openStreamDialog(streamDialog)"
                       >
@@ -1411,7 +1413,7 @@
                 <ng-template #showDefaultImg>
                   <img src="assets/img/{{ stream.icon }}.svg" alt="" height="30px">
                 </ng-template>
-                <p class="mb-0 ml-3 font18 font500 text-white" [style.marginTop.px]="stream.icon == 'twitch' ? '-5' : ''">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName + "(Custom)" : "Custom") : stream.serviceName}} </p>
+                <p class="mb-0 ml-3 font18 font500 text-white" [style.marginTop.px]="stream.icon == 'twitch' ? '-5' : ''">{{ stream.isCustom ? (stream.isKeyAvailable ? getTrimedText(stream.serviceName + "(Custom)") : "Custom") : stream.serviceName}} </p>
               </div>
               <div class="col-auto">
                 <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">

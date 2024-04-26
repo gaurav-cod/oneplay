@@ -1770,6 +1770,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       })
     }
   }
+
+  getTrimedText(text) {
+    return window.innerWidth <= 475 ? (text.length > 15 ? (text.substr(0, 13) + "...") : text) : text;
+  }
+
   closeStreamDialog() {
     this.resetStreamConfigValues();
     this._streamDialogRef?.close();
