@@ -99,6 +99,12 @@ export interface CustomCountlyEvents {
     logOutConfirmClicked: "yes" | "no";
     dateOfBirthChanged: "yes" | "no"
   };
+  couponClicked: {
+    gameId: string;
+    userId: string;
+    price: number;
+    storeId: string;
+  },
   search: {
     keywords: string;
     actionDone: "yes" | "no";

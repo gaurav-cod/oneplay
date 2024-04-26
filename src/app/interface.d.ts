@@ -42,6 +42,7 @@ export interface Thumbnail {
 }
 
 export interface PurchaseStore {
+  id: string;
   name: string;
   link: string;
   store_image: string;
