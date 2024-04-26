@@ -6,11 +6,11 @@
   </div>
 </div>
 <section class="position-relative">
-  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')" (mousedown)="swipe($event, 'start')" (mouseup)="swipe($event, 'end')">
+  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')" (mousedown)="swipe($event, 'start')" (mouseup)="swipe($event, 'end')"  (click)="navigateToDetail(selectedBannerGame)">
     <ngb-carousel id="home-header" [showNavigationArrows]="false"
       [showNavigationIndicators]="false" (slide)="onSlideChange($event)" *ngIf="!!heroBannerRow" interval="0">
       <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
-        <div class="card bgTransparent border-0 borderRadius10 height80vh position-relative" (click)="navigateToDetail(game)">
+        <div class="card bgTransparent border-0 borderRadius10 height80vh position-relative">
           <div class="row carousel-images">
             <ng-container *ngIf="!playVideo">
               <img #bannerImg class="card-img borderRadius10 height80vh left-img" [src]="getBannerImage" alt="img" />
