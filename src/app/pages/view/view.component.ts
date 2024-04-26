@@ -68,7 +68,6 @@ export class ViewComponent implements OnInit, OnDestroy {
 
   public isWarningMessageView: boolean = false;
   public storeOnSale: PurchaseStore | null = null;
-  public currancyForStoreSale: string | null = null; // will be removed
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -389,6 +388,7 @@ export class ViewComponent implements OnInit, OnDestroy {
               this.selectedStore = game.storesMapping[0] ?? null;
             }
 
+            this.storeOnSale = null;
             this.game.storesMapping.forEach((store)=> {
               if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
                 this.storeOnSale = store;
@@ -1694,7 +1694,6 @@ export class ViewComponent implements OnInit, OnDestroy {
             this.streamConfigList.push(new streamConfig(data));
         }
         else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
-          this.streamConfigList.push(new streamConfig(res[3]));
           const data: streamConfig = this.addCustomToStreamConfig();
           if (data) 
             this.streamConfigList.push(new streamConfig(data));
@@ -1781,6 +1780,12 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   navigateToOffer() {
+    this.countlyService.addEvent("couponClicked", {
+      "gameId": this.game.oneplayId,
+      "price": this.storeOnSale.sale_price,
+      "storeId": this.storeOnSale.id,
+      "userId": this.user.id
+    });
     window.open(this.storeOnSale.link);
   }
 

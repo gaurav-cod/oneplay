@@ -489,8 +489,8 @@
                   <div style="padding: 0px 10px 0px 25px;">
                     <span class="font16 font400 d-block py-1 lightGrayColor">In {{ storeOnSale.name }}</span>
                     <div class="pricing d-flex align-items-center" style="gap: 10px;">
-                      <div class="percentDiscount font500 lightGrayColor">-{{ (storeOnSale.normal_price - storeOnSale.sale_price)*(100/storeOnSale.normal_price) | number:'1.0-1'}}%</div>
-                      <div class="normalPrice font500 lightGrayColor">{{storeOnSale.normal_price | currency : storeOnSale.currency}}</div>
+                      <div class="percentDiscount font500 lightGrayColor" *ngIf="storeOnSale.normal_price != '0' && storeOnSale.normal_price">{{ (storeOnSale.normal_price - storeOnSale.sale_price)*(100/(storeOnSale.normal_price)) | number:'1.0-1'}}%</div>
+                      <div class="normalPrice font500 lightGrayColor" *ngIf="storeOnSale.normal_price != '0' && storeOnSale.normal_price">{{storeOnSale.normal_price | currency : storeOnSale.currency}}</div>
                       <div class="discountPrice activeGradientText">{{ storeOnSale.sale_price | currency : storeOnSale.currency }}</div>
                     </div>
                   </div>
@@ -1411,7 +1411,7 @@
                 <ng-template #showDefaultImg>
                   <img src="assets/img/{{ stream.icon }}.svg" alt="" height="30px">
                 </ng-template>
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName}}</p>
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName + "(Custom)" : "Custom") : stream.serviceName}} </p>
               </div>
               <div class="col-auto">
                 <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">
