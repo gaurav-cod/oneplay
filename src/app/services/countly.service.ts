@@ -204,29 +204,29 @@ export class CountlyService {
       Countly.user_details(option);
     });
 
-    Countly.q.push([
-      "track_performance",
-      {
-        //page load timing
-        RT: {},
-        //required for automated networking traces
-        instrument_xhr: true,
-        captureXhrRequestResponse: true,
-        AutoXHR: {
-          alwaysSendXhr: true,
-          monitorFetch: true,
-          captureXhrRequestResponse: true,
-        },
-        //required for screen freeze traces
-        Continuity: {
-          enabled: true,
-          monitorLongTasks: true,
-          monitorPageBusy: true,
-          monitorFrameRate: true,
-          monitorInteractions: true,
-          afterOnload: true,
-        },
-      },
-    ]);
+    // Countly.q.push([
+    //   "track_performance",
+    //   {
+    //     //page load timing
+    //     RT: {},
+    //     //required for automated networking traces
+    //     instrument_xhr: true,
+    //     captureXhrRequestResponse: true,
+    //     AutoXHR: {
+    //       alwaysSendXhr: true,
+    //       monitorFetch: true,
+    //       captureXhrRequestResponse: true,
+    //     },
+    //     //required for screen freeze traces
+    //     Continuity: {
+    //       enabled: true,
+    //       monitorLongTasks: true,
+    //       monitorPageBusy: true,
+    //       monitorFrameRate: true,
+    //       monitorInteractions: true,
+    //       afterOnload: true,
+    //     },
+    //   },
+    // ]);
   }
 }
