@@ -1688,12 +1688,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           })
         }
         
-        if (res.length == 3 && this.streamConfigList[2]?.isKeyAvailable) {
-          const data: streamConfig = this.addCustomToStreamConfig();
-          if (data) 
-            this.streamConfigList.push(new streamConfig(data));
-        }
-        else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
+       if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
           const data: streamConfig = this.addCustomToStreamConfig();
           if (data) 
             this.streamConfigList.push(new streamConfig(data));
@@ -1713,6 +1708,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   openStreamInput(stream: streamConfig) {
+    this.streamErrorMsg = null;
     this.streamConfigList.forEach((s, index)=> {
       s.setIsClicked(s.serviceName == stream.serviceName);
     })
@@ -1728,8 +1724,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private updateCustomStream(streamConfigDetail: streamConfig) {
-    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key).subscribe({
+    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key, streamConfigDetail.serviceName, streamConfigDetail.url).subscribe({
       next: (res)=> {
+        streamConfigDetail.isClicked = false;
         this.isAnyValueStreamUpdated = true;
         this.selectedStreamConfig = null;
       },
@@ -1754,7 +1751,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   saveStreamConfig() {
     const streamConfigDetail: streamConfig = this.streamConfigList.filter((s)=> s.isClicked && s.serviceName)[0];
 
-    if (streamConfigDetail.isKeyAvailable) {
+    if (streamConfigDetail.isKeyAvailable && streamConfigDetail.isCustom) {
       this.updateCustomStream(streamConfigDetail);
     }
     else if (streamConfigDetail.isCustom) {
@@ -1774,6 +1771,11 @@ export class ViewComponent implements OnInit, OnDestroy {
       })
     }
   }
+
+  getTrimedText(text) {
+    return window.innerWidth <= 475 ? (text.length > 15 ? (text.substr(0, 13) + "...") : text) : text;
+  }
+
   closeStreamDialog() {
     this.resetStreamConfigValues();
     this._streamDialogRef?.close();
