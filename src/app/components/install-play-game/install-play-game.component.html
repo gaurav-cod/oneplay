@@ -26,25 +26,28 @@
                                     (error)="onImgError($event)" class="mr-1">
                             </ng-container>
                         </div>
-                        <div class="d-flex h-100 flex-column justify-content-end secondaryTagOne">
-                            <span *ngIf="game.isFree; else showSecondaryTags"
-                                class="freeTag px-2 tagText text-white freeToPlayDesktop">
-                                FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon"
-                                    alt="store" /></span>
-                            <span class="freeToPlayTab">
-                                <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
-                            </span>
+                        <div class="gameTags">
+                            <div *ngIf="game.isFree && game.status !== 'coming_soon'" class="d-flex">
+                                <span class="freeTag freeTagTriangle tagText">
+                                  FREE ON <img src='assets/img/store/store.svg' class="freeOnStoreIcon" alt="store" />
+                                </span>
                         </div>
+                                <span *ngIf="game.status === 'coming_soon'" class="redGradient tagText">COMING SOON</span>
+                                <div class="row mt-1">
+                                  <div *ngIf="game.status === 'maintenance'" class="col-auto"><span
+                                      class="orangeGradientBg tagText">MAINTENANCE</span></div>
+                                  <div *ngIf="game.status === 'updating'" class="col-auto"><span
+                                      class="updatingGradient tagText">UPDATING</span></div>
+                                  <div *ngIf="game.status === 'not_optimized'" class="col-auto"><span class="darkredGradient tagText">NOT
+                                      OPTIMIZED</span></div>
+                                </div>
+
                     </div>
                 </div>
-
+           </div>
             </div>
         </div>
     </a>
-    <div class="" *ngIf="!game.isFree; else showSecondaryTags"></div>
-    <div class="md-status">
-        <div *ngIf="game.isFree; else showSecondaryTags"></div>
-    </div>
     <div class="developerListTab mt-2" *ngIf="isInstallAndPlayList || calledFrom === 'HOME'">
         <span style="color: #DCDCDC">
             {{ game.developer | trimBySeperator }}
@@ -52,17 +55,3 @@
     </div>
 </section>
 
-<ng-template #showSecondaryTags>
-    <div class="secondaryTags d-flex justify-content-end mt-1" [ngClass]="{'position-absolute': game.isFree}" *ngIf="calledFrom != 'STORE_OTHER' && calledFrom != 'LIBRARY'">
-        <div *ngIf="game.status === 'coming_soon' || game.status === 'upcoming'">
-            <span class="redGradient px-2 tagText text-white">COMING SOON</span>
-        </div>
-        <div *ngIf="game.status === 'maintenance'">
-            <span class="orangeGradientBg px-2 tagText text-white">MAINTENANCE</span>
-        </div>
-        <div *ngIf="game.status === 'updating'" class="col-auto bottomTag"><span
-                class="updatingGradient px-2 tagText text-white">UPDATING</span></div>
-        <div *ngIf="game.status === 'not_optimized'" class="col-auto bottomTag"><span
-                class="darkredGradient px-2 tagText text-white">NOT OPTIMIZED</span></div>
-    </div>
-</ng-template>

@@ -263,7 +263,7 @@ export class SubscriptionsComponent implements OnInit, OnDestroy {
 
   buyTopUp(sub: SubscriptionModel) {
     this.addSubCardEvent("topUp");
-    window.location.href = environment.domain + "/subscription.html#topup";
+    window.location.href = environment.domain + "/subscription.html#base";
   }
 
   upgradePlan(sub:SubscriptionModel){

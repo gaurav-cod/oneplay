@@ -67,6 +67,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
   public isWarningMessageView: boolean = false;
+  public storeOnSale: PurchaseStore | null = null;
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -386,6 +387,14 @@ export class ViewComponent implements OnInit, OnDestroy {
             } else {
               this.selectedStore = game.storesMapping[0] ?? null;
             }
+
+            this.storeOnSale = null;
+            this.game.storesMapping.forEach((store)=> {
+              if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
+                this.storeOnSale = store;
+              }
+            })
+
             this._getGamesByDeveloperSub?.unsubscribe();
             this._getGamesByDeveloperSub = this.restService
               .getGamesByDeveloper(game.developer.join(","))
@@ -1763,6 +1772,16 @@ export class ViewComponent implements OnInit, OnDestroy {
   closeStreamDialog() {
     this.resetStreamConfigValues();
     this._streamDialogRef?.close();
+  }
+
+  navigateToOffer() {
+    this.countlyService.addEvent("couponClicked", {
+      "gameId": this.game.oneplayId,
+      "price": this.storeOnSale.sale_price,
+      "storeId": this.storeOnSale.id,
+      "userId": this.user.id
+    });
+    window.open(this.storeOnSale.link);
   }
 
   showError(error, doAction: boolean = false) {
