@@ -1610,8 +1610,8 @@ export class RestService {
     return this.http.post(this.r_mix_api + "/streams/config/custom", { service: service, key: key, url: url  }).pipe((map((res)=> res), catchError(({ error })=> { throw error; })))
   }
 
-  updateCustomStreamConfig(id: string, key: string) {
-    return this.http.put(this.r_mix_api + `/streams/config/custom/${id}`, { key: key }).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
+  updateCustomStreamConfig(id: string, key: string, service: string, url: string) {
+    return this.http.put(this.r_mix_api + `/streams/config/custom/${id}`, { key, service, url }).pipe((map((res)=> res)), catchError(({ error })=> { throw error; }))
   }
 
   deleteStreamConfig(id: string) {
