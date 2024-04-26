@@ -1725,6 +1725,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   private updateCustomStream(streamConfigDetail: streamConfig) {
     this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key, streamConfigDetail.serviceName, streamConfigDetail.url).subscribe({
       next: (res)=> {
+        streamConfigDetail.isClicked = false;
         this.isAnyValueStreamUpdated = true;
         this.selectedStreamConfig = null;
       },
