@@ -1708,6 +1708,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   openStreamInput(stream: streamConfig) {
+    this.streamErrorMsg = null;
     this.streamConfigList.forEach((s, index)=> {
       s.setIsClicked(s.serviceName == stream.serviceName);
     })
