@@ -102,8 +102,8 @@ export class GameCardV2Component implements AfterViewInit {
           video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "120%";
-          video.style.height = "120%";
+          video.style.width = "200%";
+          video.style.height = "100%";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";

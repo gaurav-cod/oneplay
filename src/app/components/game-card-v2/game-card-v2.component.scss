@@ -23,7 +23,8 @@
 .mute {
   position: absolute;
   bottom: 16px;
-  right: 16px;
+  left: 170%;
+  z-index: 1000000;
   padding: 1px 8px;
   border-radius: 50%;
 }

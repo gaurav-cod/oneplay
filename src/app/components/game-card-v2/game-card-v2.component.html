@@ -1,5 +1,9 @@
 <a #gameLink href="javascript:void(0)" class="card card-block border-0 shadow-1 position-relative"
   (click)="onGameClick()" [ngClass]="{'spotlightBannerWidth': railType == 'spotlight_banner'}" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+  <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+      (click)="muteUnmute($event, gameLink, game)">
+      <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
+    </div>
   <div class="mask" style="z-index: 2;">
     <div class="position-relative">
       <img #image [ngClass]="{ w290h185: hfw, specialCardHeight: specialBannerGame }"
@@ -43,10 +47,6 @@
         <img src="assets/icons/live-icon.svg" alt="" class="mr-2">
         <span class="font500 text-white">{{ streamCount }}</span>
       </div>
-    </div>
-    <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
-      (click)="muteUnmute($event, gameLink, game)">
-      <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
     </div>
     <ngx-ui-loader [fgsColor]="'#c32ead'" [hasProgressBar]="false" [loaderId]="loaderId"
       [overlayBorderRadius]="'15px'"></ngx-ui-loader>

@@ -1,7 +1,12 @@
 <span class="railHeading hideInLarge container-fluid">{{ gameFeed.title }}</span>
-<div class="spotlightBannerContainer" [style.backgroundImage]="'url('+ getBackgroundImage +')'" #gameLink>
+<div class="spotlightBannerContainer" [style.backgroundImage]="'url('+ getBackgroundImage +')'">
     <div class="d-flex h-100 align-items-center container-fluid">
-        <div class="mainSpecialBanner" (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)">
+
+        <div class="mainSpecialBanner" (click)="onGameClick()" (mouseenter)="playVideo(gameLink, image)" (mouseleave)="pauseVideo(gameLink, image)" #gameLink>
+            <div *ngIf="showSound" class="mute bg-translucent-darker" [ngClass]="{ unmute: !muted }"
+            (click)="muteUnmute($event, gameLink, game)">
+            <em class="fa text-white" [ngClass]="{ 'fa-volume-down': !muted, 'fa-volume-mute': muted }"></em>
+        </div>
             <span class="railHeading hideInMobile">{{ gameFeed.title }}</span>
             <div class="position-relative">
                 <img [src]="specialBannerGame.poster_16_9" alt="" class="spotlightBannerImage" #image>

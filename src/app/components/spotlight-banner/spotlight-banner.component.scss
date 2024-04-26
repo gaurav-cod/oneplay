@@ -223,7 +223,22 @@ transform: skewX(40deg) !important;
   margin-top: 35px;
   margin-right: 25px;
   cursor: pointer;
+  position: relative;
 }
+
+.mute {
+  position: absolute;
+  bottom: 30px;
+  left: 132%;
+  z-index: 1000000;
+  padding: 1px 8px;
+  border-radius: 50%;
+}
+
+.unmute {
+  padding: 2px 6px !important;
+}
+
 
 .spotlightBannerContainer:hover>.arrowPaddingright {
   display: block !important;

@@ -72,6 +72,9 @@ export class SpotlightBannerComponent implements OnInit {
   get isMobile() {
     return window.innerWidth < 1200;
   }
+  get getVideo() {
+    return window.innerWidth > 475 ? (this.specialBannerGame.video_hero_banner_16_9 ) : (this.specialBannerGame.video_hero_banner_1_1 );
+  }
 
   onGameClick() {
     // this.countlyService.endEvent("gameLandingView");
@@ -82,21 +85,19 @@ export class SpotlightBannerComponent implements OnInit {
   }
 
   playVideo(gameLink: HTMLAnchorElement, image: HTMLImageElement) {
-    if (this.specialBannerGame.trailer_video && !this.isMobile && this.specialBannerGame.status === "live") {
+   if (this.getVideo && !this.isMobile) {
       this.timer = setTimeout(() => {
         this.showSound = true;
         if (!(gameLink.firstElementChild instanceof HTMLVideoElement)) {
           const video = document.createElement("video");
           gameLink.insertAdjacentElement("afterbegin", video);
           video.classList.add("mask");
-          video.src =
-            environment.game_assets +
-            this.specialBannerGame.oneplayId +
-            this.specialBannerGame.trailer_video;
+          video.src = this.getVideo;
           video.muted = true;
           video.style.objectFit = 'cover';
-          video.style.width = "200px";
-          video.style.height = "200px";
+          video.style.width = "150%";
+          video.style.height = "70%";
+          video.style.top = "25%";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
@@ -121,7 +122,7 @@ export class SpotlightBannerComponent implements OnInit {
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    if ((this.specialBannerGame.video_hero_banner_16_9 || this.specialBannerGame.video_hero_banner_1_1 || this.specialBannerGame.trailer_video ) && !this.isMobile && this.specialBannerGame.status === "live") {
+    if (this.getVideo && !this.isMobile) {
       image.style.opacity = "1";
       if (gameLink.firstElementChild instanceof HTMLVideoElement) {
         gameLink.removeChild(gameLink.firstElementChild);
