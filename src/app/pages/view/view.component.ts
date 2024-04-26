@@ -1679,12 +1679,7 @@ export class ViewComponent implements OnInit, OnDestroy {
           })
         }
         
-        if (res.length == 3 && this.streamConfigList[2]?.isKeyAvailable) {
-          const data: streamConfig = this.addCustomToStreamConfig();
-          if (data) 
-            this.streamConfigList.push(new streamConfig(data));
-        }
-        else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
+       if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
           const data: streamConfig = this.addCustomToStreamConfig();
           if (data) 
             this.streamConfigList.push(new streamConfig(data));
@@ -1745,7 +1740,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   saveStreamConfig() {
     const streamConfigDetail: streamConfig = this.streamConfigList.filter((s)=> s.isClicked && s.serviceName)[0];
 
-    if (streamConfigDetail.isKeyAvailable) {
+    if (streamConfigDetail.isKeyAvailable && streamConfigDetail.isCustom) {
       this.updateCustomStream(streamConfigDetail);
     }
     else if (streamConfigDetail.isCustom) {
