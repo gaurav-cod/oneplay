@@ -93,8 +93,8 @@
     </div>
     <div class="dots-indicator">
       <ng-container *ngFor="let game of heroBannerRow.games; let idx = index">
-        <img src="assets/img/Dashboard/dot-selected.svg" alt="" height="10px" width="10px" *ngIf="game.oneplayId == selectedBannerGame.oneplayId">
-        <img src="assets/img/Dashboard/dot-unselected.svg" alt="" height="10px" width="10px" *ngIf="game.oneplayId != selectedBannerGame.oneplayId" [style]="'transform: scale('+getScaleByDistance(idx)+')'">
+        <img src="assets/img/Dashboard/dot-selected.svg" alt="" height="10px" width="10px" [hidden]="game.oneplayId != selectedBannerGame.oneplayId">
+        <img src="assets/img/Dashboard/dot-unselected.svg" alt="" height="10px" width="10px" [hidden]="game.oneplayId == selectedBannerGame.oneplayId" [style]="'transform: scale('+getScaleByDistance(idx)+')'">
         <!-- <div class="dot" [ngClass]="{'dot-active': game.oneplayId == selectedBannerGame.oneplayId}"
           [style]="'transform: scale('+getScaleByDistance(idx)+')'"></div> -->
       </ng-container>

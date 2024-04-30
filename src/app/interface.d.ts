@@ -42,9 +42,14 @@ export interface Thumbnail {
 }
 
 export interface PurchaseStore {
+  id: string;
   name: string;
   link: string;
   store_image: string;
+  sale_price: number; 
+  normal_price: number;
+  on_sale: boolean;
+  currency: string;
 }
 
 export interface StripeTxn {
@@ -227,4 +232,14 @@ export interface FilterPayload {
   game_ids: string;
   genres: string;
   categories: string;
+}
+
+export interface AaaFilterCollection {
+  title: string;
+  payload: { [x: string]: any };
+}
+
+export interface AaaFiltersRO {
+  title: string;
+  collections: AaaFilterCollection[];
 }

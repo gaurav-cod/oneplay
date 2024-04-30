@@ -60,9 +60,10 @@
                   />
                 </button>
               </div>
-              <!-- <div>
+              <div>
                 <button
                   class="btn p-0"
+                  style="z-index: 1000;"
                   (click)="openStreamDialog(streamDialog)"
                   ngbTooltip="Get ready to Live stream your games."
                 >
@@ -72,7 +73,7 @@
                     alt=""
                   />
                 </button>
-              </div> -->
+              </div>
             </div>
             <div class="row imagesText height330 align-items-end mt-md-4" [ngClass]="{'height300': game.storesMapping?.length == 0, 'height430': game.storesMapping?.length > 1, 'height410': game.storesMapping?.length == 1}">
               <div class="col-md-12 pb-5">
@@ -215,10 +216,11 @@
                         />
                       </button>
                     </div>
-                    <!-- <div>
+                    <div>
                       <button
                         class="btn p-0"
                         placement="right"
+                         style="z-index: 1000;"
                         ngbTooltip="Get ready to live stream your games."
                         (click)="openStreamDialog(streamDialog)"
                       >
@@ -230,7 +232,7 @@
                           height="41px"
                         />
                       </button>
-                    </div> -->
+                    </div>
                   </div>
                 </div>
 
@@ -472,12 +474,29 @@
             </div>
             <div class="row mt-4 mb-4">
               <div class="col-12 col-md-6">
-                <p class="font16 font500 muteText mb-0">Tags</p>
-                <span
-                  *ngFor="let genre of game.genreMappings"
-                  class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
-                  >{{ genre }}</span
-                >
+                <div>
+                  <p class="font16 font500 muteText mb-0">Tags</p>
+                  <span
+                    *ngFor="let genre of game.genreMappings"
+                    class="badge badge-pill text-capitalize customLinearGradient font500 font14 mr-2 text-white px-3 py-0 px-sm-3 mt-3"
+                    >{{ genre }}</span
+                  >
+                </div>
+                <div class="col-auto mt-3 specialStoreOffer" *ngIf="storeOnSale" (click)="navigateToOffer()">
+                  <div class="d-flex">
+                    <div class="borderLeft"></div>
+                    <p class="font16 font500 text-white mb-0 px-1" style="min-width: fit-content;">Offers on this game</p>
+                    <div class="borderRight"></div>
+                  </div>
+                  <div style="padding: 0px 10px 0px 25px;">
+                    <span class="font16 font400 d-block py-1 lightGrayColor">In {{ storeOnSale.name }}</span>
+                    <div class="pricing d-flex align-items-center" style="gap: 10px;">
+                      <div class="percentDiscount font500 lightGrayColor" *ngIf="storeOnSale.normal_price != '0' && storeOnSale.normal_price">{{ (storeOnSale.normal_price - storeOnSale.sale_price)*(100/(storeOnSale.normal_price)) | number:'1.0-1'}}%</div>
+                      <div class="normalPrice font500 lightGrayColor" *ngIf="storeOnSale.normal_price != '0' && storeOnSale.normal_price">{{storeOnSale.normal_price | currency : storeOnSale.currency}}</div>
+                      <div class="discountPrice activeGradientText">{{ storeOnSale.sale_price | currency : storeOnSale.currency }}</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-auto pr-lg-5 d-lg-none d-md-block removeOnMob" *ngIf="game.isInstallAndPlay">
                 <p class="font16 font500 muteText">Website</p>
@@ -1394,7 +1413,7 @@
                 <ng-template #showDefaultImg>
                   <img src="assets/img/{{ stream.icon }}.svg" alt="" height="30px">
                 </ng-template>
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName}}</p>
+                <p class="mb-0 ml-3 font18 font500 text-white" [style.marginTop.px]="stream.icon == 'twitch' ? '-5' : ''">{{ stream.isCustom ? (stream.isKeyAvailable ? getTrimedText(stream.serviceName + "(Custom)") : "Custom") : stream.serviceName}} </p>
               </div>
               <div class="col-auto">
                 <img src="assets/img/stream_selected.svg" alt="" *ngIf="stream.isKeyAvailable">
@@ -1405,7 +1424,7 @@
             <div class="border-0 lightBg borderRadius6" style="margin-left: -10px;">
               <div class="col text-left d-flex align-items-center">
                 <img src="assets/img/{{ stream.icon }}.svg" alt="" height="25px">
-                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom ? (stream.isKeyAvailable ? stream.serviceName : "Custom") : stream.serviceName }}</p>
+                <p class="mb-0 ml-3 font18 font500 text-white">{{ stream.isCustom && !stream.isKeyAvailable ? "Custom" : stream.serviceName }}</p>
               </div>
             </div>
             <div class="col text-left d-flex">

@@ -67,6 +67,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   @ContentChild(NgbDatepicker) dobPicker: NgbDatepicker;
 
   public isWarningMessageView: boolean = false;
+  public storeOnSale: PurchaseStore | null = null;
 
   initialized: string = "Please wait...";
   progress: number = 0;
@@ -369,8 +370,9 @@ export class ViewComponent implements OnInit, OnDestroy {
           (game) => {
             this.game = game;
             this.title.setTitle("Play " + game.title + " on OnePlay" + (game.isFree ? " for Free" : "") +" | Cloud Gaming");
-            this.meta.updateTag({ name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + ", " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") });
+            this.meta.updateTag({ name: "keywords", content: game.title + " play," + game.title + " cloud gaming," + game.title + " play on android," + game.title + " on " + game.storesMapping.map((s)=> (s.name + ",")) + " " + game.title + " cloud gaming" + (game.isFree ? " for free" : "") });
             this.meta.updateTag({ name: "description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description });
+            this.meta.updateTag({ name: "og:description", content: "Play " + game.title + (game.isFree ? " for Free" : "") + " on OnePlay Cloud Gaming. " + game.description });
 
             if (game.preferredStore) {
               const preferredStoreIndex = game.storesMapping.findIndex(
@@ -385,6 +387,14 @@ export class ViewComponent implements OnInit, OnDestroy {
             } else {
               this.selectedStore = game.storesMapping[0] ?? null;
             }
+
+            this.storeOnSale = null;
+            this.game.storesMapping.forEach((store)=> {
+              if (store.on_sale && (!this.storeOnSale || this.storeOnSale?.sale_price > store.sale_price)) {
+                this.storeOnSale = store;
+              }
+            })
+
             this._getGamesByDeveloperSub?.unsubscribe();
             this._getGamesByDeveloperSub = this.restService
               .getGamesByDeveloper(game.developer.join(","))
@@ -540,7 +550,6 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   get devGames(): GameModel[] {
-    console.log([this._devGames]);
     return [...this._devGames]
       .filter((game) => game.oneplayId !== this.game.oneplayId)
       .sort((a, b) => a.popularityScore - b.popularityScore);
@@ -1654,24 +1663,35 @@ export class ViewComponent implements OnInit, OnDestroy {
     this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
     this.restService.getAllStreamConfigs().subscribe((res)=> {
       if (res.length > 0) {
-        this.streamConfigList.forEach((stream: streamConfig, idx: number)=> {
+        const selectedIds = new Set();
+        for (let idx =0; idx<this.streamConfigList.length; idx++) {
+
+          let stream = this.streamConfigList[idx]; 
+       
           res.forEach((s)=> {
-            if (stream.isCustom && !stream.id) {
-              this.streamConfigList[idx] = new streamConfig(s);
-            }
-            else if (s.service_name == stream.serviceName && !stream.id) {
-              this.streamConfigList[idx] = new streamConfig(s);
+            if (!selectedIds.has(s.id)) {
+
+              if (stream.isCustom && !stream.id && s.is_custom == "true") {
+                this.streamConfigList[idx] = new streamConfig(s);
+                stream = this.streamConfigList[idx];
+                selectedIds.add(s.id);
+                const data: streamConfig = this.addCustomToStreamConfig();
+                if (data) 
+                  this.streamConfigList.push(data);
+              }
+              else if (s.service_name == stream.serviceName && !stream.id) {
+                this.streamConfigList[idx] = new streamConfig(s);
+                selectedIds.add(s.id);
+                stream = this.streamConfigList[idx];
+              }
             }
           })
-        })
-        // this.streamConfigList = res.sort((s1, s2)=> s1.sortIndex - s2.sortIndex);
-        
-        if (res.length == 3 && this.streamConfigList[2]?.isKeyAvailable) {
-          this.streamConfigList.push(this.addCustomToStreamConfig());
         }
-        else if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
-          this.streamConfigList.push(new streamConfig(res[3]));
-          this.streamConfigList.push(this.addCustomToStreamConfig());
+        
+       if (res.length == 4 && this.streamConfigList[3]?.isKeyAvailable) {
+          const data: streamConfig = this.addCustomToStreamConfig();
+          if (data) 
+            this.streamConfigList.push(new streamConfig(data));
         } 
 
         this.currentStreamConfigList = JSON.parse(JSON.stringify(this.streamConfigList));
@@ -1686,10 +1706,9 @@ export class ViewComponent implements OnInit, OnDestroy {
       this.showError(error);
     })
   }
-  enterStreamConfig(event: InputEvent, stream: streamConfig, value: string) {
-    stream[value] += event.data;
-  }
+
   openStreamInput(stream: streamConfig) {
+    this.streamErrorMsg = null;
     this.streamConfigList.forEach((s, index)=> {
       s.setIsClicked(s.serviceName == stream.serviceName);
     })
@@ -1705,8 +1724,9 @@ export class ViewComponent implements OnInit, OnDestroy {
   }
 
   private updateCustomStream(streamConfigDetail: streamConfig) {
-    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key).subscribe({
+    this.restService.updateCustomStreamConfig(streamConfigDetail.id, streamConfigDetail.key, streamConfigDetail.serviceName, streamConfigDetail.url).subscribe({
       next: (res)=> {
+        streamConfigDetail.isClicked = false;
         this.isAnyValueStreamUpdated = true;
         this.selectedStreamConfig = null;
       },
@@ -1731,7 +1751,7 @@ export class ViewComponent implements OnInit, OnDestroy {
   saveStreamConfig() {
     const streamConfigDetail: streamConfig = this.streamConfigList.filter((s)=> s.isClicked && s.serviceName)[0];
 
-    if (streamConfigDetail.isKeyAvailable) {
+    if (streamConfigDetail.isKeyAvailable && streamConfigDetail.isCustom) {
       this.updateCustomStream(streamConfigDetail);
     }
     else if (streamConfigDetail.isCustom) {
@@ -1751,9 +1771,24 @@ export class ViewComponent implements OnInit, OnDestroy {
       })
     }
   }
+
+  getTrimedText(text) {
+    return window.innerWidth <= 475 ? (text.length > 15 ? (text.substr(0, 13) + "...") : text) : text;
+  }
+
   closeStreamDialog() {
     this.resetStreamConfigValues();
     this._streamDialogRef?.close();
+  }
+
+  navigateToOffer() {
+    this.countlyService.addEvent("couponClicked", {
+      "gameId": this.game.oneplayId,
+      "price": this.storeOnSale.sale_price,
+      "storeId": this.storeOnSale.id,
+      "userId": this.user?.id
+    });
+    window.open(this.storeOnSale.link);
   }
 
   showError(error, doAction: boolean = false) {
