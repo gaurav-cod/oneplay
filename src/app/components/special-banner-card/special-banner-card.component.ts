@@ -116,7 +116,7 @@ export class SpecialBannerCardComponent implements OnInit, OnChanges {
           video.muted = true;
           video.style.objectFit = 'cover';
           video.style.width = "120%";
-          video.style.height = "100%";
+          video.style.height = "210px";
           video.style.zIndex = "100000";
           video.style.border = "2px solid transparent";
           video.style.backgroundImage = "linear-gradient(to bottom right, #FF0CF5, #fc77f8, #0575E6, #0575E6, #0575E6)";
