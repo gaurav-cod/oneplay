@@ -43,6 +43,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   private railDataToPush:(GameFeedModel | VideoFeedModel | GamezopFeedModel)[] = [];
 
   public firstSignUpMsgTimer: number | null = null;
+  private isDragged: boolean = false;
 
   private _feedSubscription: Subscription;
   private _paramSubscription: Subscription;
@@ -182,6 +183,7 @@ export class HomeV2Component implements OnInit, OnDestroy {
   }
 
   swipe(e: any, when: string): void {
+    this.isDragged = true;
     let clientX = 0, clientY = 0;
     if (e instanceof TouchEvent)
       clientX = e?.changedTouches[0]?.clientX, clientY = e?.changedTouches[0]?.clientY;
@@ -200,12 +202,14 @@ export class HomeV2Component implements OnInit, OnDestroy {
       if (duration < 1000 && Math.abs(direction[0]) > 30 && Math.abs(direction[0]) > Math.abs(direction[1] * 3)) { 
           const swipe = direction[0] < 0 ? 'RIGHT' : 'LEFT';
           this.moveSelectedCard(swipe);
+          this.isDragged = false;
       }
     }
+    e.stopPropagation();
   }
 
   navigateToDetail(game) {
-    if (window.innerWidth <= 475) { 
+    if (window.innerWidth <= 475 && this.isDragged) { 
       this.router.navigate(["view", this.gLink.transform(game)]);
     }
   }

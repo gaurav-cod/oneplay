@@ -5,8 +5,8 @@
     <span class="text-white font18 font600 initalText">We have assigned you a default name {{ username }}, you can change this in settings</span>
   </div>
 </div>
-<section class="position-relative" (click)="navigateToDetail(selectedBannerGame)">
-  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')" (mousedown)="swipe($event, 'start')" (mouseup)="swipe($event, 'end')" >
+<section class="position-relative" (touchstart)="swipe($event, 'start')" (touchend)="swipe($event, 'end')" (mousedown)="swipe($event, 'start')" (mouseup)="swipe($event, 'end')" (click)="navigateToDetail(selectedBannerGame)">
+  <div class="heroBanner w-100 position-relative" *ngIf="!!heroBannerRow" >
     <ngb-carousel id="home-header" [showNavigationArrows]="false"
       [showNavigationIndicators]="false" (slide)="onSlideChange($event)" *ngIf="!!heroBannerRow" interval="0">
       <ng-template *ngFor="let game of heroBannerRow.games; index as i" ngbSlide>
