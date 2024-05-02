@@ -25,8 +25,18 @@
 
   @media screen and (max-width: 475px) {
       height: 50vh !important;
+      .text-logo {
+        margin-left: 10px;
+      }
   }
-  @media screen and (min-width: 475px) and (max-width: 968px) {
+  @media screen and (min-width: 476px) and (max-width: 850px) {
+    height: 70vh !important;
+    .text-logo {
+      width: 20vw !important;
+      margin-left: 20px;
+    }
+  }
+  @media screen and (min-width: 851px) and (max-width: 968px) {
     height: 50vh !important;
   }
   @media screen and (min-width: 968px) and (max-width: 1200px) {
